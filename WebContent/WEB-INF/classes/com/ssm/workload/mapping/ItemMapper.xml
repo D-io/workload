@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.workload.dao.ItemDao" >
+  <resultMap id="BaseResultMap" type="com.ssm.workload.pojo.Item" >
+    <id column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="owner_id" property="ownerId" jdbcType="INTEGER" />
+    <result column="json_parameter" property="jsonParameter" jdbcType="VARCHAR" />
+    <result column="workload" property="workload" jdbcType="INTEGER" />
+    <result column="group_manager_id" property="groupManagerId" jdbcType="INTEGER" />
+    <result column="apply_desc" property="applyDesc" jdbcType="VARCHAR" />
+    <result column="job_desc" property="jobDesc" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="json_child_weight" property="jsonChildWeight" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ssm.workload.pojo.Item" extends="BaseResultMap" >
+    <result column="proof" property="proof" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    item_id, category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc, 
+    job_desc, status, json_child_weight
+  </sql>
+  <sql id="Blob_Column_List" >
+    proof
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from item
+    where item_id = #{itemId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from item
+    where item_id = #{itemId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ssm.workload.pojo.Item" >
+    insert into item (item_id, category_id, owner_id, 
+      json_parameter, workload, group_manager_id, 
+      apply_desc, job_desc, status, 
+      json_child_weight, proof)
+    values (#{itemId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{ownerId,jdbcType=INTEGER}, 
+      #{jsonParameter,jdbcType=VARCHAR}, #{workload,jdbcType=INTEGER}, #{groupManagerId,jdbcType=INTEGER}, 
+      #{applyDesc,jdbcType=VARCHAR}, #{jobDesc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{jsonChildWeight,jdbcType=VARCHAR}, #{proof,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.workload.pojo.Item" >
+    insert into item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="ownerId != null" >
+        owner_id,
+      </if>
+      <if test="jsonParameter != null" >
+        json_parameter,
+      </if>
+      <if test="workload != null" >
+        workload,
+      </if>
+      <if test="groupManagerId != null" >
+        group_manager_id,
+      </if>
+      <if test="applyDesc != null" >
+        apply_desc,
+      </if>
+      <if test="jobDesc != null" >
+        job_desc,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="jsonChildWeight != null" >
+        json_child_weight,
+      </if>
+      <if test="proof != null" >
+        proof,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="ownerId != null" >
+        #{ownerId,jdbcType=INTEGER},
+      </if>
+      <if test="jsonParameter != null" >
+        #{jsonParameter,jdbcType=VARCHAR},
+      </if>
+      <if test="workload != null" >
+        #{workload,jdbcType=INTEGER},
+      </if>
+      <if test="groupManagerId != null" >
+        #{groupManagerId,jdbcType=INTEGER},
+      </if>
+      <if test="applyDesc != null" >
+        #{applyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="jobDesc != null" >
+        #{jobDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="jsonChildWeight != null" >
+        #{jsonChildWeight,jdbcType=VARCHAR},
+      </if>
+      <if test="proof != null" >
+        #{proof,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.workload.pojo.Item" >
+    update item
+    <set >
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="ownerId != null" >
+        owner_id = #{ownerId,jdbcType=INTEGER},
+      </if>
+      <if test="jsonParameter != null" >
+        json_parameter = #{jsonParameter,jdbcType=VARCHAR},
+      </if>
+      <if test="workload != null" >
+        workload = #{workload,jdbcType=INTEGER},
+      </if>
+      <if test="groupManagerId != null" >
+        group_manager_id = #{groupManagerId,jdbcType=INTEGER},
+      </if>
+      <if test="applyDesc != null" >
+        apply_desc = #{applyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="jobDesc != null" >
+        job_desc = #{jobDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="jsonChildWeight != null" >
+        json_child_weight = #{jsonChildWeight,jdbcType=VARCHAR},
+      </if>
+      <if test="proof != null" >
+        proof = #{proof,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where item_id = #{itemId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ssm.workload.pojo.Item" >
+    update item
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      owner_id = #{ownerId,jdbcType=INTEGER},
+      json_parameter = #{jsonParameter,jdbcType=VARCHAR},
+      workload = #{workload,jdbcType=INTEGER},
+      group_manager_id = #{groupManagerId,jdbcType=INTEGER},
+      apply_desc = #{applyDesc,jdbcType=VARCHAR},
+      job_desc = #{jobDesc,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      json_child_weight = #{jsonChildWeight,jdbcType=VARCHAR},
+      proof = #{proof,jdbcType=LONGVARCHAR}
+    where item_id = #{itemId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.workload.pojo.Item" >
+    update item
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      owner_id = #{ownerId,jdbcType=INTEGER},
+      json_parameter = #{jsonParameter,jdbcType=VARCHAR},
+      workload = #{workload,jdbcType=INTEGER},
+      group_manager_id = #{groupManagerId,jdbcType=INTEGER},
+      apply_desc = #{applyDesc,jdbcType=VARCHAR},
+      job_desc = #{jobDesc,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      json_child_weight = #{jsonChildWeight,jdbcType=VARCHAR}
+    where item_id = #{itemId,jdbcType=INTEGER}
+  </update>
+</mapper>
