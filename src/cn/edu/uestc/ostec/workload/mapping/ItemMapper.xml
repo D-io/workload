@@ -13,16 +13,20 @@
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="json_child_weight" property="jsonChildWeight" jdbcType="VARCHAR" />
   </resultMap>
+
   <resultMap id="ResultMapWithBLOBs" type="cn.edu.uestc.ostec.workload.pojo.Item" extends="BaseResultMap" >
     <result column="proof" property="proof" jdbcType="LONGVARCHAR" />
   </resultMap>
+
   <sql id="Base_Column_List" >
     item_id, category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc, 
     job_desc, status, json_child_weight
   </sql>
+
   <sql id="Blob_Column_List" >
     proof
   </sql>
+
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -31,10 +35,12 @@
     from item
     where item_id = #{itemId,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from item
     where item_id = #{itemId,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="cn.edu.uestc.ostec.workload.pojo.Item" >
     insert into item (item_id, category_id, owner_id, 
       json_parameter, workload, group_manager_id, 
@@ -45,6 +51,7 @@
       #{applyDesc,jdbcType=VARCHAR}, #{jobDesc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{jsonChildWeight,jdbcType=VARCHAR}, #{proof,jdbcType=LONGVARCHAR})
   </insert>
+
   <insert id="insertSelective" parameterType="cn.edu.uestc.ostec.workload.pojo.Item" >
     insert into item
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -118,6 +125,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="cn.edu.uestc.ostec.workload.pojo.Item" >
     update item
     <set >
@@ -154,6 +162,7 @@
     </set>
     where item_id = #{itemId,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.edu.uestc.ostec.workload.pojo.Item" >
     update item
     set category_id = #{categoryId,jdbcType=INTEGER},
@@ -168,6 +177,7 @@
       proof = #{proof,jdbcType=LONGVARCHAR}
     where item_id = #{itemId,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="cn.edu.uestc.ostec.workload.pojo.Item" >
     update item
     set category_id = #{categoryId,jdbcType=INTEGER},

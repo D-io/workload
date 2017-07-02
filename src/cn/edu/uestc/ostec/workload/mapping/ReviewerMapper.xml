@@ -5,23 +5,28 @@
     <id column="category_id" property="categoryId" jdbcType="INTEGER" />
     <result column="reviewer_id" property="reviewerId" jdbcType="INTEGER" />
   </resultMap>
+
   <sql id="Base_Column_List" >
     category_id, reviewer_id
   </sql>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from reviewer
     where category_id = #{categoryId,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from reviewer
     where category_id = #{categoryId,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="cn.edu.uestc.ostec.workload.pojo.Reviewer" >
     insert into reviewer (category_id, reviewer_id)
     values (#{categoryId,jdbcType=INTEGER}, #{reviewerId,jdbcType=INTEGER})
   </insert>
+
   <update id="updateByPrimaryKey" parameterType="cn.edu.uestc.ostec.workload.pojo.Reviewer" >
     update reviewer
     set reviewer_id = #{reviewerId,jdbcType=INTEGER}

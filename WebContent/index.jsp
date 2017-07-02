@@ -15,21 +15,20 @@ $.ajax({
             type : "post",
             processData : true,  
             dataType : "json",  
-            data : "{
+            data : {
             		 'name':'name',
             		 'desc':'desc',
             		 'parentId':0,
             		 'isLeaf':'0',
-            		 'importRequied':'0',
+            		 'importRequired':'0',
             		 'jsonParameters':'{"人数":"A","当量":"B"}',
             		 'formula':'A*B',
             		 'version':'2016-2017-2',
             		 'status':'0',
             		 'reviewDeadline':mydate,
             		 'applyDeadline':mydate,
-            		 'reviewerId':13
-            		}",
-            success : function(data) {}
+            		 'reviewerId':13,
+                    },
 })
 }
 </script>

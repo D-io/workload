@@ -1,0 +1,17 @@
+# IDEA配置文件
+.idea
+
+# 人工制品
+out
+*.class
+
+# 自定义的配置文件
+workload/src/main/jdbc.properties
+workload/WebContent/WEB-INF/web.xml
+
+# 第三方工具配置文件
+*.plist
+*.mwb.bak
+
+# 日志文件
+logs/

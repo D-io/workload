@@ -7,12 +7,14 @@
     <result column="sendfrom_id" property="sendfromId" jdbcType="INTEGER" />
     <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
   </resultMap>
+
   <insert id="insert" parameterType="cn.edu.uestc.ostec.workload.pojo.Subject" >
     insert into subject (item_id, msg_content, sendfrom_id, 
       send_time)
     values (#{itemId,jdbcType=INTEGER}, #{msgContent,jdbcType=VARCHAR}, #{sendfromId,jdbcType=INTEGER}, 
       #{sendTime,jdbcType=TIMESTAMP})
   </insert>
+
   <insert id="insertSelective" parameterType="cn.edu.uestc.ostec.workload.pojo.Subject" >
     insert into subject
     <trim prefix="(" suffix=")" suffixOverrides="," >

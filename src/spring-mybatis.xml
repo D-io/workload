@@ -14,7 +14,7 @@
         http://www.springframework.org/schema/context/spring-context-4.1.xsd"> 
     
     <!-- 自动扫描 -->  
-    <context:component-scan base-package="com.ssm.workload" />  
+    <context:component-scan base-package="cn.edu.uestc.ostec.workload" />
     <!-- 引入配置文件 -->  
     <bean id="propertyConfigurer"  
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
@@ -40,7 +40,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
         <property name="dataSource" ref="dataSource" />  
         <!-- 自动扫描mapping.xml文件 -->  
-        <property name="mapperLocations" value="classpath:com/ssm/workload/mapping/*.xml"></property>  
+        <property name="mapperLocations" value="classpath:cn/edu/uestc/ostec/workload/dao/*.xml"></property>
     </bean>  
   
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->  
