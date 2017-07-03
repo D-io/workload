@@ -1,0 +1,162 @@
+package cn.edu.uestc.ostec.workload.pojo;
+
+import java.util.Date;
+
+public class Category {
+
+	/**
+	 * 工作量类目编号
+	 */
+	private Integer categoryId;
+
+	/**
+	 * 工作量类目名称
+	 */
+	private String name;
+
+	/**
+	 * 工作量类目简介
+	 */
+	private String desc;
+
+	/**
+	 * 上一级工作量类目编号，传入“0”则为第一级工作量类目
+	 */
+	private Integer parentId;
+
+	/**
+	 * 是否为叶节点，“0”则当前类目为叶节点，不可再进行下一级类目添加操作
+	 */
+	private String isLeaf;
+
+	/**
+	 * 工作量类目类型，0：审核类，1：复核类
+	 */
+	private String importRequired;
+
+	/**
+	 * 参数以json格式存储如：{人数：A}
+	 */
+	private String jsonParameters;
+
+	/**
+	 * 计算工作量公式，如:A*0.4
+	 */
+	private String formula;
+
+	/**
+	 * 工作量类目公式适宜版本，以学期形式表示，如：2016-2017-1
+	 */
+	private String version;
+
+	/**
+	 * 状态，0：未提交，1：已提交，-1：disable（删除）
+	 */
+	private String status;
+
+	/**
+	 * 最终审核时间
+	 */
+	private Date reviewDeadline;
+
+	/**
+	 * 审核类最终申请时间，默认为审核时间前48小时。审核人修改申请时间时，与审核时间相差不足48小时给出提示。
+	 */
+	private Date applyDeadline;
+
+	public Integer getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name == null ? null : name.trim();
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc == null ? null : desc.trim();
+	}
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
+
+	public String getIsLeaf() {
+		return isLeaf;
+	}
+
+	public void setIsLeaf(String isLeaf) {
+		this.isLeaf = isLeaf;
+	}
+
+	public String getImportRequired() {
+		return importRequired;
+	}
+
+	public void setImportRequied(String importRequied) {
+		this.importRequired = importRequied == null ? null : importRequired.trim();
+	}
+
+	public String getParameters() {
+		return jsonParameters;
+	}
+
+	public void setParameters(String jsonParameters) {
+		this.jsonParameters = jsonParameters == null ? null : jsonParameters.trim();
+	}
+
+	public String getFormula() {
+		return formula;
+	}
+
+	public void setFormula(String formula) {
+		this.formula = formula == null ? null : formula.trim();
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version == null ? null : version.trim();
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status == null ? null : status.trim();
+	}
+
+	public Date getReviewDeadline() {
+		return reviewDeadline;
+	}
+
+	public void setReviewDeadline(Date reviewDeadline) {
+		this.reviewDeadline = reviewDeadline;
+	}
+
+	public Date getApplyDeadline() {
+		return applyDeadline;
+	}
+
+	public void setApplyDeadline(Date applyDeadline) {
+		this.applyDeadline = applyDeadline;
+	}
+}

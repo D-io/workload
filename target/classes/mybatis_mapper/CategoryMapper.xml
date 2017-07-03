@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.workload.dao.CategoryDao" >
+  <resultMap id="BaseResultMap" type="cn.edu.uestc.ostec.workload.pojo.Category" >
+    <id column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="is_leaf" property="isLeaf" jdbcType="VARCHAR" />
+    <result column="import_requied" property="importRequied" jdbcType="VARCHAR" />
+    <result column="json_parameters" property="jsonParameters" jdbcType="VARCHAR" />
+    <result column="formula" property="formula" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="review_deadline" property="reviewDeadline" jdbcType="TIMESTAMP" />
+    <result column="apply_deadline" property="applyDeadline" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    category_id, name, desc, parent_id, is_leaf, import_requied, json_parameters, formula, version, 
+    status, review_deadline, apply_deadline
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from category
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="java.util.Map"  useGeneratedKeys="true" keyProperty="categoryId">
+  	<selectKey resultType="int" order="AFTER" keyProperty="categoryId">   
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into category (name, desc, 
+      parent_id, is_leaf, import_requied, json_parameters, 
+      formula, version, status, 
+      review_deadline, apply_deadline)
+    values ( #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=INTEGER}, #{isLeaf,jdbcType=VARCHAR}, #{importRequied,jdbcType=VARCHAR}, #{jsonParameters,jdbcType=VARCHAR}, 
+      #{formula,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{reviewDeadline,jdbcType=TIMESTAMP}, #{applyDeadline,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="cn.edu.uestc.ostec.workload.pojo.Category" >
+    update category
+    set name = #{name,jdbcType=VARCHAR},
+      desc = #{desc,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      is_leaf = #{isLeaf,jdbcType=VARCHAR},
+      import_requied = #{importRequied,jdbcType=VARCHAR},
+      json_parameters = #{jsonParameters,jdbcType=VARCHAR},
+      formula = #{formula,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      review_deadline = #{reviewDeadline,jdbcType=TIMESTAMP},
+      apply_deadline = #{applyDeadline,jdbcType=TIMESTAMP}
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateStatus" parameterType="cn.edu.uestc.ostec.workload.pojo.Category" >
+    update category
+    set status = #{status,jdbcType=VARCHAR}
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="cn.edu.uestc.ostec.workload.pojo.Category">
+  	select * from category where status != #{status,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from category
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectChildren" resultMap="BaseResultMap" parameterType="cn.edu.uestc.ostec.workload.pojo.Category">
+    select <include refid="Base_Column_List" /> 
+    from category  
+    where status != #{status,jdbcType=VARCHAR} and parent_id = #{parentId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectDisable" resultMap="BaseResultMap" parameterType="cn.edu.uestc.ostec.workload.pojo.Category">
+    select <include refid="Base_Column_List" /> 
+    from category  
+    where status = #{status,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByImportRequied" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from category
+    where import_requied = #{importRequied,jdbcType=VARCHAR}
+  </select>
+</mapper>

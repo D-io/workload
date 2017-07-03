@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.workload.dao.SubjectDao" >
+  <resultMap id="BaseResultMap" type="cn.edu.uestc.ostec.workload.pojo.Subject" >
+    <result column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="msg_content" property="msgContent" jdbcType="VARCHAR" />
+    <result column="sendfrom_id" property="sendfromId" jdbcType="INTEGER" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.edu.uestc.ostec.workload.pojo.Subject" >
+    insert into subject (item_id, msg_content, sendfrom_id, 
+      send_time)
+    values (#{itemId,jdbcType=INTEGER}, #{msgContent,jdbcType=VARCHAR}, #{sendfromId,jdbcType=INTEGER}, 
+      #{sendTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="cn.edu.uestc.ostec.workload.pojo.Subject" >
+    insert into subject
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="msgContent != null" >
+        msg_content,
+      </if>
+      <if test="sendfromId != null" >
+        sendfrom_id,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="msgContent != null" >
+        #{msgContent,jdbcType=VARCHAR},
+      </if>
+      <if test="sendfromId != null" >
+        #{sendfromId,jdbcType=INTEGER},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>
