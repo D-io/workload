@@ -144,4 +144,13 @@ public class Item {
 	public void setProof(String proof) {
 		this.proof = proof == null ? null : proof.trim();
 	}
+
+	@Override
+	public String toString() {
+		return "Item{" + "itemId=" + itemId + ", categoryId=" + categoryId + ", ownerId=" + ownerId
+				+ ", jsonParameter='" + jsonParameter + '\'' + ", workload=" + workload
+				+ ", groupManagerId=" + groupManagerId + ", applyDesc='" + applyDesc + '\''
+				+ ", jobDesc='" + jobDesc + '\'' + ", status='" + status + '\''
+				+ ", jsonChildWeight='" + jsonChildWeight + '\'' + ", proof='" + proof + '\'' + '}';
+	}
 }

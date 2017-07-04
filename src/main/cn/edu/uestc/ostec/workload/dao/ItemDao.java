@@ -1,41 +1,41 @@
 package cn.edu.uestc.ostec.workload.dao;
 
+import org.springframework.stereotype.Component;
+
 import cn.edu.uestc.ostec.workload.pojo.Item;
 
-public interface ItemDao {
-
-    /**
-     * 根据主键删除工作量对象
-     * @param itemId 工作量对象Id
-     * @return int
-     */
-    int deleteByPrimaryKey(Integer itemId);
+@Component
+public interface ItemDao extends BaseDao<Item> {
 
     /**
      * 插入工作量对象
-     * @param record 工作量对象
-     * @return int
+     * @param entity 工作量对象
+     * @return Boolean
      */
-    int insert(Item record);
-
-    /**
-     *
-     * @param record
-     * @return
-     */
-    int insertSelective(Item record);
-
-    /**
-     * 根据主键查询工作量对象
-     * @param itemId 工作量对象Id
-     * @return Item
-     */
-    Item selectByPrimaryKey(Integer itemId);
+    @Override
+    Boolean insert(Item entity);
 
     /**
      * 根据主键修改工作量对象
-     * @param record 工作量对象
+     * @param entity 工作量对象
      * @return int
      */
-    int updateByPrimaryKey(Item record);
+    @Override
+    Boolean update(Item entity);
+
+    /**
+     * 根据主键删除工作量对象
+     * @param id 工作量对象Id
+     * @return Boolean
+     */
+    @Override
+    Boolean delete(Integer id);
+
+    /**
+     * 根据主键查询工作量对象
+     * @param id 工作量对象Id
+     * @return Item
+     */
+    @Override
+    Item select(Integer id);
 }
