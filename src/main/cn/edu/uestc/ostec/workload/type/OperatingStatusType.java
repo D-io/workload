@@ -18,22 +18,26 @@ public interface OperatingStatusType {
 	/**
 	 * 未提交状态（解锁）
 	 */
-	String UNCOMMITTED = "0";
+	Integer UNCOMMITTED = 0;
 
 	/**
 	 * 已提交状态（锁定）
 	 */
-	String SUBMITTED = "1";
+	Integer SUBMITTED = 1;
 
 	/**
 	 * 已删除状态（无效状态）
 	 */
-	String DELETED = "-1";
+	Integer DELETED = -1;
 
+	/**
+	 * 导入Excel的方式
+	 */
+	Integer IMPORT_EXCEL = 1;
 
-	String IMPORT_EXCEL = "1";
-
-
-	String APPLY_SELF = "0";
+	/**
+	 * 自我申报的方式
+	 */
+	Integer APPLY_SELF = 0;
 
 }

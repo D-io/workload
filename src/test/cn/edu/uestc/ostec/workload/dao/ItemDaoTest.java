@@ -28,7 +28,7 @@ public class ItemDaoTest extends BaseTest {
 		item.setApplyDesc("desc");
 		item.setJobDesc("asdasd");
 		item.setProof("ASDASDSA");
-		item.setStatus("-1");
+		item.setStatus(-1);
 		item.setJsonChildWeight("21");
 	}
 
@@ -40,7 +40,7 @@ public class ItemDaoTest extends BaseTest {
 
 	@Test
 	public void update() throws Exception {
-		item.setStatus("0");
+		item.setStatus(0);
 		System.out.println(itemDao.update(item));
 	}
 

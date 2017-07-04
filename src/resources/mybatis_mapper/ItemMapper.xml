@@ -10,7 +10,7 @@
     <result column="group_manager_id" property="groupManagerId" jdbcType="INTEGER" />
     <result column="apply_desc" property="applyDesc" jdbcType="VARCHAR" />
     <result column="job_desc" property="jobDesc" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="json_child_weight" property="jsonChildWeight" jdbcType="VARCHAR" />
     <result column="proof" property="proof" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -36,7 +36,7 @@
     insert into item (<include refid="Base_Column_List" />)
     values (#{itemId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{ownerId,jdbcType=INTEGER}, 
       #{jsonParameter,jdbcType=VARCHAR}, #{workload,jdbcType=INTEGER}, #{groupManagerId,jdbcType=INTEGER}, 
-      #{applyDesc,jdbcType=VARCHAR}, #{jobDesc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{applyDesc,jdbcType=VARCHAR}, #{jobDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
       #{jsonChildWeight,jdbcType=VARCHAR}, #{proof,jdbcType=LONGVARCHAR})
   </insert>
 
@@ -49,7 +49,7 @@
       group_manager_id = #{groupManagerId,jdbcType=INTEGER},
       apply_desc = #{applyDesc,jdbcType=VARCHAR},
       job_desc = #{jobDesc,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
       json_child_weight = #{jsonChildWeight,jdbcType=VARCHAR},
       proof = #{proof,jdbcType=LONGVARCHAR}
     where item_id = #{itemId,jdbcType=INTEGER}

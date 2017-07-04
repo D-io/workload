@@ -36,7 +36,7 @@ public class Category {
 	/**
 	 * 工作量类目类型，0：审核类，1：复核类
 	 */
-	private String importRequired;
+	private Integer importRequired;
 
 	/**
 	 * 参数以json格式存储如：{人数：A}
@@ -56,7 +56,7 @@ public class Category {
 	/**
 	 * 状态，0：未提交，1：已提交，-1：disable（删除）
 	 */
-	private String status;
+	private Integer status;
 
 	/**
 	 * 最终审核时间
@@ -108,11 +108,11 @@ public class Category {
 		this.isLeaf = isLeaf;
 	}
 
-	public String getImportRequired() {
+	public Integer getImportRequired() {
 		return importRequired;
 	}
 
-	public void setImportRequired(String importRequired) {
+	public void setImportRequired(Integer importRequired) {
 		this.importRequired = importRequired;
 	}
 
@@ -140,11 +140,11 @@ public class Category {
 		this.version = version;
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

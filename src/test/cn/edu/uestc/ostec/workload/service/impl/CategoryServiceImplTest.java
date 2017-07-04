@@ -19,15 +19,15 @@ public class CategoryServiceImplTest extends BaseTest {
 	{
 		categoryService = getBean(CategoryService.class);
 		category = new Category();
-		category.setName("名字");
+		category.setName("格式化");
 		category.setDesc("描述去去去前期");
 		category.setJsonParameters("1");
 		category.setParentId(0);
 		category.setIsLeaf("0");
-		category.setImportRequired("0");
+		category.setImportRequired(0);
 		category.setFormula("a+b+c");
 		category.setVersion("2016-2017-1");
-		category.setStatus("0");
+		category.setStatus(0);
 		category.setReviewDeadline(DateHelper.getCurrentTimestamp());
 		category.setApplyDeadline(DateHelper.getCurrentTimestamp());
 	}
@@ -43,7 +43,7 @@ public class CategoryServiceImplTest extends BaseTest {
 
 	@Test
 	public void saveCategory1() throws Exception {
-		System.out.println(categoryService.saveCategory("-1",4));
+		System.out.println(categoryService.saveCategory(-1,5));
 	}
 
 	@Test
@@ -53,17 +53,17 @@ public class CategoryServiceImplTest extends BaseTest {
 
 	@Test
 	public void getCategoryChildren() throws Exception {
-		System.out.println(categoryService.getCategoriesByStatus("-1"));
+		System.out.println(categoryService.getCategoriesByStatus(-1));
 	}
 
 	@Test
 	public void getCategoriesByStatus() throws Exception {
-		System.out.println(categoryService.getCategoryChildren("-1",0));
+		System.out.println(categoryService.getCategoryChildren(-1,0));
 	}
 
 	@Test
 	public void getCategoriesByType() throws Exception {
-		System.out.println(categoryService.getCategoriesByType("0"));
+		System.out.println(categoryService.getCategoriesByType(0));
 
 	}
 

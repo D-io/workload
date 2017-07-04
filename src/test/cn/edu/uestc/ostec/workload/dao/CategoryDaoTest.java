@@ -26,10 +26,10 @@ public class CategoryDaoTest extends BaseTest {
 		category.setJsonParameters("1");
 		category.setParentId(0);
 		category.setIsLeaf("0");
-		category.setImportRequired("0");
+		category.setImportRequired(0);
 		category.setFormula("a+b+c");
 		category.setVersion("2016-2017-1");
-		category.setStatus("0");
+		category.setStatus(0);
 		category.setReviewDeadline(DateHelper.getCurrentTimestamp());
 		category.setApplyDeadline(DateHelper.getCurrentTimestamp());
 	}
@@ -38,7 +38,7 @@ public class CategoryDaoTest extends BaseTest {
 	@Test
 	public void insert() throws Exception {
 		category.setCategoryId(2);
-		category.setStatus("-1");
+		category.setStatus(-1);
 		category.setName("乱码");
 		System.out.println(categoryDao.insert(category));
 	}
@@ -61,22 +61,22 @@ public class CategoryDaoTest extends BaseTest {
 
 	@Test
 	public void updateStatus() throws Exception {
-		System.out.println(categoryDao.updateStatus("1",2));
+		System.out.println(categoryDao.updateStatus(1,2));
 	}
 
 	@Test
 	public void selectChildren() throws Exception {
-		System.out.println(categoryDao.selectChildren("0",0));
+		System.out.println(categoryDao.selectChildren(0,0));
 	}
 
 	@Test
 	public void selectDisable() throws Exception {
-		System.out.println(categoryDao.selectDisable("-1"));
+		System.out.println(categoryDao.selectByStatus(-1));
 	}
 
 	@Test
 	public void selectByImportRequired() throws Exception {
-		System.out.println(categoryDao.selectByImportRequired("0"));
+		System.out.println(categoryDao.selectByImportRequired(0));
 	}
 
 }

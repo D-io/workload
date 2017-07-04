@@ -8,13 +8,13 @@
     <result column="description" property="desc" jdbcType="VARCHAR" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="is_leaf" property="isLeaf" jdbcType="VARCHAR" />
-    <result column="import_required" property="importRequired" jdbcType="VARCHAR" />
+    <result column="import_required" property="importRequired" jdbcType="INTEGER" />
     <result column="json_parameters" property="jsonParameters" jdbcType="VARCHAR" />
     <result column="formula" property="formula" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="review_deadline" property="reviewDeadline" jdbcType="TIMESTAMP" />
-    <result column="apply_deadline" property="applyDeadline" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="review_deadline" property="reviewDeadline" jdbcType="INTEGER" />
+    <result column="apply_deadline" property="applyDeadline" jdbcType="INTEGER" />
   </resultMap>
 
   <sql id="Base_Column_List" >
@@ -30,9 +30,9 @@
   <insert id="insert">
     insert into category (category_id,name,description,parent_id,is_leaf,import_required,json_parameters,formula,version,status,review_deadline,apply_deadline)
     values (#{categoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
-      #{parentId,jdbcType=INTEGER}, #{isLeaf,jdbcType=VARCHAR}, #{importRequired,jdbcType=VARCHAR}, #{jsonParameters,jdbcType=VARCHAR},
-      #{formula,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
-      #{reviewDeadline,jdbcType=TIMESTAMP}, #{applyDeadline,jdbcType=TIMESTAMP})
+      #{parentId,jdbcType=INTEGER}, #{isLeaf,jdbcType=VARCHAR}, #{importRequired,jdbcType=INTEGER}, #{jsonParameters,jdbcType=VARCHAR},
+      #{formula,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+      #{reviewDeadline,jdbcType=INTEGER}, #{applyDeadline,jdbcType=INTEGER})
   </insert>
 
   <update id="update">
@@ -41,19 +41,19 @@
       description = #{desc,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=INTEGER},
       is_leaf = #{isLeaf,jdbcType=VARCHAR},
-      import_required = #{importRequired,jdbcType=VARCHAR},
+      import_required = #{importRequired,jdbcType=INTEGER},
       json_parameters = #{jsonParameters,jdbcType=VARCHAR},
       formula = #{formula,jdbcType=VARCHAR},
       version = #{version,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      review_deadline = #{reviewDeadline,jdbcType=TIMESTAMP},
-      apply_deadline = #{applyDeadline,jdbcType=TIMESTAMP}
+      status = #{status,jdbcType=INTEGER},
+      review_deadline = #{reviewDeadline,jdbcType=INTEGER},
+      apply_deadline = #{applyDeadline,jdbcType=INTEGER}
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
 
   <update id="updateStatus">
     update category
-    set status = #{status,jdbcType=VARCHAR}
+    set status = #{status,jdbcType=INTEGER}
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
 
@@ -69,20 +69,20 @@
   <select id="selectChildren" resultMap="categoryResultMap">
     select <include refid="Base_Column_List" /> 
     from category  
-    where status != #{status,jdbcType=VARCHAR} and parent_id = #{parentId,jdbcType=INTEGER}
+    where status != #{status,jdbcType=INTEGER} and parent_id = #{parentId,jdbcType=INTEGER}
   </select>
 
-  <select id="selectDisable" resultMap="categoryResultMap">
+  <select id="selectByStatus" resultMap="categoryResultMap">
     select <include refid="Base_Column_List" /> 
     from category  
-    where status = #{status,jdbcType=VARCHAR}
+    where status = #{status,jdbcType=INTEGER}
   </select>
 
   <select id="selectByImportRequired" resultMap="categoryResultMap">
     select 
     <include refid="Base_Column_List" />
     from category
-    where import_required = #{importRequired,jdbcType=VARCHAR}
+    where import_required = #{importRequired,jdbcType=INTEGER}
   </select>
 
 </mapper>

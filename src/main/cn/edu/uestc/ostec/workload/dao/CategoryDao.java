@@ -48,7 +48,7 @@ public interface CategoryDao extends BaseDao<Category> {
 	 * @param categoryId 工作量条目
 	 * @return Boolean
 	 */
-	Boolean updateStatus(@Param("status") String status,@Param("categoryId") Integer categoryId);
+	Boolean updateStatus(@Param("status") Integer status,@Param("categoryId") Integer categoryId);
 
 	/**
 	 * 查询某一工作量条目下非某种状态的工作量条目
@@ -56,14 +56,14 @@ public interface CategoryDao extends BaseDao<Category> {
 	 * @param parentId 父工作量Id
 	 * @return List<Category>
 	 */
-	List<Category> selectChildren(@Param("status") String status,@Param("parentId") Integer parentId);
+	List<Category> selectChildren(@Param("status") Integer status,@Param("parentId") Integer parentId);
 
 	/**
 	 * 查询删除的全部工作量条目(工作量状态为-1)
 	 * @param status 状态
 	 * @return List<Category>
 	 */
-	List<Category> selectByStatus(String status);
+	List<Category> selectByStatus(Integer status);
 
 	/**
 	 *
@@ -76,5 +76,5 @@ public interface CategoryDao extends BaseDao<Category> {
 	 * @param importRequired 标识工作量为审核类：0；还是复核类：1
 	 * @return List<Category>
 	 */
-	 List<Category> selectByImportRequired(String importRequired);
+	 List<Category> selectByImportRequired(Integer importRequired);
 }

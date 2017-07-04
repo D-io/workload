@@ -31,7 +31,7 @@ public interface CategoryService extends BaseService{
 	 * @param categoryId 工作量条目Id
 	 * @return String
 	 */
-	Boolean saveCategory(String status, Integer categoryId);
+	Boolean saveCategory(Integer status, Integer categoryId);
 
 	/**
 	 * 查看工作量条目详情
@@ -46,19 +46,19 @@ public interface CategoryService extends BaseService{
 	 * @param parentId 父节点Id
 	 * @return List<Category>
 	 */
-	List<Category> getCategoryChildren(String status, Integer parentId);
+	List<Category> getCategoryChildren(Integer status, Integer parentId);
 
 	/**
 	 * 查询删除的全部工作量条目(工作量状态为-1)
 	 * @param status 状态值
 	 * @return List<Category>
 	 */
-	List<Category> getCategoriesByStatus(String status);
+	List<Category> getCategoriesByStatus(Integer status);
 
 	/**
 	 * 根据工作量类型查询工作量条目
 	 * @param importRequired 标识工作量为审核类：0；还是复核类：1
 	 * @return List<Category>
 	 */
-	List<Category> getCategoriesByType(String importRequired);
+	List<Category> getCategoriesByType(Integer importRequired);
 }

@@ -84,7 +84,7 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	}
 
 	@Override
-	public Boolean saveCategory(String status, Integer categoryId) {
+	public Boolean saveCategory(Integer status, Integer categoryId) {
 		return categoryDao.updateStatus(status,categoryId);
 	}
 
@@ -94,17 +94,17 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	}
 
 	@Override
-	public List<Category> getCategoryChildren(String status, Integer parentId) {
+	public List<Category> getCategoryChildren(Integer status, Integer parentId) {
 		return listResult(categoryDao.selectChildren(status,parentId));
 	}
 
 	@Override
-	public List<Category> getCategoriesByStatus(String status) {
+	public List<Category> getCategoriesByStatus(Integer status) {
 		return listResult(categoryDao.selectByStatus(status));
 	}
 
 	@Override
-	public List<Category> getCategoriesByType(String importRequired) {
+	public List<Category> getCategoriesByType(Integer importRequired) {
 		return listResult(categoryDao.selectByImportRequired(importRequired));
 	}
 }

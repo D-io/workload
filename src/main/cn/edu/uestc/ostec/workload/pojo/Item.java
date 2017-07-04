@@ -50,7 +50,7 @@ public class Item {
 	/**
 	 * 状态
 	 */
-	private String status;
+	private Integer status;
 
 	/**
 	 * Json格式存储组员权重，用于计算个人工作量，存储如：{组员1编号：0.4}
@@ -126,12 +126,12 @@ public class Item {
 		this.jobDesc = jobDesc == null ? null : jobDesc.trim();
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
-		this.status = status == null ? null : status.trim();
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public String getJsonChildWeight() {
