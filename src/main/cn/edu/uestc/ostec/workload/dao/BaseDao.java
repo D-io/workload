@@ -31,6 +31,6 @@ public interface BaseDao<T> {
 	 * @param id 实体对象Id
 	 * @return Boolean
 	 */
-	Boolean select(Integer id);
+	T select(Integer id);
 
 }

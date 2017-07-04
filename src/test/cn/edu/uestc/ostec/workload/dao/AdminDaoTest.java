@@ -6,7 +6,7 @@ import cn.edu.uestc.ostec.workload.BaseTest;
 import cn.edu.uestc.ostec.workload.pojo.Admin;
 
 /**
- * Version:v1.0 (description: AdminDao ²âÊÔ)
+ * Version:v1.0 (description: AdminDao æµ‹è¯•)
  */
 public class AdminDaoTest extends BaseTest{
 
@@ -21,7 +21,7 @@ public class AdminDaoTest extends BaseTest{
 
 	@Test
 	public void insert() throws Exception {
-		admin.setAdminId(103);
+		admin.setAdminId(104);
 		System.out.println(adminDao.insert(admin));
 	}
 

@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.service.impl;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +18,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public String deleteCategory(String categoryId) {
-		int delete = categoryDao.deleteByPrimaryKey(Integer.valueOf(categoryId));
+		Boolean delete = categoryDao.delete(Integer.valueOf(categoryId));
 		String message = "";
-		if (delete > 0) {
+		if (true == delete) {
 			message = "删除成功";
 		} else {
 			message = "删除失败";
@@ -27,10 +29,10 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public int insertCategory(Map<String, Object> category) {
-		int insert = categoryDao.insert(category);
-		if (insert > 0) {
-			int categoryId = Integer.parseInt(category.get("categoryId").toString());
+	public int insertCategory(Category category) {
+		Boolean insert = categoryDao.insert(category);
+		if (true == insert) {
+			int categoryId = category.getCategoryId();
 			return categoryId;
 		} else {
 			return -1;
@@ -39,9 +41,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public String updateCategory(Category category) {
-		int update = categoryDao.updateByPrimaryKey(category);
+		Boolean update = categoryDao.update(category);
 		String message = "";
-		if (update > 0) {
+		if (true == update) {
 			message = "修改成功";
 		} else {
 			message = "修改失败";
@@ -51,9 +53,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public String updateCategoryStatus(String status, String categoryId) {
-		int update = categoryDao.updateStatus(status, Integer.valueOf(categoryId));
+		Boolean update = categoryDao.updateStatus(status, Integer.valueOf(categoryId));
 		String message = "";
-		if (update > 0) {
+		if (true == update) {
 			message = "修改成功";
 		} else {
 			message = "修改失败";
@@ -63,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category selectCategoryById(Integer categoryId) {
-		Category cotegory = categoryDao.selectByPrimaryKey(categoryId);
+		Category cotegory = categoryDao.select(categoryId);
 		return cotegory;
 	}
 
@@ -80,8 +82,8 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public List<Category> selectCategoryByImportRequied(String importRequied) {
-		List<Category> categoryList = categoryDao.selectByImportRequied(importRequied);
+	public List<Category> selectCategoryByImportRequired(String importRequired) {
+		List<Category> categoryList = categoryDao.selectByImportRequired(importRequired);
 		return categoryList;
 	}
 

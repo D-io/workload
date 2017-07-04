@@ -16,10 +16,10 @@ public interface CategoryService {
 
 	/**
 	 * 增加工作量条目
-	 * @param category 工作量条目 Map????
+	 * @param category 工作量条目
 	 * @return int
 	 */
-	int insertCategory(Map<String, Object> category);
+	int insertCategory(Category category);
 
 	/**
 	 * 修改工作量条目
@@ -63,5 +63,5 @@ public interface CategoryService {
 	 * @param importRequired 标识工作量为审核类：0；还是复核类：1
 	 * @return List<Category>
 	 */
-	public List<Category> selectCategoryByImportRequied(String importRequired);
+	List<Category> selectCategoryByImportRequired(String importRequired);
 }

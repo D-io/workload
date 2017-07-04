@@ -57,12 +57,12 @@ public class Category {
 	/**
 	 * 最终审核时间
 	 */
-	private Date reviewDeadline;
+	private Integer reviewDeadline;
 
 	/**
 	 * 审核类最终申请时间，默认为审核时间前48小时。审核人修改申请时间时，与审核时间相差不足48小时给出提示。
 	 */
-	private Date applyDeadline;
+	private Integer applyDeadline;
 
 	public Integer getCategoryId() {
 		return categoryId;
@@ -77,7 +77,7 @@ public class Category {
 	}
 
 	public void setName(String name) {
-		this.name = name == null ? null : name.trim();
+		this.name = name;
 	}
 
 	public String getDesc() {
@@ -85,7 +85,7 @@ public class Category {
 	}
 
 	public void setDesc(String desc) {
-		this.desc = desc == null ? null : desc.trim();
+		this.desc = desc;
 	}
 
 	public Integer getParentId() {
@@ -108,16 +108,16 @@ public class Category {
 		return importRequired;
 	}
 
-	public void setImportRequied(String importRequied) {
-		this.importRequired = importRequied == null ? null : importRequired.trim();
+	public void setImportRequired(String importRequired) {
+		this.importRequired = importRequired;
 	}
 
-	public String getParameters() {
+	public String getJsonParameters() {
 		return jsonParameters;
 	}
 
-	public void setParameters(String jsonParameters) {
-		this.jsonParameters = jsonParameters == null ? null : jsonParameters.trim();
+	public void setJsonParameters(String jsonParameters) {
+		this.jsonParameters = jsonParameters;
 	}
 
 	public String getFormula() {
@@ -125,7 +125,7 @@ public class Category {
 	}
 
 	public void setFormula(String formula) {
-		this.formula = formula == null ? null : formula.trim();
+		this.formula = formula;
 	}
 
 	public String getVersion() {
@@ -133,7 +133,7 @@ public class Category {
 	}
 
 	public void setVersion(String version) {
-		this.version = version == null ? null : version.trim();
+		this.version = version;
 	}
 
 	public String getStatus() {
@@ -141,22 +141,32 @@ public class Category {
 	}
 
 	public void setStatus(String status) {
-		this.status = status == null ? null : status.trim();
+		this.status = status;
 	}
 
-	public Date getReviewDeadline() {
+	public Integer getReviewDeadline() {
 		return reviewDeadline;
 	}
 
-	public void setReviewDeadline(Date reviewDeadline) {
+	public void setReviewDeadline(Integer reviewDeadline) {
 		this.reviewDeadline = reviewDeadline;
 	}
 
-	public Date getApplyDeadline() {
+	public Integer getApplyDeadline() {
 		return applyDeadline;
 	}
 
-	public void setApplyDeadline(Date applyDeadline) {
+	public void setApplyDeadline(Integer applyDeadline) {
 		this.applyDeadline = applyDeadline;
+	}
+
+	@Override
+	public String toString() {
+		return "Category{" + "categoryId=" + categoryId + ", name='" + name + '\'' + ", desc='"
+				+ desc + '\'' + ", parentId=" + parentId + ", isLeaf='" + isLeaf + '\''
+				+ ", importRequired='" + importRequired + '\'' + ", jsonParameters='"
+				+ jsonParameters + '\'' + ", formula='" + formula + '\'' + ", version='" + version
+				+ '\'' + ", status='" + status + '\'' + ", reviewDeadline=" + reviewDeadline
+				+ ", applyDeadline=" + applyDeadline + '}';
 	}
 }
