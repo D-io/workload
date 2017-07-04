@@ -71,9 +71,9 @@ public class ResponseHelper {
 	}
 
 	/**
-	 *
-	 * @param data
-	 * @return
+	 * 获取未找到页面相应
+	 * @param data 数据域
+	 * @return 未找到响应实体
 	 */
 	public static RestResponse getNotFoundResponse(Map<String, Object> data) {
 		failedResponse.setStatus(NOT_FOUND.value());
@@ -83,9 +83,9 @@ public class ResponseHelper {
 	}
 
 	/**
-	 *
-	 * @param data
-	 * @return
+	 * 获取无效操作响应
+	 * @param data 数据域
+	 * @return 无效操作响应实体
 	 */
 	public static RestResponse getInvalidOperationResponse(Map<String, Object> data) {
 		failedResponse.setStatus(INVALID_REQUEST.getErrNo());
@@ -95,9 +95,9 @@ public class ResponseHelper {
 	}
 
 	/**
-	 *
-	 * @param data
-	 * @return
+	 * 获取参数不支持相应
+	 * @param data 数据域
+	 * @return 参数不支持响应实体
 	 */
 	public static RestResponse getParameterNotSupportResponse(Map<String, Object> data) {
 		failedResponse.setStatus(PARAMETERS_NOT_SUPPORT.getErrNo());
@@ -107,9 +107,9 @@ public class ResponseHelper {
 	}
 
 	/**
-	 *
-	 * @param data
-	 * @return
+	 * 获取禁止响应
+	 * @param data 数据域
+	 * @return 禁止响应实体
 	 */
 	public static RestResponse getForbiddenResponse(Map<String, Object> data) {
 		failedResponse.setStatus(FORBIDDEN.value());
@@ -119,9 +119,9 @@ public class ResponseHelper {
 	}
 
 	/**
-	 *
-	 * @param data
-	 * @return
+	 * 获取系统错误相应
+	 * @param data 数据域
+	 * @return 系统错误响应实体
 	 */
 	public static RestResponse getSystemErrResponse(Map<String, Object> data) {
 		failedResponse.setStatus(INTERNAL_SERVER_ERROR.value());
