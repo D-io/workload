@@ -51,8 +51,8 @@ public interface CategoryDao extends BaseDao<Category> {
 	Boolean updateStatus(@Param("status") String status,@Param("categoryId") Integer categoryId);
 
 	/**
-	 * 查询某一工作量条目下的工作量条目
-	 * @param status 工作量状态
+	 * 查询某一工作量条目下非某种状态的工作量条目
+	 * @param status 工作量状态 若为-1，则查找有效的条目   !status
 	 * @param parentId 父工作量Id
 	 * @return List<Category>
 	 */
@@ -63,7 +63,7 @@ public interface CategoryDao extends BaseDao<Category> {
 	 * @param status 状态
 	 * @return List<Category>
 	 */
-	List<Category> selectDisable(String status);
+	List<Category> selectByStatus(String status);
 
 	/**
 	 *

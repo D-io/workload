@@ -16,28 +16,24 @@ package cn.edu.uestc.ostec.workload.type;
 public interface OperatingStatusType {
 
 	/**
-	 * 无效状态
+	 * 未提交状态（解锁）
 	 */
-	int INVALID = 0x00;
+	String UNCOMMITTED = "0";
 
 	/**
-	 * 已创建状态
+	 * 已提交状态（锁定）
 	 */
-	int CREATED = 0x01;
+	String SUBMITTED = "1";
 
 	/**
-	 * 已保存状态
+	 * 已删除状态（无效状态）
 	 */
-	int SAVED = 0x02;
+	String DELETED = "-1";
 
-	/**
-	 * 已提交状态
-	 */
-	int SUBMITTED = 0x04;
 
-	/**
-	 * 已完成状态
-	 */
-	int FINISHED = 0x08;
+	String IMPORT_EXCEL = "1";
+
+
+	String APPLY_SELF = "0";
 
 }
