@@ -1,8 +1,12 @@
 package cn.edu.uestc.ostec.workload.pojo;
 
-import java.util.Date;
 
 public class Category {
+
+	/**
+	 * 类目信息所在表名
+	 */
+	public static final String TABLE_NAME = "category";
 
 	/**
 	 * 工作量类目编号

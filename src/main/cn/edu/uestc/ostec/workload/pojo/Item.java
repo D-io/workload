@@ -3,6 +3,11 @@ package cn.edu.uestc.ostec.workload.pojo;
 public class Item {
 
 	/**
+	 * 工作量信息所在表名
+	 */
+	public static final String TABLE_NAME = "item";
+
+	/**
 	 * 工作量编号
 	 */
 	private Integer itemId;

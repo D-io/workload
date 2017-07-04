@@ -5,6 +5,11 @@ import java.util.Date;
 public class Subject {
 
 	/**
+	 * 交互信息所在表名
+	 */
+	public static final String TABLE_NAME = "subject";
+
+	/**
 	 * 交互编号
 	 */
 	private Integer subjectId;

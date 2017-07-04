@@ -3,6 +3,11 @@ package cn.edu.uestc.ostec.workload.pojo;
 public class Reviewer {
 
 	/**
+	 * 审核人信息所在表名
+	 */
+	public static final String TABLE_NAME = "reviewer";
+
+	/**
 	 * 审核人编号与教师表工号对应，用于控制审核人登录判断
 	 */
 	private Integer categoryId;
