@@ -27,7 +27,7 @@ public class Subject {
 	/**
 	 * 发送时间
 	 */
-	private Date sendTime;
+	private Integer sendTime;
 
 	public Integer getItemId() {
 		return itemId;
@@ -45,19 +45,33 @@ public class Subject {
 		this.msgContent = msgContent == null ? null : msgContent.trim();
 	}
 
-	public Integer getSendfromId() {
-		return sendFromId;
-	}
-
-	public void setSendfromId(Integer sendFromId) {
-		this.sendFromId = sendFromId;
-	}
-
-	public Date getSendTime() {
+	public Integer getSendTime() {
 		return sendTime;
 	}
 
-	public void setSendTime(Date sendTime) {
+	public void setSendTime(Integer sendTime) {
 		this.sendTime = sendTime;
+	}
+
+	public Integer getSubjectId() {
+		return subjectId;
+	}
+
+	public void setSubjectId(Integer subjectId) {
+		this.subjectId = subjectId;
+	}
+
+	public Integer getSendFromId() {
+		return sendFromId;
+	}
+
+	public void setSendFromId(Integer sendFromId) {
+		this.sendFromId = sendFromId;
+	}
+
+	@Override
+	public String toString() {
+		return "Subject{" + "subjectId=" + subjectId + ", itemId=" + itemId + ", msgContent='"
+				+ msgContent + '\'' + ", sendFromId=" + sendFromId + ", sendTime=" + sendTime + '}';
 	}
 }

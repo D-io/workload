@@ -27,4 +27,9 @@ public class Reviewer {
 	public void setReviewerId(Integer reviewerId) {
 		this.reviewerId = reviewerId;
 	}
+
+	@Override
+	public String toString() {
+		return "Reviewer{" + "categoryId=" + categoryId + ", reviewerId=" + reviewerId + '}';
+	}
 }
