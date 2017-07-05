@@ -64,5 +64,15 @@ public interface OperatingStatusType {
 	 */
 	Integer DENIED = 5;
 
+	/**
+	 * 工作量类目是叶子节点
+	 */
+	String IS_LEAF = "Y";
+
+	/**
+	 * 工作量类目非叶子节点
+	 */
+	String NOT_LEAF = "N";
+
 
 }

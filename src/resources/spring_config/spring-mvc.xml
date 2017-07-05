@@ -24,11 +24,14 @@
 
     <!-- 处理静态资源 -->
     <mvc:default-servlet-handler/>
+
+    <!-- 使用cglib动态代理 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
      
     <!-- 定义跳转的文件的前后缀 ，视图模式配置-->  
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!-- 前缀和后缀 -->
-        <property name="prefix" value="/WEB-INF/jsp/" />  
+        <property name="prefix" value="/WEB-INF/result/" />
         <property name="suffix" value=".jsp" />  
     </bean>  
       
@@ -41,6 +44,13 @@
         <property name="maxUploadSize" value="10485760000" />    
         <!-- 内存中的最大值 -->  
         <property name="maxInMemorySize" value="40960" />    
-    </bean>   
+    </bean>
+
+    <!--使用声明式事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <mvc:interceptors>
+        <bean class="cn.edu.uestc.ostec.workload.core.ApplicationInterceptor"/>
+    </mvc:interceptors>
   
 </beans>
