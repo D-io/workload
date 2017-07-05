@@ -17,7 +17,6 @@ import static cn.edu.uestc.ostec.workload.ServletContextConstants.APPLICATION_ON
 
 /**
  * Description:
- * Version:v1.0 (author:刘文哲 update:  )
  */
 public interface StandardApplicationAttributeContext extends ServletContextAdapter {
 

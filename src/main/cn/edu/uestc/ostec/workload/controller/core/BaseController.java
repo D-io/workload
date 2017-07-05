@@ -14,7 +14,6 @@ import cn.edu.uestc.ostec.workload.adaptor.ServletContextAdapter;
 
 /**
  * Description: 基础控制器,
- * Version:v1.0 (author:刘文哲 update: 无 )
  */
 public abstract class BaseController
 		implements WorkloadObjects,ServletContextConstants, SessionConstants, RequestConstants,

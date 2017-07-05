@@ -18,7 +18,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  * Description: 区域管理控制器
- * Version:v1.0 (author:刘文哲 update: 规划region分发处理逻辑 )
  */
 @Controller
 @RequestMapping(REGION_PATH)

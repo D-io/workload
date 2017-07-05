@@ -2,7 +2,6 @@ package cn.edu.uestc.ostec.workload.controller.core;
 
 /**
  * Description: REST 路径映射常量
- * Version:v1.0 (author:刘文哲 update: 无 )
  */
 public interface PathMappingConstants {
 
@@ -10,6 +9,21 @@ public interface PathMappingConstants {
 	 * 默认URL路径分隔符
 	 */
 	String DEFAULT_WEB_URL_SEPARATOR = "/";
+
+	/**
+	 * 工作量类目路径
+	 */
+	String MANAGER_CATEGORY_PATH = "category";
+
+	/**
+	 * 工作量审核路径
+	 */
+	String REVIEWER_ITEM_CHECK_PATH = "item-check";
+
+	/**
+	 * 工作量申报路径
+	 */
+	String TEACHER_ITEM_APPLY_PATH = "item-apply";
 
 	/**
 	 * 文件信息控制器映射路径

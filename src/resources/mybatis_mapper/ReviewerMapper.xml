@@ -12,6 +12,12 @@
     where category_id = #{categoryId,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByReviewer" resultMap="reviewerResultMap">
+    select category_id,reviewer_id
+    from reviewer
+    where reviewer_id = #{reviewerId,jdbcType=INTEGER}
+  </select>
+
   <delete id="delete">
     delete from reviewer
     where category_id = #{categoryId,jdbcType=INTEGER}

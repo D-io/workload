@@ -2,13 +2,15 @@ package cn.edu.uestc.ostec.workload.dao;
 
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 import cn.edu.uestc.ostec.workload.pojo.Reviewer;
 
 @Component
 public interface ReviewerDao extends BaseDao<Reviewer> {
 
     /**
-     * 根据主键修改审核人信息
+     * 修改审核人信息
      * @param entity 审核人信息
      * @return Boolean
      */
@@ -30,6 +32,13 @@ public interface ReviewerDao extends BaseDao<Reviewer> {
      */
     @Override
     Reviewer select(Integer id);
+
+    /**
+     * 根据审核人Id查询对应的审核的类目的信息
+     * @param reviewerId 审核人Id
+     * @return List<Reviewer>
+     */
+    List<Reviewer> selectByReviewer(Integer reviewerId);
 
     /**
      * 插入审核人对象

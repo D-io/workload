@@ -1,26 +1,54 @@
-//package cn.edu.uestc.ostec.workload.controller;
-//
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//
-//import org.json.JSONObject;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Qualifier;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//
-//import cn.edu.uestc.ostec.workload.pojo.Category;
-//import cn.edu.uestc.ostec.workload.service.CategoryService;
-//
-//@Controller
-//@RequestMapping("/workload")
-//public class CategoryController {
-//
+package cn.edu.uestc.ostec.workload.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
+import cn.edu.uestc.ostec.workload.pojo.Category;
+import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.service.CategoryService;
+
+import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGER_CATEGORY_PATH;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
+@Controller
+@RequestMapping(MANAGER_CATEGORY_PATH)
+public class CategoryController extends ApplicationController {
+
+	@Autowired
+	private CategoryService categoryService;
+
+	@RequestMapping(method = POST)
+	public RestResponse saveCategories(Category category){
+
+		return successResponse();
+	}
+
+	@RequestMapping(method = GET)
+	public RestResponse getCategories(){
+
+		return successResponse();
+	}
+
+	@RequestMapping(method = DELETE)
+	public RestResponse removeCategories(){
+
+		return successResponse();
+	}
+
+	@RequestMapping(method = PUT)
+	public RestResponse modifyCategories(){
+
+		return successResponse();
+	}
+
+
+}
+
 //	@Autowired
 //	@Qualifier("categoryService")
 //	private CategoryService categoryService;
