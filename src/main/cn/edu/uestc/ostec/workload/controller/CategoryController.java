@@ -3,11 +3,18 @@ package cn.edu.uestc.ostec.workload.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.pojo.Reviewer;
+import cn.edu.uestc.ostec.workload.pojo.User;
+import cn.edu.uestc.ostec.workload.service.AdminService;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
+import cn.edu.uestc.ostec.workload.service.ReviewerService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGER_CATEGORY_PATH;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -22,10 +29,49 @@ public class CategoryController extends ApplicationController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@RequestMapping(method = POST)
-	public RestResponse saveCategories(Category category){
+	@Autowired
+	private ReviewerService reviewerService;
 
-		return successResponse();
+	@Autowired
+	private AdminService adminService;
+
+
+	@RequestMapping(method = POST)
+	public RestResponse saveCategories(Category category,@RequestParam(value = "reviewerId") int reviewerId){
+
+		long userId = getUserId();
+
+		if(!adminService.findAllAdmins().contains(userId)){
+			return systemErrResponse("Illegal visit");
+		}
+
+		if(null == category || 0 == reviewerId){
+			return invalidOperationResponse();
+		}
+
+		if(0 != category.getParentId()){
+			category.setIsLeaf("Y");
+		}
+
+		category.setStatus(0);
+
+		boolean saveCategorySuccess = categoryService.saveCategory(category);
+
+		int categoryId = category.getCategoryId();
+		Reviewer reviewer = new Reviewer();
+		reviewer.setReviewerId(reviewerId);
+		reviewer.setCategoryId(categoryId);
+
+		boolean saveReviewerSuccess = reviewerService.saveReviewer(reviewer);
+
+		if(!saveCategorySuccess || !saveReviewerSuccess){
+			return systemErrResponse("save error");
+		}
+
+		Map<String,Object> data = getData();
+		data.put("category",category);
+		data.put("reviewer",reviewer);
+		return successResponse(data);
 	}
 
 	@RequestMapping(method = GET)

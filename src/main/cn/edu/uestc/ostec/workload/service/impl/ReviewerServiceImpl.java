@@ -36,11 +36,12 @@ public class ReviewerServiceImpl extends BaseServiceImpl implements ReviewerServ
 
 	@Override
 	public List<Reviewer> getCategoryByReviewer(int reviewerId) {
-		return reviewerDao.selectByReviewer(reviewerId);
+		return listResult(reviewerDao.selectByReviewer(reviewerId));
 	}
 
 	@Override
 	public Reviewer getReviewerByCategory(int categoryId) {
-		return reviewerDao.select(categoryId);
+
+		return objectResult(reviewerDao.select(categoryId),EMPTY_REVIEWER);
 	}
 }
