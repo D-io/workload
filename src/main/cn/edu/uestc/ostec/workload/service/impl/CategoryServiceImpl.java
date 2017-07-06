@@ -29,6 +29,12 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 		return categoryDao.updateStatus(DELETED,categoryId);
 	}
 
+	@Override
+	public Boolean deleteCategory(Integer categoryId) {
+
+		return categoryDao.delete(categoryId);
+	}
+
 	/**
 	 * 保存工作量条目
 	 * @param category 工作量条目

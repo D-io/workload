@@ -11,11 +11,18 @@ public interface CategoryService extends BaseService{
 	Category EMPTY_CATEGORY = new Category();
 
 	/**
-	 * 删除工作量条目
+	 * 删除工作量条目(设置为disable)
 	 * @param categoryId 工作量条目Id
 	 * @return String
 	 */
 	Boolean removeCategory(Integer categoryId);
+
+	/**
+	 * 彻底删除工作量类目
+	 * @param categoryId 工作量类目编号
+	 * @return Boolean
+	 */
+	Boolean deleteCategory(Integer categoryId);
 
 	/**
 	 * 保存工作量条目

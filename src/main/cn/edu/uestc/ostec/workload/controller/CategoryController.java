@@ -70,6 +70,10 @@ public class CategoryController extends ApplicationController {
 
 		boolean saveCategorySuccess = categoryService.saveCategory(category);
 
+		if(!saveCategorySuccess){
+			return systemErrResponse("save error");
+		}
+
 
 		int categoryId = category.getCategoryId();
 		categoryDto.setCategoryId(categoryId);
@@ -82,7 +86,8 @@ public class CategoryController extends ApplicationController {
 
 		boolean saveReviewerSuccess = reviewerService.saveReviewer(reviewer);
 
-		if(!saveCategorySuccess || !saveReviewerSuccess){
+		if(!saveReviewerSuccess){
+			categoryService.deleteCategory(categoryId);
 			return systemErrResponse("save error");
 		}
 
@@ -129,7 +134,7 @@ public class CategoryController extends ApplicationController {
 		Map<String,Object> data = getData();
 		data.put("categoryList",getCategoryDto(DELETED));
 
-		return successResponse();
+		return successResponse(data);
 	}
 
 	@RequestMapping(method = DELETE)
@@ -148,6 +153,13 @@ public class CategoryController extends ApplicationController {
 		Category oldCategory = categoryService.getCategory(categoryId);
 
 		CategoryDto categoryDto = categoryConverter.poToDto(oldCategory);
+		int reviewerId = reviewerService.getReviewerByCategory(categoryId).getReviewerId();
+		categoryDto.setReviewerId(reviewerId);
+
+		boolean removeReviewerSuccess = reviewerService.removeReviewer(categoryId);
+		if(!removeReviewerSuccess){
+			return systemErrResponse("delete error");
+		}
 
 		Map<String,Object> data = getData();
 		data.put("oldCategory",categoryDto);
@@ -156,7 +168,46 @@ public class CategoryController extends ApplicationController {
 	}
 
 	@RequestMapping(method = PUT)
-	public RestResponse modifyCategories(){
+	public RestResponse modifyCategories(CategoryDto categoryDto) throws Exception {
+
+		//验证管理员身份
+		long userId = getUserId();
+		if(!adminService.findAllAdmins().contains(userId)){
+			return systemErrResponse("Illegal visit");
+		}
+
+		if(null == categoryDto){
+			return systemErrResponse();
+		}
+
+		Integer reviewerId = categoryDto.getReviewerId();
+		Integer categoryId = categoryDto.getCategoryId();
+
+		Category category = categoryConverter.dtoToPo(categoryDto);
+
+		boolean modifySuccess = categoryService.saveCategory(category);
+
+		if(!modifySuccess){
+			return systemErrResponse("modify error");
+		}
+
+		Reviewer reviewer = new Reviewer();
+		reviewer.setCategoryId(categoryId);
+		reviewer.setReviewerId(reviewerId);
+		boolean modifyReviewerSuccess = reviewerService.saveReviewer(reviewer);
+
+		if(!modifyReviewerSuccess){
+			return systemErrResponse("modify error");
+		}
+
+		Map<String,Object> data = getData();
+		data.put("oldCategory",categoryDto);
+
+		return successResponse(data);
+	}
+
+	@RequestMapping(value = "public",method = PUT)
+	public RestResponse submitCategory(){
 
 		return successResponse();
 	}
