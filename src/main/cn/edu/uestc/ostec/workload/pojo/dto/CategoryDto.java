@@ -1,15 +1,13 @@
-package cn.edu.uestc.ostec.workload.pojo;
+package cn.edu.uestc.ostec.workload.pojo.dto;
 
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NOT_LEAF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 
-public class Category {
-
-	/**
-	 * 类目信息所在表名
-	 */
-	public static final String TABLE_NAME = "category";
+/**
+ * Version:v1.0 (description: Category包装对象)
+ */
+public class CategoryDto {
 
 	/**
 	 * 工作量类目编号
@@ -64,12 +62,17 @@ public class Category {
 	/**
 	 * 最终审核时间
 	 */
-	private Integer reviewDeadline;
+	private String reviewDeadline;
 
 	/**
 	 * 审核类最终申请时间，默认为审核时间前48小时。审核人修改申请时间时，与审核时间相差不足48小时给出提示。
 	 */
-	private Integer applyDeadline;
+	private String applyDeadline;
+
+	/**
+	 * 审核人ID
+	 */
+	private Integer reviewerId;
 
 	public Integer getCategoryId() {
 		return categoryId;
@@ -151,29 +154,27 @@ public class Category {
 		this.status = status;
 	}
 
-	public Integer getReviewDeadline() {
+	public String getReviewDeadline() {
 		return reviewDeadline;
 	}
 
-	public void setReviewDeadline(Integer reviewDeadline) {
+	public void setReviewDeadline(String reviewDeadline) {
 		this.reviewDeadline = reviewDeadline;
 	}
 
-	public Integer getApplyDeadline() {
+	public String getApplyDeadline() {
 		return applyDeadline;
 	}
 
-	public void setApplyDeadline(Integer applyDeadline) {
+	public void setApplyDeadline(String applyDeadline) {
 		this.applyDeadline = applyDeadline;
 	}
 
-	@Override
-	public String toString() {
-		return "Category{" + "categoryId=" + categoryId + ", name='" + name + '\'' + ", desc='"
-				+ desc + '\'' + ", parentId=" + parentId + ", isLeaf='" + isLeaf + '\''
-				+ ", importRequired='" + importRequired + '\'' + ", jsonParameters='"
-				+ jsonParameters + '\'' + ", formula='" + formula + '\'' + ", version='" + version
-				+ '\'' + ", status='" + status + '\'' + ", reviewDeadline=" + reviewDeadline
-				+ ", applyDeadline=" + applyDeadline + '}';
+	public Integer getReviewerId() {
+		return reviewerId;
+	}
+
+	public void setReviewerId(Integer reviewerId) {
+		this.reviewerId = reviewerId;
 	}
 }

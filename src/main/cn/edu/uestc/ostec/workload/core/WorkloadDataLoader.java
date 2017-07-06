@@ -11,7 +11,6 @@ package cn.edu.uestc.ostec.workload.core;
 
 /**
  * Description:数据启动器
- * Version:v1.0 (author:刘文哲 update: 实现init,destroy方法 )
  */
 public class WorkloadDataLoader {
 

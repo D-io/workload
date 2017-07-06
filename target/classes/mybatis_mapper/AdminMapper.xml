@@ -16,4 +16,8 @@
     values (#{adminId,jdbcType=INTEGER})
   </insert>
 
+  <select id="selectAll" resultMap="adminResultMap">
+      select * from admin
+  </select>
+
 </mapper>

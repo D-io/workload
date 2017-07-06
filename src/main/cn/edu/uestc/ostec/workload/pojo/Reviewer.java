@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.pojo;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
+
 public class Reviewer {
 
 	/**

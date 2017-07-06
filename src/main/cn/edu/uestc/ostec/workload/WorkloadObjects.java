@@ -1,6 +1,6 @@
 package cn.edu.uestc.ostec.workload;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.Collections;

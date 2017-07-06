@@ -1,28 +1,35 @@
 package cn.edu.uestc.ostec.workload.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
+import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Reviewer;
-import cn.edu.uestc.ostec.workload.pojo.User;
+import cn.edu.uestc.ostec.workload.pojo.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.service.AdminService;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ReviewerService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGER_CATEGORY_PATH;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
-@Controller
+@RestController
 @RequestMapping(MANAGER_CATEGORY_PATH)
 public class CategoryController extends ApplicationController {
 
@@ -35,31 +42,42 @@ public class CategoryController extends ApplicationController {
 	@Autowired
 	private AdminService adminService;
 
+	@Autowired
+	private CategoryConverter categoryConverter;
 
+	/**
+	 * 添加工作量类目信息
+	 * @param categoryDto category包装对象
+	 * @return RestResponse
+	 */
 	@RequestMapping(method = POST)
-	public RestResponse saveCategories(Category category,@RequestParam(value = "reviewerId") int reviewerId){
+	public RestResponse addCategories(CategoryDto categoryDto) throws ParseException {
 
-		long userId = getUserId();
+//		//验证管理员身份
+//		long userId = getUserId();
+//		if(!adminService.findAllAdmins().contains(userId)){
+//			return systemErrResponse("Illegal visit");
+//		}
 
-		if(!adminService.findAllAdmins().contains(userId)){
-			return systemErrResponse("Illegal visit");
+		//参数检验
+		if(null == categoryDto || ZERO_INT == categoryDto.getReviewerId()){
+			return parameterNotSupportResponse("Parameter not support");
 		}
 
-		if(null == category || 0 == reviewerId){
-			return invalidOperationResponse();
-		}
-
-		if(0 != category.getParentId()){
-			category.setIsLeaf("Y");
-		}
-
-		category.setStatus(0);
+		Category category = categoryConverter.dtoToPo(categoryDto);
+		//设置状态值，转换时间
+		category.setStatus(UNCOMMITTED);
 
 		boolean saveCategorySuccess = categoryService.saveCategory(category);
 
+
 		int categoryId = category.getCategoryId();
+		categoryDto.setCategoryId(categoryId);
+		categoryDto.setStatus(category.getStatus());
+
+		//保存对应的审核人信息
 		Reviewer reviewer = new Reviewer();
-		reviewer.setReviewerId(reviewerId);
+		reviewer.setReviewerId(categoryDto.getReviewerId());
 		reviewer.setCategoryId(categoryId);
 
 		boolean saveReviewerSuccess = reviewerService.saveReviewer(reviewer);
@@ -68,22 +86,73 @@ public class CategoryController extends ApplicationController {
 			return systemErrResponse("save error");
 		}
 
+
 		Map<String,Object> data = getData();
-		data.put("category",category);
-		data.put("reviewer",reviewer);
+		data.put("category",categoryDto);
 		return successResponse(data);
 	}
 
-	@RequestMapping(method = GET)
-	public RestResponse getCategories(){
+	@RequestMapping(value="list",method = GET)
+	public RestResponse getSubmittedCategories(){
+
+		Map<String,Object> data = getData();
+		data.put("submitted",getCategoryDto(SUBMITTED));
+
+		return successResponse(data);
+	}
+
+	@RequestMapping(value = "valid",method = GET)
+	public RestResponse getValidCategories(){
+
+		//验证管理员身份
+		long userId = getUserId();
+		if(!adminService.findAllAdmins().contains(userId)){
+			return systemErrResponse("Illegal visit");
+		}
+
+		Map<String,Object> data = getData();
+		data.put("submitted",getCategoryDto(SUBMITTED));
+		data.put("notSubmitted",getCategoryDto(UNCOMMITTED));
+
+		return successResponse();
+	}
+
+	@RequestMapping(value = "disable",method = GET)
+	public RestResponse getDisableCategories(){
+
+		//验证管理员身份
+		long userId = getUserId();
+		if(!adminService.findAllAdmins().contains(userId)){
+			return systemErrResponse("Illegal visit");
+		}
+
+		Map<String,Object> data = getData();
+		data.put("categoryList",getCategoryDto(DELETED));
 
 		return successResponse();
 	}
 
 	@RequestMapping(method = DELETE)
-	public RestResponse removeCategories(){
+	public RestResponse removeCategories(@RequestParam(value = "categoryId") Integer categoryId){
 
-		return successResponse();
+		if(null == categoryId){
+			return parameterNotSupportResponse("null parameter");
+		}
+
+		boolean removeSuccess = categoryService.removeCategory(categoryId);
+
+		if(!removeSuccess){
+			return systemErrResponse("delete error");
+		}
+
+		Category oldCategory = categoryService.getCategory(categoryId);
+
+		CategoryDto categoryDto = categoryConverter.poToDto(oldCategory);
+
+		Map<String,Object> data = getData();
+		data.put("oldCategory",categoryDto);
+
+		return successResponse(data);
 	}
 
 	@RequestMapping(method = PUT)
@@ -92,7 +161,36 @@ public class CategoryController extends ApplicationController {
 		return successResponse();
 	}
 
+	/**
+	 * 获取对应状态下的CategoryDto对象
+	 * @param status 状态
+	 * @return List<CategoryDto>
+	 */
+	public List<CategoryDto> getCategoryDto(Integer status){
 
+		List<CategoryDto> categoryDtos = new ArrayList<>();
+
+		List<Category> categoryList = categoryService.getCategoriesByStatus(status);
+
+		if(categoryList.isEmpty()){
+			return null;
+		}
+
+		for (Category category:categoryList){
+			CategoryDto categoryDto = categoryConverter.poToDto(category);
+			Reviewer reviewer = reviewerService.getReviewerByCategory(category.getCategoryId());
+			int reviewerId;
+			if(null != reviewer){
+				reviewerId = reviewer.getReviewerId();
+			}else{
+				reviewerId = 0;
+			}
+			categoryDto.setReviewerId(reviewerId);
+			categoryDtos.add(categoryDto);
+		}
+
+		return categoryDtos;
+	}
 }
 
 //	@Autowired

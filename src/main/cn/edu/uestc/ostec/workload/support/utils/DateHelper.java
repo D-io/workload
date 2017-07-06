@@ -10,6 +10,8 @@
 package cn.edu.uestc.ostec.workload.support.utils;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,10 +19,12 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
+import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.DATE_FORMAT_CN;
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.DATE_FORMAT_DEFAULT;
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.DATE_TIME_FORMAT_DEFAULT;
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.MILLISECOND_TO_SECOND;
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.TIME_FORMAT_DEFAULT;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 /**
  * Description: 时间辅助类(采用java8新特性)
@@ -32,6 +36,7 @@ public class DateHelper {
 
 	/**
 	 * 获取当前日期
+	 *
 	 * @return 默认格式的当前日期
 	 */
 	public static String getDate() {
@@ -72,8 +77,9 @@ public class DateHelper {
 
 	/**
 	 * 格式化日期时间
+	 *
 	 * @param dateTime 日期时间
-	 * @param format 日期格式
+	 * @param format   日期格式
 	 * @return 格式化的日期时间
 	 */
 	public static String getDateTime(LocalDateTime dateTime, String format) {
@@ -83,6 +89,7 @@ public class DateHelper {
 
 	/**
 	 * 获取日期时间 - yyyy-MM-dd HH:mm:ss
+	 *
 	 * @param timestamp 时间戳
 	 * @return 默认格式的日期时间
 	 */
@@ -90,6 +97,12 @@ public class DateHelper {
 		LocalDateTime time = LocalDateTime
 				.ofInstant(Instant.ofEpochSecond(timestamp), TimeZone.getDefault().toZoneId());
 		return getDateTime(time, DATE_TIME_FORMAT_DEFAULT);
+	}
+
+	public static String getDateTime(int timestamp) {
+		LocalDateTime time = LocalDateTime
+				.ofInstant(Instant.ofEpochSecond(timestamp), TimeZone.getDefault().toZoneId());
+		return getDateTime(time, DATE_FORMAT_CN);
 	}
 
 	/**
@@ -107,6 +120,12 @@ public class DateHelper {
 	private static long currentTime() {
 
 		return System.currentTimeMillis();
+	}
+
+	public static int getTimeStamp(String date) throws ParseException {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_CN);
+		java.util.Date date_ = simpleDateFormat.parse(date);
+		return (int) (date_.getTime() / MILLISECOND_TO_SECOND);
 	}
 
 	/**

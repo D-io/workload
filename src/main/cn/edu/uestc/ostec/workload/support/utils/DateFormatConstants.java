@@ -60,4 +60,9 @@ public interface DateFormatConstants {
 	 */
 	String DATE_TIME_FORMAT_CN = DATE_FORMAT_CN + " " + TIME_FORMAT_CN;
 
+	/**
+	 * 整形时间格式
+	 */
+	String DATE_TIME_FORMAT_INTEGER = "yyyyMMdd";
+
 }

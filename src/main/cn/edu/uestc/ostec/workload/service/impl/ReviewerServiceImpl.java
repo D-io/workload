@@ -23,7 +23,7 @@ public class ReviewerServiceImpl extends BaseServiceImpl implements ReviewerServ
 
 		int categoryId = reviewer.getCategoryId();
 		Reviewer result = getReviewerByCategory(categoryId);
-		if(null != result) {
+		if(null != result.getReviewerId()) {
 			return reviewerDao.update(reviewer);
 		}
 		return reviewerDao.insert(reviewer);
