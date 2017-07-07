@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.pojo.dto;
 
+import java.util.List;
+
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NOT_LEAF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
@@ -7,7 +9,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 /**
  * Version:v1.0 (description: Category包装对象)
  */
-public class CategoryDto {
+public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 
 	/**
 	 * 工作量类目编号
@@ -74,6 +76,31 @@ public class CategoryDto {
 	 */
 	private Integer reviewerId;
 
+	/**
+	 * 子节点
+	 */
+	private List<CategoryDto> children;
+
+	@Override
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	@Override
+	public Integer getObjectId() {
+		return categoryId;
+	}
+
+	@Override
+	public List<CategoryDto> getChildren() {
+		return children;
+	}
+
+	@Override
+	public void setChildren(List<CategoryDto> children) {
+		this.children = children;
+	}
+
 	public Integer getCategoryId() {
 		return categoryId;
 	}
@@ -96,10 +123,6 @@ public class CategoryDto {
 
 	public void setDesc(String desc) {
 		this.desc = desc;
-	}
-
-	public Integer getParentId() {
-		return parentId;
 	}
 
 	public void setParentId(Integer parentId) {

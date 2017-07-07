@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.dao.CategoryDao;
 import cn.edu.uestc.ostec.workload.pojo.Category;
+import cn.edu.uestc.ostec.workload.pojo.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
@@ -17,6 +19,9 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 
 	@Autowired
 	private CategoryDao categoryDao;
+
+	@Autowired
+	private CategoryConverter categoryConverter;
 
 	/**
 	 * 删除工作量类目
@@ -73,5 +78,15 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	@Override
 	public List<Category> getCategoriesByType(Integer importRequired) {
 		return listResult(categoryDao.selectByImportRequired(importRequired));
+	}
+
+	@Override
+	public List<CategoryDto> getDtoObjects(Integer status,Integer parentId) {
+		return categoryConverter.poListToDtoList(categoryDao.selectChildren(status,parentId));
+	}
+
+	@Override
+	public CategoryDto getDtoObject(Integer objectId) {
+		return categoryConverter.poToDto(categoryDao.select(objectId));
 	}
 }

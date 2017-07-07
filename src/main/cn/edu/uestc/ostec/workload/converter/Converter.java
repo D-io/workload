@@ -33,4 +33,34 @@ public interface Converter<P, D> {
 	 * @return 持久化对象
 	 */
 	P dtoToPo(D dto) throws ParseException;
+
+	/**
+	 * 批量转换持久化对象为数据传输对象
+	 *
+	 * @param poList 持久化对象列表
+	 * @return 数据传输对象列表
+	 */
+	default List<D> poListToDtoList(List<P> poList) {
+		List<D> dtoList = new ArrayList<>();
+		for (P po : poList) {
+			dtoList.add(poToDto(po));
+		}
+
+		return dtoList;
+	}
+
+	/**
+	 * 批量转换数据传输对象为持久化对象
+	 *
+	 * @param dtoList 数据传输对象
+	 * @return 持久化对象列表
+	 */
+	default List<P> dtoListToPoList(List<D> dtoList) throws Exception{
+		List<P> poList = new ArrayList<>();
+		for (D dto : dtoList) {
+			poList.add(dtoToPo(dto));
+		}
+
+		return poList;
+	}
 }

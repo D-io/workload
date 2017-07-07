@@ -24,11 +24,6 @@ public interface WorkloadObjects {
 	List<String> IMMUTABLE_EMPTY_STRING_LIST = Collections.unmodifiableList(new ArrayList<>());
 
 	/**
-	 * json映射器对象
-	 */
-	ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-	/**
 	 * int类型 0
 	 */
 	int ZERO_INT = 0;
@@ -71,5 +66,9 @@ public interface WorkloadObjects {
 		return mapInstance();
 	}
 
+	/**
+	 * json映射器对象
+	 */
+	ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 }

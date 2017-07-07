@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -7,9 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.uestc.ostec.workload.adaptor.MultiLevelObjectAdaptor;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.pojo.Category;
@@ -18,7 +22,9 @@ import cn.edu.uestc.ostec.workload.pojo.Reviewer;
 import cn.edu.uestc.ostec.workload.pojo.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.service.AdminService;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
+import cn.edu.uestc.ostec.workload.service.MultiLevelService;
 import cn.edu.uestc.ostec.workload.service.ReviewerService;
+import cn.edu.uestc.ostec.workload.support.utils.Date;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGER_CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
@@ -31,7 +37,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @RestController
 @RequestMapping(MANAGER_CATEGORY_PATH)
-public class CategoryController extends ApplicationController {
+public class CategoryController extends ApplicationController
+		implements MultiLevelObjectAdaptor<CategoryDto> {
 
 	@Autowired
 	private CategoryService categoryService;
@@ -47,34 +54,40 @@ public class CategoryController extends ApplicationController {
 
 	/**
 	 * 添加工作量类目信息
+	 *
 	 * @param categoryDto category包装对象
 	 * @return RestResponse
 	 */
 	@RequestMapping(method = POST)
 	public RestResponse addCategories(CategoryDto categoryDto) throws ParseException {
 
-//		//验证管理员身份
-//		long userId = getUserId();
-//		if(!adminService.findAllAdmins().contains(userId)){
-//			return systemErrResponse("Illegal visit");
-//		}
+		//TODO 用户信息未获取到 待解决
+		//TODO Category子节点待解决
+
+		//		//验证管理员身份
+		//		long userId = getUserId();
+		//		if(!adminService.findAllAdmins().contains(userId)){
+		//			return systemErrResponse("Illegal visit");
+		//		}
 
 		//参数检验
-		if(null == categoryDto || ZERO_INT == categoryDto.getReviewerId()){
+		if (null == categoryDto || ZERO_INT == categoryDto.getReviewerId()) {
 			return parameterNotSupportResponse("Parameter not support");
 		}
 
+		//将dto对象转为pojo（转换时间）
 		Category category = categoryConverter.dtoToPo(categoryDto);
-		//设置状态值，转换时间
+		//设置状态值(未提交)
 		category.setStatus(UNCOMMITTED);
 
+		//保存category类目
 		boolean saveCategorySuccess = categoryService.saveCategory(category);
 
-		if(!saveCategorySuccess){
+		if (!saveCategorySuccess) {
 			return systemErrResponse("save error");
 		}
 
-
+		//设置dto对象的ID和status，用作数据展示
 		int categoryId = category.getCategoryId();
 		categoryDto.setCategoryId(categoryId);
 		categoryDto.setStatus(category.getStatus());
@@ -86,83 +99,103 @@ public class CategoryController extends ApplicationController {
 
 		boolean saveReviewerSuccess = reviewerService.saveReviewer(reviewer);
 
-		if(!saveReviewerSuccess){
+		if (!saveReviewerSuccess) {
+			//若保存失败，撤销之前保存的category
 			categoryService.deleteCategory(categoryId);
 			return systemErrResponse("save error");
 		}
 
-
-		Map<String,Object> data = getData();
-		data.put("category",categoryDto);
-		return successResponse(data);
-	}
-
-	@RequestMapping(value="list",method = GET)
-	public RestResponse getSubmittedCategories(){
-
-		Map<String,Object> data = getData();
-		data.put("submitted",getCategoryDto(SUBMITTED));
+		//展示保存的dto的完整信息
+		Map<String, Object> data = getData();
+		data.put("category", categoryDto);
 
 		return successResponse(data);
 	}
 
-	@RequestMapping(value = "valid",method = GET)
-	public RestResponse getValidCategories(){
+	@RequestMapping(value = "list", method = GET)
+	public RestResponse getSubmittedCategories() {
 
-		//验证管理员身份
-		long userId = getUserId();
-		if(!adminService.findAllAdmins().contains(userId)){
-			return systemErrResponse("Illegal visit");
-		}
+		//获取已经提交的类目信息
+		Map<String, Object> data = getData();
+		data.put("submitted", getCategoryDto(SUBMITTED));
 
-		Map<String,Object> data = getData();
-		data.put("submitted",getCategoryDto(SUBMITTED));
-		data.put("notSubmitted",getCategoryDto(UNCOMMITTED));
-
-		return successResponse();
+		return successResponse(data);
 	}
 
-	@RequestMapping(value = "disable",method = GET)
-	public RestResponse getDisableCategories(){
+	@RequestMapping(value = "valid", method = GET)
+	public RestResponse getValidCategories() {
 
-		//验证管理员身份
-		long userId = getUserId();
-		if(!adminService.findAllAdmins().contains(userId)){
-			return systemErrResponse("Illegal visit");
+		//		//验证管理员身份
+		//		long userId = getUserId();
+		//		if(!adminService.findAllAdmins().contains(userId)){
+		//			return systemErrResponse("Illegal visit");
+		//		}
+
+		Map<String, Object> data = getData();
+		List<CategoryDto> categoryDtos = categoryService.getDtoObjects(SUBMITTED, 0);
+		if (categoryDtos.size() < 0) {
+			return invalidOperationResponse();
 		}
 
-		Map<String,Object> data = getData();
-		data.put("categoryList",getCategoryDto(DELETED));
+		try {
+			for (Iterator<CategoryDto> iterator = categoryDtos.iterator(); iterator.hasNext(); ) {
+				CategoryDto categoryDto = iterator.next();
+				buildObjectStructure(categoryDto, categoryService);
+			}
+			data.put("categoryInfoTree", categoryDtos);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return successResponse(data);
+	}
+
+	@RequestMapping(value = "disable", method = GET)
+	public RestResponse getDisableCategories() {
+
+		//		//验证管理员身份
+		//		long userId = getUserId();
+		//		if(!adminService.findAllAdmins().contains(userId)){
+		//			return systemErrResponse("Illegal visit");
+		//		}
+
+		//获取已经删除的类目信息
+		Map<String, Object> data = getData();
+		data.put("categoryList", getCategoryDto(DELETED));
 
 		return successResponse(data);
 	}
 
 	@RequestMapping(method = DELETE)
-	public RestResponse removeCategories(@RequestParam(value = "categoryId") Integer categoryId){
+	public RestResponse removeCategories(
+			@RequestParam(value = "categoryId")
+					Integer categoryId) {
 
-		if(null == categoryId){
+		if (null == categoryId) {
 			return parameterNotSupportResponse("null parameter");
 		}
 
+		//设置为disable状态
 		boolean removeSuccess = categoryService.removeCategory(categoryId);
 
-		if(!removeSuccess){
+		if (!removeSuccess) {
 			return systemErrResponse("delete error");
 		}
 
 		Category oldCategory = categoryService.getCategory(categoryId);
-
 		CategoryDto categoryDto = categoryConverter.poToDto(oldCategory);
+
 		int reviewerId = reviewerService.getReviewerByCategory(categoryId).getReviewerId();
 		categoryDto.setReviewerId(reviewerId);
 
+		//相应地删除对应的reviewer信息
 		boolean removeReviewerSuccess = reviewerService.removeReviewer(categoryId);
-		if(!removeReviewerSuccess){
+		if (!removeReviewerSuccess) {
 			return systemErrResponse("delete error");
 		}
 
-		Map<String,Object> data = getData();
-		data.put("oldCategory",categoryDto);
+		//展示删除的categoryDto信息
+		Map<String, Object> data = getData();
+		data.put("oldCategory", categoryDto);
 
 		return successResponse(data);
 	}
@@ -170,70 +203,70 @@ public class CategoryController extends ApplicationController {
 	@RequestMapping(method = PUT)
 	public RestResponse modifyCategories(CategoryDto categoryDto) throws Exception {
 
-		//验证管理员身份
-		long userId = getUserId();
-		if(!adminService.findAllAdmins().contains(userId)){
-			return systemErrResponse("Illegal visit");
-		}
+		//		//验证管理员身份
+		//		long userId = getUserId();
+		//		if(!adminService.findAllAdmins().contains(userId)){
+		//			return systemErrResponse("Illegal visit");
+		//		}
 
-		if(null == categoryDto){
+		//校验
+		if (null == categoryDto) {
 			return systemErrResponse();
 		}
 
+		//获取相应的表的主键信息
 		Integer reviewerId = categoryDto.getReviewerId();
 		Integer categoryId = categoryDto.getCategoryId();
+		categoryDto.setStatus(UNCOMMITTED);
 
+		//将dto对象转为pojo对象并保存
 		Category category = categoryConverter.dtoToPo(categoryDto);
-
 		boolean modifySuccess = categoryService.saveCategory(category);
 
-		if(!modifySuccess){
+		if (!modifySuccess) {
 			return systemErrResponse("modify error");
 		}
 
+		//更新reviewer对象
 		Reviewer reviewer = new Reviewer();
 		reviewer.setCategoryId(categoryId);
 		reviewer.setReviewerId(reviewerId);
 		boolean modifyReviewerSuccess = reviewerService.saveReviewer(reviewer);
 
-		if(!modifyReviewerSuccess){
+		if (!modifyReviewerSuccess) {
 			return systemErrResponse("modify error");
 		}
 
-		Map<String,Object> data = getData();
-		data.put("oldCategory",categoryDto);
+		Map<String, Object> data = getData();
+		data.put("oldCategory", categoryDto);
 
 		return successResponse(data);
 	}
 
-	@RequestMapping(value = "public",method = PUT)
-	public RestResponse submitCategory(){
+	@RequestMapping(value = "public", method = PUT)
+	public RestResponse submitCategory() {
 
 		return successResponse();
 	}
 
 	/**
 	 * 获取对应状态下的CategoryDto对象
+	 *
 	 * @param status 状态
 	 * @return List<CategoryDto>
 	 */
-	public List<CategoryDto> getCategoryDto(Integer status){
+	public List<CategoryDto> getCategoryDto(Integer status) {
 
 		List<CategoryDto> categoryDtos = new ArrayList<>();
+		List<Category> parentCategoryList = categoryService.getCategoriesByStatus(status);
 
-		List<Category> categoryList = categoryService.getCategoriesByStatus(status);
-
-		if(categoryList.isEmpty()){
-			return null;
-		}
-
-		for (Category category:categoryList){
+		for (Category category : parentCategoryList) {
 			CategoryDto categoryDto = categoryConverter.poToDto(category);
 			Reviewer reviewer = reviewerService.getReviewerByCategory(category.getCategoryId());
 			int reviewerId;
-			if(null != reviewer){
+			if (null != reviewer.getReviewerId()) {
 				reviewerId = reviewer.getReviewerId();
-			}else{
+			} else {
 				reviewerId = 0;
 			}
 			categoryDto.setReviewerId(reviewerId);
