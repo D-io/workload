@@ -9,10 +9,17 @@
 
 package cn.edu.uestc.ostec.workload.type;
 
+import org.apache.ibatis.ognl.ASTList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Description: 数据操作状态类型
  */
 public interface OperatingStatusType {
+
+	Integer ROOT = 0;
 
 	/**
 	 * 工作量类目未提交状态（解锁）
@@ -73,6 +80,11 @@ public interface OperatingStatusType {
 	 * 工作量类目非叶子节点
 	 */
 	String NOT_LEAF = "N";
+
+	/**
+	 * 状态值列表
+	 */
+	List<Integer> statusList = new ArrayList<>();
 
 
 }

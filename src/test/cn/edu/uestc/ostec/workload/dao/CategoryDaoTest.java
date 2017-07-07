@@ -65,11 +65,6 @@ public class CategoryDaoTest extends BaseTest {
 	}
 
 	@Test
-	public void selectChildren() throws Exception {
-		System.out.println(categoryDao.selectChildren(0,0));
-	}
-
-	@Test
 	public void selectDisable() throws Exception {
 		System.out.println(categoryDao.selectByStatus(-1));
 	}

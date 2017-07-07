@@ -59,6 +59,13 @@ public interface CategoryDao extends BaseDao<Category> {
 	List<Category> selectChildren(@Param("status") Integer status,@Param("parentId") Integer parentId);
 
 	/**
+	 * 查询子节点（有效状态，不包含删除状态）
+	 * @param parentId 父节点编号
+	 * @return List<Category>
+	 */
+	List<Category> selectValidChildren(Integer parentId);
+
+	/**
 	 * 查询删除的全部工作量条目(工作量状态为-1)
 	 * @param status 状态
 	 * @return List<Category>

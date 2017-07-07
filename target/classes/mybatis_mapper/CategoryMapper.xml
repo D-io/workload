@@ -71,7 +71,13 @@
   <select id="selectChildren" resultMap="categoryResultMap">
     select <include refid="Base_Column_List" /> 
     from category  
-    where status = #{status,jdbcType=INTEGER} and parent_id = #{parentId,jdbcType=INTEGER}
+    where status = #{status} and parent_id = #{parentId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectValidChildren" resultMap="categoryResultMap">
+    select <include refid="Base_Column_List" />
+    from category
+    where status != -1 and parent_id = #{parentId,jdbcType=INTEGER}
   </select>
 
   <select id="selectByStatus" resultMap="categoryResultMap">

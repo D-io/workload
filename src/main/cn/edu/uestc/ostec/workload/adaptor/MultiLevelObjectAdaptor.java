@@ -46,4 +46,23 @@ public interface MultiLevelObjectAdaptor<D extends AbstractMultiLevelObjectDto> 
 		return root;
 	}
 
+	default D buildValidObjectStructure(D root, MultiLevelService<D> service)
+			throws JsonProcessingException {
+
+		//以当前对象作为根节点获取子节点
+		List<D> categoryList = service.getDtoObjects(root.getObjectId());
+
+		//存在子节点则递归查询
+		if (categoryList.size() > 0) {
+			for (D categoryDto : categoryList) {
+				buildValidObjectStructure(categoryDto, service);
+			}
+		}
+
+		//根节点与子节点绑定
+		root.setChildren(categoryList);
+
+		return root;
+	}
+
 }

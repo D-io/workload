@@ -82,11 +82,15 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 
 	@Override
 	public List<CategoryDto> getDtoObjects(Integer status,Integer parentId) {
-		return categoryConverter.poListToDtoList(categoryDao.selectChildren(status,parentId));
+		return listResult(categoryConverter.poListToDtoList(categoryDao.selectChildren(status,parentId)));
 	}
 
 	@Override
 	public CategoryDto getDtoObject(Integer objectId) {
 		return categoryConverter.poToDto(categoryDao.select(objectId));
+	}
+
+	public List<CategoryDto> getDtoObjects(Integer parentId) {
+		return categoryConverter.poListToDtoList(categoryDao.selectValidChildren(parentId));
 	}
 }

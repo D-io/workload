@@ -57,11 +57,6 @@ public class CategoryServiceImplTest extends BaseTest {
 	}
 
 	@Test
-	public void getCategoriesByStatus() throws Exception {
-		System.out.println(categoryService.getCategoryChildren(-1,0));
-	}
-
-	@Test
 	public void getCategoriesByType() throws Exception {
 		System.out.println(categoryService.getCategoriesByType(0));
 

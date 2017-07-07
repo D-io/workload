@@ -23,6 +23,7 @@ import cn.edu.uestc.ostec.workload.service.CategoryService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGER_CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.ROOT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -93,25 +94,19 @@ public class CategoryController extends ApplicationController
 	@RequestMapping(value = "list", method = GET)
 	public RestResponse getSubmittedCategories() {
 
+		Map<String, Object> data = getData();
+
 		//获取已经提交的类目信息
-		return getCategoryDto(SUBMITTED);
+		data.put("categoryTree", getCategoryDto(SUBMITTED, ROOT));
+		return successResponse(data);
 	}
 
-	@RequestMapping(value = "valid", method = GET)
-	public RestResponse getValidCategories() {
-
-		//		//验证管理员身份
-		//		long userId = getUserId();
-		//		if(!adminService.findAllAdmins().contains(userId)){
-		//			return systemErrResponse("Illegal visit");
-		//		}
-		return getCategoryDto(UNCOMMITTED);
-
-
-	}
-
-	@RequestMapping(value = "disable", method = GET)
-	public RestResponse getDisableCategories() {
+	/**
+	 * 管理员查看未提交的和已提交的工作量类目树结构
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "all",method = GET)
+	public RestResponse getCategories(Integer status) {
 
 		//		//验证管理员身份
 		//		long userId = getUserId();
@@ -119,12 +114,22 @@ public class CategoryController extends ApplicationController
 		//			return systemErrResponse("Illegal visit");
 		//		}
 
-		//获取已经删除的类目信息
-		return getCategoryDto(DELETED);
+		Map<String, Object> data = getData();
+
+		//获取已经提交的类目信息
+		if(DELETED != status) {
+			data.put("categoryTree", getCategoryDto(null, ROOT));
+		}else{
+			//获取状态为Disable的工作量类目信息
+			data.put("categoryList",categoryService.getCategoriesByStatus(DELETED));
+		}
+
+		return successResponse(data);
 	}
 
 	/**
 	 * 置对应的条目信息为Disable
+	 *
 	 * @param categoryId 类目编号
 	 * @return RestResponse
 	 */
@@ -143,11 +148,11 @@ public class CategoryController extends ApplicationController
 		}
 
 		Category category = categoryService.getCategory(categoryId);
-		if(null == category){
+		if (null == category) {
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		if(SUBMITTED == category.getStatus()){
+		if (SUBMITTED == category.getStatus()) {
 			return invalidOperationResponse("非解锁工作量不可删除，请先解锁！");
 		}
 
@@ -155,7 +160,7 @@ public class CategoryController extends ApplicationController
 		boolean removeSuccess = categoryService.removeCategory(categoryId);
 
 		if (!removeSuccess) {
-			return systemErrResponse("delete error");
+			return systemErrResponse("删除失败！");
 		}
 
 		Category oldCategory = categoryService.getCategory(categoryId);
@@ -168,12 +173,19 @@ public class CategoryController extends ApplicationController
 		return successResponse(data);
 	}
 
-	@RequestMapping(value = "unlock",method = POST)
-	public RestResponse undoCategories(){
+	/**
+	 * 解锁对应的工作量信息:修改对应状态为SUBMITTED条目为UNCOMMITTED
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "unlock", method = POST)
+	public RestResponse undoCategories() {
 
+		//获取状态为SUBMITTED的工作量条目
 		List<Category> categoryList = categoryService.getCategoriesByStatus(SUBMITTED);
-		for(Category category:categoryList){
-			if(!categoryService.saveCategory(category.getCategoryId(),UNCOMMITTED)){
+
+		//修改相应的状态
+		for (Category category : categoryList) {
+			if (!categoryService.saveCategory(category.getCategoryId(), UNCOMMITTED)) {
 				return invalidOperationResponse("解锁失败");
 			}
 		}
@@ -181,6 +193,12 @@ public class CategoryController extends ApplicationController
 		return successResponse();
 	}
 
+	/**
+	 * 修改类目信息
+	 * @param categoryDto 工作类目信息dto
+	 * @return RestResponse
+	 * @throws Exception
+	 */
 	@RequestMapping(method = PUT)
 	public RestResponse modifyCategories(CategoryDto categoryDto) throws Exception {
 
@@ -193,6 +211,10 @@ public class CategoryController extends ApplicationController
 		//校验
 		if (null == categoryDto) {
 			return systemErrResponse();
+		}
+
+		if (SUBMITTED == categoryDto.getStatus()) {
+			return invalidOperationResponse("非解锁工作量不可修改，请先解锁！");
 		}
 
 		categoryDto.setStatus(UNCOMMITTED);
@@ -212,256 +234,57 @@ public class CategoryController extends ApplicationController
 	}
 
 	/**
-	 * 提交
-	 * @return
+	 * 提交：修改对应的UNCOMMITTED状态为SUBMITTED
 	 */
 	@RequestMapping(value = "public", method = PUT)
 	public RestResponse submitCategory() {
 
 		Map<String, Object> data = getData();
 		List<Category> categoryList = categoryService.getCategoriesByStatus(UNCOMMITTED);
-		for (Category category:categoryList){
-			 if(!categoryService.saveCategory(SUBMITTED,category.getCategoryId())){
-			 	return systemErrResponse("提交失败");
-			 }
+		for (Category category : categoryList) {
+			if (!categoryService.saveCategory(SUBMITTED, category.getCategoryId())) {
+				return systemErrResponse("提交失败");
+			}
 		}
-		data.put("categoryList",categoryList);
+		data.put("categoryList", categoryList);
 		return successResponse(data);
 	}
 
 	/**
-	 * 获取对应状态下的CategoryDto对象
-	 *
-	 * @param status 状态
-	 * @return RestResponse
+	 * 获取对应状态下的CategoryDto对象,构建树结构
 	 */
-	public RestResponse getCategoryDto(Integer status) {
+	public List<CategoryDto> getCategoryDto(Integer status, Integer parentId) {
 
-		Map<String, Object> data = getData();
-		List<CategoryDto> categoryDtoList = categoryService.getDtoObjects(status, 0);
-		if (categoryDtoList.size() < 0) {
-			return invalidOperationResponse();
+		List<CategoryDto> categoryDtoList;
+
+		if(null == status){
+			//由父节点获取状态有效的子节点对应的dto对象
+			categoryDtoList = categoryService.getDtoObjects(parentId);
+		}else{
+			//由父节点和状态值查询对应的子节点dto对象
+			categoryDtoList = categoryService.getDtoObjects(status, parentId);
 		}
 
+		if (categoryDtoList.size() < 0) {
+			return null;
+		}
+
+		//遍历子节点，分别构建树结构
 		try {
 			for (Iterator<CategoryDto> iterator = categoryDtoList.iterator(); iterator
 					.hasNext(); ) {
 				CategoryDto categoryDto = iterator.next();
-				buildObjectStructure(categoryDto, categoryService);
+				if(null == status){
+					buildValidObjectStructure(categoryDto,categoryService);
+				}else{
+					buildObjectStructure(categoryDto, categoryService);
+				}
 			}
-			data.put("categoryInfoTree", categoryDtoList);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		return successResponse(data);
+
+		//返回形成的树结构
+		return categoryDtoList;
 	}
 }
-
-//	@Autowired
-//	@Qualifier("categoryService")
-//	private CategoryService categoryService;
-//
-//	JSONObject obj = new JSONObject();
-//
-////	/**
-////	 * 新增工作量条目(管理员新增)
-////	 */
-////	@RequestMapping("/insertCategory")
-////	public void insertCategory(
-////			@RequestBody
-////					Map<String, Object> category, HttpServletRequest request) {
-////		try {
-////			String reviewerId = category.get("reviewerId").toString();
-////			category.remove("reviewerId");
-////			int insertCategory = categoryService.insertCategory(category);
-////			if (insertCategory == -1) {
-////				obj.put("result", 0);
-////				obj.put("msg", "新增工作量条目失败，请检查字段是否合法");
-////			} else {
-////				Map<String, Object> reviewer = new HashMap<String, Object>();
-////				reviewer.put("reviewerId", reviewerId);
-////				reviewer.put("categoryId", insertCategory);
-////				obj.put("result", 1);
-////				obj.put("msg", insertCategory);
-////			}
-////		} catch (Exception e) {
-////			e.printStackTrace();
-////		}
-////	}
-//
-//	/**
-//	 * 修改工作量条目
-//	 * 管理员可修改字段同新增
-//	 * 审核人仅修改字段applyDeadline
-//	 */
-//	@RequestMapping("/updateCategory")
-//	public void updateCategory(HttpServletRequest request, Category category) {
-//		try {
-//			String updateCategory = categoryService.updateCategory(category);
-//			if (updateCategory.equals("修改成功")) {
-//				obj.put("result", 1);
-//				obj.put("msg", updateCategory);
-//			} else {
-//				obj.put("result", 0);
-//				obj.put("msg", updateCategory);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	@RequestMapping("/selectFirst")
-//	//查询第一级工作量条目
-//	public void selectFirst(HttpServletRequest request) {
-//		try {
-//			//查询非删除状态下，且父节点为0的所有条目
-//			String status = "-1";
-//			Integer parentId = 0;
-//			List<Category> selectCategory = categoryService
-//					.selectCategoryChildren(status, parentId);
-//			obj.put("result", 1);
-//			obj.put("msg", selectCategory);
-//			request.setCharacterEncoding("utf-8");
-//			request.setAttribute("select", obj);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	@RequestMapping("/selectChildren")
-//	//查询某一工作量条目的子条目
-//	public void selectChildren(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			//查询非删除状态下，且父节点为传入id的所有条目
-//			String status = "-1";
-//			Integer parentId = Integer.valueOf(request.getParameter("parentId"));
-//			List<Category> selectCategory = categoryService
-//					.selectCategoryChildren(status, parentId);
-//			obj.put("result", 1);
-//			obj.put("msg", selectCategory);
-//			request.setCharacterEncoding("utf-8");
-//			request.setAttribute("select", obj);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	@RequestMapping("/selectDetail")
-//	//查看详情
-//	public void selectDetail(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			//根据传入id查询某一条数据
-//			Integer categoryId = Integer.valueOf(request.getParameter("categoryId"));
-//			Category selectCategory = categoryService.selectCategoryById(categoryId);
-//			obj.put("result", 1);
-//			obj.put("msg", selectCategory);
-//			request.setCharacterEncoding("utf-8");
-//			request.setAttribute("select", obj);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	@RequestMapping("/updateToLock")
-//	//根据id锁定(提交)工作量条目
-//	public void updateToLock(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			String categoryIds = request.getParameter("id");
-//			String[] categoryId = categoryIds.split(",");
-//			for (int i = 0; i < categoryIds.length(); i++) {
-//				String deleteCategory = categoryService.updateCategoryStatus("1", categoryId[i]);
-//				if (deleteCategory.equals("修改成功")) {
-//					obj.put("result", 1);
-//					obj.put("msg", "提交成功");
-//				} else {
-//					obj.put("result", 0);
-//					obj.put("msg", "部分提交失败，请重新尝试！");
-//					break;
-//				}
-//			}
-//			request.setCharacterEncoding("utf-8");
-//			request.setAttribute("update", obj);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	@RequestMapping("/clearStatus")
-//	//根据id解锁工作量条目(条目状态置于未提交)
-//	public void clearStatus(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			String categoryIds = request.getParameter("id");
-//			String[] categoryId = categoryIds.split(",");
-//			for (int i = 0; i < categoryIds.length(); i++) {
-//				String deleteCategory = categoryService.updateCategoryStatus("0", categoryId[i]);
-//				if (deleteCategory.equals("修改成功")) {
-//					obj.put("result", 1);
-//					obj.put("msg", "解锁成功");
-//				} else {
-//					obj.put("result", 0);
-//					obj.put("msg", "部分解锁失败，请重新尝试！");
-//					break;
-//				}
-//			}
-//			request.setCharacterEncoding("utf-8");
-//			request.setAttribute("update", obj);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	@RequestMapping("/updateToDisable")
-//	//根据id删除工作量条目(页面不显示)
-//	public void updateToDisable(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			String categoryIds = request.getParameter("id");
-//			String status = request.getParameter("status");
-//			String[] categoryId = categoryIds.split(",");
-//			String[] statu = status.split(",");
-//			for (int i = 0; i < categoryIds.length(); i++) {
-//				if (statu[i] != "0") {
-//					obj.put("result", 0);
-//					obj.put("msg", "非解锁工作量不可删除，请先解锁！");
-//					break;
-//				}
-//				String deleteCategory = categoryService.updateCategoryStatus("-1", categoryId[i]);
-//				if (deleteCategory.equals("修改成功")) {
-//					obj.put("result", 1);
-//					obj.put("msg", "删除成功");
-//				} else {
-//					obj.put("result", 0);
-//					obj.put("msg", "部分删除失败，请重新尝试！");
-//					break;
-//				}
-//			}
-//			request.setCharacterEncoding("utf-8");
-//			request.setAttribute("update", obj);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	@RequestMapping("/delete")
-//	//根据id删除工作量条目 (彻底删除)
-//	public void delete(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			String categoryIds = request.getParameter("id");
-//			String[] categoryId = categoryIds.split(",");
-//			for (int i = 0; i < categoryIds.length(); i++) {
-//				String deleteCategory = categoryService.deleteCategory(categoryId[i]);
-//				if (deleteCategory.equals("删除成功")) {
-//					obj.put("result", 1);
-//					obj.put("msg", deleteCategory);
-//				} else {
-//					obj.put("result", 0);
-//					obj.put("msg", "部分删除失败，请重新尝试！");
-//					break;
-//				}
-//			}
-//			request.setCharacterEncoding("utf-8");
-//			request.setAttribute("delete", obj);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//}
