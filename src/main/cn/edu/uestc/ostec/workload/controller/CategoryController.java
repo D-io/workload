@@ -63,7 +63,7 @@ public class CategoryController extends ApplicationController
 
 		//参数检验
 		if (null == categoryDto || ZERO_INT == categoryDto.getReviewerId()) {
-			return parameterNotSupportResponse("Parameter not support");
+			return parameterNotSupportResponse("参数不能为空");
 		}
 
 		//将dto对象转为pojo（转换时间）
@@ -75,7 +75,7 @@ public class CategoryController extends ApplicationController
 		boolean saveCategorySuccess = categoryService.saveCategory(category);
 
 		if (!saveCategorySuccess) {
-			return systemErrResponse("save error");
+			return systemErrResponse("保存失败");
 		}
 
 		//设置dto对象的ID和status，用作数据展示
@@ -94,10 +94,7 @@ public class CategoryController extends ApplicationController
 	public RestResponse getSubmittedCategories() {
 
 		//获取已经提交的类目信息
-		Map<String, Object> data = getData();
-		data.put("submitted", getCategoryDto(SUBMITTED));
-
-		return successResponse(data);
+		return getCategoryDto(SUBMITTED);
 	}
 
 	@RequestMapping(value = "valid", method = GET)
@@ -108,23 +105,9 @@ public class CategoryController extends ApplicationController
 		//		if(!adminService.findAllAdmins().contains(userId)){
 		//			return systemErrResponse("Illegal visit");
 		//		}
+		return getCategoryDto(UNCOMMITTED);
 
-		Map<String, Object> data = getData();
-		List<CategoryDto> categoryDtos = categoryService.getDtoObjects(SUBMITTED, 0);
-		if (categoryDtos.size() < 0) {
-			return invalidOperationResponse();
-		}
 
-		try {
-			for (Iterator<CategoryDto> iterator = categoryDtos.iterator(); iterator.hasNext(); ) {
-				CategoryDto categoryDto = iterator.next();
-				buildObjectStructure(categoryDto, categoryService);
-			}
-			data.put("categoryInfoTree", categoryDtos);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return successResponse(data);
 	}
 
 	@RequestMapping(value = "disable", method = GET)
@@ -137,19 +120,35 @@ public class CategoryController extends ApplicationController
 		//		}
 
 		//获取已经删除的类目信息
-		Map<String, Object> data = getData();
-		data.put("categoryList", getCategoryDto(DELETED));
-
-		return successResponse(data);
+		return getCategoryDto(DELETED);
 	}
 
+	/**
+	 * 置对应的条目信息为Disable
+	 * @param categoryId 类目编号
+	 * @return RestResponse
+	 */
 	@RequestMapping(method = DELETE)
 	public RestResponse removeCategories(
 			@RequestParam(value = "categoryId")
 					Integer categoryId) {
+		//		//验证管理员身份
+		//		long userId = getUserId();
+		//		if(!adminService.findAllAdmins().contains(userId)){
+		//			return systemErrResponse("Illegal visit");
+		//		}
 
 		if (null == categoryId) {
 			return parameterNotSupportResponse("null parameter");
+		}
+
+		Category category = categoryService.getCategory(categoryId);
+		if(null == category){
+			return parameterNotSupportResponse("参数有误");
+		}
+
+		if(SUBMITTED == category.getStatus()){
+			return invalidOperationResponse("非解锁工作量不可删除，请先解锁！");
 		}
 
 		//设置为disable状态
@@ -169,6 +168,19 @@ public class CategoryController extends ApplicationController
 		return successResponse(data);
 	}
 
+	@RequestMapping(value = "unlock",method = POST)
+	public RestResponse undoCategories(){
+
+		List<Category> categoryList = categoryService.getCategoriesByStatus(SUBMITTED);
+		for(Category category:categoryList){
+			if(!categoryService.saveCategory(category.getCategoryId(),UNCOMMITTED)){
+				return invalidOperationResponse("解锁失败");
+			}
+		}
+
+		return successResponse();
+	}
+
 	@RequestMapping(method = PUT)
 	public RestResponse modifyCategories(CategoryDto categoryDto) throws Exception {
 
@@ -183,9 +195,6 @@ public class CategoryController extends ApplicationController
 			return systemErrResponse();
 		}
 
-		//获取相应的表的主键信息
-		Integer reviewerId = categoryDto.getReviewerId();
-		Integer categoryId = categoryDto.getCategoryId();
 		categoryDto.setStatus(UNCOMMITTED);
 
 		//将dto对象转为pojo对象并保存
@@ -202,25 +211,49 @@ public class CategoryController extends ApplicationController
 		return successResponse(data);
 	}
 
+	/**
+	 * 提交
+	 * @return
+	 */
 	@RequestMapping(value = "public", method = PUT)
 	public RestResponse submitCategory() {
 
-		return successResponse();
+		Map<String, Object> data = getData();
+		List<Category> categoryList = categoryService.getCategoriesByStatus(UNCOMMITTED);
+		for (Category category:categoryList){
+			 if(!categoryService.saveCategory(SUBMITTED,category.getCategoryId())){
+			 	return systemErrResponse("提交失败");
+			 }
+		}
+		data.put("categoryList",categoryList);
+		return successResponse(data);
 	}
 
 	/**
 	 * 获取对应状态下的CategoryDto对象
 	 *
 	 * @param status 状态
-	 * @return List<CategoryDto>
+	 * @return RestResponse
 	 */
-	public List<CategoryDto> getCategoryDto(Integer status) {
+	public RestResponse getCategoryDto(Integer status) {
 
-		List<Category> categoryList = categoryService.getCategoriesByStatus(status);
+		Map<String, Object> data = getData();
+		List<CategoryDto> categoryDtoList = categoryService.getDtoObjects(status, 0);
+		if (categoryDtoList.size() < 0) {
+			return invalidOperationResponse();
+		}
 
-		List<CategoryDto> categoryDtoList = categoryConverter.poListToDtoList(categoryList);
-
-		return categoryDtoList;
+		try {
+			for (Iterator<CategoryDto> iterator = categoryDtoList.iterator(); iterator
+					.hasNext(); ) {
+				CategoryDto categoryDto = iterator.next();
+				buildObjectStructure(categoryDto, categoryService);
+			}
+			data.put("categoryInfoTree", categoryDtoList);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return successResponse(data);
 	}
 }
 
