@@ -15,11 +15,12 @@
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="review_deadline" property="reviewDeadline" jdbcType="INTEGER" />
     <result column="apply_deadline" property="applyDeadline" jdbcType="INTEGER" />
+    <result column="reviewer_id" property="reviewerId" jdbcType="INTEGER"/>
   </resultMap>
 
   <sql id="Base_Column_List" >
     category_id, name, description, parent_id, is_leaf, import_required, json_parameters, formula, version,
-    status, review_deadline, apply_deadline
+    status, review_deadline, apply_deadline,reviewer_id
   </sql>
 
   <delete id="delete">
@@ -28,8 +29,8 @@
   </delete>
 
   <insert id="insert">
-    insert into category (category_id,name,description,parent_id,is_leaf,import_required,json_parameters,formula,version,status,review_deadline,apply_deadline)
-    values (#{categoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
+    insert into category (category_id,name,reviewer_id,description,parent_id,is_leaf,import_required,json_parameters,formula,version,status,review_deadline,apply_deadline)
+    values (#{categoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{reviewerId}, #{desc,jdbcType=VARCHAR},
       #{parentId,jdbcType=INTEGER}, #{isLeaf,jdbcType=VARCHAR}, #{importRequired,jdbcType=INTEGER}, #{jsonParameters,jdbcType=VARCHAR},
       #{formula,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
       #{reviewDeadline,jdbcType=INTEGER}, #{applyDeadline,jdbcType=INTEGER})
@@ -38,6 +39,7 @@
   <update id="update">
     update category
     set name = #{name,jdbcType=VARCHAR},
+      reviewer_id = #{reviewerId,jdbcType=INTEGER},
       description = #{desc,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=INTEGER},
       is_leaf = #{isLeaf,jdbcType=VARCHAR},

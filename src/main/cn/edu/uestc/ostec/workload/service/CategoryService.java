@@ -3,7 +3,7 @@ package cn.edu.uestc.ostec.workload.service;
 import java.util.List;
 
 import cn.edu.uestc.ostec.workload.pojo.Category;
-import cn.edu.uestc.ostec.workload.pojo.dto.CategoryDto;
+import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 
 public interface CategoryService extends MultiLevelService<CategoryDto> {
 

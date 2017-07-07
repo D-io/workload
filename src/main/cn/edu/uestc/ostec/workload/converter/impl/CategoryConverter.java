@@ -6,7 +6,7 @@ import java.text.ParseException;
 
 import cn.edu.uestc.ostec.workload.converter.Converter;
 import cn.edu.uestc.ostec.workload.pojo.Category;
-import cn.edu.uestc.ostec.workload.pojo.dto.CategoryDto;
+import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
@@ -36,6 +36,7 @@ public class CategoryConverter implements Converter<Category,CategoryDto> {
 		categoryDto.setVersion(po.getVersion());
 		categoryDto.setApplyDeadline(DateHelper.getDateTime(po.getApplyDeadline()));
 		categoryDto.setReviewDeadline(DateHelper.getDateTime(po.getReviewDeadline()));
+		categoryDto.setReviewerId(po.getReviewerId());
 
 		return categoryDto;
 	}
@@ -56,6 +57,7 @@ public class CategoryConverter implements Converter<Category,CategoryDto> {
 		category.setParentId(dto.getParentId());
 		category.setApplyDeadline(DateHelper.getTimeStamp(dto.getApplyDeadline()));
 		category.setReviewDeadline(DateHelper.getTimeStamp(dto.getReviewDeadline()));
+		category.setReviewerId(dto.getReviewerId());
 
 		return category;
 	}

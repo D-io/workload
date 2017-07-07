@@ -71,6 +71,19 @@ public class Category {
 	 */
 	private Integer applyDeadline;
 
+	/**
+	 * 审核人编号
+	 */
+	private Integer reviewerId;
+
+	public Integer getReviewerId() {
+		return reviewerId;
+	}
+
+	public void setReviewerId(Integer reviewerId) {
+		this.reviewerId = reviewerId;
+	}
+
 	public Integer getCategoryId() {
 		return categoryId;
 	}

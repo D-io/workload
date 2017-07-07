@@ -12,7 +12,7 @@ package cn.edu.uestc.ostec.workload.adaptor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
-import cn.edu.uestc.ostec.workload.pojo.dto.AbstractMultiLevelObjectDto;
+import cn.edu.uestc.ostec.workload.dto.AbstractMultiLevelObjectDto;
 import cn.edu.uestc.ostec.workload.service.MultiLevelService;
 
 /**

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.dao.CategoryDao;
 import cn.edu.uestc.ostec.workload.pojo.Category;
-import cn.edu.uestc.ostec.workload.pojo.dto.CategoryDto;
+import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;

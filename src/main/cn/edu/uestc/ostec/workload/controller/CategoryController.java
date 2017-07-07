@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +17,9 @@ import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
-import cn.edu.uestc.ostec.workload.pojo.Reviewer;
-import cn.edu.uestc.ostec.workload.pojo.dto.CategoryDto;
+import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.service.AdminService;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
-import cn.edu.uestc.ostec.workload.service.MultiLevelService;
-import cn.edu.uestc.ostec.workload.service.ReviewerService;
-import cn.edu.uestc.ostec.workload.support.utils.Date;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGER_CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
@@ -44,9 +39,6 @@ public class CategoryController extends ApplicationController
 	private CategoryService categoryService;
 
 	@Autowired
-	private ReviewerService reviewerService;
-
-	@Autowired
 	private AdminService adminService;
 
 	@Autowired
@@ -62,7 +54,6 @@ public class CategoryController extends ApplicationController
 	public RestResponse addCategories(CategoryDto categoryDto) throws ParseException {
 
 		//TODO 用户信息未获取到 待解决
-		//TODO Category子节点待解决
 
 		//		//验证管理员身份
 		//		long userId = getUserId();
@@ -91,19 +82,6 @@ public class CategoryController extends ApplicationController
 		int categoryId = category.getCategoryId();
 		categoryDto.setCategoryId(categoryId);
 		categoryDto.setStatus(category.getStatus());
-
-		//保存对应的审核人信息
-		Reviewer reviewer = new Reviewer();
-		reviewer.setReviewerId(categoryDto.getReviewerId());
-		reviewer.setCategoryId(categoryId);
-
-		boolean saveReviewerSuccess = reviewerService.saveReviewer(reviewer);
-
-		if (!saveReviewerSuccess) {
-			//若保存失败，撤销之前保存的category
-			categoryService.deleteCategory(categoryId);
-			return systemErrResponse("save error");
-		}
 
 		//展示保存的dto的完整信息
 		Map<String, Object> data = getData();
@@ -184,15 +162,6 @@ public class CategoryController extends ApplicationController
 		Category oldCategory = categoryService.getCategory(categoryId);
 		CategoryDto categoryDto = categoryConverter.poToDto(oldCategory);
 
-		int reviewerId = reviewerService.getReviewerByCategory(categoryId).getReviewerId();
-		categoryDto.setReviewerId(reviewerId);
-
-		//相应地删除对应的reviewer信息
-		boolean removeReviewerSuccess = reviewerService.removeReviewer(categoryId);
-		if (!removeReviewerSuccess) {
-			return systemErrResponse("delete error");
-		}
-
 		//展示删除的categoryDto信息
 		Map<String, Object> data = getData();
 		data.put("oldCategory", categoryDto);
@@ -227,16 +196,6 @@ public class CategoryController extends ApplicationController
 			return systemErrResponse("modify error");
 		}
 
-		//更新reviewer对象
-		Reviewer reviewer = new Reviewer();
-		reviewer.setCategoryId(categoryId);
-		reviewer.setReviewerId(reviewerId);
-		boolean modifyReviewerSuccess = reviewerService.saveReviewer(reviewer);
-
-		if (!modifyReviewerSuccess) {
-			return systemErrResponse("modify error");
-		}
-
 		Map<String, Object> data = getData();
 		data.put("oldCategory", categoryDto);
 
@@ -257,23 +216,11 @@ public class CategoryController extends ApplicationController
 	 */
 	public List<CategoryDto> getCategoryDto(Integer status) {
 
-		List<CategoryDto> categoryDtos = new ArrayList<>();
-		List<Category> parentCategoryList = categoryService.getCategoriesByStatus(status);
+		List<Category> categoryList = categoryService.getCategoriesByStatus(status);
 
-		for (Category category : parentCategoryList) {
-			CategoryDto categoryDto = categoryConverter.poToDto(category);
-			Reviewer reviewer = reviewerService.getReviewerByCategory(category.getCategoryId());
-			int reviewerId;
-			if (null != reviewer.getReviewerId()) {
-				reviewerId = reviewer.getReviewerId();
-			} else {
-				reviewerId = 0;
-			}
-			categoryDto.setReviewerId(reviewerId);
-			categoryDtos.add(categoryDto);
-		}
+		List<CategoryDto> categoryDtoList = categoryConverter.poListToDtoList(categoryList);
 
-		return categoryDtos;
+		return categoryDtoList;
 	}
 }
 

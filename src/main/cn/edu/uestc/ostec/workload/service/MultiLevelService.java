@@ -11,7 +11,7 @@ package cn.edu.uestc.ostec.workload.service;
 
 import java.util.List;
 
-import cn.edu.uestc.ostec.workload.pojo.dto.AbstractMultiLevelObjectDto;
+import cn.edu.uestc.ostec.workload.dto.AbstractMultiLevelObjectDto;
 
 /**
  * Description: 多层级服务标记接口

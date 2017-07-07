@@ -7,7 +7,7 @@
  * Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
  */
 
-package cn.edu.uestc.ostec.workload.pojo.dto;
+package cn.edu.uestc.ostec.workload.dto;
 
 import java.util.List;
 

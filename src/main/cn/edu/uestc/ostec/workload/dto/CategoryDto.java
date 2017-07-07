@@ -1,4 +1,4 @@
-package cn.edu.uestc.ostec.workload.pojo.dto;
+package cn.edu.uestc.ostec.workload.dto;
 
 import java.util.List;
 
