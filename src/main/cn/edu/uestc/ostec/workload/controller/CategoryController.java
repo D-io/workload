@@ -31,6 +31,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+/**
+ * Version:v1.0 (description: 工作量类目信息管理控制器 )
+ */
 @RestController
 @RequestMapping(MANAGER_CATEGORY_PATH)
 public class CategoryController extends ApplicationController
@@ -98,6 +101,22 @@ public class CategoryController extends ApplicationController
 
 		//获取已经提交的类目信息
 		data.put("categoryTree", getCategoryDto(SUBMITTED, ROOT));
+		return successResponse(data);
+	}
+
+	/**
+	 * 查询单个Category信息
+	 * @param categoryId Category编号
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "single", method = GET)
+	public RestResponse getCategory(@RequestParam("categoryId") Integer categoryId) {
+
+		CategoryDto categoryDto = categoryConverter.poToDto(categoryService.getCategory(categoryId));
+
+		Map<String,Object> data = getData();
+		data.put("categoryDto",categoryDto);
+
 		return successResponse(data);
 	}
 

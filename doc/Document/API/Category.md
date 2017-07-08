@@ -1,4 +1,61 @@
 ## 工作量类目接口
+
+### 获取单个工作量类目信息
+- 接口地址:`/category/single`
+- 支持格式：`json`
+- 请求方式：`GET`
+- 请求示例：`localhost:8080/category/single?categoryId=14`
+- 请求参数具体说明：
+
+参数名 | 类型 | 说明
+---|---|---
+categoryId | int | 要删除的类目Id
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- 返回参数结果集说明
+
+对象名 | 说明 | 备注
+---|--- | ---
+categoryTree | 工作量类目树结构
+categoryTree.children | 工作量类目子节点 | 树结构
+categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，若为1则为已提交状态
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "categoryDto": {
+            "categoryId": 14,
+            "name": "教学",
+            "desc": "就是简单的教学",
+            "parentId": 0,
+            "isLeaf": "N",
+            "importRequired": 0,
+            "jsonParameters": "{“人数”:“A”}",
+            "formula": "A+B+C",
+            "version": "2017-2018-1",
+            "status": 1,
+            "reviewDeadline": "2017年12月21日",
+            "applyDeadline": "2017年12月10日",
+            "reviewerId": 3201231,
+            "reviewerName": "唐雪飞",
+            "children": null,
+            "objectId": 14
+        }
+    }
+}
+```
+
+
 ### 获取工作量类目信息
 - 接口地址:`/category/all`
 - 支持格式：`json`

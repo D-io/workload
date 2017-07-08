@@ -18,7 +18,7 @@ public interface PathMappingConstants {
 	/**
 	 * 工作量审核路径
 	 */
-	String REVIEWER_ITEM_CHECK_PATH = "item-check";
+	String ITEM_PATH = "item";
 
 	/**
 	 * 工作量申报路径
