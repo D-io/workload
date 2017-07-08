@@ -1,0 +1,595 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>7. 交互接口 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="API/ErrorCode.html" />
+    
+    
+    <link rel="prev" href="FEDEBUG.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    1. workload简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="VERSION.html">
+            
+                <a href="VERSION.html">
+            
+                    
+                    2. 版本记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="CONTRIBUTOR.html">
+            
+                <a href="CONTRIBUTOR.html">
+            
+                    
+                    3. 开发人员
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="CONFIGURATION.html">
+            
+                <a href="CONFIGURATION.html">
+            
+                    
+                    4. 系统配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="FORMAT.html">
+            
+                <a href="FORMAT.html">
+            
+                    
+                    5. 开发规范
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="FEDEBUG.html">
+            
+                <a href="FEDEBUG.html">
+            
+                    
+                    6. 前端调试方式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.7" data-path="INTERFACE.html">
+            
+                <a href="INTERFACE.html">
+            
+                    
+                    7. 交互接口
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="API/ErrorCode.html">
+            
+                <a href="API/ErrorCode.html">
+            
+                    
+                    7.0 错误码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="API/Category.html">
+            
+                <a href="API/Category.html">
+            
+                    
+                    7.1 工作量类目管理接口
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >7. 交互接口</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="8-restful&#x63A5;&#x53E3;">8. RESTful&#x63A5;&#x53E3;</h1>
+<h3 id="1&#x3001;&#x533A;&#x5757;&#x7BA1;&#x7406;&#x63A5;&#x53E3;">1&#x3001;&#x533A;&#x5757;&#x7BA1;&#x7406;&#x63A5;&#x53E3;</h3>
+<ul>
+<li>&#x63A5;&#x53E3;&#x5730;&#x5740;: <code>/region</code></li>
+<li>&#x652F;&#x6301;&#x683C;&#x5F0F;&#xFF1A;<code>html</code></li>
+<li>&#x8BF7;&#x6C42;&#x65B9;&#x5F0F;:  <code>GET</code> </li>
+<li>&#x8BF7;&#x6C42;&#x793A;&#x4F8B;&#xFF1A;<code>localhost:8080/region?regionName=manager/manager</code></li>
+<li>&#x8BF7;&#x6C42;&#x53C2;&#x6570;&#x8BF4;&#x660E;&#xFF1A;</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;&#x540D;</th>
+<th>&#x7C7B;&#x578B;</th>
+<th>&#x5FC5;&#x586B;</th>
+<th>&#x8BF4;&#x660E;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>regionName</td>
+<td>String</td>
+<td>&#x662F;</td>
+<td>&#x533A;&#x5757;&#x540D;&#x79F0;</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>&#x8FD4;&#x56DE;&#x5F62;&#x5F0F;&#x5177;&#x4F53;&#x8BF4;&#x660E;&#xFF1A;<code>html</code></p>
+</li>
+<li><p>html&#x8FD4;&#x56DE;&#x6210;&#x529F;&#x793A;&#x4F8B;&#x5982;&#x4E0B;</p>
+</li>
+</ul>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;page-content-wrapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;page-content&quot;</span> &gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;page-title note note-info&quot;</span> &gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">strong</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-title&quot;</span>&gt;</span>
+                CCP&#x4E0E;CO&#x5173;&#x8054;&#x7BA1;&#x7406;
+            <span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span> &gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;portlet box green&quot;</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;portlet title&quot;</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;caption&quot;</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;portlet-title&quot;</span>&gt;</span>
+                            CCP&#x4E0E;CO&#x5173;&#x8054;&#x7BA1;&#x7406;
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-comment">&lt;!--caption--&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tools&quot;</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;collapse&quot;</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-comment">&lt;!--portlet title--&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;portlet-body&quot;</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">table</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;table table-bordered&quot;</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">thead</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>#<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>CO1<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>CO2<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>CO3<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>CO4<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>CO5<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">thead</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">tbody</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">th</span> <span class="hljs-attr">scope</span>=<span class="hljs-string">&quot;row&quot;</span>&gt;</span>CCP1.1<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">td</span> &gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">td</span> &gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">th</span> <span class="hljs-attr">scope</span>=<span class="hljs-string">&quot;row&quot;</span>&gt;</span>CCP1.2<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">tbody</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h3 id="2&#x3001;&#x767B;&#x5165;&#x63A5;&#x53E3;">2&#x3001;&#x767B;&#x5165;&#x63A5;&#x53E3;</h3>
+<ul>
+<li>&#x63A5;&#x53E3;&#x5730;&#x5740;: <code>/auth/login</code></li>
+<li>&#x652F;&#x6301;&#x683C;&#x5F0F;&#xFF1A;<code>html</code></li>
+<li>&#x8BF7;&#x6C42;&#x65B9;&#x5F0F;:  <code>GET</code> </li>
+<li>&#x8BF7;&#x6C42;&#x793A;&#x4F8B;&#xFF1A;<code>localhost:8080/auth/login</code></li>
+<li>&#x8BF7;&#x6C42;&#x53C2;&#x6570;&#x8BF4;&#x660E;&#xFF1A;<code>&#x65E0;</code></li>
+<li>&#x8FD4;&#x56DE;&#x5F62;&#x5F0F;&#x5177;&#x4F53;&#x8BF4;&#x660E;&#xFF1A;<code>&#x91CD;&#x5B9A;&#x5411;&#x5230;&#x4E3B;&#x9875;</code></li>
+</ul>
+<h3 id="3&#x3001;&#x767B;&#x51FA;&#x63A5;&#x53E3;">3&#x3001;&#x767B;&#x51FA;&#x63A5;&#x53E3;</h3>
+<ul>
+<li>&#x63A5;&#x53E3;&#x5730;&#x5740;: <code>/auth/logout</code></li>
+<li>&#x652F;&#x6301;&#x683C;&#x5F0F;&#xFF1A;<code>html</code></li>
+<li>&#x8BF7;&#x6C42;&#x65B9;&#x5F0F;:  <code>GET</code> </li>
+<li>&#x8BF7;&#x6C42;&#x793A;&#x4F8B;&#xFF1A;<code>localhost:8080/auth/logout</code></li>
+<li>&#x8BF7;&#x6C42;&#x53C2;&#x6570;&#x8BF4;&#x660E;&#xFF1A;<code>&#x65E0;</code></li>
+<li>&#x8FD4;&#x56DE;&#x5F62;&#x5F0F;&#x5177;&#x4F53;&#x8BF4;&#x660E;&#xFF1A;<code>&#x91CD;&#x5B9A;&#x5411;&#x5230;&#x4E3B;&#x9875;</code></li>
+</ul>
+<h3 id="4&#x3001;&#x6587;&#x4EF6;&#x4E0A;&#x4F20;">4&#x3001;&#x6587;&#x4EF6;&#x4E0A;&#x4F20;</h3>
+<ul>
+<li>&#x63A5;&#x53E3;&#x5730;&#x5740;: <code>/file</code></li>
+<li>&#x652F;&#x6301;&#x683C;&#x5F0F;&#xFF1A;<code>json</code></li>
+<li>&#x8BF7;&#x6C42;&#x65B9;&#x5F0F;:  <code>POST</code> </li>
+<li>&#x8BF7;&#x6C42;&#x793A;&#x4F8B;&#xFF1A;<code>localhost:8080/file</code></li>
+<li>&#x8BF7;&#x6C42;&#x53C2;&#x6570;&#x8BF4;&#x660E;&#xFF1A;</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;&#x540D;</th>
+<th>&#x7C7B;&#x578B;</th>
+<th>&#x5FC5;&#x586B;</th>
+<th>&#x8BF4;&#x660E;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>file</td>
+<td>file</td>
+<td>&#x662F;</td>
+<td>&#x6587;&#x4EF6;</td>
+</tr>
+<tr>
+<td>fileId</td>
+<td>int</td>
+<td>&#x662F;</td>
+<td>&#x6587;&#x4EF6;&#x7F16;&#x53F7;&#xFF08;&#x7CFB;&#x7EDF;&#x53EF;&#x4E0A;&#x4F20;&#x9879;&#x7684;&#x7F16;&#x53F7;&#xFF09;</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>&#x8FD4;&#x56DE;&#x5F62;&#x5F0F;&#x5177;&#x4F53;&#x8BF4;&#x660E;&#xFF1A;<code>json</code></li>
+<li>json&#x8FD4;&#x56DE;&#x6210;&#x529F;&#x793A;&#x4F8B;&#x5982;&#x4E0B;</li>
+</ul>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-number">200</span>,
+  <span class="hljs-string">&quot;statusName&quot;</span>: <span class="hljs-string">&quot;OK&quot;</span>,
+  <span class="hljs-string">&quot;data&quot;</span>: {
+    <span class="hljs-string">&quot;fileInfo&quot;</span>: {
+      <span class="hljs-string">&quot;fileInfoId&quot;</span>: <span class="hljs-number">4</span>,
+      <span class="hljs-string">&quot;path&quot;</span>: <span class="hljs-string">&quot;/data/aems/&#x5B9E;&#x6218; Jetty.pdf&quot;</span>,
+      <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-number">1257261</span>,
+      <span class="hljs-string">&quot;md5Summary&quot;</span>: <span class="hljs-string">&quot;f8dd935df7154cbf53b93e5bbbd1b83a&quot;</span>,
+      <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;pdf&quot;</span>,
+      <span class="hljs-string">&quot;createTime&quot;</span>: <span class="hljs-number">1497030427</span>,
+      <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-number">2</span>,
+      <span class="hljs-string">&quot;fileId&quot;</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-string">&quot;authorId&quot;</span>: <span class="hljs-number">2014220701009</span>,
+      <span class="hljs-string">&quot;recipientsList&quot;</span>: <span class="hljs-string">&quot;&quot;</span>
+    }
+  }
+}
+</code></pre>
+<h3 id="5&#x3001;&#x6587;&#x4EF6;&#x4E0B;&#x8F7D;">5&#x3001;&#x6587;&#x4EF6;&#x4E0B;&#x8F7D;</h3>
+<ul>
+<li>&#x63A5;&#x53E3;&#x5730;&#x5740;: <code>/file</code></li>
+<li>&#x652F;&#x6301;&#x683C;&#x5F0F;&#xFF1A;<code>json</code></li>
+<li>&#x8BF7;&#x6C42;&#x65B9;&#x5F0F;:  <code>GET</code> </li>
+<li>&#x8BF7;&#x6C42;&#x793A;&#x4F8B;&#xFF1A;<code>localhost:8080/auth/logout</code></li>
+<li>&#x8BF7;&#x6C42;&#x53C2;&#x6570;&#x8BF4;&#x660E;&#xFF1A;</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;&#x540D;</th>
+<th>&#x7C7B;&#x578B;</th>
+<th>&#x5FC5;&#x586B;</th>
+<th>&#x8BF4;&#x660E;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fileInfoId</td>
+<td>int</td>
+<td>&#x662F;</td>
+<td>&#x6587;&#x4EF6;&#x4FE1;&#x606F;&#x7F16;&#x53F7;</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>&#x8FD4;&#x56DE;&#x5F62;&#x5F0F;&#xFF1A;<code>application/octet-stream</code></li>
+</ul>
+<h3 id="6&#x3001;&#x589E;&#x52A0;&#x6587;&#x4EF6;&#x9879;">6&#x3001;&#x589E;&#x52A0;&#x6587;&#x4EF6;&#x9879;</h3>
+<ul>
+<li>&#x63A5;&#x53E3;&#x5730;&#x5740;: <code>/file/info</code></li>
+<li>&#x652F;&#x6301;&#x683C;&#x5F0F;&#xFF1A;<code>json</code></li>
+<li>&#x8BF7;&#x6C42;&#x65B9;&#x5F0F;:  <code>POST</code> </li>
+<li>&#x8BF7;&#x6C42;&#x793A;&#x4F8B;&#xFF1A;<code>localhost:8080/file/info?mime=pdf&amp;size=10000000</code></li>
+<li>&#x8BF7;&#x6C42;&#x53C2;&#x6570;&#x8BF4;&#x660E;&#xFF1A;</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;&#x540D;</th>
+<th>&#x7C7B;&#x578B;</th>
+<th>&#x5FC5;&#x586B;</th>
+<th>&#x8BF4;&#x660E;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mime</td>
+<td>String</td>
+<td>&#x5426;</td>
+<td>&#x6587;&#x4EF6;&#x683C;&#x5F0F;&#x7C7B;&#x578B;</td>
+</tr>
+<tr>
+<td>deadline</td>
+<td>int</td>
+<td>&#x5426;</td>
+<td>&#x4E0A;&#x4F20;&#x622A;&#x6B62;&#x65E5;&#x671F;</td>
+</tr>
+<tr>
+<td>size</td>
+<td>long</td>
+<td>&#x5426;</td>
+<td>&#x53EF;&#x4E0A;&#x4F20;&#x7684;&#x6700;&#x5927;&#x6587;&#x4EF6;&#x5927;&#x5C0F;</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>&#x8FD4;&#x56DE;&#x5F62;&#x5F0F;&#x5177;&#x4F53;&#x8BF4;&#x660E;&#xFF1A;<code>json</code></li>
+<li>json&#x8FD4;&#x56DE;&#x6210;&#x529F;&#x793A;&#x4F8B;&#x5982;&#x4E0B;</li>
+</ul>
+<p>```json
+{
+  &quot;status&quot;: 200,
+  &quot;statusName&quot;: &quot;OK&quot;,
+  &quot;data&quot;: {
+    &quot;fileInfo&quot;: {
+      &quot;fileInfoId&quot;: 4,
+      &quot;path&quot;: &quot;/data/aems/&#x5B9E;&#x6218; Jetty.pdf&quot;,
+      &quot;size&quot;: 1257261,
+      &quot;md5Summary&quot;: &quot;f8dd935df7154cbf53b93e5bbbd1b83a&quot;,
+      &quot;type&quot;: &quot;pdf&quot;,
+      &quot;createTime&quot;: 1497030427,
+      &quot;status&quot;: 2,
+      &quot;fileId&quot;: 1,
+      &quot;authorId&quot;: 2014220701009,
+      &quot;recipientsList&quot;: &quot;&quot;
+    }
+  }
+}</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="FEDEBUG.html" class="navigation navigation-prev " aria-label="Previous page: 6. 前端调试方式">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="API/ErrorCode.html" class="navigation navigation-next " aria-label="Next page: 7.0 错误码">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"7. 交互接口","level":"1.7","depth":1,"next":{"title":"7.0 错误码","level":"1.7.1","depth":2,"path":"API/ErrorCode.md","ref":"API/ErrorCode.md","articles":[]},"previous":{"title":"6. 前端调试方式","level":"1.6","depth":1,"path":"FEDEBUG.md","ref":"FEDEBUG.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"INTERFACE.md","mtime":"2017-06-19T03:04:11.773Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-07-08T05:42:44.702Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
