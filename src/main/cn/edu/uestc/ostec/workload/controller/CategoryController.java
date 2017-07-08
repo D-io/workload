@@ -177,7 +177,7 @@ public class CategoryController extends ApplicationController
 	 * 解锁对应的工作量信息:修改对应状态为SUBMITTED条目为UNCOMMITTED
 	 * @return RestResponse
 	 */
-	@RequestMapping(value = "unlock", method = POST)
+	@RequestMapping(value = "unlock", method = PUT)
 	public RestResponse undoCategories() {
 
 		//获取状态为SUBMITTED的工作量条目
@@ -185,12 +185,12 @@ public class CategoryController extends ApplicationController
 
 		//修改相应的状态
 		for (Category category : categoryList) {
-			if (!categoryService.saveCategory(category.getCategoryId(), UNCOMMITTED)) {
+			if (!categoryService.saveCategory(UNCOMMITTED,category.getCategoryId())) {
 				return invalidOperationResponse("解锁失败");
 			}
 		}
 
-		return successResponse();
+		return successResponse("解锁成功");
 	}
 
 	/**
