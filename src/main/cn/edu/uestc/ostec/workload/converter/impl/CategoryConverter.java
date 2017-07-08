@@ -1,10 +1,12 @@
 package cn.edu.uestc.ostec.workload.converter.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 
 import cn.edu.uestc.ostec.workload.converter.Converter;
+import cn.edu.uestc.ostec.workload.dao.TeacherDao;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 
@@ -17,6 +19,9 @@ import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
  */
 @Component
 public class CategoryConverter implements Converter<Category,CategoryDto> {
+
+	@Autowired
+	private TeacherDao teacherDao;
 
 	@Override
 	public CategoryDto poToDto(Category po) {
@@ -37,6 +42,7 @@ public class CategoryConverter implements Converter<Category,CategoryDto> {
 		categoryDto.setApplyDeadline(DateHelper.getDateTime(po.getApplyDeadline()));
 		categoryDto.setReviewDeadline(DateHelper.getDateTime(po.getReviewDeadline()));
 		categoryDto.setReviewerId(po.getReviewerId());
+		categoryDto.setReviewerName(teacherDao.findNameById(categoryDto.getReviewerId()));
 
 		return categoryDto;
 	}

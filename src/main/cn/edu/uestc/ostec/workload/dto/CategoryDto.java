@@ -77,9 +77,22 @@ public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 	private Integer reviewerId;
 
 	/**
+	 * 审核人姓名
+	 */
+	private String reviewerName;
+
+	/**
 	 * 子节点
 	 */
 	private List<CategoryDto> children;
+
+	public String getReviewerName() {
+		return reviewerName;
+	}
+
+	public void setReviewerName(String reviewerName) {
+		this.reviewerName = reviewerName;
+	}
 
 	@Override
 	public Integer getParentId() {
