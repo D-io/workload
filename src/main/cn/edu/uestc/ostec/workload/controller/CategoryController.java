@@ -20,6 +20,7 @@ import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.service.AdminService;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
+import cn.edu.uestc.ostec.workload.service.TeacherService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGER_CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
@@ -38,6 +39,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RequestMapping(MANAGER_CATEGORY_PATH)
 public class CategoryController extends ApplicationController
 		implements MultiLevelObjectAdaptor<CategoryDto> {
+
+	@Autowired
+	private TeacherService teacherService;
 
 	@Autowired
 	private CategoryService categoryService;
@@ -266,6 +270,15 @@ public class CategoryController extends ApplicationController
 			}
 		}
 		data.put("categoryList", categoryList);
+		return successResponse(data);
+	}
+
+	@RequestMapping(value = "teachers",method = GET)
+	public RestResponse getTeacherList() {
+
+		Map<String,Object> data = getData();
+		data.put("teacherList",teacherService.findAll());
+
 		return successResponse(data);
 	}
 

@@ -20,6 +20,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping(ITEM_PATH)
 public class ItemController extends ApplicationController {
 
+	//TODO 重置工作量审核状态以及申请状态
+
 	@Autowired
 	public ItemService itemService;
 
