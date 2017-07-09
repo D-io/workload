@@ -8,7 +8,7 @@ public class User {
 	/**
 	 * 用户编号
 	 */
-	private long userId;
+	private Integer userId;
 
 	/**
 	 * 用户姓名
@@ -48,7 +48,7 @@ public class User {
 	public User() {
 	}
 
-	public User(long userId, String name, String email, String userType, String createBy,
+	public User(Integer userId, String name, String email, String userType, String createBy,
 			long createTime, long currentLogin, long lastLogin) {
 		this.userId = userId;
 		this.name = name;
@@ -60,11 +60,11 @@ public class User {
 		this.lastLogin = lastLogin;
 	}
 
-	public long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 

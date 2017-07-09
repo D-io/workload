@@ -1,6 +1,9 @@
 package cn.edu.uestc.ostec.workload.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import cn.edu.uestc.ostec.workload.pojo.Item;
 
@@ -38,4 +41,11 @@ public interface ItemDao extends BaseDao<Item> {
      */
     @Override
     Item select(Integer id);
+
+    /**
+     * 根据教师编号查找对应该教师的工作量条目
+     * @param teacherId 教师编号
+     * @return List<Item>
+     */
+    List<Item> selectItemsByStatus(@Param("status") Integer status,@Param("teacherId") Integer teacherId);
 }

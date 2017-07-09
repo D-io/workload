@@ -54,4 +54,11 @@
       proof = #{proof,jdbcType=LONGVARCHAR}
     where item_id = #{itemId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectItemsByStatus" resultMap="itemResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from item
+    where status == #{status,jdbcType=INTEGER} and owner_id = #{ownerId,jdbcType=INTEGER}
+  </select>
 </mapper>

@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.service;
 
+import java.util.List;
+
 import cn.edu.uestc.ostec.workload.pojo.Item;
 
 /**
@@ -32,9 +34,24 @@ public interface ItemService extends BaseService {
 	Item findItem(Integer itemId);
 
 	/**
+	 * 查找对应老师的全部工作量条目信息
+	 * @param status 工作量状态
+	 * @param teacherId 教师编号
+	 * @return List<Item>
+	 */
+	List<Item> findItemsByStatus(Integer status,Integer teacherId);
+
+	/**
 	 * 删除Item信息
 	 * @param itemId 工作量编号
 	 * @return Boolean
 	 */
 	Boolean removeItem(Integer itemId);
+
+	/**
+	 * 正常状态下的Item信息（审核通过和未审核的）
+	 * @param teacherId 教师编号
+	 * @return List<Item>
+	 */
+	List<Item> findNormalItems(Integer teacherId);
 }
