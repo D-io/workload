@@ -13,6 +13,11 @@ public class Item {
 	private Integer itemId;
 
 	/**
+	 * 工作量对应的项目名称
+	 */
+	private String itemName;
+
+	/**
 	 * 工作量类目编号，确定工作量所属类目
 	 */
 	private Integer categoryId;
@@ -68,6 +73,14 @@ public class Item {
 
 	public void setItemId(Integer itemId) {
 		this.itemId = itemId;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 
 	public Integer getCategoryId() {

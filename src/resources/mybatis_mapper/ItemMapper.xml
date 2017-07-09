@@ -3,6 +3,7 @@
 <mapper namespace="cn.edu.uestc.ostec.workload.dao.ItemDao" >
   <resultMap id="itemResultMap" type="cn.edu.uestc.ostec.workload.pojo.Item" >
     <id column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
     <result column="category_id" property="categoryId" jdbcType="INTEGER" />
     <result column="owner_id" property="ownerId" jdbcType="INTEGER" />
     <result column="json_parameter" property="jsonParameter" jdbcType="VARCHAR" />
