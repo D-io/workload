@@ -11,12 +11,16 @@ import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
+import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.service.SubjectService;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REVIEWER_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
@@ -40,8 +44,16 @@ public class ReviewerController extends ApplicationController {
 	@Autowired
 	private ItemConverter itemConverter;
 
+	@Autowired
+	private SubjectService subjectService;
+
+	@Autowired
+	private SubjectConverter subjectConverter;
+
 	/**
 	 * 审核人获取负责的类目下的工作量提交的信息
+	 *
+	 * @return RestResponse
 	 */
 	@RequestMapping(value = "unchecked", method = GET)
 	public RestResponse getUncheckedItems() {
@@ -75,7 +87,9 @@ public class ReviewerController extends ApplicationController {
 	/**
 	 * 审核人审核Item信息
 	 *
-	 * @param itemId item编号
+	 * @param itemId  item编号git
+	 * @param status  通过or拒绝
+	 * @param message 拒绝的原因
 	 * @return RestResponse
 	 */
 	@RequestMapping(value = "check", method = PUT)
@@ -83,7 +97,9 @@ public class ReviewerController extends ApplicationController {
 			@RequestParam("itemId")
 					Integer itemId,
 			@RequestParam("status")
-					Integer status) {
+					Integer status,
+			@RequestParam(required = false)
+					String message) {
 
 		//用户校验
 		User user = getUser();
@@ -97,7 +113,7 @@ public class ReviewerController extends ApplicationController {
 			return parameterNotSupportResponse("无效参数");
 		}
 
-		if(CHECKED != status || DENIED != status) {
+		if (CHECKED != status || DENIED != status) {
 			return parameterNotSupportResponse("无效参数");
 		}
 
@@ -110,12 +126,26 @@ public class ReviewerController extends ApplicationController {
 		//设置为对应的状态
 		item.setStatus(status);
 		boolean saveSuccess = itemService.saveItem(item);
-		if(!saveSuccess) {
+
+		//设置对应的Subject信息
+		Subject subject = new Subject();
+		subject.setMsgContent(message);
+		subject.setSendFromId(user.getUserId());
+		subject.setSendTime(DateHelper.getCurrentTimestamp());
+		subject.setItemId(itemId);
+		if (null == subject) {
+			return parameterNotSupportResponse("参数有误");
+		}
+
+		//保存Subject信息
+		boolean saveMessageSuccess = subjectService.addSubject(subject);
+		if (!saveMessageSuccess || !saveSuccess) {
 			return systemErrResponse("更新状态失败");
 		}
 
-		Map<String,Object> data = getData();
-		data.put("item",itemConverter.poToDto(item));
+		Map<String, Object> data = getData();
+		data.put("item", itemConverter.poToDto(item));
+		data.put("subject", subjectConverter.poToDto(subject));
 
 		return successResponse(data);
 	}

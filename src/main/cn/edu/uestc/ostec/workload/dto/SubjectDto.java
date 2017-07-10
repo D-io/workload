@@ -1,6 +1,9 @@
-package cn.edu.uestc.ostec.workload.pojo;
+package cn.edu.uestc.ostec.workload.dto;
 
-public class Subject {
+/**
+ * Version:v1.0 (description:  )
+ */
+public class SubjectDto {
 
 	/**
 	 * 交互信息所在表名
@@ -30,7 +33,15 @@ public class Subject {
 	/**
 	 * 发送时间
 	 */
-	private Integer sendTime;
+	private String sendTime;
+
+	public Integer getSubjectId() {
+		return subjectId;
+	}
+
+	public void setSubjectId(Integer subjectId) {
+		this.subjectId = subjectId;
+	}
 
 	public Integer getItemId() {
 		return itemId;
@@ -45,23 +56,7 @@ public class Subject {
 	}
 
 	public void setMsgContent(String msgContent) {
-		this.msgContent = msgContent == null ? null : msgContent.trim();
-	}
-
-	public Integer getSendTime() {
-		return sendTime;
-	}
-
-	public void setSendTime(Integer sendTime) {
-		this.sendTime = sendTime;
-	}
-
-	public Integer getSubjectId() {
-		return subjectId;
-	}
-
-	public void setSubjectId(Integer subjectId) {
-		this.subjectId = subjectId;
+		this.msgContent = msgContent;
 	}
 
 	public Integer getSendFromId() {
@@ -72,9 +67,11 @@ public class Subject {
 		this.sendFromId = sendFromId;
 	}
 
-	@Override
-	public String toString() {
-		return "Subject{" + "subjectId=" + subjectId + ", itemId=" + itemId + ", msgContent='"
-				+ msgContent + '\'' + ", sendFromId=" + sendFromId + ", sendTime=" + sendTime + '}';
+	public String getSendTime() {
+		return sendTime;
+	}
+
+	public void setSendTime(String sendTime) {
+		this.sendTime = sendTime;
 	}
 }
