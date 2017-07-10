@@ -62,4 +62,10 @@
     from item
     where status == #{status,jdbcType=INTEGER} and owner_id = #{ownerId,jdbcType=INTEGER}
   </select>
+
+  <update id="updateStatus">
+    update item
+    set status = #{status,jdbcType=INTEGER}
+    where item_id = #{itemId,jdbcType=INTEGER}
+  </update>
 </mapper>

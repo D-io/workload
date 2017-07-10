@@ -21,11 +21,6 @@ public interface PathMappingConstants {
 	String ITEM_PATH = "item";
 
 	/**
-	 * 工作量申报路径
-	 */
-	String TEACHER_ITEM_APPLY_PATH = "item-apply";
-
-	/**
 	 * 文件信息控制器映射路径
 	 */
 	String FILE_INFO_PATH = "file/info";

@@ -47,7 +47,7 @@ public interface OperatingStatusType {
 	Integer APPLY_SELF = 0;
 
 	/**
-	 * 工作量未审核状态
+	 * 工作量未审核状态,审核中
 	 */
 	Integer NON_CHECKED = 1;
 

@@ -42,7 +42,7 @@ public interface ItemService extends BaseService {
 	List<Item> findItemsByStatus(Integer status,Integer teacherId);
 
 	/**
-	 * 删除Item信息
+	 * 删除Item信息(置为Disable状态)
 	 * @param itemId 工作量编号
 	 * @return Boolean
 	 */
@@ -54,4 +54,11 @@ public interface ItemService extends BaseService {
 	 * @return List<Item>
 	 */
 	List<Item> findNormalItems(Integer teacherId);
+
+	/**
+	 * 彻底删除对应的item对象
+	 * @param itemId item编号
+	 * @return Boolean
+	 */
+	Boolean deleteItem(Integer itemId);
 }

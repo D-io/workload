@@ -45,12 +45,12 @@ public class Item {
 	/**
 	 * 申请描述
 	 */
-	private String applyDesc;
+	private String applyDesc = null;
 
 	/**
 	 * 工作描述
 	 */
-	private String jobDesc;
+	private String jobDesc = null;
 
 	/**
 	 * 状态
@@ -65,7 +65,7 @@ public class Item {
 	/**
 	 * 证明
 	 */
-	private String proof;
+	private String proof = null;
 
 	public Integer getItemId() {
 		return itemId;

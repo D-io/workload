@@ -86,14 +86,9 @@ public class CategoryController extends ApplicationController
 			return systemErrResponse("保存失败");
 		}
 
-		//设置dto对象的ID和status，用作数据展示
-		int categoryId = category.getCategoryId();
-		categoryDto.setCategoryId(categoryId);
-		categoryDto.setStatus(category.getStatus());
-
 		//展示保存的dto的完整信息
 		Map<String, Object> data = getData();
-		data.put("category", categoryDto);
+		data.put("category", categoryConverter.poToDto(category));
 
 		return successResponse(data);
 	}
@@ -251,7 +246,7 @@ public class CategoryController extends ApplicationController
 		}
 
 		Map<String, Object> data = getData();
-		data.put("oldCategory", categoryDto);
+		data.put("oldCategory", categoryConverter.poToDto(category));
 
 		return successResponse(data);
 	}
@@ -264,6 +259,10 @@ public class CategoryController extends ApplicationController
 
 		Map<String, Object> data = getData();
 		List<Category> categoryList = categoryService.getCategoriesByStatus(UNCOMMITTED);
+		if(null == categoryList) {
+			return invalidOperationResponse("无可提交的项目");
+		}
+
 		for (Category category : categoryList) {
 			if (!categoryService.saveCategory(SUBMITTED, category.getCategoryId())) {
 				return systemErrResponse("提交失败");

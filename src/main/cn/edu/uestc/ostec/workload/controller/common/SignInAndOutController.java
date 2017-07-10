@@ -32,7 +32,7 @@ public class SignInAndOutController extends ApplicationController {
 		User user = new User();
 		user.setName((String) attributes.get("name"));
 		user.setUserType((String) attributes.get("userType"));
-		user.setUserId(Long.valueOf((String) attributes.get("userId")));
+		user.setUserId(Integer.valueOf((String) attributes.get("userId")));
 		user.setEmail((String) attributes.get("email"));
 
 		// 向session中注入用户信息

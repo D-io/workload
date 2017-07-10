@@ -6,11 +6,6 @@ package cn.edu.uestc.ostec.workload.dto;
 public class ItemDto {
 
 	/**
-	 * 工作量信息所在表名
-	 */
-	public static final String TABLE_NAME = "item";
-
-	/**
 	 * 工作量编号
 	 */
 	private Integer itemId;
@@ -48,12 +43,12 @@ public class ItemDto {
 	/**
 	 * 申请描述
 	 */
-	private String applyDesc;
+	private String applyDesc = null;
 
 	/**
 	 * 工作描述
 	 */
-	private String jobDesc;
+	private String jobDesc = null;
 
 	/**
 	 * 状态
@@ -68,11 +63,30 @@ public class ItemDto {
 	/**
 	 * 证明
 	 */
-	private String proof;
+	private String proof = null;
 
+	/**
+	 * 教师姓名
+	 */
 	private String teacherName;
 
+	/**
+	 * 审核人姓名
+	 */
 	private String reviewerName;
+
+	/**
+	 * 组长姓名
+	 */
+	private String groupManagerName;
+
+	public String getGroupManagerName() {
+		return groupManagerName;
+	}
+
+	public void setGroupManagerName(String groupManagerName) {
+		this.groupManagerName = groupManagerName;
+	}
 
 	public Integer getItemId() {
 		return itemId;

@@ -1,6 +1,7 @@
 package cn.edu.uestc.ostec.workload.converter.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 
@@ -15,6 +16,7 @@ import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
 /**
  * Version:v1.0 (description:  )
  */
+@Component
 public class ItemConverter implements Converter<Item,ItemDto> {
 
 	@Autowired
@@ -49,6 +51,7 @@ public class ItemConverter implements Converter<Item,ItemDto> {
 		itemDto.setReviewerName(teacherDao.findNameById(reviewerId));
 
 		itemDto.setTeacherName(teacherDao.findNameById(itemDto.getOwnerId()));
+		itemDto.setGroupManagerName(teacherDao.findNameById(itemDto.getGroupManagerId()));
 
 		return itemDto;
 	}

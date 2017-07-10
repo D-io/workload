@@ -10,6 +10,7 @@ import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 
 /**
@@ -46,14 +47,21 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	@Override
 	public Boolean removeItem(Integer itemId) {
 
-		return itemDao.delete(itemId);
+		return itemDao.updateStatus(DELETED,itemId);
 	}
 
 	@Override
 	public List<Item> findNormalItems(Integer teacherId) {
+
 		List<Item> checkedItemList = findItemsByStatus(CHECKED,teacherId);
 		List<Item> nonCheckedItemList = findItemsByStatus(NON_CHECKED,teacherId);
 		checkedItemList.addAll(nonCheckedItemList);
 		return checkedItemList;
+	}
+
+	@Override
+	public Boolean deleteItem(Integer itemId) {
+
+		return itemDao.delete(itemId);
 	}
 }

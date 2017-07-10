@@ -48,4 +48,12 @@ public interface ItemDao extends BaseDao<Item> {
      * @return List<Item>
      */
     List<Item> selectItemsByStatus(@Param("status") Integer status,@Param("teacherId") Integer teacherId);
+
+    /**
+     * 修改itemId对应的Item对象的status
+     * @param status
+     * @param itemId
+     * @return
+     */
+    Boolean updateStatus(@Param("status") Integer status,@Param("itemId") Integer itemId);
 }
