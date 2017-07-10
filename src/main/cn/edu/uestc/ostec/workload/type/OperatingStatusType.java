@@ -9,8 +9,6 @@
 
 package cn.edu.uestc.ostec.workload.type;
 
-import org.apache.ibatis.ognl.ASTList;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +55,7 @@ public interface OperatingStatusType {
 	Integer NON_CHECKED_AGAIN = 2;
 
 	/**
-	 * 工作量通过状态
+	 * 工作量通过状态（申报通过）
 	 */
 	Integer CHECKED = 3;
 
@@ -70,6 +68,11 @@ public interface OperatingStatusType {
 	 * 工作量拒绝状态
 	 */
 	Integer DENIED = 5;
+
+	/**
+	 * 工作量复核通过
+	 */
+	Integer CHECKED_AGAIN = 6;
 
 	/**
 	 * 工作量类目是叶子节点

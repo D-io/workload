@@ -49,11 +49,11 @@ public interface ItemService extends BaseService {
 	Boolean removeItem(Integer itemId);
 
 	/**
-	 * 正常状态下的Item信息（审核通过和未审核的）
+	 * 正常状态下申请的Item信息（审核通过和未审核的）
 	 * @param teacherId 教师编号
 	 * @return List<Item>
 	 */
-	List<Item> findNormalItems(Integer teacherId);
+	List<Item> findNormalApplyItems(Integer teacherId);
 
 	/**
 	 * 彻底删除对应的item对象
@@ -61,4 +61,11 @@ public interface ItemService extends BaseService {
 	 * @return Boolean
 	 */
 	Boolean deleteItem(Integer itemId);
+
+	/**
+	 * 正常状态下导入的Item信息
+	 * @param teacherId 教师编号
+	 * @return List<Item>
+	 */
+	List<Item> findNormalImportItems(Integer teacherId);
 }

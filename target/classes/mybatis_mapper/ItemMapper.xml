@@ -3,6 +3,7 @@
 <mapper namespace="cn.edu.uestc.ostec.workload.dao.ItemDao" >
   <resultMap id="itemResultMap" type="cn.edu.uestc.ostec.workload.pojo.Item" >
     <id column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
     <result column="category_id" property="categoryId" jdbcType="INTEGER" />
     <result column="owner_id" property="ownerId" jdbcType="INTEGER" />
     <result column="json_parameter" property="jsonParameter" jdbcType="VARCHAR" />
@@ -16,7 +17,7 @@
   </resultMap>
 
   <sql id="Base_Column_List" >
-    item_id, category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc, 
+    item_id, item_name, category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc,
     job_desc, status, json_child_weight,proof
   </sql>
 
@@ -42,7 +43,8 @@
 
   <update id="update">
     update item
-    set category_id = #{categoryId,jdbcType=INTEGER},
+    set item_name = #{itemName,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER},
       owner_id = #{ownerId,jdbcType=INTEGER},
       json_parameter = #{jsonParameter,jdbcType=VARCHAR},
       workload = #{workload,jdbcType=INTEGER},
@@ -52,6 +54,19 @@
       status = #{status,jdbcType=INTEGER},
       json_child_weight = #{jsonChildWeight,jdbcType=VARCHAR},
       proof = #{proof,jdbcType=LONGVARCHAR}
+    where item_id = #{itemId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectItemsByStatus" resultMap="itemResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from item
+    where status = #{status,jdbcType=INTEGER} and owner_id = #{ownerId,jdbcType=INTEGER}
+  </select>
+
+  <update id="updateStatus">
+    update item
+    set status = #{status,jdbcType=INTEGER}
     where item_id = #{itemId,jdbcType=INTEGER}
   </update>
 </mapper>

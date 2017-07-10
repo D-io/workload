@@ -10,8 +10,10 @@ import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED_AGAIN;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED_AGAIN;
 
 /**
  * Version:v1.0 (description:  )
@@ -51,7 +53,7 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	}
 
 	@Override
-	public List<Item> findNormalItems(Integer teacherId) {
+	public List<Item> findNormalApplyItems(Integer teacherId) {
 
 		List<Item> checkedItemList = findItemsByStatus(CHECKED,teacherId);
 		List<Item> nonCheckedItemList = findItemsByStatus(NON_CHECKED,teacherId);
@@ -63,5 +65,15 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	public Boolean deleteItem(Integer itemId) {
 
 		return itemDao.delete(itemId);
+	}
+
+	@Override
+	public List<Item> findNormalImportItems(Integer teacherId) {
+
+		List<Item> checkedItemList = findItemsByStatus(CHECKED_AGAIN,teacherId);
+		List<Item> nonCheckedItemList = findItemsByStatus(NON_CHECKED_AGAIN,teacherId);
+		checkedItemList.addAll(nonCheckedItemList);
+
+		return checkedItemList;
 	}
 }

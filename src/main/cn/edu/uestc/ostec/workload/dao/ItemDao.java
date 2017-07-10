@@ -47,7 +47,7 @@ public interface ItemDao extends BaseDao<Item> {
      * @param teacherId 教师编号
      * @return List<Item>
      */
-    List<Item> selectItemsByStatus(@Param("status") Integer status,@Param("teacherId") Integer teacherId);
+    List<Item> selectItemsByStatus(@Param("status") Integer status,@Param("ownerId") Integer teacherId);
 
     /**
      * 修改itemId对应的Item对象的status

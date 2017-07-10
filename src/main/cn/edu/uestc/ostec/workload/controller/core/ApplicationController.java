@@ -33,7 +33,7 @@ public class ApplicationController extends ResultController
 		return servletContext.getContextPath();
 	}
 
-	public Long getUserId() {
+	public Integer getUserId() {
 		return getUser().getUserId();
 	}
 

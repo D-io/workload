@@ -17,7 +17,7 @@
   </resultMap>
 
   <sql id="Base_Column_List" >
-    item_id, category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc, 
+    item_id, item_name, category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc,
     job_desc, status, json_child_weight,proof
   </sql>
 
@@ -43,7 +43,8 @@
 
   <update id="update">
     update item
-    set category_id = #{categoryId,jdbcType=INTEGER},
+    set item_name = #{itemName,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER},
       owner_id = #{ownerId,jdbcType=INTEGER},
       json_parameter = #{jsonParameter,jdbcType=VARCHAR},
       workload = #{workload,jdbcType=INTEGER},
@@ -60,7 +61,7 @@
     select
     <include refid="Base_Column_List" />
     from item
-    where status == #{status,jdbcType=INTEGER} and owner_id = #{ownerId,jdbcType=INTEGER}
+    where status = #{status,jdbcType=INTEGER} and owner_id = #{ownerId,jdbcType=INTEGER}
   </select>
 
   <update id="updateStatus">

@@ -27,9 +27,9 @@ public interface StandardSessionAttributeContext extends ServletContextAdapter {
 	 *
 	 * @return 返回当前用户对象Id，不存在则返回null
 	 */
-	default Long getUserId() {
+	default Integer getUserId() {
 
-		return (Long) getSessionContext().getAttribute(SESSION_USER_IDENTIFIER);
+		return (Integer) getSessionContext().getAttribute(SESSION_USER_IDENTIFIER);
 	}
 
 }

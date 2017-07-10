@@ -127,7 +127,7 @@ public class CategoryController extends ApplicationController
 	public RestResponse getCategories(Integer status) {
 
 		//		//验证管理员身份
-		//		long userId = getUserId();
+		//		int userId = getUserId();
 		//		if(!adminService.findAllAdmins().contains(userId)){
 		//			return systemErrResponse("Illegal visit");
 		//		}
