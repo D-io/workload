@@ -93,4 +93,11 @@
     where import_required = #{importRequired,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByReviewer" resultMap="categoryResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM category
+    WHERE reviewer_id = #{reviewerId,jdbcType=INTEGER}
+  </select>
+
 </mapper>

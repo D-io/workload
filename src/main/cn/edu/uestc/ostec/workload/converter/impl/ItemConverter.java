@@ -10,6 +10,7 @@ import cn.edu.uestc.ostec.workload.dao.CategoryDao;
 import cn.edu.uestc.ostec.workload.dao.ItemDao;
 import cn.edu.uestc.ostec.workload.dao.TeacherDao;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
 
@@ -47,7 +48,9 @@ public class ItemConverter implements Converter<Item,ItemDto> {
 		itemDto.setStatus(po.getStatus());
 		itemDto.setWorkload(po.getWorkload());
 
-		int reviewerId = categoryDao.select(itemDto.getCategoryId()).getReviewerId();
+		Category category = categoryDao.select(itemDto.getCategoryId());
+		itemDto.setCategoryName(category.getName());
+		int reviewerId = category.getReviewerId();
 		itemDto.setReviewerName(teacherDao.findNameById(reviewerId));
 
 		itemDto.setTeacherName(teacherDao.findNameById(itemDto.getOwnerId()));

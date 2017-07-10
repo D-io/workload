@@ -80,6 +80,19 @@ public class ItemDto {
 	 */
 	private String groupManagerName;
 
+	/**
+	 * 对应的类目姓名
+	 */
+	private String categoryName;
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
 	public String getGroupManagerName() {
 		return groupManagerName;
 	}

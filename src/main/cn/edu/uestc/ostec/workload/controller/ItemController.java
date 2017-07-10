@@ -6,12 +6,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.crypto.Data;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
@@ -70,6 +74,7 @@ public class ItemController extends ApplicationController {
 			return invalidOperationResponse("非法操作");
 		}
 
+		//根据登陆的用户设置相应的item信息中owner属性
 		int teacherId = user.getUserId();
 		itemDto.setOwnerId(teacherId);
 
@@ -77,6 +82,7 @@ public class ItemController extends ApplicationController {
 		int importRequired = categoryService.getCategory(itemDto.getCategoryId())
 				.getImportRequired();
 
+		//判断是手动申报类还是系统导入类来决定proof的值
 		if (APPLY_SELF == importRequired) {
 			itemDto.setProof(null);
 		} else if (IMPORT_EXCEL == importRequired) {
@@ -187,7 +193,7 @@ public class ItemController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		//获取教师ID对应的两类状态的工作量对象
+		//获取教师ID对应的两类状态的工作量对象（申报类）
 		int teacherId = user.getUserId();
 		List<Item> abnormalItemList = itemService.findItemsByStatus(DENIED, teacherId);
 		List<Item> normalItemList = itemService.findNormalApplyItems(teacherId);
@@ -214,7 +220,7 @@ public class ItemController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		//获取教师ID对应的两类状态的工作量对象
+		//获取教师ID对应的两类状态的工作量对象（导入类）
 		int teacherId = user.getUserId();
 		List<Item> abnormalItemList = itemService.findItemsByStatus(DOUBTED, teacherId);
 		List<Item> normalItemList = itemService.findNormalImportItems(teacherId);
@@ -225,5 +231,39 @@ public class ItemController extends ApplicationController {
 
 		return successResponse(data);
 	}
+
+	/**
+	 * 审核人获取负责的类目下的工作量提交的信息
+	 */
+	@RequestMapping(value = "unchecked",method = GET)
+	public RestResponse getUncheckedItems() {
+
+		User user = getUser();
+		System.out.println(user);
+
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		//获取教师ID对应的两类状态的工作量对象（导入类）
+		int teacherId = user.getUserId();
+		List<Category> categoryList = categoryService.getCategoriesByReviewer(teacherId);
+		if(categoryList.isEmpty()){
+			return systemErrResponse("error");
+		}
+
+		List<Item>  itemList = new ArrayList<>();
+		for (Category category:categoryList) {
+			List<Item> items = itemService.findItemsByCategory(category.getCategoryId());
+			itemList.addAll(items);
+		}
+
+		Map<String,Object> data = getData();
+		data.put("itemList",itemConverter.poListToDtoList(itemList));
+
+		return successResponse(data);
+	}
+
+
 
 }

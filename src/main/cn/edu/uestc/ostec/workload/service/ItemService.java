@@ -68,4 +68,11 @@ public interface ItemService extends BaseService {
 	 * @return List<Item>
 	 */
 	List<Item> findNormalImportItems(Integer teacherId);
+
+	/**
+	 * 根据CategoryId查找提交了的Item信息
+	 * @param categoryId 类目编号
+	 * @return List<Item>
+	 */
+	List<Item> findItemsByCategory(Integer categoryId);
 }

@@ -56,4 +56,11 @@ public interface ItemDao extends BaseDao<Item> {
      * @return
      */
     Boolean updateStatus(@Param("status") Integer status,@Param("itemId") Integer itemId);
+
+    /**
+     * 根据CategoryId查找对应的item信息
+     * @param categoryId 类目编号
+     * @return List<Item>
+     */
+    List<Item> selectItemsByCategory(@Param("categoryId")Integer categoryId);
 }

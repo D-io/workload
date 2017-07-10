@@ -62,31 +62,44 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 
 	@Override
 	public Category getCategory(Integer categoryId) {
+
 		return objectResult(categoryDao.select(categoryId),EMPTY_CATEGORY);
 	}
 
 	@Override
 	public List<Category> getCategoryChildren(Integer status, Integer parentId) {
+
 		return listResult(categoryDao.selectChildren(status,parentId));
 	}
 
 	@Override
 	public List<Category> getCategoriesByStatus(Integer status) {
+
 		return listResult(categoryDao.selectByStatus(status));
 	}
 
 	@Override
 	public List<Category> getCategoriesByType(Integer importRequired) {
+
 		return listResult(categoryDao.selectByImportRequired(importRequired));
 	}
 
 	@Override
+	public List<Category> getCategoriesByReviewer(Integer reviewerId) {
+
+		return listResult(categoryDao.selectByReviewer(reviewerId));
+	}
+
+
+	@Override
 	public List<CategoryDto> getDtoObjects(Integer status,Integer parentId) {
+
 		return listResult(categoryConverter.poListToDtoList(categoryDao.selectChildren(status,parentId)));
 	}
 
 	@Override
 	public CategoryDto getDtoObject(Integer objectId) {
+
 		return categoryConverter.poToDto(categoryDao.select(objectId));
 	}
 

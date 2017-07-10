@@ -76,4 +76,10 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 
 		return checkedItemList;
 	}
+
+	@Override
+	public List<Item> findItemsByCategory(Integer categoryId) {
+
+		return itemDao.selectItemsByCategory(categoryId);
+	}
 }

@@ -72,10 +72,6 @@ public interface CategoryDao extends BaseDao<Category> {
 	 */
 	List<Category> selectByStatus(Integer status);
 
-	/**
-	 *
-	 * @return
-	 */
 	List<Category> selectAll();
 
 	/**
@@ -84,4 +80,11 @@ public interface CategoryDao extends BaseDao<Category> {
 	 * @return List<Category>
 	 */
 	 List<Category> selectByImportRequired(Integer importRequired);
+
+	/**
+	 * 根据审核人查询工作量条目
+	 * @param reviewerId 审核人编号
+	 * @return List<Category>
+	 */
+	List<Category> selectByReviewer(Integer reviewerId);
 }

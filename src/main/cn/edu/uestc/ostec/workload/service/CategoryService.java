@@ -68,4 +68,11 @@ public interface CategoryService extends MultiLevelService<CategoryDto> {
 	 * @return List<Category>
 	 */
 	List<Category> getCategoriesByType(Integer importRequired);
+
+	/**
+	 * 根据审核人编号查询对应的工作量条目
+	 * @param reviewerId 审核人编号
+	 * @return List<Category>
+	 */
+	List<Category> getCategoriesByReviewer(Integer reviewerId);
 }
