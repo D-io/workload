@@ -20,6 +20,8 @@ public interface PathMappingConstants {
 	 */
 	String ITEM_PATH = "item";
 
+	String REVIEWER_PATH = "reviewer";
+
 	/**
 	 * 文件信息控制器映射路径
 	 */

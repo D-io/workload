@@ -6,16 +6,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.crypto.Data;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
-import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
@@ -231,39 +227,5 @@ public class ItemController extends ApplicationController {
 
 		return successResponse(data);
 	}
-
-	/**
-	 * 审核人获取负责的类目下的工作量提交的信息
-	 */
-	@RequestMapping(value = "unchecked",method = GET)
-	public RestResponse getUncheckedItems() {
-
-		User user = getUser();
-		System.out.println(user);
-
-		if (null == user) {
-			return invalidOperationResponse("非法请求");
-		}
-
-		//获取教师ID对应的两类状态的工作量对象（导入类）
-		int teacherId = user.getUserId();
-		List<Category> categoryList = categoryService.getCategoriesByReviewer(teacherId);
-		if(categoryList.isEmpty()){
-			return systemErrResponse("error");
-		}
-
-		List<Item>  itemList = new ArrayList<>();
-		for (Category category:categoryList) {
-			List<Item> items = itemService.findItemsByCategory(category.getCategoryId());
-			itemList.addAll(items);
-		}
-
-		Map<String,Object> data = getData();
-		data.put("itemList",itemConverter.poListToDtoList(itemList));
-
-		return successResponse(data);
-	}
-
-
 
 }
