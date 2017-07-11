@@ -33,7 +33,6 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
  * Version:v1.0 (description:  )
@@ -61,7 +60,8 @@ public class ReviewerController extends ApplicationController {
 	 * 审核人获取负责的类目下的工作量提交的信息(自我申报类 and 系统导入类)
 	 * 自我申报类：对应查询未审核状态的工作量条目信息
 	 * 系统导入类: 1、对应查询未提交状态的工作量条目信息
-	 *			  2、对应查询存疑状态和存疑通过状态的工作量条目信息
+	 * 2、对应查询存疑状态和存疑通过状态的工作量条目信息
+	 *
 	 * @return RestResponse
 	 */
 	@RequestMapping(value = "items", method = GET)
@@ -101,9 +101,9 @@ public class ReviewerController extends ApplicationController {
 				importItemList.addAll(items);
 
 				// 根据工作量类目对应的ID查询该类下的工作量子条目信息 （状态为 存疑和存疑通过）
-				items = itemService.findItemsByCategory(categoryId,DOUBTED);
+				items = itemService.findItemsByCategory(categoryId, DOUBTED);
 				doubtItemList.addAll(items);
-				items = itemService.findItemsByCategory(categoryId,DOUBTED_CHECKED);
+				items = itemService.findItemsByCategory(categoryId, DOUBTED_CHECKED);
 				doubtItemList.addAll(items);
 
 			} else {
@@ -114,7 +114,7 @@ public class ReviewerController extends ApplicationController {
 		Map<String, Object> data = getData();
 		data.put("applyItemList", itemConverter.poListToDtoList(applyUncheckedItemList));
 		data.put("importItemList", itemConverter.poListToDtoList(importItemList));
-		data.put("doubtedItemList",itemConverter.poListToDtoList(doubtItemList));
+		data.put("doubtedItemList", itemConverter.poListToDtoList(doubtItemList));
 
 		return successResponse(data);
 	}
@@ -193,6 +193,25 @@ public class ReviewerController extends ApplicationController {
 	 */
 	public RestResponse modifyReviewTime(String date) {
 
+		return successResponse();
+	}
+
+	/**
+	 * 修改工作量
+	 * @param workload 工作量
+	 * @return RestResponse
+	 */
+	public RestResponse modifyWorkload(@RequestParam("itemId") Integer itemId,
+			@RequestParam("workload") Integer workload) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		//TODO 身份检验
+
+		Item item = itemService.findItem(itemId);
 		return successResponse();
 	}
 

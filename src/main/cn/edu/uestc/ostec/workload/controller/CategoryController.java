@@ -246,7 +246,7 @@ public class CategoryController extends ApplicationController
 		}
 
 		Map<String, Object> data = getData();
-		data.put("oldCategory", categoryConverter.poToDto(category));
+		data.put("category", categoryConverter.poToDto(category));
 
 		return successResponse(data);
 	}

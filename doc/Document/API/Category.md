@@ -98,6 +98,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                 "reviewDeadline": "2017年07月04日",
                 "applyDeadline": "2017年07月04日",
                 "reviewerId": 123,
+				"reviewerName": null,
                 "children": [
                     {
                         "categoryId": 3,
@@ -113,6 +114,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                         "reviewDeadline": "2017年07月04日",
                         "applyDeadline": "2017年07月04日",
                         "reviewerId": 432,
+						"reviewerName": null,
                         "children": [
                             {
                                 "categoryId": 4,
@@ -128,6 +130,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                 "reviewDeadline": "2017年07月04日",
                                 "applyDeadline": "2017年07月04日",
                                 "reviewerId": 123,
+								"reviewerName": null,
                                 "children": [
                                     {
                                         "categoryId": 11,
@@ -143,6 +146,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                         "reviewDeadline": "2017年12月21日",
                                         "applyDeadline": "2017年12月10日",
                                         "reviewerId": 4356,
+										"reviewerName": null,
                                         "children": [],
                                         "objectId": 11
                                     },
@@ -160,6 +164,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                         "reviewDeadline": "2017年12月21日",
                                         "applyDeadline": "2017年12月10日",
                                         "reviewerId": 345,
+										"reviewerName": null,
                                         "children": [],
                                         "objectId": 13
                                     }
@@ -180,6 +185,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                 "reviewDeadline": "2017年07月04日",
                                 "applyDeadline": "2017年07月04日",
                                 "reviewerId": 234,
+								"reviewerName": null,
                                 "children": [],
                                 "objectId": 5
                             },
@@ -197,6 +203,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                 "reviewDeadline": "2017年12月21日",
                                 "applyDeadline": "2017年12月10日",
                                 "reviewerId": 123,
+								"reviewerName": null,
                                 "children": [],
                                 "objectId": 9
                             }
@@ -253,6 +260,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                 "reviewDeadline": "2017年07月04日",
                 "applyDeadline": "2017年07月04日",
                 "reviewerId": 123,
+				"reviewerName": null,
                 "children": [
                     {
                         "categoryId": 3,
@@ -268,6 +276,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                         "reviewDeadline": "2017年07月04日",
                         "applyDeadline": "2017年07月04日",
                         "reviewerId": 432,
+						"reviewerName": null,
                         "children": [
                             {
                                 "categoryId": 4,
@@ -283,6 +292,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                 "reviewDeadline": "2017年07月04日",
                                 "applyDeadline": "2017年07月04日",
                                 "reviewerId": 123,
+								"reviewerName": null,
                                 "children": [
                                     {
                                         "categoryId": 13,
@@ -298,6 +308,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                         "reviewDeadline": "2017年12月21日",
                                         "applyDeadline": "2017年12月10日",
                                         "reviewerId": 345,
+										"reviewerName": null,
                                         "children": [],
                                         "objectId": 13
                                     }
@@ -318,6 +329,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                 "reviewDeadline": "2017年07月04日",
                                 "applyDeadline": "2017年07月04日",
                                 "reviewerId": 234,
+								"reviewerName": null,
                                 "children": [],
                                 "objectId": 5
                             },
@@ -335,6 +347,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                 "reviewDeadline": "2017年12月21日",
                                 "applyDeadline": "2017年12月10日",
                                 "reviewerId": 123,
+								"reviewerName": null,
                                 "children": [],
                                 "objectId": 9
                             }
@@ -406,6 +419,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
             "reviewDeadline": "2017年12月21日",
             "applyDeadline": "2017年12月10日",
             "reviewerId": 1,
+			"reviewerName": null,
             "children": null,
             "objectId": 14
         }
@@ -462,6 +476,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
             "reviewDeadline": "2017年12月21日",
             "applyDeadline": "2017年12月10日",
             "reviewerId": 4356,
+			"reviewerName": null,
             "children": null,
             "objectId": 11
         }
@@ -483,7 +498,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
 ### 解锁对应的工作量信息
 - 接口地址：`/category/unlock`
 - 支持格式：`json`
-- 请求方式：`PUT`
+- 请求方式：`POST`
 - 请求示例：`localhost:8080/category/unlock`
 
 - 返回参数具体说明：
@@ -507,9 +522,9 @@ data | String | 结果集
 
 ### 修改对应的工作量信息
 
-- 接口地址：`/category`
+- 接口地址：`/category/modify`
 - 支持格式：`json`
-- 请求方式：`PUT`
+- 请求方式：`POST`
 - 请求示例：`localhost:8080/category?categoryId=14&name=修改过的教学&desc_就是简单的教学&parentId=2&isLeaf=N&importRequired=0&jsonParameters={“人_数”:“A”}&formula=_A%2BB%2BC&version=2017-2018-1&reviewDeadline=2017年12月21日&applyDeadline=2017年12月10日&reviewerId=1`
 
 - 返回参数具体说明：
@@ -526,7 +541,7 @@ data | String | 结果集
     "status": 200,
     "statusName": "OK",
     "data": {
-        "oldCategory": {
+        "category": {
             "categoryId": 14,
             "name": "修改过的教学",
             "desc": null,
@@ -540,6 +555,7 @@ data | String | 结果集
             "reviewDeadline": "2017年12月21日",
             "applyDeadline": "2017年12月10日",
             "reviewerId": 1,
+			"reviewerName": null,
             "children": null,
             "objectId": 14
         }
@@ -548,9 +564,9 @@ data | String | 结果集
 ```
 
 ### 提交工作量类目信息
-- 接口地址：`/category、public`
+- 接口地址：`/category/public`
 - 支持格式：`json`
-- 请求方式：`PUT`
+- 请求方式：`POST`
 - 请求示例：`localhost:8080/category/public`
 
 - 返回参数具体说明：
@@ -581,7 +597,8 @@ data | String | 结果集
                 "status": 0,
                 "reviewDeadline": 1499166527,
                 "applyDeadline": 1499166527,
-                "reviewerId": 123
+                "reviewerId": 123,
+				"reviewerName": null,
             },
             {
                 "categoryId": 3,
@@ -596,7 +613,8 @@ data | String | 结果集
                 "status": 0,
                 "reviewDeadline": 1499151023,
                 "applyDeadline": 1499151023,
-                "reviewerId": 432
+                "reviewerId": 432,
+				"reviewerName": null
             },
             {
                 "categoryId": 4,
@@ -611,7 +629,8 @@ data | String | 结果集
                 "status": 0,
                 "reviewDeadline": 1499166558,
                 "applyDeadline": 1499166558,
-                "reviewerId": 123
+                "reviewerId": 123,
+				"reviewerName": null
             },
             {
                 "categoryId": 5,
@@ -626,7 +645,8 @@ data | String | 结果集
                 "status": 0,
                 "reviewDeadline": 1499171096,
                 "applyDeadline": 1499171096,
-                "reviewerId": 234
+                "reviewerId": 234,
+				"reviewerName": null
             },
             {
                 "categoryId": 9,
@@ -641,7 +661,8 @@ data | String | 结果集
                 "status": 0,
                 "reviewDeadline": 1513785600,
                 "applyDeadline": 1512835200,
-                "reviewerId": 123
+                "reviewerId": 123,
+				"reviewerName": null
             },
             {
                 "categoryId": 13,
@@ -656,7 +677,8 @@ data | String | 结果集
                 "status": 0,
                 "reviewDeadline": 1513785600,
                 "applyDeadline": 1512835200,
-                "reviewerId": 345
+                "reviewerId": 345,
+				"reviewerName": null
             },
             {
                 "categoryId": 14,
@@ -671,7 +693,8 @@ data | String | 结果集
                 "status": 0,
                 "reviewDeadline": 1513785600,
                 "applyDeadline": 1512835200,
-                "reviewerId": 1
+                "reviewerId": 1,
+				"reviewerName": null
             },
             {
                 "categoryId": 15,
@@ -686,7 +709,8 @@ data | String | 结果集
                 "status": 0,
                 "reviewDeadline": 1513785600,
                 "applyDeadline": 1512835200,
-                "reviewerId": 1
+                "reviewerId": 1,
+				"reviewerName": null
             }
         ]
     }
