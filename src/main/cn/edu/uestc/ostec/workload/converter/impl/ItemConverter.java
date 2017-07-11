@@ -50,6 +50,8 @@ public class ItemConverter implements Converter<Item,ItemDto> {
 
 		Category category = categoryDao.select(itemDto.getCategoryId());
 		itemDto.setCategoryName(category.getName());
+		itemDto.setImportRequired(category.getImportRequired());
+
 		int reviewerId = category.getReviewerId();
 		itemDto.setReviewerName(teacherDao.findNameById(reviewerId));
 

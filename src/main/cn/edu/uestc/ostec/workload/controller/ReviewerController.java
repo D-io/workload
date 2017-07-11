@@ -150,4 +150,18 @@ public class ReviewerController extends ApplicationController {
 		return successResponse(data);
 	}
 
+	/**
+	 * 提前审核时间
+	 * @param date 审核时间
+	 * @return RestResponse
+	 */
+	public RestResponse modifyReviewTime(String date){
+
+
+
+		return successResponse();
+	}
+
+
+
 }

@@ -20,7 +20,7 @@ public interface OperatingStatusType {
 	Integer ROOT = 0;
 
 	/**
-	 * 工作量类目未提交状态（解锁）
+	 * 工作量类目未提交状态（解锁），工作量条目未提交状态
 	 */
 	Integer UNCOMMITTED = 0;
 
@@ -45,34 +45,29 @@ public interface OperatingStatusType {
 	Integer APPLY_SELF = 0;
 
 	/**
-	 * 工作量未审核状态,审核中
+	 * 工作量未审核状态,审核中,工作量条目已提交状态
 	 */
 	Integer NON_CHECKED = 1;
 
 	/**
-	 * 工作量未复核状态
-	 */
-	Integer NON_CHECKED_AGAIN = 2;
-
-	/**
 	 * 工作量通过状态（申报通过）
 	 */
-	Integer CHECKED = 3;
+	Integer CHECKED = 2;
 
 	/**
 	 * 工作量存疑状态
 	 */
-	Integer DOUBTED = 4;
+	Integer DOUBTED = 3;
+
+	/**
+	 * 工作量条目存疑通过
+	 */
+	Integer DOUBTED_CHECKED = 4;
 
 	/**
 	 * 工作量拒绝状态
 	 */
 	Integer DENIED = 5;
-
-	/**
-	 * 工作量复核通过
-	 */
-	Integer CHECKED_AGAIN = 6;
 
 	/**
 	 * 工作量类目是叶子节点
@@ -85,9 +80,30 @@ public interface OperatingStatusType {
 	String NOT_LEAF = "N";
 
 	/**
-	 * 状态值列表
+	 * 获取正常状态下的条目信息
+	 *
+	 * @return List<Integer> statusList
 	 */
-	List<Integer> statusList = new ArrayList<>();
+	default List<Integer> getNormalStatusList() {
 
+		List<Integer> statusList = new ArrayList<>();
+		statusList.add(CHECKED);
+		statusList.add(NON_CHECKED);
+
+		return statusList;
+	}
+
+	/**
+	 * 获取存疑状态下的条目信息
+	 *
+	 * @return List<Integer> statusList
+	 */
+	default List<Integer> getAbnormalStatusList() {
+		List<Integer> statusList = new ArrayList<>();
+		statusList.add(DOUBTED);
+		statusList.add(DOUBTED_CHECKED);
+
+		return statusList;
+	}
 
 }

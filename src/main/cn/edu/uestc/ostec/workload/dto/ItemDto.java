@@ -85,6 +85,19 @@ public class ItemDto {
 	 */
 	private String categoryName;
 
+	/**
+	 * 申报方式or导入方式
+	 */
+	private Integer importRequired;
+
+	public Integer getImportRequired() {
+		return importRequired;
+	}
+
+	public void setImportRequired(Integer importRequired) {
+		this.importRequired = importRequired;
+	}
+
 	public String getCategoryName() {
 		return categoryName;
 	}

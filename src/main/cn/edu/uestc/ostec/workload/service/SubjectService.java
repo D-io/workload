@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.service;
 
+import java.util.List;
+
 import cn.edu.uestc.ostec.workload.pojo.Subject;
 
 /**
@@ -10,6 +12,13 @@ public interface SubjectService extends BaseService {
 	String NAME = "subjectService";
 
 	Subject EMPTY_SUBJECT = new Subject();
+
+	/**
+	 * 根据Item编号查询对应的交互信息列别
+	 * @param itemId item编号
+	 * @return List<Subject>
+	 */
+	List<Subject> getSubjectsByItem(Integer itemId);
 
 	/**
 	 * 查询单个Subject信息

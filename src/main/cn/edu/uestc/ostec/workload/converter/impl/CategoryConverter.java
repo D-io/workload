@@ -15,7 +15,7 @@ import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
 
 
 /**
- * Version:v1.0 (description:  )
+ * Version:v1.0 (description: 工作量类目PO与DTO转换器  )
  */
 @Component
 public class CategoryConverter implements Converter<Category,CategoryDto> {

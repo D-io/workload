@@ -6,26 +6,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
+import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
+import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.ITEM_PATH;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
+
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -36,7 +36,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
  */
 @RestController
 @RequestMapping(ITEM_PATH)
-public class ItemController extends ApplicationController {
+public class ItemController extends ApplicationController implements OperatingStatusType{
 
 	//TODO 重置工作量审核状态以及申请状态
 
@@ -51,6 +51,12 @@ public class ItemController extends ApplicationController {
 
 	@Autowired
 	private ItemConverter itemConverter;
+
+	@Autowired
+	private SubjectService subjectService;
+
+	@Autowired
+	private SubjectConverter subjectConverter;
 
 	/**
 	 * 添加Item信息
@@ -151,14 +157,14 @@ public class ItemController extends ApplicationController {
 					Integer itemId) {
 
 		Item item = itemService.findItem(itemId);
-		if(null == item){
+		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
 
 		boolean removeSuccess = false;
-		if(UNCOMMITTED == item.getStatus()) {
+		if (UNCOMMITTED == item.getStatus()) {
 			removeSuccess = itemService.removeItem(itemId);
-		}else{
+		} else {
 			return invalidOperationResponse("无法删除");
 		}
 		if (!removeSuccess) {
@@ -175,7 +181,9 @@ public class ItemController extends ApplicationController {
 	}
 
 	/**
-	 * 获取教师各自申报的工作量信息
+	 * 获取教师各自申报的工作量信息(Apply_Self)
+	 * abnormalItemList：审核未通过的工作量条目（DENIED）
+	 * normalItemList：审核通过和待审核的工作量条目（CHECKED,NON_CHECKED）
 	 *
 	 * @return RestResponse
 	 */
@@ -191,18 +199,28 @@ public class ItemController extends ApplicationController {
 
 		//获取教师ID对应的两类状态的工作量对象（申报类）
 		int teacherId = user.getUserId();
-		List<Item> abnormalItemList = itemService.findItemsByStatus(DENIED, teacherId);
-		List<Item> normalItemList = itemService.findNormalApplyItems(teacherId);
+		List<ItemDto> abnormalItemList = findItemsByStatus(APPLY_SELF, DENIED, teacherId);
+		List<ItemDto> normalItemList = findItems(APPLY_SELF,getNormalStatusList(),teacherId);
+
+		//获取否定理由信息
+		List<Subject> subjectList = new ArrayList<>();
+		for (ItemDto item : abnormalItemList) {
+			Subject subject = subjectService.getSubjectsByItem(item.getItemId()).get(ZERO_INT);
+			subjectList.add(subject);
+		}
 
 		Map<String, Object> data = getData();
-		data.put("abnormalItemList", itemConverter.poListToDtoList(abnormalItemList));
-		data.put("normalItemList", itemConverter.poListToDtoList(normalItemList));
+		data.put("abnormalItemList", abnormalItemList);
+		data.put("abnormalItemList", normalItemList);
+		data.put("subjectList", subjectConverter.poListToDtoList(subjectList));
 
 		return successResponse(data);
 	}
 
 	/**
-	 * 获取教师导入的工作量信息
+	 * 获取审核人导入的工作量信息(Excel_Import)
+	 * abnormalItemList：存疑的工作量条目（存疑未解决，存疑已解决）DOUBTED,DOUBTED_CHECKED
+	 * normalItemList：正常的工作量条目（尚未复核，未审核）
 	 *
 	 * @return RestResponse
 	 */
@@ -218,14 +236,64 @@ public class ItemController extends ApplicationController {
 
 		//获取教师ID对应的两类状态的工作量对象（导入类）
 		int teacherId = user.getUserId();
-		List<Item> abnormalItemList = itemService.findItemsByStatus(DOUBTED, teacherId);
-		List<Item> normalItemList = itemService.findNormalImportItems(teacherId);
+		List<ItemDto> abnormalItemList = findItems(IMPORT_EXCEL,getAbnormalStatusList(),teacherId);
+		List<ItemDto> normalItemList = findItems(IMPORT_EXCEL,getNormalStatusList(),teacherId);
+
+		List<Subject> subjects = new ArrayList<>();
+		for(ItemDto itemDto:normalItemList) {
+			if(DOUBTED_CHECKED == itemDto.getStatus()) {
+				Subject subject = subjectService.getSubjectsByItem(itemDto.getItemId()).get(ZERO_INT);
+				subjects.add(subject);
+			}
+		}
 
 		Map<String, Object> data = getData();
 		data.put("abnormalItemList", abnormalItemList);
 		data.put("normalItemList", normalItemList);
+		data.put("subjectList",subjectConverter.poListToDtoList(subjects));
 
 		return successResponse(data);
+	}
+
+	/**
+	 * 查找对应的老师的对应状态的对应导入方式的工作量条目信息
+	 *
+	 * @param importRequired 导入方式、申报方式
+	 * @param status         状态
+	 * @param teacherId      教师编号
+	 * @return List<Item>
+	 */
+	public List<ItemDto> findItemsByStatus(Integer importRequired, Integer status,
+			Integer teacherId) {
+
+		List<ItemDto> itemDtoList = itemConverter
+				.poListToDtoList(itemService.findItemsByStatus(status, teacherId));
+		List<ItemDto> itemDtoGroup = new ArrayList<>();
+
+		for (ItemDto itemDto : itemDtoList) {
+			if (importRequired == itemDto.getImportRequired()) {
+				itemDtoGroup.add(itemDto);
+			}
+		}
+		return itemDtoGroup;
+	}
+
+	/**
+	 * 查找对应的老师的对应状态列表的对应导入方式的工作量条目信息
+	 * @param importRequired 导入方式
+	 * @param statusList 状态表
+	 * @param teacherId 教师编号
+	 * @return List<ItemDto>
+	 */
+	public List<ItemDto> findItems(Integer importRequired, List<Integer> statusList,
+			Integer teacherId) {
+
+		List<ItemDto> itemDtoList = new ArrayList<>();
+		for (Integer status : statusList) {
+			itemDtoList = findItemsByStatus(importRequired, status, teacherId);
+		}
+
+		return itemDtoList;
 	}
 
 }
