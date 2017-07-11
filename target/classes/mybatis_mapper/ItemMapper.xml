@@ -69,4 +69,11 @@
     set status = #{status,jdbcType=INTEGER}
     where item_id = #{itemId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectItemsByCategory" resultMap="itemResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM item
+    WHERE category_id = #{categoryId} AND status = #{status}
+  </select>
 </mapper>

@@ -54,6 +54,7 @@ public class CategoryConverter implements Converter<Category,CategoryDto> {
 		}
 
 		Category category = new Category();
+		category.setCategoryId(dto.getCategoryId());
 		category.setName(dto.getName());
 		category.setJsonParameters(dto.getJsonParameters());
 		category.setDesc(dto.getDesc());

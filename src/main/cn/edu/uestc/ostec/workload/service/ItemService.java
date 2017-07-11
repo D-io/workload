@@ -60,5 +60,5 @@ public interface ItemService extends BaseService {
 	 * @param categoryId 类目编号
 	 * @return List<Item>
 	 */
-	List<Item> findItemsByCategory(Integer categoryId);
+	List<Item> findItemsByCategory(Integer categoryId,Integer status);
 }

@@ -23,8 +23,14 @@ import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REVIEWER_PATH;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECKED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -51,12 +57,14 @@ public class ReviewerController extends ApplicationController {
 	private SubjectConverter subjectConverter;
 
 	/**
-	 * 审核人获取负责的类目下的工作量提交的信息
-	 *
+	 * 审核人获取负责的类目下的工作量提交的信息(自我申报类 and 系统导入类)
+	 * 自我申报类：对应查询未审核状态的工作量条目信息
+	 * 系统导入类: 1、对应查询未提交状态的工作量条目信息
+	 *			  2、对应查询存疑状态和存疑通过状态的工作量条目信息
 	 * @return RestResponse
 	 */
-	@RequestMapping(value = "unchecked", method = GET)
-	public RestResponse getUncheckedItems() {
+	@RequestMapping(value = "items", method = GET)
+	public RestResponse getReviewItems() {
 
 		User user = getUser();
 		System.out.println(user);
@@ -65,21 +73,47 @@ public class ReviewerController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		//获取教师ID对应的两类状态的工作量对象（导入类）
+		//获取教师ID对应工作量类目下的条目（申报类和导入类）
 		int teacherId = user.getUserId();
 		List<Category> categoryList = categoryService.getCategoriesByReviewer(teacherId);
 		if (categoryList.isEmpty()) {
 			return systemErrResponse("error");
 		}
 
-		List<Item> itemList = new ArrayList<>();
+		List<Item> items;
+		List<Item> applyUncheckedItemList = new ArrayList<>();
+		List<Item> importItemList = new ArrayList<>();
+		List<Item> doubtItemList = new ArrayList<>();
+
 		for (Category category : categoryList) {
-			List<Item> items = itemService.findItemsByCategory(category.getCategoryId());
-			itemList.addAll(items);
+			int categoryId = category.getCategoryId();
+			if (APPLY_SELF == category.getImportRequired()) {
+
+				// 根据工作量类目对应的ID查询该类下的工作量条目信息（状态为 未审核）
+				items = itemService.findItemsByCategory(categoryId, NON_CHECKED);
+				applyUncheckedItemList.addAll(items);
+
+			} else if (IMPORT_EXCEL == category.getImportRequired()) {
+
+				// 根据工作量类目对应的ID查询该类下的工作量条目信息 （状态为 未提交）
+				items = itemService.findItemsByCategory(categoryId, UNCOMMITTED);
+				importItemList.addAll(items);
+
+				// 根据工作量类目对应的ID查询该类下的工作量子条目信息 （状态为 存疑和存疑通过）
+				items = itemService.findItemsByCategory(categoryId,DOUBTED);
+				doubtItemList.addAll(items);
+				items = itemService.findItemsByCategory(categoryId,DOUBTED_CHECKED);
+				doubtItemList.addAll(items);
+
+			} else {
+				return systemErrResponse("error");
+			}
 		}
 
 		Map<String, Object> data = getData();
-		data.put("itemList", itemConverter.poListToDtoList(itemList));
+		data.put("applyItemList", itemConverter.poListToDtoList(applyUncheckedItemList));
+		data.put("importItemList", itemConverter.poListToDtoList(importItemList));
+		data.put("doubtedItemList",itemConverter.poListToDtoList(doubtItemList));
 
 		return successResponse(data);
 	}
@@ -87,7 +121,7 @@ public class ReviewerController extends ApplicationController {
 	/**
 	 * 审核人审核Item信息
 	 *
-	 * @param itemId  item编号git
+	 * @param itemId  item编号
 	 * @param status  通过or拒绝
 	 * @param message 拒绝的原因
 	 * @return RestResponse
@@ -152,16 +186,13 @@ public class ReviewerController extends ApplicationController {
 
 	/**
 	 * 提前审核时间
+	 *
 	 * @param date 审核时间
 	 * @return RestResponse
 	 */
-	public RestResponse modifyReviewTime(String date){
-
-
+	public RestResponse modifyReviewTime(String date) {
 
 		return successResponse();
 	}
-
-
 
 }

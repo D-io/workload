@@ -17,7 +17,7 @@
   </insert>
 
   <select id="selectByItem" resultMap="subjectResultMap">
-    select * from subject where item_id = #{itemId,jdbcType=INTEGER}
+    select * from subject where item_id = #{itemId,jdbcType=INTEGER} order by send_time desc
   </select>
 
   <select id="select" resultMap="subjectResultMap">

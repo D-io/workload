@@ -91,6 +91,7 @@
     <include refid="Base_Column_List" />
     from category
     where import_required = #{importRequired,jdbcType=INTEGER}
+          and status = 1
   </select>
 
   <select id="selectByReviewer" resultMap="categoryResultMap">
@@ -98,6 +99,7 @@
     <include refid="Base_Column_List" />
     FROM category
     WHERE reviewer_id = #{reviewerId,jdbcType=INTEGER}
+          and status = 1
   </select>
 
 </mapper>
