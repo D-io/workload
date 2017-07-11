@@ -195,7 +195,7 @@ public class CategoryController extends ApplicationController
 	 * 解锁对应的工作量信息:修改对应状态为SUBMITTED条目为UNCOMMITTED
 	 * @return RestResponse
 	 */
-	@RequestMapping(value = "unlock", method = PUT)
+	@RequestMapping(value = "unlock", method = POST)
 	public RestResponse undoCategories() {
 
 		//获取状态为SUBMITTED的工作量条目
@@ -217,7 +217,7 @@ public class CategoryController extends ApplicationController
 	 * @return RestResponse
 	 * @throws Exception
 	 */
-	@RequestMapping(method = PUT)
+	@RequestMapping(value = "modify", method = POST)
 	public RestResponse modifyCategories(CategoryDto categoryDto) throws Exception {
 
 		//		//验证管理员身份
@@ -254,7 +254,7 @@ public class CategoryController extends ApplicationController
 	/**
 	 * 提交：修改对应的UNCOMMITTED状态为SUBMITTED
 	 */
-	@RequestMapping(value = "public", method = PUT)
+	@RequestMapping(value = "public", method = POST)
 	public RestResponse submitCategory() {
 
 		Map<String, Object> data = getData();

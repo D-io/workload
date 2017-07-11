@@ -112,7 +112,7 @@ public class ItemController extends ApplicationController implements OperatingSt
 	 *
 	 * @return RestResponse
 	 */
-	@RequestMapping(value = "public", method = PUT)
+	@RequestMapping(value = "public", method = POST)
 	public RestResponse submitItem() {
 
 		//TODO 截止时间的限制

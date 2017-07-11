@@ -32,6 +32,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
@@ -126,7 +127,7 @@ public class ReviewerController extends ApplicationController {
 	 * @param message 拒绝的原因
 	 * @return RestResponse
 	 */
-	@RequestMapping(value = "check", method = PUT)
+	@RequestMapping(value = "check", method = POST)
 	public RestResponse checkItems(
 			@RequestParam("itemId")
 					Integer itemId,
