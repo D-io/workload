@@ -60,13 +60,11 @@ public class CategoryController extends ApplicationController
 	@RequestMapping(method = POST)
 	public RestResponse addCategories(CategoryDto categoryDto) {
 
-		//TODO 用户信息未获取到 待解决
-
-		//		//验证管理员身份
-		//		long userId = getUserId();
-		//		if(!adminService.findAllAdmins().contains(userId)){
-		//			return systemErrResponse("Illegal visit");
-		//		}
+		//验证管理员身份
+		int userId = getUserId();
+		if (!adminService.findAllAdmins().contains(userId)) {
+			return systemErrResponse("非法访问");
+		}
 
 		//参数检验
 		if (null == categoryDto || ZERO_INT == categoryDto.getReviewerId()) {
@@ -130,16 +128,17 @@ public class CategoryController extends ApplicationController
 	@RequestMapping(value = "all", method = GET)
 	public RestResponse getCategories(Integer status) {
 
-		//		//验证管理员身份
-		//		int userId = getUserId();
-		//		if(!adminService.findAllAdmins().contains(userId)){
-		//			return systemErrResponse("Illegal visit");
-		//		}
+		//验证管理员身份
+		int userId = getUserId();
+		System.out.println(userId);
+		if (!adminService.findAllAdmins().contains(userId)) {
+			return systemErrResponse("Illegal visit");
+		}
 
 		Map<String, Object> data = getData();
 
 		//获取已经提交的类目信息
-		if (DELETED != status) {
+		if (!DELETED.equals(status)) {
 			data.put("categoryTree", getCategoryDto(null, ROOT));
 		} else {
 			//获取状态为Disable的工作量类目信息
@@ -159,14 +158,11 @@ public class CategoryController extends ApplicationController
 	public RestResponse removeCategories(
 			@RequestParam(value = "categoryId")
 					Integer categoryId) {
-		//		//验证管理员身份
-		//		long userId = getUserId();
-		//		if(!adminService.findAllAdmins().contains(userId)){
-		//			return systemErrResponse("Illegal visit");
-		//		}
-
-		if (null == categoryId) {
-			return parameterNotSupportResponse("null parameter");
+		//验证管理员身份
+		int userId = getUserId();
+		System.out.println(userId);
+		if (!adminService.findAllAdmins().contains(userId)) {
+			return systemErrResponse("非法访问");
 		}
 
 		Category category = categoryService.getCategory(categoryId);
@@ -203,6 +199,13 @@ public class CategoryController extends ApplicationController
 	@RequestMapping(value = "unlock", method = POST)
 	public RestResponse undoCategories() {
 
+		//验证管理员身份
+		int userId = getUserId();
+		System.out.println(userId);
+		if (!adminService.findAllAdmins().contains(userId)) {
+			return systemErrResponse("非法访问");
+		}
+
 		//获取状态为SUBMITTED的工作量条目
 		List<Category> categoryList = categoryService.getCategoriesByStatus(SUBMITTED);
 
@@ -225,15 +228,16 @@ public class CategoryController extends ApplicationController
 	@RequestMapping(value = "modify", method = POST)
 	public RestResponse modifyCategories(CategoryDto categoryDto) throws Exception {
 
-		//		//验证管理员身份
-		//		long userId = getUserId();
-		//		if(!adminService.findAllAdmins().contains(userId)){
-		//			return systemErrResponse("Illegal visit");
-		//		}
+		//验证管理员身份
+		int userId = getUserId();
+		System.out.println(userId);
+		if (!adminService.findAllAdmins().contains(userId)) {
+			return systemErrResponse("非法访问");
+		}
 
 		//校验
 		if (null == categoryDto) {
-			return systemErrResponse();
+			return parameterNotSupportResponse("参数有误");
 		}
 
 		if (SUBMITTED.equals(categoryDto.getStatus())) {
@@ -247,7 +251,7 @@ public class CategoryController extends ApplicationController
 		boolean modifySuccess = categoryService.saveCategory(category);
 
 		if (!modifySuccess) {
-			return systemErrResponse("modify error");
+			return systemErrResponse("修改失败");
 		}
 
 		Map<String, Object> data = getData();
@@ -264,6 +268,13 @@ public class CategoryController extends ApplicationController
 	 */
 	@RequestMapping(value = "public", method = POST)
 	public RestResponse submitCategory() {
+
+		//验证管理员身份
+		int userId = getUserId();
+		System.out.println(userId);
+		if (!adminService.findAllAdmins().contains(userId)) {
+			return systemErrResponse("非法访问");
+		}
 
 		Map<String, Object> data = getData();
 		List<Category> categoryList = categoryService.getCategoriesByStatus(UNCOMMITTED);
@@ -291,11 +302,12 @@ public class CategoryController extends ApplicationController
 			@RequestParam("categoryId")
 					Integer... categoryIdList) {
 
-		//		//验证管理员身份
-		//		long userId = getUserId();
-		//		if(!adminService.findAllAdmins().contains(userId)){
-		//			return systemErrResponse("Illegal visit");
-		//		}
+		//验证管理员身份
+		int userId = getUserId();
+		System.out.println(userId);
+		if (!adminService.findAllAdmins().contains(userId)) {
+			return systemErrResponse("非法访问");
+		}
 
 		boolean submitSuccess;
 		List<Category> categoryList = new ArrayList<>();

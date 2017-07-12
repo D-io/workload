@@ -10,6 +10,7 @@
 <head>
     <title>Title</title>
     <h1>Hello manager!!</h1>
+    <a href="/category/all">获取类目信息</a>
 </head>
 <body>
 
