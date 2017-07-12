@@ -13,6 +13,7 @@ import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
@@ -20,6 +21,7 @@ import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.ITEM_PATH;
@@ -123,6 +125,14 @@ public class ItemController extends ApplicationController implements OperatingSt
 		for (Integer itemId : itemIdList) {
 			Item item = itemService.findItem(itemId);
 			if (item.getOwnerId().equals(teacherId) && UNCOMMITTED.equals(item.getStatus())) {
+
+				//申请截止时间限制
+				Category category = categoryService.getCategory(item.getCategoryId());
+				if(DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
+					errorData.put(item.getItemName(),"申请已经截止");
+					continue;
+				}
+
 				//修改对应的item状态为提交（待审核）
 				item.setStatus(NON_CHECKED);
 
@@ -152,8 +162,6 @@ public class ItemController extends ApplicationController implements OperatingSt
 	@RequestMapping(value = "public", method = POST)
 	public RestResponse submitItem() {
 
-		//TODO 截止时间的限制
-
 		User user = getUser();
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
@@ -166,8 +174,17 @@ public class ItemController extends ApplicationController implements OperatingSt
 			return invalidOperationResponse("无可提交的项目");
 		}
 
+		Map<String,Object> errorData = getData();
 		//修改Item状态为未审核态（提交态）
 		for (Item item : itemList) {
+
+			//申请截止时间限制
+			Category category = categoryService.getCategory(item.getCategoryId());
+			if(DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
+				errorData.put(item.getItemName(),"申请已经截止");
+				continue;
+			}
+
 			item.setStatus(NON_CHECKED);
 			if (!itemService.saveItem(item)) {
 				return systemErrResponse("提交失败");
@@ -206,6 +223,12 @@ public class ItemController extends ApplicationController implements OperatingSt
 			return invalidOperationResponse("非法请求");
 		}
 
+		// 截止时间限定
+		Category category = categoryService.getCategory(item.getCategoryId());
+		if(DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
+			return invalidOperationResponse("申请已经截止");
+		}
+
 		if (!DENIED.equals(item.getStatus())) {
 			return parameterNotSupportResponse("无法重新申请");
 		}
@@ -224,7 +247,7 @@ public class ItemController extends ApplicationController implements OperatingSt
 
 	/**
 	 * 删除Item信息(置为Disable状态)
-	 * 只能删除未提交的工作量信息
+	 * 只能删除  未提交的工作量信息 and 被拒绝的申请
 	 *
 	 * @param itemId 工作过量Id
 	 * @return RestResponse
@@ -268,16 +291,15 @@ public class ItemController extends ApplicationController implements OperatingSt
 	@RequestMapping(value = "apply-list", method = GET)
 	public RestResponse getTeacherApplyItems() {
 
-//		User user = getUser();
-		//		System.out.println(user);
-		//
-		//		if (null == user) {
-		//			return invalidOperationResponse("非法请求");
-		//		}
-		//
-		//		//获取教师ID对应的两类状态的工作量对象（申报类）
-		//		int teacherId = user.getUserId();
-		int teacherId = 3210343;
+		User user = getUser();
+		System.out.println(user);
+
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		//获取教师ID对应的两类状态的工作量对象（申报类）
+		int teacherId = user.getUserId();
 		List<ItemDto> abnormalItemList = findItemsByStatus(APPLY_SELF, DENIED, teacherId);
 		List<ItemDto> normalItemList = findItems(APPLY_SELF, getNormalStatusList(), teacherId);
 
