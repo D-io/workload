@@ -35,7 +35,7 @@
 
   <insert id="insert">
     insert into item (<include refid="Base_Column_List" />)
-    values (#{itemId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{ownerId,jdbcType=INTEGER}, 
+    values (#{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, #{ownerId,jdbcType=INTEGER},
       #{jsonParameter,jdbcType=VARCHAR}, #{workload,jdbcType=INTEGER}, #{groupManagerId,jdbcType=INTEGER}, 
       #{applyDesc,jdbcType=VARCHAR}, #{jobDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
       #{jsonChildWeight,jdbcType=VARCHAR}, #{proof,jdbcType=LONGVARCHAR})

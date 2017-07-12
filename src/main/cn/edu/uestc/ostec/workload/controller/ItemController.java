@@ -102,6 +102,49 @@ public class ItemController extends ApplicationController implements OperatingSt
 	}
 
 	/**
+	 * 选择性提交工作量条目
+	 *
+	 * @param itemIdList 工作量条目列表
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "public-selective", method = POST)
+	public RestResponse submitItem(@RequestParam("itemId") Integer... itemIdList) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+		int teacherId = user.getUserId();
+
+		List<Item> itemList = new ArrayList<>();
+		Map<String, Object> data = getData();
+		Map<String, Object> errorData = getData();
+
+		for (Integer itemId : itemIdList) {
+			Item item = itemService.findItem(itemId);
+			if (item.getOwnerId().equals(teacherId) && UNCOMMITTED.equals(item.getStatus())) {
+				//修改对应的item状态为提交（待审核）
+				item.setStatus(NON_CHECKED);
+
+				boolean saveSuccess = itemService.saveItem(item);
+				if (!saveSuccess) {
+					errorData.put(item.getItemName(), "提交失败");
+				} else {
+					item = itemService.findItem(itemId);
+					itemList.add(item);
+				}
+			} else {
+				errorData.put(item.getItemName(), "无法提交");
+			}
+		}
+
+		data.put("itemList", itemConverter.poListToDtoList(itemList));
+		data.put("errorData", errorData);
+
+		return successResponse(data);
+	}
+
+	/**
 	 * 提交对应的工作量（状态为未提交的工作量）
 	 *
 	 * @return RestResponse
@@ -110,7 +153,6 @@ public class ItemController extends ApplicationController implements OperatingSt
 	public RestResponse submitItem() {
 
 		//TODO 截止时间的限制
-		//TODO 未获取到用户的信息
 
 		User user = getUser();
 		if (null == user) {
