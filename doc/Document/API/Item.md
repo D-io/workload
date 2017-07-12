@@ -528,3 +528,52 @@ normalItemList | json | 正常条目
     }
 }
 ```
+
+### 重置工作量条目申请和审核状态接口
+- 接口地址：`/item/reset`
+- 支持格式：`json`
+- 请求方式：`DELETE`
+- 请求示例：`localhost:8080/item/reset?itemId=3&role=reviewer`
+
+- 请求参数具体说明：
+参数名 |类型 | 说明
+---|---|---
+itemId | int | 工作量条目编号
+role | String | 角色（reviewer 或 proposer）
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "item": {
+            "itemId": 3,
+            "itemName": "工作量",
+            "categoryId": 2,
+            "ownerId": 3210343,
+            "jsonParameter": "asd",
+            "workload": 200,
+            "groupManagerId": 5130121,
+            "applyDesc": "申请描述",
+            "jobDesc": null,
+            "status": 1,
+            "jsonChildWeight": "12",
+            "proof": null,
+            "teacherName": "张翔",
+            "reviewerName": "邵俊明",
+            "groupManagerName": "邵俊明",
+            "categoryName": "名字去去去去去去前期",
+            "importRequired": 0
+        }
+    }
+}
+```
