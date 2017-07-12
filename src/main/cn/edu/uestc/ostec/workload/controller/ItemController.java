@@ -18,6 +18,7 @@ import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
+import cn.edu.uestc.ostec.workload.service.AdminService;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
@@ -37,7 +38,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping(ITEM_PATH)
 public class ItemController extends ApplicationController implements OperatingStatusType {
 
-	//TODO 重置工作量审核状态以及申请状态
+	@Autowired
+	private AdminService adminService;
 
 	@Autowired
 	private ItemService itemService;
@@ -357,6 +359,51 @@ public class ItemController extends ApplicationController implements OperatingSt
 
 		return successResponse(data);
 	}
+
+	/**
+	 * 重置申请人或者审核人状态
+	 *
+	 * @param role 角色信息 reviewer(审核人)或proposer(申请人)
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "reset", method = POST)
+	public RestResponse resetStatus(
+			@RequestParam("itemId")
+					Integer itemId,
+			@RequestParam("role")
+					String role) {
+		//验证管理员身份
+		int userId = getUserId();
+		System.out.println(userId);
+		if (!adminService.findAllAdmins().contains(userId)) {
+			return systemErrResponse("非法访问");
+		}
+
+		Item item = itemService.findItem(itemId);
+		if(null == item) {
+			return parameterNotSupportResponse("参数有误");
+		}
+
+		if (ROLE_REVIEWER.equals(role)) {
+			item.setStatus(NON_CHECKED);
+		} else if (ROLE_PROPOSER.equals(role)) {
+			item.setStatus(UNCOMMITTED);
+		} else {
+			return parameterNotSupportResponse("参数有误");
+		}
+
+		boolean resetSuccess = itemService.saveItem(item);
+		if(!resetSuccess) {
+			return systemErrResponse("重置状态失败");
+		}
+
+		Map<String,Object> data = getData();
+		data.put("item",itemConverter.poToDto(item));
+
+		return successResponse(data);
+	}
+
+	//TODO 个人工作量统计页面
 
 	/**
 	 * 查找对应的老师的对应状态的对应导入方式的工作量条目信息

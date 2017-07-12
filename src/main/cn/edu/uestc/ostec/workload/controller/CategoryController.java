@@ -16,14 +16,17 @@ import cn.edu.uestc.ostec.workload.adaptor.MultiLevelObjectAdaptor;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.pojo.Category;
+import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.service.AdminService;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
+import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGER_CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.ROOT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
@@ -50,6 +53,9 @@ public class CategoryController extends ApplicationController
 
 	@Autowired
 	private CategoryConverter categoryConverter;
+
+	@Autowired
+	private ItemService itemService;
 
 	/**
 	 * 添加工作量类目信息
@@ -341,6 +347,11 @@ public class CategoryController extends ApplicationController
 		return successResponse(data);
 	}
 
+	/**
+	 * 获取教师信息列表
+	 *
+	 * @return RestResponse
+	 */
 	@RequestMapping(value = "teachers", method = GET)
 	public RestResponse getTeacherList() {
 
@@ -349,6 +360,10 @@ public class CategoryController extends ApplicationController
 
 		return successResponse(data);
 	}
+
+	//TODO 申请人和审核人重置 -> ItemController
+
+	//TODO 工作量统计汇总
 
 	/**
 	 * 获取对应状态下的CategoryDto对象,构建树结构

@@ -34,6 +34,16 @@ public interface WorkloadObjects {
 	double ZERO_DOUBLE = 0.0;
 
 	/**
+	 * 审核人角色信息
+	 */
+	String ROLE_REVIEWER = "reviewer";
+
+	/**
+	 * 申请人角色信息
+	 */
+	String ROLE_PROPOSER = "proposer";
+
+	/**
 	 * 获取空的Map&lt;K, V&gt;
 	 *
 	 * @param <K> 键类型
