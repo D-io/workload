@@ -174,7 +174,7 @@ public class CategoryController extends ApplicationController
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		if (SUBMITTED == category.getStatus()) {
+		if (SUBMITTED.equals(category.getStatus())) {
 			return invalidOperationResponse("非解锁工作量不可删除，请先解锁！");
 		}
 
@@ -236,7 +236,7 @@ public class CategoryController extends ApplicationController
 			return systemErrResponse();
 		}
 
-		if (SUBMITTED == categoryDto.getStatus()) {
+		if (SUBMITTED.equals(categoryDto.getStatus())) {
 			return invalidOperationResponse("非解锁工作量不可修改，请先解锁！");
 		}
 
@@ -305,7 +305,7 @@ public class CategoryController extends ApplicationController
 		for (Integer categoryId : categoryIdList) {
 			Category category = categoryService.getCategory(categoryId);
 
-			if (UNCOMMITTED == category.getStatus()) {
+			if (UNCOMMITTED.equals(category.getStatus())) {
 				submitSuccess = categoryService.saveCategory(SUBMITTED, categoryId);
 
 				if (!submitSuccess) {

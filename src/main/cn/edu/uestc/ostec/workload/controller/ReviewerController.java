@@ -150,14 +150,14 @@ public class ReviewerController extends ApplicationController {
 		//判断导入方式，对应不同的状态值
 
 		//自我申报-未审核状态
-		if (APPLY_SELF == importRequired) {
+		if (APPLY_SELF.equals(importRequired)) {
 
 			List<ItemDto> nonCheckedItems = itemService
 					.listResult(getReviewItems(teacherId, importRequired, NON_CHECKED));
 			data.put("nonCheckedItem", nonCheckedItems);
 			return successResponse(data);
 
-		} else if (IMPORT_EXCEL == importRequired) {
+		} else if (IMPORT_EXCEL.equals(importRequired)) {
 
 			//系统导入-未提交状态
 			List<ItemDto> unCommittedItem = itemService
@@ -211,13 +211,13 @@ public class ReviewerController extends ApplicationController {
 			return parameterNotSupportResponse("无效参数");
 		}
 
-		if (CHECKED != status || DENIED != status) {
+		if (!CHECKED.equals(status) || !DENIED.equals(status)) {
 			return parameterNotSupportResponse("无效参数");
 		}
 
 		//身份校验
 		Category category = categoryService.getCategory(item.getCategoryId());
-		if (user.getUserId() != category.getReviewerId()) {
+		if (user.getUserId().equals(category.getReviewerId())) {
 			return invalidOperationResponse("非法操作");
 		}
 
@@ -375,7 +375,7 @@ public class ReviewerController extends ApplicationController {
 
 		//查找对应的导入方式下的为指定状态的Item条目信息
 		for (Category category : categoryList) {
-			if (importRequired == category.getImportRequired()) {
+			if (importRequired.equals(category.getImportRequired())) {
 				items = itemService.findItemsByCategory(category.getCategoryId(), status);
 				itemList.addAll(items);
 			}
