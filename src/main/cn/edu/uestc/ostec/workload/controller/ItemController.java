@@ -20,7 +20,6 @@ import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
-import cn.edu.uestc.ostec.workload.service.TeacherService;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.ITEM_PATH;
@@ -28,14 +27,13 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.I
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
  * Version:v1.0 (description: 工作量信息配置控制器 )
  */
 @RestController
 @RequestMapping(ITEM_PATH)
-public class ItemController extends ApplicationController implements OperatingStatusType{
+public class ItemController extends ApplicationController implements OperatingStatusType {
 
 	//TODO 重置工作量审核状态以及申请状态
 
@@ -44,9 +42,6 @@ public class ItemController extends ApplicationController implements OperatingSt
 
 	@Autowired
 	private CategoryService categoryService;
-
-	@Autowired
-	private TeacherService teacherService;
 
 	@Autowired
 	private ItemConverter itemConverter;
@@ -84,9 +79,9 @@ public class ItemController extends ApplicationController implements OperatingSt
 				.getImportRequired();
 
 		//判断是手动申报类还是系统导入类来决定proof的值
-		if (APPLY_SELF == importRequired) {
+		if (APPLY_SELF.equals(importRequired)) {
 			itemDto.setProof(null);
-		} else if (IMPORT_EXCEL == importRequired) {
+		} else if (IMPORT_EXCEL.equals(importRequired)) {
 
 			//TODO 如果该类目为导入类型时，对于proof字段应该存取文件路径？？
 			itemDto.setProof("file-path???");
@@ -144,6 +139,38 @@ public class ItemController extends ApplicationController implements OperatingSt
 	}
 
 	/**
+	 * 重新申请被审核人否定的接口
+	 *
+	 * @param itemId 工作量条目编号
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "apply-again", method = POST)
+	public RestResponse applyItemsAgain(
+			@RequestParam("itemId")
+					Integer itemId) {
+
+		Item item = itemService.findItem(itemId);
+		if (null == item) {
+			return parameterNotSupportResponse("参数有误");
+		}
+
+		if (!DENIED.equals(item.getStatus())) {
+			return parameterNotSupportResponse("无法重新提交");
+		}
+
+		item.setStatus(NON_CHECKED);
+		boolean saveSuccess = itemService.saveItem(item);
+		if (!saveSuccess) {
+			return systemErrResponse("重新申请失败");
+		}
+
+		Map<String, Object> data = getData();
+		data.put("item", itemConverter.poToDto(item));
+
+		return successResponse(data);
+	}
+
+	/**
 	 * 删除Item信息(置为Disable状态)
 	 * 只能删除未提交的工作量信息
 	 *
@@ -160,8 +187,8 @@ public class ItemController extends ApplicationController implements OperatingSt
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		boolean removeSuccess = false;
-		if (UNCOMMITTED == item.getStatus()) {
+		boolean removeSuccess;
+		if (UNCOMMITTED.equals(item.getStatus())) {
 			removeSuccess = itemService.removeItem(itemId);
 		} else {
 			return invalidOperationResponse("无法删除");
@@ -199,7 +226,7 @@ public class ItemController extends ApplicationController implements OperatingSt
 		//获取教师ID对应的两类状态的工作量对象（申报类）
 		int teacherId = user.getUserId();
 		List<ItemDto> abnormalItemList = findItemsByStatus(APPLY_SELF, DENIED, teacherId);
-		List<ItemDto> normalItemList = findItems(APPLY_SELF,getNormalStatusList(),teacherId);
+		List<ItemDto> normalItemList = findItems(APPLY_SELF, getNormalStatusList(), teacherId);
 
 		//获取否定理由信息
 		List<Subject> subjectList = new ArrayList<>();
@@ -235,13 +262,15 @@ public class ItemController extends ApplicationController implements OperatingSt
 
 		//获取教师ID对应的两类状态的工作量对象（导入类）
 		int teacherId = user.getUserId();
-		List<ItemDto> abnormalItemList = findItems(IMPORT_EXCEL,getAbnormalStatusList(),teacherId);
-		List<ItemDto> normalItemList = findItems(IMPORT_EXCEL,getNormalStatusList(),teacherId);
+		List<ItemDto> abnormalItemList = findItems(IMPORT_EXCEL, getAbnormalStatusList(),
+				teacherId);
+		List<ItemDto> normalItemList = findItems(IMPORT_EXCEL, getNormalStatusList(), teacherId);
 
 		List<Subject> subjects = new ArrayList<>();
-		for(ItemDto itemDto:normalItemList) {
-			if(DOUBTED_CHECKED == itemDto.getStatus()) {
-				Subject subject = subjectService.getSubjectsByItem(itemDto.getItemId()).get(ZERO_INT);
+		for (ItemDto itemDto : normalItemList) {
+			if (DOUBTED_CHECKED.equals(itemDto.getStatus())) {
+				Subject subject = subjectService.getSubjectsByItem(itemDto.getItemId())
+						.get(ZERO_INT);
 				subjects.add(subject);
 			}
 		}
@@ -249,7 +278,7 @@ public class ItemController extends ApplicationController implements OperatingSt
 		Map<String, Object> data = getData();
 		data.put("abnormalItemList", abnormalItemList);
 		data.put("normalItemList", normalItemList);
-		data.put("subjectList",subjectConverter.poListToDtoList(subjects));
+		data.put("subjectList", subjectConverter.poListToDtoList(subjects));
 
 		return successResponse(data);
 	}
@@ -270,7 +299,7 @@ public class ItemController extends ApplicationController implements OperatingSt
 		List<ItemDto> itemDtoGroup = new ArrayList<>();
 
 		for (ItemDto itemDto : itemDtoList) {
-			if (importRequired == itemDto.getImportRequired()) {
+			if (importRequired.equals(itemDto.getImportRequired())) {
 				itemDtoGroup.add(itemDto);
 			}
 		}
@@ -279,9 +308,10 @@ public class ItemController extends ApplicationController implements OperatingSt
 
 	/**
 	 * 查找对应的老师的对应状态列表的对应导入方式的工作量条目信息
+	 *
 	 * @param importRequired 导入方式
-	 * @param statusList 状态表
-	 * @param teacherId 教师编号
+	 * @param statusList     状态表
+	 * @param teacherId      教师编号
 	 * @return List<ItemDto>
 	 */
 	public List<ItemDto> findItems(Integer importRequired, List<Integer> statusList,
