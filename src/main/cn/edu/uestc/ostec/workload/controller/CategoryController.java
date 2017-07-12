@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -103,25 +104,30 @@ public class CategoryController extends ApplicationController
 
 	/**
 	 * 查询单个Category信息
+	 *
 	 * @param categoryId Category编号
 	 * @return RestResponse
 	 */
 	@RequestMapping(value = "single", method = GET)
-	public RestResponse getCategory(@RequestParam("categoryId") Integer categoryId) {
+	public RestResponse getCategory(
+			@RequestParam("categoryId")
+					Integer categoryId) {
 
-		CategoryDto categoryDto = categoryConverter.poToDto(categoryService.getCategory(categoryId));
+		CategoryDto categoryDto = categoryConverter
+				.poToDto(categoryService.getCategory(categoryId));
 
-		Map<String,Object> data = getData();
-		data.put("categoryDto",categoryDto);
+		Map<String, Object> data = getData();
+		data.put("categoryDto", categoryDto);
 
 		return successResponse(data);
 	}
 
 	/**
 	 * 管理员查看未提交的和已提交的工作量类目树结构
+	 *
 	 * @return RestResponse
 	 */
-	@RequestMapping(value = "all",method = GET)
+	@RequestMapping(value = "all", method = GET)
 	public RestResponse getCategories(Integer status) {
 
 		//		//验证管理员身份
@@ -133,11 +139,11 @@ public class CategoryController extends ApplicationController
 		Map<String, Object> data = getData();
 
 		//获取已经提交的类目信息
-		if(DELETED != status) {
+		if (DELETED != status) {
 			data.put("categoryTree", getCategoryDto(null, ROOT));
-		}else{
+		} else {
 			//获取状态为Disable的工作量类目信息
-			data.put("categoryList",categoryService.getCategoriesByStatus(DELETED));
+			data.put("categoryList", categoryService.getCategoriesByStatus(DELETED));
 		}
 
 		return successResponse(data);
@@ -191,6 +197,7 @@ public class CategoryController extends ApplicationController
 
 	/**
 	 * 解锁对应的工作量信息:修改对应状态为SUBMITTED条目为UNCOMMITTED
+	 *
 	 * @return RestResponse
 	 */
 	@RequestMapping(value = "unlock", method = POST)
@@ -201,7 +208,7 @@ public class CategoryController extends ApplicationController
 
 		//修改相应的状态
 		for (Category category : categoryList) {
-			if (!categoryService.saveCategory(UNCOMMITTED,category.getCategoryId())) {
+			if (!categoryService.saveCategory(UNCOMMITTED, category.getCategoryId())) {
 				return invalidOperationResponse("解锁失败");
 			}
 		}
@@ -211,9 +218,9 @@ public class CategoryController extends ApplicationController
 
 	/**
 	 * 修改类目信息
+	 *
 	 * @param categoryDto 工作类目信息dto
 	 * @return RestResponse
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "modify", method = POST)
 	public RestResponse modifyCategories(CategoryDto categoryDto) throws Exception {
@@ -250,14 +257,17 @@ public class CategoryController extends ApplicationController
 	}
 
 	/**
+	 * 全部提交
 	 * 提交：修改对应的UNCOMMITTED状态为SUBMITTED
+	 *
+	 * @return RestResponse
 	 */
 	@RequestMapping(value = "public", method = POST)
 	public RestResponse submitCategory() {
 
 		Map<String, Object> data = getData();
 		List<Category> categoryList = categoryService.getCategoriesByStatus(UNCOMMITTED);
-		if(null == categoryList) {
+		if (null == categoryList) {
 			return invalidOperationResponse("无可提交的项目");
 		}
 
@@ -270,11 +280,60 @@ public class CategoryController extends ApplicationController
 		return successResponse(data);
 	}
 
-	@RequestMapping(value = "teachers",method = GET)
+	/**
+	 * 选择性提交
+	 *
+	 * @param categoryIdList 可变参数Id
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "public-selective", method = POST)
+	public RestResponse submitCategory(
+			@RequestParam("categoryId")
+					Integer... categoryIdList) {
+
+		//		//验证管理员身份
+		//		long userId = getUserId();
+		//		if(!adminService.findAllAdmins().contains(userId)){
+		//			return systemErrResponse("Illegal visit");
+		//		}
+
+		boolean submitSuccess;
+		List<Category> categoryList = new ArrayList<>();
+		Map<String, Object> data = getData();
+		Map<String, Object> errorData = getData();
+
+		for (Integer categoryId : categoryIdList) {
+			Category category = categoryService.getCategory(categoryId);
+
+			if (UNCOMMITTED == category.getStatus()) {
+				submitSuccess = categoryService.saveCategory(SUBMITTED, categoryId);
+
+				if (!submitSuccess) {
+					//提交失败的错误信息
+					errorData.put(category.getName(), "提交失败");
+				} else {
+					//提交成功的类目信息
+					category = categoryService.getCategory(categoryId);
+					categoryList.add(category);
+				}
+
+			} else {
+				//无法提交的错误信息（状态值不为UNCOMMITTED）
+				errorData.put(category.getName(), "无法提交");
+			}
+		}
+
+		data.put("errorData", errorData);
+		data.put("categoryList", categoryConverter.poListToDtoList(categoryList));
+
+		return successResponse(data);
+	}
+
+	@RequestMapping(value = "teachers", method = GET)
 	public RestResponse getTeacherList() {
 
-		Map<String,Object> data = getData();
-		data.put("teacherList",teacherService.findAll());
+		Map<String, Object> data = getData();
+		data.put("teacherList", teacherService.findAll());
 
 		return successResponse(data);
 	}
@@ -286,10 +345,10 @@ public class CategoryController extends ApplicationController
 
 		List<CategoryDto> categoryDtoList;
 
-		if(null == status){
+		if (null == status) {
 			//由父节点获取状态有效的子节点对应的dto对象
 			categoryDtoList = categoryService.getDtoObjects(parentId);
-		}else{
+		} else {
 			//由父节点和状态值查询对应的子节点dto对象
 			categoryDtoList = categoryService.getDtoObjects(status, parentId);
 		}
@@ -303,9 +362,9 @@ public class CategoryController extends ApplicationController
 			for (Iterator<CategoryDto> iterator = categoryDtoList.iterator(); iterator
 					.hasNext(); ) {
 				CategoryDto categoryDto = iterator.next();
-				if(null == status){
-					buildValidObjectStructure(categoryDto,categoryService);
-				}else{
+				if (null == status) {
+					buildValidObjectStructure(categoryDto, categoryService);
+				} else {
 					buildObjectStructure(categoryDto, categoryService);
 				}
 			}

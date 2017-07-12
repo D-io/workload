@@ -261,6 +261,7 @@ public class ReviewerController extends ApplicationController {
 			@RequestParam("date")
 					String date) {
 
+		//根据categoryId查询到Category对象，并转换为dto对象
 		Category category = categoryService.getCategory(categoryId);
 		if(null == category) {
 			return parameterNotSupportResponse("参数有误");

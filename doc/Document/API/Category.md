@@ -563,7 +563,7 @@ data | String | 结果集
 }
 ```
 
-### 提交工作量类目信息
+### 提交工作量类目信息(全部提交)
 - 接口地址：`/category/public`
 - 支持格式：`json`
 - 请求方式：`POST`
@@ -716,6 +716,76 @@ data | String | 结果集
     }
 }
 ```
+
+### 提交工作量类目信息(全部提交)
+- 接口地址：`/category/public-selective`
+- 支持格式：`json`
+- 请求方式：`POST`
+- 请求示例：`localhost:8080/category/public-selective?categoryId=2&categoryId=3&categoryId=4&categoryId=5&categoryId=9`
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+errorData | String | 提交失败的信息
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "categoryList": [
+            {
+                "categoryId": 2,
+                "name": "名字去去去去去去前期",
+                "desc": "描述去去去前期",
+                "parentId": 0,
+                "isLeaf": "N",
+                "importRequired": 0,
+                "jsonParameters": "1",
+                "formula": "a+b+c",
+                "version": "2016-2017-1",
+                "status": 1,
+                "reviewDeadline": "2017年07月04日",
+                "applyDeadline": "2017年07月04日",
+                "reviewerId": 5130121,
+                "reviewerName": "邵俊明",
+                "children": null,
+                "objectId": 2
+            },
+            {
+                "categoryId": 9,
+                "name": "教学",
+                "desc": "就是简单的教学",
+                "parentId": 0,
+                "isLeaf": "N",
+                "importRequired": 0,
+                "jsonParameters": "{“人数”:“A”}",
+                "formula": "A B C",
+                "version": "2017-2018-1",
+                "status": 1,
+                "reviewDeadline": "2017年12月21日",
+                "applyDeadline": "2017年12月10日",
+                "reviewerId": 3201231,
+                "reviewerName": "唐雪飞",
+                "children": null,
+                "objectId": 9
+            }
+        ],
+        "errorData": {
+            "名字": "无法提交",
+            "格式化": "无法提交",
+            "乱码": "无法提交"
+        }
+    }
+}
+```
+
+
 ### 获取教师信息
 - 接口地址:`/category/teachers`
 - 支持格式：`json`

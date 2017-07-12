@@ -63,12 +63,8 @@ public class CategoryConverter implements Converter<Category,CategoryDto> {
 		category.setImportRequired(dto.getImportRequired());
 		category.setParentId(dto.getParentId());
 
-		try {
-			category.setApplyDeadline(DateHelper.getTimeStamp(dto.getApplyDeadline()));
-			category.setReviewDeadline(DateHelper.getTimeStamp(dto.getReviewDeadline()));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		category.setApplyDeadline(DateHelper.getTimeStamp(dto.getApplyDeadline()));
+		category.setReviewDeadline(DateHelper.getTimeStamp(dto.getReviewDeadline()));
 
 		category.setReviewerId(dto.getReviewerId());
 
