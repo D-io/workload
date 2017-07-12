@@ -3,11 +3,9 @@ package cn.edu.uestc.ostec.workload.converter.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
 
 import cn.edu.uestc.ostec.workload.converter.Converter;
 import cn.edu.uestc.ostec.workload.dao.CategoryDao;
-import cn.edu.uestc.ostec.workload.dao.ItemDao;
 import cn.edu.uestc.ostec.workload.dao.TeacherDao;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
@@ -62,7 +60,7 @@ public class ItemConverter implements Converter<Item,ItemDto> {
 	}
 
 	@Override
-	public Item dtoToPo(ItemDto dto) throws ParseException {
+	public Item dtoToPo(ItemDto dto) {
 
 		if(ObjectHelper.isNull(dto)){
 			return null;

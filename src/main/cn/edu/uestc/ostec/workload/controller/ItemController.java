@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +64,7 @@ public class ItemController extends ApplicationController implements OperatingSt
 	 * @return RestResponse
 	 */
 	@RequestMapping(method = POST)
-	public RestResponse addItem(ItemDto itemDto) throws ParseException {
+	public RestResponse addItem(ItemDto itemDto) {
 
 		User user = getUser();
 		if (null == user) {

@@ -28,7 +28,7 @@ public class SubjectConverter implements Converter<Subject,SubjectDto> {
 	}
 
 	@Override
-	public Subject dtoToPo(SubjectDto dto) throws ParseException {
+	public Subject dtoToPo(SubjectDto dto) {
 		return null;
 	}
 }

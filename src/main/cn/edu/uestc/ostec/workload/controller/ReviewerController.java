@@ -5,12 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.crypto.Data;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
@@ -262,7 +259,7 @@ public class ReviewerController extends ApplicationController {
 			@RequestParam("categoryId")
 					Integer categoryId,
 			@RequestParam("date")
-					String date) throws ParseException {
+					String date) {
 
 		Category category = categoryService.getCategory(categoryId);
 		if(null == category) {

@@ -24,7 +24,6 @@ import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.DATE
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.DATE_TIME_FORMAT_DEFAULT;
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.MILLISECOND_TO_SECOND;
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.TIME_FORMAT_DEFAULT;
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 /**
  * Description: 时间辅助类(采用java8新特性)
@@ -122,9 +121,14 @@ public class DateHelper {
 		return System.currentTimeMillis();
 	}
 
-	public static int getTimeStamp(String date) throws ParseException {
+	public static int getTimeStamp(String date) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_CN);
-		java.util.Date date_ = simpleDateFormat.parse(date);
+		java.util.Date date_ = null;
+		try {
+			date_ = simpleDateFormat.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		return (int) (date_.getTime() / MILLISECOND_TO_SECOND);
 	}
 

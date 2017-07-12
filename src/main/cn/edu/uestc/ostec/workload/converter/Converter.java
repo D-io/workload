@@ -9,7 +9,6 @@
 
 package cn.edu.uestc.ostec.workload.converter;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public interface Converter<P, D> {
 	 * @param dto 数据传输对象
 	 * @return 持久化对象
 	 */
-	P dtoToPo(D dto) throws ParseException;
+	P dtoToPo(D dto);
 
 	/**
 	 * 批量转换持久化对象为数据传输对象

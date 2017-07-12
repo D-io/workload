@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +57,7 @@ public class CategoryController extends ApplicationController
 	 * @return RestResponse
 	 */
 	@RequestMapping(method = POST)
-	public RestResponse addCategories(CategoryDto categoryDto) throws ParseException {
+	public RestResponse addCategories(CategoryDto categoryDto) {
 
 		//TODO 用户信息未获取到 待解决
 

@@ -48,7 +48,7 @@ public class CategoryConverter implements Converter<Category,CategoryDto> {
 	}
 
 	@Override
-	public Category dtoToPo(CategoryDto dto) throws ParseException {
+	public Category dtoToPo(CategoryDto dto) {
 		if(ObjectHelper.isNull(dto)){
 			return null;
 		}
@@ -62,8 +62,14 @@ public class CategoryConverter implements Converter<Category,CategoryDto> {
 		category.setFormula(dto.getFormula());
 		category.setImportRequired(dto.getImportRequired());
 		category.setParentId(dto.getParentId());
-		category.setApplyDeadline(DateHelper.getTimeStamp(dto.getApplyDeadline()));
-		category.setReviewDeadline(DateHelper.getTimeStamp(dto.getReviewDeadline()));
+
+		try {
+			category.setApplyDeadline(DateHelper.getTimeStamp(dto.getApplyDeadline()));
+			category.setReviewDeadline(DateHelper.getTimeStamp(dto.getReviewDeadline()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
 		category.setReviewerId(dto.getReviewerId());
 
 		return category;
