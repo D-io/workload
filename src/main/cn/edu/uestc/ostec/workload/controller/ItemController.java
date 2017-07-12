@@ -191,13 +191,23 @@ public class ItemController extends ApplicationController implements OperatingSt
 			@RequestParam("itemId")
 					Integer itemId) {
 
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+		int teacherId = user.getUserId();
+
 		Item item = itemService.findItem(itemId);
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
 
+		if(!item.getOwnerId().equals(teacherId)) {
+			return invalidOperationResponse("非法请求");
+		}
+
 		if (!DENIED.equals(item.getStatus())) {
-			return parameterNotSupportResponse("无法重新提交");
+			return parameterNotSupportResponse("无法重新申请");
 		}
 
 		item.setStatus(NON_CHECKED);
@@ -230,7 +240,7 @@ public class ItemController extends ApplicationController implements OperatingSt
 		}
 
 		boolean removeSuccess;
-		if (UNCOMMITTED.equals(item.getStatus())) {
+		if (UNCOMMITTED.equals(item.getStatus()) || DENIED.equals(item.getStatus())) {
 			removeSuccess = itemService.removeItem(itemId);
 		} else {
 			return invalidOperationResponse("无法删除");
@@ -258,15 +268,16 @@ public class ItemController extends ApplicationController implements OperatingSt
 	@RequestMapping(value = "apply-list", method = GET)
 	public RestResponse getTeacherApplyItems() {
 
-		User user = getUser();
-		System.out.println(user);
-
-		if (null == user) {
-			return invalidOperationResponse("非法请求");
-		}
-
-		//获取教师ID对应的两类状态的工作量对象（申报类）
-		int teacherId = user.getUserId();
+//		User user = getUser();
+		//		System.out.println(user);
+		//
+		//		if (null == user) {
+		//			return invalidOperationResponse("非法请求");
+		//		}
+		//
+		//		//获取教师ID对应的两类状态的工作量对象（申报类）
+		//		int teacherId = user.getUserId();
+		int teacherId = 3210343;
 		List<ItemDto> abnormalItemList = findItemsByStatus(APPLY_SELF, DENIED, teacherId);
 		List<ItemDto> normalItemList = findItems(APPLY_SELF, getNormalStatusList(), teacherId);
 
@@ -279,7 +290,7 @@ public class ItemController extends ApplicationController implements OperatingSt
 
 		Map<String, Object> data = getData();
 		data.put("abnormalItemList", abnormalItemList);
-		data.put("abnormalItemList", normalItemList);
+		data.put("normalItemList", normalItemList);
 		data.put("subjectList", subjectConverter.poListToDtoList(subjectList));
 
 		return successResponse(data);
