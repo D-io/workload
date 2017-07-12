@@ -474,7 +474,15 @@ normalItemList | json | 正常条目
     "status": 200,
     "statusName": "OK",
     "data": {
-        "subjectList": [],
+        "subjectList": [
+            {
+                "subjectId": 2,
+                "itemId": 10,
+                "msgContent": "你好",
+                "sendFromId": 12,
+                "sendTime": "2017年07月04日"
+            }
+        ],
         "normalItemList": [
             {
                 "itemId": 9,

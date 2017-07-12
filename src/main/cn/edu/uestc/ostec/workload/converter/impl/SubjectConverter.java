@@ -19,6 +19,7 @@ public class SubjectConverter implements Converter<Subject,SubjectDto> {
 	public SubjectDto poToDto(Subject po) {
 
 		SubjectDto subjectDto = new SubjectDto();
+		subjectDto.setSubjectId(po.getSubjectId());
 		subjectDto.setItemId(po.getItemId());
 		subjectDto.setMsgContent(po.getMsgContent());
 		subjectDto.setSendFromId(po.getSendFromId());

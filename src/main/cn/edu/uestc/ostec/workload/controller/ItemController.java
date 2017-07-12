@@ -320,7 +320,7 @@ public class ItemController extends ApplicationController implements OperatingSt
 		List<ItemDto> normalItemList = findItems(IMPORT_EXCEL, getNormalStatusList(), teacherId);
 
 		List<Subject> subjects = new ArrayList<>();
-		for (ItemDto itemDto : normalItemList) {
+		for (ItemDto itemDto : abnormalItemList) {
 			if (DOUBTED_CHECKED.equals(itemDto.getStatus())) {
 				Subject subject = subjectService.getSubjectsByItem(itemDto.getItemId())
 						.get(ZERO_INT);
