@@ -23,6 +23,7 @@ import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.pojo.File;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.service.FileInfoService;
 import cn.edu.uestc.ostec.workload.service.FileService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
@@ -30,6 +31,8 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.F
 import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.getFileExtension;
 import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.getFileName;
 import static cn.edu.uestc.ostec.workload.support.utils.ObjectHelper.isNull;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -45,6 +48,9 @@ public class FileUploadAndDownloadController extends ApplicationController {
 
 	@Autowired
 	private FileService fileService;
+
+	@Autowired
+	private FileInfoService fileInfoService;
 
 	@RequestMapping(method = POST)
 	public RestResponse fileUpload(
@@ -90,7 +96,7 @@ public class FileUploadAndDownloadController extends ApplicationController {
 
 	@RequestMapping(method = GET)
 	public RestResponse fileDownload(
-			@RequestParam
+			@RequestParam("fileInfoId")
 					int fileInfoId) throws IOException {
 
 		if (ZERO_INT == fileInfoId) {
@@ -104,6 +110,38 @@ public class FileUploadAndDownloadController extends ApplicationController {
 		}
 
 		return streamResponse(fileInfo, getFileName(fileInfo.getPath()));
+	}
+
+	/**
+	 * 提交上传的文件
+	 * @param fileInfoId 文件信息编号
+	 * @return RestResponse
+	 */
+	public RestResponse submitFile(@RequestParam("fileInfoId") int fileInfoId) {
+
+		if (ZERO_INT == fileInfoId) {
+			return parameterNotSupportResponse();
+		}
+
+		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
+		if (isNull(fileInfo)) {
+			return invalidOperationResponse();
+		}
+
+		if(UNCOMMITTED.equals(fileInfo.getStatus())) {
+			return invalidOperationResponse("无法提交");
+		}
+
+		fileInfo.setStatus(SUBMITTED);
+		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
+		if(!submitSuccess) {
+			return systemErrResponse("文件上传失败");
+		}
+
+		Map<String,Object> data = getData();
+		data.put("fileInfo", fileInfo);
+
+		return successResponse(data);
 	}
 
 }
