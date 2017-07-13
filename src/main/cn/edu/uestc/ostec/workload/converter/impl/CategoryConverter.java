@@ -39,6 +39,7 @@ public class CategoryConverter implements Converter<Category,CategoryDto> {
 		categoryDto.setJsonParameters(po.getJsonParameters());
 		categoryDto.setStatus(po.getStatus());
 		categoryDto.setVersion(po.getVersion());
+		categoryDto.setParentId(po.getParentId());
 		categoryDto.setApplyDeadline(DateHelper.getDateTime(po.getApplyDeadline()));
 		categoryDto.setReviewDeadline(DateHelper.getDateTime(po.getReviewDeadline()));
 		categoryDto.setReviewerId(po.getReviewerId());

@@ -85,10 +85,8 @@ public class ItemController extends ApplicationController implements OperatingSt
 		//判断是手动申报类还是系统导入类来决定proof的值
 		if (APPLY_SELF.equals(importRequired)) {
 			itemDto.setProof(null);
-		} else if (IMPORT_EXCEL.equals(importRequired)) {
-
-			//TODO 如果该类目为导入类型时，对于proof字段应该存取文件路径？？
-			itemDto.setProof("file-path???");
+		} else {
+			return invalidOperationResponse();
 		}
 
 		Item item = itemConverter.dtoToPo(itemDto);

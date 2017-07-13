@@ -117,6 +117,7 @@ public class FileUploadAndDownloadController extends ApplicationController {
 	 * @param fileInfoId 文件信息编号
 	 * @return RestResponse
 	 */
+	@RequestMapping(value = "submit", method = POST)
 	public RestResponse submitFile(@RequestParam("fileInfoId") int fileInfoId) {
 
 		if (ZERO_INT == fileInfoId) {
