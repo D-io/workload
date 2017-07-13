@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.dto;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
+
 /**
  * Version:v1.0 (description:  )
  */
@@ -33,7 +35,7 @@ public class ItemDto {
 	/**
 	 * 根据参数计算出的当前总的工作量
 	 */
-	private Integer workload;
+	private Integer workload = ZERO_INT;
 
 	/**
 	 * 组长编号，默认当前申请人为组长。当前登录人编号与此字段一致时，方可进行工作量的修改操作
