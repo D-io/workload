@@ -62,7 +62,7 @@ public class FileInfo {
 	/**
 	 * 文件作者
 	 */
-	private Long authorId;
+	private Integer authorId;
 
 	/**
 	 * 接收人列表
@@ -72,14 +72,14 @@ public class FileInfo {
 	public FileInfo() {
 	}
 
-	public FileInfo(Integer fileId, Long authorId, String recipientsList) {
+	public FileInfo(Integer fileId, Integer authorId, String recipientsList) {
 		this.fileId = fileId;
 		this.authorId = authorId;
 		this.recipientsList = recipientsList;
 	}
 
 	public FileInfo(String path, Long size, String md5Summary, String type, Integer createTime,
-			Integer status, Integer fileId, Long authorId, String recipientsList) {
+			Integer status, Integer fileId, Integer authorId, String recipientsList) {
 		this.path = path;
 		this.size = size;
 		this.md5Summary = md5Summary;
@@ -155,11 +155,11 @@ public class FileInfo {
 		this.fileId = fileId;
 	}
 
-	public Long getAuthorId() {
+	public Integer getAuthorId() {
 		return authorId;
 	}
 
-	public void setAuthorId(Long authorId) {
+	public void setAuthorId(Integer authorId) {
 		this.authorId = authorId;
 	}
 

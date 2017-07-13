@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.uestc.ostec.workload.dao.FileDao">
+  <resultMap id="fileResultMap" type="cn.edu.uestc.ostec.workload.pojo.File">
+    <id column="file_id" jdbcType="INTEGER" property="fileId" />
+    <result column="mime" jdbcType="VARCHAR" property="mime" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="deadline" jdbcType="VARCHAR" property="deadline" />
+    <result column="size" jdbcType="VARCHAR" property="size" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+
+  <select id="select"  resultMap="fileResultMap">
+    SELECT * FROM file
+    <where>
+      1 = 1
+      <if test="null != fileId">
+        AND file_id = #{fileId}
+      </if>
+      <if test="null != userId">
+        AND user_id = #{userId}
+      </if>
+    </where>
+  </select>
+
+  <insert id="insert">
+    INSERT INTO file(file_id,mime,create_time,deadline,size,type,user_id) VALUES(#{fileId},#{mime},#{createTime},#{deadline},#{size},#{type},#{userId})
+  </insert>
+
+  <update id="update">
+    UPDATE file SET mime=#{mime},create_time=#{createTime},deadline=#{deadline},size=#{size}, type=#{type},user_id=#{userId} WHERE file_id=#{fileId}
+  </update>
+
+  <delete id="delete">
+    DELETE FROM file WHERE file_id=#{fileId}
+  </delete>
+
+</mapper>

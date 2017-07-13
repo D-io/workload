@@ -16,10 +16,13 @@ public interface PathMappingConstants {
 	String MANAGER_CATEGORY_PATH = "category";
 
 	/**
-	 * 工作量审核路径
+	 * 工作量条目路径
 	 */
 	String ITEM_PATH = "item";
 
+	/**
+	 * 审核人审核工作量路径
+	 */
 	String REVIEWER_PATH = "reviewer";
 
 	/**

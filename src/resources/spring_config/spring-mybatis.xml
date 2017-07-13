@@ -16,6 +16,7 @@
     <!-- 自动扫描 -->
     <context:component-scan base-package="cn.edu.uestc.ostec.workload.controller" />
     <context:component-scan base-package="cn.edu.uestc.ostec.workload.converter.impl" />
+    <context:component-scan base-package="cn.edu.uestc.ostec.workload.event"/>
     <context:component-scan base-package="cn.edu.uestc.ostec.workload.service" />
     <context:component-scan base-package="cn.edu.uestc.ostec.workload.handler" />
     <context:component-scan base-package="cn.edu.uestc.ostec.workload.dao" />

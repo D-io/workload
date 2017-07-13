@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.uestc.ostec.workload.dao.FileInfoDao">
+  <resultMap id="fileInfoResultMap" type="cn.edu.uestc.ostec.workload.pojo.FileInfo">
+    <id column="file_info_id" jdbcType="INTEGER" property="fileInfoId" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="size" jdbcType="INTEGER" property="size" />
+    <result column="md5_summary" jdbcType="VARCHAR" property="md5Summary" />
+    <result column="type" jdbcType="CHAR" property="type" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="file_id" jdbcType="INTEGER" property="fileId" />
+    <result column="author_id" jdbcType="INTEGER" property="authorId" />
+    <result column="recipients_list" jdbcType="LONGVARCHAR" property="recipientsList" />
+  </resultMap>
+
+  <select id="select" resultMap="fileInfoResultMap">
+    SELECT * FROM file_info
+    <where>
+      1 = 1
+      <if test="null != fileInfoId">
+        AND file_info_id = #{fileInfoId}
+      </if>
+      <if test="null != authorId">
+        AND author_id = #{authorId}
+      </if>
+    </where>
+</select>
+
+  <insert id="insert">
+    INSERT INTO file_info(file_info_id,path,size,md5_summary,type,create_time,status,file_id,author_id,recipients_list) VALUES(#{fileInfoId},#{path},#{size},#{md5Summary},#{type},#{createTime},#{status},#{fileId},#{authorId},#{recipientsList})
+  </insert>
+
+  <update id="update">
+    UPDATE file_info SET path=#{path},size=#{size},md5_summary=#{md5Summary},type=#{type},create_time=#{createTime},status=#{status},file_id=#{fileId},author_id=#{authorId},recipients_list=#{recipientsList} WHERE file_info_id =#{fileInfoId}
+  </update>
+
+  <delete id="delete">
+    DELETE FROM file_info WHERE file_info_id =#{fileInfoId}
+  </delete>
+</mapper>

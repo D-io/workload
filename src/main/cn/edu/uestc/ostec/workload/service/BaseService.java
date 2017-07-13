@@ -3,10 +3,24 @@ package cn.edu.uestc.ostec.workload.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
+
 /**
  * Version:v1.0 (description:  )
  */
 public interface BaseService {
+
+	/**
+	 * 获取列表中首个元素，列表为空时返回null
+	 *
+	 * @param list 需要获取元素的列表
+	 * @param <T>  POJO类型
+	 * @return 列表非空则返回列表中的首个元素
+	 */
+	default <T> T getFirstElement(List<T> list) {
+
+		return isListAvailable(list) ? list.get(ZERO_INT) : null;
+	}
 
 	/**
 	 * 如果列表可用则返回true
@@ -42,6 +56,19 @@ public interface BaseService {
 	default <T> T objectResult(T object, T defaultObject) {
 
 		return isObjectAvailable(object) ? object : defaultObject;
+	}
+
+	/**
+	 * 返回mapper层结果对象
+	 *
+	 * @param list          从mapper获取的列表
+	 * @param defaultObject 默认对象
+	 * @param <T>           POJO类型
+	 * @return 返回mapper层结果对象
+	 */
+	default <T> T objectResult(List<T> list, T defaultObject) {
+
+		return isListAvailable(list) ? getFirstElement(list) : defaultObject;
 	}
 
 	/**
