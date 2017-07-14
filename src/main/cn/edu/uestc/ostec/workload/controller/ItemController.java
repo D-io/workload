@@ -110,7 +110,9 @@ public class ItemController extends ApplicationController implements OperatingSt
 	 * @return RestResponse
 	 */
 	@RequestMapping(value = "public-selective", method = POST)
-	public RestResponse submitItem(@RequestParam("itemId") Integer... itemIdList) {
+	public RestResponse submitItem(
+			@RequestParam("itemId")
+					Integer... itemIdList) {
 
 		User user = getUser();
 		if (null == user) {
@@ -128,8 +130,8 @@ public class ItemController extends ApplicationController implements OperatingSt
 
 				//申请截止时间限制
 				Category category = categoryService.getCategory(item.getCategoryId());
-				if(DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
-					errorData.put(item.getItemName(),"申请已经截止");
+				if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
+					errorData.put(item.getItemName(), "申请已经截止");
 					continue;
 				}
 
@@ -174,14 +176,14 @@ public class ItemController extends ApplicationController implements OperatingSt
 			return invalidOperationResponse("无可提交的项目");
 		}
 
-		Map<String,Object> errorData = getData();
+		Map<String, Object> errorData = getData();
 		//修改Item状态为未审核态（提交态）
 		for (Item item : itemList) {
 
 			//申请截止时间限制
 			Category category = categoryService.getCategory(item.getCategoryId());
-			if(DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
-				errorData.put(item.getItemName(),"申请已经截止");
+			if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
+				errorData.put(item.getItemName(), "申请已经截止");
 				continue;
 			}
 
@@ -219,13 +221,13 @@ public class ItemController extends ApplicationController implements OperatingSt
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		if(!item.getOwnerId().equals(teacherId)) {
+		if (!item.getOwnerId().equals(teacherId)) {
 			return invalidOperationResponse("非法请求");
 		}
 
 		// 截止时间限定
 		Category category = categoryService.getCategory(item.getCategoryId());
-		if(DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
+		if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
 			return invalidOperationResponse("申请已经截止");
 		}
 
@@ -378,7 +380,7 @@ public class ItemController extends ApplicationController implements OperatingSt
 		}
 
 		Item item = itemService.findItem(itemId);
-		if(null == item) {
+		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
 
@@ -391,17 +393,45 @@ public class ItemController extends ApplicationController implements OperatingSt
 		}
 
 		boolean resetSuccess = itemService.saveItem(item);
-		if(!resetSuccess) {
+		if (!resetSuccess) {
 			return systemErrResponse("重置状态失败");
 		}
 
-		Map<String,Object> data = getData();
-		data.put("item",itemConverter.poToDto(item));
+		Map<String, Object> data = getData();
+		data.put("item", itemConverter.poToDto(item));
 
 		return successResponse(data);
 	}
 
-	//TODO 个人工作量统计页面
+	/**
+	 * 个人工作量汇总统计
+	 *
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "collection", method = GET)
+	public RestResponse getAllItemDtoList() {
+
+		User user = getUser();
+
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		int teacherId = user.getUserId();
+		int workload = 0;
+
+		List<Item> itemList = itemService.findItemsByStatus(CHECKED, teacherId);
+		itemList.addAll(itemService.findItemsByCategory(DOUBTED_CHECKED, teacherId));
+		for (Item item : itemList) {
+			workload += item.getWorkload();
+		}
+
+		Map<String, Object> data = getData();
+		data.put("itemDtoList", itemConverter.poListToDtoList(itemList));
+		data.put("totalWorkload", workload);
+
+		return successResponse(data);
+	}
 
 	/**
 	 * 查找对应的老师的对应状态的对应导入方式的工作量条目信息
