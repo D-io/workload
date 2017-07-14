@@ -1,5 +1,6 @@
 package cn.edu.uestc.ostec.workload.controller;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
+import cn.edu.uestc.ostec.workload.pojo.Teacher;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
@@ -61,69 +63,6 @@ public class ReviewerController extends ApplicationController {
 
 	@Autowired
 	private CategoryConverter categoryConverter;
-
-	//	/**
-	//	 * 审核人获取负责的类目下的工作量提交的信息(自我申报类 and 系统导入类)
-	//	 * 自我申报类：对应查询未审核状态的工作量条目信息
-	//	 * 系统导入类: 1、对应查询未提交状态的工作量条目信息
-	//	 * 2、对应查询存疑状态和存疑通过状态的工作量条目信息
-	//	 *
-	//	 * @return RestResponse
-	//	 */
-	//	@RequestMapping(value = "items", method = GET)
-	//	public RestResponse getReviewItems() {
-	//
-	//		User user = getUser();
-	//		System.out.println(user);
-	//
-	//		if (null == user) {
-	//			return invalidOperationResponse("非法请求");
-	//		}
-	//
-	//		//获取教师ID对应工作量类目下的条目（申报类和导入类）
-	//		int teacherId = user.getUserId();
-	//		List<Category> categoryList = categoryService.getCategoriesByReviewer(teacherId);
-	//		if (categoryList.isEmpty()) {
-	//			return systemErrResponse("error");
-	//		}
-	//
-	//		List<Item> items;
-	//		List<Item> applyUncheckedItemList = new ArrayList<>();
-	//		List<Item> importItemList = new ArrayList<>();
-	//		List<Item> doubtItemList = new ArrayList<>();
-	//
-	//		for (Category category : categoryList) {
-	//			int categoryId = category.getCategoryId();
-	//			if (APPLY_SELF == category.getImportRequired()) {
-	//
-	//				// 根据工作量类目对应的ID查询该类下的工作量条目信息（状态为 未审核）
-	//				items = itemService.findItemsByCategory(categoryId, NON_CHECKED);
-	//				applyUncheckedItemList.addAll(items);
-	//
-	//			} else if (IMPORT_EXCEL == category.getImportRequired()) {
-	//
-	//				// 根据工作量类目对应的ID查询该类下的工作量条目信息 （状态为 未提交）
-	//				items = itemService.findItemsByCategory(categoryId, UNCOMMITTED);
-	//				importItemList.addAll(items);
-	//
-	//				// 根据工作量类目对应的ID查询该类下的工作量子条目信息 （状态为 存疑和存疑通过）
-	//				items = itemService.findItemsByCategory(categoryId, DOUBTED);
-	//				doubtItemList.addAll(items);
-	//				items = itemService.findItemsByCategory(categoryId, DOUBTED_CHECKED);
-	//				doubtItemList.addAll(items);
-	//
-	//			} else {
-	//				return systemErrResponse("error");
-	//			}
-	//		}
-	//
-	//		Map<String, Object> data = getData();
-	//		data.put("applyItemList", itemConverter.poListToDtoList(applyUncheckedItemList));
-	//		data.put("importItemList", itemConverter.poListToDtoList(importItemList));
-	//		data.put("doubtedItemList", itemConverter.poListToDtoList(doubtItemList));
-	//
-	//		return successResponse(data);
-	//	}
 
 	/**
 	 * 获取不同导入方式下的对应的需要审核的工作量条目信息
@@ -263,7 +202,7 @@ public class ReviewerController extends ApplicationController {
 
 		//根据categoryId查询到Category对象，并转换为dto对象
 		Category category = categoryService.getCategory(categoryId);
-		if(null == category) {
+		if (null == category) {
 			return parameterNotSupportResponse("参数有误");
 		}
 
@@ -273,16 +212,16 @@ public class ReviewerController extends ApplicationController {
 		Category newCategory = categoryConverter.dtoToPo(categoryDto);
 
 		//转换为整形时间戳后可进行大小判断
-		if(newCategory.getReviewDeadline() > category.getReviewDeadline()){
+		if (newCategory.getReviewDeadline() > category.getReviewDeadline()) {
 			return parameterNotSupportResponse("时间只能提前");
 		}
 
 		boolean saveSuccess = categoryService.saveCategory(newCategory);
-		if(!saveSuccess) {
+		if (!saveSuccess) {
 			return systemErrResponse("修改失败");
 		}
-		Map<String,Object> data = getData();
-		data.put("newCategory",newCategory);
+		Map<String, Object> data = getData();
+		data.put("newCategory", newCategory);
 
 		return successResponse(data);
 	}
@@ -351,6 +290,64 @@ public class ReviewerController extends ApplicationController {
 
 		return successResponse(data);
 
+	}
+
+	@RequestMapping(value = "/categories", method = GET)
+	public RestResponse getCategory() {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		List<Category> categoryList = categoryService.getCategoriesByReviewer(user.getUserId());
+		if (categoryList.isEmpty()) {
+			return invalidOperationResponse();
+		}
+
+		//获取审核人负责的类目的类目名作为下拉选项
+		List<String> categoryName = new ArrayList<>();
+		for (Category category : categoryList) {
+			categoryName.add(category.getName());
+		}
+
+		Map<String, Object> data = getData();
+		data.put("categoryNameList", categoryName);
+
+		return successResponse(data);
+	}
+
+	@RequestMapping(value = "/all-items", method = GET)
+	public RestResponse getAllItems(
+			@RequestParam("option")
+					String option) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+		int reviewerId = user.getUserId();
+
+		List<ItemDto> importItemList = getReviewItems(reviewerId, IMPORT_EXCEL, CHECKED);
+		importItemList.addAll(getReviewItems(reviewerId, IMPORT_EXCEL, DOUBTED_CHECKED));
+
+		List<ItemDto> applyItemList = getReviewItems(reviewerId, APPLY_SELF, CHECKED);
+		List<ItemDto> checkedItemList = new ArrayList<>();
+		checkedItemList.addAll(importItemList);
+		checkedItemList.addAll(applyItemList);
+
+		//TODO 条件查询
+		Map<String, Object> data = getData();
+		if ("all".equals(option)) {
+
+		} else if ("teachers".equals(option)) {
+
+		} else {
+
+		}
+
+
+		return successResponse(data);
 	}
 
 	/**

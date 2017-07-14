@@ -65,6 +65,8 @@ public class ItemController extends ApplicationController implements OperatingSt
 	@RequestMapping(method = POST)
 	public RestResponse addItem(ItemDto itemDto) {
 
+		//TODO 根据参数和公式进行相应的工作量条目的工作量的计算
+
 		User user = getUser();
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
