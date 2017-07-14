@@ -53,10 +53,8 @@ public class FileUploadAndDownloadController extends ApplicationController {
 	private FileInfoService fileInfoService;
 
 	@RequestMapping(method = POST)
-	public RestResponse fileUpload(
-			@RequestParam
-					MultipartFile file,
-			@RequestParam
+	public RestResponse fileUpload(MultipartFile file,
+			@RequestParam("fileId")
 					int fileId) throws IOException {
 
 		if (file.isEmpty()) {
@@ -68,17 +66,17 @@ public class FileUploadAndDownloadController extends ApplicationController {
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		if (file.getSize() > requestFile.getSize()) {
-			return invalidOperationResponse("上传文件大于要求文件大小，无法上传");
-		}
-
-		if (!getFileExtension(file.getOriginalFilename()).equals(requestFile.getMime())) {
-			return invalidOperationResponse("文件类型错误，无法上传");
-		}
-
-		if (DateHelper.getCurrentTimestamp() > requestFile.getDeadline()) {
-			return invalidOperationResponse("文件上传已截止");
-		}
+		//		if (file.getSize() > requestFile.getSize()) {
+		//			return invalidOperationResponse("上传文件大于要求文件大小，无法上传");
+		//		}
+		//
+		//		if (!getFileExtension(file.getOriginalFilename()).equals(requestFile.getMime())) {
+		//			return invalidOperationResponse("文件类型错误，无法上传");
+		//		}
+		//
+		//		if (DateHelper.getCurrentTimestamp() > requestFile.getDeadline()) {
+		//			return invalidOperationResponse("文件上传已截止");
+		//		}
 
 		FileInfo fileInfo = new FileInfo(fileId, getUserId(), "");
 		boolean isUpload = fileEvent.uploadFile(file, fileInfo);
@@ -114,11 +112,14 @@ public class FileUploadAndDownloadController extends ApplicationController {
 
 	/**
 	 * 提交上传的文件
+	 *
 	 * @param fileInfoId 文件信息编号
 	 * @return RestResponse
 	 */
 	@RequestMapping(value = "submit", method = POST)
-	public RestResponse submitFile(@RequestParam("fileInfoId") int fileInfoId) {
+	public RestResponse submitFile(
+			@RequestParam("fileInfoId")
+					int fileInfoId) {
 
 		if (ZERO_INT == fileInfoId) {
 			return parameterNotSupportResponse();
@@ -129,17 +130,17 @@ public class FileUploadAndDownloadController extends ApplicationController {
 			return invalidOperationResponse();
 		}
 
-		if(UNCOMMITTED.equals(fileInfo.getStatus())) {
+		if (UNCOMMITTED.equals(fileInfo.getStatus())) {
 			return invalidOperationResponse("无法提交");
 		}
 
 		fileInfo.setStatus(SUBMITTED);
 		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
-		if(!submitSuccess) {
+		if (!submitSuccess) {
 			return systemErrResponse("文件上传失败");
 		}
 
-		Map<String,Object> data = getData();
+		Map<String, Object> data = getData();
 		data.put("fileInfo", fileInfo);
 
 		return successResponse(data);

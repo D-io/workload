@@ -17,23 +17,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.uestc.ostec.workload.ExcelTemplateIndex;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.event.FileEvent;
+import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
+import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.FILE_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Version:v1.0 (description: 导入excel中的item数据保存到数据库 )
  */
 
 @RestController
-@RequestMapping()
-public class ItemExcelImportController extends ApplicationController {
+@RequestMapping(FILE_PATH)
+public class ItemExcelController extends ApplicationController implements ExcelTemplateIndex {
 
 	@Autowired
 	private FileEvent fileEvent;
@@ -44,12 +49,16 @@ public class ItemExcelImportController extends ApplicationController {
 	@Autowired
 	private ItemConverter itemConverter;
 
+	@Autowired
+	private CategoryService categoryService;
+
 	/**
 	 * 导入Excel中的信息到数据库
 	 *
 	 * @param fileInfoId 文件信息编号
 	 * @return RestResponse
 	 */
+	@RequestMapping(value = "import", method = POST)
 	public RestResponse importExcel(
 			@RequestParam("categoryId")
 					int categoryId,
@@ -60,6 +69,11 @@ public class ItemExcelImportController extends ApplicationController {
 
 		ItemDto itemDto = null;
 		List<ItemDto> itemDtoList = new ArrayList<>();
+
+		Category category = categoryService.getCategory(categoryId);
+		if(null == category) {
+			return invalidOperationResponse();
+		}
 
 		Map<String,Object> data = getData();
 		Map<String,Object> errorData = getData();
@@ -93,21 +107,23 @@ public class ItemExcelImportController extends ApplicationController {
 					itemDto = new ItemDto();
 
 					//顺序由最终决定的模板决定
-					HSSFCell itemName = row.getCell(0);
-					HSSFCell categoryName = row.getCell(1);
-					HSSFCell ownerId = row.getCell(2);
-					HSSFCell ownerName = row.getCell(3);
-					HSSFCell groupManagerId = row.getCell(4);
-					HSSFCell jsonParameters = row.getCell(5);
-					HSSFCell jobDesc = row.getCell(6);
-					HSSFCell jsonChildWeight = row.getCell(7);
+					HSSFCell itemName = row.getCell(ITEM_NAME_INDEX);
+//					HSSFCell categoryName = row.getCell(CATEGORY_NAME_INDEX);
+					HSSFCell ownerId = row.getCell(OWNER_ID_INDEX);
+//					HSSFCell ownerName = row.getCell(OWNER_NAME_INDEX);
+					HSSFCell groupManagerId = row.getCell(GROUP_MANAGER_INDEX);
+					HSSFCell jsonParameters = row.getCell(JSON_PARAMETERS_INDEX);
+					HSSFCell jobDesc = row.getCell(JOB_DESC_INDEX);
+					HSSFCell jsonChildWeight = row.getCell(JSON_WEIGHT_INDEX);
+//					HSSFCell groupManagerName = row.getCell(GROUP_MANAGER_NAME_INDEX);
 
 					itemDto.setItemName(itemName.getStringCellValue());
-					itemDto.setCategoryName(categoryName.getStringCellValue());
+//					itemDto.setCategoryName(categoryName.getStringCellValue());
 					itemDto.setOwnerId(Integer.parseInt(ownerId.getStringCellValue()));
-					itemDto.setTeacherName(ownerName.getStringCellValue());
+//					itemDto.setTeacherName(ownerName.getStringCellValue());
 					itemDto.setGroupManagerId(
 							Integer.parseInt(groupManagerId.getStringCellValue()));
+//					itemDto.setGroupManagerName(groupManagerName.getStringCellValue());
 					itemDto.setJsonParameter(jsonParameters.getStringCellValue());
 					itemDto.setJobDesc(jobDesc.getStringCellValue());
 					itemDto.setJsonChildWeight(jsonChildWeight.getStringCellValue());

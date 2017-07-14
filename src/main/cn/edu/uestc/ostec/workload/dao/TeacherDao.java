@@ -26,4 +26,11 @@ public interface TeacherDao {
 	 */
 	List<Teacher> findTeachers();
 
+	/**
+	 * 根据姓名查询教师编号
+	 * @param name 姓名
+	 * @return Teacher
+	 */
+	Teacher findIdByName(@Param("name") String name);
+
 }

@@ -55,7 +55,7 @@ public class WorkloadServletContextListener implements ServletContextListener, W
 		servletContext.setAttribute(APPLICATION_FILE_UPLOAD_PATH, fileUploadPath);
 		//设置cas登出地址
 		servletContext.setAttribute(APPLICATION_CAS_SERVER_LOGOUT_PATH,
-				casContextPath + WebParametersConstants.CAS_SERVER_LOUGOUT_PREFIX);
+				casContextPath + WebParametersConstants.CAS_SERVER_LOGOUT_PREFIX);
 		//2.设置参数至application域 end
 	}
 }

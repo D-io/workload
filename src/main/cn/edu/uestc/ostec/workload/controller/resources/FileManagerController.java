@@ -1,12 +1,3 @@
-/*
- * Project: AEMS（工程认证达成度评价管理系统）
- * File: FileManagerController.java
- * Author: 刘文哲
- * Email: liuwnzh@163.com
- * Date: 2017年7月8日
- * Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
- */
-
 package cn.edu.uestc.ostec.workload.controller.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;

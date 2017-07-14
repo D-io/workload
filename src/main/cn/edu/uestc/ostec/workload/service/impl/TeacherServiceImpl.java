@@ -20,11 +20,19 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
 
 	@Override
 	public List<Teacher> findAll() {
+
 		return listResult(teacherDao.findTeachers());
 	}
 
 	@Override
 	public String findTeacherNameById(Integer teacherId) {
+
 		return teacherDao.findNameById(teacherId);
+	}
+
+	@Override
+	public Teacher findIdByName(String name) {
+
+		return teacherDao.findIdByName(name);
 	}
 }

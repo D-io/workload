@@ -13,7 +13,7 @@ public interface WebParametersConstants {
 	/**
 	 * 统一认证中心登出URL前缀
 	 */
-	String CAS_SERVER_LOUGOUT_PREFIX = "/logout?service=";
+	String CAS_SERVER_LOGOUT_PREFIX = "/logout?service=";
 
 	/**
 	 * 文件上传路径

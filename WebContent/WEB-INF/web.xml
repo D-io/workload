@@ -29,6 +29,13 @@
     <param-name>casServerContextPath</param-name>
     <param-value>https://portal.ostec.wshugen.cn:8443/authcas</param-value>
   </context-param>
+  
+  <!-- 文件上传路径配置 BEGIN -->
+  <context-param>
+    <param-name>fileUploadPath</param-name>
+    <param-value>C:\Users\Administrator\Desktop\fileUploadTest</param-value>
+  </context-param>
+  <!-- 文件上传路径配置 END -->
 
   <!-- 启动内置的应用监听器、session监听器 BEGIN -->
   <listener>
@@ -55,8 +62,6 @@
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
   <!-- Spring IOC END -->
-
-  <!-- TODO XSS filter -->
 
   <!--  CAS logout configuration BEGIN -->
   <listener>

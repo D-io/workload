@@ -16,4 +16,8 @@
       SELECT teacher_id,name FROM teacher ORDER BY convert(name using gbk) ASC
     </select>
 
+    <select id="findIdByName" resultMap="teacherResultMap">
+        SELECT teacher_id FORM teacher WHERE name = #{name}
+    </select>
+
 </mapper>
