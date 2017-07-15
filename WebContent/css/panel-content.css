@@ -1,0 +1,77 @@
+.panel {
+    background: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+}
+.panel-heading {
+    background: #f6f6f6;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid #DADADA;
+    border-bottom-color: rgb(218, 218, 218);
+    padding: 18px;
+    position: relative;
+}
+.panel-actions {
+    right: 15px;
+    position: absolute;
+    top: 15px;
+}
+html .panel-primary .panel-actions a {
+    background-color: transparent !important;
+    color: white;
+}
+.panel-actions a, .panel-actions a:focus, .panel-actions a:hover, .panel-actions a:active, .panel-actions a:visited, .panel-actions .panel-action, .panel-actions .panel-action:focus, .panel-actions .panel-action:hover, .panel-actions .panel-action:active, .panel-actions .panel-action:visited {
+    outline: none !important;
+    text-decoration: none !important;
+}
+.panel-actions a, .panel-actions .panel-action {
+    background-color: transparent;
+    border-radius: 2px;
+    color: #b4b4b4;
+    font-size: 14px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    width: 24px;
+}
+.panel-action-toggle, .panel-action-dismiss {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 14px;
+    line-height: 1;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+html .panel-primary .panel-title {
+    color: white;
+}
+.panel-title {
+    color: #33353f;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 20px;
+    padding: 0;
+    text-transform: none;
+}
+.panel-body {
+    background: #fdfdfd;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+}
+h2, .h2 {
+    font-size: 30px;
+    font-size: 3rem;
+}
+h1, h2, h3, .h1, .h2, .h3 {
+    letter-spacing: -1px;
+}
+.panel-action-toggle:before {
+    content: "\f0d7";
+}
+.panel-collapsed .panel-action-toggle:before {
+    content: "\f0d8";
+}
