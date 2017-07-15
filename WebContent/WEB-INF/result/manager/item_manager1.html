@@ -1,0 +1,231 @@
+<!doctype html>
+<html class="fixed">
+    <head>
+
+        <!-- Basic -->
+        <meta charset="UTF-8">
+
+        <title>Tree View | Porto Admin - Responsive HTML5 Template 1.4.1</title>
+        <meta name="keywords" content="HTML5 Admin Template" />
+        <meta name="description" content="Porto Admin - Responsive HTML5 Template">
+        <meta name="author" content="okler.net">
+
+        <!-- Mobile Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+        <!-- Web Fonts  -->
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+        <!-- Vendor CSS 供应商(类似于框架配的)-->
+        <link rel="stylesheet" href="../WebContent/vendor/css/bootstrap.css" />
+        <!-- 图标 -->
+        <link rel="stylesheet" href="../WebContent/vendor/font-awesome/css/font-awesome.css" />
+        <!-- 日历 -->
+        <link rel="stylesheet" href="../WebContent/vendor/bootstrap-datepicker/css/datepicker3.css" />
+
+        <!-- Specific Page Vendor CSS (实现复选框)-->
+        <link rel="stylesheet" href="../WebContent/vendor/jstree/themes/default/style.css" />
+
+        <!-- Theme CSS -->
+        <link rel="stylesheet" href="../WebContent/css/theme.css" />
+
+        <!-- Skin CSS (颜色)-->
+        <link rel="stylesheet" href="../WebContent/css/default.css" />
+        
+        <!-- 日期插件 -->
+        <link rel="stylesheet" href="../WebContent/css/bootstrap-timepicker.css">
+
+        <!-- ztree -->
+        <link rel="stylesheet" href="../WebContent/css/zTreeStyle/zTreeStyle.css" type="text/css">
+        <style type="text/css">
+        .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+    </style>
+
+        <!-- Head Libs (整个框的收缩的实现)-->
+    <script src="../js/vendor/js/modernizr.js"></script>
+    </head>
+    <body>
+        <section class="panel panel-primary" id="tree">
+            <button id="addToTable" class="btn btn-primary"  data-target="#addModal">Add <i class="fa fa-plus"></i></button>
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    <a href="#" class="panel-action panel-action-toggle" data-panel-toggle></a>
+                    <!--<a href="#" class="panel-action panel-action-dismiss" data-panel-dismiss></a>-->
+                </div>    
+                <h2 class="panel-title">教学工作当量计算方式：</h2>
+            </header>
+
+            <!-- Modal -->
+            <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">添加信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">条目名称</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="itemName" name ="name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label ">条目简介</label>
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" id="itemIntro" rows="3" name="desc"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">条目类别</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="itemClass" name="sorting">
+                                            <option value="1">导入类</option>
+                                            <option value="2">审核类</option>
+                                          
+                                        </select> 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">审核人</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="checkPerson" name="reviewerId">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">父条目</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="parentItem" name="parentId">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">父条目审核人</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="parentVerifier">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">是否含有子节点</label>
+                                    <div class="col-sm-9">
+                                        <input type="radio" id="hasChildNode" name="hasChildNode" value="true">是
+                                        <input type="radio" id="noChildNode" name="hasChildNode"  value="false">否
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">申请截止时间</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                             <input type="text" data-plugin-datepicker class="form-control" id="applyEndTme">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">审核截止时间</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                             <input type="text" data-plugin-datepicker class="form-control" id="checkEndTime">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">适用学期</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="semester">
+                                            <option>2017-2018-1</option>
+                                            <option>2017-2018-2</option>
+                                            <option>2016-2017-1</option>
+                                            <option>2016-2017-2</option>
+                                            <option>2015-2016-1</option>
+                                            <option>2015-2016-2</option>
+                                           
+                                        </select> 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">计算公式参数配置</label>
+                                    <div class="col-sm-9">
+                                        
+                                        <a class="btn btn-primary" role="button" data-toggle="collapse" href="#parameter" aria-expanded="false" aria-controls="collapseExample">
+                                        <i class="fa fa-plus"></i>
+                                        </a>
+                                        <div class="collapse" id="parameter">
+                                          <div class="well">
+                                            <table class="table" id="parameterTable">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>参数名称</th>
+                                                    <th>参数符号</th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr>
+                                                   <td>1</td>
+                                                   <td><input type="text" name="parameterName"></td>
+                                                   <td><input type="text" name="parameterSymbol"></td>
+                                                   <td><a class="btn" onclick="addParameter()"><i class="fa fa-plus"></i></a></td>
+                                                </tr>
+                                            </table>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">计算公式</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="formula">
+                                    </div>
+                                </div>             
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" id="save">保存</button>
+                        </div>
+                    </div>
+                </div>              
+            </div>
+                <div class="allTree">
+  
+                    
+                    <div class="panel-body">
+                        <div class="zTreeDemoBackground left">
+                             <ul id="treeDemo" class="ztree"></ul>
+                        </div>
+                    </div>
+
+                </div>          
+        </section>
+        <!-- Vendor -->
+        <script src="../WebContent/vendor/js/jquery.js"></script>
+        <script src="../WebContent/vendor/js/jquery.browser.mobile.js"></script>
+        <script src="../WebContent/vendor/js/bootstrap.js"></script>
+        <!-- 收缩 -->
+        <script src="../WebContent/vendor/js/nanoscroller.js"></script>
+        <!-- 日历 -->
+        <script src="../WebContent/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+        
+        <!-- Theme Base, Components and Settings -->
+        <script src="../WebContent/js/theme.js"></script>
+        
+        <!-- Theme Custom -->
+        <script src="../WebContent/js/theme.custom.js"></script>
+        
+        <!-- Theme Initialization Files -->
+        <script src="../WebContent/js/theme.init.js"></script>
+        
+        <!-- ztree-->
+
+        <script type="text/javascript" src="../WebContent/js/jquery.ztree.core.js"></script>
+        <script type="text/javascript" src="../WebContent/js/jquery.ztree.excheck.js"></script>
+        <script type="text/javascript" src="../WebContent/js/jquery.ztree.exedit.js"></script>
+
+        <!-- Examples (实现复选框)-->
+        <script src="../WebContent/js/ajax-ztree.js"></script>
+    </body>
+</html>
