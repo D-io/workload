@@ -78,4 +78,6 @@ public interface ItemDao extends BaseDao<Item> {
 					Integer categoryId,
 			@Param("status")
 					Integer status);
+
+	List<Item> selectValidItemByCategory(Integer categoryId);
 }

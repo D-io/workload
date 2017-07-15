@@ -55,6 +55,12 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	}
 
 	@Override
+	public List<Item> findItemByCategory(Integer categoryId) {
+
+		return listResult(itemDao.selectValidItemByCategory(categoryId));
+	}
+
+	@Override
 	public List<Item> findItemsByCategory(Integer categoryId,Integer status) {
 
 		return itemDao.selectItemsByCategory(categoryId,status);

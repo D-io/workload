@@ -21,6 +21,7 @@ public interface ItemService extends BaseService {
 
 	/**
 	 * 保存Item信息
+	 *
 	 * @param item 工作量信息
 	 * @return Boolean
 	 */
@@ -28,6 +29,7 @@ public interface ItemService extends BaseService {
 
 	/**
 	 * 查找Item信息
+	 *
 	 * @param itemId 工作量对应的Id
 	 * @return Item
 	 */
@@ -35,14 +37,16 @@ public interface ItemService extends BaseService {
 
 	/**
 	 * 查找对应老师的全部工作量条目信息
-	 * @param status 工作量状态
+	 *
+	 * @param status    工作量状态
 	 * @param teacherId 教师编号
 	 * @return List<Item>
 	 */
-	List<Item> findItemsByStatus(Integer status,Integer teacherId);
+	List<Item> findItemsByStatus(Integer status, Integer teacherId);
 
 	/**
 	 * 删除Item信息(置为Disable状态)
+	 *
 	 * @param itemId 工作量编号
 	 * @return Boolean
 	 */
@@ -50,15 +54,26 @@ public interface ItemService extends BaseService {
 
 	/**
 	 * 彻底删除对应的item对象
+	 *
 	 * @param itemId item编号
 	 * @return Boolean
 	 */
 	Boolean deleteItem(Integer itemId);
 
 	/**
-	 * 根据CategoryId查找提交了的Item信息
+	 * 根绝类目编号和状态查询条目信息
+	 *
+	 * @param categoryId 类目编号
+	 * @param status     状态
+	 * @return List<Item>
+	 */
+	List<Item> findItemsByCategory(Integer categoryId, Integer status);
+
+	/**
+	 * 根据类目编号查询所有有效的条目信息
+	 *
 	 * @param categoryId 类目编号
 	 * @return List<Item>
 	 */
-	List<Item> findItemsByCategory(Integer categoryId,Integer status);
+	List<Item> findItemByCategory(Integer categoryId);
 }

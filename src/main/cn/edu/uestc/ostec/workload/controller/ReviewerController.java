@@ -292,7 +292,7 @@ public class ReviewerController extends ApplicationController {
 
 	}
 
-	@RequestMapping(value = "/categories", method = GET)
+	@RequestMapping(value = "categories", method = GET)
 	public RestResponse getCategory() {
 
 		User user = getUser();
@@ -317,10 +317,19 @@ public class ReviewerController extends ApplicationController {
 		return successResponse(data);
 	}
 
-	@RequestMapping(value = "/all-items", method = GET)
+	/**
+	 * 条件查询
+	 *
+	 * @param option 条件(category,all,teacher)
+	 * @param value  对应条件的标识符，categoryName or teacherName
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "all-items", method = GET)
 	public RestResponse getAllItems(
 			@RequestParam("option")
-					String option) {
+					String option,
+			@RequestParam(required = false)
+					String value) {
 
 		User user = getUser();
 		if (null == user) {
@@ -328,24 +337,52 @@ public class ReviewerController extends ApplicationController {
 		}
 		int reviewerId = user.getUserId();
 
-		List<ItemDto> importItemList = getReviewItems(reviewerId, IMPORT_EXCEL, CHECKED);
-		importItemList.addAll(getReviewItems(reviewerId, IMPORT_EXCEL, DOUBTED_CHECKED));
-
-		List<ItemDto> applyItemList = getReviewItems(reviewerId, APPLY_SELF, CHECKED);
-		List<ItemDto> checkedItemList = new ArrayList<>();
-		checkedItemList.addAll(importItemList);
-		checkedItemList.addAll(applyItemList);
-
-		//TODO 条件查询
-		Map<String, Object> data = getData();
-		if ("all".equals(option)) {
-
-		} else if ("teachers".equals(option)) {
-
-		} else {
-
+		List<Item> itemList = new ArrayList<>();
+		List<Category> categoryList = categoryService.getCategoriesByReviewer(reviewerId);
+		for (Category category : categoryList) {
+			itemList.addAll(itemService.findItemByCategory(category.getCategoryId()));
 		}
 
+		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
+		List<ItemDto> itemDtoGroup = new ArrayList<>();
+		double workload = ZERO_DOUBLE;
+
+		Map<String, Object> data = getData();
+
+		//TODO 添加小组或者个人查询条件
+		//TODO 对应的需要在Item的数据表中添加相应的字段
+
+		if ("all".equals(option)) {
+			data.put("itemList", itemDtoList);
+		} else if ("teacher".equals(option)) {
+
+			for (ItemDto itemDto : itemDtoList) {
+				if (value.equals(itemDto.getTeacherName())) {
+					itemDtoGroup.add(itemDto);
+					data.put("itemList", itemDtoGroup);
+				}
+			}
+
+		} else if ("category".equals(option)) {
+
+			for (ItemDto itemDto : itemDtoList) {
+				if (value.equals(itemDto.getCategoryName())) {
+					itemDtoGroup.add(itemDto);
+					data.put("itemList", itemDtoGroup);
+				}
+			}
+
+		} else {
+			return parameterNotSupportResponse();
+		}
+
+		for (ItemDto itemDto : itemDtoGroup) {
+			Integer status = itemDto.getStatus();
+			if (CHECKED.equals(status) || DOUBTED.equals(status)) {
+				workload += itemDto.getWorkload();
+			}
+		}
+		data.put("totalWorkload", workload);
 
 		return successResponse(data);
 	}
