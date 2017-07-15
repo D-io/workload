@@ -32,6 +32,6 @@ public class JsonTypeHandler extends BaseTypeHandler {
 	public void setNonNullParameter(PreparedStatement arg0, int arg1,
 			Object arg2, JdbcType arg3) throws SQLException {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
