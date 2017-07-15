@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
+import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REVIEWER_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
@@ -129,13 +131,13 @@ public class ReviewInfoListController extends ApplicationController {
 		}
 
 		//获取审核人负责的类目的类目名作为下拉选项
-		List<String> categoryName = new ArrayList<>();
+		List<String> categoryBriefs = new ArrayList<>();
 		for (Category category : categoryList) {
-			categoryName.add(category.getName());
+			categoryBriefs.add(category.getName());
 		}
 
 		Map<String, Object> data = getData();
-		data.put("categoryNameList", categoryName);
+		data.put("categoryList", categoryBriefs);
 
 		return successResponse(data);
 	}
