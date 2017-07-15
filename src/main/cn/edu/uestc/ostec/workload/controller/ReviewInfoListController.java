@@ -57,7 +57,9 @@ public class ReviewInfoListController extends ApplicationController {
 	@RequestMapping(value = "items", method = GET)
 	public RestResponse getItems(
 			@RequestParam("importRequired")
-					Integer importRequired) {
+					Integer importRequired,
+			@RequestParam(required = false)
+					String option) {
 
 		// 用户验证
 		User user = getUser();
@@ -85,6 +87,14 @@ public class ReviewInfoListController extends ApplicationController {
 			//系统导入-未提交状态
 			List<ItemDto> unCommittedItem = itemService
 					.listResult(getReviewItems(teacherId, importRequired, UNCOMMITTED));
+			if("uncommitted".equals(option)) {
+				data.put("unCommittedItem", unCommittedItem);
+				return successResponse(data);
+			}
+
+			//系统导入-未审核状态
+			List<ItemDto> nonCheckedItem = itemService
+					.listResult(getReviewItems(teacherId, importRequired, NON_CHECKED));
 
 			//系统导入-存疑状态-疑问解决状态
 			List<ItemDto> doubtedItemList = itemService
@@ -92,8 +102,8 @@ public class ReviewInfoListController extends ApplicationController {
 			doubtedItemList.addAll(itemService
 					.listResult(getReviewItems(teacherId, importRequired, DOUBTED_CHECKED)));
 
-			data.put("unCommittedItem", unCommittedItem);
 			data.put("doubtedItem", doubtedItemList);
+			data.put("nonCheckedItem",nonCheckedItem);
 
 			return successResponse(data);
 
