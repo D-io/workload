@@ -11,9 +11,19 @@ public interface PathMappingConstants {
 	String DEFAULT_WEB_URL_SEPARATOR = "/";
 
 	/**
+	 * 管理路径
+	 */
+	String MANAGE_PATH = "/manage";
+
+	/**
+	 * 信息获取路径
+	 */
+	String INFO_PATH = "/info";
+
+	/**
 	 * 工作量类目路径
 	 */
-	String MANAGER_CATEGORY_PATH = "category";
+	String CATEGORY_PATH = "category";
 
 	/**
 	 * 工作量条目路径
@@ -29,6 +39,11 @@ public interface PathMappingConstants {
 	 * 文件信息控制器映射路径
 	 */
 	String FILE_INFO_PATH = "file/info";
+
+	/**
+	 * 公共信息控制器路径
+	 */
+	String COMMON_INFO_PATH = "common";
 
 	/**
 	 * 文件控制器映射路径
