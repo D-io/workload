@@ -1,4 +1,4 @@
-package cn.edu.uestc.ostec.workload.pojo;
+package cn.edu.uestc.ostec.workload.dto;
 
 /**
  * Version:v1.0 (description: 配置公式参数，用于Json字段的映射 )

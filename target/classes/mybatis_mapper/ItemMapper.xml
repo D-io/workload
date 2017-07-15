@@ -7,7 +7,7 @@
     <result column="category_id" property="categoryId" jdbcType="INTEGER" />
     <result column="owner_id" property="ownerId" jdbcType="INTEGER" />
     <result column="json_parameter" property="jsonParameter" jdbcType="VARCHAR" />
-    <result column="workload" property="workload" jdbcType="INTEGER" />
+    <result column="workload" property="workload" jdbcType="DOUBLE" />
     <result column="group_manager_id" property="groupManagerId" jdbcType="INTEGER" />
     <result column="apply_desc" property="applyDesc" jdbcType="VARCHAR" />
     <result column="job_desc" property="jobDesc" jdbcType="VARCHAR" />
@@ -36,7 +36,7 @@
   <insert id="insert">
     insert into item (<include refid="Base_Column_List" />)
     values (#{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, #{ownerId,jdbcType=INTEGER},
-      #{jsonParameter,jdbcType=VARCHAR}, #{workload,jdbcType=INTEGER}, #{groupManagerId,jdbcType=INTEGER}, 
+      #{jsonParameter,jdbcType=VARCHAR}, #{workload,jdbcType=DOUBLE}, #{groupManagerId,jdbcType=INTEGER},
       #{applyDesc,jdbcType=VARCHAR}, #{jobDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
       #{jsonChildWeight,jdbcType=VARCHAR}, #{proof,jdbcType=LONGVARCHAR})
   </insert>
@@ -47,7 +47,7 @@
       category_id = #{categoryId,jdbcType=INTEGER},
       owner_id = #{ownerId,jdbcType=INTEGER},
       json_parameter = #{jsonParameter,jdbcType=VARCHAR},
-      workload = #{workload,jdbcType=INTEGER},
+      workload = #{workload,jdbcType=DOUBLE},
       group_manager_id = #{groupManagerId,jdbcType=INTEGER},
       apply_desc = #{applyDesc,jdbcType=VARCHAR},
       job_desc = #{jobDesc,jdbcType=VARCHAR},

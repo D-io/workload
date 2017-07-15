@@ -23,7 +23,7 @@ public class ItemDaoTest extends BaseTest {
 		item.setCategoryId(1);
 		item.setOwnerId(1);
 		item.setJsonParameter("asd");
-		item.setWorkload(20);
+		//item.setWorkload(20);
 		item.setGroupManagerId(1);
 		item.setApplyDesc("desc");
 		item.setJobDesc("asdasd");

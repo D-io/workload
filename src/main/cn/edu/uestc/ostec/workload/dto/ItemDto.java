@@ -1,5 +1,6 @@
 package cn.edu.uestc.ostec.workload.dto;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 
 /**
@@ -35,7 +36,7 @@ public class ItemDto {
 	/**
 	 * 根据参数计算出的当前总的工作量
 	 */
-	private Integer workload = ZERO_INT;
+	private Double workload = ZERO_DOUBLE;
 
 	/**
 	 * 组长编号，默认当前申请人为组长。当前登录人编号与此字段一致时，方可进行工作量的修改操作
@@ -156,11 +157,11 @@ public class ItemDto {
 		this.jsonParameter = jsonParameter;
 	}
 
-	public Integer getWorkload() {
+	public Double getWorkload() {
 		return workload;
 	}
 
-	public void setWorkload(Integer workload) {
+	public void setWorkload(Double workload) {
 		this.workload = workload;
 	}
 

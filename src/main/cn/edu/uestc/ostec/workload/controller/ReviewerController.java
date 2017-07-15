@@ -237,7 +237,7 @@ public class ReviewerController extends ApplicationController {
 			@RequestParam("itemId")
 					Integer itemId,
 			@RequestParam("workload")
-					Integer workload) {
+					Double workload) {
 
 		User user = getUser();
 		if (null == user) {

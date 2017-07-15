@@ -35,7 +35,7 @@ public class Item {
 	/**
 	 * 根据参数计算出的当前总的工作量
 	 */
-	private Integer workload;
+	private Double workload;
 
 	/**
 	 * 组长编号，默认当前申请人为组长。当前登录人编号与此字段一致时，方可进行工作量的修改操作
@@ -107,11 +107,11 @@ public class Item {
 		this.jsonParameter = jsonParameter == null ? null : jsonParameter.trim();
 	}
 
-	public Integer getWorkload() {
+	public Double getWorkload() {
 		return workload;
 	}
 
-	public void setWorkload(Integer workload) {
+	public void setWorkload(Double workload) {
 		this.workload = workload;
 	}
 

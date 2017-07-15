@@ -7,7 +7,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import cn.edu.uestc.ostec.workload.pojo.ParameterValue;
+import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 
@@ -16,6 +16,9 @@ import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
  */
 public class FormulaCalculate {
 
+	/**
+	 * 通过使用JDK自带的类可以实现调用JS的功能
+	 */
 	//调用JS
 	static ScriptEngine jse = new ScriptEngineManager().getEngineByName("JavaScript");
 

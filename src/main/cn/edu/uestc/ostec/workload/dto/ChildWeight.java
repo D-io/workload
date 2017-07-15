@@ -1,4 +1,4 @@
-package cn.edu.uestc.ostec.workload.pojo;
+package cn.edu.uestc.ostec.workload.dto;
 
 /**
  * Version:v1.0 (description: 成员权重，用于Json字段的映射 )
