@@ -24,4 +24,9 @@ public class ParameterValue {
 	public void setValue(double value) {
 		this.value = value;
 	}
+
+	public ParameterValue(String symbol, double value) {
+		this.symbol = symbol;
+		this.value = value;
+	}
 }
