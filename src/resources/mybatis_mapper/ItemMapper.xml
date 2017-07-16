@@ -83,4 +83,11 @@
     FROM item
     WHERE category_id = #{categoryId} AND status != -1
   </select>
+
+  <select id="All" resultMap="itemResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM item
+    WHERE status != -1 AND status != 0
+  </select>
 </mapper>

@@ -2,6 +2,7 @@ package cn.edu.uestc.ostec.workload.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -43,6 +44,43 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 	@Autowired
 	private SubjectConverter subjectConverter;
+
+	/**
+	 * 获取老师对应该类目下的条目信息
+	 * @param categoryId 类目编号
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "item-group", method = GET)
+	public RestResponse getItemsByCategory(
+			@RequestParam("categoryId")
+					Integer categoryId) {
+
+		User user = getUser();
+		System.out.println(user);
+
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+		int teacherId = user.getUserId();
+
+		List<Item> itemList = itemService.findItemByCategory(categoryId);
+
+		if (null == itemList || itemList.isEmpty()) {
+			return parameterNotSupportResponse("参数有误");
+		}
+
+		List<Item> teacherItems = new ArrayList<>();
+		for(Item item:itemList) {
+			if(item.getOwnerId().equals(teacherId)) {
+				teacherItems.add(item);
+			}
+		}
+
+		Map<String,Object> data = getData();
+		data.put("itemList",itemConverter.poListToDtoList(teacherItems));
+
+		return successResponse(data);
+	}
 
 	/**
 	 * 获取教师各自申报的工作量信息(Apply_Self)

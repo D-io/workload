@@ -1,5 +1,76 @@
 ## 工作量条目Item接口
 
+### 获取教师对应的类目下的工作量信息
+- 接口地址：`/item/info/item-group`
+- 支持格式：`json`
+- 请求方式：`GET`
+- 请求示例：`localhost:8080/item/info/item-group?categoryId=2`
+
+- 请求参数具体说明：
+参数名 |类型 | 说明
+---|---|---
+categoryId | int | 类目编号
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "itemList": [
+            {
+                "itemId": 2,
+                "itemName": "name",
+                "categoryId": 2,
+                "ownerId": 3210343,
+                "jsonParameter": "asd",
+                "workload": 20,
+                "groupManagerId": 1,
+                "applyDesc": "desc",
+                "jobDesc": "asdasd",
+                "status": 1,
+                "jsonChildWeight": "21",
+                "proof": "ASDASDSA",
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": null,
+                "categoryName": "名字去去去去去去前期",
+                "importRequired": 0
+            },
+            {
+                "itemId": 3,
+                "itemName": "工作量",
+                "categoryId": 2,
+                "ownerId": 3210343,
+                "jsonParameter": "asd",
+                "workload": 200,
+                "groupManagerId": 5130121,
+                "applyDesc": "申请描述",
+                "jobDesc": null,
+                "status": 1,
+                "jsonChildWeight": "12",
+                "proof": null,
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "邵俊明",
+                "categoryName": "名字去去去去去去前期",
+                "importRequired": 0
+            }
+        ]
+    }
+}
+```
+
 ### 获取教师各自申报的工作量信息(Apply_Self)
 - 接口地址：`/item/apply-list`
 - 支持格式：`json`

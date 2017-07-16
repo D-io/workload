@@ -26,7 +26,6 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.M
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
@@ -38,7 +37,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @RestController
 @RequestMapping(ITEM_PATH + MANAGE_PATH)
-public class ItemManageController extends ApplicationController{
+public class ItemManageController extends ApplicationController {
 
 	@Autowired
 	private AdminService adminService;
@@ -76,19 +75,14 @@ public class ItemManageController extends ApplicationController{
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
+		Integer status = itemDto.getImportRequired();
 
-		if (ROLE_REVIEWER.equals(role)) {
+		if (ROLE_REVIEWER.equals(role) && APPLY_SELF.equals(status)) {
 			item.setStatus(NON_CHECKED);
-		} else if (ROLE_PROPOSER.equals(role)) {
-			if (IMPORT_EXCEL.equals(itemDto.getImportRequired())) {
-				item.setStatus(DOUBTED);
-			}else if (APPLY_SELF.equals(itemDto.getImportRequired())) {
-				item.setStatus(UNCOMMITTED);
-			}else {
-				return systemErrResponse();
-			}
+		} else if (ROLE_PROPOSER.equals(role) && IMPORT_EXCEL.equals(status)) {
+			item.setStatus(DOUBTED);
 		} else {
-			return parameterNotSupportResponse("参数有误");
+			item.setStatus(UNCOMMITTED);
 		}
 
 		boolean resetSuccess = itemService.saveItem(item);
@@ -101,7 +95,6 @@ public class ItemManageController extends ApplicationController{
 
 		return successResponse(data);
 	}
-
 
 	/**
 	 * 删除Item信息(置为Disable状态)

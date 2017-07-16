@@ -80,4 +80,6 @@ public interface ItemDao extends BaseDao<Item> {
 					Integer status);
 
 	List<Item> selectValidItemByCategory(Integer categoryId);
+
+	List<Item> selectAll();
 }

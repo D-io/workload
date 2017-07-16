@@ -199,7 +199,7 @@ public class ReviewInfoListController extends ApplicationController {
 
 		for (ItemDto itemDto : itemDtoGroup) {
 			Integer status = itemDto.getStatus();
-			if (CHECKED.equals(status) || DOUBTED.equals(status)) {
+			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
 				workload += itemDto.getWorkload();
 			}
 		}
