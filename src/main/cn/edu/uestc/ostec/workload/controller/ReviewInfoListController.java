@@ -93,18 +93,15 @@ public class ReviewInfoListController extends ApplicationController {
 				return successResponse(data);
 			}
 
-			//系统导入-未审核状态
-			List<ItemDto> nonCheckedItem = itemService
-					.listResult(getReviewItems(teacherId, importRequired, NON_CHECKED));
 
 			//系统导入-存疑状态-疑问解决状态
 			List<ItemDto> doubtedItemList = itemService
 					.listResult(getReviewItems(teacherId, importRequired, DOUBTED));
-			doubtedItemList.addAll(itemService
-					.listResult(getReviewItems(teacherId, importRequired, DOUBTED_CHECKED)));
+			List<ItemDto> doubtedCheckedList = itemService
+					.listResult(getReviewItems(teacherId, importRequired, DOUBTED_CHECKED));
 
 			data.put("doubtedItem", doubtedItemList);
-			data.put("nonCheckedItem", nonCheckedItem);
+			data.put("doubtedCheckedItem", doubtedCheckedList);
 
 			return successResponse(data);
 

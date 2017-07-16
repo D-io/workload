@@ -31,6 +31,11 @@ public class SubjectDto {
 	private Integer sendFromId;
 
 	/**
+	 * 发送人姓名
+	 */
+	private String sendFromName;
+
+	/**
 	 * 发送时间
 	 */
 	private String sendTime;
@@ -73,5 +78,13 @@ public class SubjectDto {
 
 	public void setSendTime(String sendTime) {
 		this.sendTime = sendTime;
+	}
+
+	public String getSendFromName() {
+		return sendFromName;
+	}
+
+	public void setSendFromName(String sendFromName) {
+		this.sendFromName = sendFromName;
 	}
 }

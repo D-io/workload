@@ -1,10 +1,10 @@
 package cn.edu.uestc.ostec.workload.converter.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
-
 import cn.edu.uestc.ostec.workload.converter.Converter;
+import cn.edu.uestc.ostec.workload.dao.TeacherDao;
 import cn.edu.uestc.ostec.workload.dto.SubjectDto;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
@@ -15,6 +15,9 @@ import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 @Component
 public class SubjectConverter implements Converter<Subject,SubjectDto> {
 
+	@Autowired
+	private TeacherDao teacherDao;
+
 	@Override
 	public SubjectDto poToDto(Subject po) {
 
@@ -23,6 +26,7 @@ public class SubjectConverter implements Converter<Subject,SubjectDto> {
 		subjectDto.setItemId(po.getItemId());
 		subjectDto.setMsgContent(po.getMsgContent());
 		subjectDto.setSendFromId(po.getSendFromId());
+		subjectDto.setSendFromName(teacherDao.findNameById(po.getSendFromId()));
 
 		subjectDto.setSendTime(DateHelper.getDateTime(po.getSendTime()));
 		return subjectDto;

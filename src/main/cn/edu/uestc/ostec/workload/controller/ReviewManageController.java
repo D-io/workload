@@ -12,6 +12,7 @@ import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -82,13 +83,13 @@ public class ReviewManageController extends ApplicationController {
 			return parameterNotSupportResponse("无效参数");
 		}
 
-		if (!CHECKED.equals(status) || !DENIED.equals(status)) {
+		if (!(CHECKED.equals(status) || DENIED.equals(status))) {
 			return parameterNotSupportResponse("无效参数");
 		}
 
 		//身份校验
 		Category category = categoryService.getCategory(item.getCategoryId());
-		if (user.getUserId().equals(category.getReviewerId())) {
+		if (!user.getUserId().equals(category.getReviewerId())) {
 			return invalidOperationResponse("非法操作");
 		}
 
@@ -96,25 +97,26 @@ public class ReviewManageController extends ApplicationController {
 		item.setStatus(status);
 		boolean saveSuccess = itemService.saveItem(item);
 
-		//设置对应的Subject信息
+		Map<String, Object> data = getData();
+
+		//设置对应的Subject信息（有消息作为参数，同时为拒绝状态）
 		Subject subject = new Subject();
-		subject.setMsgContent(message);
-		subject.setSendFromId(user.getUserId());
-		subject.setSendTime(DateHelper.getCurrentTimestamp());
-		subject.setItemId(itemId);
-		if (null == subject) {
-			return parameterNotSupportResponse("参数有误");
+		if(null != message && DENIED.equals(status)) {
+			subject.setMsgContent(message);
+			subject.setSendFromId(user.getUserId());
+			subject.setSendTime(DateHelper.getCurrentTimestamp());
+			subject.setItemId(itemId);//保存Subject信息
+			boolean saveMessageSuccess = subjectService.addSubject(subject);
+			if (!saveMessageSuccess || !saveSuccess) {
+				return systemErrResponse("更新状态失败");
+			}
+			data.put("subject", subjectConverter.poToDto(subject));
 		}
 
-		//保存Subject信息
-		boolean saveMessageSuccess = subjectService.addSubject(subject);
-		if (!saveMessageSuccess || !saveSuccess) {
+		if(!saveSuccess) {
 			return systemErrResponse("更新状态失败");
 		}
-
-		Map<String, Object> data = getData();
 		data.put("item", itemConverter.poToDto(item));
-		data.put("subject", subjectConverter.poToDto(subject));
 
 		return successResponse(data);
 	}
@@ -176,9 +178,13 @@ public class ReviewManageController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		//TODO 身份检验
-
+		//审核人身份校验
 		Item item = itemService.findItem(itemId);
+		ItemDto itemDto = itemConverter.poToDto(item);
+		if(user.getUserId() != itemDto.getReviewerId()) {
+			return invalidOperationResponse("非法请求");
+		}
+
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
@@ -196,7 +202,8 @@ public class ReviewManageController extends ApplicationController {
 	}
 
 	/**
-	 * 提交工作量条目
+	 * 提交工作量条目（存疑通过）
+	 * PS.区分对于导入的工作量的文件提交动作,该动作由ItemExcelImport来执行完成
 	 *
 	 * @return RestResponse
 	 */

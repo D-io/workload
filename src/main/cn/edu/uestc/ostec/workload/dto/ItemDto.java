@@ -74,6 +74,11 @@ public class ItemDto {
 	private String teacherName;
 
 	/**
+	 * 审核人编号
+	 */
+	private Integer reviewerId;
+
+	/**
 	 * 审核人姓名
 	 */
 	private String reviewerName;
@@ -92,6 +97,14 @@ public class ItemDto {
 	 * 申报方式or导入方式
 	 */
 	private Integer importRequired;
+
+	public Integer getReviewerId() {
+		return reviewerId;
+	}
+
+	public void setReviewerId(Integer reviewerId) {
+		this.reviewerId = reviewerId;
+	}
 
 	public Integer getImportRequired() {
 		return importRequired;
