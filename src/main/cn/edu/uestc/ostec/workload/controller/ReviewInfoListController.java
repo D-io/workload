@@ -20,7 +20,6 @@ import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
-import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REVIEWER_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
@@ -89,7 +88,7 @@ public class ReviewInfoListController extends ApplicationController {
 			//系统导入-未提交状态
 			List<ItemDto> unCommittedItem = itemService
 					.listResult(getReviewItems(teacherId, importRequired, UNCOMMITTED));
-			if("uncommitted".equals(option)) {
+			if ("uncommitted".equals(option)) {
 				data.put("unCommittedItem", unCommittedItem);
 				return successResponse(data);
 			}
@@ -105,7 +104,7 @@ public class ReviewInfoListController extends ApplicationController {
 					.listResult(getReviewItems(teacherId, importRequired, DOUBTED_CHECKED)));
 
 			data.put("doubtedItem", doubtedItemList);
-			data.put("nonCheckedItem",nonCheckedItem);
+			data.put("nonCheckedItem", nonCheckedItem);
 
 			return successResponse(data);
 
