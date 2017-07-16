@@ -25,6 +25,9 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.I
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGE_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECKED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -69,6 +72,7 @@ public class ItemManageController extends ApplicationController{
 		}
 
 		Item item = itemService.findItem(itemId);
+		ItemDto itemDto = itemConverter.poToDto(item);
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
@@ -76,7 +80,13 @@ public class ItemManageController extends ApplicationController{
 		if (ROLE_REVIEWER.equals(role)) {
 			item.setStatus(NON_CHECKED);
 		} else if (ROLE_PROPOSER.equals(role)) {
-			item.setStatus(UNCOMMITTED);
+			if (IMPORT_EXCEL.equals(itemDto.getImportRequired())) {
+				item.setStatus(DOUBTED);
+			}else if (APPLY_SELF.equals(itemDto.getImportRequired())) {
+				item.setStatus(UNCOMMITTED);
+			}else {
+				return systemErrResponse();
+			}
 		} else {
 			return parameterNotSupportResponse("参数有误");
 		}

@@ -27,6 +27,8 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.M
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REVIEWER_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECKED;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -181,7 +183,7 @@ public class ReviewManageController extends ApplicationController {
 		//审核人身份校验
 		Item item = itemService.findItem(itemId);
 		ItemDto itemDto = itemConverter.poToDto(item);
-		if(user.getUserId() != itemDto.getReviewerId()) {
+		if(!user.getUserId().equals(itemDto.getReviewerId())) {
 			return invalidOperationResponse("非法请求");
 		}
 
@@ -217,8 +219,12 @@ public class ReviewManageController extends ApplicationController {
 			return parameterNotSupportResponse("参数有误");
 		}
 
+		if(!DOUBTED.equals(item.getStatus())) {
+			return invalidOperationResponse();
+		}
+
 		//修改item的状态为CHECKED 审核通过
-		item.setStatus(CHECKED);
+		item.setStatus(DOUBTED_CHECKED);
 		boolean saveSuccess = itemService.saveItem(item);
 		if (!saveSuccess) {
 			return systemErrResponse("保存失败");
