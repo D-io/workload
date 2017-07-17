@@ -1,8 +1,11 @@
 package cn.edu.uestc.ostec.workload.service.impl;
 
+import com.github.pagehelper.PageHelper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.uestc.ostec.workload.dao.ItemDao;
@@ -52,6 +55,18 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	public Boolean deleteItem(Integer itemId) {
 
 		return itemDao.delete(itemId);
+	}
+
+	@Override
+	public List<Item> findAll(int pageNum, int pageSize) {
+
+		PageHelper.startPage(pageNum,pageSize);
+		List<Item> items = itemDao.selectAll();
+		List<Item> itemList =  new ArrayList<>();
+		for(Item item:items) {
+			itemList.add(item);
+		}
+		return itemList;
 	}
 
 	@Override

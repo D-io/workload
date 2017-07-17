@@ -76,4 +76,13 @@ public interface ItemService extends BaseService {
 	 * @return List<Item>
 	 */
 	List<Item> findItemByCategory(Integer categoryId);
+
+	/**
+	 * 分页查询所有的条目信息
+	 *
+	 * @param pageNum  页码
+	 * @param pageSize 页的大小
+	 * @return List<Item>
+	 */
+	List<Item> findAll(int pageNum, int pageSize);
 }

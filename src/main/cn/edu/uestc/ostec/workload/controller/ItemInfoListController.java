@@ -45,8 +45,28 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	@Autowired
 	private SubjectConverter subjectConverter;
 
+	@RequestMapping(value = "item-all",method = GET)
+	public RestResponse getAllItems(
+			@RequestParam("pageNum")
+					int pageNum,
+			@RequestParam("pageSize")
+					int pageSize) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		List<Item> itemList = itemService.findAll(pageNum,pageSize);
+		Map<String,Object> data = getData();
+		data.put("itemList",itemConverter.poListToDtoList(itemList));
+
+		return successResponse(data);
+	}
+
 	/**
 	 * 获取老师对应该类目下的条目信息
+	 *
 	 * @param categoryId 类目编号
 	 * @return RestResponse
 	 */
@@ -56,8 +76,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 					Integer categoryId) {
 
 		User user = getUser();
-		System.out.println(user);
-
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
 		}
@@ -70,14 +88,14 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		List<Item> teacherItems = new ArrayList<>();
-		for(Item item:itemList) {
-			if(item.getOwnerId().equals(teacherId)) {
+		for (Item item : itemList) {
+			if (item.getOwnerId().equals(teacherId)) {
 				teacherItems.add(item);
 			}
 		}
 
-		Map<String,Object> data = getData();
-		data.put("itemList",itemConverter.poListToDtoList(teacherItems));
+		Map<String, Object> data = getData();
+		data.put("itemList", itemConverter.poListToDtoList(teacherItems));
 
 		return successResponse(data);
 	}

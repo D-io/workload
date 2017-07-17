@@ -1,6 +1,12 @@
 package cn.edu.uestc.ostec.workload.dao;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.edu.uestc.ostec.workload.BaseTest;
 import cn.edu.uestc.ostec.workload.pojo.Item;
@@ -51,7 +57,15 @@ public class ItemDaoTest extends BaseTest {
 
 	@Test
 	public void select() throws Exception {
-		System.out.println(itemDao.select(1));
+		PageHelper.startPage(1,2);
+		List<Item> itemList = itemDao.selectAll();
+		System.out.println(itemList.get(0));
+		System.out.println(itemList.get(1));
+		List<Item> items = new ArrayList<>();
+		for(Item item:itemList) {
+			items.add(item);
+		}
+		System.out.println(items);
 	}
 
 }

@@ -5,6 +5,7 @@ import org.junit.Test;
 import cn.edu.uestc.ostec.workload.BaseTest;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
+import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 /**
@@ -14,10 +15,13 @@ public class CategoryServiceImplTest extends BaseTest {
 
 	private CategoryService categoryService;
 
+	private ItemService itemService;
+
 	private Category category;
 
 	{
 		categoryService = getBean(CategoryService.class);
+		itemService = getBean(ItemService.class);
 		category = new Category();
 		category.setName("格式化");
 		category.setDesc("描述去去去前期");
@@ -59,6 +63,7 @@ public class CategoryServiceImplTest extends BaseTest {
 	@Test
 	public void getCategoriesByType() throws Exception {
 		System.out.println(categoryService.getCategoriesByType(0));
+		System.out.println(itemService.findAll(2,2));
 
 	}
 

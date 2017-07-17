@@ -25,7 +25,7 @@
     <bean id="propertyConfigurer"  
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
         <property name="location" value="classpath:jdbc.properties" />  
-    </bean>  
+    </bean>
   
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">  
         <property name="driverClass" value="${driver}" />  
@@ -47,6 +47,19 @@
         <property name="dataSource" ref="dataSource" />  
         <!-- 自动扫描mapping.xml文件 -->  
         <property name="mapperLocations" value="classpath:mybatis_mapper/*Mapper.xml"></property>
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <!--使用下面的方式配置参数，一行配置一个 -->
+                        <value>
+                            supportMethodArguments=true
+                            params=pageNum=pageNumKey;pageSize=pageSizeKey;
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
     </bean>  
   
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->  

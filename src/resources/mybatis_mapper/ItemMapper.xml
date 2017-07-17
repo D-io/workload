@@ -84,7 +84,7 @@
     WHERE category_id = #{categoryId} AND status != -1
   </select>
 
-  <select id="All" resultMap="itemResultMap">
+  <select id="selectAll" resultMap="itemResultMap">
     SELECT
     <include refid="Base_Column_List" />
     FROM item
