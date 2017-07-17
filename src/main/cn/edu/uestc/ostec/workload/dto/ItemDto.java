@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.dto;
 
+import java.util.List;
+
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 
@@ -34,6 +36,11 @@ public class ItemDto {
 	private String jsonParameter;
 
 	/**
+	 * 映射json参数的结果
+	 */
+	private List<ParameterValue> parameterValues = null;
+
+	/**
 	 * 根据参数计算出的当前总的工作量
 	 */
 	private Double workload = ZERO_DOUBLE;
@@ -54,6 +61,11 @@ public class ItemDto {
 	private String jobDesc = null;
 
 	/**
+	 * 映射Json工作描述的集合
+	 */
+	private List<JobDesc> jobDescList = null;
+
+	/**
 	 * 状态
 	 */
 	private Integer status;
@@ -62,6 +74,11 @@ public class ItemDto {
 	 * Json格式存储组员权重，用于计算个人工作量，存储如：{组员1编号：0.4}
 	 */
 	private String jsonChildWeight;
+
+	/**
+	 * 映射Json组员权重的集合
+	 */
+	private List<ChildWeight> childWeightList = null;
 
 	/**
 	 * 证明
@@ -240,5 +257,29 @@ public class ItemDto {
 
 	public void setReviewerName(String reviewerName) {
 		this.reviewerName = reviewerName;
+	}
+
+	public List<ParameterValue> getParameterValues() {
+		return parameterValues;
+	}
+
+	public void setParameterValues(List<ParameterValue> parameterValues) {
+		this.parameterValues = parameterValues;
+	}
+
+	public List<JobDesc> getJobDescList() {
+		return jobDescList;
+	}
+
+	public void setJobDescList(List<JobDesc> jobDescList) {
+		this.jobDescList = jobDescList;
+	}
+
+	public List<ChildWeight> getChildWeightList() {
+		return childWeightList;
+	}
+
+	public void setChildWeightList(List<ChildWeight> childWeightList) {
+		this.childWeightList = childWeightList;
 	}
 }

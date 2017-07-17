@@ -93,7 +93,6 @@ public class ReviewInfoListController extends ApplicationController {
 				return successResponse(data);
 			}
 
-
 			//系统导入-存疑状态-疑问解决状态
 			List<ItemDto> doubtedItemList = itemService
 					.listResult(getReviewItems(teacherId, importRequired, DOUBTED));
@@ -127,9 +126,9 @@ public class ReviewInfoListController extends ApplicationController {
 		}
 
 		//获取审核人负责的类目的类目名作为下拉选项
-		List<String> categoryBriefs = new ArrayList<>();
+		List<CategoryBrief> categoryBriefs = new ArrayList<>();
 		for (Category category : categoryList) {
-			categoryBriefs.add(category.getName());
+			categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName()));
 		}
 
 		Map<String, Object> data = getData();
@@ -208,6 +207,41 @@ public class ReviewInfoListController extends ApplicationController {
 		return successResponse(data);
 	}
 
+//	/**
+//	 * 条件查询
+//	 * @param categoryId 类目编号
+//	 * @param ownerId 教师编号
+//	 * @return RestResponse
+//	 */
+//	@RequestMapping(value = "items" ,method = GET)
+//	public RestResponse getAllItems(
+//			@RequestParam(required = false)
+//					Integer categoryId,
+//			@RequestParam(required = false)
+//					Integer ownerId,
+//			@RequestParam("pageNum")
+//					int pageNum,
+//			@RequestParam("pageSize")
+//					int pageSize) {
+//
+//		User user = getUser();
+//		if (null == user) {
+//			return invalidOperationResponse("非法请求");
+//		}
+//
+//		List<Item> itemList = itemService.findAll(categoryId,null,ownerId,pageNum,pageSize);
+//		double workload = ZERO_DOUBLE;
+//		for(Item item:itemList) {
+//			Integer status = item.getStatus();
+//			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
+//				workload += item.getWorkload();
+//			}
+//		}
+//
+//
+//		return successResponse();
+//	}
+
 	/**
 	 * 获取审核人负责的类目下的对应导入方式对应状态的工作量类目信息
 	 *
@@ -239,4 +273,31 @@ public class ReviewInfoListController extends ApplicationController {
 		return itemConverter.poListToDtoList(itemList);
 	}
 
+	class CategoryBrief {
+
+		private Integer categoryId;
+
+		private String categoryName;
+
+		public Integer getCategoryId() {
+			return categoryId;
+		}
+
+		public void setCategoryId(Integer categoryId) {
+			this.categoryId = categoryId;
+		}
+
+		public String getCategoryName() {
+			return categoryName;
+		}
+
+		public void setCategoryName(String categoryName) {
+			this.categoryName = categoryName;
+		}
+
+		public CategoryBrief(Integer categoryId, String categoryName) {
+			this.categoryId = categoryId;
+			this.categoryName = categoryName;
+		}
+	}
 }

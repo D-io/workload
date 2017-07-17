@@ -176,8 +176,14 @@ data | String | 结果集
     "statusName": "OK",
     "data": {
         "categoryList": [
-            "名字去去去去去去前期",
-            "修改过的教学"
+            {
+                "categoryId": 2,
+                "categoryName": "名字去去去去去去前期"
+            },
+            {
+                "categoryId": 15,
+                "categoryName": "修改过的教学"
+            }
         ]
     }
 }

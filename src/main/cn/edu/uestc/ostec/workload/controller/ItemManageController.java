@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -20,6 +22,7 @@ import cn.edu.uestc.ostec.workload.service.AdminService;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
+import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.ITEM_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGE_PATH;
@@ -188,8 +191,6 @@ public class ItemManageController extends ApplicationController {
 	@RequestMapping(method = POST)
 	public RestResponse addItem(ItemDto itemDto) {
 
-		//TODO 根据参数和公式进行相应的工作量条目的工作量的计算
-
 		User user = getUser();
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
@@ -213,6 +214,11 @@ public class ItemManageController extends ApplicationController {
 		} else {
 			return invalidOperationResponse();
 		}
+
+		//TODO 根据参数和公式进行相应的工作量条目的工作量的计算 待测试
+//		Category category = categoryService.getCategory(itemDto.getCategoryId());
+//		double workload = FormulaCalculate.calculate(category.getFormula(),itemDto.getParameterValues()));
+//		itemDto.setWorkload(workload);
 
 		Item item = itemConverter.dtoToPo(itemDto);
 		item.setStatus(UNCOMMITTED);

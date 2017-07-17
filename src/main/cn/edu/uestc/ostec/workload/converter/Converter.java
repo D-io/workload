@@ -9,8 +9,12 @@
 
 package cn.edu.uestc.ostec.workload.converter;
 
+import com.fasterxml.jackson.databind.JavaType;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.OBJECT_MAPPER;
 
 /**
  * Description: 转换器接口
@@ -61,5 +65,10 @@ public interface Converter<P, D> {
 		}
 
 		return poList;
+	}
+
+	default JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
+		return OBJECT_MAPPER.getTypeFactory()
+				.constructParametricType(collectionClass, elementClasses);
 	}
 }
