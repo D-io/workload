@@ -53,8 +53,11 @@
                     <property name="properties">
                         <!--使用下面的方式配置参数，一行配置一个 -->
                         <value>
-                            supportMethodArguments=true
-                            params=pageNum=pageNumKey;pageSize=pageSizeKey;
+                            helperDialect=mysql
+                            reasonable=true
+                            supportMethodsArguments=true
+                            params=count=countSql
+                            autoRuntimeDialect=true
                         </value>
                     </property>
                 </bean>

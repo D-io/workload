@@ -88,6 +88,17 @@
     SELECT
     <include refid="Base_Column_List" />
     FROM item
-    WHERE status != -1 AND status != 0
+    <where>
+      status != -1 AND status != 0
+      <if test="null != categoryId">
+        AND category_id = #{categoryId}
+      </if>
+      <if test="null != status">
+        AND status = #{status}
+      </if>
+      <if test="null != ownerId">
+        AND owner_id = #{ownerId}
+      </if>
+    </where>
   </select>
 </mapper>

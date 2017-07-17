@@ -58,10 +58,10 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	}
 
 	@Override
-	public List<Item> findAll(int pageNum, int pageSize) {
+	public List<Item> findAll(Integer categoryId,Integer status,Integer ownerId,int pageNum, int pageSize) {
 
 		PageHelper.startPage(pageNum,pageSize);
-		List<Item> items = itemDao.selectAll();
+		List<Item> items = itemDao.selectAll(categoryId,status,ownerId);
 		List<Item> itemList =  new ArrayList<>();
 		for(Item item:items) {
 			itemList.add(item);

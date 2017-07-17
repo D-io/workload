@@ -81,5 +81,19 @@ public interface ItemDao extends BaseDao<Item> {
 
 	List<Item> selectValidItemByCategory(Integer categoryId);
 
-	List<Item> selectAll();
+	/**
+	 * 条件查询所有条目信息
+	 *
+	 * @param categoryId 类目编号
+	 * @param status     状态
+	 * @param ownerId    教师编号
+	 * @return List<Item>
+	 */
+	List<Item> selectAll(
+			@Param("categoryId")
+					Integer categoryId,
+			@Param("status")
+					Integer status,
+			@Param("ownerId")
+					Integer ownerId);
 }

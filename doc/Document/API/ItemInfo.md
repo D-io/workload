@@ -4,13 +4,16 @@
 - 接口地址：`/item/info/item-all`
 - 支持格式：`json`
 - 请求方式：`GET`
-- 请求示例：`localhost:8080/item/info/item-all?pageNum=1&pageSize=2`
+- 请求示例：`localhost:8080/item/info/item-all?pageNum=1&pageSize=100&categoryId=2&status=1&ownerId=12`
 
 - 请求参数具体说明：
-参数名 |类型 | 说明
----|---|---
-pageNum | int | 页码编号
-pageSize | int | 页的大小
+参数名 |类型 | 说明 | 是否必须
+---|---|---|---
+pageNum | int | 页码编号 | 是
+pageSize | int | 页的大小 | 是
+categoryId | int | 类目编号 | 否 （查询条件）
+status | int | 状态值 | 否（查询条件） 
+ownerId | int | 教师Id | 否 （查询条件） 
 
 - 返回参数具体说明：
 

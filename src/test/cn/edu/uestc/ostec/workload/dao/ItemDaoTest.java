@@ -52,20 +52,8 @@ public class ItemDaoTest extends BaseTest {
 
 	@Test
 	public void delete() throws Exception {
-		System.out.println(itemDao.delete(1));
-	}
-
-	@Test
-	public void select() throws Exception {
-		PageHelper.startPage(1,2);
-		List<Item> itemList = itemDao.selectAll();
-		System.out.println(itemList.get(0));
-		System.out.println(itemList.get(1));
-		List<Item> items = new ArrayList<>();
-		for(Item item:itemList) {
-			items.add(item);
-		}
-		System.out.println(items);
+//		System.out.println(itemDao.delete(1));
+		System.out.println(itemDao.selectAll(null,null,null));
 	}
 
 }

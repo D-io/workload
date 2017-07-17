@@ -45,6 +45,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	@Autowired
 	private SubjectConverter subjectConverter;
 
+	//TODO 条件查询，设置参数，动态Sql语句拼接
+
 	/**
 	 * 管理员分页查询所有的条目信息
 	 * @param pageNum 页号
@@ -53,6 +55,12 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	 */
 	@RequestMapping(value = "item-all",method = GET)
 	public RestResponse getAllItems(
+			@RequestParam(required = false)
+					Integer categoryId,
+			@RequestParam(required = false)
+					Integer status,
+			@RequestParam(required = false)
+					Integer ownerId,
 			@RequestParam("pageNum")
 					int pageNum,
 			@RequestParam("pageSize")
@@ -63,7 +71,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return invalidOperationResponse("非法请求");
 		}
 
-		List<Item> itemList = itemService.findAll(pageNum,pageSize);
+		List<Item> itemList = itemService.findAll(categoryId,status,ownerId,pageNum,pageSize);
 		Map<String,Object> data = getData();
 		data.put("itemList",itemConverter.poListToDtoList(itemList));
 
