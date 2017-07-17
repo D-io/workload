@@ -65,7 +65,6 @@ public class ItemManageController extends ApplicationController {
 					String role) {
 		//验证管理员身份
 		int userId = getUserId();
-		System.out.println(userId);
 		if (!adminService.findAllAdmins().contains(userId)) {
 			return systemErrResponse("非法访问");
 		}

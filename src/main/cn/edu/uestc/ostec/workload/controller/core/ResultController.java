@@ -243,4 +243,28 @@ public abstract class ResultController extends BaseController
 		return successResponse();
 	}
 
+	public RestResponse streamResponse(byte bytes[], String fileName) throws IOException {
+
+		HttpServletResponse response = getResponseContext();
+
+		//设置响应类型
+		response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+		response.setHeader("Accept-Ranges", "bytes");
+		//		response.setIntHeader("Accept-Length", Math.toIntExact(file.getSize()));// 解决乱码问题
+
+		// FireFox用ISO-8859-1
+		String encodedFileName;
+		if (Browser.IE.getName() == getClientBrowser()) {
+			encodedFileName = URLEncoder.encode(fileName, "UTF-8");
+		} else {
+			encodedFileName = new String(fileName.getBytes(), "ISO-8859-1");
+		}
+		response.setHeader("Content-Disposition",
+				"attachment; filename=\"" + encodedFileName + "\"; filename*=utf-8''"
+						+ encodedFileName);
+
+		response.getOutputStream().write(bytes);
+		return successResponse();
+	}
+
 }

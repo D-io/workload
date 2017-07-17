@@ -45,6 +45,12 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	@Autowired
 	private SubjectConverter subjectConverter;
 
+	/**
+	 * 管理员分页查询所有的条目信息
+	 * @param pageNum 页号
+	 * @param pageSize 页的大小
+	 * @return RestResponse
+	 */
 	@RequestMapping(value = "item-all",method = GET)
 	public RestResponse getAllItems(
 			@RequestParam("pageNum")

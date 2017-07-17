@@ -26,8 +26,6 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.ROOT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-//TODO 修改doc中的接口路径
-
 /**
  * Version:v1.0 (description: 工作量类目信息展示控制器 )
  */
@@ -141,5 +139,5 @@ public class CategoryInfoListController extends ApplicationController
 		return categoryDtoList;
 	}
 
-	//TODO 工作量统计汇总
+	//TODO 工作量统计汇总 -> ItemInfoController下
 }

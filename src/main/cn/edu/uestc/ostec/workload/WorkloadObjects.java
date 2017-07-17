@@ -43,6 +43,8 @@ public interface WorkloadObjects {
 	 */
 	String ROLE_PROPOSER = "proposer";
 
+	String ROLE_ADMIN = "admin";
+
 	/**
 	 * 获取空的Map&lt;K, V&gt;
 	 *
