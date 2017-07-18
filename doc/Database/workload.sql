@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2017-07-18 10:38:44
+Date: 2017-07-18 10:41:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -135,6 +135,7 @@ CREATE TABLE `item` (
   `proof` text COMMENT '证明，若该条目is_import为0，则存入提交文件，若为1，则该字段为空',
   `status` int(2) NOT NULL COMMENT '状态，0：未提交，1：未审核，2：通过，3：存疑，4 : 存疑通过，5：拒绝， -1：disable（删除）',
   `json_child_weight` text NOT NULL COMMENT '存储团队成员json串（格式{child_id：团队成员,value：团队成员占权重}）',
+  `is_group` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`item_id`),
   KEY `fk_category_id` (`category_id`),
   CONSTRAINT `fk_category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -143,13 +144,13 @@ CREATE TABLE `item` (
 -- ----------------------------
 -- Records of item
 -- ----------------------------
-INSERT INTO `item` VALUES ('1', '213', '2', '3210343', '213', '2.00', '3210343', '', '0', '0', '1', '');
-INSERT INTO `item` VALUES ('2', 'name', '2', '3210343', 'asd', '20.00', '1', 'desc', 'asdasd', 'ASDASDSA', '1', '21');
-INSERT INTO `item` VALUES ('3', '工作量', '2', '3210343', 'asd', '200.00', '5130121', '申请描述', null, null, '1', '12');
-INSERT INTO `item` VALUES ('4', '工作量', '2', '5130121', 'asd', '200.00', '5130121', '申请描述', null, null, '4', '12');
-INSERT INTO `item` VALUES ('5', '位', '3', '3210343', '', '0.00', '0', null, null, null, '1', '');
-INSERT INTO `item` VALUES ('9', '工作量', '15', '5130121', 'asd', '200.00', '5130121', '申请描述', null, null, '1', '12');
-INSERT INTO `item` VALUES ('10', 'workload', '15', '3210343', '{\"A\":10}', '150.00', '5130121', '描述一下', null, null, '5', '{\"A\":12}');
+INSERT INTO `item` VALUES ('1', '213', '2', '3210343', '213', '2.00', '3210343', '', '0', '0', '1', '', '0');
+INSERT INTO `item` VALUES ('2', 'name', '2', '3210343', 'asd', '20.00', '1', 'desc', 'asdasd', 'ASDASDSA', '1', '21', '0');
+INSERT INTO `item` VALUES ('3', '工作量', '2', '3210343', 'asd', '200.00', '5130121', '申请描述', null, null, '1', '12', '0');
+INSERT INTO `item` VALUES ('4', '工作量', '2', '5130121', 'asd', '200.00', '5130121', '申请描述', null, null, '4', '12', '0');
+INSERT INTO `item` VALUES ('5', '位', '3', '3210343', '', '0.00', '0', null, null, null, '1', '', '0');
+INSERT INTO `item` VALUES ('9', '工作量', '15', '5130121', 'asd', '200.00', '5130121', '申请描述', null, null, '1', '12', '0');
+INSERT INTO `item` VALUES ('10', 'workload', '15', '3210343', '{\"A\":10}', '150.00', '5130121', '描述一下', null, null, '5', '{\"A\":12}', '0');
 
 -- ----------------------------
 -- Table structure for `subject`
