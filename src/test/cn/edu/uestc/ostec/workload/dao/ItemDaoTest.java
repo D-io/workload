@@ -53,7 +53,7 @@ public class ItemDaoTest extends BaseTest {
 	@Test
 	public void delete() throws Exception {
 //		System.out.println(itemDao.delete(1));
-		System.out.println(itemDao.selectAll(null,null,null));
+//		System.out.println(itemDao.selectAll(null,null,null));
 	}
 
 }

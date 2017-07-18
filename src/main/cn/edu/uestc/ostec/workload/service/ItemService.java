@@ -86,5 +86,5 @@ public interface ItemService extends BaseService {
 	 * @param pageSize 页的大小
 	 * @return List<Item>
 	 */
-	List<Item> findAll(Integer categoryId,Integer status,Integer ownerId,int pageNum, int pageSize);
+	List<Item> findAll(Integer categoryId,Integer status,Integer ownerId,Integer isGroup,int pageNum, int pageSize);
 }

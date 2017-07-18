@@ -95,5 +95,7 @@ public interface ItemDao extends BaseDao<Item> {
 			@Param("status")
 					Integer status,
 			@Param("ownerId")
-					Integer ownerId);
+					Integer ownerId,
+			@Param("isGroup")
+					Integer isGroup);
 }

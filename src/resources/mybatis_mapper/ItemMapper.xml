@@ -101,6 +101,9 @@
       <if test="null != ownerId">
         AND owner_id = #{ownerId}
       </if>
+      <if test="null != isGroup">
+        AND is_group = #{isGroup}
+      </if>
     </where>
   </select>
 </mapper>

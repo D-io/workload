@@ -190,10 +190,20 @@ data | String | 结果集
 ```
 
 ### 工作量统计（条件查询接口）
-- 接口地址:``
+- 接口地址: `reviewer/info/items-all`
 - 支持格式：`json`
 - 请求方式：`GET`
-- 请求示例：``
+- 请求示例：`localhost:8080/reviewer/info/items?categoryId=2&isGroup=0&ownerId=3210343&pageNum=1&pageSize=100`
+
+- 请求参数具体说明：（查询条件） 分页查询 
+
+参数名 |类型 | 说明 | 是否必填
+---|---|---
+categoryId | int | 类目编号 | 否
+isGroup | int | 小组或者个人 | 否 0为个人，1为小组
+ownerId | int | 教师编号 | 否
+pageNum | int | 页号 | 是
+pageSize | int | 页的大小 | 是
 
 
 - 返回参数具体说明：
@@ -206,6 +216,38 @@ data | String | 结果集
 
 - Json返回成功示例如下：
 ```json
-
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "itemDtoList": [
+            {
+                "itemId": 2,
+                "itemName": "name",
+                "categoryId": 2,
+                "ownerId": 3210343,
+                "jsonParameter": "asd",
+                "parameterValues": null,
+                "workload": 20,
+                "groupManagerId": 1,
+                "applyDesc": "desc",
+                "jobDesc": "asdasd",
+                "jobDescList": null,
+                "status": 1,
+                "jsonChildWeight": "21",
+                "childWeightList": null,
+                "proof": "ASDASDSA",
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": null,
+                "categoryName": "名字去去去去去去前期",
+                "importRequired": 0,
+                "isGroup": 0
+            }
+        ],
+        "totalWorkload": 0
+    }
+}
 ```
 

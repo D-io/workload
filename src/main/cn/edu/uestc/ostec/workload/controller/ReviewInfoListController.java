@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.controller;
 
+import com.mysql.fabric.xmlrpc.base.Data;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,7 @@ import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.support.utils.Date;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REVIEWER_PATH;
@@ -137,110 +140,128 @@ public class ReviewInfoListController extends ApplicationController {
 		return successResponse(data);
 	}
 
-	/**
-	 * 条件查询
-	 *
-	 * @param option 条件(category,all,teacher)
-	 * @param value  对应条件的标识符，categoryName or teacherName
-	 * @return RestResponse
-	 */
-	@RequestMapping(value = "all-items", method = GET)
-	public RestResponse getAllItems(
-			@RequestParam("option")
-					String option,
-			@RequestParam(required = false)
-					String value) {
-
-		User user = getUser();
-		if (null == user) {
-			return invalidOperationResponse("非法请求");
-		}
-		int reviewerId = user.getUserId();
-
-		List<Item> itemList = new ArrayList<>();
-		List<Category> categoryList = categoryService.getCategoriesByReviewer(reviewerId);
-		for (Category category : categoryList) {
-			itemList.addAll(itemService.findItemByCategory(category.getCategoryId()));
-		}
-
-		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
-		List<ItemDto> itemDtoGroup = new ArrayList<>();
-		double workload = ZERO_DOUBLE;
-
-		Map<String, Object> data = getData();
-
-		//TODO 添加小组或者个人查询条件
-		//TODO 对应的需要在Item的数据表中添加相应的字段
-
-		if ("all".equals(option)) {
-			data.put("itemList", itemDtoList);
-		} else if ("teacher".equals(option)) {
-
-			for (ItemDto itemDto : itemDtoList) {
-				if (value.equals(itemDto.getTeacherName())) {
-					itemDtoGroup.add(itemDto);
-					data.put("itemList", itemDtoGroup);
-				}
-			}
-
-		} else if ("category".equals(option)) {
-
-			for (ItemDto itemDto : itemDtoList) {
-				if (value.equals(itemDto.getCategoryName())) {
-					itemDtoGroup.add(itemDto);
-					data.put("itemList", itemDtoGroup);
-				}
-			}
-
-		} else {
-			return parameterNotSupportResponse();
-		}
-
-		for (ItemDto itemDto : itemDtoGroup) {
-			Integer status = itemDto.getStatus();
-			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
-				workload += itemDto.getWorkload();
-			}
-		}
-		data.put("totalWorkload", workload);
-
-		return successResponse(data);
-	}
-
 //	/**
 //	 * 条件查询
-//	 * @param categoryId 类目编号
-//	 * @param ownerId 教师编号
+//	 *
+//	 * @param option 条件(category,all,teacher)
+//	 * @param value  对应条件的标识符，categoryName or teacherName
 //	 * @return RestResponse
 //	 */
-//	@RequestMapping(value = "items" ,method = GET)
+//	@RequestMapping(value = "all-items", method = GET)
 //	public RestResponse getAllItems(
+//			@RequestParam("option")
+//					String option,
 //			@RequestParam(required = false)
-//					Integer categoryId,
-//			@RequestParam(required = false)
-//					Integer ownerId,
-//			@RequestParam("pageNum")
-//					int pageNum,
-//			@RequestParam("pageSize")
-//					int pageSize) {
+//					String value) {
 //
 //		User user = getUser();
 //		if (null == user) {
 //			return invalidOperationResponse("非法请求");
 //		}
+//		int reviewerId = user.getUserId();
 //
-//		List<Item> itemList = itemService.findAll(categoryId,null,ownerId,pageNum,pageSize);
-//		double workload = ZERO_DOUBLE;
-//		for(Item item:itemList) {
-//			Integer status = item.getStatus();
-//			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
-//				workload += item.getWorkload();
-//			}
+//		List<Item> itemList = new ArrayList<>();
+//		List<Category> categoryList = categoryService.getCategoriesByReviewer(reviewerId);
+//		for (Category category : categoryList) {
+//			itemList.addAll(itemService.findItemByCategory(category.getCategoryId()));
 //		}
 //
+//		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
+//		List<ItemDto> itemDtoGroup = new ArrayList<>();
+//		double workload = ZERO_DOUBLE;
 //
-//		return successResponse();
+//		Map<String, Object> data = getData();
+//
+//		//TODO 添加小组或者个人查询条件
+//		//TODO 对应的需要在Item的数据表中添加相应的字段
+//
+//		if ("all".equals(option)) {
+//			data.put("itemList", itemDtoList);
+//		} else if ("teacher".equals(option)) {
+//
+//			for (ItemDto itemDto : itemDtoList) {
+//				if (value.equals(itemDto.getTeacherName())) {
+//					itemDtoGroup.add(itemDto);
+//					data.put("itemList", itemDtoGroup);
+//				}
+//			}
+//
+//		} else if ("category".equals(option)) {
+//
+//			for (ItemDto itemDto : itemDtoList) {
+//				if (value.equals(itemDto.getCategoryName())) {
+//					itemDtoGroup.add(itemDto);
+//					data.put("itemList", itemDtoGroup);
+//				}
+//			}
+//
+//		} else {
+//			return parameterNotSupportResponse();
+//		}
+//
+//		for (ItemDto itemDto : itemDtoGroup) {
+//			Integer status = itemDto.getStatus();
+//			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
+//				workload += itemDto.getWorkload();
+//			}
+//		}
+//		data.put("totalWorkload", workload);
+//
+//		return successResponse(data);
 //	}
+
+	/**
+	 * 条件查询
+	 * @param categoryId 类目编号
+	 * @param ownerId 教师编号
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "items-all" ,method = GET)
+	public RestResponse getAllItems(
+			@RequestParam(required = false)
+					Integer categoryId,
+			@RequestParam(required = false)
+					Integer isGroup,
+			@RequestParam(required = false)
+					Integer ownerId,
+			@RequestParam("pageNum")
+					int pageNum,
+			@RequestParam("pageSize")
+					int pageSize) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+
+		Map<String,Object> data = getData();
+
+		List<Item> itemList = itemService.findAll(categoryId,null,ownerId,isGroup,pageNum,pageSize);
+		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
+		List<ItemDto> newItemDtoList = new ArrayList<>();
+		if(null == categoryId) {
+			for(ItemDto itemDto:itemDtoList) {
+				if(!itemDto.getReviewerId().equals(user.getUserId())) {
+					newItemDtoList.add(itemDto);
+				}
+			}
+			itemDtoList.removeAll(newItemDtoList);
+		}
+
+		double workload = ZERO_DOUBLE;
+		for(ItemDto itemDto:itemDtoList) {
+			Integer status = itemDto.getStatus();
+			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
+				workload += itemDto.getWorkload();
+			}
+		}
+
+		data.put("itemDtoList",itemDtoList);
+		data.put("totalWorkload",workload);
+
+		return successResponse(data);
+	}
 
 	/**
 	 * 获取审核人负责的类目下的对应导入方式对应状态的工作量类目信息

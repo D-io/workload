@@ -71,7 +71,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return invalidOperationResponse("非法请求");
 		}
 
-		List<Item> itemList = itemService.findAll(categoryId,status,ownerId,pageNum,pageSize);
+		List<Item> itemList = itemService.findAll(categoryId,status,ownerId,null,pageNum,pageSize);
 		Map<String,Object> data = getData();
 		data.put("itemList",itemConverter.poListToDtoList(itemList));
 
