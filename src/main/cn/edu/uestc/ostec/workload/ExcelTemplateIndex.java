@@ -19,8 +19,12 @@ public interface ExcelTemplateIndex {
 
 	int JSON_PARAMETERS_INDEX = 6;
 
-	int JOB_DESC_INDEX = 7;
+	int IS_GROUP_INDEX = 7;
 
-	int JSON_WEIGHT_INDEX = 8;
+	int JOB_DESC_INDEX = 8;
+
+	int JSON_WEIGHT_INDEX = 9;
+
+
 
 }

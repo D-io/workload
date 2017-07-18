@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.pojo;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
+
 public class Item {
 
 	/**
@@ -66,6 +68,8 @@ public class Item {
 	 * 证明
 	 */
 	private String proof = null;
+
+	private Integer isGroup = ZERO_INT;
 
 	public Integer getItemId() {
 		return itemId;
@@ -161,6 +165,14 @@ public class Item {
 
 	public void setProof(String proof) {
 		this.proof = proof == null ? null : proof.trim();
+	}
+
+	public Integer getIsGroup() {
+		return isGroup;
+	}
+
+	public void setIsGroup(Integer isGroup) {
+		this.isGroup = isGroup;
 	}
 
 	@Override

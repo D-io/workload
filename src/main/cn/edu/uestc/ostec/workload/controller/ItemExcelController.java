@@ -27,12 +27,15 @@ import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
+import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.ExcelHelper;
+import cn.edu.uestc.ostec.workload.support.utils.FileHelper;
+import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 import cn.edu.uestc.ostec.workload.type.ItemStatus;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.FILE_PATH;
@@ -88,7 +91,10 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 		//获取对应FileInfo的文件File（java.io.file）对象
 		FileInfo fileInfo = fileEvent.downloadFile(fileInfoId);
-		File excelFile = new File(fileInfo.getPath());
+		String path = fileInfo.getPath();
+		File excelFile = new File(path);
+
+		String fileName = FileHelper.getFileName(path);
 
 		//获取文件流
 		FileInputStream fileInputStream;
@@ -123,6 +129,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					HSSFCell jsonParameters = row.getCell(JSON_PARAMETERS_INDEX);
 					HSSFCell jobDesc = row.getCell(JOB_DESC_INDEX);
 					HSSFCell jsonChildWeight = row.getCell(JSON_WEIGHT_INDEX);
+					HSSFCell isGroup = row.getCell(IS_GROUP_INDEX);
 					//					HSSFCell groupManagerName = row.getCell(GROUP_MANAGER_NAME_INDEX);
 
 					itemDto.setItemName(itemName.getStringCellValue());
@@ -135,11 +142,18 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					itemDto.setJsonParameter(jsonParameters.getStringCellValue());
 					itemDto.setJobDesc(jobDesc.getStringCellValue());
 					itemDto.setJsonChildWeight(jsonChildWeight.getStringCellValue());
+					itemDto.setIsGroup(Integer.parseInt(isGroup.getStringCellValue()));
 
+
+					itemDto.setProof(fileName);
 					itemDto.setCategoryId(categoryId);
 					itemDto.setStatus(NON_CHECKED);
 
-					boolean saveSuccess = itemService.saveItem(itemConverter.dtoToPo(itemDto));
+					//先转换为po，再转换为dto，转换为dto的过程中计算相应的工作量
+					Item item = itemConverter.dtoToPo(itemDto);
+					ItemDto newItemDto = itemConverter.poToDto(item);
+
+					boolean saveSuccess = itemService.saveItem(itemConverter.dtoToPo(newItemDto));
 					if (!saveSuccess) {
 						errorData.put(itemDto.getItemName(), "导入失败");
 					}

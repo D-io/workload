@@ -219,6 +219,7 @@ public class ItemManageController extends ApplicationController {
 //		Category category = categoryService.getCategory(itemDto.getCategoryId());
 //		double workload = FormulaCalculate.calculate(category.getFormula(),itemDto.getParameterValues()));
 //		itemDto.setWorkload(workload);
+//
 
 		Item item = itemConverter.dtoToPo(itemDto);
 		item.setStatus(UNCOMMITTED);

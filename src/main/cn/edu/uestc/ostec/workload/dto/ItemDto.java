@@ -115,6 +115,11 @@ public class ItemDto {
 	 */
 	private Integer importRequired;
 
+	/**
+	 * 是否为小组
+	 */
+	private Integer isGroup;
+
 	public Integer getReviewerId() {
 		return reviewerId;
 	}
@@ -281,5 +286,13 @@ public class ItemDto {
 
 	public void setChildWeightList(List<ChildWeight> childWeightList) {
 		this.childWeightList = childWeightList;
+	}
+
+	public Integer getIsGroup() {
+		return isGroup;
+	}
+
+	public void setIsGroup(Integer isGroup) {
+		this.isGroup = isGroup;
 	}
 }
