@@ -187,6 +187,13 @@ public class Item implements Cloneable {
 				+ ", jsonChildWeight='" + jsonChildWeight + '\'' + ", proof='" + proof + '\'' + '}';
 	}
 
+	/**
+	 * 重写父类Object的clone()方法用于子类对象的复制
+	 *
+	 * PS.由于只涉及到基本的包装类型，未涉及到自定义类型，浅复制就足够满
+	 *
+	 * @return Object
+	 */
 	@Override
 	public Object clone() {
 

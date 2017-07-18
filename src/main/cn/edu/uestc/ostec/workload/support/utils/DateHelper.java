@@ -9,6 +9,8 @@
 
 package cn.edu.uestc.ostec.workload.support.utils;
 
+import org.apache.poi.util.SystemOutLogger;
+
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +23,7 @@ import java.util.TimeZone;
 
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.DATE_FORMAT_CN;
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.DATE_FORMAT_DEFAULT;
+import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.DATE_TIME_FORMAT_CN;
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.DATE_TIME_FORMAT_DEFAULT;
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.MILLISECOND_TO_SECOND;
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.TIME_FORMAT_DEFAULT;
@@ -121,6 +124,10 @@ public class DateHelper {
 		return System.currentTimeMillis();
 	}
 
+	public static int getDateTimeStamp(String date) {
+		return getTimeStamp(date+" 00时00分00秒",DATE_TIME_FORMAT_CN);
+	}
+
 	public static int getTimeStamp(String date) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_CN);
 		java.util.Date date_ = null;
@@ -140,6 +147,7 @@ public class DateHelper {
 	public static int getCurrentTimestamp() {
 
 		return (int) (currentTime() / MILLISECOND_TO_SECOND);
+
 	}
 
 }

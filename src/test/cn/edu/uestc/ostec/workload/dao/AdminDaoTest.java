@@ -7,6 +7,7 @@ import java.util.List;
 import cn.edu.uestc.ostec.workload.BaseTest;
 import cn.edu.uestc.ostec.workload.pojo.Admin;
 import cn.edu.uestc.ostec.workload.pojo.Item;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 /**
  * Version:v1.0 (description: AdminDao 测试)
@@ -31,18 +32,7 @@ public class AdminDaoTest extends BaseTest{
 	@Test
 	public void delete() throws Exception {
 		//System.out.println(adminDao.delete(102));
-		Item item = new Item();
-		item.setItemId(1);
-		item.setWorkload(12.0);
-		item.setJsonChildWeight("asd");
-		System.out.println(item);
-		Item item1 = (Item) item.clone();
-		System.out.println(item1);
-		item.setJsonChildWeight("as");
-		item.setWorkload(12.1);
-		item.setItemId(2);
-		System.out.println(item);
-		System.out.println(item1);
+		System.out.println(DateHelper.getDateTimeStamp("2017年12月20日"));
 	}
 
 }

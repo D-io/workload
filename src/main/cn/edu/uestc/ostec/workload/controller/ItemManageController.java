@@ -1,13 +1,10 @@
 package cn.edu.uestc.ostec.workload.controller;
 
-import org.apache.poi.poifs.property.Child;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +15,6 @@ import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.JobDesc;
-import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -42,6 +38,10 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
+//TODO 工作量计算抽象，便于导入时调用
+//TODO 精简返回给前端页面的信息，减少数据量
+//TODO 获取需要导出的信息的抽象，便于导出Excel时调用
 
 /**
  * Version:v1.0 (description: 工作量条目信息管理控制器 )
@@ -235,16 +235,16 @@ public class ItemManageController extends ApplicationController {
 		Item oldItem = itemConverter.dtoToPo(itemDto);
 		ItemDto newItemDto = itemConverter.poToDto(oldItem);
 
-		//TODO 根据参数和公式进行相应的工作量条目的工作量的计算 待测试
 		Category category = categoryService.getCategory(itemDto.getCategoryId());
 		//小组总的工作量或者个人的工作量结果
 		double workload = FormulaCalculate
 				.calculate(category.getFormula(), newItemDto.getParameterValues());
 
-		List<Item> itemList = new ArrayList<>();
-		List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
-		List<JobDesc> jobDescList = newItemDto.getJobDescList();
 		if (GROUP.equals(newItemDto.getIsGroup())) {
+			List<Item> itemList = new ArrayList<>();
+			List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
+			List<JobDesc> jobDescList = newItemDto.getJobDescList();
+
 			Item item = itemConverter.dtoToPo(itemDto);
 
 			//对组员的工作量信息进行保存，分别计算工作量
@@ -252,6 +252,7 @@ public class ItemManageController extends ApplicationController {
 				int ownerId = childWeightList.get(index).getUserId();
 				if (jobDescList.get(index).getUserId().equals(ownerId)) {
 					//设置组员各自的工作量信息
+					//克隆Item工作量条目，以克隆公共信息
 					Item itemTemp = (Item) item.clone();
 					itemTemp.setOwnerId(ownerId);
 					itemTemp.setJobDesc(jobDescList.get(index).getJobDesc());
@@ -261,10 +262,12 @@ public class ItemManageController extends ApplicationController {
 
 					//计算组员各自的工作量
 					itemTemp.setWorkload(workload * weight);
+					//保存成员老师的工作量条目到数据库中
 					boolean saveSuccess = itemService.saveItem(itemTemp);
 					if (!saveSuccess) {
 						return systemErrResponse();
 					}
+					//用于返回前端的数据展示
 					itemList.add(itemTemp);
 				}
 			}
@@ -386,7 +389,7 @@ public class ItemManageController extends ApplicationController {
 	 * 更改需要复核的工作量条目状态
 	 *
 	 * @param itemId  工作量条目编号
-	 * @param status  状态
+	 * @param status  状态（存疑or通过）
 	 * @param message 消息
 	 * @return RestResponse
 	 */
