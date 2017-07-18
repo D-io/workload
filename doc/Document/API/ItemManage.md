@@ -4,19 +4,21 @@
 - 接口地址:`/item/manage`
 - 支持格式：`json`
 - 请求方式：`POST`
-- 请求示例：`localhost:8080/item/manage?itemName=workload&categoryId=3&ownerId=3210343&jsonParameter={"A":10}&workload=500&groupManagerId=5130121&applyDesc=描述一下&jsonChildWeight={"A":12}`
+- 请求示例：`localhost:8080/item/manage?itemName=workload&categoryId=3&ownerId=3210343&jsonParameter=[ {"symbol": "A", "value": 12}, { "symbol": "B", "value": 12 } ]&groupManagerId=5130121&applyDesc=描述一下&jobDesc=[{"userId": 3210343,"jobDesc": "准备工作" }, {"userId": 5130121,"jobDesc": "指导老师" }]&jsonChildWeight=[{"userId": 3210343,"weight": 0.2 }, {"userId": 5130121,"weight": 0.8 }]&isGroup=1`
 - 请求参数具体说明：
 
-参数名 | 类型 | 说明
----|---|---
-itemName | String | 工作量条目名称
-categoryId | int | 对应的类目编号
-ownerId | int | 所属教师编号
-jsonParameters | json | 传入的json参数
-worklaod | int | 工作量
-groupManagerId | int | 小组负责人编号
-applyDesc | String | 申请描述
-jsonChildWeight | json | 成员各自权重 
+参数名 | 类型 | 说明 | 备注
+---|---|---|---
+itemName | String | 工作量条目名称 | 必填
+categoryId | int | 对应的类目编号 | 必填
+ownerId | int | 所属教师编号 | 
+jsonParameters | json | 传入的json参数 | 注意格式
+worklaod | int | 工作量 |
+groupManagerId | int | 小组负责人编号 |
+applyDesc | String | 申请描述 | 
+jobDesc | String | 成员职责描述 | 注意格式
+jsonChildWeight | json | 成员各自权重 | 注意格式，以及和Desc的一一对应的顺序关系（顺序保持一致） 
+isGroup | int | 小组 1还是个人 0 | 必填
 
 - 返回参数具体说明：
 
@@ -32,25 +34,74 @@ data | String | 结果集
     "status": 200,
     "statusName": "OK",
     "data": {
-        "item": {
-            "itemId": 10,
-            "itemName": "workload",
-            "categoryId": 3,
-            "ownerId": 3210343,
-            "jsonParameter": "{\"A\":10}",
-            "workload": 500,
-            "groupManagerId": 5130121,
-            "applyDesc": "描述一下",
-            "jobDesc": null,
-            "status": 0,
-            "jsonChildWeight": "{\"A\":12}",
-            "proof": null,
-            "teacherName": "张翔",
-            "reviewerName": "邵俊明",
-            "groupManagerName": "邵俊明",
-            "categoryName": "乱码",
-            "importRequired": 0
-        }
+        "itemList": [
+            {
+                "itemId": 34,
+                "itemName": "workload",
+                "categoryId": 3,
+                "ownerId": 3210343,
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "B",
+                        "value": 12
+                    }
+                ],
+                "workload": 7.2,
+                "groupManagerId": 5130121,
+                "applyDesc": "描述一下",
+                "jobDesc": "准备工作",
+                "jobDescList": [],
+                "status": 0,
+                "jsonChildWeight": "0.2",
+                "childWeightList": [],
+                "proof": null,
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "邵俊明",
+                "categoryName": "乱码",
+                "importRequired": 0,
+                "isGroup": 1
+            },
+            {
+                "itemId": 35,
+                "itemName": "workload",
+                "categoryId": 3,
+                "ownerId": 5130121,
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "B",
+                        "value": 12
+                    }
+                ],
+                "workload": 28.8,
+                "groupManagerId": 5130121,
+                "applyDesc": "描述一下",
+                "jobDesc": "指导老师",
+                "jobDescList": [],
+                "status": 0,
+                "jsonChildWeight": "0.8",
+                "childWeightList": [],
+                "proof": null,
+                "teacherName": "邵俊明",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "邵俊明",
+                "categoryName": "乱码",
+                "importRequired": 0,
+                "isGroup": 1
+            }
+        ]
     }
 }
 ```

@@ -39,7 +39,7 @@
     values (#{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, #{ownerId,jdbcType=INTEGER},
       #{jsonParameter,jdbcType=VARCHAR}, #{workload,jdbcType=DOUBLE}, #{groupManagerId,jdbcType=INTEGER},
       #{applyDesc,jdbcType=VARCHAR}, #{jobDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
-      #{jsonChildWeight,jdbcType=VARCHAR}, #{proof,jdbcType=LONGVARCHAR}),#{isGroup,jdbcType=INTEGER}
+      #{jsonChildWeight,jdbcType=VARCHAR}, #{proof,jdbcType=LONGVARCHAR},#{isGroup,jdbcType=INTEGER})
   </insert>
 
   <update id="update">

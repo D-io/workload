@@ -229,6 +229,8 @@ public class ItemManageController extends ApplicationController {
 			return invalidOperationResponse();
 		}
 
+		Map<String, Object> data = getData();
+
 		//利用转换的方式获得相应的参数列表、职责描述列表和权重列表
 		Item oldItem = itemConverter.dtoToPo(itemDto);
 		ItemDto newItemDto = itemConverter.poToDto(oldItem);
@@ -239,50 +241,47 @@ public class ItemManageController extends ApplicationController {
 		double workload = FormulaCalculate
 				.calculate(category.getFormula(), newItemDto.getParameterValues());
 
+		List<Item> itemList = new ArrayList<>();
 		List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
 		List<JobDesc> jobDescList = newItemDto.getJobDescList();
 		if (GROUP.equals(newItemDto.getIsGroup())) {
 			Item item = itemConverter.dtoToPo(itemDto);
-			for (JobDesc jobDesc : jobDescList) {
-				item.setOwnerId(jobDesc.getUserId());
-				item.setJobDesc(jobDesc.getJobDesc());
-				itemService.saveItem(item);
-			}
 
-			//
+			//对组员的工作量信息进行保存，分别计算工作量
 			for (int index = 0; index < childWeightList.size(); index++) {
 				int ownerId = childWeightList.get(index).getUserId();
 				if (jobDescList.get(index).getUserId().equals(ownerId)) {
-					item.setOwnerId(ownerId);
-					item.setJobDesc(jobDescList.get(index).getJobDesc());
-					item.setJsonChildWeight(String.valueOf(childWeightList.get(index).getWeight()));
+					//设置组员各自的工作量信息
+					Item itemTemp = (Item) item.clone();
+					itemTemp.setOwnerId(ownerId);
+					itemTemp.setJobDesc(jobDescList.get(index).getJobDesc());
+					double weight = childWeightList.get(index).getWeight();
+					itemTemp.setJsonChildWeight(String.valueOf(weight));
+					itemTemp.setStatus(UNCOMMITTED);
+
+					//计算组员各自的工作量
+					itemTemp.setWorkload(workload * weight);
+					boolean saveSuccess = itemService.saveItem(itemTemp);
+					if (!saveSuccess) {
+						return systemErrResponse();
+					}
+					itemList.add(itemTemp);
 				}
 			}
+			data.put("itemList",itemConverter.poListToDtoList(itemList));
 
-			for (ChildWeight childWeight : childWeightList) {
-				if (childWeight.getUserId().equals(item.getOwnerId())) {
-					workload = workload * childWeight.getWeight();
-				}
+		} else {
+			newItemDto.setWorkload(workload);
+			newItemDto.setStatus(UNCOMMITTED);
+			Item item = itemConverter.dtoToPo(newItemDto);
+
+			boolean saveSuccess = itemService.saveItem(item);
+			if (!saveSuccess) {
+				return systemErrResponse("保存失败");
 			}
+			newItemDto.setItemId(item.getItemId());
+			data.put("item", newItemDto);
 		}
-
-		//		if (SINGLE.equals(itemDto.getIsGroup())) {
-		//			workload = workload * 1;
-		//		} else if (GROUP.equals(itemDto.getIsGroup())) {
-		//			workload =
-		//		}
-
-		newItemDto.setWorkload(workload);
-		newItemDto.setStatus(UNCOMMITTED);
-		Item item = itemConverter.dtoToPo(newItemDto);
-
-		boolean saveSuccess = itemService.saveItem(item);
-		if (!saveSuccess) {
-			return systemErrResponse("保存失败");
-		}
-
-		Map<String, Object> data = getData();
-		data.put("item", newItemDto);
 
 		return successResponse(data);
 	}

@@ -2,7 +2,7 @@ package cn.edu.uestc.ostec.workload.pojo;
 
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 
-public class Item {
+public class Item implements Cloneable {
 
 	/**
 	 * 工作量信息所在表名
@@ -69,6 +69,9 @@ public class Item {
 	 */
 	private String proof = null;
 
+	/**
+	 * 是否为小组
+	 */
 	private Integer isGroup = ZERO_INT;
 
 	public Integer getItemId() {
@@ -182,5 +185,18 @@ public class Item {
 				+ ", groupManagerId=" + groupManagerId + ", applyDesc='" + applyDesc + '\''
 				+ ", jobDesc='" + jobDesc + '\'' + ", status='" + status + '\''
 				+ ", jsonChildWeight='" + jsonChildWeight + '\'' + ", proof='" + proof + '\'' + '}';
+	}
+
+	@Override
+	public Object clone() {
+
+		Item item = null;
+		try {
+			item = (Item) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+
+		return item;
 	}
 }
