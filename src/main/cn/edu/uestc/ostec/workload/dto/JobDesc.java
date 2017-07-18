@@ -5,16 +5,16 @@ package cn.edu.uestc.ostec.workload.dto;
  */
 public class JobDesc {
 
-	private String userId;
+	private Integer userId;
 
 	private String jobDesc;
 
-	public String getUserId() {
-		return userId;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public Integer getUserId() {
+		return userId;
 	}
 
 	public String getJobDesc() {
@@ -23,5 +23,18 @@ public class JobDesc {
 
 	public void setJobDesc(String jobDesc) {
 		this.jobDesc = jobDesc;
+	}
+
+	public JobDesc(Integer userId, String jobDesc) {
+		this.userId = userId;
+		this.jobDesc = jobDesc;
+	}
+
+	public JobDesc() {
+	}
+
+	@Override
+	public String toString() {
+		return "JobDesc{" + "userId='" + userId + '\'' + ", jobDesc='" + jobDesc + '\'' + '}';
 	}
 }

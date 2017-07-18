@@ -29,4 +29,12 @@ public class ParameterValue {
 		this.symbol = symbol;
 		this.value = value;
 	}
+
+	public ParameterValue() {
+	}
+
+	@Override
+	public String toString() {
+		return "ParameterValue{" + "symbol='" + symbol + '\'' + ", value=" + value + '}';
+	}
 }

@@ -1,13 +1,11 @@
 package cn.edu.uestc.ostec.workload.controller;
 
-import com.mysql.fabric.xmlrpc.base.Data;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +19,6 @@ import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
-import cn.edu.uestc.ostec.workload.support.utils.Date;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REVIEWER_PATH;
@@ -33,8 +30,6 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
-//TODO Reviewer对应的接口未测试哦
 
 /**
  * Version:v1.0 (description: 审核页面信息展示控制器 )
@@ -171,9 +166,6 @@ public class ReviewInfoListController extends ApplicationController {
 //		double workload = ZERO_DOUBLE;
 //
 //		Map<String, Object> data = getData();
-//
-//		//TODO 添加小组或者个人查询条件
-//		//TODO 对应的需要在Item的数据表中添加相应的字段
 //
 //		if ("all".equals(option)) {
 //			data.put("itemList", itemDtoList);

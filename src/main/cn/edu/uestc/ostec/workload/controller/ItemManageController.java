@@ -1,32 +1,40 @@
 package cn.edu.uestc.ostec.workload.controller;
 
+import org.apache.poi.poifs.property.Child;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
+import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
+import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.dto.JobDesc;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.AdminService;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.ITEM_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGE_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
@@ -53,6 +61,12 @@ public class ItemManageController extends ApplicationController {
 
 	@Autowired
 	private CategoryService categoryService;
+
+	@Autowired
+	private SubjectService subjectService;
+
+	@Autowired
+	private SubjectConverter subjectConverter;
 
 	/**
 	 * 重置申请人或者审核人状态
@@ -215,14 +229,52 @@ public class ItemManageController extends ApplicationController {
 			return invalidOperationResponse();
 		}
 
-		//TODO 根据参数和公式进行相应的工作量条目的工作量的计算 待测试
-//		Category category = categoryService.getCategory(itemDto.getCategoryId());
-//		double workload = FormulaCalculate.calculate(category.getFormula(),itemDto.getParameterValues()));
-//		itemDto.setWorkload(workload);
-//
+		//利用转换的方式获得相应的参数列表、职责描述列表和权重列表
+		Item oldItem = itemConverter.dtoToPo(itemDto);
+		ItemDto newItemDto = itemConverter.poToDto(oldItem);
 
-		Item item = itemConverter.dtoToPo(itemDto);
-		item.setStatus(UNCOMMITTED);
+		//TODO 根据参数和公式进行相应的工作量条目的工作量的计算 待测试
+		Category category = categoryService.getCategory(itemDto.getCategoryId());
+		//小组总的工作量或者个人的工作量结果
+		double workload = FormulaCalculate
+				.calculate(category.getFormula(), newItemDto.getParameterValues());
+
+		List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
+		List<JobDesc> jobDescList = newItemDto.getJobDescList();
+		if (GROUP.equals(newItemDto.getIsGroup())) {
+			Item item = itemConverter.dtoToPo(itemDto);
+			for (JobDesc jobDesc : jobDescList) {
+				item.setOwnerId(jobDesc.getUserId());
+				item.setJobDesc(jobDesc.getJobDesc());
+				itemService.saveItem(item);
+			}
+
+			//
+			for (int index = 0; index < childWeightList.size(); index++) {
+				int ownerId = childWeightList.get(index).getUserId();
+				if (jobDescList.get(index).getUserId().equals(ownerId)) {
+					item.setOwnerId(ownerId);
+					item.setJobDesc(jobDescList.get(index).getJobDesc());
+					item.setJsonChildWeight(String.valueOf(childWeightList.get(index).getWeight()));
+				}
+			}
+
+			for (ChildWeight childWeight : childWeightList) {
+				if (childWeight.getUserId().equals(item.getOwnerId())) {
+					workload = workload * childWeight.getWeight();
+				}
+			}
+		}
+
+		//		if (SINGLE.equals(itemDto.getIsGroup())) {
+		//			workload = workload * 1;
+		//		} else if (GROUP.equals(itemDto.getIsGroup())) {
+		//			workload =
+		//		}
+
+		newItemDto.setWorkload(workload);
+		newItemDto.setStatus(UNCOMMITTED);
+		Item item = itemConverter.dtoToPo(newItemDto);
 
 		boolean saveSuccess = itemService.saveItem(item);
 		if (!saveSuccess) {
@@ -230,7 +282,7 @@ public class ItemManageController extends ApplicationController {
 		}
 
 		Map<String, Object> data = getData();
-		data.put("item", itemConverter.poToDto(item));
+		data.put("item", newItemDto);
 
 		return successResponse(data);
 	}
@@ -327,6 +379,58 @@ public class ItemManageController extends ApplicationController {
 
 		Map<String, Object> data = getData();
 		data.put("submittedItemList", itemConverter.poListToDtoList(itemList));
+
+		return successResponse(data);
+	}
+
+	/**
+	 * 更改需要复核的工作量条目状态
+	 *
+	 * @param itemId  工作量条目编号
+	 * @param status  状态
+	 * @param message 消息
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "status-update", method = POST)
+	public RestResponse updateItemStatus(
+			@RequestParam("itemId")
+					Integer itemId,
+			@RequestParam("status")
+					Integer status,
+			@RequestParam(required = false)
+					String message) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		Item item = itemService.findItem(itemId);
+		if (!NON_CHECKED.equals(item.getStatus())) {
+			return invalidOperationResponse();
+		}
+
+		if (!(DOUBTED.equals(status) || CHECKED.equals(status))) {
+			return invalidOperationResponse();
+		}
+
+		Map<String, Object> data = getData();
+
+		if (DOUBTED.equals(status)) {
+			Subject subject = new Subject();
+			subject.setItemId(itemId);
+			subject.setSendTime(DateHelper.getCurrentTimestamp());
+			subject.setSendFromId(user.getUserId());
+			subject.setMsgContent(message);
+			subjectService.addSubject(subject);
+			data.put("subject", subjectConverter.poToDto(subject));
+		}
+		item.setStatus(status);
+		boolean updateSuccess = itemService.saveItem(item);
+		if (!updateSuccess) {
+			return systemErrResponse("更新状态失败");
+		}
+		data.put("item", itemConverter.poToDto(item));
 
 		return successResponse(data);
 	}

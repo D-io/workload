@@ -43,6 +43,16 @@ public interface WorkloadObjects {
 	 */
 	String ROLE_PROPOSER = "proposer";
 
+	/**
+	 * 小组
+	 */
+	Integer GROUP = 1;
+
+	/**
+	 * 个人
+	 */
+	Integer SINGLE = 0;
+
 	String ROLE_ADMIN = "admin";
 
 	/**

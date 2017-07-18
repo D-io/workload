@@ -5,15 +5,15 @@ package cn.edu.uestc.ostec.workload.dto;
  */
 public class ChildWeight {
 
-	private String userId;
+	private Integer userId;
 
 	private double weight;
 
-	public String getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -23,5 +23,18 @@ public class ChildWeight {
 
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+
+	public ChildWeight(Integer userId, double weight) {
+		this.userId = userId;
+		this.weight = weight;
+	}
+
+	public ChildWeight() {
+	}
+
+	@Override
+	public String toString() {
+		return "ChildWeight{" + "userId='" + userId + '\'' + ", weight=" + weight + '}';
 	}
 }

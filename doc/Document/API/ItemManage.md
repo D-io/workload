@@ -394,3 +394,93 @@ data | String | 结果集
     }
 }
 ```
+
+### 更改工作量条目状态（存疑和确认）
+- 接口地址：`/item/manage/status-update`
+- 支持格式：`json`
+- 请求方式：`DELETE`
+- 请求示例：`localhost:8080/item/manage/status-update?itemId=1&status=3&message=你好`
+
+- 请求参数具体说明：
+参数名 |类型 | 说明
+---|---|---
+itemId | int | 工作量条目编号
+status | int | 状态值（2,通过；3，存疑）
+message | String | 存疑的原因（非必须）
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "item": {
+            "itemId": 1,
+            "itemName": "213",
+            "categoryId": 2,
+            "ownerId": 3210343,
+            "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+            "parameterValues": [
+                {
+                    "symbol": "A",
+                    "value": 12
+                },
+                {
+                    "symbol": "A",
+                    "value": 12
+                }
+            ],
+            "workload": 2,
+            "groupManagerId": 3210343,
+            "applyDesc": "",
+            "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+            "jobDescList": [
+                {
+                    "userId": 3210343,
+                    "jobDesc": "准备工作"
+                },
+                {
+                    "userId": 5130121,
+                    "jobDesc": "指导老师"
+                }
+            ],
+            "status": 3,
+            "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+            "childWeightList": [
+                {
+                    "userId": 3210343,
+                    "weight": 0.2
+                },
+                {
+                    "userId": 5130121,
+                    "weight": 0.8
+                }
+            ],
+            "proof": "0",
+            "teacherName": "张翔",
+            "reviewerId": 3210343,
+            "reviewerName": "张翔",
+            "groupManagerName": "张翔",
+            "categoryName": "名字去去去去去去前期",
+            "importRequired": 0,
+            "isGroup": 1
+        },
+        "subject": {
+            "subjectId": 4,
+            "itemId": 1,
+            "msgContent": "你好",
+            "sendFromId": 3210343,
+            "sendFromName": "张翔",
+            "sendTime": "2017年07月18日"
+        }
+    }
+}
+```
