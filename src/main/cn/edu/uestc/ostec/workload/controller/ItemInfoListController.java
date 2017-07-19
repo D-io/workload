@@ -177,9 +177,12 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		List<Subject> subjects = new ArrayList<>();
 		for (ItemDto itemDto : abnormalItemList) {
 			if (DOUBTED_CHECKED.equals(itemDto.getStatus())) {
-				Subject subject = subjectService.getSubjectsByItem(itemDto.getItemId())
-						.get(ZERO_INT);
-				subjects.add(subject);
+				List<Subject> subjectList = subjectService.getSubjectsByItem(itemDto.getItemId());
+				if(null == subjectList) {
+					subjects.add(null);
+				} else {
+					subjects.addAll(subjectList);
+				}
 			}
 		}
 
@@ -257,7 +260,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		List<ItemDto> itemDtoList = new ArrayList<>();
 		for (Integer status : statusList) {
-			itemDtoList = findItemsByStatus(importRequired, status, teacherId);
+			itemDtoList.addAll(findItemsByStatus(importRequired, status, teacherId));
 		}
 
 		return itemDtoList;
