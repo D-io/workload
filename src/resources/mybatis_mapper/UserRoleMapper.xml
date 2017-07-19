@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.uestc.ostec.workload.dao.UserRoleDao">
+    <resultMap id="userRoleResultMap" type="cn.edu.uestc.ostec.workload.pojo.UserRole">
+        <id column="user_id" jdbcType="INTEGER" property="userId"/>
+        <id column="role" jdbcType="LONGVARCHAR" property="role"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="deadline" jdbcType="INTEGER" property="deadline"/>
+    </resultMap>
+
+    <select id="selectList" resultMap="userRoleResultMap">
+        SELECT * FROM user_role
+        <where>
+            1 = 1
+            <if test="null != userId">
+                AND user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <select id="select" resultMap="userRoleResultMap">
+        SELECT * FROM user_role WHERE user_id = #{userId}
+    </select>
+
+    <insert id="add">
+        INSERT INTO user_role (user_id, role, status, deadline)
+        VALUES (#{userId}, #{role}, #{status}, #{deadline})
+    </insert>
+
+    <update id="update">
+        UPDATE user_role
+        SET
+            status   = #{status},
+            deadline = #{deadline},
+            role     = #{role}
+        WHERE user_id = #{userId}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM user_role
+        WHERE user_id = #{userId}
+    </delete>
+
+</mapper>
