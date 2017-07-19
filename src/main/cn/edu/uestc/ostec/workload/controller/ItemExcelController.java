@@ -66,6 +66,8 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 	/**
 	 * 导入Excel中的信息到数据库
 	 *
+	 * PS.导入的格式待确定 格式不同对应的计算方式不同
+	 *
 	 * @param fileInfoId 文件信息编号
 	 * @return RestResponse
 	 */
@@ -77,6 +79,8 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					int fileInfoId) {
 
 		//TODO 待测试
+		//TODO 确定导入的格式
+		//TODO 确定计算方式
 
 		ItemDto itemDto = null;
 		List<ItemDto> itemDtoList = new ArrayList<>();
