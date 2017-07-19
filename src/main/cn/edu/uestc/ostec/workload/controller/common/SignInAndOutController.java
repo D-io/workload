@@ -21,7 +21,11 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.A
 @RequestMapping(AUTH_PATH)
 public class SignInAndOutController extends ApplicationController {
 
-	@RequestMapping("login")
+	public static final String SIGN_IN = "login";
+
+	public static final String SIGN_OUT = "logout";
+
+	@RequestMapping(SIGN_IN)
 	public String login() {
 
 		// 获取cas服务器响应数据
@@ -44,7 +48,7 @@ public class SignInAndOutController extends ApplicationController {
 		return getRedirectUrlPath(DEFAULT_PAGE);
 	}
 
-	@RequestMapping("logout")
+	@RequestMapping(SIGN_OUT)
 	public String logout(HttpServletResponse response) throws IOException {
 
 		//如果session域中存在用户标识符，才进行登出操作

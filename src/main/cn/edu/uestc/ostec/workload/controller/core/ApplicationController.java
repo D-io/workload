@@ -1,9 +1,11 @@
 package cn.edu.uestc.ostec.workload.controller.core;
 
+import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.context.StandardApplicationAttributeContext;
 import cn.edu.uestc.ostec.workload.context.StandardSessionAttributeContext;
+import cn.edu.uestc.ostec.workload.dto.RoleInfo;
 import cn.edu.uestc.ostec.workload.pojo.User;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.DEFAULT_WEB_URL_SEPARATOR;
@@ -39,6 +41,11 @@ public class ApplicationController extends ResultController
 
 	public User getUser() {
 		return (User) session.getAttribute(SESSION_USER_INFO_ENTITY);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected List<RoleInfo> getUserRoles() {
+		return (List<RoleInfo>) session.getAttribute(SESSION_USER_ROLE_LIST);
 	}
 
 	/**

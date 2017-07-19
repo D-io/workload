@@ -21,4 +21,17 @@ public interface SessionConstants {
 	 */
 	String SESSION_USER_NAME="userName";
 
+	/**
+	 * 用户角色信息(拦截器注入session)<br/>
+	 * &lt;UserType.code,List&lt;Integer&gt;relatedId&gt;
+	 */
+	String SESSION_USER_ROLE_MAP = "userRoleMap";
+
+	/**
+	 * 用户角色信息(拦截器注入session)<br/>
+	 * List&lt;RoleInfo&gt;
+	 */
+	String SESSION_USER_ROLE_LIST = "userRoleList";
+
+
 }

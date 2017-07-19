@@ -19,4 +19,14 @@ public interface WebParametersConstants {
 	 * 文件上传路径
 	 */
 	String FILE_UPLOAD_PATH = "fileUploadPath";
+
+	/**
+	 * 页面管理控制器映射路径
+	 */
+	String PAGE_MANAGER_PATH = "page";
+
+	/**
+	 * 用户管理控制器映射路径
+	 */
+	String USER_MANAGER_PATH = "user";
 }

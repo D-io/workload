@@ -17,6 +17,22 @@ import java.util.List;
  */
 public interface OperatingStatusType {
 
+	/**
+	 * 无效状态
+	 */
+	int INVALID = 0x00;
+
+	/**
+	 * 已创建状态
+	 */
+	int CREATED = 0x01;
+
+	/**
+	 * 已保存状态
+	 */
+	int SAVED = 0x02;
+
+
 	Integer ROOT = 0;
 
 	/**

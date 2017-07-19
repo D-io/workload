@@ -37,7 +37,7 @@ public abstract class ResultController extends BaseController
 	/**
 	 * 默认响应页面
 	 */
-	protected static final String DEFAULT_PAGE = "default";
+	public static final String DEFAULT_PAGE = "default";
 
 	/**
 	 * 默认测试响应页面
