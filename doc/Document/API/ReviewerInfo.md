@@ -341,8 +341,61 @@ data | String | 结果集
                 "categoryName": "名字去去去去去去前期"
             },
             {
-                "categoryId": 15,
-                "categoryName": "修改过的教学"
+                "categoryId": 3,
+                "categoryName": "乱码"
+            },
+            {
+                "categoryId": 10,
+                "categoryName": "教学"
+            }
+        ],
+        "applyCategories": [
+            {
+                "categoryId": 2,
+                "name": "名字去去去去去去前期",
+                "desc": "描述去去去前期",
+                "parentId": 0,
+                "isLeaf": "N",
+                "importRequired": 0,
+                "jsonParameters": "1",
+                "formula": "a+b+c",
+                "version": "2016-2017-1",
+                "status": 1,
+                "reviewDeadline": 1499166527,
+                "applyDeadline": 1499166527,
+                "reviewerId": 3210343
+            },
+            {
+                "categoryId": 3,
+                "name": "乱码",
+                "desc": "描述去去去前期",
+                "parentId": 2,
+                "isLeaf": "N",
+                "importRequired": 0,
+                "jsonParameters": "1",
+                "formula": "A+2*B",
+                "version": "2016-2017-1",
+                "status": 1,
+                "reviewDeadline": 1499151023,
+                "applyDeadline": 1499151023,
+                "reviewerId": 3210343
+            }
+        ],
+        "importCategories": [
+            {
+                "categoryId": 10,
+                "name": "教学",
+                "desc": "就是简单的教学",
+                "parentId": 2,
+                "isLeaf": "N",
+                "importRequired": 1,
+                "jsonParameters": "{“人数”:“A”}",
+                "formula": "A B C",
+                "version": "2017-2018-1",
+                "status": 1,
+                "reviewDeadline": 1513785600,
+                "applyDeadline": 1512835200,
+                "reviewerId": 3210343
             }
         ]
     }

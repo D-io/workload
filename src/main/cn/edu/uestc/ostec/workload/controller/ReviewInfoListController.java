@@ -1,6 +1,5 @@
 package cn.edu.uestc.ostec.workload.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -109,6 +108,11 @@ public class ReviewInfoListController extends ApplicationController {
 
 	}
 
+	/**
+	 * 根据审核人查询负责的类目信息
+	 *
+	 * @return RestResponse
+	 */
 	@RequestMapping(value = "categories", method = GET)
 	public RestResponse getCategory() {
 
@@ -123,92 +127,105 @@ public class ReviewInfoListController extends ApplicationController {
 			return invalidOperationResponse();
 		}
 
+		List<Category> importCategories = new ArrayList<>();
+		List<Category> applyCategories = new ArrayList<>();
+
 		//获取审核人负责的类目的类目名作为下拉选项
 		List<CategoryBrief> categoryBriefs = new ArrayList<>();
 		for (Category category : categoryList) {
 			categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName()));
+			if(APPLY_SELF.equals(category.getImportRequired())) {
+				applyCategories.add(category);
+			} else if(IMPORT_EXCEL.equals(category.getImportRequired())) {
+				importCategories.add(category);
+			} else {
+				return null;
+			}
 		}
 
 		Map<String, Object> data = getData();
 		data.put("categoryList", categoryBriefs);
+		data.put("importCategories",importCategories);
+		data.put("applyCategories",applyCategories);
 
 		return successResponse(data);
 	}
 
-//	/**
-//	 * 条件查询
-//	 *
-//	 * @param option 条件(category,all,teacher)
-//	 * @param value  对应条件的标识符，categoryName or teacherName
-//	 * @return RestResponse
-//	 */
-//	@RequestMapping(value = "all-items", method = GET)
-//	public RestResponse getAllItems(
-//			@RequestParam("option")
-//					String option,
-//			@RequestParam(required = false)
-//					String value) {
-//
-//		User user = getUser();
-//		if (null == user) {
-//			return invalidOperationResponse("非法请求");
-//		}
-//		int reviewerId = user.getUserId();
-//
-//		List<Item> itemList = new ArrayList<>();
-//		List<Category> categoryList = categoryService.getCategoriesByReviewer(reviewerId);
-//		for (Category category : categoryList) {
-//			itemList.addAll(itemService.findItemByCategory(category.getCategoryId()));
-//		}
-//
-//		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
-//		List<ItemDto> itemDtoGroup = new ArrayList<>();
-//		double workload = ZERO_DOUBLE;
-//
-//		Map<String, Object> data = getData();
-//
-//		if ("all".equals(option)) {
-//			data.put("itemList", itemDtoList);
-//		} else if ("teacher".equals(option)) {
-//
-//			for (ItemDto itemDto : itemDtoList) {
-//				if (value.equals(itemDto.getTeacherName())) {
-//					itemDtoGroup.add(itemDto);
-//					data.put("itemList", itemDtoGroup);
-//				}
-//			}
-//
-//		} else if ("category".equals(option)) {
-//
-//			for (ItemDto itemDto : itemDtoList) {
-//				if (value.equals(itemDto.getCategoryName())) {
-//					itemDtoGroup.add(itemDto);
-//					data.put("itemList", itemDtoGroup);
-//				}
-//			}
-//
-//		} else {
-//			return parameterNotSupportResponse();
-//		}
-//
-//		for (ItemDto itemDto : itemDtoGroup) {
-//			Integer status = itemDto.getStatus();
-//			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
-//				workload += itemDto.getWorkload();
-//			}
-//		}
-//		data.put("totalWorkload", workload);
-//
-//		return successResponse(data);
-//	}
+	//	/**
+	//	 * 条件查询
+	//	 *
+	//	 * @param option 条件(category,all,teacher)
+	//	 * @param value  对应条件的标识符，categoryName or teacherName
+	//	 * @return RestResponse
+	//	 */
+	//	@RequestMapping(value = "all-items", method = GET)
+	//	public RestResponse getAllItems(
+	//			@RequestParam("option")
+	//					String option,
+	//			@RequestParam(required = false)
+	//					String value) {
+	//
+	//		User user = getUser();
+	//		if (null == user) {
+	//			return invalidOperationResponse("非法请求");
+	//		}
+	//		int reviewerId = user.getUserId();
+	//
+	//		List<Item> itemList = new ArrayList<>();
+	//		List<Category> categoryList = categoryService.getCategoriesByReviewer(reviewerId);
+	//		for (Category category : categoryList) {
+	//			itemList.addAll(itemService.findItemByCategory(category.getCategoryId()));
+	//		}
+	//
+	//		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
+	//		List<ItemDto> itemDtoGroup = new ArrayList<>();
+	//		double workload = ZERO_DOUBLE;
+	//
+	//		Map<String, Object> data = getData();
+	//
+	//		if ("all".equals(option)) {
+	//			data.put("itemList", itemDtoList);
+	//		} else if ("teacher".equals(option)) {
+	//
+	//			for (ItemDto itemDto : itemDtoList) {
+	//				if (value.equals(itemDto.getTeacherName())) {
+	//					itemDtoGroup.add(itemDto);
+	//					data.put("itemList", itemDtoGroup);
+	//				}
+	//			}
+	//
+	//		} else if ("category".equals(option)) {
+	//
+	//			for (ItemDto itemDto : itemDtoList) {
+	//				if (value.equals(itemDto.getCategoryName())) {
+	//					itemDtoGroup.add(itemDto);
+	//					data.put("itemList", itemDtoGroup);
+	//				}
+	//			}
+	//
+	//		} else {
+	//			return parameterNotSupportResponse();
+	//		}
+	//
+	//		for (ItemDto itemDto : itemDtoGroup) {
+	//			Integer status = itemDto.getStatus();
+	//			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
+	//				workload += itemDto.getWorkload();
+	//			}
+	//		}
+	//		data.put("totalWorkload", workload);
+	//
+	//		return successResponse(data);
+	//	}
 
 	/**
 	 * 条件查询
+	 *
 	 * @param categoryId 类目编号
-	 * @param ownerId 教师编号
+	 * @param ownerId    教师编号
 	 * @return RestResponse
 	 */
-	@RequestMapping(value = "items-all" ,method = GET)
+	@RequestMapping(value = "items-all", method = GET)
 	public RestResponse getAllItems(
 			@RequestParam(required = false)
 					Integer categoryId,
@@ -227,14 +244,15 @@ public class ReviewInfoListController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		Map<String,Object> data = getData();
+		Map<String, Object> data = getData();
 
-		List<Item> itemList = itemService.findAll(categoryId,null,ownerId,isGroup,pageNum,pageSize);
+		List<Item> itemList = itemService
+				.findAll(categoryId, null, ownerId, isGroup, pageNum, pageSize);
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
 		List<ItemDto> newItemDtoList = new ArrayList<>();
-		if(null == categoryId) {
-			for(ItemDto itemDto:itemDtoList) {
-				if(!itemDto.getReviewerId().equals(user.getUserId())) {
+		if (null == categoryId) {
+			for (ItemDto itemDto : itemDtoList) {
+				if (!itemDto.getReviewerId().equals(user.getUserId())) {
 					newItemDtoList.add(itemDto);
 				}
 			}
@@ -242,15 +260,15 @@ public class ReviewInfoListController extends ApplicationController {
 		}
 
 		double workload = ZERO_DOUBLE;
-		for(ItemDto itemDto:itemDtoList) {
+		for (ItemDto itemDto : itemDtoList) {
 			Integer status = itemDto.getStatus();
 			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
 				workload += itemDto.getWorkload();
 			}
 		}
 
-		data.put("itemDtoList",itemDtoList);
-		data.put("totalWorkload",workload);
+		data.put("itemDtoList", itemDtoList);
+		data.put("totalWorkload", workload);
 
 		return successResponse(data);
 	}
