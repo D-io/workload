@@ -54,7 +54,6 @@ public class DefaultController extends ApplicationController {
 			throw new ForbiddenException();
 		}
 
-
 		//用户登录后响应功能首页，暂时只有课程管理员
 		Map<String, String> parameters = new HashMap<>();
 		//parameters.put("regionName", _buildUrlPath(SIGNED_DEFAULT_PAGE));

@@ -4,7 +4,7 @@
 - 接口地址：`/item/info/item-all`
 - 支持格式：`json`
 - 请求方式：`GET`
-- 请求示例：`localhost:8080/item/info/item-all?pageNum=1&pageSize=100&categoryId=2&status=1&ownerId=12`
+- 请求示例：`http://127.0.0.1:8080/item/info/item-all?pageNum=1&pageSize=100&categoryId=2&status=1`
 
 - 请求参数具体说明：
 参数名 |类型 | 说明 | 是否必须
@@ -35,40 +35,51 @@ data | String | 结果集
                 "itemName": "name",
                 "categoryId": 2,
                 "ownerId": 3210343,
-                "jsonParameter": "asd",
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
                 "workload": 20,
                 "groupManagerId": 1,
                 "applyDesc": "desc",
-                "jobDesc": "asdasd",
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
                 "status": 1,
-                "jsonChildWeight": "21",
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
                 "proof": "ASDASDSA",
                 "teacherName": "张翔",
                 "reviewerId": 3210343,
                 "reviewerName": "张翔",
                 "groupManagerName": null,
                 "categoryName": "名字去去去去去去前期",
-                "importRequired": 0
-            },
-            {
-                "itemId": 3,
-                "itemName": "工作量",
-                "categoryId": 2,
-                "ownerId": 3210343,
-                "jsonParameter": "asd",
-                "workload": 200,
-                "groupManagerId": 5130121,
-                "applyDesc": "申请描述",
-                "jobDesc": null,
-                "status": 1,
-                "jsonChildWeight": "12",
-                "proof": null,
-                "teacherName": "张翔",
-                "reviewerId": 3210343,
-                "reviewerName": "张翔",
-                "groupManagerName": "邵俊明",
-                "categoryName": "名字去去去去去去前期",
-                "importRequired": 0
+                "importRequired": 0,
+                "isGroup": 0
             }
         ]
     }
@@ -102,44 +113,55 @@ data | String | 结果集
     "data": {
         "itemList": [
             {
-                "itemId": 2,
-                "itemName": "name",
-                "categoryId": 2,
-                "ownerId": 3210343,
-                "jsonParameter": "asd",
-                "workload": 20,
-                "groupManagerId": 1,
-                "applyDesc": "desc",
-                "jobDesc": "asdasd",
-                "status": 1,
-                "jsonChildWeight": "21",
-                "proof": "ASDASDSA",
-                "teacherName": "张翔",
-                "reviewerId": 3210343,
-                "reviewerName": "张翔",
-                "groupManagerName": null,
-                "categoryName": "名字去去去去去去前期",
-                "importRequired": 0
-            },
-            {
                 "itemId": 3,
-                "itemName": "工作量",
-                "categoryId": 2,
+                "itemName": "工作量asdf",
+                "categoryId": 10,
                 "ownerId": 3210343,
-                "jsonParameter": "asd",
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
                 "workload": 200,
                 "groupManagerId": 5130121,
                 "applyDesc": "申请描述",
-                "jobDesc": null,
-                "status": 1,
-                "jsonChildWeight": "12",
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
+                "status": 5,
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
                 "proof": null,
                 "teacherName": "张翔",
                 "reviewerId": 3210343,
                 "reviewerName": "张翔",
                 "groupManagerName": "邵俊明",
-                "categoryName": "名字去去去去去去前期",
-                "importRequired": 0
+                "categoryName": "教学",
+                "importRequired": 0,
+                "isGroup": 0
             }
         ]
     }
@@ -173,74 +195,199 @@ normalItemList | json | 正常条目
     "status": 200,
     "statusName": "OK",
     "data": {
-        "subjectList": [
-            {
-                "subjectId": null,
-                "itemId": 4,
-                "msgContent": "你好",
-                "sendFromId": 12,
-                "sendTime": "2017年07月04日"
-            }
-        ],
+        "subjectList": {
+            "工作量": [
+                {
+                    "subjectId": 4,
+                    "itemId": 4,
+                    "msgContent": "你好",
+                    "sendFromId": 3210343,
+                    "sendFromName": "张翔",
+                    "sendTime": "2017年07月18日"
+                },
+                {
+                    "subjectId": 3,
+                    "itemId": 4,
+                    "msgContent": "有误",
+                    "sendFromId": 3210343,
+                    "sendFromName": "张翔",
+                    "sendTime": "2017年07月16日"
+                }
+            ],
+            "工作量asdf": [
+                {
+                    "subjectId": 1,
+                    "itemId": 3,
+                    "msgContent": "阿达",
+                    "sendFromId": 3203158,
+                    "sendFromName": "兰刚",
+                    "sendTime": "2017年07月04日"
+                },
+                {
+                    "subjectId": 2,
+                    "itemId": 3,
+                    "msgContent": "你好",
+                    "sendFromId": 3203158,
+                    "sendFromName": "兰刚",
+                    "sendTime": "2017年07月04日"
+                }
+            ]
+        },
         "normalItemList": [
             {
                 "itemId": 2,
                 "itemName": "name",
                 "categoryId": 2,
                 "ownerId": 3210343,
-                "jsonParameter": "asd",
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
                 "workload": 20,
                 "groupManagerId": 1,
                 "applyDesc": "desc",
-                "jobDesc": "asdasd",
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
                 "status": 1,
-                "jsonChildWeight": "21",
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
                 "proof": "ASDASDSA",
                 "teacherName": "张翔",
-                "reviewerName": "邵俊明",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
                 "groupManagerName": null,
                 "categoryName": "名字去去去去去去前期",
-                "importRequired": 0
-            },
-            {
-                "itemId": 3,
-                "itemName": "工作量",
-                "categoryId": 2,
-                "ownerId": 3210343,
-                "jsonParameter": "asd",
-                "workload": 200,
-                "groupManagerId": 5130121,
-                "applyDesc": "申请描述",
-                "jobDesc": null,
-                "status": 1,
-                "jsonChildWeight": "12",
-                "proof": null,
-                "teacherName": "张翔",
-                "reviewerName": "邵俊明",
-                "groupManagerName": "邵俊明",
-                "categoryName": "名字去去去去去去前期",
-                "importRequired": 0
+                "importRequired": 0,
+                "isGroup": 0
             }
         ],
         "abnormalItemList": [
+            {
+                "itemId": 3,
+                "itemName": "工作量asdf",
+                "categoryId": 10,
+                "ownerId": 3210343,
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
+                "workload": 200,
+                "groupManagerId": 5130121,
+                "applyDesc": "申请描述",
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
+                "status": 5,
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
+                "proof": null,
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "邵俊明",
+                "categoryName": "教学",
+                "importRequired": 0,
+                "isGroup": 0
+            },
             {
                 "itemId": 4,
                 "itemName": "工作量",
                 "categoryId": 2,
                 "ownerId": 3210343,
-                "jsonParameter": "asd",
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
                 "workload": 200,
                 "groupManagerId": 5130121,
                 "applyDesc": "申请描述",
-                "jobDesc": null,
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
                 "status": 5,
-                "jsonChildWeight": "12",
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
                 "proof": null,
                 "teacherName": "张翔",
-                "reviewerName": "邵俊明",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
                 "groupManagerName": "邵俊明",
                 "categoryName": "名字去去去去去去前期",
-                "importRequired": 0
+                "importRequired": 0,
+                "isGroup": 0
             }
         ]
     }
@@ -274,55 +421,284 @@ normalItemList | json | 正常条目
     "status": 200,
     "statusName": "OK",
     "data": {
-        "subjectList": [
-            {
-                "subjectId": 2,
-                "itemId": 10,
-                "msgContent": "你好",
-                "sendFromId": 12,
-                "sendTime": "2017年07月04日"
-            }
-        ],
+        "subjectList": {
+            "213": [],
+            "工作量asdf": [
+                {
+                    "subjectId": 1,
+                    "itemId": 3,
+                    "msgContent": "阿达",
+                    "sendFromId": 3203158,
+                    "sendFromName": "兰刚",
+                    "sendTime": "2017年07月04日"
+                },
+                {
+                    "subjectId": 2,
+                    "itemId": 3,
+                    "msgContent": "你好",
+                    "sendFromId": 3203158,
+                    "sendFromName": "兰刚",
+                    "sendTime": "2017年07月04日"
+                }
+            ]
+        },
         "normalItemList": [
             {
-                "itemId": 9,
-                "itemName": "工作量",
-                "categoryId": 15,
+                "itemId": 2,
+                "itemName": "name",
+                "categoryId": 2,
                 "ownerId": 3210343,
-                "jsonParameter": "asd",
-                "workload": 200,
-                "groupManagerId": 5130121,
-                "applyDesc": "申请描述",
-                "jobDesc": null,
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
+                "workload": 20,
+                "groupManagerId": 1,
+                "applyDesc": "desc",
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
                 "status": 1,
-                "jsonChildWeight": "12",
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
+                "proof": "ASDASDSA",
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": null,
+                "categoryName": "名字去去去去去去前期",
+                "importRequired": 1,
+                "isGroup": 0
+            },
+            {
+                "itemId": 5,
+                "itemName": "位",
+                "categoryId": 3,
+                "ownerId": 3210343,
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
+                "workload": 0,
+                "groupManagerId": 0,
+                "applyDesc": null,
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
+                "status": 1,
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
                 "proof": null,
                 "teacherName": "张翔",
-                "reviewerName": "唐雪飞",
-                "groupManagerName": "邵俊明",
-                "categoryName": "修改过的教学",
-                "importRequired": 1
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": null,
+                "categoryName": "乱码",
+                "importRequired": 1,
+                "isGroup": 0
             }
         ],
         "abnormalItemList": [
             {
-                "itemId": 10,
-                "itemName": "workload",
-                "categoryId": 15,
+                "itemId": 1,
+                "itemName": "213",
+                "categoryId": 2,
                 "ownerId": 3210343,
-                "jsonParameter": "{\"A\":10}",
-                "workload": 500,
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
+                "workload": 2,
+                "groupManagerId": 3210343,
+                "applyDesc": "",
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
+                "status": 3,
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
+                "proof": "0",
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "张翔",
+                "categoryName": "名字去去去去去去前期",
+                "importRequired": 1,
+                "isGroup": 1
+            },
+            {
+                "itemId": 3,
+                "itemName": "工作量asdf",
+                "categoryId": 10,
+                "ownerId": 3210343,
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
+                "workload": 200,
                 "groupManagerId": 5130121,
-                "applyDesc": "描述一下",
-                "jobDesc": null,
-                "status": 4,
-                "jsonChildWeight": "{\"A\":12}",
+                "applyDesc": "申请描述",
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
+                "status": 3,
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
                 "proof": null,
                 "teacherName": "张翔",
-                "reviewerName": "唐雪飞",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
                 "groupManagerName": "邵俊明",
-                "categoryName": "修改过的教学",
-                "importRequired": 1
+                "categoryName": "教学",
+                "importRequired": 1,
+                "isGroup": 0
+            },
+            {
+                "itemId": 4,
+                "itemName": "工作量",
+                "categoryId": 2,
+                "ownerId": 3210343,
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
+                "workload": 200,
+                "groupManagerId": 5130121,
+                "applyDesc": "申请描述",
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
+                "status": 4,
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
+                "proof": null,
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "邵俊明",
+                "categoryName": "名字去去去去去去前期",
+                "importRequired": 1,
+                "isGroup": 0
             }
         ]
     }
@@ -358,64 +734,160 @@ normalItemList | json | 正常条目
     "data": {
         "itemDtoList": [
             {
+                "itemId": 1,
+                "itemName": "213",
+                "categoryId": 2,
+                "ownerId": 3210343,
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
+                "workload": 2,
+                "groupManagerId": 3210343,
+                "applyDesc": "",
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
+                "status": 2,
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
+                "proof": "0",
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "张翔",
+                "categoryName": "名字去去去去去去前期",
+                "importRequired": 0,
+                "isGroup": 1
+            },
+            {
                 "itemId": 2,
                 "itemName": "name",
                 "categoryId": 2,
                 "ownerId": 3210343,
-                "jsonParameter": "asd",
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
                 "workload": 20,
                 "groupManagerId": 1,
                 "applyDesc": "desc",
-                "jobDesc": "asdasd",
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
                 "status": 2,
-                "jsonChildWeight": "21",
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
                 "proof": "ASDASDSA",
                 "teacherName": "张翔",
+                "reviewerId": 3210343,
                 "reviewerName": "张翔",
                 "groupManagerName": null,
                 "categoryName": "名字去去去去去去前期",
-                "importRequired": 0
+                "importRequired": 0,
+                "isGroup": 0
             },
             {
                 "itemId": 3,
-                "itemName": "工作量",
-                "categoryId": 2,
+                "itemName": "工作量asdf",
+                "categoryId": 10,
                 "ownerId": 3210343,
-                "jsonParameter": "asd",
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
                 "workload": 200,
                 "groupManagerId": 5130121,
                 "applyDesc": "申请描述",
-                "jobDesc": null,
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
                 "status": 2,
-                "jsonChildWeight": "12",
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
                 "proof": null,
                 "teacherName": "张翔",
+                "reviewerId": 3210343,
                 "reviewerName": "张翔",
                 "groupManagerName": "邵俊明",
-                "categoryName": "名字去去去去去去前期",
-                "importRequired": 0
-            },
-            {
-                "itemId": 10,
-                "itemName": "workload",
-                "categoryId": 15,
-                "ownerId": 3210343,
-                "jsonParameter": "{\"A\":10}",
-                "workload": 500,
-                "groupManagerId": 5130121,
-                "applyDesc": "描述一下",
-                "jobDesc": null,
-                "status": 2,
-                "jsonChildWeight": "{\"A\":12}",
-                "proof": null,
-                "teacherName": "张翔",
-                "reviewerName": "张翔",
-                "groupManagerName": "邵俊明",
-                "categoryName": "修改过的教学",
-                "importRequired": 1
+                "categoryName": "教学",
+                "importRequired": 0,
+                "isGroup": 0
             }
         ],
-        "totalWorkload": 720
+        "totalWorkload": 222
     }
 }
 ```

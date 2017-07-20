@@ -17,7 +17,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  * Description:
- * Version:v1.0 (author:刘文哲 update:  )
  */
 @RestController
 @SuppressWarnings("unchecked")

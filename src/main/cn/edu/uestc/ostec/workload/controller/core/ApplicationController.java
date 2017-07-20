@@ -1,5 +1,6 @@
 package cn.edu.uestc.ostec.workload.controller.core;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,20 @@ public class ApplicationController extends ResultController
 	@SuppressWarnings("unchecked")
 	protected List<RoleInfo> getUserRoles() {
 		return (List<RoleInfo>) session.getAttribute(SESSION_USER_ROLE_LIST);
+	}
+
+	/**
+	 * 获取角色编码信息列表
+	 *
+	 * @return List<String>
+	 */
+	public List<String> getUserRoleCodeList() {
+		List<String> roleCodes = new ArrayList<>();
+		List<RoleInfo> roleInfoList = getUserRoles();
+		for (RoleInfo roleInfo : roleInfoList) {
+			roleCodes.add(roleInfo.getRole());
+		}
+		return roleCodes;
 	}
 
 	/**

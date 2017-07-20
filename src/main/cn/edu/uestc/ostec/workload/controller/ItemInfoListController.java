@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,11 @@ import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.dto.RoleInfo;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
-import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
+import cn.edu.uestc.ostec.workload.pojo.UserRole;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
@@ -24,6 +26,7 @@ import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.ITEM_PATH;
 
+import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
@@ -49,11 +52,12 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 	/**
 	 * 管理员分页查询所有的条目信息
-	 * @param pageNum 页号
+	 *
+	 * @param pageNum  页号
 	 * @param pageSize 页的大小
 	 * @return RestResponse
 	 */
-	@RequestMapping(value = "item-all",method = GET)
+	@RequestMapping(value = "item-all", method = GET)
 	public RestResponse getAllItems(
 			@RequestParam(required = false)
 					Integer categoryId,
@@ -67,13 +71,14 @@ public class ItemInfoListController extends ApplicationController implements Ope
 					int pageSize) {
 
 		User user = getUser();
-		if (null == user) {
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
 			return invalidOperationResponse("非法请求");
 		}
 
-		List<Item> itemList = itemService.findAll(categoryId,status,ownerId,null,pageNum,pageSize);
-		Map<String,Object> data = getData();
-		data.put("itemList",itemConverter.poListToDtoList(itemList));
+		List<Item> itemList = itemService
+				.findAll(categoryId, status, ownerId, null, pageNum, pageSize);
+		Map<String, Object> data = getData();
+		data.put("itemList", itemConverter.poListToDtoList(itemList));
 
 		return successResponse(data);
 	}
@@ -115,8 +120,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	}
 
 	/**
-	 * 获取教师各自申报的工作量信息(Apply_Self)
-	 * abnormalItemList：审核未通过的工作量条目（DENIED）
+	 * 获取教师各自申报的工作量信息(Apply_Self) abnormalItemList：审核未通过的工作量条目（DENIED）
 	 * normalItemList：审核通过和待审核的工作量条目（CHECKED,NON_CHECKED）
 	 *
 	 * @return RestResponse
@@ -137,23 +141,22 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		List<ItemDto> normalItemList = findItems(APPLY_SELF, getNormalStatusList(), teacherId);
 
 		//获取否定理由信息
-		List<Subject> subjectList = new ArrayList<>();
+		Map<String, Object> subjectMap = new HashMap<>();
 		for (ItemDto item : abnormalItemList) {
-			Subject subject = subjectService.getSubjectsByItem(item.getItemId()).get(ZERO_INT);
-			subjectList.add(subject);
+			subjectMap.put(item.getItemName(), subjectConverter
+					.poListToDtoList(subjectService.getSubjectsByItem(item.getItemId())));
 		}
 
 		Map<String, Object> data = getData();
 		data.put("abnormalItemList", abnormalItemList);
 		data.put("normalItemList", normalItemList);
-		data.put("subjectList", subjectConverter.poListToDtoList(subjectList));
+		data.put("subjectList", subjectMap);
 
 		return successResponse(data);
 	}
 
 	/**
-	 * 获取审核人导入的工作量信息(Excel_Import)
-	 * abnormalItemList：存疑的工作量条目（存疑未解决，存疑已解决）DOUBTED,DOUBTED_CHECKED
+	 * 获取审核人导入的工作量信息(Excel_Import) abnormalItemList：存疑的工作量条目（存疑未解决，存疑已解决）DOUBTED,DOUBTED_CHECKED
 	 * normalItemList：正常的工作量条目（尚未复核，未审核）
 	 *
 	 * @return RestResponse
@@ -174,22 +177,19 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				teacherId);
 		List<ItemDto> normalItemList = findItems(IMPORT_EXCEL, getNormalStatusList(), teacherId);
 
-		List<Subject> subjects = new ArrayList<>();
+		Map<String, Object> subjectMap = new HashMap<>();
+
 		for (ItemDto itemDto : abnormalItemList) {
-			if (DOUBTED_CHECKED.equals(itemDto.getStatus())) {
-				List<Subject> subjectList = subjectService.getSubjectsByItem(itemDto.getItemId());
-				if(null == subjectList) {
-					subjects.add(null);
-				} else {
-					subjects.addAll(subjectList);
-				}
+			if (DOUBTED.equals(itemDto.getStatus())) {
+				subjectMap.put(itemDto.getItemName(), subjectConverter
+						.poListToDtoList(subjectService.getSubjectsByItem(itemDto.getItemId())));
 			}
 		}
 
 		Map<String, Object> data = getData();
 		data.put("abnormalItemList", abnormalItemList);
 		data.put("normalItemList", normalItemList);
-		data.put("subjectList", subjectConverter.poListToDtoList(subjects));
+		data.put("subjectList", subjectMap);
 
 		return successResponse(data);
 	}
