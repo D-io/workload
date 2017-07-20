@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2017-07-18 10:41:15
+Date: 2017-07-20 12:43:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -54,17 +54,17 @@ CREATE TABLE `category` (
 -- ----------------------------
 -- Records of category
 -- ----------------------------
-INSERT INTO `category` VALUES ('2', '3210343', '名字去去去去去去前期', '描述去去去前期', '0', 'N', '0', '1', 'a+b+c', '2016-2017-1', '1', '1499166527', '1499166527');
-INSERT INTO `category` VALUES ('3', '5130121', '乱码', '描述去去去前期', '2', 'N', '0', '1', 'a+b+c', '2016-2017-1', '1', '1499151023', '1499151023');
+INSERT INTO `category` VALUES ('2', '3210343', '名字去去去去去去前期', '描述去去去前期', '0', 'N', '1', '1', 'a+b+c', '2016-2017-1', '1', '1499166527', '1499166527');
+INSERT INTO `category` VALUES ('3', '3210343', '乱码', '描述去去去前期', '2', 'N', '1', '1', 'A+2*B', '2016-2017-1', '1', '1499151023', '1499151023');
 INSERT INTO `category` VALUES ('4', '3201231', '名字', '描述去去去前期', '3', 'N', '0', '1', 'a+b+c', '2016-2017-1', '-1', '1499166558', '1499166558');
 INSERT INTO `category` VALUES ('5', '3201231', '格式化', '描述去去去前期', '3', 'N', '0', '1', 'a+b+c', '2016-2017-1', '1', '1499171096', '1499171096');
 INSERT INTO `category` VALUES ('9', '3201231', '教学', '就是简单的教学', '3', 'N', '0', '{“人数”:“A”}', 'A B C', '2017-2018-1', '1', '1513785600', '1512835200');
-INSERT INTO `category` VALUES ('10', '3210343', '教学', '就是简单的教学', '2', 'N', '0', '{“人数”:“A”}', 'A B C', '2017-2018-1', '-1', '1513785600', '1512835200');
+INSERT INTO `category` VALUES ('10', '3210343', '教学', '就是简单的教学', '2', 'N', '0', '{“人数”:“A”}', 'A B C', '2017-2018-1', '1', '1513785600', '1512835200');
 INSERT INTO `category` VALUES ('11', '3201231', '教学', '就是简单的教学', '4', 'N', '0', '{“人数”:“A”}', 'A+B+C', '2017-2018-1', '-1', '1513785600', '1512835200');
 INSERT INTO `category` VALUES ('12', '3201231', '教学', '就是简单的教学', '2', 'N', '0', '{“人数”:“A”}', 'A+B+C', '2017-2018-1', '-1', '1513785600', '1512835200');
 INSERT INTO `category` VALUES ('13', '3201231', '教学', '就是简单的教学', '4', 'N', '0', '{“人数”:“A”}', 'A+B+C', '2017-2018-1', '1', '1513785600', '1512835200');
 INSERT INTO `category` VALUES ('14', '1', '修改过的教学', '_就是简单的教学', '2', 'N', '0', '{“人_数”:“A”}', '_A+B+C', '2017-2018-1', '0', '1513785600', '1512835200');
-INSERT INTO `category` VALUES ('15', '3210343', '修改过的教学', null, '2', 'N', '1', '{“人_数”:“A”}', '_A+B+C', '2017-2018-1', '1', '1513612800', '1512835200');
+INSERT INTO `category` VALUES ('15', '3201231', '修改过的教学', null, '2', 'N', '1', '{“人_数”:“A”}', '_A+B+C', '2017-2018-1', '1', '1513612800', '1512835200');
 INSERT INTO `category` VALUES ('16', '1', '修改过的教学', '_就是简单的教学', '2', 'N', '1', '{“人_数”:“A”}', '_A+B+C', '2017-2018-1', '0', '1513785600', '1512835200');
 INSERT INTO `category` VALUES ('17', '1', '修改过的教学', '_就是简单的教学', '2', 'N', '0', '{“人_数”:“A”}', '_A+B+C', '2017-2018-1', '0', '1513785600', '1512835200');
 INSERT INTO `category` VALUES ('18', '3203158', '修改过的教学', '_就是简单的教学', '2', 'N', '0', '{“人_数”:“A”}', '_A+B+C', '2017-2018-1', '0', '1513785600', '1512835200');
@@ -144,13 +144,38 @@ CREATE TABLE `item` (
 -- ----------------------------
 -- Records of item
 -- ----------------------------
-INSERT INTO `item` VALUES ('1', '213', '2', '3210343', '213', '2.00', '3210343', '', '0', '0', '1', '', '0');
-INSERT INTO `item` VALUES ('2', 'name', '2', '3210343', 'asd', '20.00', '1', 'desc', 'asdasd', 'ASDASDSA', '1', '21', '0');
-INSERT INTO `item` VALUES ('3', '工作量', '2', '3210343', 'asd', '200.00', '5130121', '申请描述', null, null, '1', '12', '0');
-INSERT INTO `item` VALUES ('4', '工作量', '2', '5130121', 'asd', '200.00', '5130121', '申请描述', null, null, '4', '12', '0');
-INSERT INTO `item` VALUES ('5', '位', '3', '3210343', '', '0.00', '0', null, null, null, '1', '', '0');
-INSERT INTO `item` VALUES ('9', '工作量', '15', '5130121', 'asd', '200.00', '5130121', '申请描述', null, null, '1', '12', '0');
-INSERT INTO `item` VALUES ('10', 'workload', '15', '3210343', '{\"A\":10}', '150.00', '5130121', '描述一下', null, null, '5', '{\"A\":12}', '0');
+INSERT INTO `item` VALUES ('1', '213', '2', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]', '2.00', '3210343', '', '[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]', '0', '3', '[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]', '1');
+INSERT INTO `item` VALUES ('2', 'name', '2', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]', '20.00', '1', 'desc', '[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]', 'ASDASDSA', '1', '[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]', '0');
+INSERT INTO `item` VALUES ('3', '工作量', '10', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]', '200.00', '5130121', '申请描述', '[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]', null, '1', '[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]', '0');
+INSERT INTO `item` VALUES ('4', '工作量', '2', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]', '200.00', '5130121', '申请描述', '[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]', null, '4', '[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]', '0');
+INSERT INTO `item` VALUES ('5', '位', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]', '0.00', '0', null, '[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]', null, '1', '[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]', '0');
+INSERT INTO `item` VALUES ('9', '工作量', '15', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]', '200.00', '5130121', '申请描述', '[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]', null, '1', '[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]', '0');
+INSERT INTO `item` VALUES ('10', 'workload', '15', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]', '150.00', '5130121', '描述一下', '[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]', null, '5', '[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]', '0');
+INSERT INTO `item` VALUES ('11', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]', '0.00', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
+INSERT INTO `item` VALUES ('12', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '28.80', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
+INSERT INTO `item` VALUES ('13', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '28.80', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
+INSERT INTO `item` VALUES ('14', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '7.20', '5130121', '描述一下', '准备工作', null, '0', '0.2', '1');
+INSERT INTO `item` VALUES ('15', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '28.80', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
+INSERT INTO `item` VALUES ('16', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '7.20', '5130121', '描述一下', '准备工作', null, '0', '0.2', '1');
+INSERT INTO `item` VALUES ('17', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '28.80', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
+INSERT INTO `item` VALUES ('18', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '7.20', '5130121', '描述一下', '准备工作', null, '0', '0.2', '1');
+INSERT INTO `item` VALUES ('19', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '28.80', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
+INSERT INTO `item` VALUES ('20', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '7.20', '5130121', '描述一下', '准备工作', null, '0', '0.2', '1');
+INSERT INTO `item` VALUES ('21', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '28.80', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
+INSERT INTO `item` VALUES ('22', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '7.20', '5130121', '描述一下', '准备工作', null, '0', '0.2', '1');
+INSERT INTO `item` VALUES ('23', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '28.80', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
+INSERT INTO `item` VALUES ('24', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '36.00', '5130121', '描述一下', '[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]', null, '0', '[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]', '0');
+INSERT INTO `item` VALUES ('25', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '36.00', '5130121', '描述一下', '[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]', null, '0', '[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]', '0');
+INSERT INTO `item` VALUES ('26', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '7.20', '5130121', '描述一下', '准备工作', null, '0', '0.2', '1');
+INSERT INTO `item` VALUES ('27', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '28.80', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
+INSERT INTO `item` VALUES ('28', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '7.20', '5130121', '描述一下', '准备工作', null, '0', '0.2', '1');
+INSERT INTO `item` VALUES ('29', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '28.80', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
+INSERT INTO `item` VALUES ('30', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '36.00', '5130121', '描述一下', '[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]', null, '0', '[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]', '0');
+INSERT INTO `item` VALUES ('31', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 24}, { \"symbol\": \"B\", \"value\": 12 } ]', '48.00', '5130121', '描述一下', '[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]', null, '0', '[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]', '0');
+INSERT INTO `item` VALUES ('32', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 24}, { \"symbol\": \"B\", \"value\": 12 } ]', '9.60', '5130121', '描述一下', '准备工作', null, '0', '0.2', '1');
+INSERT INTO `item` VALUES ('33', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 24}, { \"symbol\": \"B\", \"value\": 12 } ]', '38.40', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
+INSERT INTO `item` VALUES ('34', 'workload', '3', '3210343', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '7.20', '5130121', '描述一下', '准备工作', null, '0', '0.2', '1');
+INSERT INTO `item` VALUES ('35', 'workload', '3', '5130121', '[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]', '28.80', '5130121', '描述一下', '指导老师', null, '0', '0.8', '1');
 
 -- ----------------------------
 -- Table structure for `subject`
@@ -171,7 +196,8 @@ CREATE TABLE `subject` (
 -- Records of subject
 -- ----------------------------
 INSERT INTO `subject` VALUES ('2', '10', '你好', '12', '1499157164');
-INSERT INTO `subject` VALUES ('3', '10', '有误', '3210343', '1500178157');
+INSERT INTO `subject` VALUES ('3', '4', '有误', '3210343', '1500178157');
+INSERT INTO `subject` VALUES ('4', '4', '你好', '3210343', '1500366776');
 
 -- ----------------------------
 -- Table structure for `teacher`
@@ -352,3 +378,20 @@ INSERT INTO `teacher` VALUES ('6156311', '杨珊', 'F', 'S', '1', null, null, nu
 INSERT INTO `teacher` VALUES ('7140003', 'GORDHAN DA', 'M', 'S', '14', null, null, null, null, null, '13880088830', '', 'gordhan@uestc.edu.cn', null);
 INSERT INTO `teacher` VALUES ('7140258', '刘乐源', 'M', 'S', '15', null, null, null, null, null, '0', '', 'leyuanliu@qq.com', null);
 INSERT INTO `teacher` VALUES ('7141201', '陈大江', 'M', 'S', '14', null, null, null, null, null, '0', '', 'dajiangchen2010@gmail.com', null);
+
+-- ----------------------------
+-- Table structure for `user_role`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role` (
+  `user_id` int(11) NOT NULL,
+  `role` text NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `deadline` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_role
+-- ----------------------------
+INSERT INTO `user_role` VALUES ('3210343', '[{\"role\":\"ADMIN\",\"roleName\":\"工作量计算规则配置管理员\"},{\"role\":\"RE\",\"roleName\":\"工作量审核人\"}]', '1', '1500024348');

@@ -1,11 +1,3 @@
-/*
- * AEMS（工程认证达成度评价管理系统）
- * Author: 刘文哲
- * Email: liuwnzh@163.com
- * Date: 17-5-2 下午11:36
- * Copyright: Copyright (c) 2017.
- */
-
 package cn.edu.uestc.ostec.workload.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +30,6 @@ import static cn.edu.uestc.ostec.workload.support.utils.ClientInfoHelper.OPERATI
 
 /**
  * Description: 拦截器
- * Version:v1.0 (author:刘文哲 update:  )
  */
 public class ApplicationInterceptor extends HandlerInterceptorAdapter
 		implements SessionConstants, ServletContextConstants {
