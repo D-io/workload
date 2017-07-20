@@ -70,7 +70,7 @@ public class PageManagementController extends ApplicationController {
 		Map<String, Object> sideBarItem = mapInstance();
 		UserType userType = UserType.getUserType(roleInfo.getRole());
 		sideBarItem.put("role", userType.getDesc());
-		sideBarItem.put("roleId", userType.getCode());
+		sideBarItem.put("roleCode", userType.getCode());
 
 		return sideBarItem;
 	}
