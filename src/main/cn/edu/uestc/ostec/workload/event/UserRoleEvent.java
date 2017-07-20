@@ -1,12 +1,3 @@
-/*
- * Project: AEMS（工程认证达成度评价管理系统）
- * File: UserRoleEvent.java
- * Author: 刘文哲
- * Email: liuwnzh@163.com
- * Date: 2017年7月9日
- * Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
- */
-
 package cn.edu.uestc.ostec.workload.event;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +5,14 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.edu.uestc.ostec.workload.dto.RoleInfo;
 
 /**
- * Description:
- * Version:v1.0 (author:刘文哲 update:  )
+ * Description: 角色管理事件
  */
 public interface UserRoleEvent extends IEvent {
+
+	/**
+	 * 服务名称
+	 */
+	String EVENT_NAME = "userRoleEvent";
 
 	/**
 	 * 追加用户角色

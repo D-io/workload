@@ -12,6 +12,7 @@ import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
+import cn.edu.uestc.ostec.workload.event.UserRoleEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
@@ -38,6 +39,9 @@ public class CategoryManageController extends ApplicationController {
 
 	@Autowired
 	private CategoryConverter categoryConverter;
+
+	@Autowired
+	private UserRoleEvent userRoleEvent;
 
 	/**
 	 * 添加工作量类目信息
@@ -208,9 +212,14 @@ public class CategoryManageController extends ApplicationController {
 			return invalidOperationResponse("无可提交的项目");
 		}
 
+		Map<String,Object> errorData = getData();
 		for (Category category : categoryList) {
-			if (!categoryService.saveCategory(SUBMITTED, category.getCategoryId())) {
-				return systemErrResponse("提交失败");
+			int reviewerId = category.getReviewerId();
+			boolean appendSuccess = userRoleEvent.appendRoleInfo(reviewerId,REVIEWER_ROLE);
+			boolean saveSuccess = categoryService.saveCategory(SUBMITTED, category.getCategoryId());
+			if (!saveSuccess || !appendSuccess) {
+				errorData.put(category.getName(),"提交失败");
+				continue;
 			}
 		}
 		data.put("categoryList", categoryList);
@@ -235,17 +244,21 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		boolean submitSuccess;
+		boolean appendSuccess;
 		List<Category> categoryList = new ArrayList<>();
 		Map<String, Object> data = getData();
 		Map<String, Object> errorData = getData();
 
 		for (Integer categoryId : categoryIdList) {
+
 			Category category = categoryService.getCategory(categoryId);
 
+			int reviewerId = category.getReviewerId();
 			if (UNCOMMITTED.equals(category.getStatus())) {
-				submitSuccess = categoryService.saveCategory(SUBMITTED, categoryId);
 
-				if (!submitSuccess) {
+				appendSuccess = userRoleEvent.appendRoleInfo(reviewerId,REVIEWER_ROLE);
+				submitSuccess = categoryService.saveCategory(SUBMITTED, categoryId);
+				if (!submitSuccess || !appendSuccess) {
 					//提交失败的错误信息
 					errorData.put(category.getName(), "提交失败");
 				} else {

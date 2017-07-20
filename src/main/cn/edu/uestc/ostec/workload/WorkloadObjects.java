@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.uestc.ostec.workload.dto.RoleInfo;
+
 /**
  * Version:v1.0 (description:  )
  */
@@ -53,7 +55,11 @@ public interface WorkloadObjects {
 	 */
 	Integer SINGLE = 0;
 
-	String ROLE_ADMIN = "admin";
+	/**
+	 * 审核人角色信息
+	 */
+	RoleInfo REVIEWER_ROLE = new RoleInfo("RE","工作量审核人");
+
 
 	/**
 	 * 获取空的Map&lt;K, V&gt;

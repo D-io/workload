@@ -2,6 +2,7 @@ package cn.edu.uestc.ostec.workload.converter.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ import static cn.edu.uestc.ostec.workload.WorkloadObjects.OBJECT_MAPPER;
 /**
  * Description: 用户角色信息和UserDto对象的转换
  */
-@Controller
+@Component
 public class UserRoleConverter implements Converter<UserRole, User> {
 
 	@Override

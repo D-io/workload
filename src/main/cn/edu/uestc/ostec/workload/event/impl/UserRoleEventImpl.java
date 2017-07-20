@@ -1,11 +1,4 @@
-/*
- * Project: AEMS（工程认证达成度评价管理系统）
- * File: UserRoleEventImpl.java
- * Author: 刘文哲
- * Email: liuwnzh@163.com
- * Date: 2017年7月9日
- * Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
- */
+
 
 package cn.edu.uestc.ostec.workload.event.impl;
 
@@ -24,9 +17,8 @@ import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 /**
  * Description:
- * Version:v1.0 (author:刘文哲 update:  )
  */
-@Service
+@Service(UserRoleEvent.EVENT_NAME)
 public class UserRoleEventImpl implements UserRoleEvent {
 
 	@Autowired
@@ -35,18 +27,25 @@ public class UserRoleEventImpl implements UserRoleEvent {
 	@Autowired
 	private UserRoleService userRoleService;
 
+	/**
+	 * 为指定用户分配角色(前提是user_role的数据表中要存在所有老师的信息)
+	 *
+	 * @param userId   追加角色的用户
+	 * @param roleInfo 指定需要增加的角色
+	 * @return boolean
+	 */
 	@Override
 	public boolean appendRoleInfo(int userId, RoleInfo roleInfo) {
 
 		User user = userRoleService.getUserRoleDto(userId);
 		user.setUserId(userId);
-		user.setDeadline(DateHelper.getDateTime());
+		user.setDeadline(DateHelper.getCnDate());
 		//获取当前用户已有角色
 		List<RoleInfo> roleInfoList = user.getRoleInfoList();
 		if (roleInfoList == null || roleInfoList.size() == 0) {
 			//不存在角色列表，新增角色
 			user.setRoleInfoList(roleInfo);
-		} else if(!roleInfoList.contains(roleInfo)){
+		} else if (!roleInfoList.contains(roleInfo)) {
 			//列表中没有此角色，新增一项角色
 			roleInfoList.add(roleInfo);
 		} else {
@@ -55,6 +54,13 @@ public class UserRoleEventImpl implements UserRoleEvent {
 		return userRoleService.saveUserRole(userRoleConverter.dtoToPo(user));
 	}
 
+	/**
+	 * 删除指定用户的角色信息
+	 *
+	 * @param userId   持有特定角色的用户
+	 * @param roleInfo 指定需要清理的角色
+	 * @return boolean
+	 */
 	@Override
 	public boolean clearRoleInfo(int userId, RoleInfo roleInfo) {
 		//修改该组组长的角色信息
@@ -80,6 +86,14 @@ public class UserRoleEventImpl implements UserRoleEvent {
 		return userRoleService.saveUserRole(userRoleConverter.dtoToPo(user));
 	}
 
+	/**
+	 * 转移角色信息
+	 *
+	 * @param fromUserId 原持有角色的用户
+	 * @param toUserId   新分配的用户
+	 * @param roleInfo   角色信息
+	 * @return boolean
+	 */
 	@Override
 	public boolean transferRoleInfo(int fromUserId, int toUserId, RoleInfo roleInfo) {
 		return clearRoleInfo(fromUserId, roleInfo) && appendRoleInfo(toUserId, roleInfo);

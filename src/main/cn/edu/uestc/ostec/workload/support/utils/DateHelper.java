@@ -77,6 +77,11 @@ public class DateHelper {
 		return getDateTime(LocalDateTime.now().withNano(0), DATE_TIME_FORMAT_DEFAULT);
 	}
 
+	public static String getCnDate() {
+
+		return getDateTime(LocalDateTime.now().withNano(0),DATE_FORMAT_CN);
+	}
+
 	/**
 	 * 格式化日期时间
 	 *

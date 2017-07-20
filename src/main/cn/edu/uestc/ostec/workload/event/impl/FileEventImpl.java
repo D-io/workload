@@ -30,7 +30,6 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 
 /**
  * Description:
- * Version:v1.0 (author:刘文哲 update:  )
  */
 @Service(FileEvent.EVENT_NAME)
 public class FileEventImpl implements FileEvent {
