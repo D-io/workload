@@ -1,58 +1,59 @@
 $(document).ready(function(){
-
-  $('#clickToggle1').click(function(){
-    $("#ck1").toggle("slow");
-    
-
-  });
-  
-  $('#clickToggle2').click(function(){
-    $("#ck2").toggle("slow");
-
-  });
-   $('#clickToggle3').click(function(){
-    $("#ck3").toggle("slow");
-    $("#ck4").toggle("slow");
-
-  });
-   $('.btn-sm').click(function(){
-    $('.hidden-addedText').show();
-
-   });
-   $('.btn-md').click(function(){
-    $('.hidden-addedText').hide();
-
-   });
-   $(".collapse-link").click(function(){
-    $(".x_content").slideToggle("slow");
-  });
-   $(".collapse-link").click(function(){
-    $(".fa-chevron-up").toggleClass("fa-chevron-down");
-  });
-   $(".close-link").click(function(){
-    $(".x_panel").hide();
-   });
-        $(".sorting1").click(function(){
-    $(".sorting1").toggleClass("sorting_asc");
-
-   });     
-  $(".sorting2").click(function(){
-    $(".sorting2").toggleClass("sorting_asc");
-    
-   });
-
-     $(".sorting_asc").click(function(){
-    $(".sorting_asc").toggleClass("sorting_desc");
-   });
+    $('#clickToggle1').on("click", function () {
+        $(".ck1").toggle("slow");
 
 
+    });
+
+    $('#clickToggle2').on("click", function () {
+        $(".ck2").toggle("slow");
+
+    });
+    $('#clickToggle3').on("click", function () {
+        $(".ck3").toggle("slow");
+
+
+    });
+    $('.btn-sm').on("click", function () {
+        $('.hidden-addedText').show();
+
+    });
+    $('.btn-md').on("click", function () {
+        $('.hidden-addedText').hide();
+
+    });
+    $(".collapse-link").on("click", function () {
+        $(".x_content").slideToggle("slow");
+    });
+    $(".collapse-link").on("click", function () {
+        $(".fa-chevron-up").toggleClass("fa-chevron-down");
+    });
+    $(".close-link").on("click", function () {
+        $(".x_panel").hide();
+    });
+    $(".sorting1").on("click", function () {
+        $(".sorting1").toggleClass("sorting_asc");
+
+    });
+    $(".sorting2").on("click", function () {
+        $(".sorting2").toggleClass("sorting_asc");
+
+    });
+
+    $(".sorting_asc").on("click", function () {
+        $(".sorting_asc").toggleClass("sorting_desc");
+    });
 });
 
 function jumpToSum() {
-    $('.panel-body').empty();
-    $('#addToTable').remove();
-    $('#submit').remove();
-    $.get("/category/list", function (data) {
+
+    var resetStr='regionName=manager/sum';
+    $.get("/region?"+resetStr,function (data) {
+        $('.right_col').empty();
+        $('.right_col').append(data);
+
+    });
+    $.get("/category/info/list", function (data) {
         var showlist = $("<ul></ul>");
         showall(data.data.categoryTree, showlist);
         $(".panel-body").append(showlist);
@@ -71,7 +72,7 @@ function jumpToSum() {
                         $(li).append(item[menu].name).append("<ul></ul>").appendTo(parent);
                     }
                     //将空白的ul作为下一个递归遍历的父亲节点传入
-                    showall(item[menu].children, $(li));
+                    showall(item[menu].children, $(li).children().eq(0));
                 }
                 //如果该节点没有子节点，则直接将该节点li以及文本创建好直接添加到父亲节点中
                 else {
@@ -93,13 +94,13 @@ function jumpToSum() {
 }
 
 function jumpToAdd() {
-    var btnstr="<button id='addToTable' class='btn btn-primary'  data-target='#addModal' >Add <i class='fa fa-plus'></i></button> <button id='submit' class='btn btn-primary'>Submit</button>";
-    var treestr=" <div class='zTreeDemoBackground left'> <ul id='treeDemo' class='ztree'></ul> </div>";
-    $('#addToTable').remove();
-    $('#submit').remove();
-    $('.panel-body').empty();
-    $('#tree').prepend(btnstr);
-    $('.panel-body').append(treestr);
+
+    var resetStr='regionName=manager/add';
+    $.get("/region?"+resetStr,function (data) {
+        $('.right_col').empty();
+        $('.right_col').append(data);
+
+    });
     var setting = {
         view: {
             addHoverDom: addHoverDom,
@@ -140,7 +141,7 @@ function jumpToAdd() {
     };
 //动态添加节点信息
     var znodes = new Array();
-    $.get("/category/all",function (data) {
+    $.get("/category/info/all",function (data) {
             for (var m = 0; m < data.data.categoryTree.length; m++) {
 
                 createTree(data.data.categoryTree[m]);
@@ -215,7 +216,7 @@ function jumpToAdd() {
                 else
                     radio = 0;
 
-                $.post("/category/modify",
+                $.post("/category/manage/modify",
                     {
                         name: $('#itemName').val(),
                         desc: $('#desc').val(),
@@ -271,7 +272,7 @@ function jumpToAdd() {
         var str='categoryId'+'='+treeNode.id;
         $.ajax({
             type:"DELETE",
-            url:"/category?"+ str,
+            url:"/category/manage?"+ str,
             data:{
                 categoryId:treeNode.id
             },
@@ -379,7 +380,7 @@ function jumpToAdd() {
                     else
                         radio = 0;
 
-                    $.post("/category", {
+                    $.post("/category/manage", {
                         name: $('#itemName').val(),
                         desc: $('#desc').val(),
                         parentId: treeNode.id,
@@ -417,7 +418,7 @@ function jumpToAdd() {
 
     };
     function showTeacherInfo(){
-        $.get("/category/teachers",function (data) {
+        $.get("/common/teachers",function (data) {
             var str="<div class='well well-sm'><ul class='list-group'>";
             var TeacherInfo=data.data.teacherList;
             for(var count=0;count<TeacherInfo.length;count++){
@@ -464,7 +465,7 @@ function jumpToAdd() {
                 }
                 else
                     radio = 0;
-                $.post("/category", {
+                $.post("/category/manage", {
                     name: $('#itemName').val(),
                     desc: $('#desc').val(),
                     parentId: 0,
@@ -531,7 +532,7 @@ function jumpToAdd() {
 
         $('#submit').click(function(){
 
-            $.post("/category/public-selective",str,function (data){
+            $.post("/category/manage/public-selective",str,function (data){
                 if(data.status==200)
                     alert("提交节点成功！");
                 else
@@ -543,4 +544,12 @@ function jumpToAdd() {
     $("#selectAll").bind("click", selectAll);
 
 
+}
+function reset() {
+    var resetStr='regionName=manager/reviewer_reset';
+    $.get("/region?"+resetStr,function (data) {
+        $('.right_col').empty();
+        $('.right_col').append(data);
+
+    });
 }

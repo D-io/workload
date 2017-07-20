@@ -64,6 +64,25 @@ To change this template use File | Settings | File Templates.
                         <span>欢迎,</span>
                         <h2>John Doe</h2>
                     </div>
+                    <div class="dropdown" id="changerole">
+                        <button type="button" class="btn dropdown-toggle" id="dropdownMenu1"
+                                data-toggle="dropdown">
+                            切换角色
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation">
+                                <a id="reviewer" tabindex="-1" class="swift-role">复核人</a>
+                            </li>
+                            <li role="presentation">
+                                <a id="auditor" tabindex="-1" class="swift-role">审核人</a>
+                            </li>
+                            <li role="presentation">
+                                <a id="manager" tabindex="-1" class="swift-role">管理员</a>
+                            </li>
+
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- /menu profile quick info -->

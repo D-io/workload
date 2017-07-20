@@ -38,7 +38,7 @@ var setting = {
 };
 //动态添加节点信息
 var zNodes = new Array();
-$.get("/category/all",function (data) {
+$.get("/category/info/all",function (data) {
         for (var m = 0; m < data.data.categoryTree.length; m++) {
 
             createTree(data.data.categoryTree[m]);
@@ -95,7 +95,9 @@ function beforeEditName(treeId, treeNode) {
         $('#parentId').val(treeNode.parentId);
         $('#applyDeadline').val(treeNode.applyDeadline);
         $('#reviewDeadline').val(treeNode.reviewDeadline);
+
         $('#formula').val(treeNode.formula);
+
 
         $('#addModal').modal('show');
         $('#save').unbind("click");
@@ -108,12 +110,13 @@ function beforeEditName(treeId, treeNode) {
 
             var radio;
             if ($('#importRequired').val() == '导入类') {
+                radio = 0;
+            }
+            else {
                 radio = 1;
             }
-            else
-                radio = 0;
 
-            $.post("/category/modify",
+            $.post("/category/manage/modify",
                 {
                     name: $('#itemName').val(),
                     desc: $('#desc').val(),
@@ -149,6 +152,7 @@ function beforeEditName(treeId, treeNode) {
                             $('#'+treeNode.tId+'_span').val(newNode.name);
 
                             window.zNodes.splice(i, 1, newNode);
+                            $.fn.zTree.init($("#treeDemo"), setting, window.zNodes);
                         }
                     }
 
@@ -169,7 +173,7 @@ function beforeRemove(treeId, treeNode) {
     var str='categoryId'+'='+treeNode.id;
     $.ajax({
         type:"DELETE",
-        url:"/category?"+ str,
+        url:"/category/manage?"+ str,
         data:{
             categoryId:treeNode.id
         },
@@ -277,7 +281,7 @@ function addHoverDom(treeId, treeNode){
                 else
                     radio = 0;
 
-                $.post("/category", {
+                $.post("/category/manage", {
                     name: $('#itemName').val(),
                     desc: $('#desc').val(),
                     parentId: treeNode.id,
@@ -315,7 +319,7 @@ function addHoverDom(treeId, treeNode){
 
 };
 function showTeacherInfo(){
-    $.get("/category/teachers",function (data) {
+    $.get("common/teachers",function (data) {
         var str="<div class='well well-sm'><ul class='list-group'>";
         var TeacherInfo=data.data.teacherList;
         for(var count=0;count<TeacherInfo.length;count++){
@@ -362,7 +366,7 @@ $(document).ready(function(){
             }
             else
                 radio = 0;
-            $.post("/category", {
+            $.post("/category/manage", {
                 name: $('#itemName').val(),
                 desc: $('#desc').val(),
                 parentId: 0,
@@ -429,7 +433,7 @@ function zTreeOnClick(event, treeId, treeNode) {
 
     $('#submit').click(function(){
 
-        $.post("/category/public-selective",str,function (data){
+        $.post("/category/manage/public-selective",str,function (data){
             if(data.status==200)
                 alert("提交节点成功！");
             else
@@ -437,5 +441,5 @@ function zTreeOnClick(event, treeId, treeNode) {
         } )
     });
 }
-$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+$.fn.zTree.init($("#treeDemo"), setting, window.zNodes);
 $("#selectAll").bind("click", selectAll);
