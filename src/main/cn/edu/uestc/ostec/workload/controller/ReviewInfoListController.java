@@ -29,6 +29,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECK
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
+import static cn.edu.uestc.ostec.workload.type.UserType.REVIEWER;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
@@ -62,9 +63,7 @@ public class ReviewInfoListController extends ApplicationController {
 
 		// 用户验证
 		User user = getUser();
-		System.out.println(user);
-
-		if (null == user) {
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
 			return invalidOperationResponse("非法请求");
 		}
 
@@ -113,8 +112,9 @@ public class ReviewInfoListController extends ApplicationController {
 	@RequestMapping(value = "categories", method = GET)
 	public RestResponse getCategory() {
 
+		// 用户验证
 		User user = getUser();
-		if (null == user) {
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
 			return invalidOperationResponse("非法请求");
 		}
 
@@ -221,11 +221,11 @@ public class ReviewInfoListController extends ApplicationController {
 			@RequestParam("pageSize")
 					int pageSize) {
 
+		// 用户验证
 		User user = getUser();
-		if (null == user) {
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
 			return invalidOperationResponse("非法请求");
 		}
-
 
 		Map<String,Object> data = getData();
 

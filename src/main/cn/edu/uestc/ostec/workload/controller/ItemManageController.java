@@ -20,7 +20,6 @@ import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
-import cn.edu.uestc.ostec.workload.service.AdminService;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
@@ -36,6 +35,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
+import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -49,9 +49,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @RequestMapping(ITEM_PATH + MANAGE_PATH)
 public class ItemManageController extends ApplicationController {
-
-	@Autowired
-	private AdminService adminService;
 
 	@Autowired
 	private ItemService itemService;
@@ -81,9 +78,9 @@ public class ItemManageController extends ApplicationController {
 			@RequestParam("role")
 					String role) {
 		//验证管理员身份
-		int userId = getUserId();
-		if (!adminService.findAllAdmins().contains(userId)) {
-			return systemErrResponse("非法访问");
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
 		}
 
 		Item item = itemService.findItem(itemId);

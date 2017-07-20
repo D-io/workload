@@ -16,7 +16,7 @@ import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
-import cn.edu.uestc.ostec.workload.service.AdminService;
+import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.CATEGORY_PATH;
@@ -24,6 +24,7 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.I
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.ROOT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
+import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
@@ -39,9 +40,6 @@ public class CategoryInfoListController extends ApplicationController
 
 	@Autowired
 	private CategoryConverter categoryConverter;
-
-	@Autowired
-	private AdminService adminService;
 
 	@RequestMapping(value = "list", method = GET)
 	public RestResponse getSubmittedCategories() {
@@ -82,10 +80,9 @@ public class CategoryInfoListController extends ApplicationController
 	public RestResponse getCategories(Integer status) {
 
 		//验证管理员身份
-		int userId = getUserId();
-		System.out.println(userId);
-		if (!adminService.findAllAdmins().contains(userId)) {
-			return systemErrResponse("Illegal visit");
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
 		}
 
 		Map<String, Object> data = getData();

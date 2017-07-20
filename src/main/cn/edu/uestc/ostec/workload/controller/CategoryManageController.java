@@ -15,13 +15,14 @@ import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
-import cn.edu.uestc.ostec.workload.service.AdminService;
+import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGE_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
+import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -36,9 +37,6 @@ public class CategoryManageController extends ApplicationController {
 	private CategoryService categoryService;
 
 	@Autowired
-	private AdminService adminService;
-
-	@Autowired
 	private CategoryConverter categoryConverter;
 
 	/**
@@ -51,9 +49,9 @@ public class CategoryManageController extends ApplicationController {
 	public RestResponse addCategories(CategoryDto categoryDto) {
 
 		//验证管理员身份
-		int userId = getUserId();
-		if (!adminService.findAllAdmins().contains(userId)) {
-			return systemErrResponse("非法访问");
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
 		}
 
 		//参数检验
@@ -91,10 +89,9 @@ public class CategoryManageController extends ApplicationController {
 			@RequestParam(value = "categoryId")
 					Integer categoryId) {
 		//验证管理员身份
-		int userId = getUserId();
-		System.out.println(userId);
-		if (!adminService.findAllAdmins().contains(userId)) {
-			return systemErrResponse("非法访问");
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
 		}
 
 		Category category = categoryService.getCategory(categoryId);
@@ -132,10 +129,9 @@ public class CategoryManageController extends ApplicationController {
 	public RestResponse undoCategories() {
 
 		//验证管理员身份
-		int userId = getUserId();
-		System.out.println(userId);
-		if (!adminService.findAllAdmins().contains(userId)) {
-			return systemErrResponse("非法访问");
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
 		}
 
 		//获取状态为SUBMITTED的工作量条目
@@ -161,10 +157,9 @@ public class CategoryManageController extends ApplicationController {
 	public RestResponse modifyCategories(CategoryDto categoryDto) throws Exception {
 
 		//验证管理员身份
-		int userId = getUserId();
-		System.out.println(userId);
-		if (!adminService.findAllAdmins().contains(userId)) {
-			return systemErrResponse("非法访问");
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
 		}
 
 		//校验
@@ -202,10 +197,9 @@ public class CategoryManageController extends ApplicationController {
 	public RestResponse submitCategory() {
 
 		//验证管理员身份
-		int userId = getUserId();
-		System.out.println(userId);
-		if (!adminService.findAllAdmins().contains(userId)) {
-			return systemErrResponse("非法访问");
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
 		}
 
 		Map<String, Object> data = getData();
@@ -235,9 +229,9 @@ public class CategoryManageController extends ApplicationController {
 					Integer... categoryIdList) {
 
 		//验证管理员身份
-		int userId = getUserId();
-		if (!adminService.findAllAdmins().contains(userId)) {
-			return systemErrResponse("非法访问");
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
 		}
 
 		boolean submitSuccess;

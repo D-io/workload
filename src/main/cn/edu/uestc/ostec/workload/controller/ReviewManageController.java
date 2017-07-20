@@ -12,7 +12,6 @@ import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
-import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -29,6 +28,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECKED;
+import static cn.edu.uestc.ostec.workload.type.UserType.REVIEWER;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -73,9 +73,9 @@ public class ReviewManageController extends ApplicationController {
 			@RequestParam(required = false)
 					String message) {
 
-		//用户校验
+		// 用户验证
 		User user = getUser();
-		if (null == user) {
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
 			return invalidOperationResponse("非法请求");
 		}
 
@@ -87,12 +87,6 @@ public class ReviewManageController extends ApplicationController {
 
 		if (!(CHECKED.equals(status) || DENIED.equals(status))) {
 			return parameterNotSupportResponse("无效参数");
-		}
-
-		//身份校验
-		Category category = categoryService.getCategory(item.getCategoryId());
-		if (!user.getUserId().equals(category.getReviewerId())) {
-			return invalidOperationResponse("非法操作");
 		}
 
 		//设置为对应的状态
@@ -136,6 +130,12 @@ public class ReviewManageController extends ApplicationController {
 			@RequestParam("date")
 					String date) {
 
+		// 用户验证
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
+
 		//根据categoryId查询到Category对象，并转换为dto对象
 		Category category = categoryService.getCategory(categoryId);
 		if (null == category) {
@@ -175,17 +175,14 @@ public class ReviewManageController extends ApplicationController {
 			@RequestParam("workload")
 					Double workload) {
 
+		// 用户验证
 		User user = getUser();
-		if (null == user) {
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
 			return invalidOperationResponse("非法请求");
 		}
 
 		//审核人身份校验
 		Item item = itemService.findItem(itemId);
-		ItemDto itemDto = itemConverter.poToDto(item);
-		if(!user.getUserId().equals(itemDto.getReviewerId())) {
-			return invalidOperationResponse("非法请求");
-		}
 
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
@@ -213,6 +210,12 @@ public class ReviewManageController extends ApplicationController {
 	public RestResponse submitItems(
 			@RequestParam("itemId")
 					Integer itemId) {
+
+		// 用户验证
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
 
 		Item item = itemService.findItem(itemId);
 		if (null == item) {
