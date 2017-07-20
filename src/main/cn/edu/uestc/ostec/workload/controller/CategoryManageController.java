@@ -1,18 +1,16 @@
 package cn.edu.uestc.ostec.workload.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
-import cn.edu.uestc.ostec.workload.event.UserRoleEvent;
+import cn.edu.uestc.ostec.workload.event.CategoryEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
@@ -40,8 +38,11 @@ public class CategoryManageController extends ApplicationController {
 	@Autowired
 	private CategoryConverter categoryConverter;
 
+	//	@Autowired
+	//	private UserRoleEvent userRoleEvent;
+
 	@Autowired
-	private UserRoleEvent userRoleEvent;
+	private CategoryEvent categoryEvent;
 
 	/**
 	 * 添加工作量类目信息
@@ -191,40 +192,40 @@ public class CategoryManageController extends ApplicationController {
 		return successResponse(data);
 	}
 
-	/**
-	 * 全部提交
-	 * 提交：修改对应的UNCOMMITTED状态为SUBMITTED
-	 *
-	 * @return RestResponse
-	 */
-	@RequestMapping(value = "public", method = POST)
-	public RestResponse submitCategory() {
-
-		//验证管理员身份
-		User user = getUser();
-		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
-			return invalidOperationResponse("非法请求");
-		}
-
-		Map<String, Object> data = getData();
-		List<Category> categoryList = categoryService.getCategoriesByStatus(UNCOMMITTED);
-		if (null == categoryList) {
-			return invalidOperationResponse("无可提交的项目");
-		}
-
-		Map<String,Object> errorData = getData();
-		for (Category category : categoryList) {
-			int reviewerId = category.getReviewerId();
-			boolean appendSuccess = userRoleEvent.appendRoleInfo(reviewerId,REVIEWER_ROLE);
-			boolean saveSuccess = categoryService.saveCategory(SUBMITTED, category.getCategoryId());
-			if (!saveSuccess || !appendSuccess) {
-				errorData.put(category.getName(),"提交失败");
-				continue;
-			}
-		}
-		data.put("categoryList", categoryList);
-		return successResponse(data);
-	}
+	//	/**
+	//	 * 全部提交
+	//	 * 提交：修改对应的UNCOMMITTED状态为SUBMITTED
+	//	 *
+	//	 * @return RestResponse
+	//	 */
+	//	@RequestMapping(value = "public", method = POST)
+	//	public RestResponse submitCategory() {
+	//
+	//		//验证管理员身份
+	//		User user = getUser();
+	//		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+	//			return invalidOperationResponse("非法请求");
+	//		}
+	//
+	//		Map<String, Object> data = getData();
+	//		List<Category> categoryList = categoryService.getCategoriesByStatus(UNCOMMITTED);
+	//		if (null == categoryList) {
+	//			return invalidOperationResponse("无可提交的项目");
+	//		}
+	//
+	//		Map<String,Object> errorData = getData();
+	//		for (Category category : categoryList) {
+	//			int reviewerId = category.getReviewerId();
+	//			boolean appendSuccess = userRoleEvent.appendRoleInfo(reviewerId,REVIEWER_ROLE);
+	//			boolean saveSuccess = categoryService.saveCategory(SUBMITTED, category.getCategoryId());
+	//			if (!saveSuccess || !appendSuccess) {
+	//				errorData.put(category.getName(),"提交失败");
+	//				continue;
+	//			}
+	//		}
+	//		data.put("categoryList", categoryList);
+	//		return successResponse(data);
+	//	}
 
 	/**
 	 * 选择性提交
@@ -235,7 +236,7 @@ public class CategoryManageController extends ApplicationController {
 	@RequestMapping(value = "public-selective", method = POST)
 	public RestResponse submitCategory(
 			@RequestParam("categoryId")
-					Integer... categoryIdList) {
+					int... categoryIdList) {
 
 		//验证管理员身份
 		User user = getUser();
@@ -243,40 +244,40 @@ public class CategoryManageController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		boolean submitSuccess;
-		boolean appendSuccess;
-		List<Category> categoryList = new ArrayList<>();
-		Map<String, Object> data = getData();
-		Map<String, Object> errorData = getData();
+		//		boolean submitSuccess;
+		//		boolean appendSuccess;
+		//		List<Category> categoryList = new ArrayList<>();
+		//		Map<String, Object> data = getData();
+		//		Map<String, Object> errorData = getData();
+		//
+		//		for (Integer categoryId : categoryIdList) {
+		//
+		//			Category category = categoryService.getCategory(categoryId);
+		//
+		//			int reviewerId = category.getReviewerId();
+		//			if (UNCOMMITTED.equals(category.getStatus())) {
+		//
+		//				appendSuccess = userRoleEvent.appendRoleInfo(reviewerId,REVIEWER_ROLE);
+		//				submitSuccess = categoryService.saveCategory(SUBMITTED, categoryId);
+		//				if (!submitSuccess || !appendSuccess) {
+		//					//提交失败的错误信息
+		//					errorData.put(category.getName(), "提交失败");
+		//				} else {
+		//					//提交成功的类目信息
+		//					category = categoryService.getCategory(categoryId);
+		//					categoryList.add(category);
+		//				}
+		//
+		//			} else {
+		//				//无法提交的错误信息（状态值不为UNCOMMITTED）
+		//				errorData.put(category.getName(), "无法提交");
+		//			}
+		//		}
+		//
+		//		data.put("errorData", errorData);
+		//		data.put("categoryList", categoryConverter.poListToDtoList(categoryList));
 
-		for (Integer categoryId : categoryIdList) {
-
-			Category category = categoryService.getCategory(categoryId);
-
-			int reviewerId = category.getReviewerId();
-			if (UNCOMMITTED.equals(category.getStatus())) {
-
-				appendSuccess = userRoleEvent.appendRoleInfo(reviewerId,REVIEWER_ROLE);
-				submitSuccess = categoryService.saveCategory(SUBMITTED, categoryId);
-				if (!submitSuccess || !appendSuccess) {
-					//提交失败的错误信息
-					errorData.put(category.getName(), "提交失败");
-				} else {
-					//提交成功的类目信息
-					category = categoryService.getCategory(categoryId);
-					categoryList.add(category);
-				}
-
-			} else {
-				//无法提交的错误信息（状态值不为UNCOMMITTED）
-				errorData.put(category.getName(), "无法提交");
-			}
-		}
-
-		data.put("errorData", errorData);
-		data.put("categoryList", categoryConverter.poListToDtoList(categoryList));
-
-		return successResponse(data);
+		return successResponse(categoryEvent.submitCategories(categoryIdList));
 	}
 
 }
