@@ -3,16 +3,20 @@ package cn.edu.uestc.ostec.workload.converter.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.edu.uestc.ostec.workload.converter.Converter;
 import cn.edu.uestc.ostec.workload.dao.TeacherDao;
+import cn.edu.uestc.ostec.workload.dto.FormulaParameter;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.OBJECT_MAPPER;
 
 /**
  * Version:v1.0 (description: 工作量类目PO与DTO转换器  )
@@ -44,6 +48,15 @@ public class CategoryConverter implements Converter<Category,CategoryDto> {
 		categoryDto.setReviewDeadline(DateHelper.getDateTime(po.getReviewDeadline()));
 		categoryDto.setReviewerId(po.getReviewerId());
 		categoryDto.setReviewerName(teacherDao.findNameById(categoryDto.getReviewerId()));
+
+		List<FormulaParameter> formulaParameterList = new ArrayList<>();
+		try {
+			formulaParameterList = OBJECT_MAPPER.readValue(categoryDto.getJsonParameters(),
+					getCollectionType(ArrayList.class, FormulaParameter.class));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		categoryDto.setFormulaParameterList(formulaParameterList);
 
 		return categoryDto;
 	}

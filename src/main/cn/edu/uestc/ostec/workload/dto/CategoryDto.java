@@ -47,6 +47,11 @@ public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 	private String jsonParameters;
 
 	/**
+	 * 参数描述
+	 */
+	private List<FormulaParameter> formulaParameterList = null;
+
+	/**
 	 * 计算工作量公式，如:A*0.4
 	 */
 	private String formula;
@@ -212,5 +217,13 @@ public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 
 	public void setReviewerId(Integer reviewerId) {
 		this.reviewerId = reviewerId;
+	}
+
+	public List<FormulaParameter> getFormulaParameterList() {
+		return formulaParameterList;
+	}
+
+	public void setFormulaParameterList(List<FormulaParameter> formulaParameterList) {
+		this.formulaParameterList = formulaParameterList;
 	}
 }

@@ -5,6 +5,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.util.SystemOutLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,11 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.flow.Parameter;
+
 import cn.edu.uestc.ostec.workload.ExcelTemplateIndex;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ExportItemList;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
@@ -32,6 +36,7 @@ import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.service.TeacherService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.ExcelHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FileHelper;
@@ -58,15 +63,13 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 	private ItemService itemService;
 
 	@Autowired
-	private ItemConverter itemConverter;
-
-	@Autowired
 	private CategoryService categoryService;
 
+	@Autowired
+	private TeacherService teacherService;
+
 	/**
-	 * 导入Excel中的信息到数据库
-	 *
-	 * PS.导入的格式待确定 格式不同对应的计算方式不同
+	 * 导入Excel中的信息到数据库 （提交文件） 先上传文件，提交文件之后进行Excel的信息导入数据库的操作 PS.导入的格式待确定 格式不同对应的计算方式不同
 	 *
 	 * @param fileInfoId 文件信息编号
 	 * @return RestResponse
@@ -82,8 +85,9 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		//TODO 确定导入的格式
 		//TODO 确定计算方式
 
-		ItemDto itemDto = null;
-		List<ItemDto> itemDtoList = new ArrayList<>();
+		Item item = null;
+		List<Item> itemList = new ArrayList<>();
+		List<ItemBrief> itemBriefList = new ArrayList<>();
 
 		Category category = categoryService.getCategory(categoryId);
 		if (null == category) {
@@ -98,6 +102,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		String path = fileInfo.getPath();
 		File excelFile = new File(path);
 
+		//文件名用作Item的proof属性
 		String fileName = FileHelper.getFileName(path);
 
 		//获取文件流
@@ -122,7 +127,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					if (null == row) {
 						continue;
 					}
-					itemDto = new ItemDto();
+					item = new Item();
 
 					//顺序由最终决定的模板决定
 					HSSFCell itemName = row.getCell(ITEM_NAME_INDEX);
@@ -136,33 +141,39 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					HSSFCell isGroup = row.getCell(IS_GROUP_INDEX);
 					//					HSSFCell groupManagerName = row.getCell(GROUP_MANAGER_NAME_INDEX);
 
-					itemDto.setItemName(itemName.getStringCellValue());
+					item.setItemName(itemName.getStringCellValue());
 					//					itemDto.setCategoryName(categoryName.getStringCellValue());
-					itemDto.setOwnerId(Integer.parseInt(ownerId.getStringCellValue()));
+					item.setOwnerId(Integer.parseInt(ownerId.getStringCellValue()));
 					//					itemDto.setTeacherName(ownerName.getStringCellValue());
-					itemDto.setGroupManagerId(
-							Integer.parseInt(groupManagerId.getStringCellValue()));
+					item.setGroupManagerId(Integer.parseInt(groupManagerId.getStringCellValue()));
 					//					itemDto.setGroupManagerName(groupManagerName.getStringCellValue());
-					itemDto.setJsonParameter(jsonParameters.getStringCellValue());
-					itemDto.setJobDesc(jobDesc.getStringCellValue());
-					itemDto.setJsonChildWeight(jsonChildWeight.getStringCellValue());
-					itemDto.setIsGroup(Integer.parseInt(isGroup.getStringCellValue()));
+					item.setJsonParameter(jsonParameters.getStringCellValue());
+					item.setJobDesc(jobDesc.getStringCellValue());
+					item.setJsonChildWeight(jsonChildWeight.getStringCellValue());
+					item.setIsGroup(Integer.parseInt(isGroup.getStringCellValue()));
 
+					item.setProof(fileName);
+					item.setCategoryId(categoryId);
+					item.setStatus(NON_CHECKED);
 
-					itemDto.setProof(fileName);
-					itemDto.setCategoryId(categoryId);
-					itemDto.setStatus(NON_CHECKED);
+					//计算workload(先获取公式对应的参数)
+					List<ParameterValue> parameterValues = getParams(item.getJsonParameter());
+					double totalWorkload = FormulaCalculate
+							.calculate(category.getFormula(), parameterValues);
+					double childWeight = Double.valueOf(item.getJsonChildWeight());
+					double workload = totalWorkload * childWeight;
+					item.setWorkload(workload);
 
-					//先转换为po，再转换为dto，转换为dto的过程中计算相应的工作量
-					Item item = itemConverter.dtoToPo(itemDto);
-					ItemDto newItemDto = itemConverter.poToDto(item);
-
-					boolean saveSuccess = itemService.saveItem(itemConverter.dtoToPo(newItemDto));
+					//保存时相应的生成Item的编号
+					boolean saveSuccess = itemService.saveItem(item);
 					if (!saveSuccess) {
-						errorData.put(itemDto.getItemName(), "导入失败");
+						errorData.put(item.getItemName(), "导入失败");
 					}
 
-					itemDtoList.add(itemDto);
+					ItemBrief itemBrief = itemToBrief(item);
+					itemBriefList.add(itemBrief);
+
+					itemList.add(item);
 				}
 			}
 
@@ -172,15 +183,14 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			e.printStackTrace();
 		}
 
-		data.put("itemDtoList", itemDtoList);
+		data.put("itemList", itemList);
 		data.put("errorData", errorData);
 
 		return successResponse(data);
 	}
 
 	/**
-	 * 传参时候根据页面展示的数据进行导出
-	 * eg. exportItemList.itemDtoList[0].itemName
+	 * 传参时候根据页面展示的数据进行导出 eg. exportItemList.itemDtoList[0].itemName
 	 *
 	 * @param exportItemList 页面展示的数据
 	 * @return RestResponse
@@ -240,6 +250,235 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		byte[] fileContent = os.toByteArray();
 
 		return streamResponse(fileContent, userId + ".xsl");
+	}
+
+	public static List<ParameterValue> getParams(String str) {
+		List<ParameterValue> parameterValues = new ArrayList<>();
+		String[] params = str.split(",");
+		for (String param : params) {
+			String[] values = param.split(":");
+			ParameterValue parameterValue = new ParameterValue(values[0],
+					Double.valueOf(values[1]));
+			parameterValues.add(parameterValue);
+		}
+		return parameterValues;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(getParams("A:12,B:12"));
+	}
+
+	/**
+	 * 将Item信息做转换
+	 */
+	public ItemBrief itemToBrief(Item item) {
+
+		ItemBrief itemBrief = new ItemBrief();
+		itemBrief.setCategoryId(item.getCategoryId());
+		itemBrief.setGroupManagerId(item.getGroupManagerId());
+		itemBrief.setGroupManagerName(
+				teacherService.findTeacherNameById(itemBrief.getGroupManagerId()));
+		itemBrief.setIsGroup(item.getIsGroup());
+		itemBrief.setOwnerId(item.getOwnerId());
+		itemBrief.setOwnerName(teacherService.findTeacherNameById(itemBrief.getOwnerId()));
+		itemBrief.setItemId(item.getItemId());
+
+		itemBrief.setItemName(item.getItemName());
+		itemBrief.setStatus(item.getStatus());
+		itemBrief.setProof(item.getProof());
+
+		itemBrief.setJobDesc(item.getJobDesc());
+		itemBrief.setWeight(item.getJsonChildWeight());
+
+		itemBrief.setJsonParameter(item.getJsonParameter());
+		itemBrief.setWorkload(item.getWorkload());
+
+		return itemBrief;
+
+	}
+
+	public Item briefToItem() {
+		Item item = new Item();
+		return item;
+	}
+
+	class ItemBrief {
+
+		/**
+		 * 工作量编号
+		 */
+		private Integer itemId;
+
+		/**
+		 * 工作量对应的项目名称
+		 */
+		private String itemName;
+
+		/**
+		 * 工作量类目编号，确定工作量所属类目
+		 */
+		private Integer categoryId;
+
+		/**
+		 * 所属人编号，与教师表中工号一致
+		 */
+		private Integer ownerId;
+
+		private String ownerName;
+
+		/**
+		 * 参数以json格式存储，与类目表公式中参数一致，如{A：40}
+		 */
+		private String jsonParameter;
+
+		/**
+		 * 根据参数计算出的当前总的工作量
+		 */
+		private Double workload;
+
+		/**
+		 * 组长编号，默认当前申请人为组长。当前登录人编号与此字段一致时，方可进行工作量的修改操作
+		 */
+		private Integer groupManagerId;
+
+		private String groupManagerName;
+
+		/**
+		 * 工作描述
+		 */
+		private String jobDesc = null;
+
+		/**
+		 * 状态
+		 */
+		private Integer status;
+
+		/**
+		 * Json格式存储组员权重，用于计算个人工作量，存储如：{组员1编号：0.4}
+		 */
+		private String weight;
+
+		/**
+		 * 证明
+		 */
+		private String proof = null;
+
+		/**
+		 * 是否为小组
+		 */
+		private Integer isGroup = ZERO_INT;
+
+		public Integer getItemId() {
+			return itemId;
+		}
+
+		public void setItemId(Integer itemId) {
+			this.itemId = itemId;
+		}
+
+		public String getItemName() {
+			return itemName;
+		}
+
+		public void setItemName(String itemName) {
+			this.itemName = itemName;
+		}
+
+		public Integer getCategoryId() {
+			return categoryId;
+		}
+
+		public void setCategoryId(Integer categoryId) {
+			this.categoryId = categoryId;
+		}
+
+		public Integer getOwnerId() {
+			return ownerId;
+		}
+
+		public void setOwnerId(Integer ownerId) {
+			this.ownerId = ownerId;
+		}
+
+		public String getOwnerName() {
+			return ownerName;
+		}
+
+		public void setOwnerName(String ownerName) {
+			this.ownerName = ownerName;
+		}
+
+		public String getJsonParameter() {
+			return jsonParameter;
+		}
+
+		public void setJsonParameter(String jsonParameter) {
+			this.jsonParameter = jsonParameter;
+		}
+
+		public Double getWorkload() {
+			return workload;
+		}
+
+		public void setWorkload(Double workload) {
+			this.workload = workload;
+		}
+
+		public Integer getGroupManagerId() {
+			return groupManagerId;
+		}
+
+		public void setGroupManagerId(Integer groupManagerId) {
+			this.groupManagerId = groupManagerId;
+		}
+
+		public String getGroupManagerName() {
+			return groupManagerName;
+		}
+
+		public void setGroupManagerName(String groupManagerName) {
+			this.groupManagerName = groupManagerName;
+		}
+
+		public String getJobDesc() {
+			return jobDesc;
+		}
+
+		public void setJobDesc(String jobDesc) {
+			this.jobDesc = jobDesc;
+		}
+
+		public Integer getStatus() {
+			return status;
+		}
+
+		public void setStatus(Integer status) {
+			this.status = status;
+		}
+
+		public String getWeight() {
+			return weight;
+		}
+
+		public void setWeight(String weight) {
+			this.weight = weight;
+		}
+
+		public String getProof() {
+			return proof;
+		}
+
+		public void setProof(String proof) {
+			this.proof = proof;
+		}
+
+		public Integer getIsGroup() {
+			return isGroup;
+		}
+
+		public void setIsGroup(Integer isGroup) {
+			this.isGroup = isGroup;
+		}
 	}
 
 }
