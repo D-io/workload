@@ -5,7 +5,6 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.util.SystemOutLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,11 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.flow.Parameter;
-
 import cn.edu.uestc.ostec.workload.ExcelTemplateIndex;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
-import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ExportItemList;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
@@ -35,6 +31,7 @@ import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
+import cn.edu.uestc.ostec.workload.service.FileInfoService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
@@ -44,7 +41,10 @@ import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 import cn.edu.uestc.ostec.workload.type.ItemStatus;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.FILE_PATH;
+import static cn.edu.uestc.ostec.workload.support.utils.ObjectHelper.isNull;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -68,6 +68,9 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 	@Autowired
 	private TeacherService teacherService;
 
+	@Autowired
+	private FileInfoService fileInfoService;
+
 	/**
 	 * 导入Excel中的信息到数据库 （提交文件）
 	 *
@@ -86,8 +89,24 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					int fileInfoId) {
 
 		//TODO 待测试
-		//TODO 确定导入的格式
-		//TODO 确定计算方式
+		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
+		if (isNull(fileInfo)) {
+			return invalidOperationResponse();
+		}
+
+		if (!UNCOMMITTED.equals(fileInfo.getStatus())) {
+			return invalidOperationResponse("无法提交");
+		}
+
+		fileInfo.setStatus(SUBMITTED);
+		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
+		if (!submitSuccess) {
+			return systemErrResponse("文件上传失败");
+		}
+
+		Map<String, Object> data = getData();
+		data.put("fileInfo", fileInfo);
+
 
 		Item item = null;
 		List<Item> itemList = new ArrayList<>();
@@ -98,11 +117,9 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			return invalidOperationResponse();
 		}
 
-		Map<String, Object> data = getData();
 		Map<String, Object> errorData = getData();
 
 		//获取对应FileInfo的文件File（java.io.file）对象
-		FileInfo fileInfo = fileEvent.downloadFile(fileInfoId);
 		String path = fileInfo.getPath();
 		File excelFile = new File(path);
 
@@ -187,7 +204,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			e.printStackTrace();
 		}
 
-		data.put("itemList", itemBriefList);
+		data.put("itemList", itemList);
 		data.put("errorData", errorData);
 
 		return successResponse(data);

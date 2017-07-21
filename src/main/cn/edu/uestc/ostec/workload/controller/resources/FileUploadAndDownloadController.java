@@ -131,7 +131,7 @@ public class FileUploadAndDownloadController extends ApplicationController {
 			return invalidOperationResponse();
 		}
 
-		if (UNCOMMITTED.equals(fileInfo.getStatus())) {
+		if (!UNCOMMITTED.equals(fileInfo.getStatus())) {
 			return invalidOperationResponse("无法提交");
 		}
 
