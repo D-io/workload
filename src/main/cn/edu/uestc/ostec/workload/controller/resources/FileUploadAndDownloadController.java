@@ -66,6 +66,7 @@ public class FileUploadAndDownloadController extends ApplicationController {
 			return parameterNotSupportResponse("参数有误");
 		}
 
+		//		//发布文件对应的有相应的限制条件
 		//		if (file.getSize() > requestFile.getSize()) {
 		//			return invalidOperationResponse("上传文件大于要求文件大小，无法上传");
 		//		}

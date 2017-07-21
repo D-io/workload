@@ -1,11 +1,3 @@
-/*
- * AEMS（工程认证达成度评价管理系统）
- * Author: 刘文哲
- * Email: liuwnzh@163.com
- * Date: 17-4-21 下午3:38
- * Copyright: Copyright (c) 2017.
- */
-
 package cn.edu.uestc.ostec.workload.dao;
 
 import org.apache.ibatis.annotations.Param;

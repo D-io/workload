@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
+import cn.edu.uestc.ostec.workload.converter.impl.FileConverter;
+import cn.edu.uestc.ostec.workload.dto.FileDto;
 import cn.edu.uestc.ostec.workload.pojo.File;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.service.FileService;
@@ -28,25 +30,29 @@ public class FileManagerController extends ApplicationController {
 	@Autowired
 	private FileService fileService;
 
+	@Autowired
+	private FileConverter fileConverter;
+
 	/**
 	 * 发布文件
 	 *
-	 * @param file 接收前端发来的文件参数
+	 * @param fileDto 接收前端发来的文件参数
 	 * @return 发布成功则返回200响应
 	 */
 	@RequestMapping(method = POST)
-	public RestResponse publish(File file) {
+	public RestResponse publish(FileDto fileDto) {
 
-		file.setCreateTime(getCurrentTimestamp());
-		file.setUserId(getUserId());
+		fileDto.setCreateTime(getCurrentTimestamp());
+		fileDto.setUserId(getUserId());
 
+		File file = fileConverter.dtoToPo(fileDto);
 		boolean isSaveSucceed = fileService.saveFile(file);
 		if (!isSaveSucceed) {
 			return systemErrResponse("文件保存失败");
 		}
 
 		Map<String, Object> data = getData();
-		data.put("file", file);
+		data.put("fileDto", fileConverter.poToDto(file));
 
 		return successResponse(data);
 	}
@@ -71,7 +77,7 @@ public class FileManagerController extends ApplicationController {
 
 		if ("all".equals(option)) {
 			fileList = fileService.getFiles(getUserId());
-			data.put("fileList", fileList);
+			data.put("fileList", fileConverter.poListToDtoList(fileList));
 			return successResponse(data);
 		}
 
@@ -79,7 +85,7 @@ public class FileManagerController extends ApplicationController {
 		if (File.FILE.equals(file)) {
 			return invalidOperationResponse();
 		}
-		data.put("file", file);
+		data.put("file", fileConverter.poToDto(file));
 
 		return successResponse(data);
 	}

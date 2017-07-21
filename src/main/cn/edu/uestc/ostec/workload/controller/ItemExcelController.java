@@ -69,7 +69,11 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 	private TeacherService teacherService;
 
 	/**
-	 * 导入Excel中的信息到数据库 （提交文件） 先上传文件，提交文件之后进行Excel的信息导入数据库的操作 PS.导入的格式待确定 格式不同对应的计算方式不同
+	 * 导入Excel中的信息到数据库 （提交文件）
+	 *
+	 * 先上传文件，提交文件之后进行Excel的信息导入数据库的操作
+	 *
+	 * PS.导入的格式待确定 格式不同对应的计算方式不同
 	 *
 	 * @param fileInfoId 文件信息编号
 	 * @return RestResponse
@@ -183,7 +187,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			e.printStackTrace();
 		}
 
-		data.put("itemList", itemList);
+		data.put("itemList", itemBriefList);
 		data.put("errorData", errorData);
 
 		return successResponse(data);
@@ -264,9 +268,9 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		return parameterValues;
 	}
 
-	public static void main(String[] args) {
-		System.out.println(getParams("A:12,B:12"));
-	}
+//	public static void main(String[] args) {
+//		System.out.println(getParams("A:12,B:12"));
+//	}
 
 	/**
 	 * 将Item信息做转换
