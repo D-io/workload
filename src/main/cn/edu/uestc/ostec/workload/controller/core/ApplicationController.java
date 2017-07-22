@@ -66,7 +66,7 @@ public class ApplicationController extends ResultController
 		}
 		byte[] file = ExcelExportHelper.exportItemInfo(itemDtoList);
 		try {
-			return streamResponse(file,user.getUserId() + ".xsl");
+			return streamResponse(file,user.getUserId() + ".xslx");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return systemErrResponse();

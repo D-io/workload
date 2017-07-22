@@ -194,6 +194,8 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 					item.setWorkload(formatWorkload);
 
+					item.setJsonParameter(OBJECT_MAPPER.writeValueAsString(parameterValues));
+
 					//保存时相应的生成Item的编号
 					boolean saveSuccess = itemService.saveItem(item);
 					if (!saveSuccess) {
