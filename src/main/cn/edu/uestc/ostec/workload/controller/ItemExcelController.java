@@ -1,10 +1,14 @@
 package cn.edu.uestc.ostec.workload.controller;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -94,7 +98,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			return invalidOperationResponse();
 		}
 
-		if (!UNCOMMITTED.equals(fileInfo.getStatus())) {
+		if (UNCOMMITTED.equals(fileInfo.getStatus())) {
 			return invalidOperationResponse("无法提交");
 		}
 
@@ -130,15 +134,22 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		FileInputStream fileInputStream;
 		try {
 			fileInputStream = new FileInputStream(excelFile);
-			//创建Excel工作簿
-			HSSFWorkbook hssfWorkbook = new HSSFWorkbook(fileInputStream);
+
+			//版本不同创建不同的工作簿
+			Workbook book = null;
+			try {
+				book = new XSSFWorkbook(excelFile);
+			} catch (Exception ex) {
+				book = new HSSFWorkbook(fileInputStream);
+			}
+
 			//得到第一个工作表
-			HSSFSheet sheet = null;
-			HSSFRow row = null;
+			Sheet sheet = null;
+			Row row = null;
 
 			//遍历工作簿中所有的表格
-			for (int i = 0; i < hssfWorkbook.getNumberOfSheets(); i++) {
-				sheet = hssfWorkbook.getSheetAt(i);
+			for (int i = 0; i < book.getNumberOfSheets(); i++) {
+				sheet = book.getSheetAt(i);
 				if (null == sheet) {
 					continue;
 				}
@@ -151,27 +162,27 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					item = new Item();
 
 					//顺序由最终决定的模板决定
-					HSSFCell itemName = row.getCell(ITEM_NAME_INDEX);
+					Cell itemName = row.getCell(ITEM_NAME_INDEX);
 					//					HSSFCell categoryName = row.getCell(CATEGORY_NAME_INDEX);
-					HSSFCell ownerId = row.getCell(OWNER_ID_INDEX);
+					Cell ownerId = row.getCell(OWNER_ID_INDEX);
 					//					HSSFCell ownerName = row.getCell(OWNER_NAME_INDEX);
-					HSSFCell groupManagerId = row.getCell(GROUP_MANAGER_INDEX);
-					HSSFCell jsonParameters = row.getCell(JSON_PARAMETERS_INDEX);
-					HSSFCell jobDesc = row.getCell(JOB_DESC_INDEX);
-					HSSFCell jsonChildWeight = row.getCell(JSON_WEIGHT_INDEX);
-					HSSFCell isGroup = row.getCell(IS_GROUP_INDEX);
+					Cell groupManagerId = row.getCell(GROUP_MANAGER_INDEX);
+					Cell jsonParameters = row.getCell(JSON_PARAMETERS_INDEX);
+					Cell jobDesc = row.getCell(JOB_DESC_INDEX);
+					Cell jsonChildWeight = row.getCell(JSON_WEIGHT_INDEX);
+					Cell isGroup = row.getCell(IS_GROUP_INDEX);
 					//					HSSFCell groupManagerName = row.getCell(GROUP_MANAGER_NAME_INDEX);
 
 					item.setItemName(itemName.getStringCellValue());
 					//					itemDto.setCategoryName(categoryName.getStringCellValue());
-					item.setOwnerId(Integer.parseInt(ownerId.getStringCellValue()));
+					item.setOwnerId(((Double)ownerId.getNumericCellValue()).intValue());
 					//					itemDto.setTeacherName(ownerName.getStringCellValue());
-					item.setGroupManagerId(Integer.parseInt(groupManagerId.getStringCellValue()));
+					item.setGroupManagerId(((Double)groupManagerId.getNumericCellValue()).intValue());
 					//					itemDto.setGroupManagerName(groupManagerName.getStringCellValue());
 					item.setJsonParameter(jsonParameters.getStringCellValue());
 					item.setJobDesc(jobDesc.getStringCellValue());
-					item.setJsonChildWeight(jsonChildWeight.getStringCellValue());
-					item.setIsGroup(Integer.parseInt(isGroup.getStringCellValue()));
+					item.setJsonChildWeight(((Double)jsonChildWeight.getNumericCellValue()).toString());
+					item.setIsGroup(((Double)isGroup.getNumericCellValue()).intValue());
 
 					item.setProof(fileName);
 					item.setCategoryId(categoryId);

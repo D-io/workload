@@ -70,9 +70,9 @@ data | String | 结果集
     "statusName": "OK",
     "data": {
         "file": {
-            "fileId": 5,
+            "fileId": 4,
             "mime": "xlsx",
-            "createTime": 1500642700,
+            "createTime": 1500642767,
             "deadlineDate": "2017年12月21日",
             "size": 200,
             "type": "table",
