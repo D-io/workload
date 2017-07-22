@@ -233,10 +233,12 @@ public class ReviewInfoListController extends ApplicationController {
 					Integer isGroup,
 			@RequestParam(required = false)
 					Integer ownerId,
-			@RequestParam("pageNum")
-					int pageNum,
-			@RequestParam("pageSize")
-					int pageSize) {
+			@RequestParam(required = false)
+					String isExport,
+			@RequestParam(required = false)
+					Integer pageNum,
+			@RequestParam(required = false)
+					Integer pageSize) {
 
 		// 用户验证
 		User user = getUser();
@@ -245,7 +247,8 @@ public class ReviewInfoListController extends ApplicationController {
 		}
 
 		Map<String, Object> data = getData();
-
+		pageSize = (null == pageSize ? 1000000 : pageSize);
+		pageNum = (null == pageNum ? 1 : pageNum);
 		List<Item> itemList = itemService
 				.findAll(categoryId, null, ownerId, isGroup, pageNum, pageSize);
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
@@ -267,10 +270,16 @@ public class ReviewInfoListController extends ApplicationController {
 			}
 		}
 
-		data.put("itemDtoList", itemDtoList);
-		data.put("totalWorkload", workload);
+		if(null == isExport) {
+			data.put("itemDtoList", itemDtoList);
+			data.put("totalWorkload", workload);
+			return successResponse(data);
+		} else if("yes".equals(isExport)) {
+			return getExportExcel(itemDtoList);
+		} else {
+			return parameterNotSupportResponse("参数有误");
+		}
 
-		return successResponse(data);
 	}
 
 	/**
