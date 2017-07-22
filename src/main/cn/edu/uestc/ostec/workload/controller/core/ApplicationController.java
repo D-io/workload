@@ -1,13 +1,17 @@
 package cn.edu.uestc.ostec.workload.controller.core;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.context.StandardApplicationAttributeContext;
 import cn.edu.uestc.ostec.workload.context.StandardSessionAttributeContext;
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.RoleInfo;
+import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
+import cn.edu.uestc.ostec.workload.support.utils.ExcelExportHelper;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.DEFAULT_WEB_URL_SEPARATOR;
 
@@ -47,6 +51,27 @@ public class ApplicationController extends ResultController
 	@SuppressWarnings("unchecked")
 	protected List<RoleInfo> getUserRoles() {
 		return (List<RoleInfo>) session.getAttribute(SESSION_USER_ROLE_LIST);
+	}
+
+	/**
+	 * 根据数据源导出相应的Excel列表
+	 * @param itemDtoList 数据源
+	 * @return RestResponse
+	 * @throws IOException
+	 */
+	public RestResponse getExportExcel(List<ItemDto> itemDtoList) {
+		User user = getUser();
+		if(null == user) {
+			return invalidOperationResponse();
+		}
+		byte[] file = ExcelExportHelper.exportItemInfo(itemDtoList);
+		try {
+			return streamResponse(file,user.getUserId() + ".xsl");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return systemErrResponse();
+		}
+
 	}
 
 	/**

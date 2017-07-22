@@ -20,38 +20,28 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.ExcelTemplateIndex;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
-import cn.edu.uestc.ostec.workload.dto.ExportItemList;
-import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
-import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
-import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.FileInfoService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
-import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
-import cn.edu.uestc.ostec.workload.support.utils.ExcelHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FileHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
-import cn.edu.uestc.ostec.workload.type.ItemStatus;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.FILE_PATH;
 import static cn.edu.uestc.ostec.workload.support.utils.ObjectHelper.isNull;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -61,9 +51,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @RequestMapping(FILE_PATH)
 public class ItemExcelController extends ApplicationController implements ExcelTemplateIndex {
-
-	@Autowired
-	private FileEvent fileEvent;
 
 	@Autowired
 	private ItemService itemService;
@@ -78,7 +65,15 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 	private FileInfoService fileInfoService;
 
 	/**
-	 * 导入Excel中的信息到数据库 （提交文件） 先上传文件，提交文件之后进行Excel的信息导入数据库的操作 PS.导入的格式待确定 格式不同对应的计算方式不同
+	 * 导入Excel中的信息到数据库 （提交文件）
+	 *
+	 * 三个步骤：
+	 * 1、先根据文件要求上传文件；
+	 * 2、提交文件之后进行Excel的信息导入数据库的操作；
+	 * 3、导入之后查看导入的工作量列表进行确认；
+	 * 4、确认无误后进行提交工作量的操作
+	 *
+	 * PS.导入的格式待确定 格式不同对应的计算方式不同
 	 *
 	 * @param fileInfoId 文件信息编号
 	 * @return RestResponse
@@ -185,7 +180,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 					item.setProof(fileName);
 					item.setCategoryId(categoryId);
-					item.setStatus(NON_CHECKED);
+					item.setStatus(UNCOMMITTED);
 
 					//计算workload(先获取公式对应的参数)
 					List<ParameterValue> parameterValues = getParams(item.getJsonParameter());
@@ -193,6 +188,8 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 							.calculate(category.getFormula(), parameterValues);
 					double childWeight = Double.valueOf(item.getJsonChildWeight());
 					double workload = totalWorkload * childWeight;
+
+					//工作量四舍五入获取两位小数
 					BigDecimal b = new BigDecimal(workload);
 					double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 					item.setWorkload(formatWorkload);
@@ -222,70 +219,27 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		return successResponse(data);
 	}
 
+//	@RequestMapping(value = "export", method = GET)
+//	public RestResponse exportExcel(ExportItemList exportItemList) throws IOException {
+//
+//		User user = getUser();
+//		if (null == user) {
+//			return invalidOperationResponse("非法请求");
+//		}
+//
+//		int userId = user.getUserId();
+//
+//
+//
+//		return streamResponse(fileContent, userId + ".xsl");
+//	}
+
 	/**
-	 * 传参时候根据页面展示的数据进行导出 eg. exportItemList.itemDtoList[0].itemName
-	 *
-	 * @param exportItemList 页面展示的数据
-	 * @return RestResponse
+	 * 从Excel模板中提取对应的参数
+	 * @param str 模板中填写的参数列对应的字符串
+	 * @return List<ParameterValue>
 	 */
-	@RequestMapping(value = "export", method = GET)
-	public RestResponse exportExcel(ExportItemList exportItemList) throws IOException {
-
-		User user = getUser();
-		if (null == user) {
-			return invalidOperationResponse("非法请求");
-		}
-
-		int userId = user.getUserId();
-
-		List<ItemDto> itemDtoList = exportItemList.getItemDtoList();
-
-		HSSFWorkbook wb = new HSSFWorkbook();
-		HSSFCellStyle textStyle = ExcelHelper.getTextStyle(wb);
-
-		HSSFSheet sheet = wb.createSheet(DateHelper.getDate());
-		HSSFRow row = sheet.createRow(0);
-		// 在excel表格中添加标题
-		ExcelHelper.createCell(row, textStyle, 0, "教师编号");
-		ExcelHelper.createCell(row, textStyle, 1, "教师姓名");
-		ExcelHelper.createCell(row, textStyle, 2, "工作量类型");
-		ExcelHelper.createCell(row, textStyle, 3, "工作量名称");
-		ExcelHelper.createCell(row, textStyle, 4, "工作量");
-		ExcelHelper.createCell(row, textStyle, 5, "状态");
-
-		for (int rowNum = 1; rowNum < itemDtoList.size(); rowNum++) {
-			int index = rowNum - 1;
-			String teacherId = itemDtoList.get(index).getOwnerId().toString();
-			String teacherNameName = itemDtoList.get(index).getTeacherName();
-			String categoryName = itemDtoList.get(index).getCategoryName();
-			String itemName = itemDtoList.get(index).getItemName();
-			String workload = itemDtoList.get(index).getWorkload().toString();
-			String status = ItemStatus.getItemStatus(itemDtoList.get(index).getStatus()).getDesc();
-			row = sheet.createRow(rowNum);
-			ExcelHelper.createCell(row, textStyle, 0, teacherId);
-			ExcelHelper.createCell(row, textStyle, 1, teacherNameName);
-			ExcelHelper.createCell(row, textStyle, 2, categoryName);
-			ExcelHelper.createCell(row, textStyle, 3, itemName);
-			ExcelHelper.createCell(row, textStyle, 4, workload);
-			ExcelHelper.createCell(row, textStyle, 5, status);
-		}
-		ExcelHelper.setAutoStyle(sheet, itemDtoList.size() + 1);
-		ByteArrayOutputStream os = null;
-		os = new ByteArrayOutputStream();
-		try {
-			wb.write(os);
-			os.close();
-			wb.close();
-		} catch (IOException e) {
-			// TODO do something useful
-		}
-
-		byte[] fileContent = os.toByteArray();
-
-		return streamResponse(fileContent, userId + ".xsl");
-	}
-
-	public static List<ParameterValue> getParams(String str) {
+	public List<ParameterValue> getParams(String str) {
 		List<ParameterValue> parameterValues = new ArrayList<>();
 		String[] params = str.split(",");
 		for (String param : params) {
@@ -296,10 +250,6 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		}
 		return parameterValues;
 	}
-
-	//	public static void main(String[] args) {
-	//		System.out.println(getParams("A:12,B:12"));
-	//	}
 
 	/**
 	 * 将Item信息做转换
@@ -325,6 +275,8 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 		itemBrief.setJsonParameter(item.getJsonParameter());
 		itemBrief.setWorkload(item.getWorkload());
+
+		itemBrief.setCategoryName(categoryService.getCategory(itemBrief.getCategoryId()).getName());
 
 		return itemBrief;
 
@@ -353,10 +305,18 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		private Integer categoryId;
 
 		/**
+		 * 工作量类目名称
+		 */
+		private String categoryName;
+
+		/**
 		 * 所属人编号，与教师表中工号一致
 		 */
 		private Integer ownerId;
 
+		/**
+		 * 工作量条目所属人姓名
+		 */
 		private String ownerName;
 
 		/**
@@ -374,6 +334,9 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		 */
 		private Integer groupManagerId;
 
+		/**
+		 * 组长姓名
+		 */
 		private String groupManagerName;
 
 		/**
@@ -511,6 +474,14 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 		public void setIsGroup(Integer isGroup) {
 			this.isGroup = isGroup;
+		}
+
+		public String getCategoryName() {
+			return categoryName;
+		}
+
+		public void setCategoryName(String categoryName) {
+			this.categoryName = categoryName;
 		}
 	}
 

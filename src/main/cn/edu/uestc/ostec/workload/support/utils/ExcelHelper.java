@@ -24,8 +24,8 @@ public class ExcelHelper {
 		return cell;
 	}
 
-	public static void setAutoStyle(HSSFSheet sheet, int rowNumber) {
-		for (int i = 0; i < rowNumber; i++) {
+	public static void setAutoStyle(HSSFSheet sheet, int columnNumber) {
+		for (int i = 0; i < columnNumber; i++) {
 			sheet.autoSizeColumn(i);
 		}
 	}

@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.controller;
 
+import com.sun.deploy.net.HttpResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
@@ -26,6 +30,7 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.I
 
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Version:v1.0 (description: 工作量信息展示控制器 )
@@ -63,22 +68,33 @@ public class ItemInfoListController extends ApplicationController implements Ope
 					Integer status,
 			@RequestParam(required = false)
 					Integer ownerId,
-			@RequestParam("pageNum")
-					int pageNum,
-			@RequestParam("pageSize")
-					int pageSize) {
+			@RequestParam(required = false)
+					String ifExport,
+			@RequestParam(required = false)
+					Integer pageNum,
+			@RequestParam(required = false)
+					Integer pageSize) {
 
 		User user = getUser();
 		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
 			return invalidOperationResponse("非法请求");
 		}
 
+		pageSize = (null == pageSize ? 100000 : pageSize);
+		pageNum = (null == pageNum ? 1 : pageNum);
 		List<Item> itemList = itemService
 				.findAll(categoryId, status, ownerId, null, pageNum, pageSize);
 		Map<String, Object> data = getData();
-		data.put("itemList", itemConverter.poListToDtoList(itemList));
+		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
+		if (null == ifExport) {
+			data.put("itemList", itemDtoList);
+			return successResponse(data);
+		} else if ("yes".equals(ifExport)) {
+			return getExportExcel(itemDtoList);
+		} else {
+			return parameterNotSupportResponse();
+		}
 
-		return successResponse(data);
 	}
 
 	/**
