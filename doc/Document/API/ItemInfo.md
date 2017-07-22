@@ -5,15 +5,19 @@
 - 支持格式：`json`
 - 请求方式：`GET`
 - 请求示例：`http://127.0.0.1:8080/item/info/item-all?pageNum=1&pageSize=100&categoryId=2&status=1`
+    - `/item/info/item-all?categoryId=3&status=1&ifExport=yes` //导出实例
 
 - 请求参数具体说明：
 参数名 |类型 | 说明 | 是否必须
 ---|---|---|---
-pageNum | int | 页码编号 | 是
-pageSize | int | 页的大小 | 是
+pageNum | int | 页码编号 | 否
+pageSize | int | 页的大小 | 否
 categoryId | int | 类目编号 | 否 （查询条件）
 status | int | 状态值 | 否（查询条件） 
-ownerId | int | 教师Id | 否 （查询条件） 
+ownerId | int | 教师Id | 否 （查询条件）
+isExport | String | 是否导出 | 是即为yes
+
+- PS.导出时不用输入页号pageNum和页的大小pageSize，不导出时不填ifExport属性
 
 - 返回参数具体说明：
 

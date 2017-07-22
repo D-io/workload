@@ -407,6 +407,7 @@ data | String | 结果集
 - 支持格式：`json`
 - 请求方式：`GET`
 - 请求示例：`localhost:8080/reviewer/info/items-all?categoryId=2&isGroup=0&ownerId=3210343&pageNum=1&pageSize=100`
+    - `localhost:8080/reviewer/info/items-all?categoryId=2&isGroup=0&ownerId=3210343&ifExport`
 
 - 请求参数具体说明：（查询条件） 分页查询 
 
@@ -415,9 +416,11 @@ data | String | 结果集
 categoryId | int | 类目编号 | 否
 isGroup | int | 小组或者个人 | 否 0为个人，1为小组
 ownerId | int | 教师编号 | 否
-pageNum | int | 页号 | 是
-pageSize | int | 页的大小 | 是
+pageNum | int | 页号 | 否
+pageSize | int | 页的大小 | 否
+isExport | String | 是否导出 | 否（若要导出，对应属性为yes）
 
+- PS. 导出时不需要输入相应的页号和页的大小，不导出时不填ifExport属性
 
 - 返回参数具体说明：
 
