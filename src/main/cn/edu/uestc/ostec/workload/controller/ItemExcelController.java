@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -76,11 +78,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 	private FileInfoService fileInfoService;
 
 	/**
-	 * 导入Excel中的信息到数据库 （提交文件）
-	 *
-	 * 先上传文件，提交文件之后进行Excel的信息导入数据库的操作
-	 *
-	 * PS.导入的格式待确定 格式不同对应的计算方式不同
+	 * 导入Excel中的信息到数据库 （提交文件） 先上传文件，提交文件之后进行Excel的信息导入数据库的操作 PS.导入的格式待确定 格式不同对应的计算方式不同
 	 *
 	 * @param fileInfoId 文件信息编号
 	 * @return RestResponse
@@ -110,7 +108,6 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 		Map<String, Object> data = getData();
 		data.put("fileInfo", fileInfo);
-
 
 		Item item = null;
 		List<Item> itemList = new ArrayList<>();
@@ -175,14 +172,16 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 					item.setItemName(itemName.getStringCellValue());
 					//					itemDto.setCategoryName(categoryName.getStringCellValue());
-					item.setOwnerId(((Double)ownerId.getNumericCellValue()).intValue());
+					item.setOwnerId(((Double) ownerId.getNumericCellValue()).intValue());
 					//					itemDto.setTeacherName(ownerName.getStringCellValue());
-					item.setGroupManagerId(((Double)groupManagerId.getNumericCellValue()).intValue());
+					item.setGroupManagerId(
+							((Double) groupManagerId.getNumericCellValue()).intValue());
 					//					itemDto.setGroupManagerName(groupManagerName.getStringCellValue());
 					item.setJsonParameter(jsonParameters.getStringCellValue());
 					item.setJobDesc(jobDesc.getStringCellValue());
-					item.setJsonChildWeight(((Double)jsonChildWeight.getNumericCellValue()).toString());
-					item.setIsGroup(((Double)isGroup.getNumericCellValue()).intValue());
+					item.setJsonChildWeight(
+							((Double) jsonChildWeight.getNumericCellValue()).toString());
+					item.setIsGroup(((Double) isGroup.getNumericCellValue()).intValue());
 
 					item.setProof(fileName);
 					item.setCategoryId(categoryId);
@@ -194,7 +193,9 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 							.calculate(category.getFormula(), parameterValues);
 					double childWeight = Double.valueOf(item.getJsonChildWeight());
 					double workload = totalWorkload * childWeight;
-					item.setWorkload(workload);
+					BigDecimal b = new BigDecimal(workload);
+					double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					item.setWorkload(formatWorkload);
 
 					//保存时相应的生成Item的编号
 					boolean saveSuccess = itemService.saveItem(item);
@@ -296,9 +297,9 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		return parameterValues;
 	}
 
-//	public static void main(String[] args) {
-//		System.out.println(getParams("A:12,B:12"));
-//	}
+	//	public static void main(String[] args) {
+	//		System.out.println(getParams("A:12,B:12"));
+	//	}
 
 	/**
 	 * 将Item信息做转换

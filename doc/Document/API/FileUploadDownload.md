@@ -1,18 +1,15 @@
 ## 文件管理接口
 
-### 管理员发布文件信息
-- 接口地址：`/file/info`
+### 文件上传接口
+- 接口地址：`/file`
 - 支持格式：`json`
 - 请求方式：`POST`
-- 请求示例：`localhost:8080/file/info?mime=xlsx&size=200&deadlineDate=2017年12月21日&type=table`
+- 请求示例：`localhost:8080/file?fileId=4`
 
 - 请求参数说明：
 参数名 |类型 | 说明
 ---|---|---
-mime | String | 文件约束
-deadline | String | 截止日期
-size | Long | 文件大小
-type | String | 文件类型
+fileId | int | 对应的管理员发布的文件编号
 
 - 返回参数具体说明：
 
@@ -28,32 +25,45 @@ data | String | 结果集
     "status": 200,
     "statusName": "OK",
     "data": {
-        "fileDto": {
-            "fileId": 5,
-            "mime": "xlsx",
-            "createTime": 1500642700,
-            "deadlineDate": "2017年12月21日",
-            "size": 200,
-            "type": "table",
-            "userId": 3210343,
-            "publisher": "张翔"
+        "fileInfo": {
+            "fileInfoId": 4,
+            "path": "C:\\Users\\Administrator\\Desktop\\fileUploadTest\\工作量导入模板-v1.0 - 副本.xlsx",
+            "size": 11105,
+            "md5Summary": "b5b888418f082227a3c94d93fc7e1434",
+            "type": "xlsx",
+            "createTime": 1500688680,
+            "status": 0,
+            "fileId": 4,
+            "authorId": 3210343,
+            "recipientsList": ""
         }
     }
 }
 ```
 
 
-### 接收文件信息
-- 接口地址：`/file/info`
+### 文件下载
+- 接口地址：`/file`
 - 支持格式：`json`
 - 请求方式：`GET`
-- 请求示例：`localhost:8080/file/info`
+- 请求示例：`localhost:8080/file?fileInfoId=4`
 
 - 请求参数说明：
 参数名 |类型 | 说明 | 是否必须
 ---|---|---
-fileId | int | 文件编号 | 否
-option | String | 额外选项，值暂定"all" | 否
+fileInfoId | int | 对应的上传的文件编号 | 否
+
+
+### 文件提交(修改相应的状态信息)
+- 接口地址：`/file/submit`
+- 支持格式：`json`
+- 请求方式：`POST`
+- 请求示例：`localhost:8080/file/submit?fileInfoId=4`
+
+- 请求参数说明：
+参数名 |类型 | 说明 | 是否必须
+---|---|---
+fileInfoId | int | 对应的上传的文件编号 | 否
 
 - 返回参数具体说明：
 
@@ -69,15 +79,17 @@ data | String | 结果集
     "status": 200,
     "statusName": "OK",
     "data": {
-        "file": {
+        "fileInfo": {
+            "fileInfoId": 4,
+            "path": "C:\\Users\\Administrator\\Desktop\\fileUploadTest\\工作量导入模板-v1.0 - 副本.xlsx",
+            "size": 11105,
+            "md5Summary": "b5b888418f082227a3c94d93fc7e1434",
+            "type": "xlsx",
+            "createTime": 1500688680,
+            "status": 1,
             "fileId": 4,
-            "mime": "xlsx",
-            "createTime": 1500642767,
-            "deadlineDate": "2017年12月21日",
-            "size": 200,
-            "type": "table",
-            "userId": 3210343,
-            "publisher": "张翔"
+            "authorId": 3210343,
+            "recipientsList": ""
         }
     }
 }
