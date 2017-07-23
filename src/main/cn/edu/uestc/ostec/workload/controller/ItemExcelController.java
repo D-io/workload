@@ -26,6 +26,10 @@ import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.ExcelTemplateIndex;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
+import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
+import cn.edu.uestc.ostec.workload.dto.CategoryDto;
+import cn.edu.uestc.ostec.workload.dto.FormulaParameter;
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
@@ -35,13 +39,17 @@ import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.FileInfoService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
+import cn.edu.uestc.ostec.workload.support.utils.ExcelHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FileHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
+import cn.edu.uestc.ostec.workload.type.ItemStatus;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.FILE_PATH;
 import static cn.edu.uestc.ostec.workload.support.utils.ObjectHelper.isNull;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -57,6 +65,9 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 	@Autowired
 	private CategoryService categoryService;
+
+	@Autowired
+	private CategoryConverter categoryConverter;
 
 	@Autowired
 	private TeacherService teacherService;
@@ -235,6 +246,222 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 //
 //		return streamResponse(fileContent, userId + ".xsl");
 //	}
+
+	/**
+	 * 根据不同类目不同的类型生成不同的Excel模板文件
+	 * @param categoryId 类目编号
+	 * @param type 类型
+	 * @return streamRestResponse 文件流
+	 */
+	@RequestMapping(value = "template",method = GET)
+	public RestResponse getTemplate(@RequestParam("categoryId") Integer categoryId,
+			@RequestParam("type") String type) {
+
+		Category category = categoryService.getCategory(categoryId);
+		CategoryDto categoryDto = categoryConverter.poToDto(category);
+		List<FormulaParameter> parameterList = categoryDto.getFormulaParameterList();
+
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFCellStyle textStyle = ExcelHelper.getTextStyle(wb);
+
+		HSSFSheet sheet = wb.createSheet(DateHelper.getDate());
+		HSSFRow row = sheet.createRow(0);
+		// 在excel表格中添加标题
+		ExcelHelper.createCell(row, textStyle, 0, "教师编号");
+		ExcelHelper.createCell(row, textStyle, 1, "教师姓名");
+		ExcelHelper.createCell(row, textStyle, 2, "工作量名称");
+		ExcelHelper.createCell(row, textStyle, 3, "职责描述");
+		int index = 4;
+		for(FormulaParameter formulaParameter:parameterList) {
+			ExcelHelper.createCell(row,textStyle,index,formulaParameter.getDesc() + formulaParameter.getSymbol());
+			index++;
+		}
+
+		if("group".equals(type)) {
+			ExcelHelper.createCell(row, textStyle, index, "团队负责人编号");
+			ExcelHelper.createCell(row, textStyle, index + 1, "团队负责人姓名");
+			ExcelHelper.createCell(row,textStyle,index + 2,"所占权重");
+		}
+
+		ExcelHelper.setAutoStyle(sheet, index + 3);
+		ByteArrayOutputStream os = null;
+		os = new ByteArrayOutputStream();
+		try {
+			wb.write(os);
+			os.close();
+			wb.close();
+		} catch (IOException e) {
+			// TODO do something useful
+		}
+
+		byte[] fileContent = os.toByteArray();
+		try {
+			return streamResponse(fileContent,category.getName() + "工作量导入模板" + ".xlsx");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return systemErrResponse();
+		}
+	}
+
+	/**
+	 * 根据不同类目对应的模板文件进行导入
+	 * @param categoryId 类目编号
+	 * @param fileInfoId 上传的文件编号
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "import-template",method = POST)
+	public RestResponse importByTemplate(
+			@RequestParam("categoryId")
+					int categoryId,
+			@RequestParam("fileInfoId")
+					int fileInfoId) {
+
+		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
+		if (isNull(fileInfo)) {
+			return invalidOperationResponse();
+		}
+
+		if (UNCOMMITTED.equals(fileInfo.getStatus())) {
+			return invalidOperationResponse("无法提交");
+		}
+
+		fileInfo.setStatus(SUBMITTED);
+		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
+		if (!submitSuccess) {
+			return systemErrResponse("文件上传失败");
+		}
+
+		Map<String, Object> data = getData();
+		data.put("fileInfo", fileInfo);
+
+		Item item = null;
+		List<Item> itemList = new ArrayList<>();
+		List<ItemBrief> itemBriefList = new ArrayList<>();
+
+		Category category = categoryService.getCategory(categoryId);
+		if (null == category) {
+			return invalidOperationResponse();
+		}
+		CategoryDto categoryDto = categoryConverter.poToDto(category);
+
+		Map<String, Object> errorData = getData();
+
+		//获取对应FileInfo的文件File（java.io.file）对象
+		String path = fileInfo.getPath();
+		File excelFile = new File(path);
+
+		//文件名用作Item的proof属性
+		String fileName = FileHelper.getFileName(path);
+
+		//获取文件流
+		FileInputStream fileInputStream;
+		try {
+			fileInputStream = new FileInputStream(excelFile);
+
+			//版本不同创建不同的工作簿
+			Workbook book = null;
+			try {
+				book = new XSSFWorkbook(excelFile);
+			} catch (Exception ex) {
+				book = new HSSFWorkbook(fileInputStream);
+			}
+
+			//得到第一个工作表
+			Sheet sheet = null;
+			Row row = null;
+
+			//遍历工作簿中所有的表格
+			for (int i = 0; i < book.getNumberOfSheets(); i++) {
+				sheet = book.getSheetAt(i);
+				if (null == sheet) {
+					continue;
+				}
+				row = sheet.getRow(0);
+
+				//遍历每一个表中所有的行
+				for (int j = 1; j < sheet.getPhysicalNumberOfRows(); j++) {
+					row = sheet.getRow(j);
+					if (null == row) {
+						continue;
+					}
+					item = new Item();
+
+					//顺序由最终决定的模板决定
+					Cell itemName = row.getCell(T_ITEM_NAME_INDEX);
+					item.setItemName(itemName.getStringCellValue());
+
+					Cell ownerId = row.getCell(T_TEACHER_ID_INDEX);
+					int teacherId = ((Double) ownerId.getNumericCellValue()).intValue();
+					item.setOwnerId(teacherId);
+
+					Cell jobDesc = row.getCell(T_JOB_DESC_INDEX);
+					item.setJobDesc(jobDesc.getStringCellValue());
+
+					List<ParameterValue> parameterValues = new ArrayList<>();
+					int index = T_JOB_DESC_INDEX + 1;
+					for(FormulaParameter formulaParameter:categoryDto.getFormulaParameterList()) {
+						Cell cell = row.getCell(index);
+						double value = cell.getNumericCellValue();
+						ParameterValue parameterValue = new ParameterValue(formulaParameter.getSymbol(),value);
+						parameterValues.add(parameterValue);
+						index++;
+					}
+
+					Cell groupManagerId = row.getCell(index);
+					int managerId = (null == groupManagerId ?  teacherId: ((Double) groupManagerId.getNumericCellValue()).intValue());
+					item.setGroupManagerId(managerId);
+
+					Cell weight = row.getCell(index + 2);
+					String childWeight = (null == weight ? "1" : ((Double)weight.getNumericCellValue()).toString());
+					item.setJsonChildWeight(childWeight);
+
+					if(null == groupManagerId && null == weight) {
+						item.setIsGroup(SINGLE);
+					} else {
+						item.setIsGroup(GROUP);
+					}
+
+					item.setProof(fileName);
+					item.setCategoryId(categoryId);
+					item.setStatus(UNCOMMITTED);
+
+					//计算workload(先获取公式对应的参数)
+					double totalWorkload = FormulaCalculate
+							.calculate(category.getFormula(), parameterValues);
+					double personalWeight = Double.valueOf(item.getJsonChildWeight());
+					double workload = totalWorkload * personalWeight;
+
+					//工作量四舍五入获取两位小数
+					BigDecimal b = new BigDecimal(workload);
+					double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					item.setWorkload(formatWorkload);
+
+					item.setJsonParameter(OBJECT_MAPPER.writeValueAsString(parameterValues));
+
+					//保存时相应的生成Item的编号
+					boolean saveSuccess = itemService.saveItem(item);
+					if (!saveSuccess) {
+						errorData.put(item.getItemName(), "导入失败");
+					}
+
+					ItemBrief itemBrief = itemToBrief(item);
+					itemBriefList.add(itemBrief);
+
+					itemList.add(item);
+				}
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		data.put("itemList", itemList);
+		data.put("errorData", errorData);
+
+		return successResponse(data);
+	}
 
 	/**
 	 * 从Excel模板中提取对应的参数

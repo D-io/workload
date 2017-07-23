@@ -1,8 +1,0 @@
-driver=com.mysql.jdbc.Driver  
-url=jdbc:mysql://localhost/workload
-username=root
-password=
-initialPoolSize=1
-maxPoolSize=20
-maxIdleTime=20
-minPoolSize=1

@@ -25,10 +25,8 @@ import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.service.FileInfoService;
 import cn.edu.uestc.ostec.workload.service.FileService;
-import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.FILE_PATH;
-import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.getFileExtension;
 import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.getFileName;
 import static cn.edu.uestc.ostec.workload.support.utils.ObjectHelper.isNull;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
