@@ -1,12 +1,3 @@
-/*
- * Project: AEMS（工程认证达成度评价管理系统）
- * File: CourseAchievementConfigurationController.java
- * Author: 王俊杰
- * Email: galileo233@163.com
- * Date: 2017年7月11日
- * Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
- */
-
 package cn.edu.uestc.ostec.workload.support.utils;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
