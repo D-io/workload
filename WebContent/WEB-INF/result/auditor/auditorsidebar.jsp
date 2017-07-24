@@ -26,12 +26,12 @@
 
     <div class="profile clearfix">
         <div class="profile_pic">
-            <img src="css/images/img.jpg" alt="..." class="img-circle profile_img">
+
 
         </div>
         <div class="profile_info">
             <span>欢迎,</span>
-            <h2>John Doe</h2>
+            <h2>工作量审核人</h2>
 
         </div>
         <div class="dropdown" id="changerole">
@@ -63,15 +63,15 @@
             <ul class="nav side-menu">
                 <li class="active"><a id="clickToggle1"><i class="fa fa-home"></i> 导入 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                        <li class="ck1" onclick=""><a><span>工作量导入</span></a></li>
-                        <li class="ck1" onclick=""><a><span>导入记录</span></a></li>
-                        <li class="ck1" onclick=""><a><span>工作量复核反馈</span></a></li>
+                        <li class="ck1" onclick="importWorkload()"><a><span>工作量导入</span></a></li>
+                        <li class="ck1" onclick="importRec()"><a><span>导入记录</span></a></li>
+                        <li class="ck1" onclick="importQue()"><a><span>工作量复核反馈</span></a></li>
                     </ul>
                 </li>
 
                 <li class="active"><a id="clickToggle2"><i class="fa fa-edit"></i> 审核 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                        <li class="ck2" onclick=""><a><span>工作量审核</span></a></li>
+                        <li class="ck2" onclick="auditworkload()"><a><span>工作量审核</span></a></li>
 
                     </ul>
                 </li>
@@ -79,7 +79,7 @@
                 <li class="active"><a id="clickToggle3"><i class="fa fa-desktop"></i> 统计 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
 
-                        <li  class="ck3"><a ><span>工作量统计</span></a></li>
+                        <li  class="ck3" onclick="sumItem()"><a ><span>工作量统计</span></a></li>
 
                     </ul>
                 </li>

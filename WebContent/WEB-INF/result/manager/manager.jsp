@@ -68,12 +68,11 @@ To change this template use File | Settings | File Templates.
 
                 <div class="profile clearfix">
                     <div class="profile_pic">
-                        <img src="css/images/img.jpg" alt="..." class="img-circle profile_img">
 
                     </div>
                     <div class="profile_info">
                         <span>欢迎,</span>
-                        <h2>John Doe</h2>
+                        <h2>管理员</h2>
                     </div>
                     <div class="dropdown" id="changerole">
                         <button type="button" class="btn dropdown-toggle" id="dropdownMenu1"
@@ -117,7 +116,7 @@ To change this template use File | Settings | File Templates.
                                 <ul class="nav child_menu">
 
                                     <li  class="ck3" onclick="jumpToSum()"><a ><span>条目统计</span></a></li>
-                                    <li  class="ck3"><a ><span>工作量统计</span></a></li>
+                                    <li  class="ck3" onclick="itemSummary()"><a ><span>工作量统计</span></a></li>
 
                                 </ul>
                             </li>
@@ -145,7 +144,7 @@ To change this template use File | Settings | File Templates.
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <img src="css/images/img.jpg" alt=""><span class="dropdown_name">John Doe</span>
+                                <span class="dropdown_name">John Doe</span>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -224,7 +223,7 @@ To change this template use File | Settings | File Templates.
                                         <div class="col-sm-9">
                                             <select class="form-control" id="importRequired" name="sorting">
                                                 <option value="1">导入类</option>
-                                                <option value="2">审核类</option>
+                                                <option value="0">审核类</option>
 
                                             </select>
                                         </div>
@@ -232,7 +231,10 @@ To change this template use File | Settings | File Templates.
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">审核人</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="reviewerId" onfocus="showTeacherInfo(this)" onblur="hideTeacherInfo(this)">
+                                            <select class="form-control" id="teacherName">
+                                            <option></option>
+
+                                            </select>
                                         </div>
                                         <div id="prompt" style="width: 400px;padding-top: 40px;padding-left:100px;text-align: center"></div>
                                     </div>
@@ -243,13 +245,7 @@ To change this template use File | Settings | File Templates.
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">父条目审核人</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="parentVerifier">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">是否含有子节点</label>
+                                        <label class="col-sm-3 control-label">是否为叶子节点</label>
                                         <div class="col-sm-9">
                                             <input type="radio" id="isLeaf" name="hasChildNode" value="Y">是
                                             <input type="radio" id="isntLeaf" name="hasChildNode"  value="N">否
@@ -301,18 +297,22 @@ To change this template use File | Settings | File Templates.
                                             <div class="collapse" id="parameter">
                                                 <div class="well">
                                                     <table class="table" id="parameterTable">
+                                                        <thead>
                                                         <tr>
-                                                            <th>#</th>
+
                                                             <th>参数名称</th>
                                                             <th>参数符号</th>
-                                                            <th></th>
+                                                            <th><a class="btn btn-primary" id="addParameter"><i class="fa fa-plus"></i></a></th>
                                                         </tr>
+                                                        </thead>
+                                                        <tbody class="AddPramter">
                                                         <tr>
-                                                            <td>1</td>
-                                                            <td><input type="text" id="parameterName" name="parameterName"></td>
-                                                            <td><input type="text" id="parameterSymbol" name="parameterSymbol"></td>
-                                                            <td><a class="btn" onclick="addParameter()"><i class="fa fa-plus"></i></a></td>
+
+                                                            <td><input type="text" class="parameterName" name="parameterName"></td>
+                                                            <td><input type="text" class="parameterSymbol" name="parameterSymbol"></td>
+
                                                         </tr>
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -387,15 +387,24 @@ To change this template use File | Settings | File Templates.
 <!-- ztree-->
 
 <script language='javascript'src="js/jquery.ztree.core.js"></script>
+
 <script language='javascript' src="js/jquery.ztree.excheck.js"></script>
+
 <script language='javascript' src="js/jquery.ztree.exedit.js"></script>
 
 <!-- Examples (实现复选框)-->
 <script language='javascript' src="js/ajax-ztree.js"></script>
 <!-- Theme Jquery -->
 <script type="text/javascript" src="js/Bftheme_jquery.js"></script>
+
 <script type="text/javascript" src="js/treenodeList.js"></script>
+
 <script type="text/javascript" src="js/changerole.js"></script>
+
 <script type="text/javascript" src="js/reviewRecord.js"></script>
+
+<script type="text/javascript" src="js/auditorChange.js"></script>
+
+<script type="text/javascript" src="js/reviewerSummary.js"></script>
 </body>
 </html>

@@ -58,7 +58,7 @@ $.get("/category/info/all",function (data) {
             };
             var zTree=$.fn.zTree.getZTreeObj("treeDemo");
 
-                window.zNodes.push(nodes);
+            window.zNodes.push(nodes);
             $.fn.zTree.init($("#treeDemo"), setting, zNodes);
 
             if (item.children) {
@@ -66,9 +66,6 @@ $.get("/category/info/all",function (data) {
                     createTree(item.children[i]);
                 }
             }
-
-
-
         }
     }
 
@@ -88,14 +85,19 @@ function beforeEditName(treeId, treeNode) {
 
     setTimeout(function () {
 
-
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        var sNodes = zTree.getSelectedNodes();
+        if (sNodes.length > 0) {
+            var parentNode = sNodes[0].getParentNode();
+        }
+        var parentNodeName=parentNode.name;
         $('#itemName').val(treeNode.name);
         $('#desc').val(treeNode.desc);
 
         $('#parentId').val(treeNode.parentId);
         $('#applyDeadline').val(treeNode.applyDeadline);
         $('#reviewDeadline').val(treeNode.reviewDeadline);
-
+        $('#parentId').val(parentNodeName);
         $('#formula').val(treeNode.formula);
 
 
@@ -147,7 +149,7 @@ function beforeEditName(treeId, treeNode) {
                                 'reviewerId':data.data.category.reviewerId
                             };
 
-                            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+
                             zTree.updateNode(window.zNodes[i]);
                             $('#'+treeNode.tId+'_span').val(newNode.name);
 
@@ -261,38 +263,41 @@ function addHoverDom(treeId, treeNode){
             $('#itemName').val(null);
             $('#desc').val(null);
             $('#reviewerId').val(null);
-            $('#formula').val(null);
             $('#parentId').val(treeNode.name);
             $('#applyDeadline').val(null);
             $('#reviewDeadline').val(null);
+            $('#formula').val(null);
+            $('.parameterSymbol').val(null);
+            $('.parameterName').val(null);
 
             $('#save').unbind('click');
             $('#save').bind('click', function () {
-                var parametername = $('#parameterName').val();
-                var parameterSymbol = $('#parameterSymbol').val();
-                var reviewTimetodate = $('#reviewDeadline').val();
+                var parametername = $('.parameterName');
+                var newArray=new Array();
+                for(var i=0;i<parametername.length;i++){
 
-                var applyTimetodate = $('#applyDeadline').val();
+                    newArray.push({symbol:$(".parameterName").eq(i).val(),value:$(".parameterSymbol").eq(i).val()});
 
-                var radio = 0;
-                if ($('#importRequired').val() == '导入类') {
-                    radio = 1;
                 }
-                else
-                    radio = 0;
+                newArray=JSON.stringify(newArray);
+                var reviewTimetodate = $('#reviewDeadline').val();
+                var applyTimetodate = $('#applyDeadline').val();
+                var radio=$("#importRequired option:selected");
+                var ischild=$("input:radio[name='hasChildNode']:checked").val();
+                var reviewerid=$('#teacherName option:selected');
 
                 $.post("/category/manage", {
                     name: $('#itemName').val(),
                     desc: $('#desc').val(),
                     parentId: treeNode.id,
-                    isLeaf: $('#isLeaf').val(),
+                    isLeaf: ischild,
                     reviewDeadline: format(reviewTimetodate),
                     applyDeadline: format(applyTimetodate),
-                    reviewerId: $('#reviewerId').val(),
+                    reviewerId:reviewerid.val() ,
                     formula: $('#formula').val(),
-                    importRequired: radio,
+                    importRequired: radio.val(),
                     version: $('#version').val(),
-                    jsonParameters: '{' + parametername + ':' + parameterSymbol + '}'
+                    jsonParameters: newArray
                 }, function (data) {
                     var zTree = $.fn.zTree.getZTreeObj("treeDemo");
 
@@ -318,20 +323,6 @@ function addHoverDom(treeId, treeNode){
         });
 
 };
-function showTeacherInfo(){
-    $.get("common/teachers",function (data) {
-        var str="<div class='well well-sm'><ul class='list-group'>";
-        var TeacherInfo=data.data.teacherList;
-        for(var count=0;count<TeacherInfo.length;count++){
-            str+="<li class='list-group-item'>"+TeacherInfo[count].teacherId+'-'+TeacherInfo[count].name+"</li>";
-        }
-        str+="</ul></div>"
-        $('#prompt').append(str);
-    });
-}
-function hideTeacherInfo() {
-    $('#prompt').hide();
-}
 function removeHoverDom(treeId, treeNode) {
     $("#addBtn_"+treeNode.tId).unbind().remove();
 };
@@ -348,36 +339,38 @@ $(document).ready(function(){
         $('#applyDeadline').val(null);
         $('#reviewDeadline').val(null);
         $('#formula').val(null);
-        $('#parameterSymbol').val(null);
-        $('#parameterName').val(null);
+        $('.parameterSymbol').val(null);
+        $('.parameterName').val(null);
         $('#addModal').modal('show');
 
         $('#save').unbind('click');
         $('#save').bind('click', function () {
-            var parametername = $('#parameterName').val();
-            var parameterSymbol = $('#parameterSymbol').val();
-            var reviewTimetodate = $('#reviewDeadline').val();
+            var parametername =$(".parameterName") ;
+            var newArray=new Array();
+            for(var i=0;i<parametername.length;i++){
 
-            var applyTimetodate = $('#applyDeadline').val();
+            newArray.push({symbol:$(".parameterName").eq(i).val(),value:$(".parameterSymbol").eq(i).val()});
 
-            var radio;
-            if ($('#importRequired').val() == '导入类') {
-                radio = 1;
             }
-            else
-                radio = 0;
+            newArray=JSON.stringify(newArray);
+            var reviewTimetodate = $('#reviewDeadline').val();
+            var applyTimetodate = $('#applyDeadline').val();
+            var radio=$("#importRequired option:selected");
+            var ischild=$("input:radio[name='hasChildNode']:checked").val();
+            var reviewerid=$('#teacherName option:selected');
+
             $.post("/category/manage", {
                 name: $('#itemName').val(),
                 desc: $('#desc').val(),
                 parentId: 0,
-                isLeaf: $('#isLeaf').val(),
+                isLeaf: ischild,
                 reviewDeadline: format(reviewTimetodate),
                 applyDeadline: format(applyTimetodate),
-                reviewerId: $('#reviewerId').val(),
+                reviewerId:reviewerid.val() ,
                 formula: $('#formula').val(),
-                importRequired: radio,
+                importRequired: radio.val(),
                 version: $('#version').val(),
-                jsonParameters: '{' + parametername + ':' + parameterSymbol + '}'
+                jsonParameters: newArray
             }, function (data) {
 
 

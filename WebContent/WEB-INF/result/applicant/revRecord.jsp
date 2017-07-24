@@ -6,6 +6,7 @@ Time: 16:06
 To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <div class="abnorbalitem">
 <h4>存疑条目</h4>
     <div class="x_content" style="display: block;">
@@ -36,6 +37,25 @@ To change this template use File | Settings | File Templates.
 
         </div>
     </div>
+</div>
+<div class="modal fade" id="explainModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" >
+                    回复信息
+                </h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
 <div class="normalItem">
 <h4>正常条目</h4>
@@ -69,7 +89,14 @@ To change this template use File | Settings | File Templates.
         </div>
     </div>
 </div>
+<div class="explain_1">
+
 </div>
+<div class="explain_4">
+
+</div>
+
+
 
 
 
