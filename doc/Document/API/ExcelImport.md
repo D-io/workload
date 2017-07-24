@@ -1,5 +1,21 @@
 ## 工作量信息Excel导入
 
+### 获取不同类目对应的Excel模板
+- 接口地址：`/file/import-template`
+- 支持格式：`json`
+- 请求方式：`GET`
+- 请求示例：`localhost:8080/file/template?categoryId=3&type=isGroup`
+
+- 请求参数说明：
+参数名 |类型 | 说明
+---|---|---
+categoryId | int | 类目编号
+type | String | 模板类型（single或group）小组还是个人
+
+- 返回参数具体说明：文件流
+
+
+
 ### 导入指定格式的Excel接口（v1.1)
 - 接口地址：`/file/import-template`
 - 支持格式：`json`
