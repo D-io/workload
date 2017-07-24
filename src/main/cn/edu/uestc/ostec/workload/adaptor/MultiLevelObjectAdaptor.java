@@ -1,9 +1,8 @@
 /*
- * Project: AEMS（工程认证达成度评价管理系统）
- * File: MultiLevelObjectAdaptor.java
- * Author: 刘文哲
- * Email: liuwnzh@163.com
- * Date: 2017年5月26日
+ * Project: workload（工作量计算系统）
+ * File: RegionManagerController.java
+ * Author: 张健顺
+ * Email: 1224522500@qq.com
  * Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
  */
 
