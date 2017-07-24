@@ -51,8 +51,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	@Autowired
 	private SubjectConverter subjectConverter;
 
-	//TODO 条件查询，设置参数，动态Sql语句拼接
-
 	/**
 	 * 管理员分页查询所有的条目信息
 	 *
@@ -82,12 +80,17 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		pageSize = (null == pageSize ? 100000 : pageSize);
 		pageNum = (null == pageNum ? 1 : pageNum);
-		List<Item> itemList = itemService
+		Map<String, Object> info = itemService
 				.findAll(categoryId, status, ownerId, null, pageNum, pageSize);
+		List<Item> itemList = (List<Item>) info.get("itemList");
+		Integer pageCount = (Integer) info.get("pageCount");
+		Long totalLines = (Long) info.get("totalLines");
 		Map<String, Object> data = getData();
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
 		if (null == ifExport) {
 			data.put("itemList", itemDtoList);
+			data.put("pageCount", pageCount);
+			data.put("totalLines", totalLines);
 			return successResponse(data);
 		} else if ("yes".equals(ifExport)) {
 			return getExportExcel(itemDtoList);

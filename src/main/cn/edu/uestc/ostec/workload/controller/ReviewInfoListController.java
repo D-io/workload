@@ -249,8 +249,13 @@ public class ReviewInfoListController extends ApplicationController {
 		Map<String, Object> data = getData();
 		pageSize = (null == pageSize ? 1000000 : pageSize);
 		pageNum = (null == pageNum ? 1 : pageNum);
-		List<Item> itemList = itemService
+
+		Map<String,Object> info = itemService
 				.findAll(categoryId, null, ownerId, isGroup, pageNum, pageSize);
+		List<Item> itemList = (List<Item>) info.get("itemList");
+		Integer pageCount = (Integer) info.get("pageCount");
+		Long totalLines = (Long) info.get("totalLines");
+
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
 		List<ItemDto> newItemDtoList = new ArrayList<>();
 		if (null == categoryId) {
@@ -272,6 +277,8 @@ public class ReviewInfoListController extends ApplicationController {
 
 		if(null == isExport) {
 			data.put("itemDtoList", itemDtoList);
+			data.put("pageCount", pageCount);
+			data.put("totalLines", totalLines);
 			data.put("totalWorkload", workload);
 			return successResponse(data);
 		} else if("yes".equals(isExport)) {

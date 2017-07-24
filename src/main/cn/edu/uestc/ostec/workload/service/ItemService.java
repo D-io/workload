@@ -1,6 +1,7 @@
 package cn.edu.uestc.ostec.workload.service;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.pojo.Item;
 
@@ -86,5 +87,5 @@ public interface ItemService extends BaseService {
 	 * @param pageSize 页的大小
 	 * @return List<Item>
 	 */
-	List<Item> findAll(Integer categoryId,Integer status,Integer ownerId,Integer isGroup,int pageNum, int pageSize);
+	Map<String,Object> findAll(Integer categoryId,Integer status,Integer ownerId,Integer isGroup,int pageNum, int pageSize);
 }

@@ -407,7 +407,7 @@ data | String | 结果集
 - 支持格式：`json`
 - 请求方式：`GET`
 - 请求示例：`localhost:8080/reviewer/info/items-all?categoryId=2&isGroup=0&ownerId=3210343&pageNum=1&pageSize=100`
-    - `localhost:8080/reviewer/info/items-all?categoryId=2&isGroup=0&ownerId=3210343&ifExport`
+    - `localhost:8080/reviewer/info/items-all?categoryId=2&isGroup=0&ownerId=3210343&ifExport=yes`
 
 - 请求参数具体说明：（查询条件） 分页查询 
 
@@ -429,6 +429,8 @@ isExport | String | 是否导出 | 否（若要导出，对应属性为yes）
 status | int |状态值
 statusName | String | 状态名
 data | String | 结果集
+pageCount | int | 总页码数
+totalLines | long | 总的条数
 
 - Json返回成功示例如下：
 ```json
@@ -436,7 +438,59 @@ data | String | 结果集
     "status": 200,
     "statusName": "OK",
     "data": {
+        "pageCount": 5,
         "itemDtoList": [
+            {
+                "itemId": 1,
+                "itemName": "213",
+                "categoryId": 2,
+                "ownerId": 3210343,
+                "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"A\", \"value\": 12 } ]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    },
+                    {
+                        "symbol": "A",
+                        "value": 12
+                    }
+                ],
+                "workload": 2,
+                "groupManagerId": 3210343,
+                "applyDesc": "",
+                "jobDesc": "[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
+                "jobDescList": [
+                    {
+                        "userId": 3210343,
+                        "jobDesc": "准备工作"
+                    },
+                    {
+                        "userId": 5130121,
+                        "jobDesc": "指导老师"
+                    }
+                ],
+                "status": 1,
+                "jsonChildWeight": "[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
+                "childWeightList": [
+                    {
+                        "userId": 3210343,
+                        "weight": 0.2
+                    },
+                    {
+                        "userId": 5130121,
+                        "weight": 0.8
+                    }
+                ],
+                "proof": "0",
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "张翔",
+                "categoryName": "名字去去去去去去前期",
+                "importRequired": 0,
+                "isGroup": 1
+            },
             {
                 "itemId": 2,
                 "itemName": "name",
@@ -489,6 +543,7 @@ data | String | 结果集
                 "isGroup": 0
             }
         ],
+        "totalLines": 10,
         "totalWorkload": 20
     }
 }

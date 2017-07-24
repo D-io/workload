@@ -1,12 +1,15 @@
 package cn.edu.uestc.ostec.workload.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.dao.ItemDao;
 import cn.edu.uestc.ostec.workload.pojo.Item;
@@ -58,7 +61,7 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	}
 
 	@Override
-	public List<Item> findAll(Integer categoryId,Integer status,Integer ownerId,Integer isGroup,int pageNum, int pageSize) {
+	public Map<String,Object> findAll(Integer categoryId,Integer status,Integer ownerId,Integer isGroup,int pageNum, int pageSize) {
 
 		PageHelper.startPage(pageNum,pageSize);
 		List<Item> items = itemDao.selectAll(categoryId,status,ownerId,isGroup);
@@ -66,7 +69,14 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 		for(Item item:items) {
 			itemList.add(item);
 		}
-		return itemList;
+		Page<Item> page = (Page<Item>) items;
+		long total = page.getTotal();
+		int pageCount = (int) Math.ceil(total/pageSize);
+		Map<String,Object> data = new HashMap<>();
+		data.put("itemList",itemList);
+		data.put("pageCount",pageCount);
+		data.put("totalLines",total);
+		return data;
 	}
 
 	@Override
