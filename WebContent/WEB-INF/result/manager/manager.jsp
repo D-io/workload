@@ -27,16 +27,13 @@ To change this template use File | Settings | File Templates.
     <!-- 图标 -->
     <link rel="stylesheet"type="text/css"  href="vendor/font-awesome/css/font-awesome.css"  />
     <!-- 日历 -->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap-datepicker/css/datepicker3.css" />
-
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-timepicker.css" />
+    <link rel="stylesheet" type="text/css" href="css/datepicker3.css" />
     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="css/panel-content.css" />
 
     <!-- Skin CSS (颜色)-->
     <link rel="stylesheet" href="css/default.css" />
-
-    <!-- 日期插件 -->
-    <link rel="stylesheet" href="css/bootstrap-timepicker.css">
 
     <!-- ztree -->
     <link rel="stylesheet" type="text/css" href="css/zTreeStyle/zTreeStyle.css" type="text/css">
@@ -247,8 +244,8 @@ To change this template use File | Settings | File Templates.
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">是否为叶子节点</label>
                                         <div class="col-sm-9">
-                                            <input type="radio" id="isLeaf" name="hasChildNode" value="Y">是
-                                            <input type="radio" id="isntLeaf" name="hasChildNode"  value="N">否
+                                            <input type="radio" class="isLeaf" name="hasChildNode" value="Y">是
+                                            <input type="radio" class="isLeaf" name="hasChildNode"  value="N">否
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -396,6 +393,17 @@ To change this template use File | Settings | File Templates.
                     </div>
 
                 </div>
+                <fieldset>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="col-md-11 xdisplay_inputx form-group has-feedback">
+                                <input type="text" class="form-control has-feedback-left" id="single_cal2" placeholder="First Name" aria-describedby="inputSuccess2Status2">
+                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <span id="inputSuccess2Status2" class="sr-only">(success)</span>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
             </div>
 
         </div>
@@ -424,6 +432,7 @@ To change this template use File | Settings | File Templates.
 <!-- 收缩 -->
 <script language='javascript' src="vendor/js/nanoscroller.js"></script>
 <!-- 日历 -->
+
 <script language='javascript' src="vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script language='javascript' src="vendor/js/modernizr.js"></script>
 <!-- Theme Base, Components and Settings -->
