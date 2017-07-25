@@ -73,12 +73,26 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		List<JobDesc> jobDescList = new ArrayList<>();
 		List<ChildWeight> childWeightList = new ArrayList<>();
 		try {
-			parameterValues = OBJECT_MAPPER.readValue(itemDto.getJsonParameter(),
-					getCollectionType(ArrayList.class, ParameterValue.class));
-			jobDescList = OBJECT_MAPPER.readValue(itemDto.getJobDesc(),
-					getCollectionType(ArrayList.class, JobDesc.class));
-			childWeightList = OBJECT_MAPPER.readValue(itemDto.getJsonChildWeight(),
-					getCollectionType(ArrayList.class, ChildWeight.class));
+			if(null != itemDto.getJsonParameter()) {
+				parameterValues = OBJECT_MAPPER.readValue(itemDto.getJsonParameter(),
+						getCollectionType(ArrayList.class, ParameterValue.class));
+			} else {
+				parameterValues = null;
+			}
+
+			if(null != itemDto.getJobDesc()) {
+				jobDescList = OBJECT_MAPPER.readValue(itemDto.getJobDesc(),
+						getCollectionType(ArrayList.class, JobDesc.class));
+			} else {
+				jobDescList = null;
+			}
+
+			if(null != itemDto.getJsonChildWeight()) {
+				childWeightList = OBJECT_MAPPER.readValue(itemDto.getJsonChildWeight(),
+						getCollectionType(ArrayList.class, ChildWeight.class));
+			} else {
+				childWeightList = null;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -114,26 +128,5 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		item.setIsGroup(dto.getIsGroup());
 
 		return item;
-	}
-
-	@Test
-	public void test() {
-		List<ParameterValue> parameterValues = new ArrayList<>();
-		List<JobDesc> jobDescList = new ArrayList<>();
-		List<ChildWeight> childWeightList = new ArrayList<>();
-		try {
-			parameterValues = OBJECT_MAPPER.readValue("[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]",
-					getCollectionType(ArrayList.class, ParameterValue.class));
-			jobDescList = OBJECT_MAPPER.readValue("[{\"userId\": 3210343,\"jobDesc\": \"准备工作\" }, {\"userId\": 5130121,\"jobDesc\": \"指导老师\" }]",
-					getCollectionType(ArrayList.class, JobDesc.class));
-			childWeightList = OBJECT_MAPPER.readValue("[{\"userId\": 3210343,\"weight\": 0.2 }, {\"userId\": 5130121,\"weight\": 0.8 }]",
-					getCollectionType(ArrayList.class, ChildWeight.class));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println(parameterValues);
-		System.out.println(jobDescList);
-		System.out.println(childWeightList);
-		System.out.println(FormulaCalculate.calculate("A+2*B",parameterValues));
 	}
 }

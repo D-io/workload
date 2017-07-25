@@ -30,8 +30,12 @@ public class UserRoleConverter implements Converter<UserRole, User> {
 			user.setUserId(po.getUserId());
 			List<RoleInfo> roleInfoList = new ArrayList<>();
 			try {
-				roleInfoList = OBJECT_MAPPER.readValue(po.getRole(),
-						getCollectionType(ArrayList.class, RoleInfo.class));
+				if (null != po.getRole()) {
+					roleInfoList = OBJECT_MAPPER.readValue(po.getRole(),
+							getCollectionType(ArrayList.class, RoleInfo.class));
+				} else {
+					roleInfoList = null;
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -48,12 +52,15 @@ public class UserRoleConverter implements Converter<UserRole, User> {
 		UserRole userRole = new UserRole();
 		if (dto != null) {
 			userRole.setUserId(dto.getUserId());
-			userRole.setDeadline(DateHelper
-					.getDateTimeStamp(dto.getDeadline()));
+			userRole.setDeadline(DateHelper.getDateTimeStamp(dto.getDeadline()));
 			userRole.setStatus(dto.getStatus());
 			String roleInfo = null;
 			try {
-				roleInfo = OBJECT_MAPPER.writeValueAsString(dto.getRoleInfoList());
+				if (null != dto.getRoleInfoList()) {
+					roleInfo = OBJECT_MAPPER.writeValueAsString(dto.getRoleInfoList());
+				} else {
+					roleInfo = null;
+				}
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
