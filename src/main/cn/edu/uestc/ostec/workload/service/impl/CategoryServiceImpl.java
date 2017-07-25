@@ -90,6 +90,11 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 		return listResult(categoryDao.selectByReviewer(reviewerId));
 	}
 
+	@Override
+	public List<Category> getAllValidCategory() {
+
+		return listResult(categoryDao.selectAll());
+	}
 
 	@Override
 	public List<CategoryDto> getDtoObjects(Integer status,Integer parentId) {

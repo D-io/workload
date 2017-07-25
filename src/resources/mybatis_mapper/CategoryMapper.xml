@@ -65,7 +65,7 @@
   </select>
 
   <select id="selectAll" resultMap="categoryResultMap">
-  	select * from category
+  	select * from category where status != -1
   </select>
 
   <select id="selectChildren" resultMap="categoryResultMap">

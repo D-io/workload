@@ -34,7 +34,6 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.I
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.ROOT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -117,8 +116,7 @@ public class CategoryInfoListController extends ApplicationController
 	@RequestMapping(value = "parent-brief", method = GET)
 	public RestResponse getParentCategories() {
 
-		List<Category> categoryList = categoryService.getCategoryChildren(UNCOMMITTED, ROOT);
-		categoryList.addAll(categoryService.getCategoryChildren(SUBMITTED, ROOT));
+		List<Category> categoryList = categoryService.getAllValidCategory();
 
 		if (null == categoryList) {
 			return successResponse("无配置好的父类");

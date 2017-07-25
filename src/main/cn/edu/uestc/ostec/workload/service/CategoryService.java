@@ -75,4 +75,6 @@ public interface CategoryService extends MultiLevelService<CategoryDto> {
 	 * @return List<Category>
 	 */
 	List<Category> getCategoriesByReviewer(Integer reviewerId);
+
+	List<Category> getAllValidCategory();
 }
