@@ -104,34 +104,35 @@ function beforeEditName(treeId, treeNode) {
         $('#addModal').modal('show');
         $('#save').unbind("click");
         $('#save').bind("click", function () {
-            var parametername = $('#parameterName').val();
-            var parameterSymbol = $('#parameterSymbol').val();
-            var reviewTimetodate = $('#reviewDeadline').val();
+            var parametername = $('#parameterName');
+            var newArray=new Array();
+            for(var i=0;i<parametername.length;i++){
 
+                newArray.push({desc:$(".parameterName").eq(i).val(),symbol:$(".parameterSymbol").eq(i).val()});
+
+            }
+            newArray=JSON.stringify(newArray);
+            var reviewTimetodate = $('#reviewDeadline').val();
             var applyTimetodate = $('#applyDeadline').val();
 
-            var radio;
-            if ($('#importRequired').val() == '导入类') {
-                radio = 0;
-            }
-            else {
-                radio = 1;
-            }
+            var radio=$("#importRequired option:selected");
+            var ischild=$("input:radio[name='hasChildNode']:checked").val();
+            var reviewerid=$('#teacherName option:selected');
 
             $.post("/category/manage/modify",
                 {
                     name: $('#itemName').val(),
                     desc: $('#desc').val(),
                     parentId: treeNode.parentId,
-                    isLeaf: $('#isLeaf').val(),
+                    isLeaf: ischild,
                     reviewDeadline: format(reviewTimetodate),
                     applyDeadline: format(applyTimetodate),
-                    reviewerId: $('#reviewerId').val(),
+                    reviewerId: reviewerid.val(),
                     formula: $('#formula').val(),
-                    importRequired: radio,
+                    importRequired: radio.val(),
                     version: $('#version').val(),
                     categoryId: treeNode.id,
-                    jsonParameters: '{' + parametername + ':' + parameterSymbol + '}'
+                    jsonParameters: newArray
                 },
                 function (data) {
 
@@ -276,7 +277,7 @@ function addHoverDom(treeId, treeNode){
                 var newArray=new Array();
                 for(var i=0;i<parametername.length;i++){
 
-                    newArray.push({symbol:$(".parameterName").eq(i).val(),value:$(".parameterSymbol").eq(i).val()});
+                    newArray.push({desc:$(".parameterName").eq(i).val(),symbol:$(".parameterSymbol").eq(i).val()});
 
                 }
                 newArray=JSON.stringify(newArray);
@@ -349,7 +350,7 @@ $(document).ready(function(){
             var newArray=new Array();
             for(var i=0;i<parametername.length;i++){
 
-            newArray.push({symbol:$(".parameterName").eq(i).val(),value:$(".parameterSymbol").eq(i).val()});
+            newArray.push({desc:$(".parameterName").eq(i).val(),symbol:$(".parameterSymbol").eq(i).val()});
 
             }
             newArray=JSON.stringify(newArray);
