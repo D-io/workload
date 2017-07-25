@@ -344,7 +344,7 @@ To change this template use File | Settings | File Templates.
 
                 </div>
             </section>
-            <div class="x_panel">
+        <!--    <div class="x_panel">
                 <div class="x_title">
                     <h2><i class="fa fa-bars"></i> Tabs <small>Float left</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -393,18 +393,8 @@ To change this template use File | Settings | File Templates.
                     </div>
 
                 </div>
-                <fieldset>
-                    <div class="control-group">
-                        <div class="controls">
-                            <div class="col-md-11 xdisplay_inputx form-group has-feedback">
-                                <input type="text" class="form-control has-feedback-left" id="single_cal2" placeholder="First Name" aria-describedby="inputSuccess2Status2">
-                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-                                <span id="inputSuccess2Status2" class="sr-only">(success)</span>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
+
+          -->  </div>
 
         </div>
     </div>
