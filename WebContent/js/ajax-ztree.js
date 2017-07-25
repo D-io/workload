@@ -130,7 +130,13 @@ function beforeEditName(treeId, treeNode) {
 
         });
         $('.AddPramter').empty();
-        var jsonstrArray=JSON.parse(treeNode.jsonParameters);
+        var jsonstrArray;
+        if(treeNode.jsonParameters) {
+             jsonstrArray = JSON.parse(treeNode.jsonParameters);
+        }
+        else {
+            jsonstrArray='';
+        }
         var addStr='';
        for(var pramterCount=0;pramterCount<jsonstrArray.length;pramterCount++){
 
@@ -265,8 +271,6 @@ function beforeRemove(treeId, treeNode) {
         }
     });
 }
-
-
 //更新节点名称之前的回调函数
 function beforeRename(treeId, treeNode, newName, isCancel) {
     className = (className === "dark" ? "":"dark");
@@ -308,8 +312,6 @@ function getTime() {
         ms=now.getMilliseconds();
     return (h+":"+m+":"+s+ " " +ms);
 }
-
-
 function addHoverDom(treeId, treeNode){
     var sObj = $("#" + treeNode.tId + "_span");
 
@@ -476,7 +478,6 @@ $(document).ready(function(){
 
     });
 });
-
 function add0(m){return m<10?'0'+m:m }
 function format(shijianchuo)
 {
@@ -487,8 +488,6 @@ function format(shijianchuo)
 
     return y+'年'+add0(m)+'月'+add0(d)+'日';
 }
-
-
 function zTreeOnClick(event, treeId, treeNode) {
     var zTree= $.fn.zTree.getZTreeObj("treeDemo");
     var nodes = zTree.getCheckedNodes(true);
