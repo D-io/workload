@@ -26,7 +26,11 @@ public class FormulaCalculate {
 
 		//循环遍历替换公式中的变量值
 		for(ParameterValue parameterValue:values) {
-			formula = formula.replaceAll(parameterValue.getSymbol(),String.valueOf(parameterValue.getValue()));
+			if(null != parameterValue) {
+				formula = formula.replaceAll(parameterValue.getSymbol(), String.valueOf(parameterValue.getValue()));
+			} else {
+				continue;
+			}
 		}
 
 		double result = ZERO_DOUBLE;
