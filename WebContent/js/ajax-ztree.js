@@ -45,15 +45,25 @@ $.get("/category/info/all",function (data) {
         }
         function createTree(item) {
 
+            var x=item.reviewDeadline;
+            var y=item.applyDeadline;
+            var a=x.match(/\d+/g);
+            var b=y.match(/\d+/g);
+            var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
+            var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];
 
             var nodes = {
                 'name': item.name,
                 'id': item.categoryId,
                 'parentId': item.parentId,
                 'desc': item.desc,
-                'reviewDeadline': item.reviewDeadline,
-                'applyDeadline': item.applyDeadline,
+                'reviewDeadline': rewDeadline,
+                'applyDeadline': appDeadline,
                 'formula': item.formula,
+                'reviewerId':item.reviewerId,
+                'jsonParameters':item.jsonParameters,
+                'isLeaf':item.isLeaf,
+                'importRequired':item.importRequired,
                 'open':true
             };
             var zTree=$.fn.zTree.getZTreeObj("treeDemo");
@@ -87,24 +97,66 @@ function beforeEditName(treeId, treeNode) {
 
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         var sNodes = zTree.getSelectedNodes();
+
         if (sNodes.length > 0) {
-            var parentNode = sNodes[0].getParentNode();
+          var parentNode = sNodes[0].getParentNode();
+          var parNodeId;
+          var parNodeName;
+          if(parentNode==null){
+             parNodeId=0;
+             parNodeName='';
+          }
+          else{
+              parNodeId=parentNode.id;
+              parNodeName=parentNode.name;
+          }
+
         }
-        var parentNodeName=parentNode.name;
+
+         $("#importRequired option").each(function() {
+                if($(this).val() == treeNode.importRequired){
+                    $(this).attr("selected",true);
+                }
+            });
+        $("#teacherName option").each(function() {
+            if($(this).val() == treeNode.reviewerId){
+                $(this).attr("selected",true);
+            }
+        });
+        $("input:radio[name='hasChildNode']").each(function (){
+            if($(this).val()==treeNode.isLeaf){
+                $(this).attr("checked",true);
+            }
+
+        });
+        $('.AddPramter').empty();
+        var jsonstrArray=JSON.parse(treeNode.jsonParameters);
+        var addStr='';
+       for(var pramterCount=0;pramterCount<jsonstrArray.length;pramterCount++){
+
+           addStr+="<tr><td><input type='text' class='parameterName' name='parameterName'></td><td><input type='text' class='parameterSymbol' name='parameterSymbol'></td></tr>";
+
+       }
+        $('.AddPramter').append(addStr);
+
+        for(var count=0;count<jsonstrArray.length;count++){
+            $(".parameterName").eq(count).val(jsonstrArray[count].desc);
+            $(".parameterSymbol").eq(count).val(jsonstrArray[count].symbol);
+        }
+
         $('#itemName').val(treeNode.name);
         $('#desc').val(treeNode.desc);
-
-        $('#parentId').val(treeNode.parentId);
         $('#applyDeadline').val(treeNode.applyDeadline);
         $('#reviewDeadline').val(treeNode.reviewDeadline);
-        $('#parentId').val(parentNodeName);
+        $('#parentId').val(parNodeName);
         $('#formula').val(treeNode.formula);
+
 
 
         $('#addModal').modal('show');
         $('#save').unbind("click");
         $('#save').bind("click", function () {
-            var parametername = $('#parameterName');
+            var parametername = $('.parameterName');
             var newArray=new Array();
             for(var i=0;i<parametername.length;i++){
 
@@ -123,7 +175,7 @@ function beforeEditName(treeId, treeNode) {
                 {
                     name: $('#itemName').val(),
                     desc: $('#desc').val(),
-                    parentId: treeNode.parentId,
+                    parentId: parNodeId,
                     isLeaf: ischild,
                     reviewDeadline: format(reviewTimetodate),
                     applyDeadline: format(applyTimetodate),
@@ -135,6 +187,12 @@ function beforeEditName(treeId, treeNode) {
                     jsonParameters: newArray
                 },
                 function (data) {
+                    var x=data.data.category.reviewDeadline;
+                    var y=data.data.category.applyDeadline;
+                    var a=x.match(/\d+/g);
+                    var b=y.match(/\d+/g);
+                    var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
+                    var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];
 
                     for (var i = 0; i < window.zNodes.length; i++) {
                         if (window.zNodes[i].id == data.data.category.categoryId) {
@@ -144,15 +202,17 @@ function beforeEditName(treeId, treeNode) {
                                 'id': data.data.category.categoryId,
                                 'parentId': data.data.category.parentId,
                                 'desc': data.data.category.desc,
-                                'reviewDeadline': data.data.category.reviewDeadline,
-                                'applyDeadline': data.data.category.applyDeadline,
+                                'reviewDeadline': rewDeadline,
+                                'applyDeadline': appDeadline,
                                 'formula': data.data.category.formula,
-                                'reviewerId':data.data.category.reviewerId
+                                'reviewerId':data.data.category.reviewerId,
+                                'jsonParameters':data.data.category.jsonParameters,
+                                'isLeaf':data.data.category.isLeaf,
+                                'importRequired':data.data.category.importRequired
                             };
 
-
                             zTree.updateNode(window.zNodes[i]);
-                            $('#'+treeNode.tId+'_span').val(newNode.name);
+                            $('#'+treeNode.tId+'_span').text(newNode.name);
 
                             window.zNodes.splice(i, 1, newNode);
                             $.fn.zTree.init($("#treeDemo"), setting, window.zNodes);
@@ -270,7 +330,8 @@ function addHoverDom(treeId, treeNode){
             $('#formula').val(null);
             $('.parameterSymbol').val(null);
             $('.parameterName').val(null);
-
+            $("#parentId").attr("disabled","disabled");
+            $('.AddPramter').empty();
             $('#save').unbind('click');
             $('#save').bind('click', function () {
                 var parametername = $('.parameterName');
@@ -300,6 +361,12 @@ function addHoverDom(treeId, treeNode){
                     version: $('#version').val(),
                     jsonParameters: newArray
                 }, function (data) {
+                    var x=data.data.category.reviewDeadline;
+                    var y=data.data.category.applyDeadline;
+                    var a=x.match(/\d+/g);
+                    var b=y.match(/\d+/g);
+                    var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
+                    var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];
                     var zTree = $.fn.zTree.getZTreeObj("treeDemo");
 
                     var newNode = {
@@ -307,9 +374,13 @@ function addHoverDom(treeId, treeNode){
                         'id': data.data.category.categoryId,
                         'parentId': data.data.category.parentId,
                         'desc': data.data.category.desc,
-                        'reviewDeadline': data.data.category.reviewDeadline,
-                        'applyDeadline': data.data.category.applyDeadline,
-                        'formula': data.data.category.formula
+                        'reviewDeadline': rewDeadline,
+                        'applyDeadline': appDeadline,
+                        'formula': data.data.category.formula,
+                        'reviewerId':data.data.category.reviewerId,
+                        'jsonParameters':data.data.category.jsonParameters,
+                        'isLeaf':data.data.category.isLeaf,
+                        'importRequired':data.data.category.importRequired
                     };
 
                     newNode = zTree.addNodes(treeNode, newNode);
@@ -333,6 +404,7 @@ function selectAll() {
 }
 $(document).ready(function(){
     $('#addToTable').bind('click',function() {
+        $('.AddPramter').empty();
         $('#itemName').val(null);
         $('#desc').val(null);
         $('#reviewerId').val(null);
@@ -343,7 +415,7 @@ $(document).ready(function(){
         $('.parameterSymbol').val(null);
         $('.parameterName').val(null);
         $('#addModal').modal('show');
-
+        $("#parentId").attr("disabled","disabled");
         $('#save').unbind('click');
         $('#save').bind('click', function () {
             var parametername =$(".parameterName") ;
@@ -374,18 +446,24 @@ $(document).ready(function(){
                 jsonParameters: newArray
             }, function (data) {
 
-
+                var x=data.data.category.reviewDeadline;
+                var y=data.data.category.applyDeadline;
+                var a=x.match(/\d+/g);
+                var b=y.match(/\d+/g);
                 var zTree = $.fn.zTree.getZTreeObj("treeDemo");
 
                 var newNode= {'name': data.data.category.name,
                     'id': data.data.category.categoryId,
                     'parentId': data.data.category.parentId,
                     'desc':data.data.category.desc,
-                    'reviewDeadline':data.data.category.reviewDeadline,
-                    'applyDeadline':data.data.category.applyDeadline,
-                    'formula':data.data.category.formula
+                    'reviewDeadline':x[1]/x[2]/x[0],
+                    'applyDeadline':y[1]/y[2]/y[0],
+                    'formula':data.data.category.formula,
+                    'reviewerId':data.data.category.reviewerId,
+                    'jsonParameters':data.data.category.jsonParameters,
+                    'isLeaf':data.data.category.isLeaf,
+                    'importRequired':data.data.category.importRequired
                 };
-                alert(newNode.parentId);
                 newNode = zTree.addNodes(null, newNode);
                 window.zNodes.push(newNode);
             }, "json");
@@ -399,9 +477,8 @@ $(document).ready(function(){
     });
 });
 
-function add0(m){return m<10?'0'+m:m };
+function add0(m){return m<10?'0'+m:m }
 function format(shijianchuo)
-
 {
     var time = new Date(shijianchuo);
     var y = time.getFullYear();
@@ -410,6 +487,8 @@ function format(shijianchuo)
 
     return y+'年'+add0(m)+'月'+add0(d)+'日';
 }
+
+
 function zTreeOnClick(event, treeId, treeNode) {
     var zTree= $.fn.zTree.getZTreeObj("treeDemo");
     var nodes = zTree.getCheckedNodes(true);

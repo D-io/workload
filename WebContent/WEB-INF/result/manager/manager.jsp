@@ -27,16 +27,13 @@ To change this template use File | Settings | File Templates.
     <!-- 图标 -->
     <link rel="stylesheet"type="text/css"  href="vendor/font-awesome/css/font-awesome.css"  />
     <!-- 日历 -->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap-datepicker/css/datepicker3.css" />
-
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-timepicker.css" />
+    <link rel="stylesheet" type="text/css" href="css/datepicker3.css" />
     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="css/panel-content.css" />
 
     <!-- Skin CSS (颜色)-->
     <link rel="stylesheet" href="css/default.css" />
-
-    <!-- 日期插件 -->
-    <link rel="stylesheet" href="css/bootstrap-timepicker.css">
 
     <!-- ztree -->
     <link rel="stylesheet" type="text/css" href="css/zTreeStyle/zTreeStyle.css" type="text/css">
@@ -247,8 +244,8 @@ To change this template use File | Settings | File Templates.
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">是否为叶子节点</label>
                                         <div class="col-sm-9">
-                                            <input type="radio" id="isLeaf" name="hasChildNode" value="Y">是
-                                            <input type="radio" id="isntLeaf" name="hasChildNode"  value="N">否
+                                            <input type="radio" class="isLeaf" name="hasChildNode" value="Y">是
+                                            <input type="radio" class="isLeaf" name="hasChildNode"  value="N">否
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -347,7 +344,7 @@ To change this template use File | Settings | File Templates.
 
                 </div>
             </section>
-            <div class="x_panel">
+        <!--    <div class="x_panel">
                 <div class="x_title">
                     <h2><i class="fa fa-bars"></i> Tabs <small>Float left</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -396,7 +393,8 @@ To change this template use File | Settings | File Templates.
                     </div>
 
                 </div>
-            </div>
+
+          -->  </div>
 
         </div>
     </div>
@@ -424,6 +422,7 @@ To change this template use File | Settings | File Templates.
 <!-- 收缩 -->
 <script language='javascript' src="vendor/js/nanoscroller.js"></script>
 <!-- 日历 -->
+
 <script language='javascript' src="vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script language='javascript' src="vendor/js/modernizr.js"></script>
 <!-- Theme Base, Components and Settings -->

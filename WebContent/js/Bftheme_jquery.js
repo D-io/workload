@@ -613,6 +613,7 @@ function appendAllItem(data) {
     }
 
 }
+
 $(document).on("click","#addParameter",function () {
     var addStr="<tr><td><input type='text' class='parameterName' name='parameterName'></td><td><input type='text' class='parameterSymbol' name='parameterSymbol'></td></tr>";
     $('.AddPramter').append(addStr);
@@ -625,4 +626,5 @@ $(document).ready(function () {
     });
 
 });
+
 
