@@ -1,6 +1,7 @@
 package cn.edu.uestc.ostec.workload.pojo;
 
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NOT_LEAF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 
@@ -39,22 +40,22 @@ public class Category {
 	/**
 	 * 工作量类目类型，0：审核类，1：复核类
 	 */
-	private Integer importRequired;
+	private Integer importRequired = APPLY_SELF;
 
 	/**
 	 * 参数以json格式存储如：{人数：A}
 	 */
-	private String jsonParameters;
+	private String jsonParameters = null;
 
 	/**
 	 * 计算工作量公式，如:A*0.4
 	 */
-	private String formula;
+	private String formula = null;
 
 	/**
 	 * 工作量类目公式适宜版本，以学期形式表示，如：2016-2017-1
 	 */
-	private String version;
+	private String version = null;
 
 	/**
 	 * 状态，0：未提交，1：已提交，-1：disable（删除）
@@ -64,17 +65,17 @@ public class Category {
 	/**
 	 * 最终审核时间
 	 */
-	private Integer reviewDeadline;
+	private Integer reviewDeadline = null;
 
 	/**
 	 * 审核类最终申请时间，默认为审核时间前48小时。审核人修改申请时间时，与审核时间相差不足48小时给出提示。
 	 */
-	private Integer applyDeadline;
+	private Integer applyDeadline = null;
 
 	/**
 	 * 审核人编号
 	 */
-	private Integer reviewerId;
+	private Integer reviewerId = null;
 
 	public Integer getReviewerId() {
 		return reviewerId;

@@ -51,8 +51,12 @@ public class CategoryConverter implements Converter<Category,CategoryDto> {
 
 		List<FormulaParameter> formulaParameterList = new ArrayList<>();
 		try {
-			formulaParameterList = OBJECT_MAPPER.readValue(categoryDto.getJsonParameters(),
-					getCollectionType(ArrayList.class, FormulaParameter.class));
+			if(null != categoryDto.getJsonParameters()) {
+				formulaParameterList = OBJECT_MAPPER.readValue(categoryDto.getJsonParameters(),
+						getCollectionType(ArrayList.class, FormulaParameter.class));
+			}else {
+				formulaParameterList = null;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
