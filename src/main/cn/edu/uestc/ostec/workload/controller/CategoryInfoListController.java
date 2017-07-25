@@ -4,6 +4,7 @@
  * Author: 张健顺
  * Email: 1224522500@qq.com
  * Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
+ *
  */
 package cn.edu.uestc.ostec.workload.controller;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ import cn.edu.uestc.ostec.workload.adaptor.MultiLevelObjectAdaptor;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
+import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
@@ -31,6 +34,7 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.I
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.ROOT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -106,6 +110,32 @@ public class CategoryInfoListController extends ApplicationController
 	}
 
 	/**
+	 * 查询当前已经配置了的父节点作为下拉列表
+	 *
+	 * @return categoryBrief
+	 */
+	@RequestMapping(value = "parent-brief", method = GET)
+	public RestResponse getParentCategories() {
+
+		List<Category> categoryList = categoryService.getCategoryChildren(UNCOMMITTED, ROOT);
+		categoryList.addAll(categoryService.getCategoryChildren(SUBMITTED, ROOT));
+
+		if (null == categoryList) {
+			return successResponse("无配置好的父类");
+		}
+
+		List<CategoryBrief> categoryBriefs = new ArrayList<>();
+		for (Category category : categoryList) {
+			categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName()));
+		}
+
+		Map<String, Object> data = getData();
+		data.put("categoryBriefs", categoryBriefs);
+
+		return successResponse(data);
+	}
+
+	/**
 	 * 获取对应状态下的CategoryDto对象,构建树结构
 	 */
 	public List<CategoryDto> getCategoryDto(Integer status, Integer parentId) {
@@ -144,4 +174,32 @@ public class CategoryInfoListController extends ApplicationController
 	}
 
 	//TODO 工作量统计汇总 -> ItemInfoController下
+
+	class CategoryBrief {
+
+		String categoryName;
+
+		Integer categoryId;
+
+		public String getCategoryName() {
+			return categoryName;
+		}
+
+		public void setCategoryName(String categoryName) {
+			this.categoryName = categoryName;
+		}
+
+		public Integer getCategoryId() {
+			return categoryId;
+		}
+
+		public void setCategoryId(Integer categoryId) {
+			this.categoryId = categoryId;
+		}
+
+		public CategoryBrief(Integer categoryId, String categoryName) {
+			this.categoryName = categoryName;
+			this.categoryId = categoryId;
+		}
+	}
 }

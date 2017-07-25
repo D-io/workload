@@ -361,3 +361,47 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
     }
 }
 ```
+
+### 获取父节点下拉列表
+- 接口地址:`/category/info/parent-brief`
+- 支持格式：`json`
+- 请求方式：`GET`
+- 请求示例：`localhost:8080//category/info/parent-brief`
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- 返回参数结果集
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "categoryBriefs": [
+            {
+                "categoryName": "培养方案相关人才培养当量",
+                "categoryId": 1
+            },
+            {
+                "categoryName": "教研、教改等教学当量",
+                "categoryId": 2
+            },
+            {
+                "categoryName": "年度人才培养服务当量",
+                "categoryId": 3
+            },
+            {
+                "categoryName": "其他",
+                "categoryId": 4
+            }
+        ]
+    }
+}
+```
