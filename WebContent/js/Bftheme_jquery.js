@@ -1,33 +1,29 @@
-$(document).ready(function(){
-    $('#clickToggle1').on("click", function () {
-        $(".ck1").toggle("slow");
+$(document).on("click","#clickToggle1",function () {
+    $(".ck1").toggle("slow");
 
+});
+$(document).on("click","#clickToggle2",function () {
+    $(".ck2").toggle("slow");
 
-    });
+});
+$(document).on("click","#clickToggle3",function () {
+    $(".ck3").toggle("slow");
 
-    $('#clickToggle2').on("click", function () {
-        $(".ck2").toggle("slow");
+});
+$(document).on("click",".btn-sm",function () {
+    $('.hidden-addedText').show();
 
-    });
-    $('#clickToggle3').on("click", function () {
-        $(".ck3").toggle("slow");
+});
 
-
-    });
-    $('.btn-sm').on("click", function () {
-        $('.hidden-addedText').show();
-
-    });
     $('.btn-md').on("click", function () {
         $('.hidden-addedText').hide();
 
     });
-    $(".collapse-link").on("click", function () {
-        $(".x_content").slideToggle("slow");
-    });
-    $(".collapse-link").on("click", function () {
-        $(".fa-chevron-up").toggleClass("fa-chevron-down");
-    });
+$(document).on("click",".collapse-link",function () {
+    $(".x_content").toggle("slow");
+    $(".fa-chevron-up").toggleClass("fa-chevron-down");
+});
+
     $(".close-link").on("click", function () {
         $(".x_panel").hide();
     });
@@ -43,7 +39,7 @@ $(document).ready(function(){
     $(".sorting_asc").on("click", function () {
         $(".sorting_asc").toggleClass("sorting_desc");
     });
-});
+
 
 function jumpToSum() {
 
@@ -553,3 +549,80 @@ function reset() {
 
     });
 }
+function itemSummary() {
+    $('.right_col').empty();
+    $.get("/region?"+'regionName=manager/itemSummary',function (result) {
+        $('.right_col').append(result);
+        $.get("/item/info/item-all?"+"pageNum=1&pageSize=10",function (data) {
+            appendAllItem(data);
+
+        });
+    });
+    $(document).ready(function () {
+        $.get("/common/teachers",function (data) {
+            for(var i=0;i<data.data.teacherList.length;i++){
+                $('#teacherName').append('<option value=\"'+data.data.teacherList[i].teacherId+'\">'+data.data.teacherList[i].name+data.data.teacherList[i].teacherId+'</option>');
+            }
+        });
+
+    });
+    $(document).ready(function () {
+        $.get("/reviewer/info/categories",function (data) {
+            for(var i=0;i<data.data.categoryList.length;i++){
+                $('#itemRequired').append('<option value=\"'+data.data.categoryList[i].categoryId+'\">'+data.data.categoryList[i].categoryName+'</option>');
+            }
+        });
+
+    });
+    $(document).on("click","#sumItemSearch",function () {
+        var option0=$("#ispassed option:selected");
+        var option1=$("#itemRequired option:selected");
+        var option2=$("#teacherName option:selected");
+        var option3=$("#datatable_length option:selected");
+
+        $.get("/item/info/item-all?"+"categoryId="+option1.val()+"&ispassed="+option0.val()+"&ownerId="+option2.val()+"&pageNum=1&pageSize="+option3.val(),function (data) {
+            $(".sumItemSort").empty();
+            appendAllItem(data);
+
+        });
+    });
+}
+function appendAllItem(data) {
+    var rowInfo="<tr></tr>";
+    var cellInfo="<td></td>";
+    var analyseList= data.data.itemList;
+    var listLength= data.data.itemList.length;
+    for(var i=0;i<listLength;i++)
+    {
+        var Info=analyseList[i];
+        $(".sumItemSort").append(rowInfo);
+        $(".sumItemSort tr:last").attr("id",Info.itemId);
+        for(var j=0;j<6;j++)//单元格
+        {
+            $(".sumItemSort tr:last").append(cellInfo);
+        }
+        var id=i;
+        $(".sumItemSort tr:last td:eq(0)").text(id+1);
+        $(".sumItemSort tr:last td:eq(1)").text(Info.teacherName);
+        $(".sumItemSort tr:last td:eq(2)").text(Info.itemName);
+        $(".sumItemSort tr:last td:eq(3)").text(Info.workload);
+
+        $(".sumItemSort tr:last td:eq(4)").text();
+        var act="<a href=\"#\" class=\"pass\"style=\"color: blue; \" type=\"button\">查看详情</a> ";
+        $(".sumItemSort tr:last td:eq(5)").append(act);
+    }
+
+}
+$(document).on("click","#addParameter",function () {
+    var addStr="<tr><td><input type='text' class='parameterName' name='parameterName'></td><td><input type='text' class='parameterSymbol' name='parameterSymbol'></td></tr>";
+    $('.AddPramter').append(addStr);
+});
+$(document).ready(function () {
+    $.get("/common/teachers",function (data) {
+        for(var i=0;i<data.data.teacherList.length;i++){
+            $('#teacherName').append('<option value=\"'+data.data.teacherList[i].teacherId+'\">'+data.data.teacherList[i].name+'</option>');
+        }
+    });
+
+});
+

@@ -18,12 +18,11 @@
 
     <div class="profile clearfix">
         <div class="profile_pic">
-            <img src="css/images/img.jpg" alt="..." class="img-circle profile_img">
 
         </div>
         <div class="profile_info">
             <span>欢迎,</span>
-            <h2>John Doe</h2>
+            <h2>管理员</h2>
 
         </div>
         <div class="dropdown" id="changerole">
@@ -69,7 +68,7 @@
                     <ul class="nav child_menu">
 
                         <li  class="ck3" onclick="jumpToSum()"><a ><span>条目统计</span></a></li>
-                        <li  class="ck3"><a ><span>工作量统计</span></a></li>
+                        <li  class="ck3" onclick="itemSummary()"><a ><span>工作量统计</span></a></li>
 
                     </ul>
                 </li>

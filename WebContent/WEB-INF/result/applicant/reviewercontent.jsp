@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="x_panel" id="showRevitem">
+<div class="x_panel" >
     <div class="x_title">
         <h2>待复核工作量类目</h2>
         <ul class="nav navbar-right panel_toolbox">
@@ -27,7 +27,7 @@
         </ul>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content" style="display: block;">
+    <div class="x_content" id="showRevitem" style="display: block;">
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
