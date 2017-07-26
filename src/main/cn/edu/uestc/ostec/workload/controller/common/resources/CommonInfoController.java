@@ -16,6 +16,8 @@ import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.pojo.Teacher;
+import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.COMMON_INFO_PATH;
@@ -44,5 +46,27 @@ public class CommonInfoController extends ApplicationController {
 
 		return successResponse(data);
 	}
+
+	/**
+	 * 获取当前登录的教师信息
+	 * @return 教师信息
+	 */
+	@RequestMapping(value = "user-info",method = GET)
+	public RestResponse getUserInfo() {
+
+		User user = getUser();
+		if(null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		Teacher teacher = new Teacher();
+		teacher.setName(teacherService.findTeacherNameById(user.getUserId()));
+		teacher.setTeacherId(user.getUserId());
+		Map<String,Object> data = getData();
+		data.put("teacher",teacher);
+
+		return successResponse(data);
+	}
+
 
 }

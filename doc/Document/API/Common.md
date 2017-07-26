@@ -1,4 +1,31 @@
 ### 获取教师信息
+- 接口地址:`/common/user-info`
+- 支持格式：`json`
+- 请求方式：`GET`
+- 请求示例：`localhost:8080/common/user-info`
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "teacher": {
+            "teacherId": 3210343,
+            "name": "张翔"
+        }
+    }
+}
+```
+
+### 获取教师信息
 - 接口地址:`/common/teachers`
 - 支持格式：`json`
 - 请求方式：`GET`
