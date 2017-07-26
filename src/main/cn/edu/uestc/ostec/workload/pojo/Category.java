@@ -77,6 +77,11 @@ public class Category {
 	 */
 	private Integer reviewerId = null;
 
+	/**
+	 * 其他json参数
+	 */
+	private String otherJson = null;
+
 	public Integer getReviewerId() {
 		return reviewerId;
 	}
@@ -179,6 +184,14 @@ public class Category {
 
 	public void setApplyDeadline(Integer applyDeadline) {
 		this.applyDeadline = applyDeadline;
+	}
+
+	public String getOtherJson() {
+		return otherJson;
+	}
+
+	public void setOtherJson(String otherJson) {
+		this.otherJson = otherJson;
 	}
 
 	@Override

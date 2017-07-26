@@ -89,7 +89,27 @@ public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 	/**
 	 * 子节点
 	 */
-	private List<CategoryDto> children;
+	private List<CategoryDto> children = null;
+
+	private String otherJson = null;
+
+	private List<OtherJsonParameter> otherJsonParameters = null;
+
+	public List<OtherJsonParameter> getOtherJsonParameters() {
+		return otherJsonParameters;
+	}
+
+	public void setOtherJsonParameters(List<OtherJsonParameter> otherJsonParameters) {
+		this.otherJsonParameters = otherJsonParameters;
+	}
+
+	public String getOtherJson() {
+		return otherJson;
+	}
+
+	public void setOtherJson(String otherJson) {
+		this.otherJson = otherJson;
+	}
 
 	public String getReviewerName() {
 		return reviewerName;

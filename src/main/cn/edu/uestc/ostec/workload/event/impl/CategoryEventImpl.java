@@ -48,8 +48,8 @@ public class CategoryEventImpl implements CategoryEvent {
 					data.put(category.getName(),"保存失败");
 				}
 				category.setStatus(SUBMITTED);
-				categoryList.add(category);
 			}
+			categoryList.add(category);
 		}
 		data.put("categoryList",categoryConverter.poListToDtoList(categoryList));
 		return data;

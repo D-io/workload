@@ -16,11 +16,12 @@
     <result column="review_deadline" property="reviewDeadline" jdbcType="INTEGER" />
     <result column="apply_deadline" property="applyDeadline" jdbcType="INTEGER" />
     <result column="reviewer_id" property="reviewerId" jdbcType="INTEGER"/>
+    <result column="other_json" property="otherJson" jdbcType="VARCHAR"/>
   </resultMap>
 
   <sql id="Base_Column_List" >
     category_id, name, description, parent_id, is_leaf, import_required, json_parameters, formula, version,
-    status, review_deadline, apply_deadline,reviewer_id
+    status, review_deadline, apply_deadline,reviewer_id,other_json
   </sql>
 
   <delete id="delete">
@@ -33,7 +34,7 @@
     values (#{categoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{reviewerId}, #{desc,jdbcType=VARCHAR},
       #{parentId,jdbcType=INTEGER}, #{isLeaf,jdbcType=VARCHAR}, #{importRequired,jdbcType=INTEGER}, #{jsonParameters,jdbcType=VARCHAR},
       #{formula,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
-      #{reviewDeadline,jdbcType=INTEGER}, #{applyDeadline,jdbcType=INTEGER})
+      #{reviewDeadline,jdbcType=INTEGER}, #{applyDeadline,jdbcType=INTEGER},#{otherJson,jdbcType=VARCHAR})
   </insert>
 
   <update id="update">
@@ -49,7 +50,8 @@
       version = #{version,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       review_deadline = #{reviewDeadline,jdbcType=INTEGER},
-      apply_deadline = #{applyDeadline,jdbcType=INTEGER}
+      apply_deadline = #{applyDeadline,jdbcType=INTEGER},
+      other_json = #{otherJson,jdbcType=VARCHAR}
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
 

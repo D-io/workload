@@ -37,6 +37,7 @@ import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.FormulaParameter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
@@ -84,13 +85,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 	/**
 	 * 导入Excel中的信息到数据库 （提交文件）
-	 *
-	 * 三个步骤：
-	 * 1、先根据文件要求上传文件；
-	 * 2、提交文件之后进行Excel的信息导入数据库的操作；
-	 * 3、导入之后查看导入的工作量列表进行确认；
-	 * 4、确认无误后进行提交工作量的操作
-	 *
+	 * 三个步骤： 1、先根据文件要求上传文件； 2、提交文件之后进行Excel的信息导入数据库的操作； 3、导入之后查看导入的工作量列表进行确认； 4、确认无误后进行提交工作量的操作
 	 * PS.导入的格式待确定 格式不同对应的计算方式不同
 	 *
 	 * @param fileInfoId 文件信息编号
@@ -239,34 +234,39 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		return successResponse(data);
 	}
 
-//	@RequestMapping(value = "export", method = GET)
-//	public RestResponse exportExcel(ExportItemList exportItemList) throws IOException {
-//
-//		User user = getUser();
-//		if (null == user) {
-//			return invalidOperationResponse("非法请求");
-//		}
-//
-//		int userId = user.getUserId();
-//
-//
-//
-//		return streamResponse(fileContent, userId + ".xsl");
-//	}
+	//	@RequestMapping(value = "export", method = GET)
+	//	public RestResponse exportExcel(ExportItemList exportItemList) throws IOException {
+	//
+	//		User user = getUser();
+	//		if (null == user) {
+	//			return invalidOperationResponse("非法请求");
+	//		}
+	//
+	//		int userId = user.getUserId();
+	//
+	//
+	//
+	//		return streamResponse(fileContent, userId + ".xsl");
+	//	}
 
 	/**
 	 * 根据不同类目不同的类型生成不同的Excel模板文件
+	 *
 	 * @param categoryId 类目编号
-	 * @param type 类型
+	 * @param type       类型
 	 * @return streamRestResponse 文件流
 	 */
-	@RequestMapping(value = "template",method = GET)
-	public RestResponse getTemplate(@RequestParam("categoryId") Integer categoryId,
-			@RequestParam("type") String type) {
+	@RequestMapping(value = "template", method = GET)
+	public RestResponse getTemplate(
+			@RequestParam("categoryId")
+					Integer categoryId,
+			@RequestParam("type")
+					String type) {
 
 		Category category = categoryService.getCategory(categoryId);
 		CategoryDto categoryDto = categoryConverter.poToDto(category);
 		List<FormulaParameter> parameterList = categoryDto.getFormulaParameterList();
+		List<OtherJsonParameter> otherJsonParameterList = categoryDto.getOtherJsonParameters();
 
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFCellStyle textStyle = ExcelHelper.getTextStyle(wb);
@@ -279,15 +279,25 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		ExcelHelper.createCell(row, textStyle, 2, "工作量名称");
 		ExcelHelper.createCell(row, textStyle, 3, "职责描述");
 		int index = 4;
-		for(FormulaParameter formulaParameter:parameterList) {
-			ExcelHelper.createCell(row,textStyle,index,formulaParameter.getDesc() + formulaParameter.getSymbol());
-			index++;
+		if (null != parameterList) {
+			for (FormulaParameter formulaParameter : parameterList) {
+				ExcelHelper.createCell(row, textStyle, index,
+						formulaParameter.getDesc() + formulaParameter.getSymbol());
+				index++;
+			}
 		}
 
-		if("group".equals(type)) {
+		if (null != otherJsonParameterList) {
+			for (OtherJsonParameter otherJsonParameter : otherJsonParameterList) {
+				ExcelHelper.createCell(row, textStyle, index, otherJsonParameter.getKey());
+				index++;
+			}
+		}
+
+		if ("group".equals(type)) {
 			ExcelHelper.createCell(row, textStyle, index, "团队负责人编号");
 			ExcelHelper.createCell(row, textStyle, index + 1, "团队负责人姓名");
-			ExcelHelper.createCell(row,textStyle,index + 2,"所占权重");
+			ExcelHelper.createCell(row, textStyle, index + 2, "所占权重");
 		}
 
 		ExcelHelper.setAutoStyle(sheet, index + 3);
@@ -303,7 +313,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 		byte[] fileContent = os.toByteArray();
 		try {
-			return streamResponse(fileContent,category.getName() + "工作量导入模板" + ".xlsx");
+			return streamResponse(fileContent, category.getName() + "工作量导入模板" + ".xlsx");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return systemErrResponse();
@@ -312,11 +322,12 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 	/**
 	 * 根据不同类目对应的模板文件进行导入
+	 *
 	 * @param categoryId 类目编号
 	 * @param fileInfoId 上传的文件编号
 	 * @return RestResponse
 	 */
-	@RequestMapping(value = "import-template",method = POST)
+	@RequestMapping(value = "import-template", method = POST)
 	public RestResponse importByTemplate(
 			@RequestParam("categoryId")
 					int categoryId,
@@ -383,7 +394,6 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 				if (null == sheet) {
 					continue;
 				}
-				row = sheet.getRow(0);
 
 				//遍历每一个表中所有的行
 				for (int j = 1; j < sheet.getPhysicalNumberOfRows(); j++) {
@@ -406,23 +416,40 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 					List<ParameterValue> parameterValues = new ArrayList<>();
 					int index = T_JOB_DESC_INDEX + 1;
-					for(FormulaParameter formulaParameter:categoryDto.getFormulaParameterList()) {
+					for (FormulaParameter formulaParameter : categoryDto
+							.getFormulaParameterList()) {
 						Cell cell = row.getCell(index);
 						double value = cell.getNumericCellValue();
-						ParameterValue parameterValue = new ParameterValue(formulaParameter.getSymbol(),value);
+						ParameterValue parameterValue = new ParameterValue(
+								formulaParameter.getSymbol(), value);
 						parameterValues.add(parameterValue);
 						index++;
 					}
 
+					List<OtherJsonParameter> otherJsonParameterList = new ArrayList<>();
+					for (OtherJsonParameter otherJsonParameter : categoryDto
+							.getOtherJsonParameters()) {
+						Cell cell = row.getCell(index);
+						String value = cell.getStringCellValue();
+						OtherJsonParameter otherJson = new OtherJsonParameter(
+								otherJsonParameter.getKey(), value);
+						otherJsonParameterList.add(otherJson);
+						index++;
+					}
+
 					Cell groupManagerId = row.getCell(index);
-					int managerId = (null == groupManagerId ?  teacherId: ((Double) groupManagerId.getNumericCellValue()).intValue());
+					int managerId = (null == groupManagerId ?
+							teacherId :
+							((Double) groupManagerId.getNumericCellValue()).intValue());
 					item.setGroupManagerId(managerId);
 
 					Cell weight = row.getCell(index + 2);
-					String childWeight = (null == weight ? "1" : ((Double)weight.getNumericCellValue()).toString());
+					String childWeight = (null == weight ?
+							"1" :
+							((Double) weight.getNumericCellValue()).toString());
 					item.setJsonChildWeight(childWeight);
 
-					if(null == groupManagerId && null == weight) {
+					if (null == groupManagerId && null == weight) {
 						item.setIsGroup(SINGLE);
 					} else {
 						item.setIsGroup(GROUP);
@@ -444,6 +471,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					item.setWorkload(formatWorkload);
 
 					item.setJsonParameter(OBJECT_MAPPER.writeValueAsString(parameterValues));
+					item.setOtherJson(OBJECT_MAPPER.writeValueAsString(otherJsonParameterList));
 
 					//保存时相应的生成Item的编号
 					boolean saveSuccess = itemService.saveItem(item);
@@ -472,6 +500,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 	/**
 	 * 从Excel模板中提取对应的参数
+	 *
 	 * @param str 模板中填写的参数列对应的字符串
 	 * @return List<ParameterValue>
 	 */
@@ -513,6 +542,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		itemBrief.setWorkload(item.getWorkload());
 
 		itemBrief.setCategoryName(categoryService.getCategory(itemBrief.getCategoryId()).getName());
+		itemBrief.setOtherJson(item.getOtherJson());
 
 		return itemBrief;
 
@@ -599,6 +629,16 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		 * 是否为小组
 		 */
 		private Integer isGroup = ZERO_INT;
+
+		private String otherJson = null;
+
+		public String getOtherJson() {
+			return otherJson;
+		}
+
+		public void setOtherJson(String otherJson) {
+			this.otherJson = otherJson;
+		}
 
 		public Integer getItemId() {
 			return itemId;

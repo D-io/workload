@@ -74,6 +74,16 @@ public class Item implements Cloneable {
 	 */
 	private Integer isGroup = ZERO_INT;
 
+	private String otherJson = null;
+
+	public String getOtherJson() {
+		return otherJson;
+	}
+
+	public void setOtherJson(String otherJson) {
+		this.otherJson = otherJson;
+	}
+
 	public Integer getItemId() {
 		return itemId;
 	}
@@ -180,11 +190,12 @@ public class Item implements Cloneable {
 
 	@Override
 	public String toString() {
-		return "Item{" + "itemId=" + itemId + ", categoryId=" + categoryId + ", ownerId=" + ownerId
-				+ ", jsonParameter='" + jsonParameter + '\'' + ", workload=" + workload
-				+ ", groupManagerId=" + groupManagerId + ", applyDesc='" + applyDesc + '\''
-				+ ", jobDesc='" + jobDesc + '\'' + ", status='" + status + '\''
-				+ ", jsonChildWeight='" + jsonChildWeight + '\'' + ", proof='" + proof + '\'' + '}';
+		return "Item{" + "itemId=" + itemId + ", itemName='" + itemName + '\'' + ", categoryId="
+				+ categoryId + ", ownerId=" + ownerId + ", jsonParameter='" + jsonParameter + '\''
+				+ ", workload=" + workload + ", groupManagerId=" + groupManagerId + ", applyDesc='"
+				+ applyDesc + '\'' + ", jobDesc='" + jobDesc + '\'' + ", status=" + status
+				+ ", jsonChildWeight='" + jsonChildWeight + '\'' + ", proof='" + proof + '\''
+				+ ", isGroup=" + isGroup + ", otherJson='" + otherJson + '\'' + '}';
 	}
 
 	/**
