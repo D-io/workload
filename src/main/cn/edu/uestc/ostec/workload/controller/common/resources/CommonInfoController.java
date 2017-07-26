@@ -59,11 +59,8 @@ public class CommonInfoController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		Teacher teacher = new Teacher();
-		teacher.setName(teacherService.findTeacherNameById(user.getUserId()));
-		teacher.setTeacherId(user.getUserId());
 		Map<String,Object> data = getData();
-		data.put("teacher",teacher);
+		data.put("teacher",user);
 
 		return successResponse(data);
 	}

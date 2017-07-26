@@ -13,7 +13,6 @@ import cn.edu.uestc.ostec.workload.adaptor.ServletContextAdapter;
 
 /**
  * Description: 切面标记接口
- * Version:v1.0 (author:刘文哲 update: none )
  */
 public interface IAspect extends ServletContextAdapter {
 

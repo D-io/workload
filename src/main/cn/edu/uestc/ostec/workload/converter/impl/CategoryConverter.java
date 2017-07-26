@@ -54,14 +54,14 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 		List<FormulaParameter> formulaParameterList = new ArrayList<>();
 		List<OtherJsonParameter> otherJsonParameterList = new ArrayList<>();
 		try {
-			if (null != categoryDto.getJsonParameters()) {
+			if (null != categoryDto.getJsonParameters() && !"".equals(categoryDto.getJsonParameters())) {
 				formulaParameterList = OBJECT_MAPPER.readValue(categoryDto.getJsonParameters(),
 						getCollectionType(ArrayList.class, FormulaParameter.class));
 			} else {
 				formulaParameterList = null;
 			}
 
-			if (null != categoryDto.getOtherJson()) {
+			if (null != categoryDto.getOtherJson() && !"".equals(categoryDto.getOtherJson())) {
 				otherJsonParameterList = OBJECT_MAPPER.readValue(categoryDto.getOtherJson(),
 						getCollectionType(ArrayList.class, OtherJsonParameter.class));
 			} else {

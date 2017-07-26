@@ -1,12 +1,3 @@
-/*
- * Project: AEMS（工程认证达成度评价管理系统）
- * File: ClientIPAddressHelper.java
- * Author: 刘文哲
- * Email: liuwnzh@163.com
- * Date: 2017年5月9日
- * Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
- */
-
 package cn.edu.uestc.ostec.workload.support.utils;
 
 import nl.bitwalker.useragentutils.UserAgent;
@@ -18,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Description: 客户端Ip辅助类
- * Version:v1.0 (author:刘文哲 update: 无 )
- * Version:v1.1 (author:刘文哲 update: 增加客户端信息获取，包括操作系统、浏览器 )
  */
 public final class ClientInfoHelper {
 
