@@ -951,3 +951,43 @@ normalItemList | json | 正常条目
 }
 ```
 
+### 获取工作量条目对应的消息队列
+- 接口地址：`/item/info/subjectList`
+- 支持格式：`json`
+- 请求方式：`GET`
+- 请求示例：`localhost:8080/item/info/subjectList?itemId=11`
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "subjectList": [
+            {
+                "subjectId": 2,
+                "itemId": 11,
+                "msgContent": "已经修改",
+                "sendFromId": 3201456,
+                "sendFromName": "罗惠琼",
+                "sendTime": "2017年07月26日"
+            },
+            {
+                "subjectId": 1,
+                "itemId": 11,
+                "msgContent": "应该为20",
+                "sendFromId": 3210343,
+                "sendFromName": "张翔",
+                "sendTime": "2017年07月26日"
+            }
+        ]
+    }
+}
+```

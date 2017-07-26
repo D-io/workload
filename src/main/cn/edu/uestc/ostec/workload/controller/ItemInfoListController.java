@@ -7,7 +7,6 @@
  */
 package cn.edu.uestc.ostec.workload.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,13 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.dto.SubjectDto;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
@@ -35,7 +35,6 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.I
 
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Version:v1.0 (description: 工作量信息展示控制器 )
@@ -242,6 +241,30 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		Map<String, Object> data = getData();
 		data.put("itemDtoList", itemConverter.poListToDtoList(itemList));
 		data.put("totalWorkload", workload);
+
+		return successResponse(data);
+	}
+
+	/**
+	 * 根据条目编号获取相应的消息列表
+	 *
+	 * @param itemId 条目编号
+	 * @return 消息列表
+	 */
+	@RequestMapping(value = "subjectList", method = GET)
+	public RestResponse getSubjectList(
+			@RequestParam("itemId")
+					Integer itemId) {
+
+		List<Subject> subjectList = subjectService.getSubjectsByItem(itemId);
+
+		if (null == subjectList) {
+			return parameterNotSupportResponse("参数有误");
+		}
+
+		List<SubjectDto> subjectDtos = subjectConverter.poListToDtoList(subjectList);
+		Map<String, Object> data = getData();
+		data.put("subjectList", subjectDtos);
 
 		return successResponse(data);
 	}
