@@ -28,20 +28,12 @@ public class UserRoleConverter implements Converter<UserRole, User> {
 		User user = new User();
 		if (po != null) {
 			user.setUserId(po.getUserId());
-			List<RoleInfo> roleInfoList = new ArrayList<>();
-			try {
-				if (null != po.getRole()) {
-					roleInfoList = OBJECT_MAPPER.readValue(po.getRole(),
-							getCollectionType(ArrayList.class, RoleInfo.class));
-				} else {
-					roleInfoList = null;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			List<RoleInfo> roleInfoList = readValueFromJson(po.getRole(), RoleInfo.class);
+
 			user.setRoleInfoList(roleInfoList);
 			user.setStatus(po.getStatus());
-			user.setDeadline(DateHelper.getDateTime(po.getDeadline()));
+			user.setDeadline(
+					isNull(po.getDeadline()) ? null : DateHelper.getDateTime(po.getDeadline()));
 		}
 
 		return user;

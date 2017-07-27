@@ -13,7 +13,7 @@ import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
  * Version:v1.0 (description:  )
  */
 @Component
-public class SubjectConverter implements Converter<Subject,SubjectDto> {
+public class SubjectConverter implements Converter<Subject, SubjectDto> {
 
 	@Autowired
 	private TeacherDao teacherDao;
@@ -26,9 +26,11 @@ public class SubjectConverter implements Converter<Subject,SubjectDto> {
 		subjectDto.setItemId(po.getItemId());
 		subjectDto.setMsgContent(po.getMsgContent());
 		subjectDto.setSendFromId(po.getSendFromId());
-		subjectDto.setSendFromName(teacherDao.findNameById(po.getSendFromId()));
+		subjectDto.setSendFromName(
+				isNull(po.getSendFromId()) ? null : teacherDao.findNameById(po.getSendFromId()));
 
-		subjectDto.setSendTime(DateHelper.getDateTime(po.getSendTime()));
+		subjectDto.setSendTime(
+				isNull(po.getSendTime()) ? null : DateHelper.getDateTime(po.getSendTime()));
 		return subjectDto;
 	}
 
