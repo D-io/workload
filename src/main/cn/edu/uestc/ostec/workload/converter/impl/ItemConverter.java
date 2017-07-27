@@ -1,13 +1,7 @@
 package cn.edu.uestc.ostec.workload.converter.impl;
 
-import org.apache.poi.ss.formula.Formula;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import cn.edu.uestc.ostec.workload.converter.Converter;
 import cn.edu.uestc.ostec.workload.dao.CategoryDao;
@@ -15,13 +9,12 @@ import cn.edu.uestc.ostec.workload.dao.TeacherDao;
 import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.JobDesc;
+import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
-import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
 
-import static cn.edu.uestc.ostec.workload.WorkloadObjects.OBJECT_MAPPER;
 
 /**
  * Version:v1.0 (description:  )
@@ -56,49 +49,34 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		itemDto.setJsonParameter(po.getJsonParameter());
 		itemDto.setStatus(po.getStatus());
 		itemDto.setWorkload(po.getWorkload());
+		itemDto.setOtherJson(po.getOtherJson());
 
-		Category category = categoryDao.select(itemDto.getCategoryId());
-		itemDto.setCategoryName(category.getName());
-		itemDto.setImportRequired(category.getImportRequired());
+		Category category = isNull(itemDto.getCategoryId()) ?
+				null :
+				categoryDao.select(itemDto.getCategoryId());
 
-		int reviewerId = category.getReviewerId();
+		itemDto.setCategoryName(isNull(category) ? null : category.getName());
+		itemDto.setImportRequired(isNull(category) ? null : category.getImportRequired());
+
+		Integer reviewerId = category.getReviewerId();
 		itemDto.setReviewerId(reviewerId);
-		itemDto.setReviewerName(teacherDao.findNameById(reviewerId));
+		itemDto.setReviewerName(isNull(reviewerId) ? null : teacherDao.findNameById(reviewerId));
 
-		itemDto.setTeacherName(teacherDao.findNameById(itemDto.getOwnerId()));
-		itemDto.setGroupManagerName(teacherDao.findNameById(itemDto.getGroupManagerId()));
+		itemDto.setTeacherName(isNull(itemDto.getOwnerId()) ?
+				null :
+				teacherDao.findNameById(itemDto.getOwnerId()));
+		itemDto.setGroupManagerName(isNull(itemDto.getGroupManagerId()) ?
+				null :
+				teacherDao.findNameById(itemDto.getGroupManagerId()));
 		itemDto.setIsGroup(po.getIsGroup());
 
-		List<ParameterValue> parameterValues = new ArrayList<>();
-		List<JobDesc> jobDescList = new ArrayList<>();
-		List<ChildWeight> childWeightList = new ArrayList<>();
-		try {
-			if(null != itemDto.getJsonParameter()) {
-				parameterValues = OBJECT_MAPPER.readValue(itemDto.getJsonParameter(),
-						getCollectionType(ArrayList.class, ParameterValue.class));
-			} else {
-				parameterValues = null;
-			}
-
-			if(null != itemDto.getJobDesc()) {
-				jobDescList = OBJECT_MAPPER.readValue(itemDto.getJobDesc(),
-						getCollectionType(ArrayList.class, JobDesc.class));
-			} else {
-				jobDescList = null;
-			}
-
-			if(null != itemDto.getJsonChildWeight()) {
-				childWeightList = OBJECT_MAPPER.readValue(itemDto.getJsonChildWeight(),
-						getCollectionType(ArrayList.class, ChildWeight.class));
-			} else {
-				childWeightList = null;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		itemDto.setParameterValues(parameterValues);
-		itemDto.setJobDescList(jobDescList);
-		itemDto.setChildWeightList(childWeightList);
+		itemDto.setParameterValues(
+				readValueFromJson(itemDto.getJsonParameter(), ParameterValue.class));
+		itemDto.setJobDescList(readValueFromJson(itemDto.getJobDesc(), JobDesc.class));
+		itemDto.setChildWeightList(
+				readValueFromJson(itemDto.getJsonChildWeight(), ChildWeight.class));
+		itemDto.setOtherJsonParameters(
+				readValueFromJson(itemDto.getOtherJson(), OtherJsonParameter.class));
 		//		double workload = FormulaCalculate
 		//				.calculate(category.getFormula(), itemDto.getParameterValues());
 		//		itemDto.setWorkload(workload);

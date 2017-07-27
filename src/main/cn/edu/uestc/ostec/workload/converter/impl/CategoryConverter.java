@@ -1,5 +1,6 @@
 package cn.edu.uestc.ostec.workload.converter.impl;
 
+import org.apache.poi.ss.formula.Formula;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,33 +46,24 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 		categoryDto.setStatus(po.getStatus());
 		categoryDto.setVersion(po.getVersion());
 		categoryDto.setParentId(po.getParentId());
-		categoryDto.setApplyDeadline(DateHelper.getDateTime(po.getApplyDeadline()));
-		categoryDto.setReviewDeadline(DateHelper.getDateTime(po.getReviewDeadline()));
+		categoryDto.setApplyDeadline(isNull(po.getApplyDeadline()) ?
+				null :
+				DateHelper.getDateTime(po.getApplyDeadline()));
+
+		categoryDto.setReviewDeadline(isNull(po.getReviewDeadline()) ?
+				null :
+				DateHelper.getDateTime(po.getReviewDeadline()));
+
 		categoryDto.setReviewerId(po.getReviewerId());
-		categoryDto.setReviewerName(teacherDao.findNameById(categoryDto.getReviewerId()));
+		categoryDto.setReviewerName(isNull(categoryDto.getReviewerId()) ?
+				null :
+				teacherDao.findNameById(categoryDto.getReviewerId()));
 		categoryDto.setOtherJson(po.getOtherJson());
 
-		List<FormulaParameter> formulaParameterList = new ArrayList<>();
-		List<OtherJsonParameter> otherJsonParameterList = new ArrayList<>();
-		try {
-			if (null != categoryDto.getJsonParameters() && !"".equals(categoryDto.getJsonParameters())) {
-				formulaParameterList = OBJECT_MAPPER.readValue(categoryDto.getJsonParameters(),
-						getCollectionType(ArrayList.class, FormulaParameter.class));
-			} else {
-				formulaParameterList = null;
-			}
-
-			if (null != categoryDto.getOtherJson() && !"".equals(categoryDto.getOtherJson())) {
-				otherJsonParameterList = OBJECT_MAPPER.readValue(categoryDto.getOtherJson(),
-						getCollectionType(ArrayList.class, OtherJsonParameter.class));
-			} else {
-				otherJsonParameterList = null;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		categoryDto.setFormulaParameterList(formulaParameterList);
-		categoryDto.setOtherJsonParameters(otherJsonParameterList);
+		categoryDto.setFormulaParameterList(
+				readValueFromJson(categoryDto.getJsonParameters(), FormulaParameter.class));
+		categoryDto.setOtherJsonParameters(
+				readValueFromJson(categoryDto.getOtherJson(), OtherJsonParameter.class));
 
 		return categoryDto;
 	}
@@ -92,8 +84,13 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 		category.setImportRequired(dto.getImportRequired());
 		category.setParentId(dto.getParentId());
 
-		category.setApplyDeadline(DateHelper.getDateTimeStamp(dto.getApplyDeadline()));
-		category.setReviewDeadline(DateHelper.getDateTimeStamp(dto.getReviewDeadline()));
+		category.setApplyDeadline(isNull(dto.getApplyDeadline()) ?
+				null :
+				DateHelper.getDateTimeStamp(dto.getApplyDeadline()));
+
+		category.setReviewDeadline(isNull(dto.getReviewDeadline()) ?
+				null :
+				DateHelper.getDateTimeStamp(dto.getReviewDeadline()));
 
 		category.setReviewerId(dto.getReviewerId());
 		category.setOtherJson((dto.getOtherJson()));

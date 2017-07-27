@@ -120,6 +120,29 @@ public class ItemDto {
 	 */
 	private Integer isGroup;
 
+	/**
+	 * 其他Json字段
+	 */
+	private String otherJson = null;
+
+	private List<OtherJsonParameter> otherJsonParameters = null;
+
+	public String getOtherJson() {
+		return otherJson;
+	}
+
+	public void setOtherJson(String otherJson) {
+		this.otherJson = otherJson;
+	}
+
+	public List<OtherJsonParameter> getOtherJsonParameters() {
+		return otherJsonParameters;
+	}
+
+	public void setOtherJsonParameters(List<OtherJsonParameter> otherJsonParameters) {
+		this.otherJsonParameters = otherJsonParameters;
+	}
+
 	public Integer getReviewerId() {
 		return reviewerId;
 	}

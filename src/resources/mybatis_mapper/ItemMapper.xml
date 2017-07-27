@@ -15,11 +15,12 @@
     <result column="json_child_weight" property="jsonChildWeight" jdbcType="VARCHAR" />
     <result column="proof" property="proof" jdbcType="LONGVARCHAR" />
     <result column="is_group" property="isGroup" jdbcType="INTEGER" />
+    <result column="other_json" property="otherJson" jdbcType="VARCHAR"/>
   </resultMap>
 
   <sql id="Base_Column_List" >
     item_id, item_name, category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc,
-    job_desc, status, json_child_weight,proof,is_group
+    job_desc, status, json_child_weight,proof,is_group,other_json
   </sql>
 
   <select id="select" resultMap="itemResultMap">
@@ -39,7 +40,7 @@
     values (#{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, #{ownerId,jdbcType=INTEGER},
       #{jsonParameter,jdbcType=VARCHAR}, #{workload,jdbcType=DOUBLE}, #{groupManagerId,jdbcType=INTEGER},
       #{applyDesc,jdbcType=VARCHAR}, #{jobDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
-      #{jsonChildWeight,jdbcType=VARCHAR}, #{proof,jdbcType=LONGVARCHAR},#{isGroup,jdbcType=INTEGER})
+      #{jsonChildWeight,jdbcType=VARCHAR}, #{proof,jdbcType=LONGVARCHAR},#{isGroup,jdbcType=INTEGER},#{otherJson,jdbcType=VARCHAR})
   </insert>
 
   <update id="update">
@@ -55,7 +56,8 @@
       status = #{status,jdbcType=INTEGER},
       json_child_weight = #{jsonChildWeight,jdbcType=VARCHAR},
       proof = #{proof,jdbcType=LONGVARCHAR},
-      is_group = #{isGroup,jdbcType=INTEGER}
+      is_group = #{isGroup,jdbcType=INTEGER},
+      other_json = #{otherJson,jdbcType=VARCHAR}
     where item_id = #{itemId,jdbcType=INTEGER}
   </update>
 

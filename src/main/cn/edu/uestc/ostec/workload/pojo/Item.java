@@ -74,6 +74,9 @@ public class Item implements Cloneable {
 	 */
 	private Integer isGroup = ZERO_INT;
 
+	/**
+	 * 其他Json字段
+	 */
 	private String otherJson = null;
 
 	public String getOtherJson() {

@@ -11,7 +11,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.uestc.ostec.workload.dao.HistoryDao">
-  <resultMap id="historyResultMap" type="History">
+  <resultMap id="historyResultMap" type="cn.edu.uestc.ostec.workload.pojo.History">
     <id column="history_id" jdbcType="INTEGER" property="historyId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />

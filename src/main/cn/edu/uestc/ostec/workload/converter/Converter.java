@@ -11,6 +11,9 @@ package cn.edu.uestc.ostec.workload.converter;
 
 import com.fasterxml.jackson.databind.JavaType;
 
+import org.apache.poi.ss.formula.functions.T;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +61,7 @@ public interface Converter<P, D> {
 	 * @param dtoList 数据传输对象
 	 * @return 持久化对象列表
 	 */
-	default List<P> dtoListToPoList(List<D> dtoList) throws Exception{
+	default List<P> dtoListToPoList(List<D> dtoList) throws Exception {
 		List<P> poList = new ArrayList<>();
 		for (D dto : dtoList) {
 			poList.add(dtoToPo(dto));
@@ -70,5 +73,30 @@ public interface Converter<P, D> {
 	default JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
 		return OBJECT_MAPPER.getTypeFactory()
 				.constructParametricType(collectionClass, elementClasses);
+	}
+
+	default boolean isNull(String obj) {
+		return (null == obj || "".equals(obj));
+	}
+
+	default boolean isNull(Object object) {
+		return (null == object);
+	}
+
+	/**
+	 * Json映射到对象
+	 */
+	default <T> List<T> readValueFromJson(String json,Class<T> obj) {
+
+		try {
+			if (!isNull(json)) {
+				return OBJECT_MAPPER.readValue(json, getCollectionType(ArrayList.class, obj));
+			} else {
+				return null;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
