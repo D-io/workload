@@ -42,7 +42,7 @@ public class HistoryServiceImpl extends BaseServiceImpl implements HistoryServic
 
 	@Override
 	public boolean saveHistory(History history) {
-		if(hasObjectId(history.getHistoryId())) {
+		if(!hasObjectId(history.getHistoryId())) {
 			history.setHistoryId(getNextKey(history.TABLE_NAME));
 			return historyDao.insert(history);
 		}

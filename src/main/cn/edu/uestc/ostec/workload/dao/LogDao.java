@@ -23,20 +23,13 @@ import cn.edu.uestc.ostec.workload.pojo.Log;
 @Component
 public interface LogDao extends BaseDao<Log> {
 
-	@Override
-	default Boolean insert(Log entity) {
-		return null;
-	}
+	Boolean insert(Log entity);
 
 	@Override
-	default Boolean update(Log entity) {
-		return null;
-	}
+	Boolean update(Log entity);
 
 	@Override
-	default Boolean delete(Integer id) {
-		return null;
-	}
+	Boolean delete(Integer id);
 
 	/**
 	 * 查询日志

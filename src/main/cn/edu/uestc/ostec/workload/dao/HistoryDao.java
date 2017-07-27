@@ -22,27 +22,14 @@ import cn.edu.uestc.ostec.workload.pojo.History;
 @Component
 public interface HistoryDao extends BaseDao<History> {
 
-	@Override
-	default Boolean insert(History entity) {
-		return null;
-	}
+	Boolean insert(History entity);
 
-	@Override
-	default Boolean update(History entity) {
-		return null;
-	}
+	Boolean update(History entity);
 
-	@Override
-	default Boolean delete(Integer id) {
-		return null;
-	}
+	Boolean delete(Integer id);
 
-	default List<History> selectHistories() {
-		return null;
-	}
+	List<History> selectHistories();
 
-	default List<History> selectHistories(Integer userId) {
-		return null;
-	}
+	List<History> selectHistories(Integer userId);
 
 }
