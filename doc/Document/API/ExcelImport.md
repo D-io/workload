@@ -43,12 +43,12 @@ data | String | 结果集
     "statusName": "OK",
     "data": {
         "fileInfo": {
-            "fileInfoId": 5,
-            "path": "C:\\Users\\Administrator\\Desktop\\fileUploadTest\\乱码工作量导入模板.xlsx",
+            "fileInfoId": 6,
+            "path": "C:\\Users\\Administrator\\Desktop\\fileUploadTest\\个人教学、教研、教改成果奖（含教学竞赛）工作量导入模板.xlsx",
             "size": 18944,
-            "md5Summary": "62ea35b71a741636dd10481bd8474c54",
+            "md5Summary": "7dbf0ba39eb39a1f328fa0b06619745",
             "type": "xlsx",
-            "createTime": 1500785010,
+            "createTime": 1501147169,
             "status": 1,
             "fileId": 4,
             "authorId": 3210343,
@@ -56,19 +56,100 @@ data | String | 结果集
         },
         "itemList": [
             {
-                "itemId": 38,
-                "itemName": "本科教学",
-                "categoryId": 3,
+                "itemId": 14,
+                "itemName": "团队国家奖",
+                "categoryId": 22,
                 "ownerId": 3210343,
-                "jsonParameter": "[{\"symbol\":\"A\",\"value\":20.0},{\"symbol\":\"B\",\"value\":15.0}]",
-                "workload": 16.5,
-                "groupManagerId": 5130121,
+                "jsonParameter": "[{\"symbol\":\"A\",\"value\":3.0},{\"symbol\":\"B\",\"value\":1.0},{\"symbol\":\"C\",\"value\":1.0}]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 3
+                    },
+                    {
+                        "symbol": "B",
+                        "value": 1
+                    },
+                    {
+                        "symbol": "C",
+                        "value": 1
+                    }
+                ],
+                "workload": 120,
+                "groupManagerId": 3200223,
                 "applyDesc": null,
-                "jobDesc": "教学",
+                "jobDesc": "架构师",
+                "jobDescList": null,
                 "status": 0,
-                "jsonChildWeight": "0.33",
-                "proof": "乱码工作量导入模板.xlsx",
-                "isGroup": 1
+                "jsonChildWeight": "0.6",
+                "childWeightList": null,
+                "proof": "个人教学、教研、教改成果奖（含教学竞赛）工作量导入模板.xlsx",
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "谭浩",
+                "categoryName": "个人教学、教研、教改成果奖（含教学竞赛）",
+                "importRequired": 1,
+                "isGroup": 1,
+                "otherJson": "[{\"key\":\"获奖项目\",\"value\":\"AEMS\"},{\"key\":\"获奖名称\",\"value\":\"创新奖\"}]",
+                "otherJsonParameters": [
+                    {
+                        "key": "获奖项目",
+                        "value": "AEMS"
+                    },
+                    {
+                        "key": "获奖名称",
+                        "value": "创新奖"
+                    }
+                ]
+            },
+            {
+                "itemId": 15,
+                "itemName": "团队国家奖",
+                "categoryId": 22,
+                "ownerId": 3203158,
+                "jsonParameter": "[{\"symbol\":\"A\",\"value\":3.0},{\"symbol\":\"B\",\"value\":1.0},{\"symbol\":\"C\",\"value\":1.0}]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 3
+                    },
+                    {
+                        "symbol": "B",
+                        "value": 1
+                    },
+                    {
+                        "symbol": "C",
+                        "value": 1
+                    }
+                ],
+                "workload": 80,
+                "groupManagerId": 3200223,
+                "applyDesc": null,
+                "jobDesc": "程序员",
+                "jobDescList": null,
+                "status": 0,
+                "jsonChildWeight": "0.4",
+                "childWeightList": null,
+                "proof": "个人教学、教研、教改成果奖（含教学竞赛）工作量导入模板.xlsx",
+                "teacherName": "兰刚",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "谭浩",
+                "categoryName": "个人教学、教研、教改成果奖（含教学竞赛）",
+                "importRequired": 1,
+                "isGroup": 1,
+                "otherJson": "[{\"key\":\"获奖项目\",\"value\":\"AEMS\"},{\"key\":\"获奖名称\",\"value\":\"创新奖\"}]",
+                "otherJsonParameters": [
+                    {
+                        "key": "获奖项目",
+                        "value": "AEMS"
+                    },
+                    {
+                        "key": "获奖名称",
+                        "value": "创新奖"
+                    }
+                ]
             }
         ],
         "errorData": {}

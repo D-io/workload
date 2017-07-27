@@ -308,7 +308,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	 * @param teacherId      教师编号
 	 * @return List<Item>
 	 */
-	public List<ItemDto> findItemsByStatus(Integer importRequired, Integer status,
+	private List<ItemDto> findItemsByStatus(Integer importRequired, Integer status,
 			Integer teacherId) {
 
 		List<ItemDto> itemDtoList = itemConverter
@@ -331,7 +331,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	 * @param teacherId      教师编号
 	 * @return List<ItemDto>
 	 */
-	public List<ItemDto> findItems(Integer importRequired, List<Integer> statusList,
+	private List<ItemDto> findItems(Integer importRequired, List<Integer> statusList,
 			Integer teacherId) {
 
 		List<ItemDto> itemDtoList = new ArrayList<>();

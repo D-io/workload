@@ -95,7 +95,6 @@ public interface Converter<P, D> {
 				return null;
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
