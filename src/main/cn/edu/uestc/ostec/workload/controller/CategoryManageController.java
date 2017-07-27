@@ -85,7 +85,10 @@ public class CategoryManageController extends ApplicationController {
 
 		//展示保存的dto的完整信息
 		Map<String, Object> data = getData();
-		data.put("category", categoryConverter.poToDto(category));
+		CategoryDto categoryDto1 = categoryConverter.poToDto(category);
+		categoryDto1.setOtherJson(null);
+		categoryDto1.setJsonParameters(null);
+		data.put("category", categoryDto1);
 
 		return successResponse(data);
 	}
@@ -124,6 +127,9 @@ public class CategoryManageController extends ApplicationController {
 
 		Category oldCategory = categoryService.getCategory(categoryId);
 		CategoryDto categoryDto = categoryConverter.poToDto(oldCategory);
+
+		categoryDto.setOtherJson(null);
+		categoryDto.setJsonParameters(null);
 
 		//展示删除的categoryDto信息
 		Map<String, Object> data = getData();
@@ -194,7 +200,11 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		Map<String, Object> data = getData();
-		data.put("category", categoryConverter.poToDto(category));
+		CategoryDto categoryDto1 = categoryConverter.poToDto(category);
+		categoryDto1.setOtherJson(null);
+		categoryDto1.setJsonParameters(null);
+
+		data.put("category", categoryDto1);
 
 		return successResponse(data);
 	}

@@ -75,6 +75,9 @@ public class CategoryInfoListController extends ApplicationController
 		CategoryDto categoryDto = categoryConverter
 				.poToDto(categoryService.getCategory(categoryId));
 
+		categoryDto.setOtherJson(null);
+		categoryDto.setJsonParameters(null);
+
 		Map<String, Object> data = getData();
 		data.put("categoryDto", categoryDto);
 
@@ -102,7 +105,12 @@ public class CategoryInfoListController extends ApplicationController
 			data.put("categoryTree", getCategoryDto(null, ROOT));
 		} else {
 			//获取状态为Disable的工作量类目信息
-			data.put("categoryList", categoryService.getCategoriesByStatus(DELETED));
+			List<CategoryDto> categoryDtos = categoryConverter.poListToDtoList(categoryService.getCategoriesByStatus(DELETED));
+			for(CategoryDto categoryDto:categoryDtos) {
+				categoryDto.setOtherJson(null);
+				categoryDto.setJsonParameters(null);
+			}
+			data.put("categoryList", categoryDtos);
 		}
 
 		return successResponse(data);

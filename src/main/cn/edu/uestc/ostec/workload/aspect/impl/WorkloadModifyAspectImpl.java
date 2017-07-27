@@ -64,6 +64,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 
 		history.setUserId(userId);
 		history.setCreateTime(DateHelper.getDateTime());
+		history.setItemId(args[0].toString());
 
 		history.setOperation(
 				"当前条目的工作量被审核人" + user.getName() + "于" + history.getCreateTime() + "修改为" + args[1]);
