@@ -25,6 +25,11 @@ public class History {
 	private Integer historyId;
 
 	/**
+	 * 处理的条目编号（可能是类目，可能是条目）
+	 */
+	private String itemId;
+
+	/**
 	 * 用户编号
 	 */
 	private Integer userId;
@@ -38,6 +43,14 @@ public class History {
 	 * 操作
 	 */
 	private String operation;
+
+	public String getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
+	}
 
 	public Integer getHistoryId() {
 		return historyId;

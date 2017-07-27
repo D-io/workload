@@ -26,6 +26,7 @@ import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
+import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
@@ -54,6 +55,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 	@Autowired
 	private SubjectConverter subjectConverter;
+
+	@Autowired
+	private HistoryService historyService;
 
 	/**
 	 * 管理员分页查询所有的条目信息

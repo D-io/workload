@@ -29,30 +29,35 @@ public class HistoryServiceImpl extends BaseServiceImpl implements HistoryServic
 	private HistoryDao historyDao;
 
 	@Override
-	public History getHistory(Integer userId) {
+	public History getHistory(Integer historyId) {
+		return objectResult(historyDao.selectHistories(historyId,null,null),EMPTY_HISTORY);
+	}
 
-		return objectResult(historyDao.select(userId),EMPTY_HISTORY);
+	@Override
+	public List<History> getHistoriesByUser(Integer userId) {
+		return listResult(historyDao.selectHistories(null,userId,null));
+	}
+
+	@Override
+	public List<History> getHistoriesByItem(String itemId) {
+		return listResult(historyDao.selectHistories(null,null,itemId));
 	}
 
 	@Override
 	public List<History> getHistories() {
-
-		return listResult(historyDao.selectHistories(null));
+		return listResult(historyDao.selectHistories(null,null,null));
 	}
 
 	@Override
 	public boolean saveHistory(History history) {
+		//TODO 对于操作历史不应该提供修改接口 只能添加和查询
+		//TODO 全部转换为添加操作，即如果history带id属性，将其置为空
 		if(!hasObjectId(history.getHistoryId())) {
 			history.setHistoryId(getNextKey(history.TABLE_NAME));
 			return historyDao.insert(history);
 		}
 
 		return historyDao.update(history);
-	}
-
-	@Override
-	public boolean removeHistory(Integer userId) {
-		return historyDao.delete(userId);
 	}
 
 }

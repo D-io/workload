@@ -10,6 +10,7 @@
 
 package cn.edu.uestc.ostec.workload.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,8 +29,12 @@ public interface HistoryDao extends BaseDao<History> {
 
 	Boolean delete(Integer id);
 
-	List<History> selectHistories();
-
-	List<History> selectHistories(Integer userId);
+	List<History> selectHistories(
+			@Param("historyId")
+					Integer historyId,
+			@Param("userId")
+					Integer userId,
+			@Param("itemId")
+					String itemId);
 
 }
