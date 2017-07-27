@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /*
+  ~  * Project: workload（工作量计算系统）
+  ~  * File: RegionManagerController.java
+  ~  * Author: 张健顺
+  ~  * Email: 1224522500@qq.com
+  ~  * opyright: Copyright (c) 2017 OSTEC. All rights reserved.
+  ~  */
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.uestc.ostec.workload.dao.HistoryDao">
+  <resultMap id="historyResultMap" type="History">
+    <id column="history_id" jdbcType="INTEGER" property="historyId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="operation" jdbcType="LONGVARCHAR" property="operation" />
+  </resultMap>
+
+  <select id="selectHistories" resultMap="historyResultMap">
+    SELECT * FROM history
+    <where>
+      <if test="null != userId">
+        user_id = #{userId}
+      </if>
+    </where>
+  </select>
+
+  <insert id="insert">
+    INSERT INTO history(history_id,user_id,create_time,operation)
+    VALUES(#{historyId},#{userId},#{createTime},#{operation})
+  </insert>
+
+  <update id="update">
+    UPDATE history
+    SET user_id =#{userId},create_time=#{createTime},operation=#{operation}
+    WHERE history_id = #{historyId}
+  </update>
+
+  <delete id="delete">
+    DELETE FROM history WHERE history_id =#{historyId}
+  </delete>
+
+</mapper>

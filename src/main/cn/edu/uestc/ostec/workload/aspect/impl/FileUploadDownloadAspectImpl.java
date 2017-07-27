@@ -19,7 +19,6 @@ import cn.edu.uestc.ostec.workload.aspect.IAspect;
 
 /**
  * Description: 文件上传下载切面
- * Version:v1.0 (author:刘文哲 update:  )
  */
 @Aspect
 @Component

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Map;
 
+import cn.edu.uestc.ostec.workload.annotation.Log;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.pojo.File;
@@ -50,6 +51,7 @@ public class FileUploadAndDownloadController extends ApplicationController {
 	@Autowired
 	private FileInfoService fileInfoService;
 
+	@Log("文件上传")
 	@RequestMapping(method = POST)
 	public RestResponse fileUpload(MultipartFile file,
 			@RequestParam("fileId")
@@ -91,6 +93,7 @@ public class FileUploadAndDownloadController extends ApplicationController {
 
 	}
 
+	@Log("文件下载")
 	@RequestMapping(method = GET)
 	public RestResponse fileDownload(
 			@RequestParam("fileInfoId")

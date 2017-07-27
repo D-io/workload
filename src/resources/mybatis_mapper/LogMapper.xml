@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /*
+  ~  * Project: workload（工作量计算系统）
+  ~  * File: RegionManagerController.java
+  ~  * Author: 张健顺
+  ~  * Email: 1224522500@qq.com
+  ~  * Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
+  ~  */
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.uestc.ostec.workload.dao.LogDao">
+  <resultMap id="logResultMap" type="Log">
+    <id column="log_id" jdbcType="INTEGER" property="logId" />
+    <result column="level" jdbcType="CHAR" property="level" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="actor_id" jdbcType="INTEGER" property="actorId" />
+    <result column="message" jdbcType="LONGVARCHAR" property="message" />
+  </resultMap>
+
+  <select id="select" resultMap="logResultMap">
+    SELECT * FROM log
+    <where>
+      1 = 1
+      <if test="null != logId">
+        AND log_id = #{logId}
+      </if>
+      <if test="null != actorId">
+        AND actor_id = #{actorId}
+      </if>
+      <if test="null != level">
+        AND level = #{level}
+      </if>
+    </where>
+  </select>
+
+  <insert id="insert">
+    INSERT INTO log(log_id,level,status,create_time,actor_id,message)
+    VALUES(#{logId},#{level},#{status},#{createTime},#{actorId},#{message})
+  </insert>
+
+</mapper>
