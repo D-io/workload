@@ -991,3 +991,48 @@ data | String | 结果集
     }
 }
 ```
+
+### 获取工作量条目对应的审核人修改工作量历史操作记录
+- 接口地址：`/item/info/histories`
+- 支持格式：`json`
+- 请求方式：`GET`
+- 请求示例：`localhost:8080/item/info/histories?itemId=11`
+
+- 请求参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+itemId | String | 条目编号（字符型）
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "historyList": [
+            {
+                "historyId": 2,
+                "itemId": "11",
+                "userId": 3210343,
+                "createTime": "2017-07-27 16:14:43",
+                "operation": "当前条目的工作量被审核人张翔于2017-07-27 16:14:43修改为55.0"
+            },
+            {
+                "historyId": 3,
+                "itemId": "11",
+                "userId": 3210343,
+                "createTime": "2017-07-27 18:14:43",
+                "operation": "当前条目的工作量被审核人张翔于2017-07-27 18:14:43修改为40.0"
+            }
+        ]
+    }
+}
+```

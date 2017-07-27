@@ -22,6 +22,7 @@ import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.SubjectDto;
+import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
@@ -272,6 +273,32 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		return successResponse(data);
 	}
+
+	/**
+	 * 获取指定条目对应的全部历史操作记录
+	 * @param itemId 条目编号
+	 * @return HistoryList
+	 */
+	@RequestMapping(value = "histories",method = GET)
+	public RestResponse getHistories(@RequestParam("itemId") String itemId) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		List<History> historyList =  historyService.getHistoriesByItem(itemId);
+		if(null == historyList || historyList.isEmpty()) {
+			return systemErrResponse("无相关记录");
+		}
+
+		Map<String,Object> data = getData();
+		data.put("historyList",historyList);
+
+		return successResponse(data);
+
+	}
+
 
 	/**
 	 * 查找对应的老师的对应状态的对应导入方式的工作量条目信息
