@@ -104,6 +104,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		item.setItemName(dto.getItemName());
 		item.setStatus(dto.getStatus());
 		item.setIsGroup(dto.getIsGroup());
+		item.setOtherJson(dto.getOtherJson());
 
 		return item;
 	}

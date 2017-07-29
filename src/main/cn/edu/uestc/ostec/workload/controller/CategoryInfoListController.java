@@ -45,6 +45,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class CategoryInfoListController extends ApplicationController
 		implements MultiLevelObjectAdaptor<CategoryDto> {
 
+	//TODO 添加学期相关信息，学期切换功能
+
 	@Autowired
 	private CategoryService categoryService;
 

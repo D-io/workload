@@ -160,6 +160,11 @@ public class ItemManageController extends ApplicationController {
 			@RequestParam("itemId")
 					Integer itemId) {
 
+		//TODO 添加学期相关信息，学期切换功能
+
+		//TODO 重新申请将原条目置为Disable状态，创建新的条目进行申请，copy原有数据，若有修改作出相应修改
+		//TODO 对应做AOP的历史记录，记录工作量条目的改变的历史记录
+
 		User user = getUser();
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
@@ -224,6 +229,7 @@ public class ItemManageController extends ApplicationController {
 				.getImportRequired();
 
 		//判断是手动申报类还是系统导入类来决定proof的值
+		//TODO 添加上传附件的功能
 		if (APPLY_SELF.equals(importRequired)) {
 			itemDto.setProof(null);
 		} else {
