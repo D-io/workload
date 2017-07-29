@@ -27,6 +27,7 @@ import cn.edu.uestc.ostec.workload.service.UserRoleService;
 import cn.edu.uestc.ostec.workload.type.UserType;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REGION_PATH;
+import static cn.edu.uestc.ostec.workload.support.utils.DateHelper.getCurrentTimestamp;
 
 /**
  * Description: 用户主页控制器
@@ -47,6 +48,8 @@ public class DefaultController extends ApplicationController {
 	 */
 	@RequestMapping(value = "default")
 	public String index(ModelMap modelMap) {
+
+		buildModel(modelMap);
 
 		// 如果用户未登录，返回首页
 		if (session.getAttribute(SESSION_USER_IDENTIFIER) == null) {
@@ -88,6 +91,15 @@ public class DefaultController extends ApplicationController {
 		modelMap.addAttribute("currentRole", highestRole.getCode());
 		modelMap.addAttribute("currentRoleName", highestRole.getDesc());
 		modelMap.addAttribute("roleList", OBJECT_MAPPER.writeValueAsString(roleInfoList));
+	}
+
+	/**
+	 * 注入Model数据
+	 */
+	private void buildModel(ModelMap modelMap) {
+
+		//注入上下文路径
+		modelMap.addAttribute("contextPath", getContextPath());
 	}
 
 
