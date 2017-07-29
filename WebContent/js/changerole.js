@@ -1,7 +1,6 @@
 /**
  * Created by SBWang on 2017/7/17.
  */
-
 function changeRole(dom) {
     var role = dom.id;
     switch (role) {

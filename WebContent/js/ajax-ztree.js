@@ -156,7 +156,7 @@ function beforeEditName(treeId, treeNode) {
         $('#reviewDeadline').val(treeNode.reviewDeadline);
         $('#parentId').val(parNodeName);
         $('#formula').val(treeNode.formula);
-
+        $("#parentId").attr("disabled","disabled");
 
 
         $('#addModal').modal('show');
@@ -326,13 +326,14 @@ function addHoverDom(treeId, treeNode){
             $('#itemName').val(null);
             $('#desc').val(null);
             $('#reviewerId').val(null);
+            $("#parentId").attr("disabled","disabled");
             $('#parentId').val(treeNode.name);
             $('#applyDeadline').val(null);
             $('#reviewDeadline').val(null);
             $('#formula').val(null);
             $('.parameterSymbol').val(null);
             $('.parameterName').val(null);
-            $("#parentId").attr("disabled","disabled");
+
             $('.AddPramter').empty();
             $('#save').unbind('click');
             $('#save').bind('click', function () {
@@ -410,6 +411,7 @@ $(document).ready(function(){
         $('#itemName').val(null);
         $('#desc').val(null);
         $('#reviewerId').val(null);
+        $("#parentId").attr("disabled","disabled");
         $('#parentId').val(null);
         $('#applyDeadline').val(null);
         $('#reviewDeadline').val(null);
@@ -417,7 +419,7 @@ $(document).ready(function(){
         $('.parameterSymbol').val(null);
         $('.parameterName').val(null);
         $('#addModal').modal('show');
-        $("#parentId").attr("disabled","disabled");
+
         $('#save').unbind('click');
         $('#save').bind('click', function () {
             var parametername =$(".parameterName") ;
@@ -505,9 +507,9 @@ function zTreeOnClick(event, treeId, treeNode) {
 
     $('#submit').click(function(){
 
-        $.post("/category/manage/public-selective",str,function (data){
+        $.post("/category/manage/public-selective?"+str,function (data){
             if(data.status==200)
-                alert("提交节点成功！");
+                return confirm("提交节点成功！");
             else
                 alert("提交节点失败！");
         } )

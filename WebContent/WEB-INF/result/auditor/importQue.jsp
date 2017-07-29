@@ -6,28 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="x_panel">
-    <div class="x_title">
-        <h3>存疑工作量</h3>
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Settings 1</a>
-                    </li>
-                    <li><a href="#">Settings 2</a>
-                    </li>
-                </ul>
-            </li>
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
-        </ul>
-        <div class="clearfix"></div>
-    </div>
 
-    <div class="x_content" style="display: block;">
         <div class="abnorbalitem">
         <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
             <div class="row">
@@ -114,4 +93,4 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-</div>
+
