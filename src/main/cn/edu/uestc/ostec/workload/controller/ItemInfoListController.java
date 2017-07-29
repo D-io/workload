@@ -182,8 +182,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	}
 
 	/**
-	 * 获取审核人导入的工作量信息(Excel_Import) abnormalItemList：存疑的工作量条目（存疑未解决，存疑已解决）DOUBTED,DOUBTED_CHECKED
-	 * normalItemList：正常的工作量条目（尚未复核，未审核）
+	 * 获取审核人导入的工作量信息(Excel_Import) <br/>
+	 * abnormalItemList：存疑的工作量条目（存疑未解决，存疑已解决）DOUBTED,DOUBTED_CHECKED <br/>
+	 * normalItemList：正常的工作量条目（尚未复核，未审核） <br/>
 	 *
 	 * @return RestResponse
 	 */

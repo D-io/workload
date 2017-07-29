@@ -33,7 +33,7 @@
   <!-- 文件上传路径配置 BEGIN -->
   <context-param>
     <param-name>fileUploadPath</param-name>
-    <param-value>C:\Users\Administrator\Desktop\fileUploadTest</param-value>
+    <param-value>D:\fileUploadTest</param-value>
   </context-param>
   <!-- 文件上传路径配置 END -->
 
@@ -101,10 +101,6 @@
       <param-name>serverName</param-name>
       <param-value>http://127.0.0.1:8080</param-value>
     </init-param>
-    <init-param>
-      <param-name>encoding</param-name>
-      <param-value>UTF-8</param-value>
-    </init-param>
   </filter>
   <filter-mapping>
     <filter-name>CASFilter</filter-name>
@@ -131,11 +127,6 @@
     <init-param>
       <param-name>sslConfigFile</param-name>
       <param-value>E:\ssl\sslconf.properties</param-value>
-    </init-param>
-    <!--设置编码 -->
-    <init-param>
-      <param-name>encoding</param-name>
-      <param-value>UTF-8</param-value>
     </init-param>
   </filter>
   <filter-mapping>

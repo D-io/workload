@@ -144,10 +144,7 @@ public class ItemManageController extends ApplicationController {
 		}
 
 		Map<String, Object> data = getData();
-
-		if (null != item) {
-			data.put("item", itemConverter.poToDto(item));
-		}
+		data.put("item", itemConverter.poToDto(item));
 
 		return successResponse(data);
 	}
