@@ -107,7 +107,8 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                         "parentId": 0,
                         "isLeaf": "N",
                         "importRequired": 0,
-                        "jsonParameters": "1",
+                        "jsonParameters": "
+[{desc: "课时数", symbol: "A"}]",
                         "formula": "a+b+c",
                         "version": "2016-2017-1",
                         "status": 1,
@@ -139,7 +140,8 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                         "parentId": 0,
                                         "isLeaf": "N",
                                         "importRequired": 0,
-                                        "jsonParameters": "{“人数”:“A”}",
+                                        "jsonParameters": "
+[{desc: "课时数", symbol: "A"}]",
                                         "formula": "A+B+C",
                                         "version": "2017-2018-1",
                                         "status": 0,
@@ -178,7 +180,8 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                 "parentId": 0,
                                 "isLeaf": "N",
                                 "importRequired": 0,
-                                "jsonParameters": "1",
+                                "jsonParameters": "
+[{desc: "人数", symbol: "B"}]",
                                 "formula": "a+b+c",
                                 "version": "2016-2017-1",
                                 "status": 1,
@@ -196,7 +199,8 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
                                 "parentId": 0,
                                 "isLeaf": "N",
                                 "importRequired": 0,
-                                "jsonParameters": "{“人数”:“A”}",
+                                "jsonParameters": "
+[{desc: "带研究生人数", symbol: "A"}]",
                                 "formula": "A B C",
                                 "version": "2017-2018-1",
                                 "status": 1,
