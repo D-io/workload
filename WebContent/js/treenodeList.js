@@ -1,5 +1,5 @@
 function ownerApply(domId) {
-    var setting = {
+   /* var setting = {
         view: {
             removeHoverDom: removeHoverDom,
             selectedMulti: false
@@ -36,9 +36,9 @@ function ownerApply(domId) {
 
 
     };
-    var zNodes = new Array();
+    var zNodes = new Array();*/
         $.get("/item/info/item-group?"+'categoryId='+domId,function (data) {
-            if(data.data.itemList) {
+/*            if(data.data.itemList) {
                 for (var m = 0; m < data.data.itemList.length; m++) {
 
                     createTree(data.data.itemList[m]);
@@ -68,7 +68,8 @@ function ownerApply(domId) {
                 $.fn.zTree.init($("#treeDemo"), setting, zNodes);
 
 
-            }
+            }*/
+
         });
 
 
@@ -379,8 +380,8 @@ function ownerApply(domId) {
                 ownerId: applicant.val(),
                 groupManagerId: itemmanager.val(),
                 isGroup: radio.val(),
-                jsonParameters: newArray,
-                otherJsonParameters: otherArray,
+                jsonParameter: newArray,
+                otherJson: otherArray,
                 jobDesc: grouparray,
                 jsonChildWeight: childWeight
 
@@ -392,27 +393,30 @@ function ownerApply(domId) {
                  var b=y.match(/\d+/g);
                  */
 
-                 var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-
-                 var newNode= {'name': data.data.itemList.itemName,
-                 'id': data.data.itemList.itemId,
-                 'parentId': 0,
-                 'applyDesc':data.data.itemList.applyDesc,
-                 //  'reviewDeadline':x[1]/x[2]/x[0],
-                 //  'applyDeadline':y[1]/y[2]/y[0],
-                 'ownerId':data.data.itemList.ownerId,
-                 'workload':data.data.itemList.workload,
-                 'isGroup':data.data.itemList.isGroup,
-                 'groupManagerId':data.data.itemList.groupManagerId,
-                 'jsonParameters':data.data.itemList.jsonParameters,
-                 'otherParameters':data.data.itemList.otherJsonParameters,
-                 'jobDesc':data.data.itemList.jobDesc,
-                 'jsonChildWeight':data.data.itemList.jobDesc
-                 //  'isLeaf':data.data.category.isLeaf,
-                 // 'importRequired':data.data.category.importRequired
-                 };
+/*                 var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                for(var i=0;i<data.data.itemList.length;i++) {
+                    var newNode = {
+                        'name': data.data.itemList[0].itemName,
+                        'itemId': data.data.itemList[0].itemId,
+                        'parentId': 0,
+                        'applyDesc': data.data.itemList[0].applyDesc,
+                        //  'reviewDeadline':x[1]/x[2]/x[0],
+                        //  'applyDeadline':y[1]/y[2]/y[0],
+                        'ownerId': data.data.itemList.ownerId,
+                        'workload': data.data.itemList.workload,
+                        'isGroup': data.data.itemList.isGroup,
+                        'groupManagerId': data.data.itemList[0].groupManagerId,
+                        'jsonParameter': data.data.itemList[0].jsonParameter,
+                    //    'otherParameters': data.data.itemList.otherJsonParameters,
+                        'jobDesc': data.data.itemList[0].jobDesc,
+                        'jsonChildWeight': data.data.itemList.jobDesc
+                        //  'isLeaf':data.data.category.isLeaf,
+                        // 'importRequired':data.data.category.importRequired
+                    };
+                }
                  newNode = zTree.addNodes(null, newNode);
-                 window.zNodes.push(newNode);
+                 window.zNodes.push(newNode);*/
+
                  }, "json");
 
                  $('#addContent').modal('hide');

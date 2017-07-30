@@ -369,7 +369,7 @@ function applyworkload() {
         function  showapplyall(item) {
             for(var i=0;i<item.length;i++){
                 if(item[i].importRequired==0){
-                    $('#tab_content1').append("<li>"+item[i].name+":"+item[i].desc+"<button class='btn btn-primary apply' id='apply_"+item[i].categoryId+"' style='float: right;' data-toggle='modal' data-target='#applyModal'>点击申报</button><div style='clear: both;'></div></li>");
+                    $('#tab_content1').append("<li class='item_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+"<button class='btn btn-primary apply' id='apply_"+item[i].categoryId+"' style='float: right;' data-toggle='modal' data-target='#applyModal'>点击申报</button><div style='clear: both;'></div></li>");
 /*
                     var rowInfo="<tr></tr>";
                     var cellInfo="<td></td>";
@@ -406,6 +406,8 @@ function applyworkload() {
             var myseleFlag=this.id;
             var reg=myseleFlag.match(/\d+/g)[0];
             reg=parseInt(reg);
+            $(".modal-header").empty();
+            $(".modal-header").append($(".item_"+reg).text());
             ownerApply(reg);
            $('.parameterTh').empty();
            $('.otherParaTh').empty();

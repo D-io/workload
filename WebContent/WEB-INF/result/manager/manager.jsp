@@ -42,7 +42,7 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a class="site_title" ><span><img src="css/images/logo.png" alt="..." class="left_span" ></span><span style="font-size: 14px;">教学工作量计算系统</span></a>
+                    <a class="site_title" ><span><img src="css/images/logo.png" alt="..." class="left_span" ></span><span style="font-size: 14px;">教学工作当量计算系统</span></a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -79,20 +79,20 @@
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                     <div class="menu_section">
                         <ul class="nav side-menu" style="margin-top: 0px;">
-                            <li class="active"><a><i class="fa fa-home"></i> 我的工作量 <span class="fa fa-chevron-down"></span></a>
+                            <li class="active"><a><i class="fa fa-home"></i> 我的工作当量 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: block;">
-                                    <li><a onclick="applyworkload()">工作量申报</a></li>
-                                    <li><a onclick="workRevie()">工作量复核</a></li>
-                                    <li><a onclick="reviewerSumItem()">工作量汇总</a></li>
+                                    <li><a onclick="applyworkload()">工作当量申报</a></li>
+                                    <li><a onclick="workRevie()">工作当量复核</a></li>
+                                    <li><a onclick="reviewerSumItem()">工作当量汇总</a></li>
                                 </ul>
                             </li>
-                            <li class="active"><a><i class="fa fa-edit"></i> 工作量管理 <span class="fa fa-chevron-down"></span></a>
+                            <li class="active"><a><i class="fa fa-edit"></i> 工作当量管理 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: block;">
-                                    <li onclick="importWorkload()"><a>工作量导入</a></li>
-                                    <li onclick="auditworkload()"><a>工作量审核</a></li>
+                                    <li onclick="importWorkload()"><a>工作当量导入</a></li>
+                                    <li onclick="auditworkload()"><a>工作当量审核</a></li>
                                 </ul>
                             </li>
-                            <li class="active"><a><i class="fa fa-desktop"></i> 工作量统计<span class="fa fa-chevron-down"></span></a>
+                            <li class="active"><a><i class="fa fa-desktop"></i> 工作当量统计<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: block">
                                     <li><a>  </a></li>
                                     <li><a>  </a></li>
