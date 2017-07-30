@@ -83,7 +83,7 @@ public class ItemDto {
 	/**
 	 * 证明
 	 */
-	private String proof = null;
+	private Integer proof = null;
 
 	/**
 	 * 教师姓名
@@ -263,11 +263,11 @@ public class ItemDto {
 		this.jsonChildWeight = jsonChildWeight;
 	}
 
-	public String getProof() {
+	public Integer getProof() {
 		return proof;
 	}
 
-	public void setProof(String proof) {
+	public void setProof(Integer proof) {
 		this.proof = proof;
 	}
 

@@ -112,7 +112,6 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 	//			@RequestParam("fileInfoId")
 	//					int fileInfoId) {
 	//
-	//		//TODO 待测试
 	//		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
 	//		if (isNull(fileInfo)) {
 	//			return invalidOperationResponse();
@@ -382,9 +381,6 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		String path = fileInfo.getPath();
 		File excelFile = new File(path);
 
-		//文件名用作Item的proof属性
-		String fileName = FileHelper.getFileName(path);
-
 		//获取文件流
 		FileInputStream fileInputStream;
 		try {
@@ -469,7 +465,8 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 						item.setIsGroup(GROUP);
 					}
 
-					item.setProof(fileName);
+					//文件信息编号对应为该条目的proof
+					item.setProof(fileInfoId);
 					item.setCategoryId(categoryId);
 					item.setStatus(UNCOMMITTED);
 
@@ -644,7 +641,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		/**
 		 * 证明
 		 */
-		private String proof = null;
+		private Integer proof = null;
 
 		/**
 		 * 是否为小组
@@ -757,11 +754,11 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			this.weight = weight;
 		}
 
-		public String getProof() {
+		public Integer getProof() {
 			return proof;
 		}
 
-		public void setProof(String proof) {
+		public void setProof(Integer proof) {
 			this.proof = proof;
 		}
 

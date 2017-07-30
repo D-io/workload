@@ -13,7 +13,7 @@
     <result column="job_desc" property="jobDesc" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="json_child_weight" property="jsonChildWeight" jdbcType="VARCHAR" />
-    <result column="proof" property="proof" jdbcType="LONGVARCHAR" />
+    <result column="proof" property="proof" jdbcType="INTEGER" />
     <result column="is_group" property="isGroup" jdbcType="INTEGER" />
     <result column="other_json" property="otherJson" jdbcType="VARCHAR"/>
   </resultMap>
@@ -40,7 +40,7 @@
     values (#{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, #{ownerId,jdbcType=INTEGER},
       #{jsonParameter,jdbcType=VARCHAR}, #{workload,jdbcType=DOUBLE}, #{groupManagerId,jdbcType=INTEGER},
       #{applyDesc,jdbcType=VARCHAR}, #{jobDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
-      #{jsonChildWeight,jdbcType=VARCHAR}, #{proof,jdbcType=LONGVARCHAR},#{isGroup,jdbcType=INTEGER},#{otherJson,jdbcType=VARCHAR})
+      #{jsonChildWeight,jdbcType=VARCHAR}, #{proof,jdbcType=INTEGER},#{isGroup,jdbcType=INTEGER},#{otherJson,jdbcType=VARCHAR})
   </insert>
 
   <update id="update">
@@ -55,7 +55,7 @@
       job_desc = #{jobDesc,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       json_child_weight = #{jsonChildWeight,jdbcType=VARCHAR},
-      proof = #{proof,jdbcType=LONGVARCHAR},
+      proof = #{proof,jdbcType=INTEGER},
       is_group = #{isGroup,jdbcType=INTEGER},
       other_json = #{otherJson,jdbcType=VARCHAR}
     where item_id = #{itemId,jdbcType=INTEGER}

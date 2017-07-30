@@ -181,8 +181,6 @@ public class CategoryInfoListController extends ApplicationController
 		return categoryDtoList;
 	}
 
-	//TODO 工作量统计汇总 -> ItemInfoController下
-
 	class CategoryBrief {
 
 		String categoryName;

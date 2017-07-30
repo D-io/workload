@@ -33,7 +33,6 @@ public class ItemDaoTest extends BaseTest {
 		item.setGroupManagerId(1);
 		item.setApplyDesc("desc");
 		item.setJobDesc("asdasd");
-		item.setProof("ASDASDSA");
 		item.setStatus(-1);
 		item.setJsonChildWeight("21");
 	}

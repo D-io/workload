@@ -36,4 +36,12 @@ public interface FileEvent extends IEvent {
 	@Transactional
 	FileInfo downloadFile(int fileInfoId);
 
+	/**
+	 * 文件提交
+	 * @param fileInfoId 文件信息编号
+	 * @return boolean
+	 */
+	@Transactional
+	boolean submitFileInfo(int fileInfoId);
+
 }

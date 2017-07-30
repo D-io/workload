@@ -67,7 +67,7 @@ public class Item implements Cloneable {
 	/**
 	 * 证明
 	 */
-	private String proof = null;
+	private Integer proof = null;
 
 	/**
 	 * 是否为小组
@@ -175,12 +175,12 @@ public class Item implements Cloneable {
 		this.jsonChildWeight = jsonChildWeight == null ? null : jsonChildWeight.trim();
 	}
 
-	public String getProof() {
+	public Integer getProof() {
 		return proof;
 	}
 
-	public void setProof(String proof) {
-		this.proof = proof == null ? null : proof.trim();
+	public void setProof(Integer proof) {
+		this.proof = proof;
 	}
 
 	public Integer getIsGroup() {

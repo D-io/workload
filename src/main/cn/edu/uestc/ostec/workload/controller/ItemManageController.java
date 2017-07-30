@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +24,15 @@ import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.JobDesc;
+import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
+import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
+import cn.edu.uestc.ostec.workload.service.FileInfoService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
@@ -71,6 +76,9 @@ public class ItemManageController extends ApplicationController {
 
 	@Autowired
 	private SubjectConverter subjectConverter;
+
+	@Autowired
+	private FileEvent fileEvent;
 
 	/**
 	 * 重置申请人或者审核人状态
@@ -117,8 +125,7 @@ public class ItemManageController extends ApplicationController {
 	}
 
 	/**
-	 * 删除Item信息(置为Disable状态)
-	 * 只能删除  未提交的工作量信息 and 被拒绝的申请
+	 * 删除Item信息(置为Disable状态) 只能删除  未提交的工作量信息 and 被拒绝的申请
 	 *
 	 * @param itemId 工作过量Id
 	 * @return RestResponse
@@ -209,7 +216,8 @@ public class ItemManageController extends ApplicationController {
 	 * @return RestResponse
 	 */
 	@RequestMapping(method = POST)
-	public RestResponse addItem(ItemDto itemDto) {
+	public RestResponse addItem(ItemDto itemDto, MultipartFile file, int fileId)
+			throws IOException {
 
 		User user = getUser();
 		if (null == user) {
@@ -228,15 +236,21 @@ public class ItemManageController extends ApplicationController {
 		int importRequired = categoryService.getCategory(itemDto.getCategoryId())
 				.getImportRequired();
 
+		Map<String, Object> data = getData();
+
 		//判断是手动申报类还是系统导入类来决定proof的值
 		//TODO 添加上传附件的功能
 		if (APPLY_SELF.equals(importRequired)) {
-			itemDto.setProof(null);
+			FileInfo fileInfo = new FileInfo(fileId, getUserId(), "");
+			boolean uploadSuccess = fileEvent.uploadFile(file, fileInfo);
+			if (!uploadSuccess) {
+				data.put("errorData", "文件附件上传失败");
+			}
+			//考虑设置为文件信息编号，展示时不做文件信息展示，仅仅展示 查看附件
+			itemDto.setProof(fileInfo.getFileInfoId());
 		} else {
 			return invalidOperationResponse();
 		}
-
-		Map<String, Object> data = getData();
 
 		//利用转换的方式获得相应的参数列表、职责描述列表和权重列表
 		Item oldItem = itemConverter.dtoToPo(itemDto);
@@ -278,7 +292,7 @@ public class ItemManageController extends ApplicationController {
 					itemList.add(itemTemp);
 				}
 			}
-			data.put("itemList",itemConverter.poListToDtoList(itemList));
+			data.put("itemList", itemConverter.poListToDtoList(itemList));
 
 		} else {
 			newItemDto.setWorkload(workload);
@@ -332,7 +346,8 @@ public class ItemManageController extends ApplicationController {
 				item.setStatus(NON_CHECKED);
 
 				boolean saveSuccess = itemService.saveItem(item);
-				if (!saveSuccess) {
+				boolean fileSubmitSuccess = fileEvent.submitFileInfo(item.getProof());
+				if (!saveSuccess || !fileSubmitSuccess) {
 					errorData.put(item.getItemName(), "提交失败");
 				} else {
 					item = itemService.findItem(itemId);

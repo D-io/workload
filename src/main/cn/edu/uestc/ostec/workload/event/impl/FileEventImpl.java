@@ -26,6 +26,7 @@ import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.buildFilePath
 import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.getFileExtension;
 import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.getFileMd5Digest;
 import static cn.edu.uestc.ostec.workload.support.utils.ObjectHelper.isNull;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 
 /**
@@ -39,6 +40,16 @@ public class FileEventImpl implements FileEvent {
 
 	@Autowired
 	private FileService fileService;
+
+	@Override
+	public boolean submitFileInfo(int fileInfoId) {
+		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
+		if(null == fileInfo) {
+			return false;
+		}
+		fileInfo.setStatus(SUBMITTED);
+		return fileInfoService.saveFileInfo(fileInfo);
+	}
 
 	@Override
 	public boolean uploadFile(MultipartFile file, FileInfo fileInfo) throws IOException {
