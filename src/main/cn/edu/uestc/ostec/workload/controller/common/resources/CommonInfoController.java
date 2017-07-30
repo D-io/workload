@@ -22,6 +22,7 @@ import cn.edu.uestc.ostec.workload.service.TeacherService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.COMMON_INFO_PATH;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Version:v1.0 (description: 公共信息获取控制器  )
@@ -63,6 +64,21 @@ public class CommonInfoController extends ApplicationController {
 		data.put("teacher",user);
 
 		return successResponse(data);
+	}
+
+	/**
+	 * 设置学期
+	 * @param year 学年
+	 * @param scheme 学期
+	 * @return
+	 */
+	@RequestMapping(value = "scheme", method = POST)
+	public RestResponse switchScheme(String year, int scheme) {
+		if (!year.isEmpty() && (scheme == 1 || scheme == 2)) {
+			session.setAttribute(SESSION_CURRENT_YEAR, year);
+			session.setAttribute(SESSION_CURRENT_SCHEME, scheme);
+		}
+		return successResponse();
 	}
 
 

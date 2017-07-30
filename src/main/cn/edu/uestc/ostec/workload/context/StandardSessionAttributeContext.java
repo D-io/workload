@@ -10,6 +10,8 @@ package cn.edu.uestc.ostec.workload.context;
 import cn.edu.uestc.ostec.workload.adaptor.ServletContextAdapter;
 import cn.edu.uestc.ostec.workload.pojo.User;
 
+import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_CURRENT_SCHEME;
+import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_CURRENT_YEAR;
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_IDENTIFIER;
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
 
@@ -37,6 +39,30 @@ public interface StandardSessionAttributeContext extends ServletContextAdapter {
 	default Integer getUserId() {
 
 		return (Integer) getSessionContext().getAttribute(SESSION_USER_IDENTIFIER);
+	}
+
+	/**
+	 * 获取当前学年
+	 * @return 学年对应的字符串
+	 */
+	default String getCurrentYear(){
+		return (String) getSessionContext().getAttribute(SESSION_CURRENT_YEAR);
+	}
+
+	/**
+	 * 获取当前学期
+	 * @return 学期对应的整形数据
+	 */
+	default Integer getCurrentScheme(){
+		return (Integer) getSessionContext().getAttribute(SESSION_CURRENT_SCHEME);
+	}
+
+	/**
+	 * 获取version
+	 * @return version对应的字符串
+	 */
+	default String getCurrentSemester() {
+		return getCurrentYear() + getCurrentScheme().toString();
 	}
 
 }

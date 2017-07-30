@@ -40,5 +40,10 @@ public interface SessionConstants {
 	 */
 	String SESSION_USER_ROLE_LIST = "userRoleList";
 
+	String SESSION_CURRENT_YEAR = "currentYear";
+
+	String SESSION_CURRENT_SCHEME = "currentScheme";
+
+
 
 }
