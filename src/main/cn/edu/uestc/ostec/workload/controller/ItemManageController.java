@@ -210,13 +210,13 @@ public class ItemManageController extends ApplicationController {
 	}
 
 	/**
-	 * 添加Item信息
+	 * 添加Item信息 & 修改Item信息
 	 *
 	 * @param itemDto 工作量信息
 	 * @return RestResponse
 	 */
 	@RequestMapping(method = POST)
-	public RestResponse addItem(ItemDto itemDto, MultipartFile file, int fileId)
+	public RestResponse addItem(ItemDto itemDto, MultipartFile file,String option)
 			throws IOException {
 
 		User user = getUser();
@@ -226,6 +226,12 @@ public class ItemManageController extends ApplicationController {
 
 		if (null == itemDto) {
 			return invalidOperationResponse("非法操作");
+		}
+
+		if("modify".equals(option)) {
+			if(NON_CHECKED.equals(itemDto.getStatus())) {
+				return invalidOperationResponse("已提交的工作量，无法修改");
+			}
 		}
 
 		//根据登陆的用户设置相应的item信息中owner属性
@@ -238,10 +244,12 @@ public class ItemManageController extends ApplicationController {
 
 		Map<String, Object> data = getData();
 
+
+
 		//判断是手动申报类还是系统导入类来决定proof的值
-		//TODO 添加上传附件的功能
 		if (APPLY_SELF.equals(importRequired)) {
-			FileInfo fileInfo = new FileInfo(fileId, getUserId(), "");
+			FileInfo fileInfo = new FileInfo(ATTACHMENT_FILE_ID, getUserId(), "");
+			//TODO 文件的相关校验，可以抽象到ApplicationController中
 			boolean uploadSuccess = fileEvent.uploadFile(file, fileInfo);
 			if (!uploadSuccess) {
 				data.put("errorData", "文件附件上传失败");
@@ -396,13 +404,16 @@ public class ItemManageController extends ApplicationController {
 			}
 
 			item.setStatus(NON_CHECKED);
-			if (!itemService.saveItem(item)) {
-				return systemErrResponse("提交失败");
+			boolean saveSuccess = itemService.saveItem(item);
+			boolean submitSuccess = fileEvent.submitFileInfo(item.getProof());
+			if (!saveSuccess || !submitSuccess) {
+				errorData.put(item.getItemName(),"提交失败");
 			}
 		}
 
 		Map<String, Object> data = getData();
 		data.put("submittedItemList", itemConverter.poListToDtoList(itemList));
+		data.put("errorData",errorData);
 
 		return successResponse(data);
 	}

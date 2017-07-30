@@ -1,14 +1,17 @@
 ## 工作量条目Item接口
 
-### 添加工作量条目信息
+### 添加工作量条目信息/修改工作量条目信息
 - 接口地址:`/item/manage`
 - 支持格式：`json`
 - 请求方式：`POST`
-- 请求示例：`localhost:8080/item/manage?itemName=workload&categoryId=3&ownerId=3210343&jsonParameter=[ {"symbol": "A", "value": 12}, { "symbol": "B", "value": 12 } ]&groupManagerId=5130121&applyDesc=描述一下&jobDesc=[{"userId": 3210343,"jobDesc": "准备工作" }, {"userId": 5130121,"jobDesc": "指导老师" }]&jsonChildWeight=[{"userId": 3210343,"weight": 0.2 }, {"userId": 5130121,"weight": 0.8 }]&isGroup=1`
+- 请求示例：`localhost:8080/item/manage?itemName=workload&categoryId=33&ownerId=3210343&jsonParameter=[ {"symbol": "A", "value": 12}, { "symbol": "B", "value": 12 } ]&groupManagerId=5130121&applyDesc=描述一下&jobDesc=[{"userId": 3210343,"jobDesc": "准备工作" }, {"userId": 5130121,"jobDesc": "指导老师" }]&jsonChildWeight=[{"userId": 3210343,"weight":0.2}, {"userId": 5130121,"weight":0.8 }]&isGroup=1&otherJson=[{"key":"竞赛名称","value":"创新杯"},{"key":"参赛项目","value":"基于xxx"},{"key":"类型（团队或个人）","value":"团队"},{"key":"获奖级别","value":"国家奖"},{"key":"赛事级别","value":"国家级"}]`
+
+- 请求示例：`localhost:8080/item/manage?itemId=23&itemName=workload&categoryId=33&ownerId=3210343&jsonParameter=[ {"symbol": "A", "value": 12}, { "symbol": "B", "value": 12 } ]&groupManagerId=5130121&applyDesc=描述一下&jobDesc=[{"userId": 3210343,"jobDesc": "准备工作" }, {"userId": 5130121,"jobDesc": "指导老师" }]&jsonChildWeight=[{"userId": 3210343,"weight":0.2}, {"userId": 5130121,"weight":0.8 }]&isGroup=1&otherJson=[{"key":"竞赛名称","value":"创新杯"},{"key":"参赛项目","value":"基于xxx"},{"key":"类型（团队或个人）","value":"团队"},{"key":"获奖级别","value":"国家奖"},{"key":"赛事级别","value":"国家级"}]&option=modify`
 - 请求参数具体说明：
 
 参数名 | 类型 | 说明 | 备注
 ---|---|---|---
+itemId | int | 工作量条目编号 | **若为修改才传此参数**
 itemName | String | 工作量条目名称 | 必填
 categoryId | int | 对应的类目编号 | 必填
 ownerId | int | 所属教师编号 | 
@@ -19,6 +22,10 @@ applyDesc | String | 申请描述 |
 jobDesc | String | 成员职责描述 | 注意格式
 jsonChildWeight | json | 成员各自权重 | 注意格式，以及和Desc的一一对应的顺序关系（顺序保持一致） 
 isGroup | int | 小组 1还是个人 0 | 必填
+otherJson | String | 其他参数对应的json串 | 必填
+option | String | 可选项 | 值传modify时对应的为修改操作，添加操作不传该参数
+
+file | File | 要上传的附件 |  
 
 - 返回参数具体说明：
 
@@ -36,9 +43,9 @@ data | String | 结果集
     "data": {
         "itemList": [
             {
-                "itemId": 34,
+                "itemId": 24,
                 "itemName": "workload",
-                "categoryId": 3,
+                "categoryId": 33,
                 "ownerId": 3210343,
                 "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]",
                 "parameterValues": [
@@ -51,27 +58,50 @@ data | String | 结果集
                         "value": 12
                     }
                 ],
-                "workload": 7.2,
+                "workload": 33.6,
                 "groupManagerId": 5130121,
                 "applyDesc": "描述一下",
                 "jobDesc": "准备工作",
-                "jobDescList": [],
+                "jobDescList": null,
                 "status": 0,
                 "jsonChildWeight": "0.2",
-                "childWeightList": [],
-                "proof": null,
+                "childWeightList": null,
+                "proof": 11,
                 "teacherName": "张翔",
-                "reviewerId": 3210343,
-                "reviewerName": "张翔",
+                "reviewerId": 3203753,
+                "reviewerName": "蔡竟业",
                 "groupManagerName": "邵俊明",
-                "categoryName": "乱码",
+                "categoryName": "学生竞赛",
                 "importRequired": 0,
-                "isGroup": 1
+                "isGroup": 1,
+                "otherJson": "[{\"key\":\"竞赛名称\",\"value\":\"创新杯\"},{\"key\":\"参赛项目\",\"value\":\"基于xxx\"},{\"key\":\"类型（团队或个人）\",\"value\":\"团队\"},{\"key\":\"获奖级别\",\"value\":\"国家奖\"},{\"key\":\"赛事级别\",\"value\":\"国家级\"}]",
+                "otherJsonParameters": [
+                    {
+                        "key": "竞赛名称",
+                        "value": "创新杯"
+                    },
+                    {
+                        "key": "参赛项目",
+                        "value": "基于xxx"
+                    },
+                    {
+                        "key": "类型（团队或个人）",
+                        "value": "团队"
+                    },
+                    {
+                        "key": "获奖级别",
+                        "value": "国家奖"
+                    },
+                    {
+                        "key": "赛事级别",
+                        "value": "国家级"
+                    }
+                ]
             },
             {
-                "itemId": 35,
+                "itemId": 25,
                 "itemName": "workload",
-                "categoryId": 3,
+                "categoryId": 33,
                 "ownerId": 5130121,
                 "jsonParameter": "[ {\"symbol\": \"A\", \"value\": 12}, { \"symbol\": \"B\", \"value\": 12 } ]",
                 "parameterValues": [
@@ -84,22 +114,45 @@ data | String | 结果集
                         "value": 12
                     }
                 ],
-                "workload": 28.8,
+                "workload": 134.4,
                 "groupManagerId": 5130121,
                 "applyDesc": "描述一下",
                 "jobDesc": "指导老师",
-                "jobDescList": [],
+                "jobDescList": null,
                 "status": 0,
                 "jsonChildWeight": "0.8",
-                "childWeightList": [],
-                "proof": null,
+                "childWeightList": null,
+                "proof": 11,
                 "teacherName": "邵俊明",
-                "reviewerId": 3210343,
-                "reviewerName": "张翔",
+                "reviewerId": 3203753,
+                "reviewerName": "蔡竟业",
                 "groupManagerName": "邵俊明",
-                "categoryName": "乱码",
+                "categoryName": "学生竞赛",
                 "importRequired": 0,
-                "isGroup": 1
+                "isGroup": 1,
+                "otherJson": "[{\"key\":\"竞赛名称\",\"value\":\"创新杯\"},{\"key\":\"参赛项目\",\"value\":\"基于xxx\"},{\"key\":\"类型（团队或个人）\",\"value\":\"团队\"},{\"key\":\"获奖级别\",\"value\":\"国家奖\"},{\"key\":\"赛事级别\",\"value\":\"国家级\"}]",
+                "otherJsonParameters": [
+                    {
+                        "key": "竞赛名称",
+                        "value": "创新杯"
+                    },
+                    {
+                        "key": "参赛项目",
+                        "value": "基于xxx"
+                    },
+                    {
+                        "key": "类型（团队或个人）",
+                        "value": "团队"
+                    },
+                    {
+                        "key": "获奖级别",
+                        "value": "国家奖"
+                    },
+                    {
+                        "key": "赛事级别",
+                        "value": "国家级"
+                    }
+                ]
             }
         ]
     }

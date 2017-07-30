@@ -62,6 +62,8 @@ public interface WorkloadObjects {
 	 */
 	Integer SINGLE = 0;
 
+	Integer ATTACHMENT_FILE_ID = 5;
+
 	/**
 	 * 审核人角色信息
 	 */
