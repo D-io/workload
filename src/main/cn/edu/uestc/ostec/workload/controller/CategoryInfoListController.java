@@ -53,12 +53,16 @@ public class CategoryInfoListController extends ApplicationController
 	@Autowired
 	private CategoryConverter categoryConverter;
 
+	/**
+	 * 查询已经提交状态对应的类目信息生成的树结构
+	 * @return categoryTree
+	 */
 	@RequestMapping(value = "list", method = GET)
 	public RestResponse getSubmittedCategories() {
 
 		Map<String, Object> data = getData();
 
-		//获取已经提交的类目信息
+		//获取已经提交的类目信息构成的树结构
 		data.put("categoryTree", getCategoryDto(SUBMITTED, ROOT));
 		return successResponse(data);
 	}
@@ -168,8 +172,10 @@ public class CategoryInfoListController extends ApplicationController
 					.hasNext(); ) {
 				CategoryDto categoryDto = iterator.next();
 				if (null == status) {
+					//状态为空，查询所有有效的Category构成的树结构
 					buildValidObjectStructure(categoryDto, categoryService);
 				} else {
+					//状态不为空，查询指定的状态下的Category构成的树结构
 					buildObjectStructure(categoryDto, categoryService);
 				}
 			}

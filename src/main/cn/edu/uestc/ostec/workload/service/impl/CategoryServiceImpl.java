@@ -1,6 +1,5 @@
 package cn.edu.uestc.ostec.workload.service.impl;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +24,14 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 
 	/**
 	 * 删除工作量类目
+	 *
 	 * @param categoryId 工作量条目Id
 	 * @return Boolean
 	 */
 	@Override
 	public Boolean removeCategory(Integer categoryId) {
 
-		return categoryDao.updateStatus(DELETED,categoryId);
+		return categoryDao.updateStatus(DELETED, categoryId);
 	}
 
 	@Override
@@ -42,12 +42,13 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 
 	/**
 	 * 保存工作量条目
+	 *
 	 * @param category 工作量条目
 	 * @return Boolean
 	 */
 	@Override
 	public Boolean saveCategory(Category category) {
-		if(!hasObjectId(category.getCategoryId())){
+		if (!hasObjectId(category.getCategoryId())) {
 			category.setCategoryId(getNextKey(Category.TABLE_NAME));
 			return categoryDao.insert(category);
 		}
@@ -57,19 +58,19 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 
 	@Override
 	public Boolean saveCategory(Integer status, Integer categoryId) {
-		return categoryDao.updateStatus(status,categoryId);
+		return categoryDao.updateStatus(status, categoryId);
 	}
 
 	@Override
 	public Category getCategory(Integer categoryId) {
 
-		return objectResult(categoryDao.select(categoryId),EMPTY_CATEGORY);
+		return objectResult(categoryDao.select(categoryId), EMPTY_CATEGORY);
 	}
 
 	@Override
 	public List<Category> getCategoryChildren(Integer status, Integer parentId) {
 
-		return listResult(categoryDao.selectChildren(status,parentId));
+		return listResult(categoryDao.selectChildren(status, parentId));
 	}
 
 	@Override
@@ -96,18 +97,38 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 		return listResult(categoryDao.selectAll());
 	}
 
+	/**
+	 * 查询对应父节点下对应状态的dto对象
+	 *
+	 * @param status   状态
+	 * @param parentId 父节点的编号
+	 * @return list
+	 */
 	@Override
-	public List<CategoryDto> getDtoObjects(Integer status,Integer parentId) {
+	public List<CategoryDto> getDtoObjects(Integer status, Integer parentId) {
 
-		return listResult(categoryConverter.poListToDtoList(categoryDao.selectChildren(status,parentId)));
+		return listResult(
+				categoryConverter.poListToDtoList(categoryDao.selectChildren(status, parentId)));
 	}
 
+	/**
+	 * 查询单个category
+	 *
+	 * @param objectId 节点Id
+	 * @return CategoryDto
+	 */
 	@Override
 	public CategoryDto getDtoObject(Integer objectId) {
 
 		return categoryConverter.poToDto(categoryDao.select(objectId));
 	}
 
+	/**
+	 * 获取对应父节点下的有效状态的dto对象
+	 *
+	 * @param parentId 父节点
+	 * @return List
+	 */
 	public List<CategoryDto> getDtoObjects(Integer parentId) {
 		return categoryConverter.poListToDtoList(categoryDao.selectValidChildren(parentId));
 	}

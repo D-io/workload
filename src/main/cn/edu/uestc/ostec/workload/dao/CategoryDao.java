@@ -12,6 +12,7 @@ public interface CategoryDao extends BaseDao<Category> {
 
 	/**
 	 * 新增工作量条目
+	 *
 	 * @param category 工作量条目
 	 * @return Boolean
 	 */
@@ -20,6 +21,7 @@ public interface CategoryDao extends BaseDao<Category> {
 
 	/**
 	 * 修改工作量条目
+	 *
 	 * @param entity 工作量条目
 	 * @return Boolean
 	 */
@@ -28,6 +30,7 @@ public interface CategoryDao extends BaseDao<Category> {
 
 	/**
 	 * 根据主键删除工作量条目
+	 *
 	 * @param id 条目Id
 	 * @return Boolean
 	 */
@@ -36,6 +39,7 @@ public interface CategoryDao extends BaseDao<Category> {
 
 	/**
 	 * 根据主键查询工作量条目
+	 *
 	 * @param id 工作量条目Id
 	 * @return Category
 	 */
@@ -44,22 +48,33 @@ public interface CategoryDao extends BaseDao<Category> {
 
 	/**
 	 * 根据主键修改工作量状态
-	 * @param status 工作量状态
+	 *
+	 * @param status     工作量状态
 	 * @param categoryId 工作量条目
 	 * @return Boolean
 	 */
-	Boolean updateStatus(@Param("status") Integer status,@Param("categoryId") Integer categoryId);
+	Boolean updateStatus(
+			@Param("status")
+					Integer status,
+			@Param("categoryId")
+					Integer categoryId);
 
 	/**
-	 * 查询某一工作量条目下非某种状态的工作量条目
-	 * @param status 工作量状态 若为-1，则查找有效的条目   !status
+	 * 查询某一工作量条目下某种状态的工作量条目
+	 *
+	 * @param status   工作量状态
 	 * @param parentId 父工作量Id
 	 * @return List<Category>
 	 */
-	List<Category> selectChildren(@Param("status") Integer status,@Param("parentId") Integer parentId);
+	List<Category> selectChildren(
+			@Param("status")
+					Integer status,
+			@Param("parentId")
+					Integer parentId);
 
 	/**
 	 * 查询子节点（有效状态，不包含删除状态）
+	 *
 	 * @param parentId 父节点编号
 	 * @return List<Category>
 	 */
@@ -67,6 +82,7 @@ public interface CategoryDao extends BaseDao<Category> {
 
 	/**
 	 * 查询删除的全部工作量条目(工作量状态为-1)
+	 *
 	 * @param status 状态
 	 * @return List<Category>
 	 */
@@ -76,13 +92,15 @@ public interface CategoryDao extends BaseDao<Category> {
 
 	/**
 	 * 根据工作量类型查询工作量条目
+	 *
 	 * @param importRequired 标识工作量为审核类：0；还是复核类：1
 	 * @return List<Category>
 	 */
-	 List<Category> selectByImportRequired(Integer importRequired);
+	List<Category> selectByImportRequired(Integer importRequired);
 
 	/**
 	 * 根据审核人查询工作量条目
+	 *
 	 * @param reviewerId 审核人编号
 	 * @return List<Category>
 	 */

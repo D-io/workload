@@ -8,6 +8,8 @@
 
 package cn.edu.uestc.ostec.workload.controller.core;
 
+import org.apache.poi.ss.formula.functions.T;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,8 @@ import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.support.utils.ExcelExportHelper;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.DEFAULT_WEB_URL_SEPARATOR;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 
 /**
  * Description: 应用控制器
@@ -63,18 +67,18 @@ public class ApplicationController extends ResultController
 
 	/**
 	 * 根据数据源导出相应的Excel列表
+	 *
 	 * @param itemDtoList 数据源
 	 * @return RestResponse
-	 * @throws IOException
 	 */
 	public RestResponse getExportExcel(List<ItemDto> itemDtoList) {
 		User user = getUser();
-		if(null == user) {
+		if (null == user) {
 			return invalidOperationResponse();
 		}
 		byte[] file = ExcelExportHelper.exportItemInfo(itemDtoList);
 		try {
-			return streamResponse(file,user.getUserId() + ".xlsx");
+			return streamResponse(file, user.getUserId() + ".xlsx");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return systemErrResponse();
@@ -136,6 +140,14 @@ public class ApplicationController extends ResultController
 	 */
 	public String getRedirectUrlPath(String url, Map<String, String> parameters) {
 		return buildRouteUrl(url, true, parameters);
+	}
+
+	public boolean isValidImportedRequired(Integer importedRequired) {
+		return IMPORT_EXCEL.equals(importedRequired) || APPLY_SELF.equals(importedRequired);
+	}
+
+	public <T> boolean isEmptyList(List<T> arrayList) {
+		return null == arrayList || arrayList.isEmpty();
 	}
 
 	/**
@@ -204,4 +216,5 @@ public class ApplicationController extends ResultController
 			return DEFAULT_WEB_URL_SEPARATOR + url;
 		}
 	}
+
 }

@@ -20,7 +20,8 @@ import cn.edu.uestc.ostec.workload.service.MultiLevelService;
 public interface MultiLevelObjectAdaptor<D extends AbstractMultiLevelObjectDto> {
 
 	/**
-	 * 对多层级对象按照层级关系进行排序
+	 * 对多层级对象按照层级关系进行排序 </br>
+	 * 有相应的状态限制 </br>
 	 *
 	 * @param service 多层级服务
 	 * @param root    根节点
@@ -45,6 +46,14 @@ public interface MultiLevelObjectAdaptor<D extends AbstractMultiLevelObjectDto> 
 		return root;
 	}
 
+	/**
+	 * 构建树结构（无状态限制） </br>
+	 * 非Disable状态下的所有状态 构建相应的树结构 </br>
+	 * @param root 根节点
+	 * @param service 对应的查询的service
+	 * @return 树结构
+	 * @throws JsonProcessingException
+	 */
 	default D buildValidObjectStructure(D root, MultiLevelService<D> service)
 			throws JsonProcessingException {
 
