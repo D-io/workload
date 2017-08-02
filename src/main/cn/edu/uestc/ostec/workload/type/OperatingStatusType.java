@@ -122,4 +122,12 @@ public interface OperatingStatusType {
 		return statusList;
 	}
 
+	default List<Integer> getImportStatus() {
+		List<Integer> statusList = new ArrayList<>();
+		statusList.addAll(getNormalStatusList());
+		statusList.addAll(getAbnormalStatusList());
+
+		return statusList;
+	}
+
 }

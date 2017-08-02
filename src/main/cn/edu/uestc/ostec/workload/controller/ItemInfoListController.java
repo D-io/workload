@@ -18,15 +18,18 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
+import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.SubjectDto;
+import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
+import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
@@ -59,6 +62,12 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 	@Autowired
 	private HistoryService historyService;
+
+	@Autowired
+	private CategoryService categoryService;
+
+	@Autowired
+	private CategoryConverter categoryConverter;
 
 	/**
 	 * 管理员分页查询所有的条目信息
@@ -148,19 +157,44 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	}
 
 	/**
+	 * 获取导入类的类目信息列表
+	 * @return
+	 */
+	@RequestMapping(value = "import-categories",method = GET)
+	public RestResponse getTeacherImportCategories() {
+
+		User user = getUser();
+		if(null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+		int teacherId = user.getUserId();
+		List<ItemDto> itemDtoList = findItems(IMPORT_EXCEL,getImportStatus(),teacherId);
+		List<Category> categoryList = new ArrayList<>();
+		for(ItemDto itemDto:itemDtoList) {
+			Category category = categoryService.getCategory(itemDto.getCategoryId());
+			if(!categoryList.contains(category)) {
+				categoryList.add(category);
+			}
+		}
+
+		Map<String,Object> data = getData();
+		data.put("categoryList",categoryConverter.poListToDtoList(categoryList));
+
+		return successResponse(data);
+	}
+
+	/**
 	 * 获取对应导入方式对应状态下的条目信息
 	 * @param importedRequired 导入方式
 	 * @param status 状态
 	 * @return itemList
 	 */
-	@RequestMapping(value = "teacherItems", method = GET)
+	@RequestMapping(value = "teacher-items", method = GET)
 	public RestResponse getTeacherItems(
 			@RequestParam("importedRequired") Integer importedRequired,
 			@RequestParam("status") Integer status) {
 
 		User user = getUser();
-		System.out.println(user);
-
 		if (null == user || !isValidImportedRequired(importedRequired)) {
 			return invalidOperationResponse("非法请求");
 		}

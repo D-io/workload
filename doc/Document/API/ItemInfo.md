@@ -227,12 +227,84 @@ data | String | 结果集
 }
 ```
 
-
 ### 获取教师对应导入方式下指定状态的工作量信息
-- 接口地址：`/item/info/teacherItems`
+- 接口地址：`/item/info/import-categories`
 - 支持格式：`json`
 - 请求方式：`GET`
-- 请求示例：`localhost:8080/item/info/teacherItems?importedRequired=1&status=1`
+- 请求示例：`localhost:8080/item/info/import-categories`
+
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+itemList | String | 条目列表
+subjectList | String | 若为存疑或者拒绝状态有相应的消息队列
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200, 
+    "statusName": "OK", 
+    "data": {
+        "categoryList": [
+            {
+                "categoryId": 22, 
+                "name": "个人教学、教研、教改成果奖（含教学竞赛）", 
+                "desc": "教师个人获校级奖，计20工作当量；省级奖再加40工作当量；国家级奖再加100工作当量。", 
+                "parentId": 2, 
+                "isLeaf": "Y", 
+                "importRequired": 1, 
+                "jsonParameters": "[{\"desc\":\"个人获校级奖（个数）\",\"symbol\":\"A\"},{\"desc\":\"个人获省级奖（个数）\",\"symbol\":\"B\"},{\"desc\":\"个人获国家级奖\",\"symbol\":\"C\"}]", 
+                "formulaParameterList": [
+                    {
+                        "desc": "个人获校级奖（个数）", 
+                        "symbol": "A"
+                    }, 
+                    {
+                        "desc": "个人获省级奖（个数）", 
+                        "symbol": "B"
+                    }, 
+                    {
+                        "desc": "个人获国家级奖", 
+                        "symbol": "C"
+                    }
+                ], 
+                "formula": "20*A+40*B+100*C", 
+                "version": "2016-2017-1", 
+                "status": 1, 
+                "reviewDeadline": "2017年07月29日", 
+                "applyDeadline": "2017年07月29日", 
+                "reviewerId": 3210343, 
+                "reviewerName": "张翔", 
+                "children": null, 
+                "otherJson": "[{\"key\":\"获奖项目\",\"value\":\"\"},{\"key\":\"获奖名称\",\"value\":\"\"}]", 
+                "otherJsonParameters": [
+                    {
+                        "key": "获奖项目", 
+                        "value": ""
+                    }, 
+                    {
+                        "key": "获奖名称", 
+                        "value": ""
+                    }
+                ], 
+                "objectId": 22
+            }
+        ]
+    }
+}
+```
+
+
+### 获取教师对应导入方式下指定状态的工作量信息
+- 接口地址：`/item/info/teacher-items`
+- 支持格式：`json`
+- 请求方式：`GET`
+- 请求示例：`localhost:8080/item/info/teacher-items?importedRequired=1&status=1`
 
 - 请求参数具体说明：
 参数名 |类型 | 说明
