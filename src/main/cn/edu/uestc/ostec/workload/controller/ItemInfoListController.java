@@ -412,34 +412,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	}
 
 	/**
-	 * 获取指定条目对应的全部历史操作记录
-	 *
-	 * @param itemId 条目编号
-	 * @return HistoryList
-	 */
-	@RequestMapping(value = "histories", method = GET)
-	public RestResponse getHistories(
-			@RequestParam("itemId")
-					String itemId) {
-
-		User user = getUser();
-		if (null == user) {
-			return invalidOperationResponse("非法请求");
-		}
-
-		List<History> historyList = historyService.getHistoriesByItem(itemId);
-		if (null == historyList || historyList.isEmpty()) {
-			return systemErrResponse("无相关记录");
-		}
-
-		Map<String, Object> data = getData();
-		data.put("historyList", historyList);
-
-		return successResponse(data);
-
-	}
-
-	/**
 	 * 查找对应的老师的对应状态的对应导入方式的工作量条目信息
 	 *
 	 * @param importRequired 导入方式、申报方式
