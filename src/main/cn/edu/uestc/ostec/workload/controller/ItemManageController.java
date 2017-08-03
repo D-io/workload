@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import sun.security.util.DisabledAlgorithmConstraints;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,7 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.I
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGE_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
@@ -165,11 +168,10 @@ public class ItemManageController extends ApplicationController {
 	@RequestMapping(value = "apply-again", method = POST)
 	public RestResponse applyItemsAgain(
 			@RequestParam("itemId")
-					Integer itemId) {
+					Integer itemId,ItemDto itemDto) {
 
 		//TODO 添加学期相关信息，学期切换功能
 
-		//TODO 重新申请将原条目置为Disable状态，创建新的条目进行申请，copy原有数据，若有修改作出相应修改
 		//TODO 对应做AOP的历史记录，记录工作量条目的改变的历史记录
 
 		User user = getUser();
@@ -197,16 +199,36 @@ public class ItemManageController extends ApplicationController {
 			return parameterNotSupportResponse("无法重新申请");
 		}
 
-		item.setStatus(NON_CHECKED);
-		boolean saveSuccess = itemService.saveItem(item);
-		if (!saveSuccess) {
-			return systemErrResponse("重新申请失败");
+		//原条目删除
+		item.setStatus(DELETED);
+
+		//重新申请时新产生的对象
+		itemDto.setItemId(null);
+		itemDto.setStatus(NON_CHECKED);
+
+		Item newItem = itemConverter.dtoToPo(itemDto);
+
+		boolean saveSuccess = itemService.saveItem(newItem);
+		if(!saveSuccess) {
+			return systemErrResponse();
 		}
 
-		Map<String, Object> data = getData();
-		data.put("item", itemConverter.poToDto(item));
+		ItemDto newItemDto = itemConverter.poToDto(newItem);
+
+		Map<String,Object> data = getData();
+		data.put("newItemDto",newItemDto);
 
 		return successResponse(data);
+//		item.setStatus(NON_CHECKED);
+//		boolean saveSuccess = itemService.saveItem(item);
+//		if (!saveSuccess) {
+//			return systemErrResponse("重新申请失败");
+//		}
+//
+//		Map<String, Object> data = getData();
+//		data.put("item", itemConverter.poToDto(item));
+//
+//		return successResponse(data);
 	}
 
 	/**

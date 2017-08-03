@@ -7,6 +7,7 @@
  */
 package cn.edu.uestc.ostec.workload.controller;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -181,6 +182,32 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		data.put("categoryList",categoryConverter.poListToDtoList(categoryList));
 
 		return successResponse(data);
+	}
+
+	/**
+	 * 获取单个条目信息的接口
+	 * @param itemId 条目编号
+	 * @return itemDto
+	 */
+	@RequestMapping(value = "single",method = GET)
+	public RestResponse getSingleItem(@RequestParam("itemId") Integer itemId) {
+
+		User user = getUser();
+		if (null == user ) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		Item item = itemService.findItem(itemId);
+		if(null == item) {
+			return parameterNotSupportResponse("无效参数");
+		}
+
+		ItemDto itemDto = itemConverter.poToDto(item);
+		Map<String,Object> data = getData();
+		data.put("item",itemDto);
+
+		return successResponse(data);
+
 	}
 
 	/**
