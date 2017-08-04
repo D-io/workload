@@ -18,7 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.criteria.Join;
+
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.User;
@@ -59,6 +62,10 @@ public class ItemManageAspectImpl implements IAspect {
 
 	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ItemManageController.updateItemStatus(..))")
 	private void itemStatusUpdatePointCut() {
+	}
+
+	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ItemManageController.applyItemsAgain(..))")
+	private void itemApplyAgainPointCut() {
 	}
 
 	@After("itemSubmitPointCut()")
@@ -114,6 +121,29 @@ public class ItemManageAspectImpl implements IAspect {
 		}
 
 		history.setOperation(operation);
+
+		boolean saveSuccess = historyService.saveHistory(history);
+		if (!saveSuccess) {
+			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
+		} else {
+			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
+		}
+	}
+
+	@After("itemApplyAgainPointCut()")
+	public void recordItemApplyAgain(JoinPoint joinPoint) {
+		Object[] args = joinPoint.getArgs();
+		Integer itemId = (Integer) args[0];
+
+		Item item = itemService.findItem(itemId);
+
+		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
+		Integer userId = user.getUserId();
+		History history = new History();
+		history.setCreateTime(DateHelper.getDateTime());
+		history.setUserId(userId);
+		history.setItemId(itemId.toString());
+		history.setOperation(user.getName() + "于" + history.getCreateTime() + "重新申请工作量条目" + item.getItemName());
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {

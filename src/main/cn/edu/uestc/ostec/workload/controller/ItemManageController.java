@@ -171,7 +171,6 @@ public class ItemManageController extends ApplicationController {
 					Integer itemId,ItemDto itemDto) {
 
 		//TODO 添加学期相关信息，学期切换功能
-
 		//TODO 对应做AOP的历史记录，记录工作量条目的改变的历史记录
 
 		User user = getUser();

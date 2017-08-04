@@ -128,6 +128,12 @@
       <param-name>sslConfigFile</param-name>
       <param-value>E:\ssl\sslconf.properties</param-value>
     </init-param>
+    <!-- 编码配置 -->
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+
   </filter>
   <filter-mapping>
     <filter-name>CASValidationFilter</filter-name>
