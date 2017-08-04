@@ -11,6 +11,7 @@ package cn.edu.uestc.ostec.workload.aspect.impl;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import cn.edu.uestc.ostec.workload.aspect.IAspect;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
+import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
@@ -32,6 +34,7 @@ import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
+import static org.springframework.http.HttpStatus.OK;
 
 /**
  * Version:v1.0 (description:  )
@@ -113,9 +116,11 @@ public class ItemManageAspectImpl implements IAspect {
 
 		String operation = null;
 		if (CHECKED.equals(status)) {
-			operation = user.getName() + "于" + history.getCreateTime() + "通过了工作量" + item.getItemName();
+			operation =
+					user.getName() + "于" + history.getCreateTime() + "通过了工作量" + item.getItemName();
 		} else if (DENIED.equals(status)) {
-			operation = user.getName() + "于" + history.getCreateTime() + "对工作量" + item.getItemName() + "存疑";
+			operation = user.getName() + "于" + history.getCreateTime() + "对工作量" + item.getItemName()
+					+ "存疑";
 		} else {
 
 		}
@@ -130,8 +135,8 @@ public class ItemManageAspectImpl implements IAspect {
 		}
 	}
 
-	@After("itemApplyAgainPointCut()")
-	public void recordItemApplyAgain(JoinPoint joinPoint) {
+	@AfterReturning(returning = "rvt", pointcut = "itemApplyAgainPointCut()")
+	public void recordItemApplyAgain(JoinPoint joinPoint, Object rvt) {
 		Object[] args = joinPoint.getArgs();
 		Integer itemId = (Integer) args[0];
 
@@ -143,13 +148,20 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
 		history.setItemId(itemId.toString());
-		history.setOperation(user.getName() + "于" + history.getCreateTime() + "重新申请工作量条目" + item.getItemName());
+		history.setOperation(
+				user.getName() + "于" + history.getCreateTime() + "重新申请工作量条目" + item.getItemName());
 
-		boolean saveSuccess = historyService.saveHistory(history);
-		if (!saveSuccess) {
-			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
+		RestResponse restResponse = (RestResponse) rvt;
+		int status = restResponse.getStatus();
+		if (OK.value() == status) {
+			boolean saveSuccess = historyService.saveHistory(history);
+			if (!saveSuccess) {
+				LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
+			} else {
+				LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
+			}
 		} else {
-			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
+			return;
 		}
 	}
 
