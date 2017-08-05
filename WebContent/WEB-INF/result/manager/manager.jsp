@@ -18,7 +18,7 @@
     <title>教学工作量计算系统 | </title>
 
     <!-- Bootstrap -->
-    <link href="vendor/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <!-- Font Awesome -->
     <link href="vendor/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
     <!-- bootstrap-progressbar -->
@@ -129,26 +129,17 @@
                             </ul>
                         </li>
 
-                        <li role="presentation" class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-envelope-o"></i>
-                                <span class="badge bg-green">6</span>
-                            </a>
-                            <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                                <li>
-                                    <a>
-                                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                 <%--       <div>
+                            <label>学年学期</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 13px 15px 12px; float: right;">
+                                <select class="form-control" id="isGroup">
+                                    <option value="1">2016-2017-1</option>
+                                    <option value="0">2016-2017-2</option>
+                                    <option value="0">2017-2018-1</option>
+                                    <option value="0">2017-2018-2</option>
+                                </select>
+                            </div>
+                        </div>--%>
                     </ul>
                 </nav>
             </div>
@@ -164,26 +155,30 @@
 
                         <div class="x_panel" style="width: 100%;padding: 10px 17px;">
                             <div class="x_title">
-                                <h2><i class="fa fa-bars"></i> 工作量复核 </h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
+                                <ol class="breadcrumb">
+                                    <li><a href="#"><i class="fa fa-bars"></i>我的工作当量</a></li>
+                                    <li class="active">工作当量复核</li>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                </ol>
+                                <!--<h2><i class="fa fa-bars"></i> 工作当量复核 </h2>-->
+
+                              <!--  <div class="clearfix"></div>-->
                             </div>
                             <div class="x_content">
 
 
                                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                     <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">待复核</a>
+                                        <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">导入复核情况</a>
                                         </li>
-                                        <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">尚存疑</a>
+                                        <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
                                         </li>
-                                        <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">已通过</a>
-                                        </li>
+
                                     </ul>
                                     <div id="myTabContent" class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
@@ -192,9 +187,7 @@
                                         <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
 
                                         </div>
-                                        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
 
-                                        </div>
                                     </div>
                                 </div>
 

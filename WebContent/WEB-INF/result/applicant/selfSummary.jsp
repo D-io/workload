@@ -8,15 +8,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel" style="width: 100%;padding: 10px 17px;">
     <div class="x_title">
-        <h2><i class="fa fa-bars"></i> 个人工作量汇总 &nbsp;&nbsp;<h4>总工作量：</h4><span class="totalWorkload"></span></h2>
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
-        </ul>
-        <div class="clearfix"></div>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-bars"></i>我的工作当量</a></li>
+            <li class="active">个人工作量汇总 </li>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+        </ol>
+        <h4>总工作量：</h4><span class="totalWorkload"></span>
+      <!--  <div class="clearfix"></div>-->
     </div>
+
     <div class="x_content">
         <div class="x_content" id="showsumitem" style="display: block;">
 

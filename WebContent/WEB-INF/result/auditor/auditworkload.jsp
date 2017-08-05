@@ -8,17 +8,38 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel" style="width: 100%;padding: 10px 17px;">
     <div class="x_title">
-        <h2><i class="fa fa-bars"></i> 工作量审核 </h2>
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
-        </ul>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-bars"></i>工作当量管理</a></li>
+            <li class="active">工作当量审核</li>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+        </ol>
         <div class="clearfix"></div>
     </div>
     <div class="x_content" id="showapplyitem" style="display: block;">
+        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">申报审核情况</a>
+                </li>
+                <li role="presentation" class="" onclick="applyRec()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
+                </li>
 
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+
+                </div>
+
+
+            </div>
+        </div>
 
     </div>
     <div class="modal fade" id="refuseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
