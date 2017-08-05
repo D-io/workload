@@ -9,6 +9,8 @@
 
 package cn.edu.uestc.ostec.workload.aspect.impl;
 
+import com.sun.org.apache.regexp.internal.RE;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -71,19 +73,24 @@ public class ItemManageAspectImpl implements IAspect {
 	private void itemApplyAgainPointCut() {
 	}
 
-	@After("itemSubmitPointCut()")
-	public void recordItemSubmit(JoinPoint joinPoint) {
+	@AfterReturning(returning = "rvt", pointcut = "itemSubmitPointCut()")
+	public void recordItemSubmit(JoinPoint joinPoint, Object rvt) {
 
+		RestResponse restResponse = (RestResponse) rvt;
+		if (OK.value() != restResponse.getStatus()) {
+			return;
+		}
 		Object[] args = getParameters(joinPoint);
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 
 		for (Object arg : args) {
-			Item item = itemService.findItem((Integer) arg);
+			Integer itemId = (Integer) arg;
+			Item item = itemService.findItem(itemId);
 
 			History history = new History();
-			history.setItemId(arg.toString());
+			history.setItemId(buildHistoryItemId(itemId));
 			history.setUserId(userId);
 			history.setCreateTime(DateHelper.getDateTime());
 			history.setOperation(user.getName() + "于" + history.getCreateTime() + "提交了工作量条目" + item
@@ -97,8 +104,13 @@ public class ItemManageAspectImpl implements IAspect {
 		}
 	}
 
-	@After("itemStatusUpdatePointCut()")
-	public void recordItemsStatusChange(JoinPoint joinPoint) {
+	@AfterReturning(returning = "rvt", pointcut = "itemStatusUpdatePointCut()")
+	public void recordItemsStatusChange(JoinPoint joinPoint, Object rvt) {
+
+		RestResponse restResponse = (RestResponse) rvt;
+		if (OK.value() != restResponse.getStatus()) {
+			return;
+		}
 
 		Object[] args = joinPoint.getArgs();
 		Integer itemId = (Integer) args[0];
@@ -111,7 +123,7 @@ public class ItemManageAspectImpl implements IAspect {
 
 		History history = new History();
 		history.setUserId(userId);
-		history.setItemId(itemId.toString());
+		history.setItemId(buildHistoryItemId(itemId));
 		history.setCreateTime(DateHelper.getDateTime());
 
 		String operation = null;
@@ -137,6 +149,13 @@ public class ItemManageAspectImpl implements IAspect {
 
 	@AfterReturning(returning = "rvt", pointcut = "itemApplyAgainPointCut()")
 	public void recordItemApplyAgain(JoinPoint joinPoint, Object rvt) {
+
+		RestResponse restResponse = (RestResponse) rvt;
+		int status = restResponse.getStatus();
+		if (OK.value() != status) {
+			return;
+		}
+
 		Object[] args = joinPoint.getArgs();
 		Integer itemId = (Integer) args[0];
 
@@ -151,18 +170,12 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setOperation(
 				user.getName() + "于" + history.getCreateTime() + "重新申请工作量条目" + item.getItemName());
 
-		RestResponse restResponse = (RestResponse) rvt;
-		int status = restResponse.getStatus();
-		if (OK.value() == status) {
-			boolean saveSuccess = historyService.saveHistory(history);
-			if (!saveSuccess) {
-				LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
-			} else {
-				LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
-			}
+		boolean saveSuccess = historyService.saveHistory(history);
+		if (!saveSuccess) {
+			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
 		} else {
-			return;
+			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
 		}
 	}
-
 }
+
