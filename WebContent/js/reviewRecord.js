@@ -15,11 +15,11 @@ function workRevie(){
 
     });
     $.get("/category/info/list", function (data) {
-       // var showlist=$("<ul></ul>");
-        showimportall(data.data.categoryTree);
-        //$('#tab_content1').append(showlist);
+       var showlist=$("<ul></ul>");
+        showimportall(data.data.categoryTree,showlist);
+        $('#tab_content1').append(showlist);
 
-function  showimportall(item) {
+/*function  showimportall(item) {
     for(var i=0;i<item.length;i++){
         if(item[i].importRequired==1){
             $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+"</li>");
@@ -86,7 +86,7 @@ function  showimportall(item) {
                             var act = "<a class=\"btn btn-success sure\" id=\"pass_'" + Info.itemId + "'\">确认通过</a><a class=\"btn btn-danger LeaveQues\" data-toggle=\"modal\" data-target=\"#refuModal\" id=\"refuse_'" + Info.itemId + "'\">存疑提交</a> ";
                             $(".tbody_" + data.data.itemList[applyItemCount].categoryId + " tr:last td:eq(7)").append(act);
                         }
-                        /*
+
                          var abnormaldata = showdata(data.data.itemList);
                          $('.mymodaldata').append(abnormaldata);
                          $(".btn-success").on("click", function () {
@@ -116,7 +116,7 @@ function  showimportall(item) {
                          });
 
                          })
-                         */
+
 
                     }
                 });
@@ -126,12 +126,40 @@ function  showimportall(item) {
             showimportall(item[i].children);
         }
     }
-}
+}*/
+        function showimportall(menu_list, parent) {
+            for (var menu in menu_list) {
+                //如果有子节点，则遍历该子节点
+                if (menu_list[menu].children.length > 0) {
+                    var isShow=traverseNode(menu_list[menu],1);
+                    if(isShow==1) {
+                        var li = $("<li></li>");
+                        $(li).append(menu_list[menu].name).append("<ul></ul>").appendTo(parent);
+
+
+                    }
+                    showimportall(menu_list[menu].children, $(li).children().eq(0));
+                }
+                //如果该节点没有子节点，则直接将该节点li以及文本创建好直接添加到父亲节点中
+                else if(menu_list[menu].importRequired==1){
+                    $("<li></li>").append(menu_list[menu].name).appendTo(parent);
+                }
+            }
+        }
+/*        function returnType(menu_list) {
+            for (var menu in menu_list) {
+                if (menu_list[menu].children&&menu_list[menu].children.length>0) {
+                    return returnType(menu_list[menu].children);
+                }
+                else if(menu_list[menu].importRequired==1){
+                    return menu_list[menu].importRequired;
+                }
+            }
+
+        }*/
+
 
     });
-
-
-
 /*
     $('.confirm').click(function () {
         var classname=this.id;
@@ -191,8 +219,6 @@ function  showimportall(item) {
         });
 
     });
-
-
 }
 function  reviewerRec() {
     $('.right_col').empty();
@@ -284,55 +310,81 @@ function applyworkload() {
     });
     */
     $.get("/category/info/list", function (data) {
+        var parent=$("<ul></ul>");
+        showapplyall(data.data.categoryTree,parent);
+       $("#tab_content1").append(parent);
+       function showapplyall(menu_list,parent) {
+           for (var menu=0;menu<menu_list.length;menu++) {
+               //如果有子节点，则遍历该子节点
+               if (menu_list[menu].children.length > 0) {
+                   var isShow=traverseNode(menu_list[menu],0);
+                   if(isShow==0) {
+                       var li = $("<li></li>");
+                       $(li).append(menu_list[menu].name).append("<ul></ul>").appendTo(parent);
 
-        showapplyall(data.data.categoryTree);
+                   }
+                   showapplyall(menu_list[menu].children, $(li).children().eq(0));
+               }
+               else if(menu_list[menu].importRequired==0){
+                   $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='#applyModal' style='float: right;'>点击申报</button><div style='clear: both;'></div>").appendTo(parent);
+               }
+
+           }
+        }
+ /*                   for(var menu=0;menu<menu_list.children.length;menu++) {
+                        if(menu_list.children[menu].importRequired == 0) {
+                            break;
+                        }
+                         else {
+                            returnType(menu_list.children[menu]);
+                        }
+                    }
+            return 0;*/
+
+ /* function showapplyall(item, parent) {
+             for (var menu in item) {
+
+             //如果有子节点，则遍历该子节点
+             if (item[menu].children.length > 0) {
+             //创建一个子节点li
+             var li = $("<li class='"+item[menu].categoryId+"'></li>");
+             if (item[menu].formula) {
+             if(item[menu].importRequired==1) {
+             $(li).append(item[menu].name +"</hr>"+item[menu].desc + "<div class='col-sm-12'><button type='button' id='" + item[menu].categoryId + "' class='btn btn-primary view_detail' data-toggle='modal' data-target='#myModal' onclick='showitemgroup(this)'>查看明细</button></div>").append("<ul></ul>").appendTo(parent);
+             }
+             else
+             $(li).append(item[menu].name + item[menu].desc).append("<ul></ul>").appendTo(parent);
 
 
-        /*
-         function showimportall(item, parent) {
-         for (var menu in item) {
 
-         //如果有子节点，则遍历该子节点
-         if (item[menu].children.length > 0) {
-         //创建一个子节点li
-         var li = $("<li class='"+item[menu].categoryId+"'></li>");
-         if (item[menu].formula) {
-         if(item[menu].importRequired==1) {
-         $(li).append(item[menu].name +"</hr>"+item[menu].desc + "<div class='col-sm-12'><button type='button' id='" + item[menu].categoryId + "' class='btn btn-primary view_detail' data-toggle='modal' data-target='#myModal' onclick='showitemgroup(this)'>查看明细</button></div>").append("<ul></ul>").appendTo(parent);
-         }
-         /* else
-         $(li).append(item[menu].name + item[menu].desc).append("<ul></ul>").appendTo(parent);
+             }
+             //将li的文本设置好，并马上添加一个空白的ul子节点，并且将这个li添加到父亲节点中
+             else {
+             $(li).append(item[menu].name + item[menu].desc).append("<ul></ul>").appendTo(parent);
+             }
+             //将空白的ul作为下一个递归遍历的父亲节点传入
+             showapplyall(item[menu].children, $(li).children().eq(0));
+             }
 
+             //如果该节点没有子节点，则直接将该节点li以及文本创建好直接添加到父亲节点中
+             else {
+             if (item[menu].formula) {
 
+             if (item[menu].importRequired == 1) {
+             $("<li class='"+item[menu].categoryId+"'></li>").append(item[menu].name + "</hr>"+item[menu].desc + "<div class='col-sm-12'><button type='button' id='" + item[menu].categoryId + " 'class='btn btn-primary view_detail'data-toggle='modal' data-target='#myModal' onclick='showitemgroup(this)'>查看明细</button></div>").appendTo(parent);
+             }
+             else
+             $("<li class='"+item[menu].categoryId+"'></li>").append(item[menu].name + item[menu].desc).appendTo(parent);
 
-         }
-         //将li的文本设置好，并马上添加一个空白的ul子节点，并且将这个li添加到父亲节点中
-         else {
-         $(li).append(item[menu].name + item[menu].desc).append("<ul></ul>").appendTo(parent);
-         }
-         //将空白的ul作为下一个递归遍历的父亲节点传入
-         showall(item[menu].children, $(li).children().eq(0));
-         }
+             }
+             else {
+             $("<li class='"+item[menu].categoryId+"'></li>").append(item[menu].name + "</hr>"+item[menu].desc).appendTo(parent);
+             }
+             }
 
-         //如果该节点没有子节点，则直接将该节点li以及文本创建好直接添加到父亲节点中
-         else {
-         if (item[menu].formula) {
+             }
+             }*/
 
-         if (item[menu].importRequired == 1) {
-         $("<li class='"+item[menu].categoryId+"'></li>").append(item[menu].name + "</hr>"+item[menu].desc + "<div class='col-sm-12'><button type='button' id='" + item[menu].categoryId + " 'class='btn btn-primary view_detail'data-toggle='modal' data-target='#myModal' onclick='showitemgroup(this)'>查看明细</button></div>").appendTo(parent);
-         }
-         /* else
-         $("<li class='"+item[menu].categoryId+"'></li>").append(item[menu].name + item[menu].desc).appendTo(parent);
-
-         }
-         else {
-         $("<li class='"+item[menu].categoryId+"'></li>").append(item[menu].name + "</hr>"+item[menu].desc).appendTo(parent);
-         }
-         }
-
-         }
-         }
-         */
 /*
         function showimportall(menu_list, parent) {
             for (var menu in menu_list) {
@@ -366,39 +418,18 @@ function applyworkload() {
         }
         */
 
-        function  showapplyall(item) {
+/*        function  showapplyall(item) {
             for(var i=0;i<item.length;i++){
                 if(item[i].importRequired==0){
                     $('#tab_content1').append("<li class='item_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+"<button class='btn btn-primary apply' id='apply_"+item[i].categoryId+"' style='float: right;' data-toggle='modal' data-target='#applyModal'>点击申报</button><div style='clear: both;'></div></li>");
-/*
-                    var rowInfo="<tr></tr>";
-                    var cellInfo="<td></td>";
-
-                        $(".hidestr").append(rowInfo);
-
-                        for(var j=0;j<2;j++)//单元格
-                        {
-                            $(".hidestr tr:last").append(cellInfo);
-                        }
-                        var o='';
-                        var p='';
-                        if(item[i].otherJsonParameters){
-                            for(var k=0;k<item[i].otherJsonParameters.length;k++){
-
-                                $(".hidestr tr:last td:eq(1)").append("<li class='other_"+item[i].categoryId+"'>"+ item[i].otherJsonParameters[k].key+"</li>");
-
-                            }
-
-                        }
-                        */
-
 
                 }
                 if(item[i].children){
                     showapplyall(item[i].children);
                 }
             }
-        }
+        }*/
+
         $(document).on("click",".apply",function () {
             //$(".panel-default").toggle("show");
             $('.applymodalbody').empty();
@@ -417,7 +448,7 @@ function applyworkload() {
 
         function comparePara(item,para){
             for(var comp=0;comp<item.length;comp++){
-                if(item[comp].categoryId==para){
+                if(item[comp].categoryId==para&&item[comp].formulaParameterList&&item[comp].otherJsonParameters){
 
                     for(var t=0;t<item[comp].formulaParameterList.length;t++){
                         var symbolname=item[comp].formulaParameterList[t].symbol;
@@ -592,15 +623,27 @@ function showapplydata(item) {
     }
     return abnormaldata;
 }
+function traverseNode(rootNode,targetType)
+{
+    var resultType=2; //using as the flag of partent node's type
+    //开始遍历
+    if(rootNode.children.length==0&&rootNode.importRequired==targetType)
+    {
+        //this means rootnode is leaf node
+        return rootNode.importRequired;
+    }else
+    {
+        //recursion
+        for(var i=0;i<rootNode.children.length;i++)
+        {
+            //there we can print the child type
+            //和目标类型对比，只要有一个一样，就把当前节点的 reslulate 设置为目标类型
+            if(targetType == traverseNode(rootNode.children[i],targetType))
+                resultType=targetType;
 
+        }
 
+    }
+    return resultType;
 
-
-
-
-
-
-
-
-
-
+}
