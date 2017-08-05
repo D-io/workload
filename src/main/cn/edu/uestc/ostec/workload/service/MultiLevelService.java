@@ -26,7 +26,7 @@ public interface MultiLevelService<D extends AbstractMultiLevelObjectDto>
 	 * @param parentId 父节点的编号
 	 * @return 返回特定的DTO信息，默认返回空对象
 	 */
-	List<D> getDtoObjects(Integer status,Integer parentId);
+	List<D> getDtoObjects(Integer status,Integer parentId,String version);
 
 	/**
 	 * 根据节点Id获取dto对象
@@ -40,6 +40,6 @@ public interface MultiLevelService<D extends AbstractMultiLevelObjectDto>
 	 * @param parentId 父节点
 	 * @return List<CategoryDto>
 	 */
-	List<D> getDtoObjects(Integer parentId);
+	List<D> getDtoObjects(Integer parentId,String version);
 
 }

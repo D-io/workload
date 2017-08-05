@@ -18,7 +18,6 @@ import cn.edu.uestc.ostec.workload.WorkloadObjects;
 
 /**
  * Description: session监听器
- * Version:v1.0 (author:刘文哲 update: 无 )
  */
 public class WorkloadSessionListener implements HttpSessionListener, WorkloadObjects, SessionConstants {
 
@@ -31,6 +30,7 @@ public class WorkloadSessionListener implements HttpSessionListener, WorkloadObj
 	public void sessionCreated(HttpSessionEvent httpSessionEvent) {
 
 		session = httpSessionEvent.getSession();
+		//TODO 根据当前时间判断学年和学期
 		session.setAttribute(SESSION_CURRENT_YEAR,"2017-2018");
 		session.setAttribute(SESSION_CURRENT_SCHEME,1);
 

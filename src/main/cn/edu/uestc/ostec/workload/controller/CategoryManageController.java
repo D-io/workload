@@ -153,7 +153,7 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		//获取状态为SUBMITTED的工作量条目
-		List<Category> categoryList = categoryService.getCategoriesByStatus(SUBMITTED);
+		List<Category> categoryList = categoryService.getCategoriesByStatus(SUBMITTED,getCurrentSemester());
 
 		//修改相应的状态
 		for (Category category : categoryList) {

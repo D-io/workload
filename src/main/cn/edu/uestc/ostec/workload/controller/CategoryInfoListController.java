@@ -111,7 +111,7 @@ public class CategoryInfoListController extends ApplicationController
 			data.put("categoryTree", getCategoryDto(null, ROOT));
 		} else {
 			//获取状态为Disable的工作量类目信息
-			List<CategoryDto> categoryDtos = categoryConverter.poListToDtoList(categoryService.getCategoriesByStatus(DELETED));
+			List<CategoryDto> categoryDtos = categoryConverter.poListToDtoList(categoryService.getCategoriesByStatus(DELETED,getCurrentSemester()));
 			for(CategoryDto categoryDto:categoryDtos) {
 				categoryDto.setOtherJson(null);
 				categoryDto.setJsonParameters(null);
@@ -130,7 +130,7 @@ public class CategoryInfoListController extends ApplicationController
 	@RequestMapping(value = "parent-brief", method = GET)
 	public RestResponse getParentCategories() {
 
-		List<Category> categoryList = categoryService.getAllValidCategory();
+		List<Category> categoryList = categoryService.getAllValidCategory(getCurrentSemester());
 
 		if (null == categoryList) {
 			return successResponse("无配置好的父类");
@@ -156,10 +156,10 @@ public class CategoryInfoListController extends ApplicationController
 
 		if (null == status) {
 			//由父节点获取状态有效的子节点对应的dto对象
-			categoryDtoList = categoryService.getDtoObjects(parentId);
+			categoryDtoList = categoryService.getDtoObjects(parentId,getCurrentSemester());
 		} else {
 			//由父节点和状态值查询对应的子节点dto对象
-			categoryDtoList = categoryService.getDtoObjects(status, parentId);
+			categoryDtoList = categoryService.getDtoObjects(status, parentId,getCurrentSemester());
 		}
 
 		if (categoryDtoList.size() < 0) {

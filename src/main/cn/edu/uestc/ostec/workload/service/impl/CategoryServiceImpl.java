@@ -68,33 +68,37 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	}
 
 	@Override
-	public List<Category> getCategoryChildren(Integer status, Integer parentId) {
-
-		return listResult(categoryDao.selectChildren(status, parentId));
+	public List<Category> getCategoryChildren(Integer status, Integer parentId,String version) {
+//		return listResult(categoryDao.selectChildren(status,parentId));
+		return listResult(categoryDao.select(null,null,parentId,null,status,version));
 	}
 
 	@Override
-	public List<Category> getCategoriesByStatus(Integer status) {
+	public List<Category> getCategoriesByStatus(Integer status,String version) {
 
-		return listResult(categoryDao.selectByStatus(status));
+		//return listResult(categoryDao.selectByStatus(status));
+		return listResult(categoryDao.select(null,null,null,null,status,version));
 	}
 
 	@Override
-	public List<Category> getCategoriesByType(Integer importRequired) {
+	public List<Category> getCategoriesByType(Integer importRequired,String version) {
 
-		return listResult(categoryDao.selectByImportRequired(importRequired));
+		//return listResult(categoryDao.selectByImportRequired(importRequired));
+		return listResult(categoryDao.select(null,null,null,importRequired,null,version));
 	}
 
 	@Override
-	public List<Category> getCategoriesByReviewer(Integer reviewerId) {
+	public List<Category> getCategoriesByReviewer(Integer reviewerId,String version) {
 
-		return listResult(categoryDao.selectByReviewer(reviewerId));
+		//return listResult(categoryDao.selectByReviewer(reviewerId));
+		return listResult(categoryDao.select(null,reviewerId,null,null,null,version));
 	}
 
 	@Override
-	public List<Category> getAllValidCategory() {
+	public List<Category> getAllValidCategory(String version) {
 
-		return listResult(categoryDao.selectAll());
+		//return listResult(categoryDao.selectAll());
+		return listResult(categoryDao.selectAll(version));
 	}
 
 	/**
@@ -105,10 +109,11 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	 * @return list
 	 */
 	@Override
-	public List<CategoryDto> getDtoObjects(Integer status, Integer parentId) {
+	public List<CategoryDto> getDtoObjects(Integer status, Integer parentId,String version) {
 
-		return listResult(
-				categoryConverter.poListToDtoList(categoryDao.selectChildren(status, parentId)));
+//		return listResult(
+//				categoryConverter.poListToDtoList(categoryDao.selectChildren(status, parentId)));
+		return listResult(categoryConverter.poListToDtoList(categoryDao.select(null,null,parentId,null,status,version)));
 	}
 
 	/**
@@ -129,7 +134,9 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	 * @param parentId 父节点
 	 * @return List
 	 */
-	public List<CategoryDto> getDtoObjects(Integer parentId) {
-		return categoryConverter.poListToDtoList(categoryDao.selectValidChildren(parentId));
+	@Override
+	public List<CategoryDto> getDtoObjects(Integer parentId,String version) {
+//		return categoryConverter.poListToDtoList(categoryDao.selectValidChildren(parentId));
+		return listResult(categoryConverter.poListToDtoList(categoryDao.select(null,null,parentId,null,null,version)));
 	}
 }

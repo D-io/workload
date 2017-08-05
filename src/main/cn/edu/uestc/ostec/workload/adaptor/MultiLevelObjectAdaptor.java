@@ -9,6 +9,7 @@
 package cn.edu.uestc.ostec.workload.adaptor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.Version;
 
 import java.util.List;
 import cn.edu.uestc.ostec.workload.dto.AbstractMultiLevelObjectDto;
@@ -31,7 +32,7 @@ public interface MultiLevelObjectAdaptor<D extends AbstractMultiLevelObjectDto> 
 			throws JsonProcessingException {
 
 		//以当前对象作为根节点获取子节点
-		List<D> categoryList = service.getDtoObjects(root.getStatus(),root.getObjectId());
+		List<D> categoryList = service.getDtoObjects(root.getStatus(),root.getObjectId(), root.getVersion());
 
 		//存在子节点则递归查询
 		if (categoryList.size() > 0) {
@@ -58,7 +59,7 @@ public interface MultiLevelObjectAdaptor<D extends AbstractMultiLevelObjectDto> 
 			throws JsonProcessingException {
 
 		//以当前对象作为根节点获取子节点
-		List<D> categoryList = service.getDtoObjects(root.getObjectId());
+		List<D> categoryList = service.getDtoObjects(root.getObjectId(),root.getVersion());
 
 		//存在子节点则递归查询
 		if (categoryList.size() > 0) {

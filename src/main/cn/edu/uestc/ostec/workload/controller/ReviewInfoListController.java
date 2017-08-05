@@ -129,7 +129,7 @@ public class ReviewInfoListController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		List<Category> categoryList = categoryService.getCategoriesByReviewer(user.getUserId());
+		List<Category> categoryList = categoryService.getCategoriesByReviewer(user.getUserId(),getCurrentSemester());
 		if (categoryList.isEmpty()) {
 			return invalidOperationResponse();
 		}
@@ -308,7 +308,7 @@ public class ReviewInfoListController extends ApplicationController {
 			Integer status) {
 
 		//获取审核人负责的Category类目信息
-		List<Category> categoryList = categoryService.getCategoriesByReviewer(reviewerId);
+		List<Category> categoryList = categoryService.getCategoriesByReviewer(reviewerId,getCurrentSemester());
 		if (categoryList.isEmpty()) {
 			return null;
 		}

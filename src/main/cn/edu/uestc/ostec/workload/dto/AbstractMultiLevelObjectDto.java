@@ -50,4 +50,5 @@ public abstract class AbstractMultiLevelObjectDto<T> {
 	 */
 	public abstract void setChildren(List<T> children);
 
+	public abstract String getVersion();
 }

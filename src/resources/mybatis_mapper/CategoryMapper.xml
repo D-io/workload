@@ -24,6 +24,31 @@
     status, review_deadline, apply_deadline,reviewer_id,other_json
   </sql>
 
+  <select id="select" resultMap="categoryResultMap">
+    SELECT * FROM category
+    <where>
+      1 = 1
+      <if test="null != categoryId">
+        AND category_id = #{categoryId}
+      </if>
+      <if test="null != reviewerId">
+        AND reviewer_id = #{reviewerId}
+      </if>
+      <if test="null != parentId">
+        AND parent_id = #{parentId}
+      </if>
+      <if test="null != importedRequired">
+        AND import_required = #{importedRequired}
+      </if>
+      <if test="null != status">
+        AND status = #{status}
+      </if>
+      <if test="null != version">
+        AND version = #{version}
+      </if>
+    </where>
+  </select>
+
   <delete id="delete">
     delete from category
     where category_id = #{categoryId,jdbcType=INTEGER}
@@ -61,13 +86,13 @@
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
 
-  <select id="select" resultMap="categoryResultMap">
-    select * from category
-    where category_id = #{categoryId,jdbcType=INTEGER}
-  </select>
+  <!--<select id="select" resultMap="categoryResultMap">-->
+    <!--select * from category-->
+    <!--where category_id = #{categoryId,jdbcType=INTEGER}-->
+  <!--</select>-->
 
   <select id="selectAll" resultMap="categoryResultMap">
-  	select * from category where status != -1
+  	select * from category where status != -1 and version = #{version}
   </select>
 
   <select id="selectChildren" resultMap="categoryResultMap">

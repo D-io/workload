@@ -53,28 +53,33 @@ public interface CategoryService extends MultiLevelService<CategoryDto> {
 	 * @param parentId 父节点Id
 	 * @return List<Category>
 	 */
-	List<Category> getCategoryChildren(Integer status, Integer parentId);
+	List<Category> getCategoryChildren(Integer status, Integer parentId,String version);
 
 	/**
 	 * 查询删除的全部工作量条目(工作量状态为-1)
 	 * @param status 状态值
 	 * @return List<Category>
 	 */
-	List<Category> getCategoriesByStatus(Integer status);
+	List<Category> getCategoriesByStatus(Integer status,String version);
 
 	/**
 	 * 根据工作量类型查询工作量条目
 	 * @param importRequired 标识工作量为审核类：0；还是复核类：1
 	 * @return List<Category>
 	 */
-	List<Category> getCategoriesByType(Integer importRequired);
+	List<Category> getCategoriesByType(Integer importRequired,String version);
 
 	/**
 	 * 根据审核人编号查询对应的工作量条目
 	 * @param reviewerId 审核人编号
 	 * @return List<Category>
 	 */
-	List<Category> getCategoriesByReviewer(Integer reviewerId);
+	List<Category> getCategoriesByReviewer(Integer reviewerId,String version);
 
-	List<Category> getAllValidCategory();
+	/**
+	 *
+	 * @param version
+	 * @return
+	 */
+	List<Category> getAllValidCategory(String version);
 }

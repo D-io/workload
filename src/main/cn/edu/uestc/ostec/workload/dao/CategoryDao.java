@@ -37,14 +37,14 @@ public interface CategoryDao extends BaseDao<Category> {
 	@Override
 	Boolean delete(Integer id);
 
-	/**
-	 * 根据主键查询工作量条目
-	 *
-	 * @param id 工作量条目Id
-	 * @return Category
-	 */
-	@Override
-	Category select(Integer id);
+//	/**
+//	 * 根据主键查询工作量条目
+//	 *
+//	 * @param id 工作量条目Id
+//	 * @return Category
+//	 */
+//	@Override
+//	Category select(Integer id);
 
 	/**
 	 * 根据主键修改工作量状态
@@ -88,7 +88,7 @@ public interface CategoryDao extends BaseDao<Category> {
 	 */
 	List<Category> selectByStatus(Integer status);
 
-	List<Category> selectAll();
+	List<Category> selectAll(String version);
 
 	/**
 	 * 根据工作量类型查询工作量条目
@@ -105,4 +105,18 @@ public interface CategoryDao extends BaseDao<Category> {
 	 * @return List<Category>
 	 */
 	List<Category> selectByReviewer(Integer reviewerId);
+
+	List<Category> select(
+			@Param("categoryId")
+					Integer categoryId,
+			@Param("reviewerId")
+					Integer reviewerId,
+			@Param("parentId")
+					Integer parentId,
+			@Param("importedRequired")
+					Integer importedRequired,
+			@Param("status")
+					Integer status,
+			@Param("version")
+					String version);
 }

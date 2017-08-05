@@ -16,8 +16,7 @@ import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_IDENTIFI
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
 
 /**
- * Description:标准session域属性上下文
- * Version:v1.0 (author:刘文哲 update: 无 )
+ * Description:标准session域属性上下文 Version:v1.0 (author:刘文哲 update: 无 )
  */
 public interface StandardSessionAttributeContext extends ServletContextAdapter {
 
@@ -27,7 +26,7 @@ public interface StandardSessionAttributeContext extends ServletContextAdapter {
 	 * @return 返回当前用户信息对象，不存在则返回null
 	 */
 	default User getUser() {
-		
+
 		return (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 	}
 
@@ -43,26 +42,29 @@ public interface StandardSessionAttributeContext extends ServletContextAdapter {
 
 	/**
 	 * 获取当前学年
+	 *
 	 * @return 学年对应的字符串
 	 */
-	default String getCurrentYear(){
+	default String getCurrentYear() {
 		return (String) getSessionContext().getAttribute(SESSION_CURRENT_YEAR);
 	}
 
 	/**
 	 * 获取当前学期
+	 *
 	 * @return 学期对应的整形数据
 	 */
-	default Integer getCurrentScheme(){
+	default Integer getCurrentScheme() {
 		return (Integer) getSessionContext().getAttribute(SESSION_CURRENT_SCHEME);
 	}
 
 	/**
 	 * 获取version
+	 *
 	 * @return version对应的字符串
 	 */
 	default String getCurrentSemester() {
-		return getCurrentYear() + getCurrentScheme().toString();
+		return getCurrentYear() + "-" + getCurrentScheme().toString();
 	}
 
 }
