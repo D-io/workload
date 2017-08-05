@@ -129,7 +129,8 @@ public class ReviewInfoListController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		List<Category> categoryList = categoryService.getCategoriesByReviewer(user.getUserId(),getCurrentSemester());
+		List<Category> categoryList = categoryService
+				.getCategoriesByReviewer(user.getUserId(), getCurrentSemester());
 		if (categoryList.isEmpty()) {
 			return invalidOperationResponse();
 		}
@@ -141,9 +142,9 @@ public class ReviewInfoListController extends ApplicationController {
 		List<CategoryBrief> categoryBriefs = new ArrayList<>();
 		for (Category category : categoryList) {
 			categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName()));
-			if(APPLY_SELF.equals(category.getImportRequired())) {
+			if (APPLY_SELF.equals(category.getImportRequired())) {
 				applyCategories.add(category);
-			} else if(IMPORT_EXCEL.equals(category.getImportRequired())) {
+			} else if (IMPORT_EXCEL.equals(category.getImportRequired())) {
 				importCategories.add(category);
 			} else {
 				return null;
@@ -152,8 +153,8 @@ public class ReviewInfoListController extends ApplicationController {
 
 		Map<String, Object> data = getData();
 		data.put("categoryList", categoryBriefs);
-		data.put("importCategories",importCategories);
-		data.put("applyCategories",applyCategories);
+		data.put("importCategories", importCategories);
+		data.put("applyCategories", applyCategories);
 
 		return successResponse(data);
 	}
@@ -226,13 +227,77 @@ public class ReviewInfoListController extends ApplicationController {
 	//	}
 
 	/**
-	 * 条件查询
+	 * 不使用分页查询进行相关条件查询
+	 *
+	 * @param categoryId 类目编号
+	 * @param isGroup    是否为小组
+	 * @param ownerId    所属人编号
+	 * @param isExport   是否导出
+	 * @return itemDtoList
+	 */
+	@RequestMapping(value = "items-all", method = GET)
+	public RestResponse getAllItems(
+			@RequestParam(required = false)
+					Integer categoryId,
+			@RequestParam(required = false)
+					Integer isGroup,
+			@RequestParam(required = false)
+					Integer ownerId,
+			@RequestParam(required = false)
+					String isExport) {
+
+		// 用户验证
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
+		int userId = user.getUserId();
+
+		List<ItemDto> itemDtoList = itemService
+				.findAll(categoryId, null, ownerId, isGroup, getCurrentSemester());
+
+		List<ItemDto> removeItemDtoList = new ArrayList<>();
+
+		//获取审核人对应的负责的类目下的对应的条目信息
+		if (null == categoryId) {
+			for (ItemDto itemDto : itemDtoList) {
+				//判断条目对应的审核人是否为当前登录的用户
+				if (!itemDto.getReviewerId().equals(userId)) {
+					removeItemDtoList.add(itemDto);
+				}
+			}
+			itemDtoList.removeAll(removeItemDtoList);
+		}
+
+		double workload = ZERO_DOUBLE;
+		for (ItemDto itemDto : itemDtoList) {
+			Integer status = itemDto.getStatus();
+			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
+				workload += itemDto.getWorkload();
+			}
+		}
+
+		Map<String, Object> data = getData();
+		if (null == isExport) {
+			data.put("itemDtoList", itemDtoList);
+			data.put("totalWorkload", workload);
+			return successResponse(data);
+		} else if ("yes".equals(isExport)) {
+			return getExportExcel(itemDtoList);
+		} else {
+			return parameterNotSupportResponse("参数有误");
+		}
+
+	}
+
+	/**
+	 * 条件查询 & 分页查询
 	 *
 	 * @param categoryId 类目编号
 	 * @param ownerId    教师编号
 	 * @return RestResponse
 	 */
-	@RequestMapping(value = "items-all", method = GET)
+	@RequestMapping(value = "items-all/paginate", method = GET)
 	public RestResponse getAllItems(
 			@RequestParam(required = false)
 					Integer categoryId,
@@ -257,7 +322,7 @@ public class ReviewInfoListController extends ApplicationController {
 		pageSize = (null == pageSize ? 1000000 : pageSize);
 		pageNum = (null == pageNum ? 1 : pageNum);
 
-		Map<String,Object> info = itemService
+		Map<String, Object> info = itemService
 				.findAll(categoryId, null, ownerId, isGroup, pageNum, pageSize);
 		List<Item> itemList = (List<Item>) info.get("itemList");
 		Integer pageCount = (Integer) info.get("pageCount");
@@ -282,13 +347,13 @@ public class ReviewInfoListController extends ApplicationController {
 			}
 		}
 
-		if(null == isExport) {
+		if (null == isExport) {
 			data.put("itemDtoList", itemDtoList);
 			data.put("pageCount", pageCount);
 			data.put("totalLines", totalLines);
 			data.put("totalWorkload", workload);
 			return successResponse(data);
-		} else if("yes".equals(isExport)) {
+		} else if ("yes".equals(isExport)) {
 			return getExportExcel(itemDtoList);
 		} else {
 			return parameterNotSupportResponse("参数有误");
@@ -308,7 +373,8 @@ public class ReviewInfoListController extends ApplicationController {
 			Integer status) {
 
 		//获取审核人负责的Category类目信息
-		List<Category> categoryList = categoryService.getCategoriesByReviewer(reviewerId,getCurrentSemester());
+		List<Category> categoryList = categoryService
+				.getCategoriesByReviewer(reviewerId, getCurrentSemester());
 		if (categoryList.isEmpty()) {
 			return null;
 		}

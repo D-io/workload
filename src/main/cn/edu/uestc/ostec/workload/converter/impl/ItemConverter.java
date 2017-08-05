@@ -53,10 +53,11 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 
 		Category category = isNull(itemDto.getCategoryId()) ?
 				null :
-				categoryDao.select(itemDto.getCategoryId());
+				categoryDao.select(itemDto.getCategoryId(),null,null,null,null,null).get(0);
 
 		itemDto.setCategoryName(isNull(category) ? null : category.getName());
 		itemDto.setImportRequired(isNull(category) ? null : category.getImportRequired());
+		itemDto.setVersion(isNull(category) ? null : category.getVersion());
 
 		Integer reviewerId = category.getReviewerId();
 		itemDto.setReviewerId(reviewerId);

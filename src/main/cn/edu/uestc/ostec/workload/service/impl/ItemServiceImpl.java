@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dao.ItemDao;
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
@@ -25,6 +27,9 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 
 	@Autowired
 	private ItemDao itemDao;
+
+	@Autowired
+	private ItemConverter itemConverter;
 
 	@Override
 	public Boolean saveItem(Item item) {
@@ -58,6 +63,22 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	public Boolean deleteItem(Integer itemId) {
 
 		return itemDao.delete(itemId);
+	}
+
+	@Override
+	public List<ItemDto> findAll(Integer categoryId, Integer status, Integer ownerId,
+			Integer isGroup, String version) {
+		List<Item> itemList = itemDao.selectAll(categoryId,status,ownerId,isGroup);
+		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
+
+		List<ItemDto> itemDtos = new ArrayList<>();
+		for(ItemDto itemDto:itemDtoList) {
+			if(version.equals(itemDto.getVersion())) {
+				itemDtos.add(itemDto);
+			}
+		}
+
+		return itemDtos;
 	}
 
 	@Override

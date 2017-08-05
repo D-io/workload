@@ -3,6 +3,7 @@ package cn.edu.uestc.ostec.workload.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 
 /**
@@ -80,12 +81,17 @@ public interface ItemService extends BaseService {
 
 	/**
 	 * 分页查询所有的条目信息
+	 *
 	 * @param categoryId 类目编号
-	 * @param status 状态
-	 * @param ownerId 教师编号
-	 * @param pageNum 页号
-	 * @param pageSize 页的大小
+	 * @param status     状态
+	 * @param ownerId    教师编号
+	 * @param pageNum    页号
+	 * @param pageSize   页的大小
 	 * @return List<Item>
 	 */
-	Map<String,Object> findAll(Integer categoryId,Integer status,Integer ownerId,Integer isGroup,int pageNum, int pageSize);
+	Map<String, Object> findAll(Integer categoryId, Integer status, Integer ownerId,
+			Integer isGroup, int pageNum, int pageSize);
+
+	List<ItemDto> findAll(Integer categoryId, Integer status, Integer ownerId,
+			Integer isGroup, String version);
 }

@@ -121,9 +121,22 @@ public class ItemDto {
 	private Integer isGroup;
 
 	/**
+	 * 学期版本号
+	 */
+	private String version;
+
+	/**
 	 * 其他Json字段
 	 */
 	private String otherJson = null;
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
 	private List<OtherJsonParameter> otherJsonParameters = null;
 
