@@ -2565,7 +2565,7 @@ ul.bar_tabs>li.active {
     margin-top: -15px
 }
 ul.bar_tabs>li a {
-    padding: 10px 17px;
+    padding: 10px 10px;
     background: #F5F7FA;
     margin: 0;
     border-top-right-radius: 0
