@@ -75,9 +75,9 @@ function ownerApply(domId) {
 
     var log, className = "dark";
 //捕获节点被拖拽前回调
-    function beforeDrag(treeId, treeNodes) {
+ /*   function beforeDrag(treeId, treeNodes) {
         return false;
-    }
+    }*/
 //捕获节点编辑按钮回调函数
     /*
     function beforeEditName(treeId, treeNode) {
@@ -228,7 +228,7 @@ function ownerApply(domId) {
     }
     */
 //捕获移除节点回调函数
-    function beforeRemove(treeId, treeNode) {
+    /*function beforeRemove(treeId, treeNode) {
 
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         zTree.selectNode(treeNode);
@@ -264,9 +264,9 @@ function ownerApply(domId) {
                 return false;
             }
         });
-    }
+    }*/
 //更新节点名称之前的回调函数
-    function beforeRename(treeId, treeNode, newName, isCancel) {
+    /*function beforeRename(treeId, treeNode, newName, isCancel) {
         className = (className === "dark" ? "":"dark");
         showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
         if (newName.length == 0) {
@@ -278,17 +278,17 @@ function ownerApply(domId) {
             return false;
         }
         return true;
-    }
+    }*/
 //节点名称编辑只有的回调函数
-    function onRename(e, treeId, treeNode, isCancel) {
+ /*   function onRename(e, treeId, treeNode, isCancel) {
         showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
-    }
+    }*/
 //是否显示移除按钮
-    function showRemoveBtn(treeId, treeNode) {
+/*    function showRemoveBtn(treeId, treeNode) {
         return treeNode;
-    }
+    }*/
 //是否显示重命名按钮
-    function showRenameBtn(treeId, treeNode) {
+   /* function showRenameBtn(treeId, treeNode) {
         return treeNode;
     }
     function showLog(str) {
@@ -313,7 +313,7 @@ function ownerApply(domId) {
     function selectAll() {
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         zTree.setting.edit.editNameSelectAll =  $("#selectAll").attr("checked");
-    }
+    }*/
     $(document).ready(function() {
         $('.add').unbind('click');
         $('.add').bind('click', function () {
@@ -426,7 +426,7 @@ function ownerApply(domId) {
 
         });
 
-    function add0(m){return m<10?'0'+m:m }
+   /* function add0(m){return m<10?'0'+m:m }
     function format(shijianchuo)
     {
         var time = new Date(shijianchuo);
@@ -435,8 +435,8 @@ function ownerApply(domId) {
         var d = time.getDate();
 
         return y+'年'+add0(m)+'月'+add0(d)+'日';
-    }
-    function zTreeOnClick(event, treeId, treeNode) {
+    }*/
+   /* function zTreeOnClick(event, treeId, treeNode) {
         var zTree= $.fn.zTree.getZTreeObj("treeDemo");
         var nodes = zTree.getCheckedNodes(true);
         var str='';
@@ -460,9 +460,9 @@ function ownerApply(domId) {
                     alert("提交节点失败！");
             } )
         });
-    }
-    $.fn.zTree.init($("#treeDemo"), setting, window.zNodes);
-    $("#selectAll").bind("click", selectAll);
+    }*/
+/*    $.fn.zTree.init($("#treeDemo"), setting, window.zNodes);
+    $("#selectAll").bind("click", selectAll);*/
 
 
 

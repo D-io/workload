@@ -19,8 +19,8 @@ function importWorkload(){
                         $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+"</li>");
                       if(item[i].formula){
 
-                          var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer"> <thead style="font-size: 14px;"> <tr role="row"> ' +
-                            '<th class="sorting" style="width: 78px;">上传截止时间</th> <th class="sorting" style="width: 278px;">操作</th> <tbody style="font-size: 14px;"><td>2017-12-31</td><td><div class="dropdown" style="display: inline"><a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="dropdownMenu2">下载模板</a><ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2"><li><a href="/file/template?categoryId='+item[i].categoryId+'&type=isGroup">小组类模板</a></li><a href="/file/template?categoryId='+item[i].categoryId+'&type=isGroup">个人类模板</a></li></ul></div><a class="btn btn-info"  data-toggle="modal" data-target="#myModal">上传文件</a><a class="btn btn-success">提交文件</a> </td></tbody></table>';
+                          var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer" style="float: right;"> <thead style="font-size: 14px;"> <tr role="row"> ' +
+                            '<th class="sorting" style="width: 78px;">上传截止时间:<span class="time_'+item[i].categoryId+'"></span></th> <th class="sorting" style="width: 278px;"><div class="dropdown" style="display: inline"><a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="dropdownMenu2">下载模板</a><ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2"><li><a href="/file/template?categoryId='+item[i].categoryId+'&type=isGroup">小组类模板</a></li><a href="/file/template?categoryId='+item[i].categoryId+'&type=isGroup">个人类模板</a></li></ul></div><a class="btn btn-info"  data-toggle="modal" data-target="#myModal">导入数据</a></th> </table>';
                            $('#catInfo_' + item[i].categoryId).append(tablestr);
 
                      }
@@ -116,7 +116,7 @@ function auditworkload() {
        $.get("/reviewer/info/categories",function (data) {
            var showimport=  $("<ul></ul>");
             showall(data.data.applyCategories, showimport);
-            $("#showapplyitem").append(showimport);
+            $("#tab_content1").append(showimport);
             $.get("/reviewer/info/items?"+'importRequired=0',function (result) {
                 for(var applyItemCount=0;applyItemCount<data.data.applyCategories.length;applyItemCount++){
                     var tablestr='<table  class="table table-striped table-bordered dataTable no-footer" id="table_'+data.data.applyCategories[applyItemCount].categoryId+'"> <thead> <tr role="row"> <th  class="sorting" style="width: 60px;">序号</th> <th  class="sorting" style="width: 278px;">条目名称</th> ' +
