@@ -50,4 +50,12 @@ public interface IAspect extends ServletContextAdapter {
 		return joinPoint.getArgs();
 	}
 
+	default String buildHistoryItemId(Integer itemId) {
+		return "I" + itemId.toString();
+	}
+
+	default String buildHistoryCategryId(Integer categoryId) {
+		return "C" + categoryId.toString();
+	}
+
 }
