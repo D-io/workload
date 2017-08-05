@@ -73,6 +73,10 @@ public class ItemManageAspectImpl implements IAspect {
 	private void itemApplyAgainPointCut() {
 	}
 
+	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ItemManageController.resetStatus(..))")
+	private void itemStatusResetPointCut() {
+	}
+
 	@AfterReturning(returning = "rvt", pointcut = "itemSubmitPointCut()")
 	public void recordItemSubmit(JoinPoint joinPoint, Object rvt) {
 
@@ -166,9 +170,41 @@ public class ItemManageAspectImpl implements IAspect {
 		History history = new History();
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
-		history.setItemId(itemId.toString());
+		history.setItemId(buildHistoryItemId(itemId));
 		history.setOperation(
 				user.getName() + "于" + history.getCreateTime() + "重新申请工作量条目" + item.getItemName());
+
+		boolean saveSuccess = historyService.saveHistory(history);
+		if (!saveSuccess) {
+			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
+		} else {
+			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
+		}
+	}
+
+	@AfterReturning(returning = "rvt", pointcut = "itemStatusResetPointCut()")
+	public void recordItemStatusReset(JoinPoint joinPoint, Object rvt) {
+		RestResponse restResponse = (RestResponse) rvt;
+		int status = restResponse.getStatus();
+		if (OK.value() != status) {
+			return;
+		}
+
+		Object[] args = getParameters(joinPoint);
+		Integer itemId = (Integer) args[0];
+		String role = args[1].toString();
+
+		Item item = itemService.findItem(itemId);
+
+		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
+		Integer userId = user.getUserId();
+		History history = new History();
+		history.setCreateTime(DateHelper.getDateTime());
+		history.setUserId(userId);
+		history.setItemId(buildHistoryItemId(itemId));
+		history.setOperation(
+				user.getName() + "于" + history.getCreateTime() + "重置工作量条目" + item
+						.getItemName() + "的状态信息" + "(" + role + ")" );
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {
