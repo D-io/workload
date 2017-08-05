@@ -2,9 +2,9 @@
  * Created by SBWang on 2017/7/24.
  */
 function reviewerSumItem() {
-    $('.right_col').empty();
+    $('.right_hole').empty();
     $.get("/region?"+'regionName=applicant/selfSummary',function (result) {
-        $('.right_col').append(result);
+        $('.right_hole').append(result);
         $.get("/item/info/collection",function (data) {
             appendReviewerItem(data);
             $('.totalWorkload').text(data.data.totalWorkload);

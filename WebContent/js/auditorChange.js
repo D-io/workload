@@ -2,25 +2,61 @@
  * Created by SBWang on 2017/7/20.
  */
 function importWorkload(){
-    $('.right_col').empty();
+    $('.right_hole').empty();
     $.get("/region?"+'regionName=auditor/auditorcontent',function (result) {
-        $('.right_col').append(result);
+        $('.right_hole').append(result);
         $.get("/reviewer/info/categories",function (data) {
             var showimport=  $("<ul></ul>");
-            showall(data.data.importCategories, showimport);
-            $("#showRevitem").append(showimport);
-            $('.view_detail').text('导入文件');
+            showimportall(data.data.importCategories, showimport);
 
+            $("#tab_content1").append(showimport);
+            /*
+            $('.view_detail').text('导入文件');
+            */
+            function  showimportall(item) {
+                for(var i=0;i<item.length;i++){
+
+                        $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+"</li>");
+                      if(item[i].formula){
+
+                          var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer" style="float: right;"> <thead style="font-size: 14px;"> <tr role="row"> ' +
+                            '<th class="sorting" style="width: 78px;">上传截止时间:<span class="time_'+item[i].categoryId+'"></span></th> <th class="sorting" style="width: 278px;"><div class="dropdown" style="display: inline"><a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="dropdownMenu2">下载模板</a><ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2"><li><a href="/file/template?categoryId='+item[i].categoryId+'&type=isGroup">小组类模板</a></li><a href="/file/template?categoryId='+item[i].categoryId+'&type=isGroup">个人类模板</a></li></ul></div><a class="btn btn-info"  data-toggle="modal" data-target="#myModal">导入数据</a></th> </table>';
+                           $('#catInfo_' + item[i].categoryId).append(tablestr);
+
+                     }
+
+
+                    if(item[i].children){
+                        showimportall(item[i].children);
+                    }
+                }
+            }
 
         });
     });
+/*$(".commit").on("click",function () {
+    var data=new FormData;
+    data.append("testfile",$("#fileName").files[0]);
+    $.ajax({
+        url:"/file?fileId=4",
+        type:"POST",
+        dataType:"JSON",
+        data:data,
+        contentType: false,
+        processData: false,
+        success:function (file) {
+
+        }
+    })
+
+})*/
 
 
 }
 function importRec() {
-    $('.right_col').empty();
+    $('#tab_content2').empty();
     $.get("/region?"+'regionName=auditor/importRec',function (result) {
-        $('.right_col').append(result);
+        $('#tab_content2').append(result);
 
     });
     $.get("/reviewer/info/items?"+'importRequired=1&option=uncommitted',function (data) {
@@ -41,9 +77,9 @@ function importRec() {
 
 }
 function importQue() {
-    $('.right_col').empty();
+    $('#tab_content3').empty();
     $.get("/region?"+'regionName=auditor/importQue',function (result) {
-        $('.right_col').append(result);
+        $('#tab_content3').append(result);
 
     });
     $.get("/reviewer/info/items?importRequired=1",function (data) {
@@ -72,21 +108,42 @@ function importQue() {
 
 }
 function auditworkload() {
-    $('.right_col').empty();
+    $('.right_hole').empty();
 
    $.get("/region?"+'regionName=auditor/auditworkload',function (result) {
-      $('.right_col').append(result);
+      $('.right_hole').append(result);
+   });
        $.get("/reviewer/info/categories",function (data) {
            var showimport=  $("<ul></ul>");
-            var categoriesId=new Array();
-
             showall(data.data.applyCategories, showimport);
-            $("#showapplyitem").append(showimport);
+            $("#tab_content1").append(showimport);
             $.get("/reviewer/info/items?"+'importRequired=0',function (result) {
-            var checkitem=showapplydata(result.nonCheckedItem);
+                for(var applyItemCount=0;applyItemCount<data.data.applyCategories.length;applyItemCount++){
+                    var tablestr='<table  class="table table-striped table-bordered dataTable no-footer" id="table_'+data.data.applyCategories[applyItemCount].categoryId+'"> <thead> <tr role="row"> <th  class="sorting" style="width: 60px;">序号</th> <th  class="sorting" style="width: 278px;">条目名称</th> ' +
+                        '<th class="sorting" style="width: 78px;">工作量</th> <th class="sorting" style="width: 160px;">申报描述</th><th class="sorting" style="width: 200px;">主要参数</th> <th class="sorting" style="width: 93px;">' +
+                        '审核截止时间 </th> <th class="sorting"  style="width: 83px;">审核状态 </th> <th class="sorting"  style="width: 183px;">操作</th> </tr> </thead> <tbody class="tbody_'+data.data.applyCategories[applyItemCount].categoryId+'"></tbody></table>';
+                    $('#check_'+data.data.applyCategories[applyItemCount].categoryId).append(tablestr);
+                }
+            showapplydata(result.data.nonCheckedItem);
             });
+            $(document).on("click",".pass",function () {
+                var flag=this.id;
+                var passItemId=flag.match(/\d+/g);
+                $.get("reviewer/manage/check?"+"itemId="+passItemId+"&status=2",function () {
+                    alert('操作成功！');
+                })
+            });
+           $(document).on("click",".refuse",function () {
+               var reflag=this.id;
+               var refuItemId=reflag.match(/\d+/g);
+               $(document).on("click","#refucommit",function () {
+                   var refudesc=$("#refusedesc").val();
+                   $.get("reviewer/manage/check?"+"itemId="+refuItemId+"&status=5"+"&message="+refudesc,function () {
+                       alert('操作成功！');
+                   })
+               });
 
-
+           });
         });
         //item为json数据
         //parent为要组合成html的容器
@@ -125,9 +182,6 @@ function auditworkload() {
 
             }
         }
-
-    });
-
 }
 function sumItem() {
     $('.right_col').empty();
@@ -188,7 +242,7 @@ function showimportRec(item) {
         var statusName = '';
         var m=i+1;
 
-        abnormaldata += '<tr role=\"row\" class=\"odd\"><td class=\"sort\">'+m+'</td><td class=\"sorting_1\">'+item[i].itemName+'<a href=\"#\" class=\"btn btn-primary btn-xs\" style=\"float: right;\"><i class=\"fa fa-folder\" id=\"showitem_' + i +'\"></i>查看详情</a></td><td></td><td id="time_'+i+'\" class=\"reviewerdeadline\" >2017-12-30</td><td>2017-12-30</td><td class="operation" style="width: 30%"><a type="button" class="download">下载</a><a class="update" type="button">更新</a><a class="commit" type="button">提交</a><a class="edit" type="button" id="edit_'+i+'\" data-toggle=\"modal\" data-target=\"#edittimeModal\" >修改复核时间</a></td></tr>';
+        abnormaldata += '<tr role=\"row\" class=\"odd\"><td class=\"sort\">'+m+'</td><td class=\"sorting_1\">'+item[i].itemName+'</td><td></td><td id="time_'+i+'\" class=\"reviewerdeadline\" >2017-12-30</td><td>2017-12-30</td><td class="operation" style="width: 30%"><button class="btn btn-success commit" type="button">提交</button><button class="btn btn-info edit" type="button" id="edit_'+i+'\" data-toggle=\"modal\" data-target=\"#edittimeModal\" >修改复核时间</button></td></tr>';
 
     }
     return abnormaldata;
@@ -230,41 +284,84 @@ function showimportQue(item) {
     return abnormaldata;
 }
 function showapplydata(item) {
-    var abnormaldata;
 
-    for (var i = 0; i < item.length; i++) {
-        var statusName = '';
-        var m=i+1;
-        switch (item[i].status) {
-            case -1:
-                statusName = '删除状态';
-                break;
-            case 0:
-                statusName = '未提交状态';
-                break;
-            case 1:
-                statusName = '待审核';
-                break;
-            case 2:
-                statusName = '通过';
-                break;
-            case 3:
-                statusName = '存疑状态';
-                break;
-            case 4:
-                statusName = '存疑已解决';
-                break;
-            case 5:
-                statusName = '拒绝';
-                break;
-
-        };
-
-        var tablestr='<table  class="table table-striped table-bordered dataTable no-footer" id="table_'+item[i].itemId+'"> <thead> <tr role="row"> <th  class="sorting" style="width: 50px;">序号</th> <th  class="sorting" style="width: 78px;">申报描述</th> <th class="sorting" style="width: 78px;">工作量</th> <th class="sorting" style="width: 360px;">负责人</th> <th class="sorting" style="width: 83px;">审核截止时间 </th> <th class="sorting"  style="width: 83px;">审核状态 </th> <th class="sorting"  style="width: 183px;">操作</th> </tr> </thead> <tbody>';
-        abnormaldata += '<tr role=\"row\" class=\"odd\"><td class=\"sort\">'+m+'</td><td class=\"sorting_1\">'+item[i].itemName+'<a href=\"#\" class=\"btn btn-primary btn-xs\" style=\"float: right;\"><i class=\"fa fa-folder\" id=\"showitem_' + i +'\"></i>查看详情</a></td><td>'+item[i].workload+'</td><td></td>'+item[i].groupManagerName+'</td><td>2017-12-31</td></td><td id=\"status_'+item[i].itemId+'\">'+statusName+'</td><td class=\"addbtn\" ><a class=\"btn btn-info btn-xs explain\" id=\"explain_'+item[i].itemId+'\"data-toggle=\"modal\" data-target=\"#\"><i class=\"fa fa-pencil\"></i> 拒绝</a><a class=\"btn btn-success btn-xs '+item[i].itemId+'\">确定</a></td>\"><i class=\"fa fa-pencil\"></i> 修改审核截止时间</a><a class=\"btn btn-success btn-xs '+item[i].itemId+'\">通过</a></td></tr>';
-
+    var listLength= item.length;
+    for(var i=0;i<listLength;i++) {
+        var category = new Array();
+        category.push(item[i].categoryId);
     }
-    return abnormaldata;
+        Array.prototype.distinct = function(){
+            var self = this;
+            var _a = this.concat().sort();
+            _a.sort(function(a,b){
+                if(a == b){
+                    var n = self.indexOf(a);
+                    self.splice(n,1);
+                }
+            });
+            return self;
+        };
+        category.distinct();
+
+        for(var index=0;index<category.length;index++){
+            for(var catCount=0;catCount<listLength;catCount++){
+                if(category[index]==item[catCount].categoryId){
+                    var rowInfo="<tr></tr>";
+                    var cellInfo="<td></td>";
+                    var Info=item[catCount];
+                    $(".tbody_"+category[index]).append(rowInfo);
+                    for(var j=0;j<8;j++)//单元格
+                    {
+                        $(".tbody_"+category[index]+' tr:last').append(cellInfo);
+                       // console.log( ".tbody_"+category[index]+'tr:last');
+                    }
+                    var id=catCount;
+
+                    $(".tbody_"+category[index]+" tr:last td:eq(0)").text(id+1);
+                    $(".tbody_"+category[index]+" tr:last td:eq(1)").text(Info.itemName);
+                    $(".tbody_"+category[index]+" tr:last td:eq(2)").text(Info.workload);
+                    $(".tbody_"+category[index]+" tr:last td:eq(3)").text(Info.applyDesc);
+                    var paramArray=Info.parameterValues;
+                    var str='';
+                    for(var paramCount=0;paramCount<paramArray.length;paramCount++){
+
+                        str+=paramArray[paramCount].symbol+':'+paramArray[paramCount].value;
+                    }
+                    $(".tbody_"+category[index]+" tr:last td:eq(4)").text(str);
+                    $(".tbody_"+category[index]+" tr:last td:eq(5)").text('2017-12-31');
+                    var statusName;
+                    switch (Info.status) {
+                        case -1:
+                            statusName = '删除状态';
+                            break;
+                        case 0:
+                            statusName = '未提交状态';
+                            break;
+                        case 1:
+                            statusName = '待审核';
+                            break;
+                        case 2:
+                            statusName = '审核通过';
+                            break;
+                        case 3:
+                            statusName = '存疑提交';
+                            break;
+                        case 4:
+                            statusName = '存疑已解决';
+                            break;
+                        case 5:
+                            statusName = '审核拒绝';
+                            break;
+                    }
+                    $(".tbody_"+category[index]+" tr:last td:eq(6)").text(statusName);
+                    var act="<a class=\"btn btn-success pass\" id=\"pass_'"+Info.itemId+"'\">通过</a><a class=\"btn btn-danger refuse\" data-toggle=\"modal\" data-target=\"#refuModal\" id=\"refuse_'"+Info.itemId+"'\">拒绝</a>";
+                    $(".tbody_"+category[index]+" tr:last td:eq(7)").append(act);
+                }
+            }
+        }
+
+
+
 }
 function appendItem(data) {
     var rowInfo="<tr></tr>";

@@ -542,11 +542,52 @@ function jumpToAdd() {
 
 }
 function reset() {
-    var resetStr='regionName=manager/reviewer_reset';
-    $.get("/region?"+resetStr,function (data) {
+    var resetStr = 'regionName=manager/reviewer_reset';
+    $.get("/region?" + resetStr, function (data) {
         $('.right_col').empty();
         $('.right_col').append(data);
+        $.get("/item/info/item-all", function (data) {
+            reviewerResetItem(data);
+        });
 
+    });
+    $(document).on("click", ".reset_reviewer", function () {
+        var flag = this.id;
+        var item_id = flag.match(/\d+/g);
+        var someparamster = "itemId=" + item_id + "&role=reviewer";
+        $.ajax({
+            type: "DELETE",
+            url: "/item/manage/reset?" + someparamster,
+            succes: function (data) {
+                if (data.status == 200) {
+                    alert('重置成功！');
+
+                }
+                else alert('重置失败！');
+            },
+            error:
+                alert('重置失败！')
+        });
+
+    });
+    $(document).on("click", ".reset_applicant", function () {
+        var appflag = this.id;
+        var myitemid = appflag.match(/\d+/g);
+        var someparamster = "itemId=" + myitemid + "&role=proposer";
+        $.ajax({
+            type: "DELETE",
+            url: "/item/manage/reset?" + someparamster,
+            succes: function (data) {
+                if (data.status == 200) {
+                    alert('重置成功！');
+
+                }
+                else alert('重置失败！');
+            },
+            error:
+            alert('重置失败！')
+
+        });
     });
 }
 function itemSummary() {
@@ -613,7 +654,90 @@ function appendAllItem(data) {
     }
 
 }
+function reviewerResetItem(data) {
+    var rowInfo="<tr></tr>";
+    var cellInfo="<td></td>";
+    var analyseList= data.data.itemList;
+    var listLength= data.data.itemList.length;
+    for(var i=0;i<listLength;i++)
+    {
+        var Info=analyseList[i];
+        $(".ResetItem").append(rowInfo);
+        $(".ResetItem tr:last").attr("id",Info.itemId);
+        for(var j=0;j<7;j++)//单元格
+        {
+            $(".ResetItem tr:last").append(cellInfo);
+        }
+        var id=i;
+        var paramArray=Info.parameterValues;
+        var str='';
+        for(var paramCount=0;paramCount<paramArray.length;paramCount++){
 
+            str+=paramArray[paramCount].symbol+':'+paramArray[paramCount].value;
+        }
+        var statusName;
+        if(Info.importRequired==0) {
+            switch (Info.status) {
+                case -1:
+                    statusName = '删除状态';
+                    break;
+                case 0:
+                    statusName = '未提交状态';
+                    break;
+                case 1:
+                    statusName = '待审核';
+                    break;
+                case 2:
+                    statusName = '审核通过';
+                    break;
+                case 3:
+                    statusName = '存疑提交';
+                    break;
+                case 4:
+                    statusName = '存疑已解决';
+                    break;
+                case 5:
+                    statusName = '审核拒绝';
+                    break;
+            }
+        }
+        else {
+            switch (Info.status) {
+                case -1:
+                    statusName = '删除状态';
+                    break;
+                case 0:
+                    statusName = '未提交状态';
+                    break;
+                case 1:
+                    statusName = '待复核';
+                    break;
+                case 2:
+                    statusName = '复核通过';
+                    break;
+                case 3:
+                    statusName = '存疑提交';
+                    break;
+                case 4:
+                    statusName = '存疑已解决';
+                    break;
+                case 5:
+                    statusName = '审核拒绝';
+                    break;
+            }
+        }
+
+        $(".ResetItem tr:last td:eq(0)").text(id+1);
+        $(".ResetItem tr:last td:eq(1)").text(Info.teacherName);
+        $(".ResetItem tr:last td:eq(2)").text(Info.itemName);
+        $(".ResetItem tr:last td:eq(3)").text(str);
+        $(".ResetItem tr:last td:eq(4)").text(Info.workload);
+        $(".ResetItem tr:last td:eq(5)").text(statusName);
+        var act="<a class=\"btn btn-info btn-xs reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 重置审核人</a> <a class=\"btn btn-info btn-xs reset_applicant\" id=\"applyReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 重置申报人</a>";
+        $(".ResetItem tr:last td:eq(6)").append(act);
+    }
+
+}
 $(document).on("click","#addParameter",function () {
     var addStr="<tr><td><input type='text' class='parameterName' name='parameterName'></td><td><input type='text' class='parameterSymbol' name='parameterSymbol'></td></tr>";
     $('.AddPramter').append(addStr);

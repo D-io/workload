@@ -7,27 +7,44 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="x_panel">
+<div class="x_panel" style="width: 100%;padding: 10px 17px;">
     <div class="x_title">
-        <h3>导入工作量</h3>
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Settings 1</a>
-                    </li>
-                    <li><a href="#">Settings 2</a>
-                    </li>
-                </ul>
-            </li>
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
-        </ul>
-        <div class="clearfix"></div>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-bars"></i>工作当量管理</a></li>
+            <li class="active">工作当量导入</li>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+        </ol>
+     <!--   <div class="clearfix"></div>-->
     </div>
-    <div class="x_content" id="showRevitem" style="display: block;">
+    <div class="x_content">
+
+
+        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">导入工作当量</a>
+                </li>
+                <li role="presentation" class="" onclick="importRec()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">导入复核情况</a>
+                </li>
+                <li role="presentation" class="" onclick="importQue()"><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">查看历史记录</a>
+                </li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+
+                </div>
+            </div>
+        </div>
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -46,25 +63,26 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label " >上传文件</label>
-                            <form action="file?fileId=3" enctype="multipart/form-data" method="post">
-                            <div class="col-sm-9">
-                             <input type="file" class="form-control" id="fileName" ><hr/>
+                            <form id="uploadForm">
+                                <div class="col-sm-9">
+                                    <input type="file" class="form-control" id="fileName"><hr/>
+                                    <button  class="btn btn-primary commit" style="float: right;">提交</button>
+                                </div>
 
-                            </div>
                             </form>
                             <p>请上传小于20M的EXECLL文件</p>
 
                         </div>
 
                     </div>
+<!--
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <input type="submit" value="确定" class="btn btn-primary confirm">
+
                     </div>
+-->
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-
     </div>
 </div>
-
