@@ -64,6 +64,29 @@ public class HistoryInfoController extends ApplicationController {
 
 	}
 
+	/**
+	 * 获取User对应的历史记录
+	 *
+	 * @return historyList
+	 */
+	@RequestMapping(value = "histories-user", method = GET)
+	public RestResponse getHistoriesByUsers() {
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
 
+		int userId = user.getUserId();
+		List<History> historyList = historyService.getHistoriesByUser(userId);
+
+		if (isEmptyList(historyList)) {
+			return successResponse();
+		}
+
+		Map<String, Object> data = getData();
+		data.put("historyList", historyList);
+
+		return successResponse(data);
+	}
 
 }
