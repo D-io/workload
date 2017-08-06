@@ -380,56 +380,36 @@ data | String | 结果集
 - Json返回成功示例如下：
 ```json
 {
-    "status": 200, 
-    "statusName": "OK", 
+    "status": 200,
+    "statusName": "OK",
     "data": {
-        "categoryList": [
+        "categoryTree": [
             {
-                "categoryId": 22, 
-                "name": "个人教学、教研、教改成果奖（含教学竞赛）", 
-                "desc": "教师个人获校级奖，计20工作当量；省级奖再加40工作当量；国家级奖再加100工作当量。", 
-                "parentId": 2, 
-                "isLeaf": "Y", 
-                "importRequired": 1, 
-                "jsonParameters": "[{\"desc\":\"个人获校级奖（个数）\",\"symbol\":\"A\"},{\"desc\":\"个人获省级奖（个数）\",\"symbol\":\"B\"},{\"desc\":\"个人获国家级奖\",\"symbol\":\"C\"}]", 
-                "formulaParameterList": [
+                "categoryId": 1,
+                "name": "培养方案相关人才培养当量",
+                "desc": "培养方案相关人才培养工作是指教师从事与学院人才培养方案相关的课程教学、实践教学等（由多位老师共同参与完成的项目，工作当量由该项工作负责人根据教师参与情况分配。）",
+                "parentId": 0,
+                "isLeaf": "N",
+                "importRequired": 2,
+                "jsonParameters": null,
+                "formulaParameterList": null,
+                "formula": "",
+                "version": "2017-2018-1",
+                "status": 1,
+                "reviewDeadline": "2017年12月30日",
+                "applyDeadline": "2017年12月30日",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "children": [
                     {
-                        "desc": "个人获校级奖（个数）", 
-                        "symbol": "A"
-                    }, 
-                    {
-                        "desc": "个人获省级奖（个数）", 
-                        "symbol": "B"
-                    }, 
-                    {
-                        "desc": "个人获国家级奖", 
-                        "symbol": "C"
-                    }
-                ], 
-                "formula": "20*A+40*B+100*C", 
-                "version": "2016-2017-1", 
-                "status": 1, 
-                "reviewDeadline": "2017年07月29日", 
-                "applyDeadline": "2017年07月29日", 
-                "reviewerId": 3210343, 
-                "reviewerName": "张翔", 
-                "children": null, 
-                "otherJson": "[{\"key\":\"获奖项目\",\"value\":\"\"},{\"key\":\"获奖名称\",\"value\":\"\"}]", 
-                "otherJsonParameters": [
-                    {
-                        "key": "获奖项目", 
-                        "value": ""
-                    }, 
-                    {
-                        "key": "获奖名称", 
-                        "value": ""
-                    }
-                ], 
-                "objectId": 22
-            }
-        ]
-    }
-}
+                        "categoryId": 5,
+                        "name": "培养方案规定课程工作当量",
+                        "desc": "本科生和全日制研究生培养方案规定课程的工作当量",
+                        "parentId": 1,
+                        "isLeaf": "N",
+                        "importRequired": 2,
+                        "jsonParameters": "",
+                        "formulaParameterList": null
 ```
 
 

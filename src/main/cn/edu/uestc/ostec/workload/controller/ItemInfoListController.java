@@ -21,6 +21,7 @@ import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
+import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.SubjectDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
@@ -32,6 +33,7 @@ import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
+import cn.edu.uestc.ostec.workload.support.utils.TreeGenerateHelper;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
@@ -218,10 +220,22 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		List<Category> categories = categoryService.getRootCategories();
 		categoryList.addAll(categories);
 
-		Map<String, Object> data = getData();
-		data.put("categoryList", categoryConverter.poListToDtoList(categoryList));
+		List<CategoryDto> categoryDtoList = categoryConverter.poListToDtoList(categoryList);
 
+		TreeGenerateHelper treeGenerateHelper = new TreeGenerateHelper(categoryDtoList);
+		Map<String, Object> data = getData();
+
+		List<CategoryDto> parentList = categoryConverter.poListToDtoList(categoryService.getCategoryChildren(SUBMITTED,ZERO_INT,getCurrentSemester()));
+		List<CategoryDto> tree = new ArrayList<>();
+		for(CategoryDto categoryDto : parentList) {
+			tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
+		}
+		data.put("categoryTree", tree);
+
+
+		//data.put("categoryList",treeGenerateHelper.generateTree(ROOT));
 		return successResponse(data);
+
 	}
 
 	/**
