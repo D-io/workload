@@ -17,7 +17,6 @@ import cn.edu.uestc.ostec.workload.aspect.LogAspect;
 
 /**
  * Description:
- * Version:v1.0 (author:刘文哲 update:  )
  */
 @Aspect
 @Component
