@@ -1,7 +1,24 @@
 ## 工作量信息Excel导入
 
+- /**
+-	 * 导入Excel中的信息到数据库 （提交文件） </br>
+-	 *
+-	 * 三个步骤： </br>
+-	 * 1、先根据文件要求上传文件；</br>
+-	 * 2、提交文件之后进行Excel的信息导入数据库的操作； </br>
+-	 * 3、导入之后查看导入的工作量列表进行确认；</br>
+-	 * 4、确认无误后进行提交工作量的操作 </br>
+-	 *
+-	 * PS.导入的格式待确定 格式不同对应的计算方式不同
+-	 *
+-	 * @param fileInfoId 文件信息编号
+-	 * @return RestResponse
+-	 */
+
+
+
 ### 获取不同类目对应的Excel模板
-- 接口地址：`/file/import-template`
+- 接口地址：`/file/template`
 - 支持格式：`json`
 - 请求方式：`GET`
 - 请求示例：`localhost:8080/file/template?categoryId=3&type=isGroup`
@@ -16,7 +33,7 @@ type | String | 模板类型（single或group）小组还是个人
 
 
 
-### 导入指定格式的Excel接口（v1.1)
+### 导入指定格式的Excel接口（v1.1)  请使用该接口
 - 接口地址：`/file/import-template`
 - 支持格式：`json`
 - 请求方式：`POST`
@@ -156,10 +173,6 @@ data | String | 结果集
     }
 }
 ```
-
-
-
-
 
 ### 导入指定格式的Excel接口（v1.0）
 - 接口地址：`/file/import`

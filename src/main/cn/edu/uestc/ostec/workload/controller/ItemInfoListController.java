@@ -7,13 +7,10 @@
  */
 package cn.edu.uestc.ostec.workload.controller;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import sun.java2d.pipe.AAShapePipe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +24,6 @@ import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.SubjectDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
-import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
@@ -62,9 +58,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 	@Autowired
 	private SubjectConverter subjectConverter;
-
-	@Autowired
-	private HistoryService historyService;
 
 	@Autowired
 	private CategoryService categoryService;

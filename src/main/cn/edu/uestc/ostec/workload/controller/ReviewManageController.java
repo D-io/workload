@@ -218,6 +218,8 @@ public class ReviewManageController extends ApplicationController {
 			@RequestParam("itemId")
 					Integer itemId) {
 
+		//todo 存疑通过状态到底是由审核人发出还是复核人发出。
+
 		// 用户验证
 		User user = getUser();
 		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {

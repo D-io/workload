@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import sun.security.util.DisabledAlgorithmConstraints;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,6 @@ import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
-import cn.edu.uestc.ostec.workload.service.FileInfoService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
@@ -169,8 +166,6 @@ public class ItemManageController extends ApplicationController {
 	public RestResponse applyItemsAgain(
 			@RequestParam("itemId")
 					Integer itemId,ItemDto itemDto) {
-
-		//TODO 添加学期相关信息，学期切换功能
 
 		User user = getUser();
 		if (null == user) {

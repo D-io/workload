@@ -64,7 +64,7 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	@Override
 	public Category getCategory(Integer categoryId) {
 
-		return objectResult(categoryDao.select(categoryId), EMPTY_CATEGORY);
+		return objectResult(categoryDao.select(categoryId,null,null,null,null,null), EMPTY_CATEGORY);
 	}
 
 	@Override
