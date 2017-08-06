@@ -35,6 +35,12 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	}
 
 	@Override
+	public List<Category> getRootCategories() {
+
+		return listResult(categoryDao.selectRoot());
+	}
+
+	@Override
 	public Boolean deleteCategory(Integer categoryId) {
 
 		return categoryDao.delete(categoryId);
@@ -64,34 +70,35 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	@Override
 	public Category getCategory(Integer categoryId) {
 
-		return objectResult(categoryDao.select(categoryId,null,null,null,null,null), EMPTY_CATEGORY);
+		return objectResult(categoryDao.select(categoryId, null, null, null, null, null),
+				EMPTY_CATEGORY);
 	}
 
 	@Override
-	public List<Category> getCategoryChildren(Integer status, Integer parentId,String version) {
-//		return listResult(categoryDao.selectChildren(status,parentId));
-		return listResult(categoryDao.select(null,null,parentId,null,status,version));
+	public List<Category> getCategoryChildren(Integer status, Integer parentId, String version) {
+		//		return listResult(categoryDao.selectChildren(status,parentId));
+		return listResult(categoryDao.select(null, null, parentId, null, status, version));
 	}
 
 	@Override
-	public List<Category> getCategoriesByStatus(Integer status,String version) {
+	public List<Category> getCategoriesByStatus(Integer status, String version) {
 
 		//return listResult(categoryDao.selectByStatus(status));
-		return listResult(categoryDao.select(null,null,null,null,status,version));
+		return listResult(categoryDao.select(null, null, null, null, status, version));
 	}
 
 	@Override
-	public List<Category> getCategoriesByType(Integer importRequired,String version) {
+	public List<Category> getCategoriesByType(Integer importRequired, String version) {
 
 		//return listResult(categoryDao.selectByImportRequired(importRequired));
-		return listResult(categoryDao.select(null,null,null,importRequired,null,version));
+		return listResult(categoryDao.select(null, null, null, importRequired, null, version));
 	}
 
 	@Override
-	public List<Category> getCategoriesByReviewer(Integer reviewerId,String version) {
+	public List<Category> getCategoriesByReviewer(Integer reviewerId, String version) {
 
 		//return listResult(categoryDao.selectByReviewer(reviewerId));
-		return listResult(categoryDao.select(null,reviewerId,null,null,null,version));
+		return listResult(categoryDao.select(null, reviewerId, null, null, null, version));
 	}
 
 	@Override
@@ -109,11 +116,12 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	 * @return list
 	 */
 	@Override
-	public List<CategoryDto> getDtoObjects(Integer status, Integer parentId,String version) {
+	public List<CategoryDto> getDtoObjects(Integer status, Integer parentId, String version) {
 
-//		return listResult(
-//				categoryConverter.poListToDtoList(categoryDao.selectChildren(status, parentId)));
-		return listResult(categoryConverter.poListToDtoList(categoryDao.select(null,null,parentId,null,status,version)));
+		//		return listResult(
+		//				categoryConverter.poListToDtoList(categoryDao.selectChildren(status, parentId)));
+		return listResult(categoryConverter
+				.poListToDtoList(categoryDao.select(null, null, parentId, null, status, version)));
 	}
 
 	/**
@@ -125,7 +133,9 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	@Override
 	public CategoryDto getDtoObject(Integer objectId) {
 
-		return categoryConverter.poToDto(categoryDao.select(objectId));
+		return categoryConverter.poToDto(
+				objectResult(categoryDao.select(objectId, null, null, null, null, null),
+						EMPTY_CATEGORY));
 	}
 
 	/**
@@ -135,8 +145,9 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	 * @return List
 	 */
 	@Override
-	public List<CategoryDto> getDtoObjects(Integer parentId,String version) {
-//		return categoryConverter.poListToDtoList(categoryDao.selectValidChildren(parentId));
-		return listResult(categoryConverter.poListToDtoList(categoryDao.select(null,null,parentId,null,null,version)));
+	public List<CategoryDto> getDtoObjects(Integer parentId, String version) {
+		//		return categoryConverter.poListToDtoList(categoryDao.selectValidChildren(parentId));
+		return listResult(categoryConverter
+				.poListToDtoList(categoryDao.select(null, null, parentId, null, null, version)));
 	}
 }

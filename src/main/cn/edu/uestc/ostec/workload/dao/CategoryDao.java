@@ -91,6 +91,12 @@ public interface CategoryDao extends BaseDao<Category> {
 	List<Category> selectAll(String version);
 
 	/**
+	 * 查询根节点
+	 * @return List
+	 */
+	List<Category> selectRoot();
+
+	/**
 	 * 根据工作量类型查询工作量条目
 	 *
 	 * @param importRequired 标识工作量为审核类：0；还是复核类：1

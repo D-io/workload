@@ -95,6 +95,10 @@
   	select * from category where status != -1 and version = #{version}
   </select>
 
+  <select id="selectRoot" resultMap="categoryResultMap">
+    SELECT * FROM category WHERE is_leaf = 'N'
+  </select>
+
   <select id="selectChildren" resultMap="categoryResultMap">
     select <include refid="Base_Column_List" /> 
     from category  

@@ -215,6 +215,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			}
 		}
 
+		List<Category> categories = categoryService.getRootCategories();
+		categoryList.addAll(categories);
+
 		Map<String, Object> data = getData();
 		data.put("categoryList", categoryConverter.poListToDtoList(categoryList));
 
