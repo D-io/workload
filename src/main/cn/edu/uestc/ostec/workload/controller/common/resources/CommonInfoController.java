@@ -78,7 +78,7 @@ public class CommonInfoController extends ApplicationController {
 			session.setAttribute(SESSION_CURRENT_YEAR, year);
 			session.setAttribute(SESSION_CURRENT_SCHEME, scheme);
 		}
-		return successResponse();
+		return successResponse(getCurrentSemester());
 	}
 
 

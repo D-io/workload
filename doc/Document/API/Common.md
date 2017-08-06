@@ -1,4 +1,4 @@
-### 获取教师信息
+### 获取当前登录的用户信息
 - 接口地址:`/common/user-info`
 - 支持格式：`json`
 - 请求方式：`GET`
@@ -24,6 +24,31 @@ data | String | 结果集
     }
 }
 ```
+
+### 更改学期
+- 接口地址:`/common/scheme`
+- 支持格式：`json`
+- 请求方式：`GET`
+- 请求示例：`localhost:8080/common/scheme?year=2017-2018&scheme=2`
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "info": "2017-2018-2"
+    }
+}
+```
+
 
 ### 获取教师信息
 - 接口地址:`/common/teachers`
