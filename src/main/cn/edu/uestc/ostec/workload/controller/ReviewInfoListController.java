@@ -147,7 +147,7 @@ public class ReviewInfoListController extends ApplicationController {
 			} else if (IMPORT_EXCEL.equals(category.getImportRequired())) {
 				importCategories.add(category);
 			} else {
-				return null;
+				continue;
 			}
 		}
 
