@@ -165,9 +165,7 @@ public class ItemManageController extends ApplicationController {
 	@RequestMapping(value = "apply-again", method = POST)
 	public RestResponse applyItemsAgain(
 			@RequestParam("itemId")
-					Integer itemId,ItemDto itemDto) {
-
-		//TODO 添加学期相关信息，学期切换功能
+					Integer itemId, ItemDto itemDto) {
 
 		User user = getUser();
 		if (null == user) {
@@ -204,26 +202,26 @@ public class ItemManageController extends ApplicationController {
 		Item newItem = itemConverter.dtoToPo(itemDto);
 
 		boolean saveSuccess = itemService.saveItem(newItem);
-		if(!saveSuccess) {
+		if (!saveSuccess) {
 			return systemErrResponse();
 		}
 
 		ItemDto newItemDto = itemConverter.poToDto(newItem);
 
-		Map<String,Object> data = getData();
-		data.put("newItemDto",newItemDto);
+		Map<String, Object> data = getData();
+		data.put("newItemDto", newItemDto);
 
 		return successResponse(data);
-//		item.setStatus(NON_CHECKED);
-//		boolean saveSuccess = itemService.saveItem(item);
-//		if (!saveSuccess) {
-//			return systemErrResponse("重新申请失败");
-//		}
-//
-//		Map<String, Object> data = getData();
-//		data.put("item", itemConverter.poToDto(item));
-//
-//		return successResponse(data);
+		//		item.setStatus(NON_CHECKED);
+		//		boolean saveSuccess = itemService.saveItem(item);
+		//		if (!saveSuccess) {
+		//			return systemErrResponse("重新申请失败");
+		//		}
+		//
+		//		Map<String, Object> data = getData();
+		//		data.put("item", itemConverter.poToDto(item));
+		//
+		//		return successResponse(data);
 	}
 
 	/**
@@ -233,7 +231,7 @@ public class ItemManageController extends ApplicationController {
 	 * @return RestResponse
 	 */
 	@RequestMapping(method = POST)
-	public RestResponse addItem(ItemDto itemDto, MultipartFile file,String option)
+	public RestResponse addItem(ItemDto itemDto, MultipartFile file, String option)
 			throws IOException {
 
 		User user = getUser();
@@ -245,8 +243,8 @@ public class ItemManageController extends ApplicationController {
 			return invalidOperationResponse("非法操作");
 		}
 
-		if("modify".equals(option)) {
-			if(NON_CHECKED.equals(itemDto.getStatus())) {
+		if ("modify".equals(option)) {
+			if (NON_CHECKED.equals(itemDto.getStatus())) {
 				return invalidOperationResponse("已提交的工作量，无法修改");
 			}
 		}
@@ -261,8 +259,6 @@ public class ItemManageController extends ApplicationController {
 
 		Map<String, Object> data = getData();
 
-
-
 		//判断是手动申报类还是系统导入类来决定proof的值
 		if (APPLY_SELF.equals(importRequired) && null != file && !file.isEmpty()) {
 			FileInfo fileInfo = new FileInfo(ATTACHMENT_FILE_ID, getUserId(), "");
@@ -273,7 +269,7 @@ public class ItemManageController extends ApplicationController {
 			}
 			//考虑设置为文件信息编号，展示时不做文件信息展示，仅仅展示 查看附件
 			itemDto.setProof(fileInfo.getFileInfoId());
-		} else if (IMPORT_EXCEL.equals(importRequired)){
+		} else if (IMPORT_EXCEL.equals(importRequired)) {
 			return invalidOperationResponse();
 		}
 
@@ -336,6 +332,51 @@ public class ItemManageController extends ApplicationController {
 	}
 
 	/**
+	 * 上传文件附件
+	 *
+	 * @param itemIdList 条目编号
+	 * @param file       文件对象
+	 * @return itemDto，fileInfo,errorData
+	 */
+	@RequestMapping(value = "file-proof", method = POST)
+	public RestResponse uploadFileAsProof(MultipartFile file,
+			@RequestParam("itemId")
+					Integer... itemIdList) throws IOException {
+		Map<String, Object> data = getData();
+
+		FileInfo fileInfo = new FileInfo(ATTACHMENT_FILE_ID, getUserId(), "");
+		if (null != file && !file.isEmpty()) {
+			boolean uploadSuccess = fileEvent.uploadFile(file, fileInfo);
+			if (!uploadSuccess) {
+				data.put("errorData", "文件附件上传失败");
+			}
+		}
+
+		for (Integer itemId : itemIdList) {
+			Item item = itemService.findItem(itemId);
+			if (null == item) {
+				return parameterNotSupportResponse("参数有误");
+			}
+
+			if (!UNCOMMITTED.equals(item.getStatus())) {
+				return invalidOperationResponse("无法上传附件");
+			}
+
+			//考虑设置为文件信息编号，展示时不做文件信息展示，仅仅展示 查看附件
+			item.setProof(fileInfo.getFileInfoId());
+			data.put("fileInfo", fileInfo);
+
+			boolean saveSuccess = itemService.saveItem(item);
+			if (!saveSuccess) {
+				return systemErrResponse("保存失败");
+			}
+
+			data.put("itemDto", itemConverter.poToDto(item));
+		}
+		return successResponse(data);
+	}
+
+	/**
 	 * 选择性提交工作量条目
 	 *
 	 * @param itemIdList 工作量条目列表
@@ -371,6 +412,7 @@ public class ItemManageController extends ApplicationController {
 				item.setStatus(NON_CHECKED);
 
 				boolean saveSuccess = itemService.saveItem(item);
+
 				boolean fileSubmitSuccess = fileEvent.submitFileInfo(item.getProof());
 				if (!saveSuccess || !fileSubmitSuccess) {
 					errorData.put(item.getItemName(), "提交失败");
@@ -424,13 +466,13 @@ public class ItemManageController extends ApplicationController {
 			boolean saveSuccess = itemService.saveItem(item);
 			boolean submitSuccess = fileEvent.submitFileInfo(item.getProof());
 			if (!saveSuccess || !submitSuccess) {
-				errorData.put(item.getItemName(),"提交失败");
+				errorData.put(item.getItemName(), "提交失败");
 			}
 		}
 
 		Map<String, Object> data = getData();
 		data.put("submittedItemList", itemConverter.poListToDtoList(itemList));
-		data.put("errorData",errorData);
+		data.put("errorData", errorData);
 
 		return successResponse(data);
 	}

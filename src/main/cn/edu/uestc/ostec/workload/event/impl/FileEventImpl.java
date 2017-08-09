@@ -58,6 +58,7 @@ public class FileEventImpl implements FileEvent {
 		//生成服务器文件路径（包含名称）
 		String filePath = buildFilePath(getFileUploadPath(), fileName);
 		java.io.File newFile = new java.io.File(filePath);
+
 		//将文件存档至目标文件
 		file.transferTo(newFile);
 
