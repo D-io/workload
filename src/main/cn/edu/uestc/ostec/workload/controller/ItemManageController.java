@@ -167,6 +167,8 @@ public class ItemManageController extends ApplicationController {
 			@RequestParam("itemId")
 					Integer itemId,ItemDto itemDto) {
 
+		//TODO 添加学期相关信息，学期切换功能
+
 		User user = getUser();
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
@@ -262,7 +264,7 @@ public class ItemManageController extends ApplicationController {
 
 
 		//判断是手动申报类还是系统导入类来决定proof的值
-		if (APPLY_SELF.equals(importRequired)) {
+		if (APPLY_SELF.equals(importRequired) && null != file && !file.isEmpty()) {
 			FileInfo fileInfo = new FileInfo(ATTACHMENT_FILE_ID, getUserId(), "");
 			//TODO 文件的相关校验，可以抽象到ApplicationController中
 			boolean uploadSuccess = fileEvent.uploadFile(file, fileInfo);
@@ -271,7 +273,7 @@ public class ItemManageController extends ApplicationController {
 			}
 			//考虑设置为文件信息编号，展示时不做文件信息展示，仅仅展示 查看附件
 			itemDto.setProof(fileInfo.getFileInfoId());
-		} else {
+		} else if (IMPORT_EXCEL.equals(importRequired)){
 			return invalidOperationResponse();
 		}
 
