@@ -44,8 +44,11 @@ public class CategoryEventImpl implements CategoryEvent {
 			if (UNCOMMITTED.equals(category.getStatus())) {
 				boolean appendSuccess = userRoleEvent.appendRoleInfo(reviewerId, REVIEWER_ROLE);
 				boolean saveSuccess = categoryService.saveCategory(SUBMITTED, categoryId);
-				if (!saveSuccess || !appendSuccess) {
+				if (!saveSuccess) {
 					data.put(category.getName(),"保存失败");
+				}
+				if(!appendSuccess) {
+					data.put(category.getName(),"更新该类目负责人角色信息失败或已存在");
 				}
 				category.setStatus(SUBMITTED);
 			}

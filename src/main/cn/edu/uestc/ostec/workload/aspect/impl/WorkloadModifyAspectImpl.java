@@ -125,7 +125,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		}
 
 		History history = new History();
-		history.setItemId(buildHistoryCategryId(categoryId));
+		history.setItemId(buildHistoryCategoryId(categoryId));
 		history.setUserId(userId);
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setOperation(

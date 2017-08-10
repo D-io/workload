@@ -22,6 +22,7 @@ import cn.edu.uestc.ostec.workload.dto.RoleInfo;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.support.utils.ExcelExportHelper;
+import javafx.concurrent.Service;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.DEFAULT_WEB_URL_SEPARATOR;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
@@ -98,6 +99,10 @@ public class ApplicationController extends ResultController
 			roleCodes.add(roleInfo.getRole());
 		}
 		return roleCodes;
+	}
+
+	public String getHistoryType(String roleCode) {
+		return null;
 	}
 
 	/**
@@ -215,6 +220,14 @@ public class ApplicationController extends ResultController
 			//不以"/"开头则添加"/"后返回
 			return DEFAULT_WEB_URL_SEPARATOR + url;
 		}
+	}
+
+	public String buildHistoryItemId(Integer itemId) {
+		return "I" + itemId.toString();
+	}
+
+	public String buildHistoryCategoryId(Integer categoryId) {
+		return "C" + categoryId.toString();
 	}
 
 }

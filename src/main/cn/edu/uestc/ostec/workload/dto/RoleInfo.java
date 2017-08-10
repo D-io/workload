@@ -38,4 +38,25 @@ public class RoleInfo {
 	public String toString() {
 		return "RoleInfo{" + "role='" + role + '\'' + ", roleName='" + roleName + '\'' + '}';
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		RoleInfo roleInfo = (RoleInfo) o;
+
+		if (role != null ? !role.equals(roleInfo.role) : roleInfo.role != null)
+			return false;
+		return roleName != null ? roleName.equals(roleInfo.roleName) : roleInfo.roleName == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = role != null ? role.hashCode() : 0;
+		result = 31 * result + (roleName != null ? roleName.hashCode() : 0);
+		return result;
+	}
 }

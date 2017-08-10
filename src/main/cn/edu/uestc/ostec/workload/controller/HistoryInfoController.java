@@ -104,7 +104,12 @@ public class HistoryInfoController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
+
+
 		List<History> historyList = historyService.getHistoriesByType(type);
+		for(History history:historyList) {
+		}
+
 		if(isEmptyList(historyList)) {
 			return successResponse();
 		}
