@@ -91,7 +91,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 		history.setOperation(
 				user.getName() + "于" + history.getCreateTime() + checkStatus.getDesc() + "了工作量条目"
 						+ item.getItemName());
-		history.setType("review");
+		history.setType("apply");
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {
@@ -124,7 +124,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setOperation(user.getName() + "于" + history.getCreateTime() + "存疑通过了了工作量条目" + item
 				.getItemName());
-		history.setType("check-again");
+		history.setType("import");
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {

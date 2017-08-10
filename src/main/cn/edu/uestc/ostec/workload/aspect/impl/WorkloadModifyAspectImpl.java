@@ -25,10 +25,12 @@ import cn.edu.uestc.ostec.workload.aspect.IAspect;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.History;
+import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
+import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
@@ -52,6 +54,10 @@ public class WorkloadModifyAspectImpl implements IAspect {
 	private static final String WORKLOAD_MODIFY_INFO_LOG_PATTERN = "workload modify operation {}, result {}";
 
 	private static final String DATE_MODIFY_INFO_LOG_PATTERN = "review deadline modify operation {}, result {}";
+
+
+	@Autowired
+	private ItemService itemService;
 
 	@Autowired
 	private HistoryService historyService;
@@ -82,6 +88,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 
 		Object[] args = getParameters(joinPoint);
 		Integer itemId = (Integer) args[0];
+		Item item = itemService.findItem(itemId);
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
@@ -91,8 +98,8 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setItemId(buildHistoryItemId(itemId));
 
 		history.setOperation(
-				"当前条目的工作量被审核人" + user.getName() + "于" + history.getCreateTime() + "修改为" + args[1]);
-		history.setType("check-again");
+				"工作量" + item.getItemName() + "被审核人" + user.getName() + "于" + history.getCreateTime() + "修改为" + args[1]);
+		history.setType("import");
 
 		boolean saveSuccess = historyService.saveHistory(history);
 

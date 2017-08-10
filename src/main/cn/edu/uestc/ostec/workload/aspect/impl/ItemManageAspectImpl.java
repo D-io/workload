@@ -145,7 +145,7 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setCreateTime(DateHelper.getDateTime());
 
-		history.setType("check-again");
+		history.setType("import");
 
 		String operation = null;
 		if (CHECKED.equals(status)) {
