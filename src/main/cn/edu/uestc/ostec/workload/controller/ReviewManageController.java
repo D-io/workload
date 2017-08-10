@@ -223,7 +223,7 @@ public class ReviewManageController extends ApplicationController {
 
 		// 用户验证
 		User user = getUser();
-		if (null == user || !getUserRoleCodeList().contains(TEACHER.getCode())) {
+		if (null == user) {
 			return invalidOperationResponse("非法请求");
 		}
 

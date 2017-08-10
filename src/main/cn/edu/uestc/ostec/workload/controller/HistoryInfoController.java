@@ -89,30 +89,41 @@ public class HistoryInfoController extends ApplicationController {
 	 * @return historyList
 	 */
 	@RequestMapping(value = "histories-user", method = GET)
-	public RestResponse getHistoriesByUsers(String role,
+	public RestResponse getHistoriesByUsers(
 			@RequestParam("type")
-					String type) {
+					String type,
+			@RequestParam(required = false)
+					String role) {
 		User user = getUser();
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
 		}
 
 		int userId = user.getUserId();
+
+		//获取用户相关的历史记录，同时对应类型type
 		List<History> historyList = historyService.getHistoriesByUserRelated(userId, type);
 
 		if (isEmptyList(historyList)) {
 			return successResponse();
 		}
 
-		if (ROLE_REVIEWER.equals(role)) {
-			List<ItemDto> itemDtoList = itemService
-					.findAll(null, null, user.getUserId(), null, getCurrentSemester());
-			List<History> histories = getHistoriesByItems(itemDtoList,type);
-			historyList.removeAll(histories);
-		}
+		//查找用户自己拥有的全部工作量条目信息
+		List<ItemDto> itemDtoList = itemService
+				.findAll(null, null, user.getUserId(), null, getCurrentSemester());
+
+		//根据自己的工作量条目查询对应的历史记录
+		List<History> histories = getHistoriesByItems(itemDtoList, type);
 
 		Map<String, Object> data = getData();
-		data.put("historyList", historyList);
+		if (ROLE_REVIEWER.equals(role)) {
+			//若为工作当量审核页面，则移除自己的工作当量历史记录，仅保留自己负责审核的历史记录
+			historyList.removeAll(histories);
+			data.put("historyList", historyList);
+		} else {
+			//教师个人页面，则仅仅展示自己条目信息对应的相关历史记录
+			data.put("historyList", histories);
+		}
 
 		return successResponse(data);
 	}
@@ -169,20 +180,24 @@ public class HistoryInfoController extends ApplicationController {
 		return successResponse(data);
 	}
 
-	private List<History> getHistoriesByItems(List<ItemDto> itemList,String type) {
+	private List<History> getHistoriesByItems(List<ItemDto> itemList, String type) {
 
 		List<History> histories = new ArrayList<>();
 		List<ItemDto> itemDtoList = new ArrayList<>();
-		for(ItemDto itemDto:itemList) {
-			if("apply".equals(type) && APPLY_SELF.equals(itemDto.getImportRequired())) {
+
+		//获取和type相对应的条目信息
+		for (ItemDto itemDto : itemList) {
+			if ("apply".equals(type) && APPLY_SELF.equals(itemDto.getImportRequired())) {
 				itemDtoList.add(itemDto);
 			} else if ("import".equals(type) && IMPORT_EXCEL.equals(itemDto.getImportRequired())) {
 				itemDtoList.add(itemDto);
-			} else  {
+			} else {
 				continue;
 			}
 		}
-		for (ItemDto item : itemList) {
+
+		//根据对应的条目查找相应的历史记录
+		for (ItemDto item : itemDtoList) {
 			List<History> historyList = historyService
 					.getHistoriesByItem(buildHistoryItemId(item.getItemId()));
 			histories.addAll(historyList);
