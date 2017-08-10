@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.criteria.Join;
 
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
+import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
@@ -34,6 +35,7 @@ import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
 import static org.springframework.http.HttpStatus.OK;
@@ -61,7 +63,10 @@ public class ItemManageAspectImpl implements IAspect {
 	@Autowired
 	private ItemService itemService;
 
-	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ItemManageController.submitItem(Integer[]))")
+	@Autowired
+	private ItemConverter itemConverter;
+
+	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ItemManageController.submitItem(..))")
 	private void itemSubmitPointCut() {
 	}
 
@@ -77,6 +82,11 @@ public class ItemManageAspectImpl implements IAspect {
 	private void itemStatusResetPointCut() {
 	}
 
+	/**
+	 * 工作量条目提交日志切面
+	 * @param joinPoint
+	 * @param rvt
+	 */
 	@AfterReturning(returning = "rvt", pointcut = "itemSubmitPointCut()")
 	public void recordItemSubmit(JoinPoint joinPoint, Object rvt) {
 
@@ -92,6 +102,8 @@ public class ItemManageAspectImpl implements IAspect {
 		for (Object arg : args) {
 			Integer itemId = (Integer) arg;
 			Item item = itemService.findItem(itemId);
+			ItemDto itemDto = itemConverter.poToDto(item);
+			Integer importedRequired = itemDto.getImportRequired();
 
 			History history = new History();
 			history.setItemId(buildHistoryItemId(itemId));
@@ -99,6 +111,9 @@ public class ItemManageAspectImpl implements IAspect {
 			history.setCreateTime(DateHelper.getDateTime());
 			history.setOperation(user.getName() + "于" + history.getCreateTime() + "提交了工作量条目" + item
 					.getItemName());
+
+			history.setType(APPLY_SELF.equals(importedRequired) ? "apply" : "import");
+
 			boolean saveSuccess = historyService.saveHistory(history);
 			if (!saveSuccess) {
 				LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
@@ -108,6 +123,11 @@ public class ItemManageAspectImpl implements IAspect {
 		}
 	}
 
+	/**
+	 * 复核人复核工作量
+	 * @param joinPoint
+	 * @param rvt
+	 */
 	@AfterReturning(returning = "rvt", pointcut = "itemStatusUpdatePointCut()")
 	public void recordItemsStatusChange(JoinPoint joinPoint, Object rvt) {
 
@@ -130,6 +150,8 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setCreateTime(DateHelper.getDateTime());
 
+		history.setType("check-again");
+
 		String operation = null;
 		if (CHECKED.equals(status)) {
 			operation =
@@ -151,6 +173,9 @@ public class ItemManageAspectImpl implements IAspect {
 		}
 	}
 
+	/**
+	 * 重新申请日志切面
+	 */
 	@AfterReturning(returning = "rvt", pointcut = "itemApplyAgainPointCut()")
 	public void recordItemApplyAgain(JoinPoint joinPoint, Object rvt) {
 
@@ -174,6 +199,8 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setOperation(
 				user.getName() + "于" + history.getCreateTime() + "重新申请工作量条目" + item.getItemName());
 
+		history.setType("apply");
+
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {
 			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
@@ -182,6 +209,9 @@ public class ItemManageAspectImpl implements IAspect {
 		}
 	}
 
+	/**
+	 * 管理员重置条目相关状态日志切面
+	 */
 	@AfterReturning(returning = "rvt", pointcut = "itemStatusResetPointCut()")
 	public void recordItemStatusReset(JoinPoint joinPoint, Object rvt) {
 		RestResponse restResponse = (RestResponse) rvt;
@@ -203,8 +233,10 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setOperation(
-				user.getName() + "于" + history.getCreateTime() + "重置工作量条目" + item
-						.getItemName() + "的状态信息" + "(" + role + ")" );
+				user.getName() + "于" + history.getCreateTime() + "重置工作量条目" + item.getItemName()
+						+ "的状态信息" + "(" + role + ")");
+
+		history.setType("admin");
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {

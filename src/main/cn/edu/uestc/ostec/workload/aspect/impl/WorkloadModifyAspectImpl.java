@@ -35,7 +35,7 @@ import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENT
 import static org.springframework.http.HttpStatus.OK;
 
 /**
- * Version:v1.0 (description: 工作量管理日志切面 )
+ * Version:v1.0 (description: 日期修改和工作量修改日志切面 )
  */
 @Aspect
 @Component
@@ -92,6 +92,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 
 		history.setOperation(
 				"当前条目的工作量被审核人" + user.getName() + "于" + history.getCreateTime() + "修改为" + args[1]);
+		history.setType("check-again");
 
 		boolean saveSuccess = historyService.saveHistory(history);
 
@@ -130,6 +131,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setOperation(
 				user.getName() + "于" + history.getCreateTime() + "将原审核截止时间" + date + "修改为"
 						+ newDate);
+		history.setType("apply");
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {

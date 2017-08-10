@@ -36,6 +36,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.UserType.REVIEWER;
+import static cn.edu.uestc.ostec.workload.type.UserType.TEACHER;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -222,7 +223,7 @@ public class ReviewManageController extends ApplicationController {
 
 		// 用户验证
 		User user = getUser();
-		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
+		if (null == user || !getUserRoleCodeList().contains(TEACHER.getCode())) {
 			return invalidOperationResponse("非法请求");
 		}
 

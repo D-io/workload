@@ -437,7 +437,7 @@ public class ItemManageController extends ApplicationController {
 	 * @return RestResponse
 	 */
 	@RequestMapping(value = "public", method = POST)
-	public RestResponse submitItem() {
+	public RestResponse submitAllItem() {
 
 		User user = getUser();
 		if (null == user) {
