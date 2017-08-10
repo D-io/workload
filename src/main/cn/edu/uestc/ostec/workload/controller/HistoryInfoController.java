@@ -32,6 +32,8 @@ import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
@@ -87,17 +89,26 @@ public class HistoryInfoController extends ApplicationController {
 	 * @return historyList
 	 */
 	@RequestMapping(value = "histories-user", method = GET)
-	public RestResponse getHistoriesByUsers() {
+	public RestResponse getHistoriesByUsers(String role,
+			@RequestParam("type")
+					String type) {
 		User user = getUser();
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
 		}
 
 		int userId = user.getUserId();
-		List<History> historyList = historyService.getHistoriesByUser(userId);
+		List<History> historyList = historyService.getHistoriesByUserRelated(userId, type);
 
 		if (isEmptyList(historyList)) {
 			return successResponse();
+		}
+
+		if (ROLE_REVIEWER.equals(role)) {
+			List<ItemDto> itemDtoList = itemService
+					.findAll(null, null, user.getUserId(), null, getCurrentSemester());
+			List<History> histories = getHistoriesByItems(itemDtoList,type);
+			historyList.removeAll(histories);
 		}
 
 		Map<String, Object> data = getData();
@@ -158,6 +169,24 @@ public class HistoryInfoController extends ApplicationController {
 		return successResponse(data);
 	}
 
+	private List<History> getHistoriesByItems(List<ItemDto> itemList,String type) {
 
-
+		List<History> histories = new ArrayList<>();
+		List<ItemDto> itemDtoList = new ArrayList<>();
+		for(ItemDto itemDto:itemList) {
+			if("apply".equals(type) && APPLY_SELF.equals(itemDto.getImportRequired())) {
+				itemDtoList.add(itemDto);
+			} else if ("import".equals(type) && IMPORT_EXCEL.equals(itemDto.getImportRequired())) {
+				itemDtoList.add(itemDto);
+			} else  {
+				continue;
+			}
+		}
+		for (ItemDto item : itemList) {
+			List<History> historyList = historyService
+					.getHistoriesByItem(buildHistoryItemId(item.getItemId()));
+			histories.addAll(historyList);
+		}
+		return histories;
+	}
 }

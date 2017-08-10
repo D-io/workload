@@ -49,6 +49,19 @@ public class History {
 	 */
 	private String type;
 
+	/**
+	 * 目标用户编号
+	 */
+	private Integer aimUserId;
+
+	public Integer getAimUserId() {
+		return aimUserId;
+	}
+
+	public void setAimUserId(Integer aimUserId) {
+		this.aimUserId = aimUserId;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -99,7 +112,46 @@ public class History {
 
 	@Override
 	public String toString() {
-		return "History{" + "userId=" + userId + ", createTime='" + createTime + '\''
-				+ ", operation='" + operation + '\'' + '}';
+		return "History{" + "historyId=" + historyId + ", itemId='" + itemId + '\'' + ", userId="
+				+ userId + ", createTime='" + createTime + '\'' + ", operation='" + operation + '\''
+				+ ", type='" + type + '\'' + ", aimUserId=" + aimUserId + '}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		History history = (History) o;
+
+		if (historyId != null ? !historyId.equals(history.historyId) : history.historyId != null)
+			return false;
+		if (itemId != null ? !itemId.equals(history.itemId) : history.itemId != null)
+			return false;
+		if (userId != null ? !userId.equals(history.userId) : history.userId != null)
+			return false;
+		if (createTime != null ?
+				!createTime.equals(history.createTime) :
+				history.createTime != null)
+			return false;
+		if (operation != null ? !operation.equals(history.operation) : history.operation != null)
+			return false;
+		if (type != null ? !type.equals(history.type) : history.type != null)
+			return false;
+		return aimUserId != null ? aimUserId.equals(history.aimUserId) : history.aimUserId == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = historyId != null ? historyId.hashCode() : 0;
+		result = 31 * result + (itemId != null ? itemId.hashCode() : 0);
+		result = 31 * result + (userId != null ? userId.hashCode() : 0);
+		result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
+		result = 31 * result + (operation != null ? operation.hashCode() : 0);
+		result = 31 * result + (type != null ? type.hashCode() : 0);
+		result = 31 * result + (aimUserId != null ? aimUserId.hashCode() : 0);
+		return result;
 	}
 }

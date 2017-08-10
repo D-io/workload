@@ -49,6 +49,11 @@ public class HistoryServiceImpl extends BaseServiceImpl implements HistoryServic
 	}
 
 	@Override
+	public List<History> getHistoriesByUserRelated(Integer userId,String type) {
+		return listResult(historyDao.selectByUserRelated(userId,type));
+	}
+
+	@Override
 	public List<History> getHistories() {
 		return listResult(historyDao.selectHistories(null,null,null,null));
 	}

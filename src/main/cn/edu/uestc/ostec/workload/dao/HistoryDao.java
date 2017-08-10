@@ -39,4 +39,10 @@ public interface HistoryDao extends BaseDao<History> {
 			@Param("type")
 					String type);
 
+	List<History> selectByUserRelated(
+			@Param("userId")
+					Integer userId,
+			@Param("type")
+					String type);
+
 }

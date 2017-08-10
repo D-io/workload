@@ -29,6 +29,8 @@ public interface HistoryService extends BaseService {
 
 	List<History> getHistoriesByUser(Integer userId);
 
+	List<History> getHistoriesByUserRelated(Integer userId,String type);
+
 	List<History> getHistoriesByItem(String itemId);
 
 	List<History> getHistoriesByType(String type);

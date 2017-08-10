@@ -19,6 +19,7 @@
         <result column="operation" jdbcType="LONGVARCHAR" property="operation"/>
         <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
         <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="aim_user_id" jdbcType="INTEGER" property="aimUserId"/>
     </resultMap>
 
     <select id="selectHistories" resultMap="historyResultMap">
@@ -40,6 +41,17 @@
         </where>
 
         ORDER BY create_time ASC
+    </select>
+
+    <select id="selectByUserRelated" resultMap="historyResultMap">
+        SELECT * FROM history
+        <where>
+            (user_id = #{userId} OR aim_user_id = #{userId})
+            <if test="null != type">
+                AND type = #{type}
+            </if>
+        </where>
+
     </select>
 
     <insert id="insert">
