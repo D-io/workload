@@ -30,22 +30,27 @@ public class HistoryServiceImpl extends BaseServiceImpl implements HistoryServic
 
 	@Override
 	public History getHistory(Integer historyId) {
-		return objectResult(historyDao.selectHistories(historyId,null,null),EMPTY_HISTORY);
+		return objectResult(historyDao.selectHistories(historyId,null,null,null),EMPTY_HISTORY);
 	}
 
 	@Override
 	public List<History> getHistoriesByUser(Integer userId) {
-		return listResult(historyDao.selectHistories(null,userId,null));
+		return listResult(historyDao.selectHistories(null,userId,null,null));
 	}
 
 	@Override
 	public List<History> getHistoriesByItem(String itemId) {
-		return listResult(historyDao.selectHistories(null,null,itemId));
+		return listResult(historyDao.selectHistories(null,null,itemId,null));
+	}
+
+	@Override
+	public List<History> getHistoriesByType(String type) {
+		return listResult(historyDao.selectHistories(null,null,null,type));
 	}
 
 	@Override
 	public List<History> getHistories() {
-		return listResult(historyDao.selectHistories(null,null,null));
+		return listResult(historyDao.selectHistories(null,null,null,null));
 	}
 
 	@Override

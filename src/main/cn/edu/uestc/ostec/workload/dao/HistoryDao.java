@@ -35,6 +35,8 @@ public interface HistoryDao extends BaseDao<History> {
 			@Param("userId")
 					Integer userId,
 			@Param("itemId")
-					String itemId);
+					String itemId,
+			@Param("type")
+					String type);
 
 }

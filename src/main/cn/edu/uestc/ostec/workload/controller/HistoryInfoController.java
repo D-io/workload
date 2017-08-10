@@ -89,4 +89,29 @@ public class HistoryInfoController extends ApplicationController {
 		return successResponse(data);
 	}
 
+	/**
+	 * 获取对应类型的历史记录
+	 * @param type 类型（申报Apply、复核Check、导入Import、审核Review）
+	 * @return historyList
+	 */
+	@RequestMapping(value = "histories-type", method = GET)
+	public RestResponse getHistoriesByType(
+			@RequestParam("type")
+					String type) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		List<History> historyList = historyService.getHistoriesByType(type);
+		if(isEmptyList(historyList)) {
+			return successResponse();
+		}
+
+		Map<String, Object> data = getData();
+		data.put("historyList", historyList);
+
+		return successResponse(data);
+	}
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import cn.edu.uestc.ostec.workload.BaseTest;
 import cn.edu.uestc.ostec.workload.pojo.Item;
+import cn.edu.uestc.ostec.workload.service.HistoryService;
 
 import static org.junit.Assert.*;
 
@@ -20,10 +21,13 @@ public class ItemDaoTest extends BaseTest {
 
 	private ItemDao itemDao;
 
+	private HistoryService historyService;
+
 	private Item item;
 
 	{
 		itemDao = getBean(ItemDao.class);
+		historyService = getBean(HistoryService.class);
 		item = new Item();
 		item.setItemId(1);
 		item.setCategoryId(1);
@@ -39,8 +43,9 @@ public class ItemDaoTest extends BaseTest {
 
 	@Test
 	public void insert() throws Exception {
-		item.setItemId(2);
-		System.out.println(itemDao.insert(item));
+//		item.setItemId(2);
+//		System.out.println(itemDao.insert(item));
+		System.out.println(historyService.getHistoriesByType("apply").size());
 	}
 
 	@Test

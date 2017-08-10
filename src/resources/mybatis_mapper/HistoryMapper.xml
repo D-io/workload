@@ -18,6 +18,7 @@
         <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
         <result column="operation" jdbcType="LONGVARCHAR" property="operation"/>
         <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
+        <result column="type" jdbcType="VARCHAR" property="type" />
     </resultMap>
 
     <select id="selectHistories" resultMap="historyResultMap">
@@ -33,19 +34,22 @@
             <if test="null != itemId">
                 AND item_id = #{itemId}
             </if>
+            <if test="null != type">
+                AND type = #{type}
+            </if>
         </where>
 
         ORDER BY create_time ASC
     </select>
 
     <insert id="insert">
-    INSERT INTO history(history_id,user_id,create_time,operation,item_id)
-    VALUES(#{historyId},#{userId},#{createTime},#{operation},#{itemId})
+    INSERT INTO history(history_id,user_id,create_time,operation,item_id,type)
+    VALUES(#{historyId},#{userId},#{createTime},#{operation},#{itemId},#{type})
   </insert>
 
     <update id="update">
     UPDATE history
-    SET user_id =#{userId},create_time=#{createTime},operation=#{operation},item_id = #{itemId}
+    SET user_id =#{userId},create_time=#{createTime},operation=#{operation},item_id = #{itemId},type=#{type}
     WHERE history_id = #{historyId}
   </update>
 

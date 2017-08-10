@@ -31,6 +31,8 @@ public interface HistoryService extends BaseService {
 
 	List<History> getHistoriesByItem(String itemId);
 
+	List<History> getHistoriesByType(String type);
+
 	List<History> getHistories();
 
 	boolean saveHistory(History history);

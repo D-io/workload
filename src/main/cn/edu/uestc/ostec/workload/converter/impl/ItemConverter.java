@@ -15,6 +15,7 @@ import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 
 /**
  * Version:v1.0 (description:  )
@@ -53,7 +54,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 
 		Category category = isNull(itemDto.getCategoryId()) ?
 				null :
-				categoryDao.select(itemDto.getCategoryId(),null,null,null,null,null).get(0);
+				categoryDao.select(itemDto.getCategoryId(),null,null,null,null,null).get(ZERO_INT);
 
 		itemDto.setCategoryName(isNull(category) ? null : category.getName());
 		itemDto.setImportRequired(isNull(category) ? null : category.getImportRequired());
@@ -109,4 +110,5 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 
 		return item;
 	}
+
 }
