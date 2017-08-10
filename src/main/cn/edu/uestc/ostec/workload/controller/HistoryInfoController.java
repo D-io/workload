@@ -14,14 +14,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
+import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.History;
+import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
+import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
+import cn.edu.uestc.ostec.workload.service.ItemService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -35,6 +43,15 @@ public class HistoryInfoController extends ApplicationController {
 
 	@Autowired
 	private HistoryService historyService;
+
+	@Autowired
+	private ItemService itemService;
+
+	@Autowired
+	private CategoryService categoryService;
+
+	@Autowired
+	private ItemConverter itemConverter;
 
 	/**
 	 * 获取指定条目对应的全部历史操作记录
@@ -90,12 +107,14 @@ public class HistoryInfoController extends ApplicationController {
 	}
 
 	/**
-	 * 获取对应类型的历史记录
-	 * @param type 类型（申报Apply、复核Check、导入Import、审核Review）
+	 * 获取对应类型的历史记录(此种方案到后期历史记录较多的情况下效率极低，不建议采用)
+	 *
+	 * @param role 角色类型 reviewer（审核人）
+	 * @param type 类型（申报Apply、复核Check-again、导入Import、审核Review）
 	 * @return historyList
 	 */
 	@RequestMapping(value = "histories-type", method = GET)
-	public RestResponse getHistoriesByType(
+	public RestResponse getHistoriesByType(String role,
 			@RequestParam("type")
 					String type) {
 
@@ -104,19 +123,41 @@ public class HistoryInfoController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-
-
 		List<History> historyList = historyService.getHistoriesByType(type);
-		for(History history:historyList) {
-		}
 
-		if(isEmptyList(historyList)) {
+		if (isEmptyList(historyList)) {
 			return successResponse();
 		}
 
+		List<ItemDto> itemList = new ArrayList<>();
+		List<History> histories = new ArrayList<>();
+
+		if (ROLE_REVIEWER.equals(role)) {
+			List<Category> categoryList = categoryService
+					.getCategoriesByReviewer(user.getUserId(), getCurrentSemester());
+			for (Category category : categoryList) {
+				itemList.addAll(itemConverter
+						.poListToDtoList(itemService.findItemByCategory(category.getCategoryId())));
+			}
+		} else {
+			itemList = itemService
+					.findAll(null, null, user.getUserId(), null, getCurrentSemester());
+		}
+
+		for (History history : historyList) {
+			for (ItemDto itemDto : itemList) {
+				if (history.getItemId().equals(buildHistoryItemId(itemDto.getItemId()))) {
+					histories.add(history);
+				}
+			}
+		}
+
 		Map<String, Object> data = getData();
-		data.put("historyList", historyList);
+		data.put("historyList", histories);
 
 		return successResponse(data);
 	}
+
+
+
 }

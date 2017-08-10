@@ -101,10 +101,6 @@ public class ApplicationController extends ResultController
 		return roleCodes;
 	}
 
-	public String getHistoryType(String roleCode) {
-		return null;
-	}
-
 	/**
 	 * 获取转发地址
 	 *

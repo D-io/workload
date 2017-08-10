@@ -23,7 +23,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
  * Version:v1.0 (description:  )
  */
 @Service(ItemService.NAME)
-public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
+public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 
 	@Autowired
 	private ItemDao itemDao;
@@ -34,7 +34,7 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	@Override
 	public Boolean saveItem(Item item) {
 
-		if(!hasObjectId(item.getItemId())){
+		if (!hasObjectId(item.getItemId())) {
 			item.setItemId(getNextKey(Item.TABLE_NAME));
 			return itemDao.insert(item);
 		}
@@ -44,19 +44,19 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	@Override
 	public Item findItem(Integer itemId) {
 
-		return objectResult(itemDao.select(itemId),EMPTY_ITEM);
+		return objectResult(itemDao.select(itemId), EMPTY_ITEM);
 	}
 
 	@Override
-	public List<Item> findItemsByStatus(Integer status,Integer teacherId) {
+	public List<Item> findItemsByStatus(Integer status, Integer teacherId) {
 
-		return listResult(itemDao.selectItemsByStatus(status,teacherId));
+		return listResult(itemDao.selectItemsByStatus(status, teacherId));
 	}
 
 	@Override
 	public Boolean removeItem(Integer itemId) {
 
-		return itemDao.updateStatus(DELETED,itemId);
+		return itemDao.updateStatus(DELETED, itemId);
 	}
 
 	@Override
@@ -68,12 +68,12 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	@Override
 	public List<ItemDto> findAll(Integer categoryId, Integer status, Integer ownerId,
 			Integer isGroup, String version) {
-		List<Item> itemList = itemDao.selectAll(categoryId,status,ownerId,isGroup);
+		List<Item> itemList = itemDao.selectAll(categoryId, status, ownerId, isGroup);
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
 
 		List<ItemDto> itemDtos = new ArrayList<>();
-		for(ItemDto itemDto:itemDtoList) {
-			if(version.equals(itemDto.getVersion())) {
+		for (ItemDto itemDto : itemDtoList) {
+			if (version.equals(itemDto.getVersion())) {
 				itemDtos.add(itemDto);
 			}
 		}
@@ -82,21 +82,22 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	}
 
 	@Override
-	public Map<String,Object> findAll(Integer categoryId,Integer status,Integer ownerId,Integer isGroup,int pageNum, int pageSize) {
+	public Map<String, Object> findAll(Integer categoryId, Integer status, Integer ownerId,
+			Integer isGroup, int pageNum, int pageSize) {
 
-		PageHelper.startPage(pageNum,pageSize);
-		List<Item> items = itemDao.selectAll(categoryId,status,ownerId,isGroup);
-		List<Item> itemList =  new ArrayList<>();
-		for(Item item:items) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<Item> items = itemDao.selectAll(categoryId, status, ownerId, isGroup);
+		List<Item> itemList = new ArrayList<>();
+		for (Item item : items) {
 			itemList.add(item);
 		}
 		Page<Item> page = (Page<Item>) items;
 		long total = page.getTotal();
-		int pageCount = (int) Math.ceil(total/pageSize);
-		Map<String,Object> data = new HashMap<>();
-		data.put("itemList",itemList);
-		data.put("pageCount",pageCount);
-		data.put("totalLines",total);
+		int pageCount = (int) Math.ceil(total / pageSize);
+		Map<String, Object> data = new HashMap<>();
+		data.put("itemList", itemList);
+		data.put("pageCount", pageCount);
+		data.put("totalLines", total);
 		return data;
 	}
 
@@ -107,8 +108,8 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService{
 	}
 
 	@Override
-	public List<Item> findItemsByCategory(Integer categoryId,Integer status) {
+	public List<Item> findItemsByCategory(Integer categoryId, Integer status) {
 
-		return itemDao.selectItemsByCategory(categoryId,status);
+		return itemDao.selectItemsByCategory(categoryId, status);
 	}
 }
