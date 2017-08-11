@@ -1,323 +1,9 @@
 function ownerApply(domId) {
-   /* var setting = {
-        view: {
-            removeHoverDom: removeHoverDom,
-            selectedMulti: false
-        },
-        edit: {
-            enable: true,
-            editNameSelectAll: true,
-            showRemoveBtn: showRemoveBtn,
-            showRenameBtn: showRenameBtn
-        },
-        data: {
-            key : {
-                name : "name"
-            },
-            simpleData: {
-                enable: true,
-                idKey : "id",
-                pIdKey : "parentId"
-            }
-        },
-        check:{
-            enable:true
-        },
-        callback: {
-            beforeDrag: beforeDrag,
-         //   beforeEditName: beforeEditName,
-            beforeRemove:beforeRemove,
-            beforeRename: beforeRename,
-            onCheck: zTreeOnClick,
-            onRename: onRename
 
-        }
-
-
-
-    };
-    var zNodes = new Array();*/
-        $.get("/item/info/item-group?"+'categoryId='+domId,function (data) {
-/*            if(data.data.itemList) {
-                for (var m = 0; m < data.data.itemList.length; m++) {
-
-                    createTree(data.data.itemList[m]);
-                }
-            }
-            function createTree(item) {
-                var nodes = {
-                    'jsonParameters':item.jsonParameters,
-                    'open':true,
-                    'name': item.itemName,
-                    'id': item.itemId,
-                    'parentId': 0,
-                    'applyDesc':item.applyDesc,
-                    'ownerId':item.ownerId,
-                    'workload':item.workload,
-                    'isGroup':item.isGroup,
-                    'groupManagerId':item.groupManagerId,
-                    'jsonParameters':item.jsonParameters,
-                    'otherParameters':item.otherJsonParameters,
-                    'jobDesc':item.jobDesc,
-                    'jsonChildWeight':item.jobDesc
-
-                };
-                var zTree=$.fn.zTree.getZTreeObj("treeDemo");
-
-                window.zNodes.push(nodes);
-                $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-
-
-            }*/
-
-        });
-
-
-    var log, className = "dark";
-//捕获节点被拖拽前回调
- /*   function beforeDrag(treeId, treeNodes) {
-        return false;
-    }*/
-//捕获节点编辑按钮回调函数
-    /*
-    function beforeEditName(treeId, treeNode) {
-        className = (className === "dark" ? "" : "dark");
-        showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        zTree.selectNode(treeNode);
-
-        setTimeout(function () {
-
-            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-            var sNodes = zTree.getSelectedNodes();
-
-            if (sNodes.length > 0) {
-                var parentNode = sNodes[0].getParentNode();
-                var parNodeId;
-                var parNodeName;
-                if(parentNode==null){
-                    parNodeId=0;
-                    parNodeName='';
-                }
-                else{
-                    parNodeId=parentNode.id;
-                    parNodeName=parentNode.name;
-                }
-
-            }
-
-            $("#importRequired option").each(function() {
-                if($(this).val() == treeNode.importRequired){
-                    $(this).attr("selected",true);
-                }
-            });
-            $("#teacherName option").each(function() {
-                if($(this).val() == treeNode.reviewerId){
-                    $(this).attr("selected",true);
-                }
-            });
-            $("input:radio[name='hasChildNode']").each(function (){
-                if($(this).val()==treeNode.isLeaf){
-                    $(this).attr("checked",true);
-                }
-
-            });
-            $('.AddPramter').empty();
-            var jsonstrArray;
-            if(treeNode.jsonParameters) {
-                jsonstrArray = JSON.parse(treeNode.jsonParameters);
-            }
-            else {
-                jsonstrArray='';
-            }
-            var addStr='';
-            for(var pramterCount=0;pramterCount<jsonstrArray.length;pramterCount++){
-
-                addStr+="<tr><td><input type='text' class='parameterName' name='parameterName'></td><td><input type='text' class='parameterSymbol' name='parameterSymbol'></td></tr>";
-
-            }
-            $('.AddPramter').append(addStr);
-
-            for(var count=0;count<jsonstrArray.length;count++){
-                $(".parameterName").eq(count).val(jsonstrArray[count].desc);
-                $(".parameterSymbol").eq(count).val(jsonstrArray[count].symbol);
-            }
-
-            $('#itemName').val(treeNode.name);
-            $('#desc').val(treeNode.desc);
-            $('#applyDeadline').val(treeNode.applyDeadline);
-            $('#reviewDeadline').val(treeNode.reviewDeadline);
-            $('#parentId').val(parNodeName);
-            $('#formula').val(treeNode.formula);
-            $("#parentId").attr("disabled","disabled");
-
-
-            $('#addModal').modal('show');
-            $('#save').unbind("click");
-            $('#save').bind("click", function () {
-                var parametername = $('.parameterName');
-                var newArray=new Array();
-                for(var i=0;i<parametername.length;i++){
-
-                    newArray.push({desc:$(".parameterName").eq(i).val(),symbol:$(".parameterSymbol").eq(i).val()});
-
-                }
-                newArray=JSON.stringify(newArray);
-                var reviewTimetodate = $('#reviewDeadline').val();
-                var applyTimetodate = $('#applyDeadline').val();
-
-                var radio=$("#importRequired option:selected");
-                var ischild=$("input:radio[name='hasChildNode']:checked").val();
-                var reviewerid=$('#teacherName option:selected');
-
-                $.post("/category/manage/modify",
-                    {
-                        name: $('#itemName').val(),
-                        desc: $('#desc').val(),
-                        parentId: parNodeId,
-                        isLeaf: ischild,
-                        reviewDeadline: format(reviewTimetodate),
-                        applyDeadline: format(applyTimetodate),
-                        reviewerId: reviewerid.val(),
-                        formula: $('#formula').val(),
-                        importRequired: radio.val(),
-                        version: $('#version').val(),
-                        categoryId: treeNode.id,
-                        jsonParameters: newArray
-                    },
-                    function (data) {
-                        var x=data.data.category.reviewDeadline;
-                        var y=data.data.category.applyDeadline;
-                        var a=x.match(/\d+/g);
-                        var b=y.match(/\d+/g);
-                        var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
-                        var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];
-
-                        for (var i = 0; i < window.zNodes.length; i++) {
-                            if (window.zNodes[i].id == data.data.category.categoryId) {
-
-                                var newNode = {
-                                    'name': data.data.category.name,
-                                    'id': data.data.category.categoryId,
-                                    'parentId': data.data.category.parentId,
-                                    'desc': data.data.category.desc,
-                                    'reviewDeadline': rewDeadline,
-                                    'applyDeadline': appDeadline,
-                                    'formula': data.data.category.formula,
-                                    'reviewerId':data.data.category.reviewerId,
-                                    'jsonParameters':data.data.category.jsonParameters,
-                                    'isLeaf':data.data.category.isLeaf,
-                                    'importRequired':data.data.category.importRequired
-                                };
-
-                                zTree.updateNode(window.zNodes[i]);
-                                $('#'+treeNode.tId+'_span').text(newNode.name);
-
-                                window.zNodes.splice(i, 1, newNode);
-                                $.fn.zTree.init($("#treeDemo"), setting, window.zNodes);
-                            }
-                        }
-
-                    }
-                );
-                $('#addModal').modal('hide');
-            });
-        },0);
-        return false;
-
-    }
-    */
-//捕获移除节点回调函数
-    /*function beforeRemove(treeId, treeNode) {
-
-        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        zTree.selectNode(treeNode);
-        alert("确认删除 " + treeNode.name + " 吗？");
-        var str='itemId'+'='+treeNode.id;
-        $.ajax({
-            type:"DELETE",
-            url:"/category/manage?"+ str,
-            data:{
-                categoryId:treeNode.id
-            },
-            datatype:'json',
-            success:function(data){
-                if(data.status==1004) {
-                    alert('非解锁条目不可删！');
-                    jumpToAdd();
-                    return false;
-
-                }
-                else {
-                    return confirm("删除节点成功！");
-
-                    for(var m=0;m<window.zNodes.length;m++){
-                        if(window.zNodes[m].id==data.data.oldategory.categoryId){
-                            window.zNodes.splice(i-1,1);
-                        }
-                    }
-                    $('#'+treeNode.tId).remove();
-                }
-
-            },
-            error:function () {
-                return false;
-            }
-        });
-    }*/
-//更新节点名称之前的回调函数
-    /*function beforeRename(treeId, treeNode, newName, isCancel) {
-        className = (className === "dark" ? "":"dark");
-        showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
-        if (newName.length == 0) {
-            setTimeout(function() {
-                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                zTree.cancelEditName();
-                alert("节点名称不能为空.");
-            }, 0);
-            return false;
-        }
-        return true;
-    }*/
-//节点名称编辑只有的回调函数
- /*   function onRename(e, treeId, treeNode, isCancel) {
-        showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
-    }*/
-//是否显示移除按钮
-/*    function showRemoveBtn(treeId, treeNode) {
-        return treeNode;
-    }*/
-//是否显示重命名按钮
-   /* function showRenameBtn(treeId, treeNode) {
-        return treeNode;
-    }
-    function showLog(str) {
-        if (!log) log = $("#log");
-        log.append("<li class='"+className+"'>"+str+"</li>");
-        if(log.children("li").length > 8) {
-            log.get(0).removeChild(log.children("li")[0]);
-        }
-    }
-    function getTime() {
-        var now= new Date(),
-            h=now.getHours(),
-            m=now.getMinutes(),
-            s=now.getSeconds(),
-            ms=now.getMilliseconds();
-        return (h+":"+m+":"+s+ " " +ms);
-    }
-
-    function removeHoverDom(treeId, treeNode) {
-        $("#addBtn_"+treeNode.tId).unbind().remove();
-    };
-    function selectAll() {
-        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        zTree.setting.edit.editNameSelectAll =  $("#selectAll").attr("checked");
-    }*/
     $(document).ready(function() {
         $('.add').unbind('click');
         $('.add').bind('click', function () {
-            $(".applymodalbody").empty();
+          //  $(".applymodalbody").empty();
             $('#itemName').val(null);
             $('#applyDesc').val(null);
             $('#workload').val(null);
@@ -327,7 +13,7 @@ function ownerApply(domId) {
             $('.otherparameterName').val(null);
 
         });
-
+        $(document).off("click",".savemyApply");
         $(document).on("click", ".savemyApply", function () {
 
             var $parametername = $(".pramterDesc");
@@ -367,24 +53,30 @@ function ownerApply(domId) {
             // var reviewTimetodate = $('#reviewDeadline').val();
             //var applyTimetodate = $('#applyDeadline').val();
             var radio = $("input:radio[name='optionsRadios']:checked");
-            var applicant = $('#applicant option:selected');
+          //  var applicant = $('#applicant option:selected');
             var itemmanager = $('#itemmanager option:selected');
-
-            $.post("/item/manage", {
+          //  var formdata=new FormData();
+           // formdata.append("file",$("#fileName")[0]);
+            $.ajax({
+                type:"POST",
+                url:itemManageUrl,
+                data:{
                 categoryId:domId,
                 itemName: $('#itemName').val(),
                 applyDesc: $('#applyDesc').val(),
              //   workload: $('#workload').val(),
-                ownerId: applicant.val(),
+             //   ownerId: applicant.val(),
                 groupManagerId: itemmanager.val(),
                 isGroup: radio.val(),
-                jsonParameters: newArray,
+                jsonParameter: newArray,
                 otherJson: otherArray,
                 jobDesc: grouparray,
-                jsonChildWeight: childWeight
+                jsonChildWeight: childWeight,
+             //   file:formdata
 
-            }, function (data) {
-                var $showThead=$(".showThead");
+            },
+                success:function (data) {
+                /*var $showThead=$(".showThead");
                 if($showThead.css("display")=="none"){
                     $(".showThead").show();
                 }
@@ -395,60 +87,161 @@ function ownerApply(domId) {
                     $("#showitemName").val(data.data.itemList.itemName);
                     $("#showapplyDesc").val(data.data.itemList.applyDesc);
 
-                })
+                });
                 $(document).on("click",".editApply",function () {
                     $(".changeDis").attr("disabled","false");
-                })
+                })*/
+                    var analyseList = data.data.itemList;
+                    var listLength = data.data.itemList.length;
+                    if($(".applymodalbody").innerHTML==null||$(".applymodalbody").innerHTML==""){
+                        var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
+                            '<th class="sorting">工作量</th> <th class="sorting">' +
+                            '申报截止时间 </th> <th class="sorting">提交状态</th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
 
-                 }, "json");
+                        // $(".applymodalbody").empty();
+                        $(".applymodalbody").append(tablestr);
+
+                        var rowInfo = "<tr></tr>";
+                        var cellInfo = "<td></td>";
+
+                        var Info = analyseList;
+                        $(".tbody").append(rowInfo);
+
+                        for (var j = 0; j < 6; j++)//单元格
+                        {
+                            $(".tbody tr:last").append(cellInfo);
+                        }
+
+                        $(".tbody tr:last td:eq(0)").text(parseInt("1"));
+                        $(".tbody tr:last td:eq(1)").text(Info[0].itemName);
+                        for(var i=0;i<listLength;i++){
+                            if(Info[i].teacherName==$("#itemowner").text())
+                                var count=Info[i].workload;
+                            var CountId=Info[i].itemId;
+                        }
+                        $(".tbody tr:last td:eq(2)").text(count);
+                      //  $(".tbody tr:last td:eq(3)").text();
+                        $(".tbody tr:last td:eq(3)").attr("class","applyDead");
+                        /* var statusName;
+                         switch (Info[0].status) {
+                         case 0:
+                         statusName = '未提交';
+                         break;
+                         case 1:
+                         statusName = '已提交';
+                         break;
+                         }*/
+                        $(".tbody tr:last td:eq(4)").text("未提交");
+                        $(".tbody tr:last td:eq(4)").attr("id","statusChange_"+CountId);
+
+
+                        var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + CountId+ "\">查看详情</a> ";
+                        $(".tbody tr:last td:eq(5)").append(act);
+
+                    }
+                    else {
+                        var rowInfoAgain = "<tr></tr>";
+                        var cellInfoAgain = "<td></td>";
+                        var analyseListAgain = data.data.itemList;
+                        var listLengthAgain = data.data.itemList.length;
+                        var InfoAgain = analyseListAgain;
+                        $(".tbody").append(rowInfoAgain);
+
+                        for (var j = 0; j < 6; j++)//单元格
+                        {
+                            $(".tbody tr:last").append(cellInfoAgain);
+                        }
+
+                        $(".tbody tr:last td:eq(0)").text(parseInt($(".tbody tr:last td:eq(0)").text())+1);
+                        $(".tbody tr:last td:eq(1)").text(InfoAgain[0].itemName);
+                        for(var i=0;i<listLengthAgain;i++){
+                            if(InfoAgain[i].teacherName==$("#itemowner").text())
+                                var count=InfoAgain[i].workload;
+                            var CountId=InfoAgain[i].itemId;
+                            var CategId=InfoAgain[i].categoryId;
+                        }
+                        $(".tbody tr:last td:eq(2)").text(count);
+                        $(".tbody tr:last td:eq(3)").attr("class","applyDead");
+                        $(".applyDead").text($(".applyDeadline_"+CategId).text());
+                        /* var statusName;
+                         switch (Info[0].status) {
+                         case 0:
+                         statusName = '未提交';
+                         break;
+                         case 1:
+                         statusName = '已提交';
+                         break;
+                         }*/
+                        $(".tbody tr:last td:eq(4)").text("未提交");
+                        $(".tbody tr:last td:eq(4)").attr("id","statusChange_"+CountId);
+
+
+                        var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" +CountId + "\">查看详情</a> ";
+                        $(".tbody tr:last td:eq(5)").append(act);
+
+                    }
+                    $(document).on("click",".showaddContent",function () {
+                            var newId=this.id;
+                            var newReg=parseInt(newId.match(/\d+/g));
+                            if($("#statusChange_"+newreg).text()=="未提交"){
+                                $(".editApply").show();
+                              //  $(".editApply").display=="";
+                                $(".editApply").attr("id","editApply_"+newReg);
+                                $(".editSubmit").show();
+                                $(".editSubmit").attr("id","editSubmit_"+newReg);
+                                $(".editDelete").show();
+                                $(".editDelete").attr("id","editDelete"+newReg);
+                            }
+                            if($("#statusChange_"+newReg).text()=="已提交"){
+                                $(".editApply").hide();
+                                //  $(".editApply").attr("id","editApply_"+window.Temp[newReg-1].itemId);
+                                $(".editSubmit").hide();
+                                //  $(".editSubmit").attr("id","editSubmit_"+window.Temp[newReg-1].itemId);
+                                $(".editDelete").hide();
+                                //  $(".editDelete").attr("id","editDelete"+window.Temp[newReg-1].itemId);
+                            }
+                            $("#showitemName").val(analyseList[0].itemName);
+                            $("#showitemName").attr("disabled","true");
+                            $("#showapplyDesc").val(analyseList[0].applyDesc);
+                            $("#showapplyDesc").attr("disabled","true");
+                            if(analyseList[0].isGroup==0){
+                                $("#single").attr("checked",'checked');
+                                $("#group").attr("disabled","true");
+
+                            }
+                            else{
+                                $("#group").attr("checked",'checked');
+                                $("#single").attr("disabled","true");
+                                $(".item_manager").show();
+                                $(".item_group").show();
+                            }
+                            var showPram=analyseList[0].parameterValues;
+                            for(var i=0;i<showPram.length;i++){
+                                $(".showparameterName").eq(i).val(showPram[i].value);
+                                $(".showparameterName").eq(i).attr("disabled","true");
+
+                            }
+                            var showOtherPara=analyseList[0].otherJsonParameters;
+                            for(var n=0;n<showOtherPara.length;n++){
+                                $(".showotherparameterName").eq(n).val(showOtherPara[n].value);
+                                $(".showotherparameterName").eq(n).attr("disabled","true");
+
+                            }
+                            $("#showitemmanager").attr("disabled","true");
+                            $("#showitemmanager option[value='"+analyseList[0].groupManagerId+"']").attr("selected","selected");
+
+
+                    })                    
+
+                 }
+             //   processData: false,
+             //   contentType:false
+            });
 
                  $('#addContent').modal('hide');
-
 
             });
 
         });
-
-   /* function add0(m){return m<10?'0'+m:m }
-    function format(shijianchuo)
-    {
-        var time = new Date(shijianchuo);
-        var y = time.getFullYear();
-        var m = time.getMonth()+1;
-        var d = time.getDate();
-
-        return y+'年'+add0(m)+'月'+add0(d)+'日';
-    }*/
-   /* function zTreeOnClick(event, treeId, treeNode) {
-        var zTree= $.fn.zTree.getZTreeObj("treeDemo");
-        var nodes = zTree.getCheckedNodes(true);
-        var str='';
-        for(var i=0;i<nodes.length;i++){
-
-            if(i==nodes.length-1){
-                str+="categoryId="+nodes[i].id;
-
-            }
-            else
-                str+="categoryId="+nodes[i].id+"&";
-
-        }
-
-        $('#submit').click(function(){
-
-            $.post("/category/manage/public-selective?"+str,function (data){
-                if(data.status==200)
-                    return confirm("提交节点成功！");
-                else
-                    alert("提交节点失败！");
-            } )
-        });
-    }*/
-/*    $.fn.zTree.init($("#treeDemo"), setting, window.zNodes);
-    $("#selectAll").bind("click", selectAll);*/
-
-
-
-
 
 }

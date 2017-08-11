@@ -10,15 +10,16 @@ function workRevie(){
     });
     */
     $('.right_hole').empty();
-    $.get("/region?"+'regionName=PrimTeachers/reviewerWorkload',function (result) {
+    $.get(pageManageUrl+"?"+'regionName=PrimTeachers/reviewerWorkload',function (result) {
         $('.right_hole').append(result);
 
     });
-    $.get("/item/info/import-categories", function (data) {
-       var showlist=$("<ul></ul>");
-        showimportall(data.data.categoryList,showlist);
-        $('#tab_content1').append(showlist);
 
+    $.get(itemImportUrl, function (data) {
+       var showlist=$("<ul></ul>");
+        showimportall(data.data.categoryTree,showlist);
+
+        $('#tab_content1').append(showlist);
 /*function  showimportall(item) {
     for(var i=0;i<item.length;i++){
         if(item[i].importRequired==1){
@@ -127,7 +128,7 @@ function workRevie(){
         }
     }
 }*/
-        function showimportall(menu_list, parent) {
+/*        function showimportall(menu_list, parent) {
             for (var menu in menu_list) {
                 //如果有子节点，则遍历该子节点
                 if (menu_list[menu].parentId == 0) {
@@ -143,7 +144,7 @@ function workRevie(){
                     $(".category_"+menu_list[menu].parentId).append("<li>"+menu_list[menu].name+"</li>").appendTo(parent);
 
             }
-        }
+        }*/
 /*        function returnType(menu_list) {
             for (var menu in menu_list) {
                 if (menu_list[menu].children&&menu_list[menu].children.length>0) {
@@ -155,7 +156,135 @@ function workRevie(){
             }
 
         }*/
+        function showimportall(menu_list,parent) {
+            for (var menu=0;menu<menu_list.length;menu++) {
+                //如果有子节点，则遍历该子节点
+                if (menu_list[menu].children.length > 0) {
+                    var isShow=traverseNode(menu_list[menu],1);
+                    if(isShow==1) {
+                        var li = $("<li></li>");
+                        $(li).append(menu_list[menu].name).append("<ul></ul>").appendTo(parent);
 
+                    }
+                    showimportall(menu_list[menu].children, $(li).children().eq(0));
+                }
+                else if(menu_list[menu].importRequired==1){
+                    $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<button  id='reviewer_" + menu_list[menu].categoryId + "' class='btn btn-primary reviewer' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击复核</button><div style='clear: both;'></div>").appendTo(parent);
+                }
+
+            }
+        }
+
+    });
+  //  $(".reviewer").unbind("click");
+    $(document).off("click",".reviewer");
+    $(document).on("click",".reviewer",function () {
+        var flag=this.id;
+        var reg=parseInt(flag.match(/\d+/g));
+        $(".modal-header").text($(".item_"+reg).text());
+
+        $.get(itemGroupUrl+"?" + 'categoryId=' + reg, function (data) {
+
+                var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
+                    '<th class="sorting">工作量</th> <th class="sorting">计算公式</th><th class="sorting">主要参数</th><th>其他参数</th><th>版本</th> <th class="sorting">' +
+                    '复核截止时间 </th> <th class="sorting">复核状态 </th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
+                $(".applymodalbody").empty();
+                $(".applymodalbody").append(tablestr);
+
+                var rowInfo = "<tr></tr>";
+                var cellInfo = "<td></td>";
+                var analyseList = data.data.itemList;
+                var listLength = data.data.itemList.length;
+                for (var t = 0; t < listLength; t++) {
+                    var Info = analyseList[t];
+                    $(".tbody").append(rowInfo);
+
+                    for (var j = 0; j < 10; j++)//单元格
+                    {
+                        $(".tbody tr:last").append(cellInfo);
+                    }
+                    var id = t;
+                    $(".tbody tr:last td:eq(0)").text(id + 1);
+                    $(".tbody tr:last td:eq(1)").text(Info.itemName);
+                    $(".tbody tr:last td:eq(2)").text(Info.workload);
+                    $(".tbody tr:last td:eq(3)").text();
+                    var paramArray = Info.parameterValues;
+                    var str = '';
+                    for (var paramCount = 0; paramCount < paramArray.length; paramCount++) {
+
+                        str += paramArray[paramCount].symbol + ':' + paramArray[paramCount].value;
+                    }
+                    $(".tbody tr:last td:eq(4)").text(str);
+                    var otherparamArray = Info.otherJsonParameters;
+                    var otherstr = '';
+                    for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
+                        otherstr += otherparamArray[otherparamCount].key + ':' + otherparamArray[otherparamCount].value;
+                    }
+                    $(".tbody tr:last td:eq(5)").text(otherstr);
+                    $(".tbody tr:last td:eq(6)").text(Info.version);
+                    $(".tbody tr:last td:eq(7)").text('2017-12-31');
+                    var statusName;
+                    switch (Info.status) {
+                        case -1:
+                            statusName = '删除状态';
+                            break;
+                        case 0:
+                            statusName = '未提交状态';
+                            break;
+                        case 1:
+                            statusName = '首次复核';
+                            break;
+                        case 2:
+                            statusName = '确认通过';
+                            break;
+                        case 3:
+                            statusName = '存疑提交';
+                            break;
+                        case 4:
+                            statusName = '存疑已解决';
+                            break;
+                        case 5:
+                            statusName = '审核拒绝';
+                            break;
+                    }
+                    $(".tbody tr:last td:eq(8)").text(statusName);
+                    $(".tbody tr:last td:eq(8)").attr("id","reviewe_"+Info.itemId);
+
+                    var act = "<a class=\"btn btn-success sure\" id=\"pass_" + Info.itemId + "\">确认通过</a><a class=\"btn btn-danger LeaveQues\" data-toggle=\"modal\" data-target=\"#refuModal\" id=\"refuse_" + Info.itemId + "\">存疑提交</a> ";
+                    $(".tbody tr:last td:eq(9)").append(act);
+                }
+
+             /*   var abnormaldata = showdata(data.data.itemList);
+                $('.mymodaldata').append(abnormaldata);*/
+             /*   $(".btn-success").on("click", function () {
+                    var v = this.className;
+                    var b = v.match(/\d+/g);
+                    var itemstr = 'itemId=' + b + '&status=2';
+                    $.ajax({
+                        type: "POST",
+                        url: "/item/manage/status-update?" + itemstr
+
+                    });
+                    $('#status_' + b).val('通过');
+                });
+                $(".btn-info").on("click", function () {
+                    var message = $('#refusedesc').val();
+                    var x = this.className;
+                    var a = x.match(/\d+/g);
+                    var itemstr = 'itemId=' + a + '&status=3' + '&message=' + message;
+                    $(".commit").on("click", function () {
+                        $.ajax({
+                            type: "POST",
+                            url: "/item/manage/status-update?" + itemstr
+
+                        });
+                        $('#refuseModal').modal('hide');
+                        $('#status_' + a).val('存疑状态');
+                    });
+
+                })*/
+
+        });
 
     });
 /*
@@ -197,40 +326,51 @@ function workRevie(){
 
     $(document).on("click",".sure",function () {
         var flag=this.id;
-        var passItemId=flag.match(/\d+/g);
+        var passItemId=parseInt(flag.match(/\d+/g));
         var itemstr='itemId='+passItemId+'&status=2';
         $.ajax({
-            type:"POST",
-            url:"/item/manage/status-update?"+itemstr
+            type:"DELETE",
+            url:itemStatusUrl+"?"+itemstr,
+            success:function () {
+                alert("操作成功！");
+            }
 
         });
         $('#reviewe_'+passItemId).text('确认通过');
     });
     $(document).on("click",".LeaveQues",function () {
         var reflag=this.id;
-        var refuItemId=reflag.match(/\d+/g);
-        $(document).on("click",".conmmit",function () {
+        var refuItemId=parseInt(reflag.match(/\d+/g));
+        $(document).on("click",".commit",function () {
             var refudesc=$("#refusedesc").val();
-            $.get("reviewer/manage/check?"+"itemId="+refuItemId+"&status=3"+"&message="+refudesc,function () {
+           /* $.ajax("reviewer/manage/check?"+"itemId="+refuItemId+"&status=3"+"&message="+refudesc,function () {
                 $('#reviewe_'+refuItemId).text('存疑提交');
-            })
+                alert("操作成功！");
+            });*/
+            $.ajax({
+                url:itemStatusUrl+"?"+"itemId="+refuItemId+"&status=3"+"&message="+refudesc,
+                type:"DELETE",
+                success:function (data) {
+                    alert("操作成功！");
+                    $('#reviewe_'+refuItemId).text('存疑提交');
+                }
+            });
         });
 
     });
 }
 function  reviewerRec() {
-    $('.right_col').empty();
+  /* $('.right_col').empty();
     $.get("/region?"+'regionName=applicant/revRecord',function (html) {
 
         $('.right_col').append(html);
     });
     $.get("/item/info/import-list",function (data) {
-
         var abnormaldata=showexplaindata(data.data.abnormalItemList);
         $('.abnormaldata').append(abnormaldata);
-       /* $('.btn-info').text('查看回复');
+        $('.btn-info').text('查看回复');
         $('.btn-success').remove();
-        */
+
         $('.explain').click(function () {
             $('.modal-body').empty();
             for(var m=0;m<data.data.abnormalItemList.length;m++)
@@ -238,19 +378,191 @@ function  reviewerRec() {
                 $('.modal-body').append(data.data.abnormalItemList[m].applyDesc);
             }
         });
-/*
+
         var normaldata=showdata(data.data.normalItemList);
         $('.normalbodydata').append(normaldata);
-        */
-
-
 
     })
+*/
+  $(".reviewerRec").show();
+  $(".reviewerRecTbody").empty();
 
+  $.get(itemTeacherInfo+"?"+"importedRequired=1&status=2",function (data) {
+      var rowInfo="<tr></tr>";
+      var cellInfo="<td></td>";
+      var analyseList= data.data.itemList;
+      var listLength= data.data.itemList.length;
+      for(var i=0;i<listLength;i++)
+      {
+          var Info=analyseList[i];
+          $(".reviewerRecTbody").append(rowInfo);
+          //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
+          for(var j=0;j<11;j++)//单元格
+          {
+              $(".reviewerRecTbody tr:last").append(cellInfo);
+          }
+          var id=i;
+          $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
+          $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
+          $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
+          $(".reviewerRecTbody tr:last td:eq(3)").text();
+          var showtype='';
+          switch (Info.isGroup){
+
+              case 1:showtype="小组形式";
+                  break;
+              case 0:showtype="个人形式";
+                  break;
+
+          }
+          $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+
+          var praValues='';
+          for(var m=0;m<Info.parameterValues.length;m++){
+              praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
+          }
+          var otherpraValue='';
+          for(var n=0;n<Info.otherJsonParameters.length;n++){
+              otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
+          }
+          $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+
+          $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
+
+
+          $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
+          $(".reviewerRecTbody tr:last td:eq(8)").text();
+          $(".reviewerRecTbody tr:last td:eq(9)").text("确认通过");
+        /*  var statusName='';
+          switch (Info.status){
+              case 1:statusName="已提交";
+                  break;
+              case 0:statusName="未提交";
+          }*/
+
+          $(".reviewerRecTbody tr:last td:eq(10)").text();
+       //   var act="<a class='btn btn-primary itemToImport' id='itemToImport_"+Info.itemId+"'>提交</a> ";
+       //   $(".reviewerRecTbody tr:last td:eq(11)").text();
+      }
+  });
+    $.get(itemTeacherInfo+"?"+"importedRequired=1&status=3",function (data) {
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+        var analyseList= data.data.itemList;
+        var listLength= data.data.itemList.length;
+        for(var i=0;i<listLength;i++)
+        {
+            var Info=analyseList[i];
+            $(".reviewerRecTbody").append(rowInfo);
+            //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
+            for(var j=0;j<11;j++)//单元格
+            {
+                $(".reviewerRecTbody tr:last").append(cellInfo);
+            }
+            var id=i;
+            $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
+            $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
+            $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
+            $(".reviewerRecTbody tr:last td:eq(3)").text();
+            var showtype='';
+            switch (Info.isGroup){
+
+                case 1:showtype="小组形式";
+                    break;
+                case 0:showtype="个人形式";
+                    break;
+
+            }
+            $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+
+            var praValues='';
+            for(var m=0;m<Info.parameterValues.length;m++){
+                praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
+            }
+            var otherpraValue='';
+            for(var n=0;n<Info.otherJsonParameters.length;n++){
+                otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
+            }
+            $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+
+            $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
+
+
+            $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
+            $(".reviewerRecTbody tr:last td:eq(8)").text();
+            $(".reviewerRecTbody tr:last td:eq(9)").text("提交存疑");
+            /*  var statusName='';
+             switch (Info.status){
+             case 1:statusName="已提交";
+             break;
+             case 0:statusName="未提交";
+             }*/
+
+         //   var act="<a class='btn btn-primary reviewerRec' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
+         //   $(".reviewerRecTbody tr:last td:eq(10)").text(act);
+        }
+    });
+    $.get(itemTeacherInfo+"?importedRequired=1&status=4",function (data) {
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+        var analyseList= data.data.itemList;
+        var listLength= data.data.itemList.length;
+        for(var i=0;i<listLength;i++)
+        {
+            var Info=analyseList[i];
+            $(".reviewerRecTbody").append(rowInfo);
+            //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
+            for(var j=0;j<11;j++)//单元格
+            {
+                $(".reviewerRecTbody tr:last").append(cellInfo);
+            }
+            var id=i;
+            $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
+            $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
+            $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
+            $(".reviewerRecTbody tr:last td:eq(3)").text();
+            var showtype='';
+            switch (Info.isGroup){
+
+                case 1:showtype="小组形式";
+                    break;
+                case 0:showtype="个人形式";
+                    break;
+
+            }
+            $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+
+            var praValues='';
+            for(var m=0;m<Info.parameterValues.length;m++){
+                praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
+            }
+            var otherpraValue='';
+            for(var n=0;n<Info.otherJsonParameters.length;n++){
+                otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
+            }
+            $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+
+            $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
+
+
+            $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
+            $(".reviewerRecTbody tr:last td:eq(8)").text();
+            $(".reviewerRecTbody tr:last td:eq(9)").text("存疑解决");
+            /*  var statusName='';
+             switch (Info.status){
+             case 1:statusName="已提交";
+             break;
+             case 0:statusName="未提交";
+             }*/
+
+            var act="<a class='btn btn-primary reviewerRec' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
+            $(".reviewerRecTbody tr:last td:eq(10)").append(act);
+        }
+    });
 }
 function applyworkload() {
     $('.right_hole').empty();
-    $.get("/region?"+'regionName=PrimTeachers/applyWorkload',function (result) {
+    $.get(pageManageUrl+"?"+'regionName=PrimTeachers/applyWorkload',function (result) {
         $('.right_hole').append(result);
 
     });
@@ -307,7 +619,7 @@ function applyworkload() {
 
     });
     */
-    $.get("/category/info/list", function (data) {
+    $.get(categoryInfoListUrl, function (data) {
         var parent=$("<ul></ul>");
         showapplyall(data.data.categoryTree,parent);
        $("#tab_content1").append(parent);
@@ -324,7 +636,7 @@ function applyworkload() {
                    showapplyall(menu_list[menu].children, $(li).children().eq(0));
                }
                else if(menu_list[menu].importRequired==0){
-                   $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击申报</button><div style='clear: both;'></div>").appendTo(parent);
+                   $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<span class='applyDeadline_"+menu_list[menu].categoryId+"' style='display: none;'>"+menu_list[menu].applyDeadline+"</span> <span class='revieDeadline_"+menu_list[menu].categoryId+"' style='display: none;'>"+menu_list[menu].reviewDeadline+"</span><button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击申报</button><div style='clear: both;'></div>").appendTo(parent);
                }
 
            }
@@ -427,14 +739,63 @@ function applyworkload() {
                 }
             }
         }*/
-
+        $(document).off("click",".apply");
+        var Temp=new Array();
+        var Categry="";
         $(document).on("click",".apply",function () {
             //$(".panel-default").toggle("show");
-            $('.applymodalbody').empty();
-
+           $('.applymodalbody').empty();
             var myseleFlag=this.id;
-            var reg=myseleFlag.match(/\d+/g)[0];
-            reg=parseInt(reg);
+            var reg=parseInt(myseleFlag.match(/\d+/g));
+            window.Categry=reg;
+            $.get(itemGroupUrl+"?" + 'categoryId=' + reg, function (data) {
+                if(data.data.itemList&&data.data.itemList.length>0) {
+                   var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
+                        '<th class="sorting">工作量</th> <th class="sorting">' +
+                        '申报截止时间 </th> <th class="sorting">提交状态</th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
+
+                   // $(".applymodalbody").empty();
+                    $(".applymodalbody").append(tablestr);
+
+                    var rowInfo = "<tr></tr>";
+                    var cellInfo = "<td></td>";
+                    var analyseList = data.data.itemList;
+                    var listLength = data.data.itemList.length;
+                    for (var t = 0; t < listLength; t++) {
+                        var Info = analyseList[t];
+                        $(".tbody").append(rowInfo);
+
+                        for (var j = 0; j < 6; j++)//单元格
+                        {
+                            $(".tbody tr:last").append(cellInfo);
+                        }
+                        var id = t+1;
+                        $(".tbody tr:last td:eq(0)").text(id);
+                        $(".tbody tr:last td:eq(1)").text(Info.itemName);
+                        $(".tbody tr:last td:eq(2)").text(Info.workload);
+                        $(".tbody tr:last td:eq(3)").attr("class","applyDead")
+                      //  $(".tbody tr:last td:eq(3)").text($(""));
+                        $(".applyDead").text($(".applyDeadline_"+reg).text());
+                        var statusName;
+                        switch (Info.status) {
+                            case 0:
+                                statusName = '未提交';
+                                break;
+                            case 1:
+                                statusName = '已提交';
+                                break;
+                        }
+                        $(".tbody tr:last td:eq(4)").text(statusName);
+                        $(".tbody tr:last td:eq(4)").attr("id","statusChange_"+Info.itemId);
+
+                        var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id+ "\">查看详情</a> ";
+                        $(".tbody tr:last td:eq(5)").append(act);
+
+                    }
+                }
+                window.Temp=data.data.itemList;
+            });
+
             $(".modal-header").empty();
             $(".modal-header").append($(".item_"+reg).text());
             ownerApply(reg);
@@ -453,13 +814,15 @@ function applyworkload() {
                         var symbolname=item[comp].formulaParameterList[t].symbol;
                         $('.parameterTh').append("<th class='pramterDesc' id='"+symbolname+"'>"+item[comp].formulaParameterList[t].desc+"</th>");
                         $('.AddPramter').append("<td><input type='text' class='parameterName'></td>");
-
-
+                        $('.showparameterTh').append("<th class='showpramterDesc' id='"+symbolname+"'>"+item[comp].formulaParameterList[t].desc+"</th>");
+                        $('.showAddPramter').append("<td><input type='text' class='showparameterName'></td>");
                     }
                     for(var s=0;s<item[comp].otherJsonParameters.length;s++){
 
                         $('.otherParaTh').append("<th class='otherPramterkey'>"+item[comp].otherJsonParameters[s].key+"</th>");
                         $('#AddOtherPramter').append( "<td><input type='text' class='otherparameterName'></td>");
+                        $('.showotherParaTh').append("<th class='showotherPramterkey'>"+item[comp].otherJsonParameters[s].key+"</th>");
+                        $('#showAddOtherPramter').append("<td><input type='text' class='showotherparameterName'></td>");
 
                     }
 
@@ -469,11 +832,7 @@ function applyworkload() {
                 }
             }
         }
-
-
-    });
-    $(document).on("click",".apply",function () {
-        $.get("/common/teachers",function (data) {
+        $.get(TeacherInfoUrl,function (data) {
             for(var i=0;i<data.data.teacherList.length;i++){
                 $('.teacherName').append('<option value=\"'+data.data.teacherList[i].teacherId+'\">'+data.data.teacherList[i].name+'</option>');
             }
@@ -481,8 +840,7 @@ function applyworkload() {
 
     });
 
-       $(document).on("click",".radioChange",
-           function () {
+       $(document).on("click",".radioChange",function () {
                var selectedvValue=$("input[name='optionsRadios']:checked").val();
                if(selectedvValue=="1"){
                 $(".item_manager").show();
@@ -508,34 +866,492 @@ function applyworkload() {
         $('#AddgroupPramter').append(addMessage);
     });
     $(document).on("click",".groupMemberName",function () {
-        $.get("/common/teachers",function (data) {
+        $.get(TeacherInfoUrl,function (data) {
             for (var i = 0; i < data.data.teacherList.length; i++) {
                 $('.groupMemberName').append('<option value=\"' + data.data.teacherList[i].teacherId + '\">' + data.data.teacherList[i].name + '</option>');
                  }
         })
     });
+    $(document).on("click",".showContent",function () {
+        var newId=this.id;
+        var newReg=parseInt(newId.match(/\d+/g));
+        if($("#statusChange_"+window.Temp[newReg-1].itemId).text()=="未提交"){
+            $(".editApply").show();
+            $(".editApply").display=="";
+            $(".editApply").attr("id","editApply_"+window.Temp[newReg-1].itemId);
+            $(".editSubmit").show();
+            $(".editSubmit").attr("id","editSubmit_"+window.Temp[newReg-1].itemId);
+            $(".editDelete").show();
+            $(".editDelete").attr("id","editDelete"+window.Temp[newReg-1].itemId);
+        }
+        if($("#statusChange_"+window.Temp[newReg-1].itemId).text()=="已提交"){
+            $(".editApply").hide();
+          //  $(".editApply").attr("id","editApply_"+window.Temp[newReg-1].itemId);
+            $(".editSubmit").hide();
+          //  $(".editSubmit").attr("id","editSubmit_"+window.Temp[newReg-1].itemId);
+            $(".editDelete").hide();
+          //  $(".editDelete").attr("id","editDelete"+window.Temp[newReg-1].itemId);
+        }
+        $("#showitemName").val(window.Temp[newReg-1].itemName);
+        $("#showitemName").attr("disabled","true");
+        $("#showapplyDesc").val(window.Temp[newReg-1].applyDesc);
+        $("#showapplyDesc").attr("disabled","true");
+        if(window.Temp[newReg-1].isGroup==0){
+            $("#single").attr("checked",'checked');
+            $("#group").attr("disabled","true");
+
+        }
+        else{
+            $("#group").attr("checked",'checked');
+            $("#single").attr("disabled","true");
+            $(".item_manager").show();
+            $(".item_group").show();
+        }
+        var showPram=window.Temp[newReg-1].parameterValues;
+        for(var i=0;i<showPram.length;i++){
+            $(".showparameterName").eq(i).val(showPram[i].value);
+            $(".showparameterName").eq(i).attr("disabled","true");
+
+        }
+        var showOtherPara=window.Temp[newReg-1].otherJsonParameters;
+        for(var n=0;n<showOtherPara.length;n++){
+            $(".showotherparameterName").eq(n).val(showOtherPara[n].value);
+            $(".showotherparameterName").eq(n).attr("disabled","true");
+
+        }
+        $("#showitemmanager").attr("disabled","true");
+        $("#showitemmanager option[value='"+window.Temp[newReg-1].groupManagerId+"']").attr("selected","selected");
+
+    });
+    $(document).on("click",".editApply",function () {
+        var editId=parseInt(this.id.match(/\d+/g));
+        $(".savemyApplyAgain").attr("id",editId);
+        $("#showitemName").removeAttr("disabled");
+        $("#showapplyDesc").removeAttr("disabled");
+        $(".showparameterName").removeAttr("disabled");
+        if($("#single").disabled=="true"){
+            $("#single").removeAttr("disabled");
+        }
+        else{
+            $("#group").removeAttr("disabled");
+        }
+
+        $(".showotherparameterName").removeAttr("disabled");
+        $("#showitemmanager").removeAttr("disabled");
+    });
+    $(document).off("click",".savemyApplyAgain");
+    $(document).on("click",".savemyApplyAgain",function () {
+        var saveId=this.id;
+        var saveReg=parseInt(saveId.match(/\d+/g));
+        var $parametername = $(".showpramterDesc");
+        var newArray = new Array();
+        for (var i = 0; i < $(".showparameterName").length; i++) {
+            var dom = $(".showpramterDesc").eq(i).attr("id");
+            newArray.push({symbol: dom, value:parseInt($(".showparameterName").eq(i).val())});
+
+        }
+        newArray = JSON.stringify(newArray);
+        var otherArray = new Array();
+        var otherPramterkey = $(".showotherPramterkey");
+        for (var j = 0; j < otherPramterkey.length; j++) {
+            var otherKey=$(".showotherPramterkey").eq(j);
+            otherArray.push({key: otherKey.text(), value: $(".showotherparameterName").eq(j).val()});
+
+        }
+        otherArray = JSON.stringify(otherArray);
+        var grouparray = new Array();
+        var groupmessageArray = $('.showgroupMemberName');
+        for (var c = 0; c < groupmessageArray.length; c++) {
+            grouparray.push({
+                userId: parseInt($(".showgroupMemberName option:selected").eq(c).val()),
+                jobDesc: $(".showgroupMemberSymbol").eq(c).val()
+            });
+        }
+        grouparray = JSON.stringify(grouparray);
+        var childWeight = new Array();
+        for (m = 0; m < groupmessageArray.length; m++) {
+            childWeight.push({
+                userId: parseInt($(".showgroupMemberName option:selected").eq(m).val()),
+                weight: parseFloat($(".showgroupMemberWeight").eq(m).val())
+            });
+        }
+        childWeight = JSON.stringify((childWeight));
+
+        // var reviewTimetodate = $('#reviewDeadline').val();
+        //var applyTimetodate = $('#applyDeadline').val();
+        var radio = $("input:radio[name='showoptionsRadios']:checked");
+       // var applicant = $('#applicant option:selected');
+        var itemmanager = $('#itemmanager option:selected');
+        //  var formdata=new FormData();
+        // formdata.append("file",$("#fileName")[0]);
+        $.ajax({
+            type:"POST",
+            url:itemManageUrl,
+            data:{
+                categoryId:window.Categry,
+                itemName: $('#showitemName').val(),
+                itemId:saveReg,
+                applyDesc: $('#showapplyDesc').val(),
+                //   workload: $('#workload').val(),
+                //   ownerId: applicant.val(),
+                groupManagerId: itemmanager.val(),
+                isGroup: radio.val(),
+                jsonParameter: newArray,
+                otherJson: otherArray,
+                jobDesc: grouparray,
+                jsonChildWeight: childWeight,
+                option:modify
+                //   file:formdata
+
+            },
+            success:function (data) {
+                if($(".applymodalbody").innerHTML==null||$(".applymodalbody").innerHTML==""){
+                    var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
+                        '<th class="sorting">工作量</th> <th class="sorting">' +
+                        '申报截止时间 </th> <th class="sorting">提交状态</th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
+
+                    // $(".applymodalbody").empty();
+                    $(".applymodalbody").append(tablestr);
+
+                    var rowInfo = "<tr></tr>";
+                    var cellInfo = "<td></td>";
+                   var analyseList = data.data.itemList;
+                   var listLength = data.data.itemList.length;
+                   var Info = analyseList;
+                        $(".tbody").append(rowInfo);
+
+                        for (var j = 0; j < 6; j++)//单元格
+                        {
+                            $(".tbody tr:last").append(cellInfo);
+                        }
+
+                        $(".tbody tr:last td:eq(0)").text(parseInt("1"));
+                        $(".tbody tr:last td:eq(1)").text(Info[0].itemName);
+                        for(var i=0;i<listLength;i++){
+                            if(Info[i].teacherName==$("#itemowner").text())
+                            var count=Info[i].workload;
+                            var CountId=Info[i].itemId;
+                        }
+                        $(".tbody tr:last td:eq(2)").text(count);
+                        $(".tbody tr:last td:eq(3)").text();
+                       /* var statusName;
+                        switch (Info[0].status) {
+                            case 0:
+                                statusName = '未提交';
+                                break;
+                            case 1:
+                                statusName = '已提交';
+                                break;
+                        }*/
+                        $(".tbody tr:last td:eq(4)").text("未提交");
+                        $(".tbody tr:last td:eq(4)").attr("id","statusChange_"+CountId);
+
+
+                        var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id+ "\">查看详情</a> ";
+                        $(".tbody tr:last td:eq(5)").append(act);
+
+                }
+                else {
+                    var rowInfoAgain = "<tr></tr>";
+                    var cellInfoAgain = "<td></td>";
+                    var analyseListAgain = data.data.itemList;
+                    var listLengthAgain = data.data.itemList.length;
+                    var InfoAgain = analyseListAgain;
+                    $(".tbody").append(rowInfoAgain);
+
+                    for (var j = 0; j < 6; j++)//单元格
+                    {
+                        $(".tbody tr:last").append(cellInfoAgain);
+                    }
+
+                    $(".tbody tr:last td:eq(0)").text(parseInt($(".tbody tr:last td:eq(0)").text())+1);
+                    $(".tbody tr:last td:eq(1)").text(InfoAgain[0].itemName);
+                    for(var i=0;i<listLengthAgain;i++){
+                        if(InfoAgain[i].teacherName==$("#itemowner").text())
+                            var count=InfoAgain[i].workload;
+                        var CountId=InfoAgain[i].itemId;
+                    }
+                    $(".tbody tr:last td:eq(2)").text(count);
+                    $(".tbody tr:last td:eq(3)").text();
+                    /* var statusName;
+                     switch (Info[0].status) {
+                     case 0:
+                     statusName = '未提交';
+                     break;
+                     case 1:
+                     statusName = '已提交';
+                     break;
+                     }*/
+                    $(".tbody tr:last td:eq(4)").text("未提交");
+                    $(".tbody tr:last td:eq(4)").attr("id","statusChange_"+CountId);
+
+
+                    var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id+ "\">查看详情</a> ";
+                    $(".tbody tr:last td:eq(5)").append(act);
+
+                }
+
+/*
+                for(var showList=0;showList<data.data.itemList.length;showList++){
+                    $(".tbody").append("<tr><td></td><td>'+data.data.itemList[0].itemName+'</td><td>data.data.itemList.workload</td><td class='status_"+data.data.itemList.itemId+"'>未提交状态</td><td><a class='btn btn-primary"+data.data.itemList.itemId+"' data-target='#showContent' data-toggle='modal'>查看详情</a></td></tr>")
+
+                }
+                 $(document).on("click","."+data.data.itemList.itemId,function () {
+                    $(".changeDis").attr("disabled","true");
+                    $("#showitemName").val(data.data.itemList.itemName);
+                    $("#showapplyDesc").val(data.data.itemList.applyDesc);
+
+                });
+                $(document).on("click",".editApply",function () {
+                    $(".changeDis").attr("disabled","false");
+                })*/
+
+            }
+            //   processData: false,
+            //   contentType:false
+        });
+
+        $('#showContent').modal('hide');
+
+    });
+    $(document).off("click",".editSubmit");
+    $(document).on("click",".editSubmit",function () {
+        var submitId=parseInt(this.id.match(/\d+/g));
+        $.post(itemManaPublicUrl+"?itemId="+submitId,function () {
+            alert("提交成功！");
+            $("#statusChange_"+submitId).text("已提交");
+            $("#showContent").modal("hide");
+
+        })
+    });
+    $(document).off("click",".editDelete");
+    $(document).on("click",".editDelete",function () {
+        var deleteId=parseInt(this.id.match(/\d+/g));
+       $.ajax({
+        url:itemManageUrl+"?itemId="+deleteId,
+        type:"DELETE",
+        data:{
+            itemId:deleteId
+        },
+           success:function () {
+               alert("操作成功！");
+               $("#statusChange_"+submitId).text("已删除");
+               $("#showContent").modal("hide");
+           }
+
+       });
+    });
     }
+function showApplyHistory() {
+$.get(historyUrl+"?type=import",function (data) {
 
+});
+}
 function applyRec() {
-    $('#tab_content2').empty();
-    $.get("/region?"+'regionName=applicant/applyRec',function (html) {
-        $('#tab_content2').append(html);
+    $(".reviewerRec").show();
+    $(".reviewerRecTbody").empty();
+
+    $.get(itemTeacherInfo+"?importedRequired=0&status=1",function (data) {
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+        var analyseList= data.data.itemList;
+        var listLength= data.data.itemList.length;
+        for(var i=0;i<listLength;i++)
+        {
+            var Info=analyseList[i];
+            $(".reviewerRecTbody").append(rowInfo);
+            //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
+            for(var j=0;j<11;j++)//单元格
+            {
+                $(".reviewerRecTbody tr:last").append(cellInfo);
+            }
+            var id=i;
+            $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
+            $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
+            $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
+            $(".reviewerRecTbody tr:last td:eq(3)").text();
+            var showtype='';
+            switch (Info.isGroup){
+
+                case 1:showtype="小组形式";
+                    break;
+                case 0:showtype="个人形式";
+                    break;
+
+            }
+            $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+
+            var praValues='';
+            for(var m=0;m<Info.parameterValues.length;m++){
+                praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
+            }
+            var otherpraValue='';
+            if(Info.otherJsonParameters&&Info.otherJsonParameters.length) {
+                for (var n = 0; n < Info.otherJsonParameters.length; n++) {
+                    otherpraValue += Info.otherJsonParameters[n].key + ":" + Info.otherJsonParameters[n].value;
+                }
+            }
+            $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+
+            $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
+
+
+            $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
+            $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieDead_"+Info.categoryId);
+            $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
+            $(".reviewerRecTbody tr:last td:eq(9)").text("待审核");
+            /*  var statusName='';
+             switch (Info.status){
+             case 1:statusName="已提交";
+             break;
+             case 0:statusName="未提交";
+             }*/
+
+            $(".reviewerRecTbody tr:last td:eq(10)").text();
+            //   var act="<a class='btn btn-primary itemToImport' id='itemToImport_"+Info.itemId+"'>提交</a> ";
+            //   $(".reviewerRecTbody tr:last td:eq(11)").text();
+        }
     });
-    $.get("/item/info/apply-list", function (data) {
+    $.get(itemTeacherInfo+"?importedRequired=0&status=2",function (data) {
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+        var analyseList= data.data.itemList;
+        var listLength= data.data.itemList.length;
+        for(var i=0;i<listLength;i++)
+        {
+            var Info=analyseList[i];
+            $(".reviewerRecTbody").append(rowInfo);
+            //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
+            for(var j=0;j<11;j++)//单元格
+            {
+                $(".reviewerRecTbody tr:last").append(cellInfo);
+            }
+            var id=i;
+            $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
+            $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
+            $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
+            $(".reviewerRecTbody tr:last td:eq(3)").text();
+            var showtype='';
+            switch (Info.isGroup){
 
-        var addbtnstr="<a href='#' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> 删除申请</a>"
-        var abnormaldata=showdata(data.data.abnormalItemList);
-        $('.abnorbodyItem').append(abnormaldata);
-        $('.btn-info').text('重新申请');
-        $('.addbtn').append(addbtnstr);
-        var normaldata=showapplydata(data.data.normalItemList);
-        $('.normalbodyItem').append(normaldata);
+                case 1:showtype="小组形式";
+                    break;
+                case 0:showtype="个人形式";
+                    break;
 
+            }
+            $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+
+            var praValues='';
+            for(var m=0;m<Info.parameterValues.length;m++){
+                praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
+            }
+            var otherpraValue='';
+            for(var n=0;n<Info.otherJsonParameters.length;n++){
+                otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
+            }
+            $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+
+            $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
+
+
+            $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
+            $(".reviewerRecTbody tr:last td:eq(8)").text();
+            $(".reviewerRecTbody tr:last td:eq(9)").text("已通过");
+            /*  var statusName='';
+             switch (Info.status){
+             case 1:statusName="已提交";
+             break;
+             case 0:statusName="未提交";
+             }*/
+
+            //   var act="<a class='btn btn-primary reviewerRec' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
+            //   $(".reviewerRecTbody tr:last td:eq(10)").text(act);
+        }
+    });
+    $.get(itemTeacherInfo+"?importedRequired=0&status=5",function (data) {
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+        var analyseList= data.data.itemList;
+        var listLength= data.data.itemList.length;
+        for(var i=0;i<listLength;i++)
+        {
+            var Info=analyseList[i];
+            $(".reviewerRecTbody").append(rowInfo);
+            //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
+            for(var j=0;j<11;j++)//单元格
+            {
+                $(".reviewerRecTbody tr:last").append(cellInfo);
+            }
+            var id=i;
+            $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
+            $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
+            $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
+            $(".reviewerRecTbody tr:last td:eq(3)").text();
+            var showtype='';
+            switch (Info.isGroup){
+
+                case 1:showtype="小组形式";
+                    break;
+                case 0:showtype="个人形式";
+                    break;
+
+            }
+            $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+
+            var praValues='';
+            for(var m=0;m<Info.parameterValues.length;m++){
+                praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
+            }
+            var otherpraValue='';
+            if(Info.otherJsonParameters&&Info.otherJsonParameters.length){
+                for(var n=0;n<Info.otherJsonParameters.length;n++){
+                    otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
+                }
+            }
+
+            $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+
+            $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
+
+
+            $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
+            $(".reviewerRecTbody tr:last td:eq(8)").text();
+            $(".reviewerRecTbody tr:last td:eq(9)").text("已拒绝");
+            /*  var statusName='';
+             switch (Info.status){
+             case 1:statusName="已提交";
+             break;
+             case 0:statusName="未提交";
+             }*/
+
+            var act="<button class='btn btn-primary reviewerRec source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info' data-toggle='modal' data-target='#applyModal'><i class='fa fa-pencil'></i>重新申请</a> ";
+            $(".reviewerRecTbody tr:last td:eq(10)").append(act);
+            $(".reviewerRecTbody tr:last td:eq(10)").attr("width","150px");
+        }
+    });
+
+    $(document).off("click",".reviewerRec");
+   $(document).on("click",".reviewerRec",function () {
+        var subject=this.id;
+        var subjectList=parseInt(subject.match(/\d+/g));
+        $.get(itemInfoSubUrl+"?"+"itemId="+subjectList,function (data) {
+
+                new PNotify({
+                    title:'回复信息',
+                    text:data.data.subjectList.msgContent,
+                    type:'success',
+                    styling:'bootstrap3'
+                })
+
+
+        })
 
     });
+
 
 }
-function showdata(item) {
+/*function showdata(item) {
     var abnormaldata;
 
     for (var i = 0; i < item.length; i++) {
@@ -643,7 +1459,7 @@ function showapplydata(item) {
 
     }
     return abnormaldata;
-}
+}*/
 function traverseNode(rootNode,targetType)
 {
     var resultType=2; //using as the flag of partent node's type

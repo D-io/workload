@@ -3,9 +3,9 @@
  */
 function reviewerSumItem() {
     $('.right_hole').empty();
-    $.get("/region?"+'regionName=applicant/selfSummary',function (result) {
+    $.get(pageManageUrl+"?"+'regionName=applicant/selfSummary',function (result) {
         $('.right_hole').append(result);
-        $.get("/item/info/collection",function (data) {
+        $.get(itemCollection,function (data) {
             appendReviewerItem(data);
             $('.totalWorkload').text(data.data.totalWorkload);
         });
@@ -21,18 +21,39 @@ function appendReviewerItem(data) {
         var Info=analyseList[i];
         $(".sumItemSort").append(rowInfo);
         $(".sumItemSort tr:last").attr("id",Info.itemId);
-        for(var j=0;j<5;j++)//单元格
+        for(var j=0;j<8;j++)//单元格
         {
             $(".sumItemSort tr:last").append(cellInfo);
         }
         var id=i;
         $(".sumItemSort tr:last td:eq(0)").text(id+1);
-        $(".sumItemSort tr:last td:eq(1)").text(Info.categoryName);
-        $(".sumItemSort tr:last td:eq(2)").text(Info.itemName);
+        $(".sumItemSort tr:last td:eq(1)").text(Info.itemName);
+        $(".sumItemSort tr:last td:eq(2)").text(Info.categoryName);
         $(".sumItemSort tr:last td:eq(3)").text(Info.workload);
+        var paramArray = Info.parameterValues;
+        var str = '';
+        for (var paramCount = 0; paramCount < paramArray.length; paramCount++) {
 
-        var act="<a href=\"#\" class=\"pass\"style=\"color: blue; \" type=\"button\">查看详情</a> ";
-        $(".sumItemSort tr:last td:eq(4)").append(act);
+            str += paramArray[paramCount].symbol + ':' + paramArray[paramCount].value;
+        }
+        $(".sumItemSort tr:last td:eq(4)").append(str);
+        var otherparamArray = Info.otherJsonParameters;
+        var otherstr = '';
+        for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
+            otherstr += otherparamArray[otherparamCount].key + ':' + otherparamArray[otherparamCount].value;
+        }
+        $(".sumItemSort tr:last td:eq(5)").append(otherstr);
+        var isGroup="";
+        switch (Info.isGroup){
+            case 1:isGroup="小组形式";
+            break;
+            case 0:isGroup="个人形式";
+            break;
+        }
+        $(".sumItemSort tr:last td:eq(6)").append(isGroup);
+        $(".sumItemSort tr:last td:eq(7)").append(Info.version);
+
+
     }
 
 }
