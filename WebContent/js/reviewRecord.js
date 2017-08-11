@@ -128,34 +128,6 @@ function workRevie(){
         }
     }
 }*/
-/*        function showimportall(menu_list, parent) {
-            for (var menu in menu_list) {
-                //如果有子节点，则遍历该子节点
-                if (menu_list[menu].parentId == 0) {
-                        var li = $("<li></li>");
-                        $(li).append(menu_list[menu].name).append("<ul class='category_"+menu_list[menu].categoryId+"'></ul>").appendTo(parent);
-
-                }
-                //如果该节点没有子节点，则直接将该节点li以及文本创建好直接添加到父亲节点中
-                else if(menu_list[menu].isLeaf=="N"){
-                    $(".category_"+menu_list[menu].parentId).append("<li>"+menu_list[menu].name+"<ul class='category_"+menu_list[menu].categoryId+"'></ul></li>").appendTo(parent);
-                }
-                else
-                    $(".category_"+menu_list[menu].parentId).append("<li>"+menu_list[menu].name+"</li>").appendTo(parent);
-
-            }
-        }*/
-/*        function returnType(menu_list) {
-            for (var menu in menu_list) {
-                if (menu_list[menu].children&&menu_list[menu].children.length>0) {
-                    return returnType(menu_list[menu].children);
-                }
-                else if(menu_list[menu].importRequired==1){
-                    return menu_list[menu].importRequired;
-                }
-            }
-
-        }*/
         function showimportall(menu_list,parent) {
             for (var menu=0;menu<menu_list.length;menu++) {
                 //如果有子节点，则遍历该子节点
@@ -169,7 +141,7 @@ function workRevie(){
                     showimportall(menu_list[menu].children, $(li).children().eq(0));
                 }
                 else if(menu_list[menu].importRequired==1){
-                    $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<button  id='reviewer_" + menu_list[menu].categoryId + "' class='btn btn-primary reviewer' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击复核</button><div style='clear: both;'></div>").appendTo(parent);
+                    $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<span class='applyD_"+menu_list[menu].categoryId+"'style='display:none'>"+menu_list[menu].applyDeadline+"</span><button  id='reviewer_" + menu_list[menu].categoryId + "' class='btn btn-primary reviewer' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击复核</button><div style='clear: both;'></div>").appendTo(parent);
                 }
 
             }
@@ -360,90 +332,74 @@ function workRevie(){
     });
 }
 function  reviewerRec() {
-  /* $('.right_col').empty();
-    $.get("/region?"+'regionName=applicant/revRecord',function (html) {
 
-        $('.right_col').append(html);
-    });
-    $.get("/item/info/import-list",function (data) {
-        var abnormaldata=showexplaindata(data.data.abnormalItemList);
-        $('.abnormaldata').append(abnormaldata);
-        $('.btn-info').text('查看回复');
-        $('.btn-success').remove();
-
-        $('.explain').click(function () {
-            $('.modal-body').empty();
-            for(var m=0;m<data.data.abnormalItemList.length;m++)
-            if(this.id=='explain_'+data.data.abnormalItemList[m].itemId) {
-                $('.modal-body').append(data.data.abnormalItemList[m].applyDesc);
-            }
-        });
-
-        var normaldata=showdata(data.data.normalItemList);
-        $('.normalbodydata').append(normaldata);
-
-    })
-*/
   $(".reviewerRec").show();
   $(".reviewerRecTbody").empty();
 
   $.get(itemTeacherInfo+"?"+"importedRequired=1&status=2",function (data) {
       var rowInfo="<tr></tr>";
       var cellInfo="<td></td>";
-      var analyseList= data.data.itemList;
-      var listLength= data.data.itemList.length;
-      for(var i=0;i<listLength;i++)
-      {
-          var Info=analyseList[i];
-          $(".reviewerRecTbody").append(rowInfo);
-          //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-          for(var j=0;j<11;j++)//单元格
+
+      if(data.data.itemList&&data.data.itemList.length){
+          var analyseList= data.data.itemList;
+          var listLength= data.data.itemList.length;
+          for(var i=0;i<listLength;i++)
           {
-              $(".reviewerRecTbody tr:last").append(cellInfo);
+              var Info=analyseList[i];
+              $(".reviewerRecTbody").append(rowInfo);
+              //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
+              for(var j=0;j<11;j++)//单元格
+              {
+                  $(".reviewerRecTbody tr:last").append(cellInfo);
+              }
+              var id=i;
+              $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
+              $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
+              $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
+              $(".reviewerRecTbody tr:last td:eq(3)").text();
+              var showtype='';
+              switch (Info.isGroup){
+
+                  case 1:showtype="小组形式";
+                      break;
+                  case 0:showtype="个人形式";
+                      break;
+
+              }
+              $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+
+              var praValues='';
+              for(var m=0;m<Info.parameterValues.length;m++){
+                  praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
+              }
+              var otherpraValue='';
+              for(var n=0;n<Info.otherJsonParameters.length;n++){
+                  otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
+              }
+              $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+
+              $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
+
+
+              $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
+              $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieRec_"+Info.categoryId);
+              $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
+              $(".reviewerRecTbody tr:last td:eq(9)").text("确认通过");
+              $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#1ABB9C","color":"#ffffff"});
+
+              /*  var statusName='';
+               switch (Info.status){
+               case 1:statusName="已提交";
+               break;
+               case 0:statusName="未提交";
+               }*/
+
+              $(".reviewerRecTbody tr:last td:eq(10)").text();
+              //   var act="<a class='btn btn-primary itemToImport' id='itemToImport_"+Info.itemId+"'>提交</a> ";
+              //   $(".reviewerRecTbody tr:last td:eq(11)").text();
           }
-          var id=i;
-          $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
-          $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
-          $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-          $(".reviewerRecTbody tr:last td:eq(3)").text();
-          var showtype='';
-          switch (Info.isGroup){
-
-              case 1:showtype="小组形式";
-                  break;
-              case 0:showtype="个人形式";
-                  break;
-
-          }
-          $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
-
-          var praValues='';
-          for(var m=0;m<Info.parameterValues.length;m++){
-              praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
-          }
-          var otherpraValue='';
-          for(var n=0;n<Info.otherJsonParameters.length;n++){
-              otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
-          }
-          $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
-
-          $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
-
-
-          $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-          $(".reviewerRecTbody tr:last td:eq(8)").text();
-          $(".reviewerRecTbody tr:last td:eq(9)").text("确认通过");
-        /*  var statusName='';
-          switch (Info.status){
-              case 1:statusName="已提交";
-                  break;
-              case 0:statusName="未提交";
-          }*/
-
-          $(".reviewerRecTbody tr:last td:eq(10)").text();
-       //   var act="<a class='btn btn-primary itemToImport' id='itemToImport_"+Info.itemId+"'>提交</a> ";
-       //   $(".reviewerRecTbody tr:last td:eq(11)").text();
       }
+
   });
     $.get(itemTeacherInfo+"?"+"importedRequired=1&status=3",function (data) {
         var rowInfo="<tr></tr>";
@@ -489,8 +445,10 @@ function  reviewerRec() {
 
 
             $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-            $(".reviewerRecTbody tr:last td:eq(8)").text();
+            $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieRec_"+Info.categoryId);
+            $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
             $(".reviewerRecTbody tr:last td:eq(9)").text("提交存疑");
+            $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#70c8e2","color":"#ffffff"});
             /*  var statusName='';
              switch (Info.status){
              case 1:statusName="已提交";
@@ -546,8 +504,10 @@ function  reviewerRec() {
 
 
             $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-            $(".reviewerRecTbody tr:last td:eq(8)").text();
+            $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieRec_"+Info.categoryId);
+            $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
             $(".reviewerRecTbody tr:last td:eq(9)").text("存疑解决");
+            $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#f0ad4e","color":"#ffffff"});
             /*  var statusName='';
              switch (Info.status){
              case 1:statusName="已提交";
@@ -566,59 +526,7 @@ function applyworkload() {
         $('.right_hole').append(result);
 
     });
-    /*$.get("/category/info/list", function (data) {
-        var showlist = $("<ul></ul>");
-        showApply(data.data.categoryTree, showlist);
-        $("#tab_content1").append(showlist);
 
-
-        //item为json数据
-        //parent为要组合成html的容器
-        function showApply(item, parent) {
-            for (var menu in item) {
-
-                //如果有子节点，则遍历该子节点
-                if (item[menu].children.length > 0) {
-                    //创建一个子节点li
-                    var li = $("<li class='itemlist'></li>");
-                    if (item[menu].formula) {
-                        if(item[menu].importRequired==0) {
-                            $(li).append("<span style='font-size: 14px;'>"+item[menu].name + item[menu].desc + "</span><button type='button' id='" + item[menu].categoryId + "' class='btn btn-primary apply_detail' onclick='ownerApply(this)' style='float: right;margin-right: 0px;'>点击申报</button>").append("<ul></ul>").appendTo(parent);
-
-                        }
-                        else
-                            $(li).append(item[menu].name + item[menu].desc).append("<ul></ul>").appendTo(parent);
-
-
-                    }
-                    //将li的文本设置好，并马上添加一个空白的ul子节点，并且将这个li添加到父亲节点中
-                    else {
-                        $(li).append(item[menu].name + item[menu].desc).append("<ul></ul>").appendTo(parent);
-                    }
-                    //将空白的ul作为下一个递归遍历的父亲节点传入
-                    showApply(item[menu].children, $(li));
-                }
-                //如果该节点没有子节点，则直接将该节点li以及文本创建好直接添加到父亲节点中
-                else {
-                    if (item[menu].formula) {
-
-                        if (item[menu].importRequired == 0) {
-                            $("<li class='itemList'></li>").append("<span style='font-size: 14px;'>"+item[menu].name + item[menu].desc + "</span><button type='button' id='" + item[menu].categoryId + " 'class='btn btn-primary apply_detail' onclick='ownerApply(this)' style='float: right;margin-right: 0px;'>点击申报</button>").appendTo(parent);
-                        }
-                        else
-                            $("<li class='itemList'></li>").append("<span style='font-size: 14px;'>"+item[menu].name + item[menu].desc+"</span>").appendTo(parent);
-                    }
-                    else {
-                        $("<li class='itemList'></li>").append("<span style='font-size: 14px;'>"+item[menu].name + item[menu].desc+"</span>").appendTo(parent);
-                    }
-                }
-
-            }
-        }
-
-
-    });
-    */
     $.get(categoryInfoListUrl, function (data) {
         var parent=$("<ul></ul>");
         showapplyall(data.data.categoryTree,parent);
@@ -641,92 +549,7 @@ function applyworkload() {
 
            }
         }
- /*                   for(var menu=0;menu<menu_list.children.length;menu++) {
-                        if(menu_list.children[menu].importRequired == 0) {
-                            break;
-                        }
-                         else {
-                            returnType(menu_list.children[menu]);
-                        }
-                    }
-            return 0;*/
 
- /* function showapplyall(item, parent) {
-             for (var menu in item) {
-
-             //如果有子节点，则遍历该子节点
-             if (item[menu].children.length > 0) {
-             //创建一个子节点li
-             var li = $("<li class='"+item[menu].categoryId+"'></li>");
-             if (item[menu].formula) {
-             if(item[menu].importRequired==1) {
-             $(li).append(item[menu].name +"</hr>"+item[menu].desc + "<div class='col-sm-12'><button type='button' id='" + item[menu].categoryId + "' class='btn btn-primary view_detail' data-toggle='modal' data-target='#myModal' onclick='showitemgroup(this)'>查看明细</button></div>").append("<ul></ul>").appendTo(parent);
-             }
-             else
-             $(li).append(item[menu].name + item[menu].desc).append("<ul></ul>").appendTo(parent);
-
-
-
-             }
-             //将li的文本设置好，并马上添加一个空白的ul子节点，并且将这个li添加到父亲节点中
-             else {
-             $(li).append(item[menu].name + item[menu].desc).append("<ul></ul>").appendTo(parent);
-             }
-             //将空白的ul作为下一个递归遍历的父亲节点传入
-             showapplyall(item[menu].children, $(li).children().eq(0));
-             }
-
-             //如果该节点没有子节点，则直接将该节点li以及文本创建好直接添加到父亲节点中
-             else {
-             if (item[menu].formula) {
-
-             if (item[menu].importRequired == 1) {
-             $("<li class='"+item[menu].categoryId+"'></li>").append(item[menu].name + "</hr>"+item[menu].desc + "<div class='col-sm-12'><button type='button' id='" + item[menu].categoryId + " 'class='btn btn-primary view_detail'data-toggle='modal' data-target='#myModal' onclick='showitemgroup(this)'>查看明细</button></div>").appendTo(parent);
-             }
-             else
-             $("<li class='"+item[menu].categoryId+"'></li>").append(item[menu].name + item[menu].desc).appendTo(parent);
-
-             }
-             else {
-             $("<li class='"+item[menu].categoryId+"'></li>").append(item[menu].name + "</hr>"+item[menu].desc).appendTo(parent);
-             }
-             }
-
-             }
-             }*/
-
-/*
-        function showimportall(menu_list, parent) {
-            for (var menu in menu_list) {
-                //如果有子节点，则遍历该子节点
-                if (menu_list[menu].children.length > 0) {
-                    //创建一个子节点li
-                    var li = $("<li></li>");
-                    //将li的文本设置好，并马上添加一个空白的ul子节点，并且将这个li添加到父亲节点中
-                    if(menu_list[menu].importRequired==0) {
-                        if(menu_list.formula) {
-                            $(li).append("<span class='catInfo_" + menu_list[menu].categoryId + "'>" + menu_list[menu].name + ':' + menu_list[menu].desc + "</span><button type='button' id='" + item[menu].categoryId + "' class='btn btn-primary apply_detail' onclick='ownerApply(this)' style='float: right;margin-right: 0px;'>点击申报</button>").append("<ul></ul>").appendTo(parent);
-                        }
-                        else {
-                            $(li).append("<span class='catInfo_" + menu_list[menu].categoryId + "'>" + menu_list[menu].name + ':' + menu_list[menu].desc + "</span>").append("<ul></ul>").appendTo(parent);
-
-                        }
-                        showimportall(menu_list[menu].children, $(li));
-                    }
-                    else {
-                        showimportall(menu_list[menu].children, $(li));
-                    }
-
-                }
-                //如果该节点没有子节点，则直接将该节点li以及文本创建好直接添加到父亲节点中
-                else {
-                    if (menu_list[menu].importRequired == 0) {
-                        $("<li></li>").append("<span class='catInfo_"+menu_list[menu].categoryId+"'>"+menu_list[menu].name+':'+menu_list[menu].desc+"</span>").appendTo(parent);
-                    }
-                }
-            }
-        }
-        */
 
 /*        function  showapplyall(item) {
             for(var i=0;i<item.length;i++){
@@ -845,10 +668,7 @@ function applyworkload() {
                if(selectedvValue=="1"){
                 $(".item_manager").show();
                 $(".item_group").show();
-    /*            $(".groupMemberName").removeAttr("disabled");
-                $(".groupMemberSymbol").removeAttr("disabled");
-                $(".groupMemberWeight").removeAttr("disabled");
-                $("#itemmanager").removeAttr("disabled");*/
+
                }
                else {
                    $(".item_manager").css("display","none");
@@ -860,7 +680,7 @@ function applyworkload() {
                }
            }
        );
-
+    $(document).off("click","#addGroupMessage");
     $(document).on("click","#addGroupMessage",function () {
         var addMessage="<tr><td><select class='groupMemberName teacherName' style='width: 30%;'><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol'></select></select></td><td><input type='text' class='groupMemberWeight'></td></tr>";
         $('#AddgroupPramter').append(addMessage);
@@ -923,6 +743,7 @@ function applyworkload() {
         $("#showitemmanager option[value='"+window.Temp[newReg-1].groupManagerId+"']").attr("selected","selected");
 
     });
+    var currentId='';
     $(document).on("click",".editApply",function () {
         var editId=parseInt(this.id.match(/\d+/g));
         $(".savemyApplyAgain").attr("id",editId);
@@ -938,6 +759,9 @@ function applyworkload() {
 
         $(".showotherparameterName").removeAttr("disabled");
         $("#showitemmanager").removeAttr("disabled");
+        $.get(currentTeaIdUrl,function (data) {
+            window.currentId=data.data.teacher.name;
+        })
     });
     $(document).off("click",".savemyApplyAgain");
     $(document).on("click",".savemyApplyAgain",function () {
@@ -1028,21 +852,13 @@ function applyworkload() {
                         $(".tbody tr:last td:eq(0)").text(parseInt("1"));
                         $(".tbody tr:last td:eq(1)").text(Info[0].itemName);
                         for(var i=0;i<listLength;i++){
-                            if(Info[i].teacherName==$("#itemowner").text())
+                            if(Info[i].teacherName==currentId)
                             var count=Info[i].workload;
                             var CountId=Info[i].itemId;
                         }
                         $(".tbody tr:last td:eq(2)").text(count);
                         $(".tbody tr:last td:eq(3)").text();
-                       /* var statusName;
-                        switch (Info[0].status) {
-                            case 0:
-                                statusName = '未提交';
-                                break;
-                            case 1:
-                                statusName = '已提交';
-                                break;
-                        }*/
+
                         $(".tbody tr:last td:eq(4)").text("未提交");
                         $(".tbody tr:last td:eq(4)").attr("id","statusChange_"+CountId);
 
@@ -1067,21 +883,12 @@ function applyworkload() {
                     $(".tbody tr:last td:eq(0)").text(parseInt($(".tbody tr:last td:eq(0)").text())+1);
                     $(".tbody tr:last td:eq(1)").text(InfoAgain[0].itemName);
                     for(var i=0;i<listLengthAgain;i++){
-                        if(InfoAgain[i].teacherName==$("#itemowner").text())
+                        if(InfoAgain[i].teacherName==window.currentId)
                             var count=InfoAgain[i].workload;
                         var CountId=InfoAgain[i].itemId;
                     }
                     $(".tbody tr:last td:eq(2)").text(count);
                     $(".tbody tr:last td:eq(3)").text();
-                    /* var statusName;
-                     switch (Info[0].status) {
-                     case 0:
-                     statusName = '未提交';
-                     break;
-                     case 1:
-                     statusName = '已提交';
-                     break;
-                     }*/
                     $(".tbody tr:last td:eq(4)").text("未提交");
                     $(".tbody tr:last td:eq(4)").attr("id","statusChange_"+CountId);
 
@@ -1090,25 +897,8 @@ function applyworkload() {
                     $(".tbody tr:last td:eq(5)").append(act);
 
                 }
-
-/*
-                for(var showList=0;showList<data.data.itemList.length;showList++){
-                    $(".tbody").append("<tr><td></td><td>'+data.data.itemList[0].itemName+'</td><td>data.data.itemList.workload</td><td class='status_"+data.data.itemList.itemId+"'>未提交状态</td><td><a class='btn btn-primary"+data.data.itemList.itemId+"' data-target='#showContent' data-toggle='modal'>查看详情</a></td></tr>")
-
-                }
-                 $(document).on("click","."+data.data.itemList.itemId,function () {
-                    $(".changeDis").attr("disabled","true");
-                    $("#showitemName").val(data.data.itemList.itemName);
-                    $("#showapplyDesc").val(data.data.itemList.applyDesc);
-
-                });
-                $(document).on("click",".editApply",function () {
-                    $(".changeDis").attr("disabled","false");
-                })*/
-
             }
-            //   processData: false,
-            //   contentType:false
+
         });
 
         $('#showContent').modal('hide');
@@ -1142,6 +932,7 @@ function applyworkload() {
        });
     });
     }
+
 function showApplyHistory() {
 $.get(historyUrl+"?type=import",function (data) {
 
@@ -1200,6 +991,7 @@ function applyRec() {
             $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieDead_"+Info.categoryId);
             $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
             $(".reviewerRecTbody tr:last td:eq(9)").text("待审核");
+            $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#70c8e2","color":"#ffffff"});
             /*  var statusName='';
              switch (Info.status){
              case 1:statusName="已提交";
@@ -1256,8 +1048,10 @@ function applyRec() {
 
 
             $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-            $(".reviewerRecTbody tr:last td:eq(8)").text();
+            $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieDead_"+Info.categoryId);
+            $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
             $(".reviewerRecTbody tr:last td:eq(9)").text("已通过");
+            $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#1ABB9C","color":"#ffffff"});
             /*  var statusName='';
              switch (Info.status){
              case 1:statusName="已提交";
@@ -1316,8 +1110,10 @@ function applyRec() {
 
 
             $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-            $(".reviewerRecTbody tr:last td:eq(8)").text();
+            $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieDead_"+Info.categoryId);
+            $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
             $(".reviewerRecTbody tr:last td:eq(9)").text("已拒绝");
+            $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#f0ad4e","color":"#ffffff"});
             /*  var statusName='';
              switch (Info.status){
              case 1:statusName="已提交";
