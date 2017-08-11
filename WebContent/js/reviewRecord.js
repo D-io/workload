@@ -179,7 +179,7 @@ function workRevie(){
                     $(".tbody tr:last td:eq(0)").text(id + 1);
                     $(".tbody tr:last td:eq(1)").text(Info.itemName);
                     $(".tbody tr:last td:eq(2)").text(Info.workload);
-                    $(".tbody tr:last td:eq(3)").text();
+                    $(".tbody tr:last td:eq(3)").text(Info.formula);
                     var paramArray = Info.parameterValues;
                     var str = '';
                     for (var paramCount = 0; paramCount < paramArray.length; paramCount++) {
@@ -356,7 +356,7 @@ function  reviewerRec() {
               $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
               $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
               $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-              $(".reviewerRecTbody tr:last td:eq(3)").text();
+              $(".reviewerRecTbody tr:last td:eq(3)").text(Info.formula);
               var showtype='';
               switch (Info.isGroup){
 
@@ -379,7 +379,6 @@ function  reviewerRec() {
               $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
 
               $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
-
 
               $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
               $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieRec_"+Info.categoryId);
@@ -419,7 +418,7 @@ function  reviewerRec() {
             $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
             $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
             $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-            $(".reviewerRecTbody tr:last td:eq(3)").text();
+            $(".reviewerRecTbody tr:last td:eq(3)").text(Info.formula);
             var showtype='';
             switch (Info.isGroup){
 
@@ -478,7 +477,7 @@ function  reviewerRec() {
             $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
             $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
             $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-            $(".reviewerRecTbody tr:last td:eq(3)").text();
+            $(".reviewerRecTbody tr:last td:eq(3)").text(Info.formula);
             var showtype='';
             switch (Info.isGroup){
 
@@ -1139,7 +1138,7 @@ function applyRec() {
              case 0:statusName="未提交";
              }*/
 
-            var act="<button class='btn btn-primary reviewerRec source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info' data-toggle='modal' data-target='#applyModal'><i class='fa fa-pencil'></i>重新申请</a> ";
+            var act="<button class='btn btn-primary reviewerRec source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info apply' data-toggle='modal' data-target='#applyModal' id='applyAgain_"+Info.itemId+"'><i class='fa fa-pencil'></i>重新申请</a> ";
             $(".reviewerRecTbody tr:last td:eq(10)").append(act);
             $(".reviewerRecTbody tr:last td:eq(10)").attr("width","150px");
         }
@@ -1162,6 +1161,8 @@ function applyRec() {
         })
 
     });
+
+
 
 
 }

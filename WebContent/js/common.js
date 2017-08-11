@@ -17,7 +17,7 @@ $(document).ready(function () {
         }
     })
     $(document).on("click","#itemChange",function () {
-        $.post(thisTermUrl+"?year="+$("#year").find("option:selected").text()+"&scheme="+parseInt($("#term").text()),function (data) {
+        $.post(thisTermUrl+"?year="+$("#year").find("option:selected").text()+"&scheme="+parseInt($("#term").val()),function (data) {
             
         });
     })
