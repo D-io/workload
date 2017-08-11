@@ -118,6 +118,17 @@ public class HistoryInfoController extends ApplicationController {
 		Map<String, Object> data = getData();
 		if (ROLE_REVIEWER.equals(role)) {
 			//若为工作当量审核页面，则移除自己的工作当量历史记录，仅保留自己负责审核的历史记录
+//			List<History> histories1 = new ArrayList<>();
+//			for(History history:histories) {
+//				Integer itemId = Integer.valueOf(history.getItemId().substring(1));
+//				Item item = itemService.findItem(itemId);
+//				ItemDto itemDto = itemConverter.poToDto(item);
+//				if(!item.getItemId().equals(itemDto.getReviewerId())) {
+//					histories1.add(history);
+//				}
+//			}
+//			historyList.removeAll(histories1);
+
 			historyList.removeAll(histories);
 			data.put("historyList", historyList);
 		} else {
