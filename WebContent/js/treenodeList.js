@@ -317,12 +317,10 @@ function ownerApply(domId) {
     $(document).ready(function() {
         $('.add').unbind('click');
         $('.add').bind('click', function () {
-
+            $(".applymodalbody").empty();
             $('#itemName').val(null);
             $('#applyDesc').val(null);
             $('#workload').val(null);
-            //   $("#AddgroupPramter").empty();
-
             $('.groupMemberSymbol').val(null);
             $('.groupMemberWeight').val(null);
             $('.parameterName').val(null);
@@ -332,9 +330,9 @@ function ownerApply(domId) {
 
         $(document).on("click", ".savemyApply", function () {
 
-            var parametername = $(".pramterDesc");
+            var $parametername = $(".pramterDesc");
             var newArray = new Array();
-            for (var i = 0; i < parametername.length; i++) {
+            for (var i = 0; i < $(".parameterName").length; i++) {
                 var dom = $(".pramterDesc").eq(i).attr("id");
                 newArray.push({symbol: dom, value: parseInt($(".parameterName").eq(i).val())});
 
@@ -368,7 +366,7 @@ function ownerApply(domId) {
 
             // var reviewTimetodate = $('#reviewDeadline').val();
             //var applyTimetodate = $('#applyDeadline').val();
-            var radio = $("#isGroup option:selected");
+            var radio = $("input:radio[name='optionsRadios']:checked");
             var applicant = $('#applicant option:selected');
             var itemmanager = $('#itemmanager option:selected');
 
@@ -380,42 +378,27 @@ function ownerApply(domId) {
                 ownerId: applicant.val(),
                 groupManagerId: itemmanager.val(),
                 isGroup: radio.val(),
-                jsonParameter: newArray,
+                jsonParameters: newArray,
                 otherJson: otherArray,
                 jobDesc: grouparray,
                 jsonChildWeight: childWeight
 
             }, function (data) {
-
-                /* var x=data.data.category.reviewDeadline;
-                 var y=data.data.category.applyDeadline;
-                 var a=x.match(/\d+/g);
-                 var b=y.match(/\d+/g);
-                 */
-
-/*                 var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                for(var i=0;i<data.data.itemList.length;i++) {
-                    var newNode = {
-                        'name': data.data.itemList[0].itemName,
-                        'itemId': data.data.itemList[0].itemId,
-                        'parentId': 0,
-                        'applyDesc': data.data.itemList[0].applyDesc,
-                        //  'reviewDeadline':x[1]/x[2]/x[0],
-                        //  'applyDeadline':y[1]/y[2]/y[0],
-                        'ownerId': data.data.itemList.ownerId,
-                        'workload': data.data.itemList.workload,
-                        'isGroup': data.data.itemList.isGroup,
-                        'groupManagerId': data.data.itemList[0].groupManagerId,
-                        'jsonParameter': data.data.itemList[0].jsonParameter,
-                    //    'otherParameters': data.data.itemList.otherJsonParameters,
-                        'jobDesc': data.data.itemList[0].jobDesc,
-                        'jsonChildWeight': data.data.itemList.jobDesc
-                        //  'isLeaf':data.data.category.isLeaf,
-                        // 'importRequired':data.data.category.importRequired
-                    };
+                var $showThead=$(".showThead");
+                if($showThead.css("display")=="none"){
+                    $(".showThead").show();
                 }
-                 newNode = zTree.addNodes(null, newNode);
-                 window.zNodes.push(newNode);*/
+
+                $(".showDesc").append("<tr><td>'+data.data.itemList.itemId+'</td><td>'+data.data.itemList.itemName+'</td><td>data.data.itemList.workload</td><td>未提交状态</td><td><a class='btn btn-primary"+data.data.itemList.itemId+"' data-target='#showContent' data-toggle='modal'>查看详情</a></td></tr>")
+                $(document).on("click","."+data.data.itemList.itemId,function () {
+                    $(".changeDis").attr("disabled","true");
+                    $("#showitemName").val(data.data.itemList.itemName);
+                    $("#showapplyDesc").val(data.data.itemList.applyDesc);
+
+                })
+                $(document).on("click",".editApply",function () {
+                    $(".changeDis").attr("disabled","false");
+                })
 
                  }, "json");
 

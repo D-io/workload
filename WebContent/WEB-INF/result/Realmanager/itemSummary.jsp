@@ -74,7 +74,7 @@
             <tbody class="sumItemSort">
             </tbody>
         </table>
-        <div class="col-sm-7">
+        <div style="float: right;">
             <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
                 <ul class="pagination">
                     <li class="paginate_button previous disabled" id="datatable_previous">

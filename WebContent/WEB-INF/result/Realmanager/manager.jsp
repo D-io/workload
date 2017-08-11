@@ -18,14 +18,18 @@
     <title>教学工作量计算系统 | </title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="${contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
     <!-- Font Awesome -->
-    <link href="vendor/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link href="${contextPath}/vendor/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
     <!-- bootstrap-progressbar -->
-    <link href="vendor/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.css" rel="stylesheet" type="text/css">
+    <link href="${contextPath}/vendor/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.css" rel="stylesheet" type="text/css">
+    <!--PNotify-->
+    <link href="${contextPath}/css/PNotify/pnotify.buttons.css" rel="stylesheet" type="text/css">
+    <link href="${contextPath}/css/PNotify/pnotify.nonblock.css" rel="stylesheet" type="text/css">
+    <link href="${contextPath}/css/PNotify/pnotify.css" rel="stylesheet" type="text/css">
 
     <!-- Custom Theme Style -->
-    <link href="css/custom.css" rel="stylesheet">
+    <link href="${contextPath}/css/custom.css" rel="stylesheet">
     <style>
 
         .btn,.btn-primary{
@@ -34,6 +38,11 @@
         }
 
     </style>
+    <jsp:include page="path-variable.jsp"/>
+    <script>
+        var currentRole="${currentRole}";
+        console.log(currentRole);
+    </script>
 </head>
 
 <body class="nav-md">
@@ -42,7 +51,7 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a class="site_title" ><span><img src="css/images/logo.png" alt="..." class="left_span" ></span><span style="font-size: 14px;">教学工作当量计算系统</span></a>
+                    <a class="site_title" ><span><img src="${contextPath}/css/images/logo.png" alt="..." class="left_span" ></span><span style="font-size: 14px;">教学工作当量计算系统</span></a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -278,25 +287,37 @@
     <div class="clearfix"></div>
     <div id="notif-group" class="tabbed_notifications"></div>
 </div>
+<div class="hiddendistrict" style="display: none;">
+    <table>
+        <thead>
+        <tr><th>itemName</th><th>itemDesc</th><th>isGroup</th><th>mainPara</th><th>otherPara</th><th>groupManager</th><th>groupMember</th><th>groupDesc</th><th>groupWeight</th></tr>
+        </thead>
+        <tbody class="addTbody">
 
-
+        </tbody>
+    </table>
+</div>
 
 <!-- jQuery -->
-<script language='javascript' src="vendor/js/jquery.js"></script>
+<script language='javascript' src="${contextPath}/vendor/js/jquery.js"></script>
 <!-- Bootstrap -->
-<script language='javascript' src="vendor/js/bootstrap.js"></script>
+<script language='javascript' src="${contextPath}/vendor/js/bootstrap.js"></script>
 <!-- bootstrap-progressbar -->
-<script src="vendor/bootstrap-progressbar/js/bootstrap-progressbar.min.js"></script>
+<script src="${contextPath}/vendor/bootstrap-progressbar/js/bootstrap-progressbar.min.js"></script>
+<!--PNotify-->
+<script src="${contextPath}/vendor/PNotify/pnotify.buttons.js"></script>
+<script src="${contextPath}/vendor/PNotify/pnotify.nonblock.js"></script>
+<script src="${contextPath}/vendor/PNotify/pnotify.js"></script>
 <!-- Custom Theme Scripts -->
 
-<script src="vendor/js/custom.js"></script>
-<script src="js/reviewRecord.js"></script>
-<script src="js/treenodeList.js"></script>
-<script src="js/reviewerSummary.js"></script>
-<script src="js/auditorChange.js"></script>
-<script language='javascript'src="js/jquery.ztree.core.js"></script>
-<script language='javascript' src="js/jquery.ztree.excheck.js"></script>
-<script language='javascript' src="js/jquery.ztree.exedit.js"></script>
+<script src="${contextPath}/vendor/js/custom.js"></script>
+<script src="${contextPath}/js/reviewRecord.js"></script>
+<script src="${contextPath}/js/treenodeList.js"></script>
+<script src="${contextPath}/js/reviewerSummary.js"></script>
+<script src="${contextPath}/js/auditorChange.js"></script>
+<script language='javascript'src="${contextPath}/js/jquery.ztree.core.js"></script>
+<script language='javascript' src="${contextPath}/js/jquery.ztree.excheck.js"></script>
+<script language='javascript' src="${contextPath}/js/jquery.ztree.exedit.js"></script>
 
 </body>
 </html>

@@ -320,6 +320,32 @@ To change this template use File | Settings | File Templates.
                                             <input type="text" class="form-control" id="formula">
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">附加参数配置</label>
+                                        <div class="col-sm-9">
+
+                                            <a class="btn btn-primary" role="button" data-toggle="collapse" href="#otherParameter" aria-expanded="false" aria-controls="collapseExample">
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                            <div class="collapse" id="otherParameter">
+                                                <div class="well">
+                                                    <table class="table" id="otherParameterTable">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>参数名称</th>
+                                                        </tr>
+
+                                                        </thead>
+                                                        <tbody class="addOtherPramter">
+                                                        <tr>
+                                                            <td><input type="text" class="otherParameterName" name="otherParameterName"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                             <div class="modal-footer">

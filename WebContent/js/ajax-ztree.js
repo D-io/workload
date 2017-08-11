@@ -429,7 +429,13 @@ $(document).ready(function(){
             newArray.push({desc:$(".parameterName").eq(i).val(),symbol:$(".parameterSymbol").eq(i).val()});
 
             }
+            var otherParamterName=$(".otherParameterName");
+            var otherArray=new Array();
+            for(var m=0;m<otherParamterName.length;m++){
+                otherArray.push({symbol:$(".otherParameterName").eq(m).val(),value:""});
+            }
             newArray=JSON.stringify(newArray);
+            otherArray=JSON.stringify(otherArray);
             var reviewTimetodate = $('#reviewDeadline').val();
             var applyTimetodate = $('#applyDeadline').val();
             var radio=$("#importRequired option:selected");
@@ -447,7 +453,8 @@ $(document).ready(function(){
                 formula: $('#formula').val(),
                 importRequired: radio.val(),
                 version: $('#version').val(),
-                jsonParameters: newArray
+                jsonParameters: newArray,
+                otherJson:otherArray
             }, function (data) {
 
                 var x=data.data.category.reviewDeadline;
@@ -465,6 +472,7 @@ $(document).ready(function(){
                     'formula':data.data.category.formula,
                     'reviewerId':data.data.category.reviewerId,
                     'jsonParameters':data.data.category.jsonParameters,
+                    'otherJsonParameters':data.data.category.otherJsonParameters,
                     'isLeaf':data.data.category.isLeaf,
                     'importRequired':data.data.category.importRequired
                 };

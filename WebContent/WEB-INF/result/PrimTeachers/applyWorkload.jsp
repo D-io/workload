@@ -46,29 +46,23 @@
             </div>
         </div>
 
-        <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+        <div class="modal fade bs-example-modal-lg" id="applyModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
+
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            &times;
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                         </button>
-                       <tr class="row">
-                        <h4 class="modal-title" >
-                            工作量申报
-                        </h4>
-                        <button type="button" class="btn btn-primary applyCommit">提交</button>
-                       </tr>
+                        <h4 class="modal-title" id="myModalLabel"></h4>
                     </div>
                     <div class="modal-body">
-                        <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-                            <button class="add btn btn-primary" data-toggle="modal" data-target="#addContent">添加申报</button>
-                            <div class="applymodalbody" style="height: 60%;">
-                                    <div class="zTreeDemoBackground left">
-                                        <ul id="treeDemo" class="ztree"></ul>
-                                    </div>
+                        <button class="add btn btn-primary" data-toggle="modal" data-target="#addContent">添加申报</button>
+                        <div class="applymodalbody" style="height: 60%;">
+                            <table>
+                                <thead class="showThead" style="display: none;"><th>序号</th><th>条目名称</th><th>工作量</th><th>提交状态</th><th>操作</th></thead>
+                                <tbody class="showDesc"></tbody>
+                            </table>
 
-                            </div>
 
                         </div>
                     </div>
@@ -76,7 +70,7 @@
                 </div>
             </div>
         </div>
-    <!--
+        <!--
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-title">
@@ -108,21 +102,22 @@
                         <form class="form-horizontal form-label-left">
 
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目名称</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容简介</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <input type="text" class="form-control" id="itemName">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">申请描述 <span class="required">*</span>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容描述
                                 </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <textarea class="form-control" id="applyDesc"></textarea>
                                 </div>
                             </div>
 
-                            <div class="form-group">
+
+                            <%--<div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">申报类别</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <select class="form-control" id="isGroup">
@@ -131,9 +126,19 @@
 
                                     </select>
                                 </div>
+                            </div>--%>
+                            <div class="radio">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                </label>
+                                <label>
+                                    <input type="radio"  value="0"  name="optionsRadios" class="radioChange"> 个人申报
+                                </label>
+                                <label>
+                                    <input type="radio"  value="1"  name="optionsRadios" class="radioChange"> 小组申报
+                                </label>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">主要参数填写</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">主要考核参数</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
                                     <a class="btn btn-primary" role="button" data-toggle="collapse" href="#parameter" aria-expanded="false" aria-controls="collapseExample">
@@ -151,7 +156,7 @@
                                                 </tr>
 
                                                 </thead>
-                                                <tbody id="AddPramter">
+                                                <tbody class="AddPramter">
 
 
                                                 </tbody>
@@ -161,7 +166,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">其他参数填写</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
                                     <a class="btn btn-primary" role="button" data-toggle="collapse" href="#otherparameter" aria-expanded="false" aria-controls="collapseExample">
@@ -186,16 +191,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                       <%--     <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">申报人</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <select class="form-control teacherName" id="applicant">
 
                                     </select>
                                 </div>
-                            </div>
+                            </div>--%>
 
-                            <div class="form-group">
+                            <div class="form-group item_manager" style="display: none;">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">项目负责人</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <select class="form-control teacherName" id="itemmanager">
@@ -212,8 +217,8 @@
                             </div>
                             -->
 
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">小组成员信息</label>
+                            <div class="form-group item_group" style="display: none;">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组成员</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
                                     <a class="btn btn-primary" role="button" data-toggle="collapse" href="#groupMessage" aria-expanded="false" aria-controls="collapseExample">
@@ -251,6 +256,170 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
                         <button type="button" class="btn btn-success savemyApply">保存</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+        <div class="modal fade" id="showContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" >
+                            申报信息
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <button class="btn btn-primary btn-info editApply"><i class="fa fa-pencil"></i>编辑</button>
+
+                        <form class="form-horizontal form-label-left">
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容简介</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" class="form-control changeDis" id="showitemName">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容描述
+                                </label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <textarea class="form-control changeDis" id="showapplyDesc"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="radio">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                </label>
+                                <label>
+                                    <input type="radio" value="0"  name="optionsRadios" class="radioChange changeDis"> 个人申报
+                                </label>
+                                <label>
+                                    <input type="radio"  value="1"  name="optionsRadios" class="radioChange changeDis"> 小组申报
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">主要考核参数</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+
+                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#parameter" aria-expanded="false" aria-controls="collapseExample">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                    <div class="collapse" id="showparameter">
+                                        <div class="well">
+                                            <table class="table" id="showparameterTable">
+                                                <thead>
+                                                <tr class="showparameterTh" style="font-size: 13px;">
+
+                                                    <!--
+                                                                                                        <span style="float: right;"><a class="btn btn-success" id="addParameter"><i class="fa fa-plus"></i></a></span>
+                                                                                                        -->
+                                                </tr>
+
+                                                </thead>
+                                                <tbody class="showAddPramter">
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+
+                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#otherparameter" aria-expanded="false" aria-controls="collapseExample">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                    <div class="collapse" id="showotherparameter">
+                                        <div class="well">
+                                            <table class="table" id="showotherparameterTable">
+                                                <thead>
+                                                <tr class="showotherParaTh" style="font-size: 13px;">
+                                                    <!--
+                                                                                                        <span style="float: right;"><a class="btn btn-success" id="addOtherParameter"><i class="fa fa-plus"></i></a></span>
+                                                                                                        -->
+                                                </tr>
+
+                                                </thead>
+                                                <tbody id="showAddOtherPramter">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <%--     <div class="form-group">
+                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">申报人</label>
+                                     <div class="col-md-9 col-sm-9 col-xs-12">
+                                         <select class="form-control teacherName" id="applicant">
+
+                                         </select>
+                                     </div>
+                                 </div>--%>
+
+                            <div class="form-group item_manager" style="display: none;">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目负责人</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <select class="form-control teacherName changeDis" id="showitemmanager">
+
+                                    </select>
+                                </div>
+                            </div>
+                            <!--
+                                 <div class="form-group">
+                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">工作量</label>
+                                     <div class="col-md-9 col-sm-9 col-xs-12">
+                                         <input type="text" class="form-control" id="workload">
+                                     </div>
+                                 </div>
+                                 -->
+
+                           <%-- <div class="form-group item_group" style="display: none;">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组成员</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+
+                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#groupMessage" aria-expanded="false" aria-controls="collapseExample">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                    <div class="collapse" id="showgroupMessage">
+                                        <div class="well">
+                                            <table class="table" id="showgroupMessageTable">
+                                                <thead>
+                                                <tr style="font-size: 13px;">
+
+                                                    <th>成员姓名</th>
+                                                    <th>成员职责描述</th>
+                                                    <th>成员所占权重<span style="float: right;"><a class="btn btn-success" id="showaddGroupMessage"><i class="fa fa-plus"></i></a></span></th>
+                                                </tr>
+
+                                                </thead>
+                                                <tbody id="showAddgroupPramter">
+                                                <tr>
+
+                                                  <td><select  class="groupMemberName teacherName changeDis"><option value=""></option> </select></td>
+                                                    <td><input type="text"  class="groupMemberSymbol changeDis"></td>
+                                                    <td><input type="text"  class="groupMemberWeight changeDis"></td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>--%>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-success savemyApplyAgain">保存</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->

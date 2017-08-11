@@ -14,9 +14,9 @@ function workRevie(){
         $('.right_hole').append(result);
 
     });
-    $.get("/category/info/list", function (data) {
+    $.get("/item/info/import-categories", function (data) {
        var showlist=$("<ul></ul>");
-        showimportall(data.data.categoryTree,showlist);
+        showimportall(data.data.categoryList,showlist);
         $('#tab_content1').append(showlist);
 
 /*function  showimportall(item) {
@@ -130,20 +130,18 @@ function workRevie(){
         function showimportall(menu_list, parent) {
             for (var menu in menu_list) {
                 //如果有子节点，则遍历该子节点
-                if (menu_list[menu].children.length > 0) {
-                    var isShow=traverseNode(menu_list[menu],1);
-                    if(isShow==1) {
+                if (menu_list[menu].parentId == 0) {
                         var li = $("<li></li>");
-                        $(li).append(menu_list[menu].name).append("<ul></ul>").appendTo(parent);
+                        $(li).append(menu_list[menu].name).append("<ul class='category_"+menu_list[menu].categoryId+"'></ul>").appendTo(parent);
 
-
-                    }
-                    showimportall(menu_list[menu].children, $(li).children().eq(0));
                 }
                 //如果该节点没有子节点，则直接将该节点li以及文本创建好直接添加到父亲节点中
-                else if(menu_list[menu].importRequired==1){
-                    $("<li></li>").append(menu_list[menu].name).appendTo(parent);
+                else if(menu_list[menu].isLeaf=="N"){
+                    $(".category_"+menu_list[menu].parentId).append("<li>"+menu_list[menu].name+"<ul class='category_"+menu_list[menu].categoryId+"'></ul></li>").appendTo(parent);
                 }
+                else
+                    $(".category_"+menu_list[menu].parentId).append("<li>"+menu_list[menu].name+"</li>").appendTo(parent);
+
             }
         }
 /*        function returnType(menu_list) {
@@ -326,7 +324,7 @@ function applyworkload() {
                    showapplyall(menu_list[menu].children, $(li).children().eq(0));
                }
                else if(menu_list[menu].importRequired==0){
-                   $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='#applyModal' style='float: right;'>点击申报</button><div style='clear: both;'></div>").appendTo(parent);
+                   $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击申报</button><div style='clear: both;'></div>").appendTo(parent);
                }
 
            }
@@ -442,7 +440,8 @@ function applyworkload() {
             ownerApply(reg);
            $('.parameterTh').empty();
            $('.otherParaTh').empty();
-            $('#AddPramter').empty();
+            $('.AddPramter').empty();
+            $("#AddOtherPramter").empty();
             comparePara(data.data.categoryTree,reg);
         });
 
@@ -453,7 +452,7 @@ function applyworkload() {
                     for(var t=0;t<item[comp].formulaParameterList.length;t++){
                         var symbolname=item[comp].formulaParameterList[t].symbol;
                         $('.parameterTh').append("<th class='pramterDesc' id='"+symbolname+"'>"+item[comp].formulaParameterList[t].desc+"</th>");
-                        $('#AddPramter').append("<td><input type='text' class='parameterName'></td>");
+                        $('.AddPramter').append("<td><input type='text' class='parameterName'></td>");
 
 
                     }
@@ -481,6 +480,28 @@ function applyworkload() {
         });
 
     });
+
+       $(document).on("click",".radioChange",
+           function () {
+               var selectedvValue=$("input[name='optionsRadios']:checked").val();
+               if(selectedvValue=="1"){
+                $(".item_manager").show();
+                $(".item_group").show();
+    /*            $(".groupMemberName").removeAttr("disabled");
+                $(".groupMemberSymbol").removeAttr("disabled");
+                $(".groupMemberWeight").removeAttr("disabled");
+                $("#itemmanager").removeAttr("disabled");*/
+               }
+               else {
+                   $(".item_manager").css("display","none");
+                   $(".item_group").css("display","none");
+              /*     $(".groupMemberName").attr("disabled","true");
+                   $(".groupMemberSymbol").attr("disabled","true");
+                   $(".groupMemberWeight").attr("disabled","true");
+                   $("#itemmanager").attr("disabled","true");*/
+               }
+           }
+       );
 
     $(document).on("click","#addGroupMessage",function () {
         var addMessage="<tr><td><select class='groupMemberName teacherName' style='width: 30%;'><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol'></select></select></td><td><input type='text' class='groupMemberWeight'></td></tr>";

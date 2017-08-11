@@ -34,9 +34,9 @@ function importWorkload(){
 
         });
     });
-/*$(".commit").on("click",function () {
+$(document).on("click","#commit",function () {
     var data=new FormData;
-    data.append("testfile",$("#fileName").files[0]);
+    data.append("file",$("#file")[0].files[0]);
     $.ajax({
         url:"/file?fileId=4",
         type:"POST",
@@ -45,11 +45,11 @@ function importWorkload(){
         contentType: false,
         processData: false,
         success:function (file) {
-
+        alert("上传成功！");
         }
     })
 
-})*/
+})
 
 
 }

@@ -63,13 +63,13 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label " >上传文件</label>
-                            <form id="uploadForm">
+
                                 <div class="col-sm-9">
-                                    <input type="file" class="form-control" id="fileName"><hr/>
-                                    <button  class="btn btn-primary commit" style="float: right;">提交</button>
+                                    <input type="file" class="form-control" id="file"><hr/>
+                                    <input type="button" class="btn btn-primary" id="commit" value="上传" style="float: right;">
                                 </div>
 
-                            </form>
+
                             <p>请上传小于20M的EXECLL文件</p>
 
                         </div>
