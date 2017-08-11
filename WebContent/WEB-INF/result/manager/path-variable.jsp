@@ -50,6 +50,8 @@
 
     var itemManageUrl=contextPath+"/item/manage";
 
+    var importProofUrl=itemManageUrl+"/file-proof";
+
     var itemManaPublicUrl=itemManageUrl+"/public-selective";
 
     var itemResetUrl=itemManageUrl+"/reset";
@@ -75,6 +77,8 @@
     var itemSubmitUrl=itemManageUrl+"/public-selective";
 
     var TeacherInfoUrl=contextPath+"/common/teachers";
+
+    var currentTeaIdUrl=contextPath+"/common/user-Info";
 
     var historyUrl=contextPath+"/history/info/histories-user";
 

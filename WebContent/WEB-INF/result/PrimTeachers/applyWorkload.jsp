@@ -223,14 +223,6 @@
                                     <input type="file" name="file" id="formName">
                                 </div>
                             </div>
-                            <div class="form-group item_owner">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">申报人</label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <select class="form-control teacherName" id="itemowner">
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                            </div>
                             <div class="form-group item_manager" style="display: none;">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">项目负责人</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
