@@ -7,6 +7,7 @@ import cn.edu.uestc.ostec.workload.converter.Converter;
 import cn.edu.uestc.ostec.workload.dao.CategoryDao;
 import cn.edu.uestc.ostec.workload.dao.TeacherDao;
 import cn.edu.uestc.ostec.workload.dto.ChildWeight;
+import cn.edu.uestc.ostec.workload.dto.FormulaParameter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.JobDesc;
 import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
@@ -54,8 +55,10 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 
 		Category category = isNull(itemDto.getCategoryId()) ?
 				null :
-				categoryDao.select(itemDto.getCategoryId(),null,null,null,null,null).get(ZERO_INT);
+				categoryDao.select(itemDto.getCategoryId(), null, null, null, null, null)
+						.get(ZERO_INT);
 
+		itemDto.setFormula(isNull(category) ? null : category.getFormula());
 		itemDto.setCategoryName(isNull(category) ? null : category.getName());
 		itemDto.setImportRequired(isNull(category) ? null : category.getImportRequired());
 		itemDto.setVersion(isNull(category) ? null : category.getVersion());
@@ -79,6 +82,9 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 				readValueFromJson(itemDto.getJsonChildWeight(), ChildWeight.class));
 		itemDto.setOtherJsonParameters(
 				readValueFromJson(itemDto.getOtherJson(), OtherJsonParameter.class));
+		itemDto.setParamDesc(isNull(category) ?
+				null :
+				readValueFromJson(category.getJsonParameters(), FormulaParameter.class));
 		//		double workload = FormulaCalculate
 		//				.calculate(category.getFormula(), itemDto.getParameterValues());
 		//		itemDto.setWorkload(workload);

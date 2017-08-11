@@ -130,6 +130,32 @@ public class ItemDto {
 	 */
 	private String otherJson = null;
 
+	/**
+	 * 对应的公式
+	 */
+	private String formula = null;
+
+	/**
+	 * 对应的参数描述
+	 */
+	private List<FormulaParameter> paramDesc = null;
+
+	public String getFormula() {
+		return formula;
+	}
+
+	public void setFormula(String formula) {
+		this.formula = formula;
+	}
+
+	public List<FormulaParameter> getParamDesc() {
+		return paramDesc;
+	}
+
+	public void setParamDesc(List<FormulaParameter> paramDesc) {
+		this.paramDesc = paramDesc;
+	}
+
 	public String getVersion() {
 		return version;
 	}
