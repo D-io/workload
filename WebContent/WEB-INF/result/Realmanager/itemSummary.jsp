@@ -8,7 +8,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
     <div class="x_title">
-        <h3>工作量统计</h3>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-bars"></i>管理</a></li>
+            <li class="active">工作当量统计</li>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+        </ol>
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
             </li>
@@ -58,17 +67,17 @@
             </div>
         </div>
         -->
-        <table  class="table table-striped table-bordered dataTable no-footer">
+        <table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;">
             <thead>
             <tr role="row">
-                <th  class="sorting" style="width: 50px;">序号</th>
-                <th  class="sorting" style="width: 78px;">教师姓名</th>
-
-                <th class="sorting" style="width: 360px;">条目名称</th>
-
-                <th class="sorting" style="width: 78px;">工作量</th>
-                <th class="sorting"  style="width: 83px;">状态 </th>
-                <th class="sorting"  style="width: 183px;">操作</th>
+                <th  class="sorting">序号</th>
+                <th  class="sorting">教师姓名</th>
+                <th class="sorting">条目名称</th>
+                <th class="sorting">工作量</th>
+                <th class="sorting" >公式参数</th>
+                <th class="sorting" >其他参数</th>
+                <th class="sorting">形式</th>
+                <th class="sorting">状态</th>
             </tr>
             </thead>
             <tbody class="sumItemSort">

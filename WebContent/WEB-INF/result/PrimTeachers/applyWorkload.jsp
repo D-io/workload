@@ -29,7 +29,7 @@
                 </li>
                 <li role="presentation" class="" onclick="applyRec()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">申报审核情况</a>
                 </li>
-                <li role="presentation" class="" onclick=""><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
+                <li role="presentation" class="" onclick="showApplyHistory()"><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
                 </li>
             </ul>
             <div id="myTabContent" class="tab-content">
@@ -37,7 +37,25 @@
 
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-
+                    <table class="table table-striped table-bordered dataTable no-footer reviewerRec" style="display: none;font-size: 14px;">
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting">序号</th>
+                            <th class="sorting">条目名称</th>
+                            <th class="sorting">工作量</th>
+                            <th class="sorting">计算公式</th>
+                            <th class="sorting">形式</th>
+                            <th class="sorting">主要参数</th>
+                            <th class="sorting">其他参数</th>
+                            <th class="sorting">版本</th>
+                            <th class="sorting">审核截止时间 </th>
+                            <th class="sorting">审核状态 </th>
+                            <th class="sorting">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="reviewerRecTbody">
+                        </tbody>
+                    </table>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="history-tab">
 
@@ -57,11 +75,11 @@
                     </div>
                     <div class="modal-body">
                         <button class="add btn btn-primary" data-toggle="modal" data-target="#addContent">添加申报</button>
-                        <div class="applymodalbody" style="height: 60%;">
-                            <table>
+                        <div class="applymodalbody" style="height: 60%;"><%--
+                            <table class="table table-bordered table-striped dataTable no-footer" style="font-size:14px;">
                                 <thead class="showThead" style="display: none;"><th>序号</th><th>条目名称</th><th>工作量</th><th>提交状态</th><th>操作</th></thead>
                                 <tbody class="showDesc"></tbody>
-                            </table>
+                            </table>--%>
 
 
                         </div>
@@ -86,7 +104,7 @@
         </div>
         -->
 
-        <div class="modal fade" id="addContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -99,7 +117,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <form class="form-horizontal form-label-left">
+                        <form class="form-horizontal form-label-left" action="/item/manage"  enctype="multipart/form-data" method="post">
 
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容简介</label>
@@ -199,12 +217,25 @@
                                     </select>
                                 </div>
                             </div>--%>
-
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">上传附件</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="file" name="file" id="formName">
+                                </div>
+                            </div>
+                            <div class="form-group item_owner">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">申报人</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <select class="form-control teacherName" id="itemowner">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group item_manager" style="display: none;">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">项目负责人</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <select class="form-control teacherName" id="itemmanager">
-
+                                        <option value=""></option>
                                     </select>
                                 </div>
                             </div>
@@ -239,7 +270,7 @@
                                                 <tbody id="AddgroupPramter">
                                                 <tr>
 
-                                                    <td><select  class="groupMemberName teacherName"><option value=""></option> </select></td>
+                                                    <td><select  class="groupMemberName teacherName"><option value=" "></option> </select></td>
                                                     <td><input type="text"  class="groupMemberSymbol"></td>
                                                     <td><input type="text"  class="groupMemberWeight"></td>
 
@@ -255,7 +286,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-success savemyApply">保存</button>
+                       <button type="button" class="btn btn-success savemyApply">保存</button>
+                        <%--<input type="submit" value="提交">--%>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
@@ -272,7 +304,9 @@
                         </h4>
                     </div>
                     <div class="modal-body">
-                        <button class="btn btn-primary btn-info editApply"><i class="fa fa-pencil"></i>编辑</button>
+                        <button class="btn btn-primary btn-info editApply" style="display: none"><i class="fa fa-pencil"></i>编辑</button>
+                        <button class="btn btn-primary btn-success editSubmit" style="display: none"><i class="fa fa-pencil"></i>提交</button>
+                        <button class="btn btn-primary btn-danger editDelete" style="display: none"><i class="fa fa-pencil"></i>删除</button>
 
                         <form class="form-horizontal form-label-left">
 
@@ -295,17 +329,17 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                 </label>
                                 <label>
-                                    <input type="radio" value="0"  name="optionsRadios" class="radioChange changeDis"> 个人申报
+                                    <input type="radio" value="0"  name="showoptionsRadios" class="radioChange changeDis" id="single"> 个人申报
                                 </label>
                                 <label>
-                                    <input type="radio"  value="1"  name="optionsRadios" class="radioChange changeDis"> 小组申报
+                                    <input type="radio"  value="1"  name="showoptionsRadios" class="radioChange changeDis" id="group"> 小组申报
                                 </label>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">主要考核参数</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#parameter" aria-expanded="false" aria-controls="collapseExample">
+                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#showparameter" aria-expanded="false" aria-controls="collapseExample">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <div class="collapse" id="showparameter">
@@ -333,7 +367,7 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#otherparameter" aria-expanded="false" aria-controls="collapseExample">
+                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#showotherparameter" aria-expanded="false" aria-controls="collapseExample">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <div class="collapse" id="showotherparameter">
@@ -363,7 +397,13 @@
                                          </select>
                                      </div>
                                  </div>--%>
-
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">上传附件</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="file" name="file" id="showformName">
+                                </div>
+                                <span><a class="downloadAdded">查看附件</a></span>
+                            </div>
                             <div class="form-group item_manager" style="display: none;">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">项目负责人</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
@@ -381,11 +421,11 @@
                                  </div>
                                  -->
 
-                           <%-- <div class="form-group item_group" style="display: none;">
+                            <div class="form-group item_group" style="display: none;">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组成员</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#groupMessage" aria-expanded="false" aria-controls="collapseExample">
+                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#showgroupMessage" aria-expanded="false" aria-controls="collapseExample">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <div class="collapse" id="showgroupMessage">
@@ -403,9 +443,9 @@
                                                 <tbody id="showAddgroupPramter">
                                                 <tr>
 
-                                                  <td><select  class="groupMemberName teacherName changeDis"><option value=""></option> </select></td>
-                                                    <td><input type="text"  class="groupMemberSymbol changeDis"></td>
-                                                    <td><input type="text"  class="groupMemberWeight changeDis"></td>
+                                                  <td><select  class="showgroupMemberName teacherName changeDis"><option value=""></option> </select></td>
+                                                    <td><input type="text"  class="showgroupMemberSymbol changeDis"></td>
+                                                    <td><input type="text"  class="showgroupMemberWeight changeDis"></td>
 
                                                 </tr>
                                                 </tbody>
@@ -413,13 +453,15 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>--%>
+                            </div>
 
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
                         <button type="button" class="btn btn-success savemyApplyAgain">保存</button>
+                        <%--<input type="submit" value="提交">--%>
+
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->

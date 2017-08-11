@@ -189,14 +189,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
     <div class="x_title">
-        <h3>权限重置</h3>
-        <ul class="nav navbar-right panel_toolbox">
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-bars"></i>管理</a></li>
+            <li class="active">权限重置</li>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+        </ol>
+       <%-- <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
             </li>
 
             <li><a class="close-link"><i class="fa fa-close"></i></a>
             </li>
-        </ul>
+        </ul>--%>
         <div class="clearfix"></div>
     </div>
     <div class="x_content" id="showsumitem" style="display: block;">
@@ -240,7 +249,7 @@
             </div>
         </div>
         -->
-        <table  class="table table-striped table-bordered dataTable no-footer">
+        <table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;">
             <thead>
             <tr role="row">
                 <th  class="sorting" style="width: 40px;">序号</th>
@@ -248,6 +257,7 @@
                 <th class="sorting" style="width: 360px;">条目名称</th>
 
                 <th class="sorting" style="width: 220px;">公式参数</th>
+                <th class="sorting" style="width: 220px;">其他参数</th>
                 <th class="sorting" style="width: 78px;">工作量</th>
                 <th class="sorting"  style="width: 100px;">状态 </th>
                 <th class="sorting"  style="width: 230px;">操作</th>
@@ -256,8 +266,8 @@
             <tbody class="ResetItem">
             </tbody>
         </table>
-        <div class="col-sm-7">
-            <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+<%--        <div class="col-sm-7">--%>
+            <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate" style="float: right;">
                 <ul class="pagination">
                     <li class="paginate_button previous disabled" id="datatable_previous">
                         <a href="#" aria-controls="datatable" data-dt-idx="0" tabindex="0">前一页</a>
@@ -270,7 +280,7 @@
                 </ul>
             </div>
 
-        </div>
+        <%--</div>--%>
 
     </div>
 </div>

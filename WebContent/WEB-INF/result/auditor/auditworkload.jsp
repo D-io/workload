@@ -25,7 +25,7 @@
             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">申报审核情况</a>
                 </li>
-                <li role="presentation" class="" onclick="applyRec()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
+                <li role="presentation"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
                 </li>
 
             </ul>
@@ -40,6 +40,48 @@
 
             </div>
         </div>
+        <div class="modal fade bs-example-modal-lg" id="auditormodal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel"></h4>
+                    </div>
+                    <div class="modal-body">
+                          <div class="applymodalbody" style="height: 60%;">
+                            <table class="table dataTable table-bordered no-footer table-striped myRevieweRec" style="font-size: 14px;">
+                                <thead class="showThead" style="display: none;font-size: 14px;">
+                                <tr role="row">
+                                <th class="sorting">序号</th>
+                                <th class="sorting">条目名称</th>
+                                <th class="sorting">申报描述</th>
+                                <th class="sorting">申报形式</th>
+                                <th class="sorting">工作量</th>
+                                <th class="sorting">计算公式</th>
+                                <th class="sorting">主要参数</th>
+                                <th class="sorting">其他参数</th>
+                                <th class="sorting">版本</th>
+                                <th class="sorting">审核截止时间</th>
+                                <th class="sorting">审核状态</th>
+                                <th class="sorting" style="width: 135px;">操作</th>
+                                </tr>
+                                </thead>
+
+                                <tbody class="showDesc">
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
 
     </div>
     <div class="modal fade" id="refuseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
