@@ -348,7 +348,7 @@ function  reviewerRec() {
               var Info=analyseList[i];
               $(".reviewerRecTbody").append(rowInfo);
               //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-              for(var j=0;j<11;j++)//单元格
+              for(var j=0;j<12;j++)//单元格
               {
                   $(".reviewerRecTbody tr:last").append(cellInfo);
               }
@@ -377,14 +377,18 @@ function  reviewerRec() {
                   otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
               }
               $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+              var itemDesc='';
+              for(var item=0;item<Info.paramDesc.length;item++){
+                  itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
+              }
+              $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
+              $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
 
-              $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
-
-              $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-              $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieRec_"+Info.categoryId);
+              $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
+              $(".reviewerRecTbody tr:last td:eq(9)").attr("class","revieRec_"+Info.categoryId);
               $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
-              $(".reviewerRecTbody tr:last td:eq(9)").text("确认通过");
-              $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#1ABB9C","color":"#ffffff"});
+              $(".reviewerRecTbody tr:last td:eq(10)").text("确认通过");
+              $(".reviewerRecTbody tr:last td:eq(10)").css({"background-color":"#1ABB9C","color":"#ffffff"});
 
               /*  var statusName='';
                switch (Info.status){
@@ -393,7 +397,7 @@ function  reviewerRec() {
                case 0:statusName="未提交";
                }*/
 
-              $(".reviewerRecTbody tr:last td:eq(10)").text();
+              $(".reviewerRecTbody tr:last td:eq(11)").text();
               //   var act="<a class='btn btn-primary itemToImport' id='itemToImport_"+Info.itemId+"'>提交</a> ";
               //   $(".reviewerRecTbody tr:last td:eq(11)").text();
           }
@@ -410,7 +414,7 @@ function  reviewerRec() {
             var Info=analyseList[i];
             $(".reviewerRecTbody").append(rowInfo);
             //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-            for(var j=0;j<11;j++)//单元格
+            for(var j=0;j<12;j++)//单元格
             {
                 $(".reviewerRecTbody tr:last").append(cellInfo);
             }
@@ -439,22 +443,26 @@ function  reviewerRec() {
                 otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
             }
             $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+            var itemDesc='';
+            for(var item=0;item<Info.paramDesc.length;item++){
+                itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
+            }
+            $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
+            $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
 
-            $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
 
-
-            $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-            $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieRec_"+Info.categoryId);
+            $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
+            $(".reviewerRecTbody tr:last td:eq(9)").attr("class","revieRec_"+Info.categoryId);
             $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
-            $(".reviewerRecTbody tr:last td:eq(9)").text("提交存疑");
-            $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#70c8e2","color":"#ffffff"});
+            $(".reviewerRecTbody tr:last td:eq(10)").text("提交存疑");
+            $(".reviewerRecTbody tr:last td:eq(10)").css({"background-color":"#70c8e2","color":"#ffffff"});
             /*  var statusName='';
              switch (Info.status){
              case 1:statusName="已提交";
              break;
              case 0:statusName="未提交";
              }*/
-
+            $(".reviewerRecTbody tr:last td:eq(11)").text();
          //   var act="<a class='btn btn-primary reviewerRec' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
          //   $(".reviewerRecTbody tr:last td:eq(10)").text(act);
         }
@@ -469,7 +477,7 @@ function  reviewerRec() {
             var Info=analyseList[i];
             $(".reviewerRecTbody").append(rowInfo);
             //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-            for(var j=0;j<11;j++)//单元格
+            for(var j=0;j<12;j++)//单元格
             {
                 $(".reviewerRecTbody tr:last").append(cellInfo);
             }
@@ -498,15 +506,19 @@ function  reviewerRec() {
                 otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
             }
             $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+            var itemDesc='';
+            for(var item=0;item<Info.paramDesc.length;item++){
+                itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
+            }
+            $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
+            $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
 
-            $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
 
-
-            $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-            $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieRec_"+Info.categoryId);
+            $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
+            $(".reviewerRecTbody tr:last td:eq(9)").attr("class","revieRec_"+Info.categoryId);
             $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
-            $(".reviewerRecTbody tr:last td:eq(9)").text("存疑解决");
-            $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#f0ad4e","color":"#ffffff"});
+            $(".reviewerRecTbody tr:last td:eq(10)").text("存疑解决");
+            $(".reviewerRecTbody tr:last td:eq(10)").css({"background-color":"#f0ad4e","color":"#ffffff"});
             /*  var statusName='';
              switch (Info.status){
              case 1:statusName="已提交";
@@ -515,7 +527,7 @@ function  reviewerRec() {
              }*/
 
             var act="<a class='btn btn-primary reviewerRec' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
-            $(".reviewerRecTbody tr:last td:eq(10)").append(act);
+            $(".reviewerRecTbody tr:last td:eq(11)").append(act);
         }
     });
 }
@@ -969,7 +981,7 @@ function applyRec() {
             var Info=analyseList[i];
             $(".reviewerRecTbody").append(rowInfo);
             //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-            for(var j=0;j<11;j++)//单元格
+            for(var j=0;j<12;j++)//单元格
             {
                 $(".reviewerRecTbody tr:last").append(cellInfo);
             }
@@ -977,7 +989,7 @@ function applyRec() {
             $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
             $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
             $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-            $(".reviewerRecTbody tr:last td:eq(3)").text();
+            $(".reviewerRecTbody tr:last td:eq(3)").text(Info.formula);
             var showtype='';
             switch (Info.isGroup){
 
@@ -1000,15 +1012,19 @@ function applyRec() {
                 }
             }
             $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+            var itemDesc='';
+            for(var item=0;item<Info.paramDesc.length;item++){
+                itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
+            }
+            $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
+            $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
 
-            $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
 
-
-            $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-            $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieDead_"+Info.categoryId);
+            $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
+            $(".reviewerRecTbody tr:last td:eq(9)").attr("class","revieDead_"+Info.categoryId);
             $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
-            $(".reviewerRecTbody tr:last td:eq(9)").text("待审核");
-            $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#70c8e2","color":"#ffffff"});
+            $(".reviewerRecTbody tr:last td:eq(10)").text("待审核");
+            $(".reviewerRecTbody tr:last td:eq(10)").css({"background-color":"#70c8e2","color":"#ffffff"});
             /*  var statusName='';
              switch (Info.status){
              case 1:statusName="已提交";
@@ -1016,7 +1032,7 @@ function applyRec() {
              case 0:statusName="未提交";
              }*/
 
-            $(".reviewerRecTbody tr:last td:eq(10)").text();
+            $(".reviewerRecTbody tr:last td:eq(11)").text();
             //   var act="<a class='btn btn-primary itemToImport' id='itemToImport_"+Info.itemId+"'>提交</a> ";
             //   $(".reviewerRecTbody tr:last td:eq(11)").text();
         }
@@ -1031,7 +1047,7 @@ function applyRec() {
             var Info=analyseList[i];
             $(".reviewerRecTbody").append(rowInfo);
             //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-            for(var j=0;j<11;j++)//单元格
+            for(var j=0;j<12;j++)//单元格
             {
                 $(".reviewerRecTbody tr:last").append(cellInfo);
             }
@@ -1056,19 +1072,26 @@ function applyRec() {
                 praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
             }
             var otherpraValue='';
-            for(var n=0;n<Info.otherJsonParameters.length;n++){
-                otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
+            if(Info.otherJsonParameters&&Info.otherJsonParameters.length>0){
+                for(var n=0;n<Info.otherJsonParameters.length;n++){
+                    otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
+                }
             }
+
             $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+            var itemDesc='';
+            for(var item=0;item<Info.paramDesc.length;item++){
+                itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
+            }
+            $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
+            $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
 
-            $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
 
-
-            $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-            $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieDead_"+Info.categoryId);
+            $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
+            $(".reviewerRecTbody tr:last td:eq(9)").attr("class","revieDead_"+Info.categoryId);
             $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
-            $(".reviewerRecTbody tr:last td:eq(9)").text("已通过");
-            $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#1ABB9C","color":"#ffffff"});
+            $(".reviewerRecTbody tr:last td:eq(10)").text("已通过");
+            $(".reviewerRecTbody tr:last td:eq(10)").css({"background-color":"#1ABB9C","color":"#ffffff"});
             /*  var statusName='';
              switch (Info.status){
              case 1:statusName="已提交";
@@ -1078,6 +1101,7 @@ function applyRec() {
 
             //   var act="<a class='btn btn-primary reviewerRec' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
             //   $(".reviewerRecTbody tr:last td:eq(10)").text(act);
+            $(".reviewerRecTbody tr:last td:eq(10)").text();
         }
     });
     $.get(itemTeacherInfo+"?importedRequired=0&status=5",function (data) {
@@ -1090,7 +1114,7 @@ function applyRec() {
             var Info=analyseList[i];
             $(".reviewerRecTbody").append(rowInfo);
             //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-            for(var j=0;j<11;j++)//单元格
+            for(var j=0;j<12;j++)//单元格
             {
                 $(".reviewerRecTbody tr:last").append(cellInfo);
             }
@@ -1122,15 +1146,19 @@ function applyRec() {
             }
 
             $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+            var itemDesc='';
+            for(var item=0;item<Info.paramDesc.length;item++){
+                itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
+            }
+            $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
+            $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
 
-            $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
 
-
-            $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-            $(".reviewerRecTbody tr:last td:eq(8)").attr("class","revieDead_"+Info.categoryId);
+            $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
+            $(".reviewerRecTbody tr:last td:eq(9)").attr("class","revieDead_"+Info.categoryId);
             $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
-            $(".reviewerRecTbody tr:last td:eq(9)").text("已拒绝");
-            $(".reviewerRecTbody tr:last td:eq(9)").css({"background-color":"#f0ad4e","color":"#ffffff"});
+            $(".reviewerRecTbody tr:last td:eq(10)").text("已拒绝");
+            $(".reviewerRecTbody tr:last td:eq(10)").css({"background-color":"#f0ad4e","color":"#ffffff"});
             /*  var statusName='';
              switch (Info.status){
              case 1:statusName="已提交";
@@ -1139,8 +1167,8 @@ function applyRec() {
              }*/
 
             var act="<button class='btn btn-primary reviewerRec source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info apply' data-toggle='modal' data-target='#applyModal' id='applyAgain_"+Info.itemId+"'><i class='fa fa-pencil'></i>重新申请</a> ";
-            $(".reviewerRecTbody tr:last td:eq(10)").append(act);
-            $(".reviewerRecTbody tr:last td:eq(10)").attr("width","150px");
+            $(".reviewerRecTbody tr:last td:eq(11)").append(act);
+            $(".reviewerRecTbody tr:last td:eq(11)").attr("width","150px");
         }
     });
 
@@ -1156,14 +1184,8 @@ function applyRec() {
                     type:'success',
                     styling:'bootstrap3'
                 })
-
-
         })
-
     });
-
-
-
 
 }
 /*function showdata(item) {

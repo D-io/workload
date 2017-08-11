@@ -47,6 +47,7 @@
                             <th class="sorting">计算公式</th>
                             <th class="sorting">形式</th>
                             <th class="sorting">主要参数</th>
+                            <th class="sorting">参数描述</th>
                             <th class="sorting">其他参数</th>
                             <th class="sorting">版本</th>
                             <th class="sorting">复核截止时间 </th>
