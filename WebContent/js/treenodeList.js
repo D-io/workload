@@ -97,6 +97,10 @@ function ownerApply(domId) {
                      })*/
                     var analyseList = data.data.itemList;
                     var listLength = data.data.itemList.length;
+                    var rowInfo = "<tr></tr>";
+                    var cellInfo = "<td></td>";
+                    var Info = analyseList;
+
                     if ($(".applymodalbody").innerHTML == null || $(".applymodalbody").innerHTML == "") {
                         var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
                             '<th class="sorting">工作量</th> <th class="sorting">' +
@@ -105,10 +109,6 @@ function ownerApply(domId) {
                         // $(".applymodalbody").empty();
                         $(".applymodalbody").append(tablestr);
 
-                        var rowInfo = "<tr></tr>";
-                        var cellInfo = "<td></td>";
-
-                        var Info = analyseList;
                         $(".tbody").append(rowInfo);
 
                         for (var j = 0; j < 6; j++)//单元格
@@ -136,25 +136,22 @@ function ownerApply(domId) {
 
                     }
                     else {
-                        var rowInfoAgain = "<tr></tr>";
-                        var cellInfoAgain = "<td></td>";
-                        var analyseListAgain = data.data.itemList;
-                        var listLengthAgain = data.data.itemList.length;
-                        var InfoAgain = analyseListAgain;
-                        $(".tbody").append(rowInfoAgain);
+
+                        $(".tbody").append(rowInfo);
 
                         for (var j = 0; j < 6; j++)//单元格
                         {
-                            $(".tbody tr:last").append(cellInfoAgain);
+                            $(".tbody tr:last").append(cellInfo);
                         }
 
                         $(".tbody tr:last td:eq(0)").text(parseInt($(".tbody tr:last td:eq(0)").text()) + 1);
-                        $(".tbody tr:last td:eq(1)").text(InfoAgain[0].itemName);
-                        for (var i = 0; i < listLengthAgain; i++) {
-                            if (InfoAgain[i].teacherName == $("#itemowner").text())
-                                var count = InfoAgain[i].workload;
-                            var CountId = InfoAgain[i].itemId;
-                            var CategId = InfoAgain[i].categoryId;
+                        $(".tbody tr:last td:eq(1)").text(Info[0].itemName);
+                        for (var i = 0; i < listLength; i++) {
+                            if (Info[i].teacherName == CurrentName) {
+                                var count = Info[i].workload;
+                                var CountId = Info[i].itemId;
+                                var CategId = Info[i].categoryId;
+                            }
                         }
                         $(".tbody tr:last td:eq(2)").text(count);
                         $(".tbody tr:last td:eq(3)").attr("class", "applyDead");
@@ -184,8 +181,84 @@ function ownerApply(domId) {
                     });
 
                     $('#addContent').modal('hide');
+                    for(var hideCount=0;hideCount<listLength;hideCount++){
+                        if (Info[hideCount].teacherName == CurrentName) {
+                           /* var count = Info[i].workload;
+                            var CategId = Info[i].categoryId;*/
 
+                            var CountId = Info[i].itemId;
+                        }
+                        $(".hiddendistrict").append("<div class='groupMember_"+CountId+"'>"+Info[hideCount].ownerId+"</div><div class='jobDesc_"+CountId+"'>"+Info[hideCount].jobDesc+"</div><div class='jobWeight_"+CountId+"'>"+Info[hideCount].jsonChildWeight+"</div>")
+                    }
+                    $(document).on("click",".showaddContent",function () {
+                        var newId=this.id;
+                        var newReg=parseInt(newId.match(/\d+/g));
+                        if($("#statusChange_"+newReg).text()=="未提交"){
+                            $(".editApply").show();
+                            $(".editApply").display=="";
+                            $(".editApply").attr("id","editApply_"+newReg);
+                            $(".editSubmit").show();
+                            $(".editSubmit").attr("id","editSubmit_"+newReg);
+                            $(".editDelete").show();
+                            $(".editDelete").attr("id","editDelete"+newReg);
+                        }
+                        if($("#statusChange_"+newReg).text()=="已提交"){
+                            $(".editApply").hide();
+                            //  $(".editApply").attr("id","editApply_"+window.Temp[newReg-1].itemId);
+                            $(".editSubmit").hide();
+                            //  $(".editSubmit").attr("id","editSubmit_"+window.Temp[newReg-1].itemId);
+                            $(".editDelete").hide();
+                            //  $(".editDelete").attr("id","editDelete"+window.Temp[newReg-1].itemId);
+                        }
+                        $("#showitemName").val(Info[0].itemName);
+                        $("#showitemName").attr("disabled","true");
+                        $("#showapplyDesc").val(Info.applyDesc);
+                        $("#showapplyDesc").attr("disabled","true");
+                        if(Info[0].isGroup==0){
+                            $("#single").attr("checked",'checked');
+                            $("#group").attr("disabled","true");
+
+                        }
+                        else{
+                            $("#group").attr("checked",'checked');
+                            $("#single").attr("disabled","true");
+                            $(".item_manager").show();
+                            $(".item_group").show();
+                        }
+                        var showPram=Info[0].parameterValues;
+                        for(var i=0;i<showPram.length;i++){
+                            $(".showparameterName").eq(i).val(showPram[i].value);
+                            $(".showparameterName").eq(i).attr("disabled","true");
+
+                        }
+                        var showOtherPara=Info[0].otherJsonParameters;
+                        for(var n=0;n<showOtherPara.length;n++){
+                            $(".showotherparameterName").eq(n).val(showOtherPara[n].value);
+                            $(".showotherparameterName").eq(n).attr("disabled","true");
+
+                        }
+                        $("#showitemmanager").attr("disabled","true");
+                        $("#showitemmanager option[value='"+Info[0].groupManagerId+"']").attr("selected","selected");
+
+                        $('#showAddgroupPramter').empty();
+                        var addStr='';
+                        var $group=$(".groupMember_"+newReg);
+                        if($group&&$group.length){
+                            for(var pramterCount=0;pramterCount<$(".groupMember_"+newReg).length;pramterCount++){
+
+                                addStr+="<tr><td><select class='groupMemberName teacherName' style='width: 30%;'><option value='"+parseInt($(".groupMember_"+newReg).eq(pramterCount).text())+"'></option> </select></td><td><input type='text' class='groupMemberSymbol'>"+$(".jobDesc_"+newReg).eq(pramterCount).text()+"</td><td><input type='text' class='groupMemberWeight'>"+$(".jobDesc_"+jobWeight_).eq(pramterCount).text()+"</td></tr>";
+
+                            }
+                        }
+
+                        $('#showAddgroupPramter').append(addStr);
+                        $(".groupMemberName").attr("disabled","true");
+                        $(".groupMemberSymbol").attr("disabled","true");
+                        $(".groupMemberWeight").attr("disabled","true");
+                    });
                 }
+
+                })
 
             });
         })

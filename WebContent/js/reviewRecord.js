@@ -682,7 +682,7 @@ function applyworkload() {
        );
     $(document).off("click","#addGroupMessage");
     $(document).on("click","#addGroupMessage",function () {
-        var addMessage="<tr><td><select class='groupMemberName teacherName' style='width: 30%;'><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol'></select></select></td><td><input type='text' class='groupMemberWeight'></td></tr>";
+        var addMessage="<tr><td><select class='groupMemberName teacherName' style='width: 30%;'><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol'></td><td><input type='text' class='groupMemberWeight'></td></tr>";
         $('#AddgroupPramter').append(addMessage);
     });
     $(document).on("click",".groupMemberName",function () {
@@ -741,7 +741,22 @@ function applyworkload() {
         }
         $("#showitemmanager").attr("disabled","true");
         $("#showitemmanager option[value='"+window.Temp[newReg-1].groupManagerId+"']").attr("selected","selected");
+        $('#showAddgroupPramter').empty();
+        var addStr='';
+        var $group=$(".groupMember_"+window.Temp[newReg-1].itemId);
+        if($group&&$group.length){
+            for(var pramterCount=0;pramterCount<$(".groupMember_"+window.Temp[newReg-1].itemId).length;pramterCount++){
 
+                addStr+="<tr><td><select class='groupMemberName teacherName' style='width: 30%;'><option value='"+parseInt($(".groupMember_"+window.Temp[newReg-1].itemId).eq(pramterCount).text())+"'></option> </select></td><td><input type='text' class='groupMemberSymbol'>"+$(".jobDesc_"+window.Temp[newReg-1].itemId).eq(pramterCount).text()+"</td><td><input type='text' class='groupMemberWeight'>"+$(".jobWeight_"+window.Temp[newReg-1].itemId).eq(pramterCount).text()+"</td></tr>";
+
+            }
+        }
+
+        $('#showAddgroupPramter').append(addStr);
+
+        $(".groupMemberName").attr("disabled","true");
+        $(".groupMemberSymbol").attr("disabled","true");
+        $(".groupMemberWeight").attr("disabled","true");
     });
     var currentId='';
     $(document).on("click",".editApply",function () {
@@ -762,6 +777,9 @@ function applyworkload() {
         $.get(currentTeaIdUrl,function (data) {
             window.currentId=data.data.teacher.name;
         })
+        $(".groupMemberName").removeAttr("disabled");
+        $(".groupMemberSymbol").removeAttr("disabled");
+        $(".groupMemberWeight").removeAttr("disabled");
     });
     $(document).off("click",".savemyApplyAgain");
     $(document).on("click",".savemyApplyAgain",function () {
