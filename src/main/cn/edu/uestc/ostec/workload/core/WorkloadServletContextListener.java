@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.core;
 
+import org.junit.Test;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -46,13 +48,14 @@ public class WorkloadServletContextListener implements ServletContextListener, W
 		//1.从web.xml中提取初始化参数 begin
 		String fileUploadPath = servletContext.getInitParameter(
 				WebParametersConstants.FILE_UPLOAD_PATH);
+		String fileContextPath = servletContext.getRealPath("/");
 		String casContextPath = servletContext.getInitParameter(
 				WebParametersConstants.CAS_SERVER_CONTEXT_PATH_NAME);
 		//1.从web.xml中提取初始化参数 end
 
 		//2.设置参数至application域 begin
 		//设置文件上传路径
-		servletContext.setAttribute(APPLICATION_FILE_UPLOAD_PATH, fileUploadPath);
+		servletContext.setAttribute(APPLICATION_FILE_UPLOAD_PATH, fileContextPath + fileUploadPath);
 		//设置cas登出地址
 		servletContext.setAttribute(APPLICATION_CAS_SERVER_LOGOUT_PATH,
 				casContextPath + WebParametersConstants.CAS_SERVER_LOGOUT_PREFIX);

@@ -33,7 +33,7 @@
   <!-- 文件上传路径配置 BEGIN -->
   <context-param>
     <param-name>fileUploadPath</param-name>
-    <param-value>E:\fileUploadTest</param-value>
+    <param-value>data</param-value>
   </context-param>
   <!-- 文件上传路径配置 END -->
 
