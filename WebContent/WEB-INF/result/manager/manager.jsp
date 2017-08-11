@@ -82,18 +82,27 @@
                             </ul>
                         </li>
 
-                        <%--       <div>
-                                   <label>学年学期</label>
-                                   <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 13px 15px 12px; float: right;">
-                                       <select class="form-control" id="isGroup">
-                                           <option value="1">2016-2017-1</option>
-                                           <option value="0">2016-2017-2</option>
-                                           <option value="0">2017-2018-1</option>
-                                           <option value="0">2017-2018-2</option>
+                                   <div class="col-md-4 col-sm-4 col-xs-12" style="margin-left:440px;width:160px">
+                                       <select class="form-control" id="year">
+                                           <option value="0">2016-2017</option>
+                                           <option value="1">2017-2018</option>
+                                           <option value="2">2018-2019</option>
                                        </select>
                                    </div>
-                               </div>--%>
-                        <li role="presentation" class="dropdown">
+                        <div class="col-md-2 col-sm-2 col-xs-12" style="margin-left:0px;width: 80px;">
+                            <select class="form-control" id="term">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div>
+                            <a href="javascript:;" class="badge bg-green" id="itemChange">
+                                <%--<i class="fa fa-envelope-o"></i>--%>
+                                学期切换
+                            </a>
+                        </div>
+
+                        <%--<li role="presentation" class="dropdown">
                             <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-envelope-o"></i>
                                 <span class="badge bg-green">学期切换</span>
@@ -101,7 +110,7 @@
                             <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
                                 <li>
                                     <a href="#">
-                                 <%--       <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                 &lt;%&ndash;       <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
                                         <span>
                           <span>John Smith</span>
                           <span class="time">3 mins ago</span>
@@ -109,18 +118,18 @@
                                         <span class="message">
                           Film festivals used to be do-or-die moments for movie makers. They were where...
 
-                        </span>--%>
+                        </span>&ndash;%&gt;
                                            2016-2017
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <%--<span></span>--%>
+                                        &lt;%&ndash;<span></span>&ndash;%&gt;
                                         2017-2018
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li>--%>
                     </ul>
                 </nav>
             </div>
@@ -137,22 +146,7 @@
 
                 </div>
                 <div class="clearfix"></div>
-                <!--
-                      <div class="hiddendistrict">
-                          <table>
-                              <thead>
-                              <tr>
 
-                                  <th>json_parameters</th>
-                                  <th>other_parameters</th>
-                              </tr>
-                              </thead>
-                              <tbody class="hidestr">
-
-                              </tbody>
-                          </table>
-                      </div>
-                      -->
 
             </div>
         </div>
@@ -176,14 +170,7 @@
     <div id="notif-group" class="tabbed_notifications"></div>
 </div>
 <div class="hiddendistrict" style="display: none;">
-    <table>
-        <thead>
-        <tr><th>itemName</th><th>itemDesc</th><th>isGroup</th><th>mainPara</th><th>otherPara</th><th>groupManager</th><th>groupMember</th><th>groupDesc</th><th>groupWeight</th></tr>
-        </thead>
-        <tbody class="addTbody">
 
-        </tbody>
-    </table>
 </div>
 
 <!-- jQuery -->

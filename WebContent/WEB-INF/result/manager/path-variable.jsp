@@ -68,6 +68,8 @@
 
     var itemCollection=itemInfoUrl+"/collection";
 
+    var thisTermUrl=contextPath+"/common/scheme";
+
     var itemTeacherInfo=itemInfoUrl+"/teacher-items";
 
     var itemAllUrl=itemInfoUrl+"/item-all";

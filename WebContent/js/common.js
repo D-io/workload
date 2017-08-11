@@ -16,6 +16,11 @@ $(document).ready(function () {
 
         }
     })
+    $(document).on("click","#itemChange",function () {
+        $.post(thisTermUrl+"?year="+$("#year").find("option:selected").text()+"&scheme="+parseInt($("#term").text()),function (data) {
+            
+        });
+    })
 
 });
 function getSideBar(role,roleList) {
@@ -115,3 +120,4 @@ function changeToManager() {
     });
     ztree();
 }
+
