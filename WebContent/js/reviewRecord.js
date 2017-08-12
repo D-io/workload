@@ -584,7 +584,7 @@ function applyworkload() {
             window.Categry=reg;
             $.get(itemGroupUrl+"?" + 'categoryId=' + reg, function (data) {
                 if(data.data.itemList&&data.data.itemList.length>0) {
-                   var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
+                   var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer newTable" style="font-size: 14px;"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
                         '<th class="sorting">工作量</th> <th class="sorting">' +
                         '申报截止时间 </th> <th class="sorting">提交状态</th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
 
@@ -696,6 +696,11 @@ function applyworkload() {
         var addMessage="<tr><td><select class='groupMemberName teacherName' style='width: 30%;'><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol'></td><td><input type='text' class='groupMemberWeight'></td></tr>";
         $('#AddgroupPramter').append(addMessage);
     });
+    $(document).off("click","#showaddGroupMessage");
+    $(document).on("click","#showaddGroupMessage",function () {
+        var addMessage="<tr><td><select class='showgroupMemberName teacherName' style='width: 30%;'><option value=''></option> </select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
+        $('#showAddgroupPramter').append(addMessage);
+    });
     $(document).on("click",".groupMemberName",function () {
         $.get(TeacherInfoUrl,function (data) {
             for (var i = 0; i < data.data.teacherList.length; i++) {
@@ -727,6 +732,7 @@ function applyworkload() {
         $("#showitemName").attr("disabled","true");
         $("#showapplyDesc").val(window.Temp[newReg-1].applyDesc);
         $("#showapplyDesc").attr("disabled","true");
+        $("#showaddGroupMessage").attr("disabled","true");
         if(window.Temp[newReg-1].isGroup==0){
             $("#single").attr("checked",'checked');
             $("#group").attr("disabled","true");
@@ -758,16 +764,18 @@ function applyworkload() {
         if($group&&$group.length){
             for(var pramterCount=0;pramterCount<$(".groupMember_"+window.Temp[newReg-1].itemId).length;pramterCount++){
 
-                addStr+="<tr><td><select class='groupMemberName teacherName' style='width: 30%;'><option value='"+parseInt($(".groupMember_"+window.Temp[newReg-1].itemId).eq(pramterCount).text())+"'></option> </select></td><td><input type='text' class='groupMemberSymbol'>"+$(".jobDesc_"+window.Temp[newReg-1].itemId).eq(pramterCount).text()+"</td><td><input type='text' class='groupMemberWeight'>"+$(".jobWeight_"+window.Temp[newReg-1].itemId).eq(pramterCount).text()+"</td></tr>";
-
+                addStr="<tr><td><select class='showgroupMemberName teacherName' style='width: 30%;'><option>"+$(".groupMember_"+newReg).eq(pramterCount).text()+"</option></select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
+                $('#showAddgroupPramter').append(addStr);
+                $(".showgroupMemberSymbol").eq(pramterCount).val($(".jobDesc_"+window.Temp[newReg-1].itemId).eq(pramterCount).text());
+                $(".showgroupMemberWeight").eq(pramterCount).val($(".jobWeight_"+window.Temp[newReg-1].itemId).eq(pramterCount).text());
             }
         }
 
         $('#showAddgroupPramter').append(addStr);
 
-        $(".groupMemberName").attr("disabled","true");
-        $(".groupMemberSymbol").attr("disabled","true");
-        $(".groupMemberWeight").attr("disabled","true");
+        $(".showgroupMemberName").attr("disabled","true");
+        $(".showgroupMemberSymbol").attr("disabled","true");
+        $(".showgroupMemberWeight").attr("disabled","true");
     });
     var currentId='';
     $(document).on("click",".editApply",function () {
@@ -775,6 +783,7 @@ function applyworkload() {
         $(".savemyApplyAgain").attr("id",editId);
         $("#showitemName").removeAttr("disabled");
         $("#showapplyDesc").removeAttr("disabled");
+        $("#showaddGroupMessage").removeAttr("disabled");
         $(".showparameterName").removeAttr("disabled");
         if($("#single").disabled=="true"){
             $("#single").removeAttr("disabled");
