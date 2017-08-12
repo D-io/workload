@@ -44,6 +44,8 @@
 
     var fileInfoUrl=contextPath+"/file";
 
+    var downloadInfoUrl=fileInfoUrl+"/template";
+
     var fileTempUrl=fileInfoUrl+"/import-template";
 
     var fileSubmitUrl=fileInfoUrl+"/submit";
