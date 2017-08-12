@@ -10,7 +10,7 @@
     <div class="x_title">
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-bars"></i>我的工作当量</a></li>
-            <li class="active">个人工作量汇总 </li>
+            <li class="active curentPage" id="selfSummary">个人工作量汇总 </li>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>

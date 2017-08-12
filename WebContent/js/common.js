@@ -15,10 +15,41 @@ $(document).ready(function () {
                 break;
 
         }
-    })
+    });
     $(document).on("click","#itemChange",function () {
         $.post(thisTermUrl+"?year="+$("#year").find("option:selected").text()+"&scheme="+parseInt($("#term").val()),function (data) {
-            
+         //   window.location.reload();
+            var $currentContent=$(".curentPage").attr("id");
+            switch ($currentContent){
+                case "WorkloadApply":
+                    applyworkload();
+                break;
+                case "WorkloadRevie":
+                    workRevie();
+                    break;
+                case "selfSummary":
+                    reviewerSumItem();
+                break;
+                case "Workloadimport":
+                    importWorkload();
+                    break;
+                case "WorkloadAuditor":
+                    auditworkload();
+                    break;
+                case "CategoryManage":
+                    jumpToAdd();
+                    break;
+                case "CategorySum":
+                    jumpToSum();
+                break;
+                case "Managerreset":
+                    reset();
+                    break;
+                case "ItemSummary":
+                    itemSummary();
+                    break;
+
+            }
         });
     })
 
@@ -36,6 +67,9 @@ function getSideBar(role,roleList) {
        /* $(".scroll-view").append("<jsp:include page='Manager-left-sidebar.jsp'/>");
         $(".right_hole").append("<jsp:include page='Manager-right-col.jsp'/>");*/
         ztree();
+        if(roleList.length=1){
+            $("#dropdownMenu1").hide();
+        }
     }
     else if(role=="RE"){
         $("#dropdownMenu1").hide();

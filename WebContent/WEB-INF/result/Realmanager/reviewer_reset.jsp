@@ -191,7 +191,7 @@
     <div class="x_title">
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-bars"></i>管理</a></li>
-            <li class="active">权限重置</li>
+            <li class="active curentPage" id="Managerreset">权限重置</li>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>

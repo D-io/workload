@@ -10,7 +10,7 @@
     <div class="x_title">
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-bars"></i>我的工作当量</a></li>
-            <li class="active">工作当量复核</li>
+            <li class="active curentPage"id="WorkloadRevie">工作当量复核</li>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
