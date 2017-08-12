@@ -301,7 +301,7 @@ function workRevie(){
         var passItemId=parseInt(flag.match(/\d+/g));
         var itemstr='itemId='+passItemId+'&status=2';
         $.ajax({
-            type:"DELETE",
+            type:"POST",
             url:itemStatusUrl+"?"+itemstr,
             success:function () {
                 alert("操作成功！");
@@ -321,7 +321,7 @@ function workRevie(){
             });*/
             $.ajax({
                 url:itemStatusUrl+"?"+"itemId="+refuItemId+"&status=3"+"&message="+refudesc,
-                type:"DELETE",
+                type:"POST",
                 success:function (data) {
                     alert("操作成功！");
                     $('#reviewe_'+refuItemId).text('存疑提交');
