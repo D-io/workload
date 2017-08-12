@@ -78,10 +78,10 @@ function getSideBar(role,roleList) {
                 $(".scroll-view").empty();
                 $(".scroll-view").append(html);
             });
-            $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",function (html) {
+           /* $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",function (html) {
                 $(".right_hole").empty();
                 $(".right_hole").append(html);
-            });
+            });*/
             applyworkload();
 
         }
@@ -90,10 +90,10 @@ function getSideBar(role,roleList) {
                 $(".scroll-view").empty();
                 $(".scroll-view").append(html);
             });
-            $.get(pageManageUrl+"?"+"regionName=auditor/auditorcontent",function (html) {
+           /* $.get(pageManageUrl+"?"+"regionName=auditor/auditorcontent",function (html) {
                 $(".right_hole").empty();
                 $(".right_hole").append(html);
-            });
+            });*/
             importWorkload();
 
         }
@@ -106,8 +106,8 @@ function getSideBar(role,roleList) {
             $(".scroll-view").append(html);
         });
         $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",function (html) {
-            $(".right_hole").empty();
-            $(".right_hole").append(html);
+            /*$(".right_hole").empty();
+            $(".right_hole").append(html);*/
         });
         applyworkload();
     }
