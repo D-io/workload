@@ -67,7 +67,7 @@ function getSideBar(role,roleList) {
        /* $(".scroll-view").append("<jsp:include page='Manager-left-sidebar.jsp'/>");
         $(".right_hole").append("<jsp:include page='Manager-right-col.jsp'/>");*/
         ztree();
-        if(roleList.length=1){
+        if(roleList.length==1){
             $("#dropdownMenu1").hide();
         }
     }
