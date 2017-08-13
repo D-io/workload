@@ -222,6 +222,7 @@
 
         <button id="addToTable" class="btn btn-primary"  data-target="#addModal" data-toggle="modal">Add <i class="fa fa-plus"></i></button>
         <button id="submit" class="btn btn-primary">Submit</button>
+        <button id="unlock" class="btn btn-primary">unlock</button>
        <%-- <header class="panel-heading">
             <div class="panel-actions">
                 <a href="#" class="panel-action panel-action-toggle" data-panel-toggle></a>

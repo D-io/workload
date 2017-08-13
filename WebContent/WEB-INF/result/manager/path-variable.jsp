@@ -26,6 +26,8 @@
 
     var categoryManageUrl=contextPath+"/category/manage";
 
+    var unlockCateUrl=categoryManageUrl+"/unlock";
+
     var categoryEditUrl=categoryManageUrl+"/modify";
 
     var categorySubmitUrl=categoryManageUrl+"/public-selective";

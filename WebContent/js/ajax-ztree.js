@@ -23,7 +23,8 @@ function ztree() {
             }
         },
         check:{
-            enable:true
+            enable:true,
+            chkboxType: { "Y": "s", "N": "s" }
         },
         callback: {
             beforeDrag: beforeDrag,
@@ -554,9 +555,8 @@ function ztree() {
                 str+="categoryId="+nodes[i].id+"&";
 
         }
-
-        $('#submit').click(function(){
-
+        $(document).off("click","#submit");
+        $(document).on("click","#submit",function () {
             $.post(categorySubmitUrl+"?"+str,function (data){
                 if(data.status==200)
                     return confirm("提交节点成功！");
@@ -564,8 +564,21 @@ function ztree() {
                     alert("提交节点失败！");
             } )
         });
+
+        $(document).off("click","#unlock");
+        $(document).on("click","#unlock",function () {
+            $.post(unlockCateUrl+"?"+str,function (data){
+                if(data.status==200)
+                    return confirm("解锁节点成功！");
+                else
+                    alert("解锁节点失败！");
+            } )
+        });
+
+
+
     }
     $.fn.zTree.init($("#treeDemo"), setting, window.zNodes);
-    $("#selectAll").bind("click", selectAll);
+   // $("#selectAll").bind("click", selectAll);
 }
 
