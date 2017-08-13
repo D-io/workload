@@ -104,7 +104,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 	}
 
 	/**
-	 * 存疑通过日志切面
+	 * 存疑解决日志切面
 	 */
 	@AfterReturning(returning = "rvt", pointcut = "doubtedCheckPointCut()")
 	public void recordItemsDoubtedCheck(JoinPoint joinPoint, Object rvt) {
@@ -127,6 +127,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 		history.setOperation(user.getName() + "于" + history.getCreateTime() + "存疑通过了了工作量条目" + item
 				.getItemName());
 		history.setType("import");
+		history.setAimUserId(item.getOwnerId());
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {

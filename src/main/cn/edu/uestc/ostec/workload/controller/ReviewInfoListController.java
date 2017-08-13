@@ -272,7 +272,7 @@ public class ReviewInfoListController extends ApplicationController {
 		double workload = ZERO_DOUBLE;
 		for (ItemDto itemDto : itemDtoList) {
 			Integer status = itemDto.getStatus();
-			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
+			if (CHECKED.equals(status)) {
 				workload += itemDto.getWorkload();
 			}
 		}
@@ -342,7 +342,7 @@ public class ReviewInfoListController extends ApplicationController {
 		double workload = ZERO_DOUBLE;
 		for (ItemDto itemDto : itemDtoList) {
 			Integer status = itemDto.getStatus();
-			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
+			if (CHECKED.equals(status)) {
 				workload += itemDto.getWorkload();
 			}
 		}

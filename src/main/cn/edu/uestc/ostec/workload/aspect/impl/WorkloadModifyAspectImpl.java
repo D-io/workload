@@ -23,6 +23,8 @@ import org.springframework.stereotype.Component;
 
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
+import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
@@ -34,6 +36,8 @@ import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
@@ -63,6 +67,9 @@ public class WorkloadModifyAspectImpl implements IAspect {
 	private HistoryService historyService;
 
 	@Autowired
+	private ItemConverter itemConverter;
+
+	@Autowired
 	private CategoryService categoryService;
 
 	@Autowired
@@ -89,6 +96,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		Object[] args = getParameters(joinPoint);
 		Integer itemId = (Integer) args[0];
 		Item item = itemService.findItem(itemId);
+		ItemDto itemDto = itemConverter.poToDto(item);
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
@@ -99,7 +107,8 @@ public class WorkloadModifyAspectImpl implements IAspect {
 
 		history.setOperation(
 				"工作量" + item.getItemName() + "被审核人" + user.getName() + "于" + history.getCreateTime() + "修改为" + args[1]);
-		history.setType("import");
+		history.setType(IMPORT_EXCEL.equals(itemDto.getImportRequired()) ? "import" : "apply");
+		history.setAimUserId(item.getOwnerId());
 
 		boolean saveSuccess = historyService.saveHistory(history);
 
@@ -138,7 +147,8 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setOperation(
 				user.getName() + "于" + history.getCreateTime() + "将原审核截止时间" + date + "修改为"
 						+ newDate);
-		history.setType("apply");
+		history.setType(APPLY_SELF.equals(category.getImportRequired()) ? "apply" : "import");
+		//TODO 目标用户编号设置为所有人
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {
