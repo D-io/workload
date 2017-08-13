@@ -16,9 +16,10 @@ import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
-import cn.edu.uestc.ostec.workload.pojo.Teacher;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
+import cn.edu.uestc.ostec.workload.support.utils.Date;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.COMMON_INFO_PATH;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -50,27 +51,37 @@ public class CommonInfoController extends ApplicationController {
 
 	/**
 	 * 获取当前登录的教师信息
+	 *
 	 * @return 教师信息
 	 */
-	@RequestMapping(value = "user-info",method = GET)
+	@RequestMapping(value = "user-info", method = GET)
 	public RestResponse getUserInfo() {
 
 		User user = getUser();
-		if(null == user) {
+		if (null == user) {
 			return invalidOperationResponse("非法请求");
 		}
 
-		Map<String,Object> data = getData();
-		data.put("teacher",user);
+		Map<String, Object> data = getData();
+		data.put("teacher", user);
 
 		return successResponse(data);
 	}
 
 	/**
-	 * 设置学期
-	 * @param year 学年
-	 * @param scheme 学期
+	 * 获取学年列表
 	 * @return
+	 */
+	@RequestMapping(value = "years",method = GET)
+	public RestResponse getSchoolYearList() {
+		return successResponse(DateHelper.getCurrentSchoolYears());
+	}
+
+	/**
+	 * 设置学期
+	 *
+	 * @param year   学年
+	 * @param scheme 学期
 	 */
 	@RequestMapping(value = "scheme", method = POST)
 	public RestResponse switchScheme(String year, int scheme) {
@@ -80,6 +91,5 @@ public class CommonInfoController extends ApplicationController {
 		}
 		return successResponse(getCurrentSemester());
 	}
-
 
 }

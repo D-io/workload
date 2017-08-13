@@ -9,12 +9,15 @@
 
 package cn.edu.uestc.ostec.workload.core;
 
+import org.junit.Test;
+
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 import cn.edu.uestc.ostec.workload.SessionConstants;
 import cn.edu.uestc.ostec.workload.WorkloadObjects;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 /**
  * Description: session监听器
@@ -30,9 +33,8 @@ public class WorkloadSessionListener implements HttpSessionListener, WorkloadObj
 	public void sessionCreated(HttpSessionEvent httpSessionEvent) {
 
 		session = httpSessionEvent.getSession();
-		//TODO 根据当前时间判断学年和学期
-		session.setAttribute(SESSION_CURRENT_YEAR,"2017-2018");
-		session.setAttribute(SESSION_CURRENT_SCHEME,1);
+		session.setAttribute(SESSION_CURRENT_YEAR,DateHelper.getCurrentSchemeYear());
+		session.setAttribute(SESSION_CURRENT_SCHEME,DateHelper.getCurrentScheme());
 
 	}
 

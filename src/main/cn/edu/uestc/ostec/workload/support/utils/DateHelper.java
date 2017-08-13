@@ -10,6 +10,7 @@
 package cn.edu.uestc.ostec.workload.support.utils;
 
 import org.apache.poi.util.SystemOutLogger;
+import org.junit.Test;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -19,6 +20,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.TimeZone;
 
 import static cn.edu.uestc.ostec.workload.support.utils.DateFormatConstants.DATE_FORMAT_CN;
@@ -79,7 +83,7 @@ public class DateHelper {
 
 	public static String getCnDate() {
 
-		return getDateTime(LocalDateTime.now().withNano(0),DATE_FORMAT_CN);
+		return getDateTime(LocalDateTime.now().withNano(0), DATE_FORMAT_CN);
 	}
 
 	/**
@@ -130,7 +134,7 @@ public class DateHelper {
 	}
 
 	public static int getDateTimeStamp(String date) {
-		return getTimeStamp(date+" 00时00分00秒",DATE_TIME_FORMAT_CN);
+		return getTimeStamp(date + " 00时00分00秒", DATE_TIME_FORMAT_CN);
 	}
 
 	public static int getTimeStamp(String date) {
@@ -153,6 +157,64 @@ public class DateHelper {
 
 		return (int) (currentTime() / MILLISECOND_TO_SECOND);
 
+	}
+
+	public static int getCurrentYear() {
+
+		return LocalDate.now().getYear();
+	}
+
+	public static int getCurrentMonth() {
+
+		return LocalDate.now().getMonthValue();
+	}
+
+	public static String getCurrentSchemeYear() {
+
+		Integer year = getCurrentYear();
+		Integer nextYear = year + 1;
+		Integer lastYear = year - 1;
+		//月份大于八即为 "当前年-下一年" 学年
+		if (getCurrentMonth() >= 8) {
+			return year.toString() + "-" + nextYear.toString();
+		} else {
+			return lastYear.toString() + "-" + year.toString();
+		}
+	}
+
+	public static int getCurrentScheme() {
+
+		if(getCurrentMonth() >= 8) {
+			return 1;
+		} else {
+			return 2;
+		}
+	}
+
+	public static String getCurrentTerm() {
+		return getCurrentSchemeYear() + "-" + getCurrentScheme();
+	}
+
+	/**
+	 * 获取最近学年
+	 *
+	 * @return List<String>
+	 */
+	public static List<String> getCurrentSchoolYears() {
+
+		Integer year = DateHelper.getCurrentYear();
+		Integer tempYear = year;
+		List<String> schemeList = new ArrayList<>();
+		for (int i = 1; i <= 3; i++) {
+			Integer lastYear = year - 1;
+			Integer nextYear = tempYear + 1;
+			schemeList.add(lastYear.toString() + "-" + year.toString());
+			schemeList.add(tempYear.toString() + "-" + nextYear.toString());
+			year -= 1;
+			tempYear += 1;
+		}
+		Collections.sort(schemeList);
+		return schemeList;
 	}
 
 }

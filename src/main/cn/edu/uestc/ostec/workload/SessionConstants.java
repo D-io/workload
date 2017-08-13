@@ -44,6 +44,4 @@ public interface SessionConstants {
 
 	String SESSION_CURRENT_SCHEME = "currentScheme";
 
-
-
 }
