@@ -118,7 +118,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <form class="form-horizontal form-label-left" action="/item/manage"  enctype="multipart/form-data" method="post">
+                        <form class="form-horizontal form-label-left">
 
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容简介</label>
@@ -276,6 +276,7 @@
                             </div>
 
                         </form>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>

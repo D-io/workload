@@ -200,6 +200,7 @@ function ownerApply(domId) {
                                 var CountId = Info[i].itemId;
                             }
                             $(".hiddendistrict").append("<div class='groupMember_"+CountId+"'>"+Info[hideCount].teacherName+"</div><div class='jobDesc_"+CountId+"'>"+Info[hideCount].jobDesc+"</div><div class='jobWeight_"+CountId+"'>"+Info[hideCount].jsonChildWeight+"</div>")
+
                         }
                         $(document).on("click",".showaddContent",function () {
                             var newId=this.id;

@@ -57,7 +57,7 @@
                         <tbody class="reviewerRecTbody">
                         </tbody>
                     </table>
-                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <%--  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -91,6 +91,134 @@
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                     <button type="button" class="btn btn-primary" id="save">保存</button>
                                 </div>
+
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal -->
+                    </div>
+
+--%>
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="modal-title" >
+                                        修改工作量条目
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal form-label-left">
+                                        <button class="btn btn-primary btn-info editApply" style="display: none"><i class="fa fa-pencil"></i>编辑</button>
+                                        <button class="btn btn-primary btn-success editorSubmit" style="display: none"><i class="fa fa-pencil"></i>提交</button>
+
+
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">主要考核参数</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+
+                                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#parameter" aria-expanded="false" aria-controls="collapseExample">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+                                                <div class="collapse" id="parameter">
+                                                    <div class="well">
+                                                        <table class="table" id="parameterTable">
+                                                            <thead>
+                                                            <tr class="parameterTh" style="font-size: 13px;">
+
+                                                                <!--
+                                                                                                                    <span style="float: right;"><a class="btn btn-success" id="addParameter"><i class="fa fa-plus"></i></a></span>
+                                                                                                                    -->
+                                                            </tr>
+
+                                                            </thead>
+                                                            <tbody class="AddPramter">
+                                                            <tr class="editorPram">
+
+                                                            </tr>
+
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+
+                                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#otherparameter" aria-expanded="false" aria-controls="collapseExample">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+                                                <div class="collapse" id="otherparameter">
+                                                    <div class="well">
+                                                        <table class="table" id="otherparameterTable">
+                                                            <thead>
+                                                            <tr class="otherParaTh" style="font-size: 13px;">
+                                                                <!--
+                                                                                                                    <span style="float: right;"><a class="btn btn-success" id="addOtherParameter"><i class="fa fa-plus"></i></a></span>
+                                                                                                                    -->
+                                                            </tr>
+
+                                                            </thead>
+                                                            <tbody id="AddOtherPramter">
+                                                            <tr class="editorotherPara"></tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">回复信息</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" class="form-control changeDis" id="showitemName">
+                                            </div>
+                                        </div>
+                                        </div>
+
+
+
+                                       <%-- <div class="form-group item_group" style="display: none;">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组成员</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+
+                                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#groupMessage" aria-expanded="false" aria-controls="collapseExample">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+                                                <div class="collapse" id="groupMessage">
+                                                    <div class="well">
+                                                        <table class="table" id="groupMessageTable">
+                                                            <thead>
+                                                            <tr style="font-size: 13px;">
+
+                                                                <th>成员姓名</th>
+                                                                <th>成员职责描述</th>
+                                                                <th>成员所占权重<span style="float: right;"><a class="btn btn-success" id="addGroupMessage"><i class="fa fa-plus"></i></a></span></th>
+                                                            </tr>
+
+                                                            </thead>
+                                                            <tbody id="AddgroupPramter">
+                                                            <tr>
+
+                                                                <td><select  class="groupMemberName teacherName"><option value=" "></option> </select></td>
+                                                                <td><input type="text"  class="groupMemberSymbol"></td>
+                                                                <td><input type="text"  class="groupMemberWeight"></td>
+
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>--%>
+
+                                    </form>
+
+
+                                </div>
+
 
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal -->

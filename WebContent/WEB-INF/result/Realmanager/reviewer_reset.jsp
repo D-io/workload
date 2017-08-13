@@ -252,15 +252,16 @@
         <table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;">
             <thead>
             <tr role="row">
-                <th  class="sorting" style="width: 40px;">序号</th>
-                <th  class="sorting" style="width: 78px;">教师姓名</th>
-                <th class="sorting" style="width: 360px;">条目名称</th>
-
-                <th class="sorting" style="width: 220px;">公式参数</th>
-                <th class="sorting" style="width: 220px;">其他参数</th>
-                <th class="sorting" style="width: 78px;">工作量</th>
-                <th class="sorting"  style="width: 100px;">状态 </th>
-                <th class="sorting"  style="width: 230px;">操作</th>
+                <th  class="sorting">序号</th>
+                <th  class="sorting">教师姓名</th>
+                <th class="sorting">条目名称</th>
+                <th class="sorting">公式</th>
+                <th class="sorting">公式参数</th>
+                <th class="sorting">参数描述</th>
+                <th class="sorting">其他参数</th>
+                <th class="sorting">工作量</th>
+                <th class="sorting">状态 </th>
+                <th class="sorting">操作</th>
             </tr>
             </thead>
             <tbody class="ResetItem">

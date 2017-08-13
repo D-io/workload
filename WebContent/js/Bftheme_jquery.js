@@ -41,6 +41,7 @@ $(document).on("click",".collapse-link",function () {
         $(".sorting_asc").toggleClass("sorting_desc");
     });
 */
+
 function jumpToSum() {
 
     var resetStr='regionName=Realmanager/sum';
@@ -224,102 +225,119 @@ function appendAllItem(data) {
     }
 }
 function reviewerResetItem(data) {
-    var rowInfo="<tr></tr>";
-    var cellInfo="<td></td>";
-    if(data.data.itemDtoList&&data.data.itemDtoList.length>0){
-        var analyseList= data.data.itemDtoList;
-        var listLength= data.data.itemDtoList.length;
-        for(var i=0;i<listLength;i++)
-        {
-            var Info=analyseList[i];
-            $(".ResetItem").append(rowInfo);
-            $(".ResetItem tr:last").attr("id",Info.itemId);
-            for(var j=0;j<8;j++)//单元格
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+    /*if($(".resetNum").length>0){
+        $(".ResetItem tr:last td:eq(0)").text();
+    }*/
+        if(data.data.itemDtoList&&data.data.itemDtoList.length>0){
+            var analyseList= data.data.itemDtoList;
+            var listLength= data.data.itemDtoList.length;
+            for(var i=0;i<listLength;i++)
             {
-                $(".ResetItem tr:last").append(cellInfo);
-            }
-            var id=i;
-            var paramArray=Info.parameterValues;
-            var str='';
-            for(var paramCount=0;paramCount<paramArray.length;paramCount++){
-
-                str+=paramArray[paramCount].symbol+':'+paramArray[paramCount].value;
-            }
-            var otherparamArray = Info.otherJsonParameters;
-            var otherstr = '';
-            if(otherparamArray&&otherparamArray.length>0){
-                for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
-                    otherstr += otherparamArray[otherparamCount].key + ':' + otherparamArray[otherparamCount].value;
+                var Info=analyseList[i];
+                $(".ResetItem").append(rowInfo);
+                $(".ResetItem tr:last").attr("class","resetNum");
+                for(var j=0;j<10;j++)//单元格
+                {
+                    $(".ResetItem tr:last").append(cellInfo);
                 }
-            }
+                var id=i;
+                var paramArray=Info.parameterValues;
+                var str='';
+                for(var paramCount=0;paramCount<paramArray.length;paramCount++){
 
-            var statusName;
-            if(Info.importRequired==0) {
-                switch (Info.status) {
-                    case -1:
-                        statusName = '删除状态';
-                        break;
-                    case 0:
-                        statusName = '未提交状态';
-                        break;
-                    case 1:
-                        statusName = '待审核';
-                        break;
-                    case 2:
-                        statusName = '审核通过';
-                        break;
-                    case 3:
-                        statusName = '存疑提交';
-                        break;
-                    case 4:
-                        statusName = '存疑已解决';
-                        break;
-                    case 5:
-                        statusName = '审核拒绝';
-                        break;
+                    str+=paramArray[paramCount].symbol+':'+paramArray[paramCount].value;
                 }
-            }
-            else {
-                switch (Info.status) {
-                    case -1:
-                        statusName = '删除状态';
-                        break;
-                    case 0:
-                        statusName = '未提交状态';
-                        break;
-                    case 1:
-                        statusName = '待复核';
-                        break;
-                    case 2:
-                        statusName = '复核通过';
-                        break;
-                    case 3:
-                        statusName = '存疑提交';
-                        break;
-                    case 4:
-                        statusName = '存疑已解决';
-                        break;
-                    case 5:
-                        statusName = '审核拒绝';
-                        break;
+                var otherparamArray = Info.otherJsonParameters;
+                var otherstr = '';
+                if(otherparamArray&&otherparamArray.length>0){
+                    for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
+                        otherstr += otherparamArray[otherparamCount].key + ':' + otherparamArray[otherparamCount].value;
+                    }
                 }
-            }
+                var paramDesc = Info.paramDesc;
+                var paramDescstr = '';
+                if(paramDesc&&paramDesc.length>0){
+                    for (var paramDescCount = 0; paramDescCount < paramDesc.length; paramDescCount++) {
+                        paramDescstr += paramDesc[paramDescCount].symbol + ':' + paramDesc[paramDescCount].desc;
+                    }
+                }
+                var statusName;
+                if(Info.importRequired==0) {
+                    switch (Info.status) {
+                        case -1:
+                            statusName = '删除状态';
+                            break;
+                        case 0:
+                            statusName = '未提交状态';
+                            break;
+                        case 1:
+                            statusName = '待审核';
+                            break;
+                        case 2:
+                            statusName = '审核通过';
+                            break;
+                        case 3:
+                            statusName = '存疑提交';
+                            break;
+                        case 4:
+                            statusName = '存疑已解决';
+                            break;
+                        case 5:
+                            statusName = '审核拒绝';
+                            break;
+                    }
+                }
+                else {
+                    switch (Info.status) {
+                        case -1:
+                            statusName = '删除状态';
+                            break;
+                        case 0:
+                            statusName = '未提交状态';
+                            break;
+                        case 1:
+                            statusName = '待复核';
+                            break;
+                        case 2:
+                            statusName = '复核通过';
+                            break;
+                        case 3:
+                            statusName = '存疑提交';
+                            break;
+                        case 4:
+                            statusName = '存疑已解决';
+                            break;
+                        case 5:
+                            statusName = '审核拒绝';
+                            break;
+                    }
+                }
 
-            $(".ResetItem tr:last td:eq(0)").text(id+1);
-            $(".ResetItem tr:last td:eq(1)").text(Info.teacherName);
-            $(".ResetItem tr:last td:eq(2)").text(Info.itemName);
-            $(".ResetItem tr:last td:eq(3)").text(str);
-            $(".ResetItem tr:last td:eq(4)").text(otherstr);
-            $(".ResetItem tr:last td:eq(5)").text(Info.workload);
-            $(".ResetItem tr:last td:eq(6)").text(statusName);
-            var act="<a class=\"btn btn-info btn-xs reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 重置审核人</a> <a class=\"btn btn-info btn-xs reset_applicant\" id=\"applyReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 重置申报人</a>";
-            $(".ResetItem tr:last td:eq(7)").append(act);
+
+                $(".ResetItem tr:last td:eq(0)").text(id);
+                $(".ResetItem tr:last td:eq(1)").text(Info.teacherName);
+                $(".ResetItem tr:last td:eq(2)").text(Info.itemName);
+                $(".ResetItem tr:last td:eq(3)").text(Info.formula);
+                $(".ResetItem tr:last td:eq(4)").text(str);
+
+                $(".ResetItem tr:last td:eq(5)").text(paramDescstr);
+                $(".ResetItem tr:last td:eq(6)").text(otherstr);
+                $(".ResetItem tr:last td:eq(7)").text(Info.workload);
+                $(".ResetItem tr:last td:eq(8)").text(statusName);
+                var act="<a class=\"btn btn-info btn-xs reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 重置审核人</a> <a class=\"btn btn-info btn-xs reset_applicant\" id=\"applyReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 重置申报人</a>";
+                $(".ResetItem tr:last td:eq(9)").append(act);
+            }
         }
     }
-}
 $(document).on("click","#addParameter",function () {
     var addStr="<tr><td><input type='text' class='parameterName' name='parameterName'></td><td><input type='text' class='parameterSymbol' name='parameterSymbol'></td></tr>";
     $('.AddPramter').append(addStr);
+});
+$(document).on("click","#addOtherParameter",function () {
+    var addStr="<tr><td><input type='text' class='otherParameterName' name='parameterName'></td></tr>";
+    $('.addOtherPramter').append(addStr);
 });
 $(document).ready(function () {
     $.get(TeacherInfoUrl,function (data) {
