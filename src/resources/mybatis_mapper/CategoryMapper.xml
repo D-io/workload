@@ -55,7 +55,7 @@
   </delete>
 
   <insert id="insert">
-    insert into category (category_id,name,reviewer_id,description,parent_id,is_leaf,import_required,json_parameters,formula,version,status,review_deadline,apply_deadline)
+    insert into category (category_id,name,reviewer_id,description,parent_id,is_leaf,import_required,json_parameters,formula,version,status,review_deadline,apply_deadline,other_json)
     values (#{categoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{reviewerId}, #{desc,jdbcType=VARCHAR},
       #{parentId,jdbcType=INTEGER}, #{isLeaf,jdbcType=VARCHAR}, #{importRequired,jdbcType=INTEGER}, #{jsonParameters,jdbcType=VARCHAR},
       #{formula,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
