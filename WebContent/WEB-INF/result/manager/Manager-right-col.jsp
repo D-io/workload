@@ -336,7 +336,7 @@
                                                 <tr>
 
                                                     <th>参数名称</th>
-                                                    <th>参数符号<span style="float: right;"><a class="btn btn-primary" id="addParameter"><i class="fa fa-plus"></i></a></span></th>
+                                                    <th>参数符号<span style="float: right;"><a class="btn btn-success" id="addParameter"><i class="fa fa-plus"></i></a></span></th>
 
 
                                                 </tr>
@@ -373,7 +373,7 @@
                                             <table class="table" id="otherParameterTable">
                                                 <thead>
                                                 <tr>
-                                                    <th>参数名称</th>
+                                                    <th>参数名称<span style="float: right;"><a class="btn btn-success" id="addOtherParameter"><i class="fa fa-plus"></i></a></span></th>
                                                 </tr>
 
                                                 </thead>
