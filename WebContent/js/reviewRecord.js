@@ -972,8 +972,7 @@ function applyworkload() {
     }
 
 function showApplyHistory() {
-$.get(historyUrl+"?type=import",function (data) {
-
+$.get(historyUrl+"?type=apply",function (data) {
 });
 }
 function applyRec() {
@@ -1175,27 +1174,11 @@ function applyRec() {
              case 0:statusName="未提交";
              }*/
 
-            var act="<button class='btn btn-primary reviewerRec source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info apply' data-toggle='modal' data-target='#applyModal' id='applyAgain_"+Info.itemId+"'><i class='fa fa-pencil'></i>重新申请</a> ";
+            var act="<button class='btn btn-primary reviewerApply source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info apply' data-toggle='modal' data-target='#applyModal' id='applyAgain_"+Info.itemId+"'><i class='fa fa-pencil'></i>重新申请</a> ";
             $(".reviewerRecTbody tr:last td:eq(11)").append(act);
             $(".reviewerRecTbody tr:last td:eq(11)").attr("width","150px");
         }
     });
-
-    $(document).off("click",".reviewerRec");
-   $(document).on("click",".reviewerRec",function () {
-        var subject=this.id;
-        var subjectList=parseInt(subject.match(/\d+/g));
-        $.get(itemInfoSubUrl+"?"+"itemId="+subjectList,function (data) {
-
-                new PNotify({
-                    title:'回复信息',
-                    text:data.data.subjectList.msgContent,
-                    type:'success',
-                    styling:'bootstrap3'
-                })
-        })
-    });
-
 }
 /*function showdata(item) {
     var abnormaldata;

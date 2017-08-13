@@ -472,7 +472,7 @@ function showimportRec() {
                  case 0:statusName="未提交";
                  }*/
 
-                var act="<a class='btn btn-primary showImportRec' id='showImportRec_"+Info.itemId+"'>存疑原因</a><a class='btn btn-info editInfo' id='editInfo_"+Info.itemId+"' data-target='#editModal' data-toggle='modal'><i class='fa fa-pencil'></i>修改存疑</a> ";
+                var act="<a class='btn btn-primary reviewerApply' id='showImportRec_"+Info.itemId+"'>存疑原因</a><a class='btn btn-info editInfo' id='editInfo_"+Info.itemId+"' data-target='#editModal' data-toggle='modal'><i class='fa fa-pencil'></i>修改存疑</a> ";
                 $(".reviewerRecTbody tr:last td:eq(10)").append(act);
             }
         }

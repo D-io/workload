@@ -86,5 +86,7 @@
 
     var historyUrl=contextPath+"/history/info/histories-user";
 
+  /* $("[data-toggle='popover']").popover();*/
+
 
 </script>

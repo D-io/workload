@@ -24,9 +24,9 @@
     <!-- bootstrap-progressbar -->
     <link href="${contextPath}/vendor/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.css" rel="stylesheet" type="text/css">
     <!--PNotify-->
-    <link href="${contextPath}/css/PNotify/pnotify.buttons.css" rel="stylesheet" type="text/css">
+    <%--<link href="${contextPath}/css/PNotify/pnotify.buttons.css" rel="stylesheet" type="text/css">
     <link href="${contextPath}/css/PNotify/pnotify.nonblock.css" rel="stylesheet" type="text/css">
-    <link href="${contextPath}/css/PNotify/pnotify.css" rel="stylesheet" type="text/css">
+    <link href="${contextPath}/css/PNotify/pnotify.css" rel="stylesheet" type="text/css">--%>
 
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/bootstrap-timepicker.css" />
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/datepicker3.css" />
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/panel-content.css" />
 
     <!-- Skin CSS (颜色)-->
-    <link rel="stylesheet" href="${contextPath}/css/default.css" />
+   <%-- <link rel="stylesheet" href="${contextPath}/css/default.css" />--%>
 
     <!-- ztree -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/zTreeStyle/zTreeStyle.css" type="text/css">
@@ -180,13 +180,12 @@
 <!-- Bootstrap -->
 <script language='javascript' src="${contextPath}/vendor/js/bootstrap.js"></script>
 
-<script language='javascript' src="${contextPath}/vendor/js/jquery.browser.mobile.js"></script>
 <!-- bootstrap-progressbar -->
 <script src="${contextPath}/vendor/bootstrap-progressbar/js/bootstrap-progressbar.min.js"></script>
 <!--PNotify-->
-<script src="${contextPath}/vendor/PNotify/pnotify.buttons.js"></script>
+<%--<script src="${contextPath}/vendor/PNotify/pnotify.buttons.js"></script>
 <script src="${contextPath}/vendor/PNotify/pnotify.nonblock.js"></script>
-<script src="${contextPath}/vendor/PNotify/pnotify.js"></script>
+<script src="${contextPath}/vendor/PNotify/pnotify.js"></script>--%>
 <!-- Custom Theme Scripts -->
 
 <script src="${contextPath}/vendor/js/custom.js"></script>

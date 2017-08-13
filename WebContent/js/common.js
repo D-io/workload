@@ -1,7 +1,6 @@
 /**
  * Created by SBWang on 2017/8/10.
  */
-
 $(document).ready(function () {
     getSideBar(currentRole,roleList);
     $(document).on("click",".swift-role",function () {
@@ -51,7 +50,23 @@ $(document).ready(function () {
 
             }
         });
-    })
+    });
+    $(document).on("click",".reviewerApply",function () {
+        var subject=this.id;
+        var subjectList=parseInt(subject.match(/\d+/g));
+        $.get(itemInfoSubUrl+"?"+"itemId="+subjectList,function (data) {
+
+            $(".reviewerApply").popover({
+                placement:"top",
+                trigger:"focus",
+                html:true,
+                title:"回复信息",
+                content:'<div>发送人：<span class="sendName">'+data.data.subjectList[0].sendFromName+'</span></div><hr/><div>回复描述：<span class="sendDesc">'+data.data.subjectList[0].msgContent+'</span></div><hr/><div>回复时间：<span class="sendTime">'+data.data.subjectList[0].sendTime+'</span></div><hr/>'
+
+            })
+
+        });
+    });
 
 });
 function getSideBar(role,roleList) {
@@ -154,4 +169,16 @@ function changeToManager() {
     });
     ztree();
 }
+/*function getSubjectList(item) {
+
+    $.get(itemInfoSubUrl+"?"+"itemId="+subjectList,function (data) {
+        $(".reviewerApply").popover().click(function() {
+            $(".sendName").text(data.data.subjectList[0].sendFromName);
+            $(".sendDesc").text(data.data.subjectList[0].msgContent);
+            $(".sendTime").text(data.data.subjectList[0].sendTime);
+    });
+
+    });
+}*/
+
 
