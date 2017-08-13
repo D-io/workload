@@ -155,7 +155,7 @@ function ztree() {
             $('.AddPramter').empty();
             var jsonstrArray='';
             if(treeNode.jsonParameters!=null) {
-                jsonstrArray = JSON.parse(treeNode.jsonParameters);
+                jsonstrArray = treeNode.jsonParameters;
             }
             /*else {
              jsonstrArray='';
