@@ -27,6 +27,7 @@
     <link href="${contextPath}/css/PNotify/pnotify.buttons.css" rel="stylesheet" type="text/css">
     <link href="${contextPath}/css/PNotify/pnotify.nonblock.css" rel="stylesheet" type="text/css">
     <link href="${contextPath}/css/PNotify/pnotify.css" rel="stylesheet" type="text/css">
+
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/bootstrap-timepicker.css" />
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/datepicker3.css" />
     <!-- Theme CSS -->
@@ -47,6 +48,7 @@
             font-size: 12px;
         }
         .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+
     </style>
     <jsp:include page="path-variable.jsp"/>
 
@@ -177,6 +179,8 @@
 <script language='javascript' src="${contextPath}/vendor/js/jquery.js"></script>
 <!-- Bootstrap -->
 <script language='javascript' src="${contextPath}/vendor/js/bootstrap.js"></script>
+
+<script language='javascript' src="${contextPath}/vendor/js/jquery.browser.mobile.js"></script>
 <!-- bootstrap-progressbar -->
 <script src="${contextPath}/vendor/bootstrap-progressbar/js/bootstrap-progressbar.min.js"></script>
 <!--PNotify-->
