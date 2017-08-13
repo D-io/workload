@@ -148,6 +148,6 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	public List<CategoryDto> getDtoObjects(Integer parentId, String version) {
 		//		return categoryConverter.poListToDtoList(categoryDao.selectValidChildren(parentId));
 		return listResult(categoryConverter
-				.poListToDtoList(categoryDao.select(null, null, parentId, null, null, version)));
+				.poListToDtoList(categoryDao.selectValidChildren(parentId,version)));
 	}
 }

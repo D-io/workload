@@ -37,14 +37,14 @@ public interface CategoryDao extends BaseDao<Category> {
 	@Override
 	Boolean delete(Integer id);
 
-//	/**
-//	 * 根据主键查询工作量条目
-//	 *
-//	 * @param id 工作量条目Id
-//	 * @return Category
-//	 */
-//	@Override
-//	Category select(Integer id);
+	//	/**
+	//	 * 根据主键查询工作量条目
+	//	 *
+	//	 * @param id 工作量条目Id
+	//	 * @return Category
+	//	 */
+	//	@Override
+	//	Category select(Integer id);
 
 	/**
 	 * 根据主键修改工作量状态
@@ -78,7 +78,11 @@ public interface CategoryDao extends BaseDao<Category> {
 	 * @param parentId 父节点编号
 	 * @return List<Category>
 	 */
-	List<Category> selectValidChildren(Integer parentId);
+	List<Category> selectValidChildren(
+			@Param("parentId")
+					Integer parentId,
+			@Param("version")
+					String version);
 
 	/**
 	 * 查询删除的全部工作量条目(工作量状态为-1)
@@ -92,6 +96,7 @@ public interface CategoryDao extends BaseDao<Category> {
 
 	/**
 	 * 查询根节点
+	 *
 	 * @return List
 	 */
 	List<Category> selectRoot();

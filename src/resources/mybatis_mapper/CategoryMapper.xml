@@ -109,6 +109,7 @@
     select <include refid="Base_Column_List" />
     from category
     where status != -1 and parent_id = #{parentId,jdbcType=INTEGER}
+    and version = #{version,jdbcType=VARCHAR}
   </select>
 
   <select id="selectByStatus" resultMap="categoryResultMap">
