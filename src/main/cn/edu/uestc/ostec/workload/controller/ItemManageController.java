@@ -318,6 +318,7 @@ public class ItemManageController extends ApplicationController {
 		} else {
 			newItemDto.setWorkload(workload);
 			newItemDto.setStatus(UNCOMMITTED);
+			newItemDto.setGroupManagerId(newItemDto.getOwnerId());
 			Item item = itemConverter.dtoToPo(newItemDto);
 
 			boolean saveSuccess = itemService.saveItem(item);
