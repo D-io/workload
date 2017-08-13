@@ -3,6 +3,22 @@
  */
 $(document).ready(function () {
     getSideBar(currentRole,roleList);
+    $.get(commonYearsUrl,function (data) {
+        var arry=new Array;
+        arry=data.data.info;
+        for(var yearLength=0;yearLength<arry.length;yearLength++){
+
+            if(arry[yearLength]==currentYearUrl){
+                $("#year").append("<option selected='true'>"+arry[yearLength]+"</option>");
+            }
+            else
+                $("#year").append("<option>"+arry[yearLength]+"</option>");
+        }
+
+        $("#term").find("option[text=currentScheme]").attr("selected",true);
+
+   });
+
     $(document).on("click",".swift-role",function () {
         var str=this.id;
         switch (str){

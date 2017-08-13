@@ -16,6 +16,10 @@
 
      var roleList=${roleList};
 
+     var currentYearUrl="${currentYear}";
+
+     var currentTermUrl="${currentScheme}";
+
     var currentRoleUrl=contextPath+"/page/sidebar/list";
 
     var categoryListUrl=contextPath+"/category/info";
@@ -37,6 +41,8 @@
     var auditorManageUrl=contextPath+"/reviewer/info";
 
     var reviewerManagerUrl=contextPath+"/reviewer/manage";
+
+    var reviDoubleCheckUrl=reviewerManagerUrl+"/doubted-check";
 
     var itemAuditorUrl=auditorManageUrl+"/categories";
 
@@ -72,6 +78,8 @@
 
     var itemCollection=itemInfoUrl+"/collection";
 
+    var commonYearsUrl=contextPath+"/common/years";
+
     var thisTermUrl=contextPath+"/common/scheme";
 
     var itemTeacherInfo=itemInfoUrl+"/teacher-items";
@@ -89,6 +97,7 @@
     var historyUrl=contextPath+"/history/info/histories-user";
 
   /* $("[data-toggle='popover']").popover();*/
+
 
 
 </script>
