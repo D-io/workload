@@ -165,13 +165,9 @@ html , body{
     visibility: hidden
 }
 .nav-sm .container.body .right_col {
- 
-
     padding: 10px 20px;
     margin-left: 70px;
     z-index: 2;
-   
-
 }
 .nav-sm .navbar.nav_title {
     width: 70px
@@ -403,7 +399,7 @@ body .container.body .right_col {
 .left_col .mCSB_dragger {
     max-height: 400px !important
 }
-.blue {
+/*.blue {
     color: #3498DB
 }
 .purple {
@@ -429,11 +425,11 @@ body .container.body .right_col {
 }
 .border-green {
     border-color: #1ABB9C !important
-}
+}*/
 .border-aero {
     border-color: #9CC2CB !important
 }
-.border-red {
+/*.border-red {
     border-color: #E74C3C !important
 }
 .border-dark {
@@ -443,13 +439,13 @@ body .container.body .right_col {
     background: #fff !important;
     border: 1px solid #fff !important;
     color: #73879C
-}
+}*/
 .bg-green {
     background: #1ABB9C !important;
     border: 1px solid #1ABB9C !important;
     color: #fff
 }
-.bg-red {
+/*.bg-red {
     background: #E74C3C !important;
     border: 1px solid #E74C3C !important;
     color: #fff
@@ -473,7 +469,7 @@ body .container.body .right_col {
     background: #50C1CF !important;
     border: 1px solid #50C1CF !important;
     color: #fff
-}
+}*/
 .container {
     width: 100%;
     padding: 0
@@ -3592,10 +3588,10 @@ form:after {
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f7f9fa', endColorstr='#f0f0f0', GradientType=0);
     -ms-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
     -o-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+    /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
     border-radius: 0 0 5px 5px;
     border-top: 1px solid #CFD5D9;
-    padding: 15px 0
+    padding: 15px 0*/
 }
 .login_content form input[type="submit"],
 #content form .submit {
