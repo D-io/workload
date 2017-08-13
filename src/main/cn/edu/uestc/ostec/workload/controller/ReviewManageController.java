@@ -7,11 +7,13 @@
  */
 package cn.edu.uestc.ostec.workload.controller;
 
+import org.junit.runner.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
@@ -19,6 +21,8 @@ import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -28,6 +32,7 @@ import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
+import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGE_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REVIEWER_PATH;
@@ -105,7 +110,7 @@ public class ReviewManageController extends ApplicationController {
 
 		//设置对应的Subject信息（有消息作为参数，同时为拒绝状态）
 		Subject subject = new Subject();
-		if(null != message && DENIED.equals(status)) {
+		if (null != message && DENIED.equals(status)) {
 			subject.setMsgContent(message);
 			subject.setSendFromId(user.getUserId());
 			subject.setSendTime(DateHelper.getCurrentTimestamp());
@@ -117,7 +122,7 @@ public class ReviewManageController extends ApplicationController {
 			data.put("subject", subjectConverter.poToDto(subject));
 		}
 
-		if(!saveSuccess) {
+		if (!saveSuccess) {
 			return systemErrResponse("更新状态失败");
 		}
 		data.put("item", itemConverter.poToDto(item));
@@ -209,42 +214,64 @@ public class ReviewManageController extends ApplicationController {
 	}
 
 	/**
-	 * 提交工作量条目（存疑通过）
-	 * PS.区分对于导入的工作量的文件提交动作,该动作由ItemExcelImport来执行完成
-	 *
-	 * @return RestResponse
+	 * 存疑解决工作量
+	 * @param itemId 工作量编号
+	 * @param parameterValues 工作量主要参数
+	 * @param otherParameters 工作量其他参数
+	 * @return item
 	 */
-	@RequestMapping(value = "item-submit", method = POST)
+	@RequestMapping(value = "doubted-check", method = POST)
 	public RestResponse submitItems(
 			@RequestParam("itemId")
-					Integer itemId) {
-
-		//todo 存疑通过状态到底是由审核人发出还是复核人发出。
+					Integer itemId,
+			@RequestParam("parameterValues")
+					String parameterValues,
+			@RequestParam("otherParameters")
+					String otherParameters,
+			@RequestParam("message")
+					String message) {
 
 		// 用户验证
 		User user = getUser();
-		if (null == user ) {
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
 			return invalidOperationResponse("非法请求");
 		}
 
 		Item item = itemService.findItem(itemId);
-		if (null == item) {
-			return parameterNotSupportResponse("参数有误");
+
+		if (null == item || !DOUBTED.equals(item.getStatus())) {
+			return invalidOperationResponse("非法操作");
 		}
 
-		if(!DOUBTED.equals(item.getStatus())) {
-			return invalidOperationResponse();
-		}
+		Subject subject = new Subject();
+		subject.setItemId(itemId);
+		subject.setSendFromId(user.getUserId());
+		subject.setSendTime(DateHelper.getCurrentTimestamp());
+		subject.setMsgContent(message);
 
-		//修改item的状态为CHECKED 审核通过
+		//修改item的状态为CHECKED 存疑解决
 		item.setStatus(DOUBTED_CHECKED);
+
+		//修改工作量条目的参数
+		item.setJsonParameter(parameterValues);
+		item.setOtherJson(otherParameters);
+
+		//转换成相应的对象进行相关计算
+		ItemDto itemDto = itemConverter.poToDto(item);
+		List<ParameterValue> parameters = itemDto.getParameterValues();
+		double workload = FormulaCalculate.calculate(itemDto.getFormula(), parameters);
+		item.setWorkload(workload * Double.valueOf(item.getJsonChildWeight()));
+
 		boolean saveSuccess = itemService.saveItem(item);
-		if (!saveSuccess) {
+		boolean sendSuccess = subjectService.addSubject(subject);
+		if (!saveSuccess || !sendSuccess) {
 			return systemErrResponse("保存失败");
 		}
 
+
 		Map<String, Object> data = getData();
 		data.put("item", itemConverter.poToDto(item));
+		data.put("subject",subjectConverter.poToDto(subject));
 
 		return successResponse(data);
 

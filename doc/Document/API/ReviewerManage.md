@@ -197,17 +197,20 @@ data | String | 结果集
 }
 ```
 
-### 存疑的工作量 提交通过
-- 接口地址:`/reviewer/manage/item-submit`
+### 审核人处理存疑的工作量 
+- 接口地址:`/reviewer/manage/doubted-check`
 - 支持格式：`json`
 - 请求方式：`GET`
-- 请求示例：`localhost:8080/reviewer/manage/item-submit?itemId=4`
+- 请求示例：`http://127.0.0.1:8080/reviewer/manage/doubted-check?itemId=14&parameterValues=[{"symbol":"A","value":0},{"symbol":"B","value":0},{"symbol":"C","value":1}]&otherParameters=[{"key":"获奖项目","value":"AEMS"},{"key":"获奖名称","value":"创新奖"}]&message=你好`
 	
 - 请求参数具体说明：
 
 参数名 |类型 | 说明 | 是否必填
----|---|---
+---|---|---|---
 itemId | int | 工作量条目编号 | 是
+parameterValues | String | 条目主要参数 | 是
+otherParameters | String | 条目其他参数 | 是
+message | String | 回复消息 | 是
 
 
 - 返回参数具体说明：
@@ -225,24 +228,76 @@ data | String | 结果集
     "statusName": "OK",
     "data": {
         "item": {
-            "itemId": 4,
-            "itemName": "工作量",
-            "categoryId": 2,
+            "itemId": 14,
+            "itemName": "团队国家奖",
+            "categoryId": 22,
             "ownerId": 3210343,
-            "jsonParameter": "asd",
-            "workload": 200,
-            "groupManagerId": 5130121,
-            "applyDesc": "申请描述",
-            "jobDesc": null,
+            "jsonParameter": "[{\"symbol\":\"A\",\"value\":0},{\"symbol\":\"B\",\"value\":0},{\"symbol\":\"C\",\"value\":1}]",
+            "parameterValues": [
+                {
+                    "symbol": "A",
+                    "value": 0
+                },
+                {
+                    "symbol": "B",
+                    "value": 0
+                },
+                {
+                    "symbol": "C",
+                    "value": 1
+                }
+            ],
+            "workload": 60,
+            "groupManagerId": 3200223,
+            "applyDesc": null,
+            "jobDesc": "架构师",
+            "jobDescList": null,
             "status": 4,
-            "jsonChildWeight": "12",
-            "proof": null,
+            "jsonChildWeight": "0.6",
+            "childWeightList": null,
+            "proof": 0,
             "teacherName": "张翔",
             "reviewerId": 3210343,
             "reviewerName": "张翔",
-            "groupManagerName": "邵俊明",
-            "categoryName": "名字去去去去去去前期",
-            "importRequired": 0
+            "groupManagerName": "谭浩",
+            "categoryName": "个人教学、教研、教改成果奖（含教学竞赛）",
+            "importRequired": 1,
+            "isGroup": 1,
+            "version": "2017-2018-1",
+            "otherJson": "[{\"key\":\"获奖项目\",\"value\":\"AEMS\"},{\"key\":\"获奖名称\",\"value\":\"创新奖\"}]",
+            "formula": "20*A+40*B+100*C",
+            "paramDesc": [
+                {
+                    "desc": "个人获校级奖（个数）",
+                    "symbol": "A"
+                },
+                {
+                    "desc": "个人获省级奖（个数）",
+                    "symbol": "B"
+                },
+                {
+                    "desc": "个人获国家级奖",
+                    "symbol": "C"
+                }
+            ],
+            "otherJsonParameters": [
+                {
+                    "key": "获奖项目",
+                    "value": "AEMS"
+                },
+                {
+                    "key": "获奖名称",
+                    "value": "创新奖"
+                }
+            ]
+        },
+        "subject": {
+            "subjectId": 3,
+            "itemId": 14,
+            "msgContent": "你好",
+            "sendFromId": 3210343,
+            "sendFromName": "张翔",
+            "sendTime": "2017年08月13日"
         }
     }
 }

@@ -30,6 +30,7 @@ import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ROLE_REVIEWER;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
@@ -79,8 +80,6 @@ public class ItemManageAspectImpl implements IAspect {
 
 	/**
 	 * 工作量条目提交日志切面
-	 * @param joinPoint
-	 * @param rvt
 	 */
 	@AfterReturning(returning = "rvt", pointcut = "itemSubmitPointCut()")
 	public void recordItemSubmit(JoinPoint joinPoint, Object rvt) {
@@ -108,6 +107,7 @@ public class ItemManageAspectImpl implements IAspect {
 					.getItemName());
 
 			history.setType(APPLY_SELF.equals(importedRequired) ? "apply" : "import");
+			history.setAimUserId(itemDto.getReviewerId());
 
 			boolean saveSuccess = historyService.saveHistory(history);
 			if (!saveSuccess) {
@@ -120,8 +120,6 @@ public class ItemManageAspectImpl implements IAspect {
 
 	/**
 	 * 复核人复核工作量
-	 * @param joinPoint
-	 * @param rvt
 	 */
 	@AfterReturning(returning = "rvt", pointcut = "itemStatusUpdatePointCut()")
 	public void recordItemsStatusChange(JoinPoint joinPoint, Object rvt) {
@@ -139,6 +137,7 @@ public class ItemManageAspectImpl implements IAspect {
 		Integer userId = user.getUserId();
 
 		Item item = itemService.findItem(itemId);
+		ItemDto itemDto = itemConverter.poToDto(item);
 
 		History history = new History();
 		history.setUserId(userId);
@@ -159,6 +158,7 @@ public class ItemManageAspectImpl implements IAspect {
 		}
 
 		history.setOperation(operation);
+		history.setAimUserId(itemDto.getReviewerId());
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {
@@ -184,6 +184,7 @@ public class ItemManageAspectImpl implements IAspect {
 		Integer itemId = (Integer) args[0];
 
 		Item item = itemService.findItem(itemId);
+		ItemDto itemDto = itemConverter.poToDto(item);
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
@@ -195,6 +196,7 @@ public class ItemManageAspectImpl implements IAspect {
 				user.getName() + "于" + history.getCreateTime() + "重新申请工作量条目" + item.getItemName());
 
 		history.setType("apply");
+		history.setAimUserId(itemDto.getReviewerId());
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {
@@ -220,6 +222,7 @@ public class ItemManageAspectImpl implements IAspect {
 		String role = args[1].toString();
 
 		Item item = itemService.findItem(itemId);
+		ItemDto itemDto = itemConverter.poToDto(item);
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
@@ -231,7 +234,13 @@ public class ItemManageAspectImpl implements IAspect {
 				user.getName() + "于" + history.getCreateTime() + "重置工作量条目" + item.getItemName()
 						+ "的状态信息" + "(" + role + ")");
 
-		history.setType("admin");
+		history.setType(APPLY_SELF.equals(itemDto.getImportRequired()) ? "apply" : "import");
+
+		if (ROLE_REVIEWER.equals(role)) {
+			history.setAimUserId(itemDto.getReviewerId());
+		} else {
+			history.setAimUserId(itemDto.getOwnerId());
+		}
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -92,6 +93,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 				user.getName() + "于" + history.getCreateTime() + checkStatus.getDesc() + "了工作量条目"
 						+ item.getItemName());
 		history.setType("apply");
+		history.setAimUserId(item.getOwnerId());
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {
@@ -102,7 +104,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 	}
 
 	/**
-	 * 存疑通过日志切面（由复核人发出该动作）
+	 * 存疑通过日志切面
 	 */
 	@AfterReturning(returning = "rvt", pointcut = "doubtedCheckPointCut()")
 	public void recordItemsDoubtedCheck(JoinPoint joinPoint, Object rvt) {
