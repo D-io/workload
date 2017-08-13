@@ -86,8 +86,8 @@
 
                                    <div class="col-md-4 col-sm-4 col-xs-12" style="margin-left:440px;width:160px">
                                        <select class="form-control" id="year">
-                                           <option value="0">2016-2017</option>
                                            <option value="1">2017-2018</option>
+                                           <option value="0">2016-2017</option>
                                            <option value="2">2018-2019</option>
                                        </select>
                                    </div>
