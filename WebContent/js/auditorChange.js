@@ -1,26 +1,16 @@
-/**
- * Created by SBWang on 2017/7/20.
- */
 function importWorkload(){
     $('.right_hole').empty();
     $.get(pageManageUrl+"?"+'regionName=auditor/auditorcontent',function (result) {
         $('.right_hole').append(result);
     });
         $.get(itemAuditorUrl,function (data) {
-           // var showimport=  $("<ul></ul>");
-
-            showimportall(data.data.importCategories);
-
-           // $("#tab_content1").append(showimport);
-           /* $('.view_detail').text('导入文件');*/
-
-
+          showimportall(data.data.importCategories);
 
         });
     function  showimportall(item) {
         for(var i=0;i<item.length;i++){
 
-            $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+"<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 40%; '> <thead style='font-size: 14px;'> <tr role='row'> <th class='sorting' style='padding: 5px;'>上传截止时间:<span class='time_"+item[i].categoryId+"'>"+getLocalTime(item[i].reviewDeadline)+"</span></th> <th class='sorting' style='padding: 5px;'><div class='dropdown' style='display: inline'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=group'>小组类模板</a></li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div><a class='btn importList btn-info' id='import_"+item[i].categoryId+"' data-toggle='modal' data-target='#myModal'>导入数据</a></th> </table><div style='clear: both;'></div></li>");
+            $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+"<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 40%; '> <thead> <tr role='row'> <th class='sorting' style='padding: 5px;'>上传截止时间:<span class='time_"+item[i].categoryId+"'>"+getLocalTime(item[i].reviewDeadline)+"</span></th> <th class='sorting' style='padding: 5px;'><div class='dropdown' style='display: inline'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=group'>小组类模板</a></li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div><a class='btn importList btn-info' id='import_"+item[i].categoryId+"' data-toggle='modal' data-target='#myModal'>导入数据</a></th> </table><div style='clear: both;'></div></li>");
             if(item[i].jsonParameters.length>0){
                 var obj = eval ("(" + item[i].jsonParameters + ")");
                 for(var paraCount=0;paraCount<obj.length;paraCount++){
@@ -28,199 +18,15 @@ function importWorkload(){
 
                 }
             }
-
-            var tablestr='<table class="showImportThead table dataTable no-footer table-bordered" id="showImportThead_'+item[i].categoryId+'" style="display: none;"> <thead style="font-size: 14px;"> <tr role="row"> <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th> </tr> </thead> <tbody class="showImportDesc_'+item[i].categoryId+'"></tbody> </table>';
+            var tablestr='<table class="showImportThead table dataTable no-footer table-bordered" id="showImportThead_'+item[i].categoryId+'" style="display: none;"> <thead> <tr role="row"> <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th> </tr> </thead> <tbody class="showImportDesc_'+item[i].categoryId+'"></tbody> </table>';
             $('#catInfo_' + item[i].categoryId).append(tablestr);
-            /*   $(document).on("click",".import_"+item[i].categoryId,function () {
-             $(".modal-header").empty();
-             $(".modal-header").append(item[i].name);
-
-             });*/
-
             if(item[i].children){
                 showimportall(item[i].children);
             }
         }
     }
 
-    var myFlag='';
-    $(document).off("click",".importList");
-    $(document).on("click",".importList",function () {
-        var flag = this.id;
-        window.myFlag = parseInt(flag.match(/\d+/g));
-        $("#file").empty();
-    });
-        $(document).off("click","#commit");
-        $(document).on("click","#commit",function () {
-            var data=new FormData;
-            data.append("file",$("#file")[0].files[0]);
-            $.ajax({
-                url:fileInfoUrl+"?fileId=4",
-                type:"POST",
-                dataType:"JSON",
-                data:data,
-                contentType: false,
-                processData: false,
-                success:function (file) {
-
-                    alert("上传成功！");
-                    var creatTime=getLocalTime(file.data.fileInfo.createTime);
-                    var statusname="";
-                    switch(file.data.fileInfo.status){
-                        case 0:statusname="未提交";
-                            break;
-                    }
-                    $("#showImportThead_"+window.myFlag).show();
-                    $(".showImportDesc_"+window.myFlag).append("<tr><td>1</td><td>"+file.data.fileInfo.path+"</td><td>"+creatTime+"</td><td class='submitstatus'>"+statusname+"</td><td><a>重传</a><a class='submitImport' id='submitImport_"+file.data.fileInfo.fileInfoId+"'>提交文件</a><a class='submitImportItem' id='submitImportItem_"+file.data.fileInfo.fileInfoId+"' data-toggle='modal' data-target='.bs-example-modal-lg'>提交</a></td></tr>");
-                },
-                error:function () {
-                    alert("上传失败！");
-                }
-            });
-            $("#myModal").modal("hide");
-
-        });
-        $(document).off("click",".submitImportItem");
-        $(document).on("click",".submitImportItem",function () {
-            var importList=this.id;
-            var reg=parseInt(importList.match(/\d+/g));
-            $(".showImportTable").show();
-            $(".showImportbodyList").empty();
-            $.post(fileTempUrl+"?categoryId="+window.myFlag+"&fileInfoId="+reg,function (data) {
-
-                var rowInfo="<tr></tr>";
-                var cellInfo="<td></td>";
-                var analyseList= data.data.itemList;
-                var listLength= data.data.itemList.length;
-                for(var i=0;i<listLength;i++)
-                {
-                    var Info=analyseList[i];
-                    $(".showImportbodyList").append(rowInfo);
-                    //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-                    for(var j=0;j<11;j++)//单元格
-                    {
-                        $(".showImportbodyList tr:last").append(cellInfo);
-                    }
-                    var id=i;
-                    $(".showImportbodyList tr:last td:eq(0)").text(id+1);
-                    $(".showImportbodyList tr:last td:eq(1)").text(Info.itemName);
-                    $(".showImportbodyList tr:last td:eq(2)").text(Info.teacherName);
-                    var praValues='';
-                    for(var m=0;m<Info.parameterValues.length;m++){
-                        praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
-                    }
-                    var otherpraValue='';
-                    for(var n=0;n<Info.otherJsonParameters.length;n++){
-                        otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
-                    }
-                    $(".showImportbodyList tr:last td:eq(3)").text(praValues);
-
-                    $(".showImportbodyList tr:last td:eq(4)").text(otherpraValue);
-                    var showtype='';
-                    switch (Info.isGroup){
-
-                        case 1:showtype="小组形式";
-                            break;
-                        case 0:showtype="个人形式";
-                            break;
-
-                    }
-                    $(".showImportbodyList tr:last td:eq(5)").text(showtype);
-
-                    $(".showImportbodyList tr:last td:eq(6)").text(Info.jobDesc);
-                    $(".showImportbodyList tr:last td:eq(7)").text(Info.jsonChildWeight);
-                    $(".showImportbodyList tr:last td:eq(8)").text(Info.workload);
-                    var statusName='';
-                    switch (Info.status){
-                        case 1:statusName="已提交";
-                            break;
-                        case 0:statusName="未提交";
-                    }
-
-                    $(".showImportbodyList tr:last td:eq(9)").text(statusName);
-                    var act="<a class='btn btn-primary itemToImport' id='itemToImport_"+Info.itemId+"'>提交</a> ";
-                    $(".showImportbodyList tr:last td:eq(10)").append(act);
-                }
-            })
-
-        });
-    $(document).off("click",".submitImport");
-    $(document).on("click",".submitImport",function () {
-        var importList=this.id;
-        var reg=parseInt(importList.match(/\d+/g));
-        $("#submitImport_"+reg).css("disabled","true");
-        $.post(fileSubmitUrl+"?"+"fileInfoId="+reg,function () {
-            alert("提交文件成功！");
-            $(".submitstatus").text("已提交");
-        });
-          });
-
-$(document).off("click","itemToImport");
-$(document).on("click",".itemToImport",function () {
-   var flag=this.id;
-   var flagId=parseInt(flag.match(/\d+/g));
-   $.post(itemSubmitUrl+"?itemId="+flagId,function () {
-       alert("提交成功！");
-
-       $("#itemToImport_"+flagId).css("disabled","true");
-   })
-});
-
 }
-/*function importRec() {
-    $('#tab_content2').empty();
-    $.get("/region?"+'regionName=auditor/importRec',function (result) {
-        $('#tab_content2').append(result);
-
-    });
-    $.get("/reviewer/info/items?"+'importRequired=1&option=uncommitted',function (data) {
-        var importRec=showimportRec(data.data.unCommittedItem);
-        $('.unconmmitItem').append(importRec);
-        $('.edit').click(function () {
-            for(var i=0;i<data.data.unCommittedItem.length;i++)
-            if(this.id='edit_'+i){
-                var revDeadline=$('#time_'+i).text();
-            $('.oldreviewertime').text(revDeadline);
-            }
-        });
-
-        
-
-    });
-
-
-}*/
-/*function importQue() {
-    $('#tab_content3').empty();
-    $.get("/region?"+'regionName=auditor/importQue',function (result) {
-        $('#tab_content3').append(result);
-
-    });
-    $.get("/reviewer/info/items?importRequired=1",function (data) {
-        var importQue=showimportQue(data.data.doubtedItem);
-        $('.doubtedItem').append(importQue);
-        $('.queReason').click(function () {
-            for(var n=0;n<data.data.doubtedItem.length;n++) {
-                if (this.id == 'queReason' +n){
-                    $('.madal-body').expend(data.data.doubtedItem[n].applyDesc);
-                }
-                    }
-        });
-        $('.editworkval').click(function () {
-
-            for(var t=0;t<data.data.doubtedItem.length;t++) {
-
-                if (this.id == 'editworkval_' +t){
-                    var workload=$('#workload_'+t).text();
-                    $('.oldworkload').text(workload);
-
-                }
-            }
-
-        });
-    });
-
-}*/
 function auditworkload() {
     $('.right_hole').empty();
 
@@ -231,27 +37,6 @@ function auditworkload() {
            var showimport=  $("<ul></ul>");
             showall(data.data.applyCategories, showimport);
             $("#tab_content1").append(showimport);
-            $(document).on("click",".auditor",function () {
-                $(".showThead").show();
-                var flag=this.id;
-                var reg=parseInt(flag.match(/\d+/g));
-                $(".modal-header").text($(".item_"+reg).text());
-                $.get(auditorManageItemUrl+"?"+'importRequired=0',function (data) {
-                    $(".showDesc").empty();
-                    var dataArray=new Array;
-                    for(var applyItemCount=0;applyItemCount<data.data.nonCheckedItem.length;applyItemCount++){
-                       /* var tablestr='<table  class="table table-striped table-bordered dataTable no-footer" id="table_'+data.data.applyCategories[applyItemCount].categoryId+'"> <thead> <tr role="row"> <th  class="sorting" style="width: 60px;">序号</th> <th  class="sorting" style="width: 278px;">条目名称</th> ' +
-                            '<th class="sorting" style="width: 78px;">工作量</th> <th class="sorting" style="width: 160px;">申报描述</th><th class="sorting" style="width: 200px;">主要参数</th> <th class="sorting" style="width: 93px;">' +
-                            '审核截止时间 </th> <th class="sorting"  style="width: 83px;">审核状态 </th> <th class="sorting"  style="width: 183px;">操作</th> </tr> </thead> <tbody class="tbody_'+data.data.applyCategories[applyItemCount].categoryId+'"></tbody></table>';
-                        $('#check_'+data.data.applyCategories[applyItemCount].categoryId).append(tablestr);
-                  */
-                       if(data.data.nonCheckedItem[applyItemCount].categoryId==reg){
-                           dataArray.push(data.data.nonCheckedItem[applyItemCount]);
-                       }
-                    };
-                    showapplydata(dataArray);
-                });
-            });
 
             $(document).on("click",".pass",function () {
                 var flag=this.id;
@@ -277,26 +62,8 @@ function auditworkload() {
 
            });
         });
-        //item为json数据
-        //parent为要组合成html的容器
-        function showall(menu_list, parent) {
-            for (var menu=0;menu<menu_list.length;menu++) {
-                //如果有子节点，则遍历该子节点
-                if (menu_list[menu].children&&menu_list[menu].children.length > 0) {
-                    var isShow=traverseNode(menu_list[menu],0);
-                    if(isShow==0) {
-                        var li = $("<li></li>");
-                        $(li).append(menu_list[menu].name).append("<ul></ul>").appendTo(parent);
 
-                    }
-                    showall(menu_list[menu].children, $(li).children().eq(0));
-                }
-                else if(menu_list[menu].importRequired==0){
-                    $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<button  id='auditor_" + menu_list[menu].categoryId + "' class='btn btn-primary auditor' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击审核</button><div style='clear: both;'></div>").appendTo(parent);
-                }
 
-            }
-        }
 }
 function showimportRec() {
 
@@ -357,9 +124,17 @@ function showimportRec() {
                 $(".reviewerRecTbody tr:last td:eq(10)").text("提交存疑");
                 var act="<a class='btn btn-primary reviewerApply' id='showImportRec_"+Info.itemId+"'>存疑原因</a><a class='btn btn-info editInfo "+Info.itemId+"' id='editInfo_"+Info.categoryId+"' data-target='#editModal' data-toggle='modal'><i class='fa fa-pencil'></i>修改存疑</a> ";
                 $(".reviewerRecTbody tr:last td:eq(11)").append(act);
+                $("[data-toggle='popover']").popover();
+                $(".reviewerApply").popover({
+                    placement: "top",
+                    trigger: "click",
+                    html: true,
+                    title: "回复信息",
+                    content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
+
+                });
             }
         }
-
     });
     $(document).on("click",".editInfo",function () {
         $(".parameterTh").empty();
@@ -396,20 +171,6 @@ function showimportRec() {
         $(".parameterName").attr("disabled","true");
         $(".otherparameterName").attr("disabled","true");
         $(".editorSubmit").attr("id","editorSubmit_"+Realreg);
-
-
-        /*
-        $(".oldworkload").text($("#workload_"+reg).text());
-
-        $(document).on("click","#save",function () {
-            var str=parseInt($(".newworkload").val());
-            $.get(reviewerModifyUrl+"?"+"itemId="+reg+"&workload="+str,function () {
-                alert("修改成功！");
-                $("#editModal").modal("hide");
-                $(".oldworkload").text(str);
-            });
-        })*/
-
     });
     $(document).on("click",".editApplyInfo",function () {
         $(".parameterName").removeAttr("disabled","true");
@@ -443,21 +204,21 @@ function showimportRec() {
             $("#editModal").modal("hide");
         })
     });
-
 }
 function showImportHis() {
     $.get(historyUrl+"?role=reviewer&type=import",function (data) {
+        showhistory(data);
     });
 }
 function showReviewerHis() {
     $.get(historyUrl+"?role=reviewer&type=apply",function (data) {
+        showhistory(data);
     });
 }
 function showapplydata(item) {
 
     var rowInfo = "<tr></tr>";
     var cellInfo = "<td></td>";
-   // var analyseList = data.data.itemList;
     var listLength = item.length;
     for (var t = 0; t < listLength; t++) {
         var Info = item[t];
@@ -530,10 +291,25 @@ function showapplydata(item) {
         $(".showDesc tr:last td:eq(11)").append(act);
     }
 
-
-
 }
 function getLocalTime(nS) {
     return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
 }
+function showall(menu_list, parent) {
+    for (var menu=0;menu<menu_list.length;menu++) {
+        //如果有子节点，则遍历该子节点
+        if (menu_list[menu].children&&menu_list[menu].children.length > 0) {
+            var isShow=traverseNode(menu_list[menu],0);
+            if(isShow==0) {
+                var li = $("<li></li>");
+                $(li).append(menu_list[menu].name).append("<ul></ul>").appendTo(parent);
 
+            }
+            showall(menu_list[menu].children, $(li).children().eq(0));
+        }
+        else if(menu_list[menu].importRequired==0){
+            $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<button  id='auditor_" + menu_list[menu].categoryId + "' class='btn btn-primary auditor' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击审核</button><div style='clear: both;'></div>").appendTo(parent);
+        }
+
+    }
+}

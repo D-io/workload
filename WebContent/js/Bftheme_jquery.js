@@ -41,7 +41,6 @@ $(document).on("click",".collapse-link",function () {
         $(".sorting_asc").toggleClass("sorting_desc");
     });
 */
-
 function jumpToSum() {
 
     var resetStr='regionName=Realmanager/sum';
@@ -156,9 +155,12 @@ function itemSummary() {
     });
     $(document).ready(function () {
         $.get(itemAuditorUrl,function (data) {
-            for(var i=0;i<data.data.categoryList.length;i++){
-                $('#itemRequired').append('<option value=\"'+data.data.categoryList[i].categoryId+'\">'+data.data.categoryList[i].categoryName+'</option>');
+            if(data.data.categoryList&&data.data.categoryList.length>0){
+                for(var i=0;i<data.data.categoryList.length;i++){
+                    $('#itemRequired').append('<option value=\"'+data.data.categoryList[i].categoryId+'\">'+data.data.categoryList[i].categoryName+'</option>');
+                }
             }
+
         });
 
     });
@@ -314,9 +316,7 @@ function reviewerResetItem(data) {
                             break;
                     }
                 }
-
-
-                $(".ResetItem tr:last td:eq(0)").text(id);
+                $(".ResetItem tr:last td:eq(0)").text(id+1);
                 $(".ResetItem tr:last td:eq(1)").text(Info.teacherName);
                 $(".ResetItem tr:last td:eq(2)").text(Info.itemName);
                 $(".ResetItem tr:last td:eq(3)").text(Info.formula);
@@ -345,5 +345,4 @@ $(document).ready(function () {
             $('#teacherName').append('<option value=\"'+data.data.teacherList[i].teacherId+'\">'+data.data.teacherList[i].name+'</option>');
         }
     });
-
 });

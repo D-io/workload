@@ -61,6 +61,19 @@
 
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                    <table class="table table-striped table-bordered dataTable no-footer reviewerRec" style="display: none;font-size: 14px;">
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting">序号</th>
+                            <th class="sorting">操作时间</th>
+                            <th class="sorting">具体内容</th>
+                            <th class="sorting">操作形式</th>
+
+                        </tr>
+                        </thead>
+                        <tbody class="historyRecTbody">
+                        </tbody>
+                    </table>
 
                 </div>
 

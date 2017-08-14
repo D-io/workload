@@ -27,9 +27,9 @@
             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">工作当量申报</a>
                 </li>
-                <li role="presentation" class="" onclick="applyRec()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">申报审核情况</a>
+                <li role="presentation"  onclick="applyRec()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">申报审核情况</a>
                 </li>
-                <li role="presentation" class="" onclick="showApplyHistory()"><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
+                <li role="presentation"  onclick="showApplyHistory()"><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
                 </li>
             </ul>
             <div id="myTabContent" class="tab-content">
@@ -59,7 +59,19 @@
                     </table>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="history-tab">
+                    <table class="table table-striped table-bordered dataTable no-footer reviewerRec" style="display: none;font-size: 14px;">
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting">序号</th>
+                            <th class="sorting">操作时间</th>
+                            <th class="sorting">具体内容</th>
+                            <th class="sorting">操作形式</th>
 
+                        </tr>
+                        </thead>
+                        <tbody class="historyRecTbody">
+                        </tbody>
+                    </table>
                 </div>
 
             </div>

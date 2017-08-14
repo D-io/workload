@@ -294,7 +294,7 @@
 
                             <div class="col-sm-9">
                                 <input type="file" class="form-control" id="file"><hr/>
-                                <input type="button" class="btn btn-primary" id="commit" value="上传" style="float: right;">
+                                <input type="button" class="btn btn-primary commit" value="上传" style="float: right;">
                             </div>
 
 
