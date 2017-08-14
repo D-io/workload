@@ -407,65 +407,68 @@ function  reviewerRec() {
     $.get(itemTeacherInfo+"?"+"importedRequired=1&status=3",function (data) {
         var rowInfo="<tr></tr>";
         var cellInfo="<td></td>";
-        var analyseList= data.data.itemList;
-        var listLength= data.data.itemList.length;
-        for(var i=0;i<listLength;i++)
-        {
-            var Info=analyseList[i];
-            $(".reviewerRecTbody").append(rowInfo);
-            //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-            for(var j=0;j<12;j++)//单元格
+        if(data.data.itemList){
+            var analyseList= data.data.itemList;
+            var listLength= data.data.itemList.length;
+            for(var i=0;i<listLength;i++)
             {
-                $(".reviewerRecTbody tr:last").append(cellInfo);
-            }
-            var id=i;
-            $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
-            $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
-            $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-            $(".reviewerRecTbody tr:last td:eq(3)").text(Info.formula);
-            var showtype='';
-            switch (Info.isGroup){
+                var Info=analyseList[i];
+                $(".reviewerRecTbody").append(rowInfo);
+                //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
+                for(var j=0;j<12;j++)//单元格
+                {
+                    $(".reviewerRecTbody tr:last").append(cellInfo);
+                }
+                var id=i;
+                $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
+                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
+                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
+                $(".reviewerRecTbody tr:last td:eq(3)").text(Info.formula);
+                var showtype='';
+                switch (Info.isGroup){
 
-                case 1:showtype="小组形式";
-                    break;
-                case 0:showtype="个人形式";
-                    break;
+                    case 1:showtype="小组形式";
+                        break;
+                    case 0:showtype="个人形式";
+                        break;
 
-            }
-            $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+                }
+                $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
 
-            var praValues='';
-            for(var m=0;m<Info.parameterValues.length;m++){
-                praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
-            }
-            var otherpraValue='';
-            for(var n=0;n<Info.otherJsonParameters.length;n++){
-                otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
-            }
-            $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
-            var itemDesc='';
-            for(var item=0;item<Info.paramDesc.length;item++){
-                itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
-            }
-            $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
-            $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
+                var praValues='';
+                for(var m=0;m<Info.parameterValues.length;m++){
+                    praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
+                }
+                var otherpraValue='';
+                for(var n=0;n<Info.otherJsonParameters.length;n++){
+                    otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
+                }
+                $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+                var itemDesc='';
+                for(var item=0;item<Info.paramDesc.length;item++){
+                    itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
+                }
+                $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
+                $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
 
 
-            $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
-            $(".reviewerRecTbody tr:last td:eq(9)").attr("class","revieRec_"+Info.categoryId);
-            $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
-            $(".reviewerRecTbody tr:last td:eq(10)").text("提交存疑");
-            $(".reviewerRecTbody tr:last td:eq(10)").css({"background-color":"#70c8e2","color":"#ffffff"});
-            /*  var statusName='';
-             switch (Info.status){
-             case 1:statusName="已提交";
-             break;
-             case 0:statusName="未提交";
-             }*/
-            $(".reviewerRecTbody tr:last td:eq(11)").text();
-         //   var act="<a class='btn btn-primary reviewerRec' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
-         //   $(".reviewerRecTbody tr:last td:eq(10)").text(act);
+                $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
+                $(".reviewerRecTbody tr:last td:eq(9)").attr("class","revieRec_"+Info.categoryId);
+                $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
+                $(".reviewerRecTbody tr:last td:eq(10)").text("提交存疑");
+                $(".reviewerRecTbody tr:last td:eq(10)").css({"background-color":"#70c8e2","color":"#ffffff"});
+                /*  var statusName='';
+                 switch (Info.status){
+                 case 1:statusName="已提交";
+                 break;
+                 case 0:statusName="未提交";
+                 }*/
+                $(".reviewerRecTbody tr:last td:eq(11)").text();
+                //   var act="<a class='btn btn-primary reviewerRec' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
+                //   $(".reviewerRecTbody tr:last td:eq(10)").text(act);
+            }
         }
+
     });
     $.get(itemTeacherInfo+"?importedRequired=1&status=4",function (data) {
         var rowInfo="<tr></tr>";
@@ -637,6 +640,10 @@ function applyworkload() {
            $('.otherParaTh').empty();
             $('.AddPramter').empty();
             $("#AddOtherPramter").empty();
+            $(".showparameterTh").empty();
+            $(".showotherParaTh").empty();
+            $('.showAddPramter').empty();
+            $('#showAddOtherPramter').empty();
             comparePara(data.data.categoryTree,reg);
         });
 
@@ -720,7 +727,7 @@ function applyworkload() {
             $(".editDelete").show();
             $(".editDelete").attr("id","editDelete"+window.Temp[newReg-1].itemId);
         }
-        if($("#statusChange_"+window.Temp[newReg-1].itemId).text()=="已提交"){
+        else{
             $(".editApply").hide();
           //  $(".editApply").attr("id","editApply_"+window.Temp[newReg-1].itemId);
             $(".editSubmit").hide();
@@ -751,20 +758,24 @@ function applyworkload() {
 
         }
         var showOtherPara=window.Temp[newReg-1].otherJsonParameters;
-        for(var n=0;n<showOtherPara.length;n++){
-            $(".showotherparameterName").eq(n).val(showOtherPara[n].value);
-            $(".showotherparameterName").eq(n).attr("disabled","true");
+        if(showOtherPara.length>0){
+            for(var n=0;n<showOtherPara.length;n++){
+                $(".showotherparameterName").eq(n).val(showOtherPara[n].value);
 
+
+            }
         }
+        $(".showotherparameterName").attr("disabled","true");
+
         $("#showitemmanager").attr("disabled","true");
         $("#showitemmanager option[value='"+window.Temp[newReg-1].groupManagerId+"']").attr("selected","selected");
         $('#showAddgroupPramter').empty();
         var addStr='';
         var $group=$(".groupMember_"+window.Temp[newReg-1].itemId);
         if($group&&$group.length){
-            for(var pramterCount=0;pramterCount<$(".groupMember_"+window.Temp[newReg-1].itemId).length;pramterCount++){
+            for(var pramterCount=0;pramterCount<$group.length;pramterCount++){
 
-                addStr="<tr><td><select class='showgroupMemberName teacherName' style='width: 30%;'><option>"+$(".groupMember_"+newReg).eq(pramterCount).text()+"</option></select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
+                addStr="<tr><td><select class='showgroupMemberName teacherName' style='width: 30%;'><option selected='true'>"+$(".groupMember_"+newReg).eq(pramterCount).text()+"</option></select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
                 $('#showAddgroupPramter').append(addStr);
                 $(".showgroupMemberSymbol").eq(pramterCount).val($(".jobDesc_"+window.Temp[newReg-1].itemId).eq(pramterCount).text());
                 $(".showgroupMemberWeight").eq(pramterCount).val($(".jobWeight_"+window.Temp[newReg-1].itemId).eq(pramterCount).text());
@@ -797,9 +808,9 @@ function applyworkload() {
         $.get(currentTeaIdUrl,function (data) {
             window.currentId=data.data.teacher.name;
         })
-        $(".groupMemberName").removeAttr("disabled");
-        $(".groupMemberSymbol").removeAttr("disabled");
-        $(".groupMemberWeight").removeAttr("disabled");
+        $(".showgroupMemberName").removeAttr("disabled");
+        $(".showgroupMemberSymbol").removeAttr("disabled");
+        $(".showgroupMemberWeight").removeAttr("disabled");
     });
     $(document).off("click",".savemyApplyAgain");
     $(document).on("click",".savemyApplyAgain",function () {
@@ -963,7 +974,7 @@ function applyworkload() {
         },
            success:function () {
                alert("操作成功！");
-               $("#statusChange_"+submitId).text("已删除");
+               $("#statusChange_"+deleteId).text("已删除");
                $("#showContent").modal("hide");
            }
 
@@ -974,6 +985,10 @@ function applyworkload() {
 function showApplyHistory() {
 $.get(historyUrl+"?type=apply",function (data) {
 });
+}
+function showRevieHistory() {
+$.get(historyUrl+"?type=import",function (data) {
+ });
 }
 function applyRec() {
     $(".reviewerRec").show();

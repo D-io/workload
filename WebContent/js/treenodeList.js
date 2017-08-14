@@ -111,8 +111,8 @@ function ownerApply(domId) {
                             {
                                 $(".tbody tr:last").append(cellInfo);
                             }
-
-                            $(".tbody tr:last td:eq(0)").text(parseInt($(".tbody tr:last td:eq(0)").text()) + 1);
+                            var number=parseInt($(".tbody tr:last td:eq(0)").text());
+                            $(".tbody tr:last td:eq(0)").text(number++);
                             $(".tbody tr:last td:eq(1)").text(Info[0].itemName);
                             var count="";
                             var CountId="";
@@ -197,7 +197,7 @@ function ownerApply(domId) {
                                 /* var count = Info[i].workload;
                                  var CategId = Info[i].categoryId;*/
 
-                                var CountId = Info[i].itemId;
+                                var CountId = Info[hideCount].itemId;
                             }
                             $(".hiddendistrict").append("<div class='groupMember_"+CountId+"'>"+Info[hideCount].teacherName+"</div><div class='jobDesc_"+CountId+"'>"+Info[hideCount].jobDesc+"</div><div class='jobWeight_"+CountId+"'>"+Info[hideCount].jsonChildWeight+"</div>")
 
@@ -224,7 +224,7 @@ function ownerApply(domId) {
                             }
                             $("#showitemName").val(Info[0].itemName);
                             $("#showitemName").attr("disabled","true");
-                            $("#showapplyDesc").val(Info.applyDesc);
+                            $("#showapplyDesc").val(Info[0].applyDesc);
                             $("#showapplyDesc").attr("disabled","true");
                             if(Info[0].isGroup==0){
                                 $("#single").attr("checked",'checked');
@@ -237,6 +237,11 @@ function ownerApply(domId) {
                                 $(".item_manager").show();
                                 $(".item_group").show();
                             }
+                            /*$(".showAddPramter").empty();
+                            $(".showAddOtherPramter").empty();
+                            $('.showpramterDesc').empty();
+                            $('.showotherPramterkey').empty();*/
+
                             var showPram=Info[0].parameterValues;
                             for(var i=0;i<showPram.length;i++){
                                 $(".showparameterName").eq(i).val(showPram[i].value);
@@ -258,7 +263,7 @@ function ownerApply(domId) {
                             if($group&&$group.length){
                                 for(var pramterCount=0;pramterCount<$(".groupMember_"+newReg).length;pramterCount++){
 
-                                    addStr="<tr><td><select class='showgroupMemberName teacherName' style='width: 30%;'><option>"+$(".groupMember_"+newReg).text()+"</option></select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
+                                    addStr="<tr><td><select class='showgroupMemberName teacherName' style='width: 30%;'><option selected='selected'>"+$(".groupMember_"+newReg).eq(pramterCount).text()+"</option></select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
                                     $('#showAddgroupPramter').append(addStr);
                                     $(".showgroupMemberSymbol").eq(pramterCount).val($(".jobDesc_"+newReg).eq(pramterCount).text());
                                     $(".showgroupMemberWeight").eq(pramterCount).val($(".jobWeight_"+newReg).eq(pramterCount).text());
@@ -284,21 +289,22 @@ function ownerApply(domId) {
                         applyDesc: $('#applyDesc').val(),
                         //   workload: $('#workload').val(),
                         //   ownerId: applicant.val(),
-                        // groupManagerId: itemmanager.val(),
+                      //  groupManagerId: ,
                         isGroup: 0,
                         jsonParameter: newArray,
                         otherJson: otherArray,
+                        jsonChildWeight:1
                         // jobDesc: grouparray,
                         //  jsonChildWeight: childWeight,
                         //   file:formdata
 
                     }
                     , success: function (data) {
-                        var analyseList = data.data.itemList;
-                        var listLength = data.data.itemList.length;
+                        var Info = data.data.item;
+                       /* var listLength = data.data.item.length;*/
                         var rowInfo = "<tr></tr>";
                         var cellInfo = "<td></td>";
-                        var Info = analyseList;
+                        /*var Info = analyseList;*/
 
                         if ($(".newTable").length>0) {
                             $(".tbody").append(rowInfo);
@@ -308,10 +314,10 @@ function ownerApply(domId) {
                                 $(".tbody tr:last").append(cellInfo);
                             }
 
-                            $(".tbody tr:last td:eq(0)").text(parseInt($(".tbody tr:last td:eq(0)").text()) + 1);
-                            $(".tbody tr:last td:eq(1)").text(Info[0].itemName);
-                            var count="";
-                            var CountId="";
+                            $(".tbody tr:last td:eq(0)").text(parseInt(parseInt($(".tbody tr:last td:eq(0)").text())) + 1);
+                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
+                           /* var count="";*/
+                           /* var CountId="";
                             var CategId="";
                             for (var i = 0; i < listLength; i++) {
                                 if (Info[i].teacherName == CurrentName) {
@@ -319,18 +325,17 @@ function ownerApply(domId) {
                                      CountId = Info[i].itemId;
                                      CategId = Info[i].categoryId;
                                 }
-                            }
-                            $(".tbody tr:last td:eq(2)").text(count);
+                            }*/
+                            $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(3)").attr("class", "applyDead");
-                            $(".applyDead").text($(".applyDeadline_" + CategId).text());
+                            $(".applyDead").text($(".applyDeadline_" + Info.categoryId).text());
 
                             $(".tbody tr:last td:eq(4)").text("未提交");
-                            $(".tbody tr:last td:eq(4)").attr("id", "statusChange_" + CountId);
+                            $(".tbody tr:last td:eq(4)").attr("id", "statusChange_" + Info.itemId);
 
 
-                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + CountId + "\">查看详情</a> ";
+                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + Info.itemId + "\">查看详情</a> ";
                             $(".tbody tr:last td:eq(5)").append(act);
-
 
                         }
                         else {
@@ -350,8 +355,8 @@ function ownerApply(domId) {
                             }
 
                             $(".tbody tr:last td:eq(0)").text(parseInt("1"));
-                            $(".tbody tr:last td:eq(1)").text(Info[0].itemName);
-                            var count="";
+                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
+                           /* var count="";
                             var CountId="";
                             var CategId="";
                             for (var i = 0; i < listLength; i++) {
@@ -359,24 +364,24 @@ function ownerApply(domId) {
                                      count = Info[i].workload;
                                  CountId = Info[i].itemId;
                                 CategId = Info[i].categoryId;
-                            }
-                            $(".tbody tr:last td:eq(2)").text(count);
+                            }*/
+                            $(".tbody tr:last td:eq(2)").text(Info.workload);
                             //  $(".tbody tr:last td:eq(3)").text();
                             $(".tbody tr:last td:eq(3)").attr("class", "applyDead");
-                            $(".applyDead").text($(".applyDeadline_"+CategId).text());
+                            $(".applyDead").text($(".applyDeadline_"+Info.categoryId).text());
 
                             $(".tbody tr:last td:eq(4)").text("未提交");
-                            $(".tbody tr:last td:eq(4)").attr("id", "statusChange_" + CountId);
+                            $(".tbody tr:last td:eq(4)").attr("id", "statusChange_" + Info.itemId);
 
 
-                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + CountId + "\">查看详情</a> ";
+                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + Info.itemId + "\">查看详情</a> ";
                             $(".tbody tr:last td:eq(5)").append(act);
                         }
-
+                        $('#addContent').modal('hide');
                         var formdata = new FormData;
                         formdata.append("file", $("#formName")[0].files[0]);
                         $.ajax({
-                            url: importProofUrl + "?itemId=" + analyseList,
+                            url: importProofUrl + "?itemId=" + Info.itemId,
                             type: "POST",
                             dataType: "JSON",
                             data: formdata,
@@ -386,8 +391,6 @@ function ownerApply(domId) {
                             }
 
                         });
-
-                        $('#addContent').modal('hide');
 
                         $(document).on("click",".showaddContent",function () {
                             var newId=this.id;
@@ -409,11 +412,11 @@ function ownerApply(domId) {
                                 $(".editDelete").hide();
                                 //  $(".editDelete").attr("id","editDelete"+window.Temp[newReg-1].itemId);
                             }
-                            $("#showitemName").val(Info[0].itemName);
+                            $("#showitemName").val(Info.itemName);
                             $("#showitemName").attr("disabled","true");
                             $("#showapplyDesc").val(Info.applyDesc);
                             $("#showapplyDesc").attr("disabled","true");
-                            if(Info[0].isGroup==0){
+                            if(Info.isGroup==0){
                                 $("#single").attr("checked",'checked');
                                 $("#group").attr("disabled","true");
 
@@ -424,13 +427,13 @@ function ownerApply(domId) {
                                 $(".item_manager").show();
                                 $(".item_group").show();
                             }
-                            var showPram=Info[0].parameterValues;
+                            var showPram=Info.parameterValues;
                             for(var i=0;i<showPram.length;i++){
                                 $(".showparameterName").eq(i).val(showPram[i].value);
                                 $(".showparameterName").eq(i).attr("disabled","true");
 
                             }
-                            var showOtherPara=Info[0].otherJsonParameters;
+                            var showOtherPara=Info.otherJsonParameters;
                             for(var n=0;n<showOtherPara.length;n++){
                                 $(".showotherparameterName").eq(n).val(showOtherPara[n].value);
                                 $(".showotherparameterName").eq(n).attr("disabled","true");

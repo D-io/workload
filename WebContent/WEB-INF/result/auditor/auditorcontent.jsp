@@ -28,9 +28,9 @@
             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">导入工作当量</a>
                 </li>
-                <li role="presentation" class="" onclick="showimportRec()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">导入复核情况</a>
+                <li role="presentation"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false"  onclick="showimportRec()">导入复核情况</a>
                 </li>
-                <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">查看历史记录</a>
+                <li role="presentation"><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false"  onclick="showImportHis()">查看历史记录</a>
                 </li>
             </ul>
             <div id="myTabContent" class="tab-content">
@@ -42,6 +42,7 @@
                         <thead>
                         <tr role="row">
                             <th class="sorting">序号</th>
+                            <th class="sorting">教师姓名</th>
                             <th class="sorting">条目名称</th>
                             <th class="sorting">工作量</th>
                             <th class="sorting">计算公式</th>
@@ -109,11 +110,12 @@
                                     </h4>
                                 </div>
                                 <div class="modal-body">
+                                    <button class="btn btn-primary btn-info editApplyInfo"><i class="fa fa-pencil"></i>编辑</button>
+                                    <button class="btn btn-primary btn-success editorSubmit"><i class="fa fa-pencil"></i>提交</button>
+
                                     <form class="form-horizontal form-label-left">
-                                        <button class="btn btn-primary btn-info editApply" style="display: none"><i class="fa fa-pencil"></i>编辑</button>
-                                        <button class="btn btn-primary btn-success editorSubmit" style="display: none"><i class="fa fa-pencil"></i>提交</button>
 
-
+                                        <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">主要考核参数</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
 
@@ -143,6 +145,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -176,6 +179,7 @@
                                                 <input type="text" class="form-control changeDis" id="showitemName">
                                             </div>
                                         </div>
+                                    </form>
                                         </div>
 
 
@@ -214,7 +218,7 @@
                                             </div>
                                         </div>--%>
 
-                                    </form>
+
 
 
                                 </div>
