@@ -7,41 +7,44 @@ function importWorkload(){
         $('.right_hole').append(result);
     });
         $.get(itemAuditorUrl,function (data) {
-            var showimport=  $("<ul></ul>");
-            showimportall(data.data.importCategories, showimport);
+           // var showimport=  $("<ul></ul>");
 
-            $("#tab_content1").append(showimport);
-            /*
-            $('.view_detail').text('导入文件');
-            */
-            function  showimportall(item) {
-                for(var i=0;i<item.length;i++){
+            showimportall(data.data.importCategories);
 
-                 $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+"<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 40%; '> <thead style='font-size: 14px;'> <tr role='row'> <th class='sorting' style='padding: 5px;'>上传截止时间:<span class='time_"+item[i].categoryId+"'>"+getLocalTime(item[i].reviewDeadline)+"</span></th> <th class='sorting' style='padding: 5px;'><div class='dropdown' style='display: inline'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=group'>小组类模板</a></li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div><a class='btn importList btn-info' id='import_"+item[i].categoryId+"' data-toggle='modal' data-target='#myModal'>导入数据</a></th> </table><div style='clear: both;'></div></li>");
-                    if(item[i].jsonParameters.length>0){
-                        for(var paraCount=0;paraCount<item[i].jsonParameters.length;paraCount++){
-                            $(".hiddendistrict").append("<div class='paraDesc_"+item[i].categoryId+"' id='"+item[i].categoryId+"'>"+item[i].jsonParameters[paraCount].desc+"</div>");
+           // $("#tab_content1").append(showimport);
+           /* $('.view_detail').text('导入文件');*/
 
-                        }
-                    }
 
-                    var tablestr='<table class="showImportThead table dataTable no-footer table-bordered" id="showImportThead_'+item[i].categoryId+'" style="display: none;"> <thead style="font-size: 14px;"> <tr role="row"> <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th> </tr> </thead> <tbody class="showImportDesc_'+item[i].categoryId+'"></tbody> </table>';
-                    $('#catInfo_' + item[i].categoryId).append(tablestr);
-                 /*   $(document).on("click",".import_"+item[i].categoryId,function () {
-                        $(".modal-header").empty();
-                        $(".modal-header").append(item[i].name);
 
-                    });*/
+        });
+    function  showimportall(item) {
+        for(var i=0;i<item.length;i++){
 
-                    if(item[i].children){
-                        showimportall(item[i].children);
-                    }
+            $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+"<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 40%; '> <thead style='font-size: 14px;'> <tr role='row'> <th class='sorting' style='padding: 5px;'>上传截止时间:<span class='time_"+item[i].categoryId+"'>"+getLocalTime(item[i].reviewDeadline)+"</span></th> <th class='sorting' style='padding: 5px;'><div class='dropdown' style='display: inline'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=group'>小组类模板</a></li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div><a class='btn importList btn-info' id='import_"+item[i].categoryId+"' data-toggle='modal' data-target='#myModal'>导入数据</a></th> </table><div style='clear: both;'></div></li>");
+            if(item[i].jsonParameters.length>0){
+                var obj = eval ("(" + item[i].jsonParameters + ")");
+                for(var paraCount=0;paraCount<obj.length;paraCount++){
+                    $(".hiddendistrict").append("<div class='paraDesc_"+item[i].categoryId+"' id='"+item[i].categoryId+"_"+obj[paraCount].symbol+"'>"+obj[paraCount].desc+"</div>");
+
                 }
             }
 
-        });
+            var tablestr='<table class="showImportThead table dataTable no-footer table-bordered" id="showImportThead_'+item[i].categoryId+'" style="display: none;"> <thead style="font-size: 14px;"> <tr role="row"> <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th> </tr> </thead> <tbody class="showImportDesc_'+item[i].categoryId+'"></tbody> </table>';
+            $('#catInfo_' + item[i].categoryId).append(tablestr);
+            /*   $(document).on("click",".import_"+item[i].categoryId,function () {
+             $(".modal-header").empty();
+             $(".modal-header").append(item[i].name);
+
+             });*/
+
+            if(item[i].children){
+                showimportall(item[i].children);
+            }
+        }
+    }
+
     var myFlag='';
-    $(document).on("click",".importList");
+    $(document).off("click",".importList");
     $(document).on("click",".importList",function () {
         var flag = this.id;
         window.myFlag = parseInt(flag.match(/\d+/g));
@@ -255,7 +258,8 @@ function auditworkload() {
                 var passItemId=flag.match(/\d+/g);
                 $.post(reviewerCheckUrl+"?"+"itemId="+passItemId+"&status=2",function () {
                     alert('操作成功！');
-                    $("reviewe_"+refuItemId).text("审核通过");
+                    $("reviewe_"+passItemId).text("审核通过");
+
                 })
             });
            $(document).on("click",".refuse",function () {
@@ -266,7 +270,8 @@ function auditworkload() {
                    var refudesc=$("#refusedesc").val();
                    $.post(reviewerCheckUrl+"?"+"itemId="+refuItemId+"&status=5"+"&message="+refudesc,function () {
                        alert('操作成功！');
-                       $("reviewe_"+refuItemId).text("审核拒绝");
+                       $(".reviewe_"+refuItemId).text("审核拒绝");
+                       $("#refuseModal").modal("hide");
                    })
                });
 
@@ -308,16 +313,17 @@ function showimportRec() {
                 var Info=analyseList[i];
                 $(".reviewerRecTbody").append(rowInfo);
                 //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-                for(var j=0;j<11;j++)//单元格
+                for(var j=0;j<12;j++)//单元格
                 {
                     $(".reviewerRecTbody tr:last").append(cellInfo);
                 }
                 var id=i;
                 $(".reviewerRecTbody tr:last td:eq(0)").text(id+1);
-                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
-                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-                $(".reviewerRecTbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
-                $(".reviewerRecTbody tr:last td:eq(3)").text();
+                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.teacherName);
+                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.itemName);
+                $(".reviewerRecTbody tr:last td:eq(3)").text(Info.workload);
+                $(".reviewerRecTbody tr:last td:eq(3)").attr("id","workload_"+Info.itemId);
+                $(".reviewerRecTbody tr:last td:eq(4)").text(Info.formula);
                 var showtype='';
                 switch (Info.isGroup){
 
@@ -327,7 +333,7 @@ function showimportRec() {
                         break;
 
                 }
-                $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+                $(".reviewerRecTbody tr:last td:eq(5)").text(showtype);
 
                 var praValues='';
                 for(var m=0;m<Info.parameterValues.length;m++){
@@ -341,38 +347,54 @@ function showimportRec() {
                     $(".hiddendistrict").append("<div class='otherParaKey_"+Info.categoryId+"'>"+Info.otherJsonParameters[n].key+"</div><div class='otherParaValue_"+Info.categoryId+"'>"+Info.otherJsonParameters[n].value+"</div>")
 
                 }
-                $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
+                $(".reviewerRecTbody tr:last td:eq(6)").text(praValues);
 
-                $(".reviewerRecTbody tr:last td:eq(6)").text(otherpraValue);
+                $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
 
 
-                $(".reviewerRecTbody tr:last td:eq(7)").text(Info.version);
-                $(".reviewerRecTbody tr:last td:eq(8)").text();
-                $(".reviewerRecTbody tr:last td:eq(9)").text("提交存疑");
+                $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
+                $(".reviewerRecTbody tr:last td:eq(9)").text($(".time_"+Info.categoryId).text());
+                $(".reviewerRecTbody tr:last td:eq(10)").text("提交存疑");
                 var act="<a class='btn btn-primary reviewerApply' id='showImportRec_"+Info.itemId+"'>存疑原因</a><a class='btn btn-info editInfo "+Info.itemId+"' id='editInfo_"+Info.categoryId+"' data-target='#editModal' data-toggle='modal'><i class='fa fa-pencil'></i>修改存疑</a> ";
-                $(".reviewerRecTbody tr:last td:eq(10)").append(act);
+                $(".reviewerRecTbody tr:last td:eq(11)").append(act);
             }
         }
 
     });
     $(document).on("click",".editInfo",function () {
-        var realId=this.class;
+        $(".parameterTh").empty();
+        $(".editorPram").empty();
+        $(".otherParaTh").empty();
+        $(".editorotherPara").empty();
+        var realId=$(".editInfo").attr("class");
         var Realreg=parseInt(realId.match(/\d+/g));
        var flag=this.id;
         var reg=parseInt(flag.match(/\d+/g));
         for(var count=0;count<$(".paraDesc_"+reg).length;count++){
-            var symbolId=$("paraDesc_"+reg).attr("id");
+            var symbolId=$(".paraDesc_"+reg).eq(count).attr("id");
+           // var Reg=/_\/([\s\S]*)/;
+            var Reg=/_[a-zA-Z]*/;
+           // /appVersion\/([\d\.]*)/
+           // symbolId=Reg.exec(symbolId);
+            symbolId=symbolId.match(Reg)[0];
+            if (symbolId.substr(0,1)=='_'){
+                symbolId=symbolId.substr(1);
+            }
+
             $(".parameterTh").append("<th class='pramterDesc' id='"+symbolId+"'>"+$(".paraDesc_"+reg).eq(count).text()+"</th>")
            $(".editorPram").append("<td><input type='text' class='parameterName'></td>");
-            $(".parameterName").eq(count).text($(".paraValues_"+reg).eq(count).text());
+          //  console.log($(".paraValues_"+reg).eq(count).text());
+            $(".parameterName").eq(count).val($(".paraValues_"+reg).eq(count).text());
 
         }
         for(var othercount=0;othercount<$(".otherParaKey_"+reg).length;othercount++){
             $(".otherParaTh").append("<th class='otherPramterkey'>"+$(".otherParaKey_"+reg).eq(othercount).text()+"</th>")
             $(".editorotherPara").append("<td><input type='text' class='otherparameterName'></td>");
-            $(".otherparameterName").eq(othercount).text($(".otherParaValue_"+reg).eq(othercount).text());
+            $(".otherparameterName").eq(othercount).val($(".otherParaValue_"+reg).eq(othercount).text());
 
         }
+        $(".parameterName").attr("disabled","true");
+        $(".otherparameterName").attr("disabled","true");
         $(".editorSubmit").attr("id","editorSubmit_"+Realreg);
 
 
@@ -389,11 +411,15 @@ function showimportRec() {
         })*/
 
     });
+    $(document).on("click",".editApplyInfo",function () {
+        $(".parameterName").removeAttr("disabled","true");
+        $(".otherparameterName").removeAttr("disabled","true");
+    });
     $(document).on("click",".editorSubmit",function () {
         var submitId=parseInt(this.id.match(/\d+/g));
         var newArray = new Array();
-        for (var i = 0; i < $(".parameterName").length; i++) {
-            var dom = $(".parameterName").eq(i).attr("id");
+        for (var i = 0; i < $(".pramterDesc").length; i++) {
+            var dom = $(".pramterDesc").eq(i).attr("id");
             newArray.push({symbol: dom, value:parseInt($(".parameterName").eq(i).val())});
 
         }
@@ -412,12 +438,21 @@ function showimportRec() {
             otherParameters:otherArray,
             message:$("#showitemName").val()
         },function () {
+            showimportRec();
             alert("操作成功！");
+            $("#editModal").modal("hide");
         })
     });
 
 }
-
+function showImportHis() {
+    $.get(historyUrl+"?role=reviewer&type=import",function (data) {
+    });
+}
+function showReviewerHis() {
+    $.get(historyUrl+"?role=reviewer&type=apply",function (data) {
+    });
+}
 function showapplydata(item) {
 
     var rowInfo = "<tr></tr>";
@@ -498,7 +533,7 @@ function showapplydata(item) {
 
 
 }
-
 function getLocalTime(nS) {
     return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
 }
+

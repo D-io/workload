@@ -29,7 +29,7 @@
     <link href="${contextPath}/css/PNotify/pnotify.css" rel="stylesheet" type="text/css">--%>
 
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/bootstrap-timepicker.css" />
-    <link rel="stylesheet" type="text/css" href="${contextPath}/css/datepicker3.css" />
+    <link rel="stylesheet" type="text/css" href="${contextPath}/vendor/bootstrap-datepicker/css/datepicker3.css" />
     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/panel-content.css" />
 
@@ -199,17 +199,17 @@
 <script src="${contextPath}/js/ajax-ztree.js"></script>
 <script src="${contextPath}/js/Bftheme_jquery.js"></script>
 
-<script language='javascript' src="${contextPath}/js/theme.js"></script>
-<script language='javascript' src="${contextPath}/js/theme.custom.js"></script>
+<%--<script language='javascript' src="${contextPath}/js/theme.js"></script>
+<script language='javascript' src="${contextPath}/js/theme.custom.js"></script>--%>
 
 <!-- Theme Initialization Files -->
-<script language='javascript' src="${contextPath}/js/theme.init.js"></script>
-<script language='javascript' src="${contextPath}/vendor/js/nanoscroller.js"></script>
+<%--<script language='javascript' src="${contextPath}/js/theme.init.js"></script>
+<script language='javascript' src="${contextPath}/vendor/js/nanoscroller.js"></script>--%>
 <!-- 日历 -->
 
 <script language='javascript' src="${contextPath}/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
-<script language='javascript' src="${contextPath}/vendor/js/modernizr.js"></script>
+<%--<script language='javascript' src="${contextPath}/vendor/js/modernizr.js"></script>--%>
 
 <script language='javascript'src="${contextPath}/js/jquery.ztree.core.js"></script>
 <script language='javascript' src="${contextPath}/js/jquery.ztree.excheck.js"></script>
