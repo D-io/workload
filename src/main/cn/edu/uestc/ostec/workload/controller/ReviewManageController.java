@@ -18,7 +18,6 @@ import java.util.Map;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
-import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
@@ -26,12 +25,9 @@ import cn.edu.uestc.ostec.workload.event.SubjectEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
-import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
-import cn.edu.uestc.ostec.workload.service.SubjectService;
-import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGE_PATH;
@@ -41,7 +37,6 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.UserType.REVIEWER;
-import static cn.edu.uestc.ostec.workload.type.UserType.TEACHER;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -58,13 +53,7 @@ public class ReviewManageController extends ApplicationController {
 	private ItemService itemService;
 
 	@Autowired
-	private SubjectService subjectService;
-
-	@Autowired
 	private ItemConverter itemConverter;
-
-	@Autowired
-	private SubjectConverter subjectConverter;
 
 	@Autowired
 	private CategoryConverter categoryConverter;

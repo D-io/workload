@@ -45,9 +45,6 @@ public class CategoryManageController extends ApplicationController {
 	@Autowired
 	private CategoryConverter categoryConverter;
 
-	//	@Autowired
-	//	private UserRoleEvent userRoleEvent;
-
 	@Autowired
 	private CategoryEvent categoryEvent;
 

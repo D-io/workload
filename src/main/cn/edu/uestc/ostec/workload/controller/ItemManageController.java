@@ -52,10 +52,6 @@ import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-//TODO 工作量计算抽象，便于导入时调用
-//TODO 精简返回给前端页面的信息，减少数据量
-//TODO 获取需要导出的信息的抽象，便于导出Excel时调用
-
 /**
  * Version:v1.0 (description: 工作量条目信息管理控制器 )
  */
@@ -71,12 +67,6 @@ public class ItemManageController extends ApplicationController {
 
 	@Autowired
 	private CategoryService categoryService;
-
-	@Autowired
-	private SubjectService subjectService;
-
-	@Autowired
-	private SubjectConverter subjectConverter;
 
 	@Autowired
 	private SubjectEvent subjectEvent;
@@ -287,6 +277,9 @@ public class ItemManageController extends ApplicationController {
 				.calculate(category.getFormula(), newItemDto.getParameterValues());
 
 		if (GROUP.equals(newItemDto.getIsGroup())) {
+			if(!newItemDto.getGroupManagerId().equals(user.getUserId())) {
+				return invalidOperationResponse("非小组组长不能申报小组工作量");
+			}
 			List<Item> itemList = new ArrayList<>();
 			List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
 			List<JobDesc> jobDescList = newItemDto.getJobDescList();
