@@ -25,6 +25,7 @@ import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.JobDesc;
 import cn.edu.uestc.ostec.workload.event.FileEvent;
+import cn.edu.uestc.ostec.workload.event.SubjectEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.Item;
@@ -76,6 +77,9 @@ public class ItemManageController extends ApplicationController {
 
 	@Autowired
 	private SubjectConverter subjectConverter;
+
+	@Autowired
+	private SubjectEvent subjectEvent;
 
 	@Autowired
 	private FileEvent fileEvent;
@@ -510,18 +514,25 @@ public class ItemManageController extends ApplicationController {
 		}
 
 		Map<String, Object> data = getData();
+		boolean updateSuccess = false;
 
 		if (DOUBTED.equals(status)) {
-			Subject subject = new Subject();
-			subject.setItemId(itemId);
-			subject.setSendTime(DateHelper.getCurrentTimestamp());
-			subject.setSendFromId(user.getUserId());
-			subject.setMsgContent(message);
-			subjectService.addSubject(subject);
-			data.put("subject", subjectConverter.poToDto(subject));
+			//			Subject subject = new Subject();
+			//			subject.setItemId(itemId);
+			//			subject.setSendTime(DateHelper.getCurrentTimestamp());
+			//			subject.setSendFromId(user.getUserId());
+			//			subject.setMsgContent(message);
+			//			subjectService.addSubject(subject);
+			//			data.put("subject", subjectConverter.poToDto(subject));
+			item.setStatus(status);
+			updateSuccess = subjectEvent
+					.sendMessageAboutItem(item, message, user.getUserId());
+		} else {
+			updateSuccess = itemService.saveItem(item);
 		}
-		item.setStatus(status);
-		boolean updateSuccess = itemService.saveItem(item);
+//		item.setStatus(status);
+//		boolean updateSuccess = itemService.saveItem(item);
+
 		if (!updateSuccess) {
 			return systemErrResponse("更新状态失败");
 		}

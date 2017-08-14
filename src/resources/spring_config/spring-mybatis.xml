@@ -79,7 +79,7 @@
         <property name="dataSource" ref="dataSource" />  
     </bean>
 
-     <!-- 注解事务切面 -->
+     <!-- 注解事务切面，基于接口的代理 -->
      <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- 配置系统数据启动器-->

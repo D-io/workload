@@ -22,6 +22,7 @@ import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
+import cn.edu.uestc.ostec.workload.event.SubjectEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -68,6 +69,9 @@ public class ReviewManageController extends ApplicationController {
 	@Autowired
 	private CategoryConverter categoryConverter;
 
+	@Autowired
+	private SubjectEvent subjectEvent;
+
 	/**
 	 * 审核人审核Item信息
 	 *
@@ -103,22 +107,12 @@ public class ReviewManageController extends ApplicationController {
 
 		//设置为对应的状态
 		item.setStatus(status);
-		boolean saveSuccess = itemService.saveItem(item);
+		boolean saveSuccess = false;
 
 		Map<String, Object> data = getData();
 
-		//设置对应的Subject信息（有消息作为参数，同时为拒绝状态）
-		Subject subject = new Subject();
 		if (null != message && DENIED.equals(status)) {
-			subject.setMsgContent(message);
-			subject.setSendFromId(user.getUserId());
-			subject.setSendTime(DateHelper.getCurrentTimestamp());
-			subject.setItemId(itemId);//保存Subject信息
-			boolean saveMessageSuccess = subjectService.addSubject(subject);
-			if (!saveMessageSuccess || !saveSuccess) {
-				return systemErrResponse("更新状态失败");
-			}
-			data.put("subject", subjectConverter.poToDto(subject));
+			saveSuccess = subjectEvent.sendMessageAboutItem(item, message, user.getUserId());
 		}
 
 		if (!saveSuccess) {
@@ -214,7 +208,8 @@ public class ReviewManageController extends ApplicationController {
 
 	/**
 	 * 存疑解决工作量
-	 * @param itemId 工作量编号
+	 *
+	 * @param itemId          工作量编号
 	 * @param parameterValues 工作量主要参数
 	 * @param otherParameters 工作量其他参数
 	 * @return item
@@ -242,12 +237,6 @@ public class ReviewManageController extends ApplicationController {
 			return invalidOperationResponse("非法操作");
 		}
 
-		Subject subject = new Subject();
-		subject.setItemId(itemId);
-		subject.setSendFromId(user.getUserId());
-		subject.setSendTime(DateHelper.getCurrentTimestamp());
-		subject.setMsgContent(message);
-
 		//修改item的状态为CHECKED 存疑解决
 		item.setStatus(DOUBTED_CHECKED);
 
@@ -261,16 +250,13 @@ public class ReviewManageController extends ApplicationController {
 		double workload = FormulaCalculate.calculate(itemDto.getFormula(), parameters);
 		item.setWorkload(workload * Double.valueOf(item.getJsonChildWeight()));
 
-		boolean saveSuccess = itemService.saveItem(item);
-		boolean sendSuccess = subjectService.addSubject(subject);
-		if (!saveSuccess || !sendSuccess) {
-			return systemErrResponse("保存失败");
+		boolean saveSuccess = subjectEvent.sendMessageAboutItem(item, message, user.getUserId());
+		if (!saveSuccess) {
+			return systemErrResponse("更新状态失败");
 		}
-
 
 		Map<String, Object> data = getData();
 		data.put("item", itemConverter.poToDto(item));
-		data.put("subject",subjectConverter.poToDto(subject));
 
 		return successResponse(data);
 
