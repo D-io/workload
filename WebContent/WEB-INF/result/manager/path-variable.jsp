@@ -44,7 +44,7 @@
 
     var reviDoubleCheckUrl=reviewerManagerUrl+"/doubted-check";
 
-    var itemAuditorUrl=auditorManageUrl+"/categories";
+    var itemAuditorUrl=contextPath+"/reviewer/info/categories";
 
     var auditorManageItemUrl=auditorManageUrl+"/items";
 
@@ -92,11 +92,12 @@
 
     var TeacherInfoUrl=contextPath+"/common/teachers";
 
-    var currentTeaIdUrl=contextPath+"/common/user-Info";
+    var currentTeaIdUrl=contextPath+"/common/user-info";
 
     var historyUrl=contextPath+"/history/info/histories-user";
 
   /* $("[data-toggle='popover']").popover();*/
+
 
 
 

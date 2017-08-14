@@ -29,7 +29,7 @@
                 </li>
                 <li role="presentation"><a href="#tab_content2" id="history-tab" role="tab" data-toggle="tab" aria-expanded="false" onclick="reviewerRec()">导入复核情况</a>
                 </li>
-                <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
+                <li role="presentation"><a href="#tab_content3" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false" onclick="showRevieHistory()">查看历史记录</a>
                 </li>
 
             </ul>

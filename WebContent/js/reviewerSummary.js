@@ -39,9 +39,13 @@ function appendReviewerItem(data) {
         $(".sumItemSort tr:last td:eq(4)").append(str);
         var otherparamArray = Info.otherJsonParameters;
         var otherstr = '';
-        for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
-            otherstr += otherparamArray[otherparamCount].key + ':' + otherparamArray[otherparamCount].value;
+        if(otherparamArray!=null&&otherparamArray.length){
+            for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
+                otherstr += otherparamArray[otherparamCount].key + ':' + otherparamArray[otherparamCount].value;
+            }
+
         }
+
         $(".sumItemSort tr:last td:eq(5)").append(otherstr);
         var isGroup="";
         switch (Info.isGroup){

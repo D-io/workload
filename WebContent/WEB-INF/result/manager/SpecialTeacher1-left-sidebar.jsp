@@ -54,8 +54,8 @@
                 </li>--%>
                 <li class="active"><a><i class="fa fa-edit"></i> 工作当量管理 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: block;">
-                        <li onclick="importWorkload()"><a>工作当量导入</a></li>
-                        <li onclick="auditworkload()"><a>工作当量审核</a></li>
+                        <li><a  onclick="importWorkload()">工作当量导入</a></li>
+                        <li><a onclick="auditworkload()">工作当量审核</a></li>
                     </ul>
                 </li>
                 <li class="active"><a><i class="fa fa-desktop"></i> 工作当量统计<span class="fa fa-chevron-down"></span></a>
