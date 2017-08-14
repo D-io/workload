@@ -135,7 +135,6 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		String newDate = args[1].toString();
 
 		Category category = categoryService.getCategory(categoryId);
-		String date = categoryConverter.poToDto(category).getReviewDeadline();
 		if (null == category) {
 			return;
 		}
@@ -145,10 +144,11 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setOperation(
-				user.getName() + "于" + history.getCreateTime() + "将原审核截止时间" + date + "修改为"
+				user.getName() + "于" + history.getCreateTime() + "将审核截止时间提前到"
 						+ newDate);
 		history.setType(APPLY_SELF.equals(category.getImportRequired()) ? "apply" : "import");
 		//TODO 目标用户编号设置为所有人
+		history.setAimUserId(0000000);
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {

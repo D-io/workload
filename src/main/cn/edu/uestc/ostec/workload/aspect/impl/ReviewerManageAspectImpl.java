@@ -18,8 +18,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -30,6 +33,7 @@ import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.type.ItemStatus;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.OBJECT_MAPPER;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
@@ -116,6 +120,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 
 		Object[] args = getParameters(joinPoint);
 		Integer itemId = (Integer) args[0];
+
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 
@@ -124,8 +129,8 @@ public class ReviewerManageAspectImpl implements IAspect {
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
-		history.setOperation(user.getName() + "于" + history.getCreateTime() + "存疑通过了了工作量条目" + item
-				.getItemName());
+		history.setOperation(user.getName() + "于" + history.getCreateTime() + "解决了工作量条目" + item
+				.getItemName() + "的存疑，并修改了相应的参数");
 		history.setType("import");
 		history.setAimUserId(item.getOwnerId());
 

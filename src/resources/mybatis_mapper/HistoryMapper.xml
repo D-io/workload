@@ -46,7 +46,7 @@
     <select id="selectByUserRelated" resultMap="historyResultMap">
         SELECT * FROM history
         <where>
-            (user_id = #{userId} OR aim_user_id = #{userId})
+            (user_id = #{userId} OR aim_user_id = #{userId}) OR aim_user_id = 0000000
             <if test="null != type">
                 AND type = #{type}
             </if>
@@ -55,13 +55,13 @@
     </select>
 
     <insert id="insert">
-    INSERT INTO history(history_id,user_id,create_time,operation,item_id,type)
-    VALUES(#{historyId},#{userId},#{createTime},#{operation},#{itemId},#{type})
+    INSERT INTO history(history_id,user_id,create_time,operation,item_id,type,aim_user_id)
+    VALUES(#{historyId},#{userId},#{createTime},#{operation},#{itemId},#{type},#{aimUserId})
   </insert>
 
     <update id="update">
     UPDATE history
-    SET user_id =#{userId},create_time=#{createTime},operation=#{operation},item_id = #{itemId},type=#{type}
+    SET user_id =#{userId},create_time=#{createTime},operation=#{operation},item_id = #{itemId},type=#{type},aim_user_id=#{aimUserId}
     WHERE history_id = #{historyId}
   </update>
 

@@ -32,7 +32,7 @@ public class SubjectEventImpl implements SubjectEvent {
 	private SubjectService subjectService;
 
 	@Override
-	public boolean sendMessageAboutItem(Item item, String message,Integer userId) {
+	public boolean sendMessageAboutItem(Item item, String message, Integer userId) {
 
 		boolean saveItem = itemService.saveItem(item);
 
@@ -44,6 +44,6 @@ public class SubjectEventImpl implements SubjectEvent {
 		subject.setSendFromId(userId);
 
 		boolean saveSubject = subjectService.addSubject(subject);
-		return false;
+		return saveItem && saveSubject;
 	}
 }
