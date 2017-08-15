@@ -268,7 +268,7 @@
             </tbody>
         </table>
 <%--        <div class="col-sm-7">--%>
-            <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate" style="float: right;">
+           <%-- <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate" style="float: right;">
                 <ul class="pagination">
                     <li class="paginate_button previous disabled" id="datatable_previous">
                         <a href="#" aria-controls="datatable" data-dt-idx="0" tabindex="0">前一页</a>
@@ -279,7 +279,7 @@
                     <li class="paginate_button next" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="7" tabindex="0">下一页</a>
                     </li>
                 </ul>
-            </div>
+            </div>--%>
 
         <%--</div>--%>
 

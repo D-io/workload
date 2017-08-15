@@ -24,22 +24,22 @@
     <div class="x_content" id="showsumitem" style="display: block;">
         <div class="form-group col-sm-3">
             <select class="form-control" id="ispassed">
+                <option value="0">审核状态</option>
                 <option value="2">审核通过</option>
-                <option value="3">审核未通过</option>
-
+                <option value="5">审核拒绝</option>
             </select>
         </div>
 
         <div class="form-group col-sm-3">
             <select class="form-control" id="itemRequired">
-                <option>条目类别</option>
+                <option value="0">条目类别</option>
 
 
             </select>
         </div>
         <div class="form-group col-sm-3">
             <select class="form-control" id="teacherName">
-                <option>教师姓名</option>
+                <option value="0">教师姓名</option>
 
             </select>
         </div>
@@ -48,7 +48,7 @@
             <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
         </span>
             <span>
-            <button class="btn btn-success pull-right"><i class="fa fa-download"></i> 导出</button>
+            <button class="btn btn-success pull-right Toexcell"><i class="fa fa-download"></i> 导出</button>
         </span>
         </div>
         <!--
@@ -77,7 +77,7 @@
             <tbody class="sumItemSort">
             </tbody>
         </table>
-        <div style="float: right;">
+       <%-- <div style="float: right;">
             <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
                 <ul class="pagination">
                     <li class="paginate_button previous disabled" id="datatable_previous">
@@ -91,7 +91,7 @@
                 </ul>
             </div>
 
-        </div>
+        </div>--%>
 
     </div>
 </div>

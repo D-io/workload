@@ -102,12 +102,12 @@ function reset() {
     $.get(pageManageUrl+"?"+resetStr, function (data) {
         $('.right_hole').empty();
         $('.right_hole').append(data);
-        $.get(itemAllUrl+"?"+"status=5", function (data) {
+        $.get(itemAllUrl+"?"+"status=2", function (data) {
             reviewerResetItem(data);
         });
-        $.get(itemAllUrl+"?"+"status=0", function (data) {
+       /* $.get(itemAllUrl+"?"+"status=0", function (data) {
             reviewerResetItem(data);
-        });
+        });*/
 
     });
     $(document).on("click", ".reset_reviewer", function () {
@@ -140,7 +140,7 @@ function itemSummary() {
     $('.right_hole').empty();
     $.get(pageManageUrl+"?"+'regionName=Realmanager/itemSummary',function (result) {
         $('.right_hole').append(result);
-        $.get(itemAllUrl+"?"+"status=2",function (data) {
+        $.get(itemAllUrl,function (data) {
             appendAllItem(data);
 
         });
@@ -165,17 +165,80 @@ function itemSummary() {
 
     });
     $(document).on("click","#sumItemSearch",function () {
-        var option0=$("#ispassed option:selected");
-        var option1=$("#itemRequired option:selected");
-        var option2=$("#teacherName option:selected");
-        var option3=$("#datatable_length option:selected");
-
-        $.get(itemAllUrl+"?"+"categoryId="+option1.val()+"&ispassed="+option0.val()+"&ownerId="+option2.val()+"&pageNum=1&pageSize="+option3.val(),function (data) {
+        var option0=$("#ispassed option:selected").val();
+        var option1=$("#itemRequired option:selected").val();
+        var option2=$("#teacherName option:selected").val();
+        var option3=$("#datatable_length option:selected").val();
+        if(option0==0){
+            option0=null;
+        }
+        if(option1==0){
+            option1=null;
+        }
+        if(option2==0){
+            option2=null;
+        }
+        if(option3==0){
+            option3=null;
+        }
+        $.get(itemAllUrl,{
+            categoryId:option1,
+            status:option0,
+            ownerId:option2
+        },function (data) {
             $(".sumItemSort").empty();
             appendAllItem(data);
 
         });
     });
+
+    $(document).on("click",".Toexcell",function () {
+        var option0=$("#ispassed option:selected");
+        var option1=$("#itemRequired option:selected");
+        var option2=$("#teacherName option:selected");
+        var option3=$("#datatable_length option:selected");
+        /*$.get(itemAllUrl+"?"+"categoryId="+option1.val()+"&status="+option0.val()+"&ownerId="+option2.val()+"&isExport=yes",function (data) {
+
+        });*/
+        var form = $("<form>");
+        form.attr("style","display:none");
+       // form.attr("target","");
+        form.attr("method","get");
+      //  var strZipPath='categoryId="'+option1.val()+'"&status="'+option0.val()+'"&ownerId="'+option2.val()+'"&isExport="yes"';
+
+        form.attr("action",itemAllUrl);
+        if(option1.val()!=0){
+            var input1 = $("<input>");
+            input1.attr("type","hidden");
+            input1.attr("name","categoryId");
+            input1.attr("value",option1.val());
+            form.append(input1);
+        }
+       if(option0.val()!=0){
+           var input2 = $("<input>");
+           input2.attr("type","hidden");
+           input2.attr("name","status");
+           input2.attr("value",option0.val());
+           form.append(input2);
+       }
+        if(option2.val()!=0){
+            var input3 = $("<input>");
+            input3.attr("type","hidden");
+            input3.attr("name","ownerId");
+            input3.attr("value",option2.val());
+            form.append(input3);
+        }
+        var input4 = $("<input>");
+        input4.attr("type","hidden");
+        input4.attr("name","ifExport");
+        input4.attr("value","yes");
+        $("body").append(form);
+
+        form.append(input4);
+        form.submit();
+        form.remove();
+    })
+
 }
 function appendAllItem(data) {
     var rowInfo="<tr></tr>";
@@ -222,7 +285,19 @@ function appendAllItem(data) {
             }
             $(".sumItemSort tr:last td:eq(6)").text(isGroup);
             //  var act="<a href=\"#\" class=\"pass btn btn-primary\" type=\"button\">查看详情</a> ";
-            $(".sumItemSort tr:last td:eq(7)").text("确认通过");
+            var statusName='';
+            switch(Info.status){
+                case 2:statusName="确认通过";
+                break;
+                case 3:statusName="提交存疑";
+                break;
+                case 4:statusName="存疑解决";
+                break;
+                case 5:statusName="审核拒绝";
+                break;
+
+            }
+            $(".sumItemSort tr:last td:eq(7)").text(statusName);
         }
     }
 }

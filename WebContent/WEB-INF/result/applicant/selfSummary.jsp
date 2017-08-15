@@ -30,8 +30,9 @@
 
             </div>
             <span style="float: right;">
-            <button class="btn btn-success pull-right"><i class="fa fa-download"></i> 导出</button>
-        </span>
+           <%-- <button class="btn btn-success pull-right Toexcellowner"><i class="fa fa-download"></i> 导出</button>
+        --%>
+            </span>
             <table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;">
                 <thead>
                 <tr role="row">
