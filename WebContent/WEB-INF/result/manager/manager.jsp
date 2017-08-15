@@ -48,7 +48,38 @@
             font-size: 12px;
         }
         .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+        .bs-example-modal-lg .modal-dialog {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
 
+       .bs-example-modal-lg .modal-content {
+            /*overflow-y: scroll; */
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+       .bs-example-modal-lg .modal-body {
+            overflow-y: scroll;
+            position: absolute;
+            top: 55px;
+            bottom: 65px;
+            width: 100%;
+        }
+       .bs-example-modal-lg .modal-header{
+           position: absolute;
+
+       }
+        .bs-example-modal-lg .modal-footer {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+        }
     </style>
     <jsp:include page="path-variable.jsp"/>
 

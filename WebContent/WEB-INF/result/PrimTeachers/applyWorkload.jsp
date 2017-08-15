@@ -37,7 +37,7 @@
 
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                    <table class="table table-striped table-bordered dataTable no-footer reviewerRec border-aero" style="display: none;font-size: 14px;">
+                    <table class="table table-striped table-bordered dataTable no-footer reviewerRec border-aero" style="display: none;">
                         <thead>
                         <tr role="row">
                             <th class="sorting">序号</th>
@@ -59,7 +59,7 @@
                     </table>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="history-tab">
-                    <table class="table table-striped table-bordered dataTable no-footer reviewerRec" style="display: none;font-size: 14px;">
+                    <table class="table table-striped table-bordered dataTable no-footer reviewerRec">
                         <thead>
                         <tr role="row">
                             <th class="sorting">序号</th>

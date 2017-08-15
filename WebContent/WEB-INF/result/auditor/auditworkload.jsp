@@ -34,7 +34,19 @@
 
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                    <table class="table table-striped table-bordered dataTable no-footer reviewerRec">
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting">序号</th>
+                            <th class="sorting">操作时间</th>
+                            <th class="sorting">具体内容</th>
+                            <th class="sorting">操作形式</th>
 
+                        </tr>
+                        </thead>
+                        <tbody class="historyRecTbody">
+                        </tbody>
+                    </table>
                 </div>
 
 
@@ -50,12 +62,14 @@
                         <h4 class="modal-title" id="myModalLabel"></h4>
                     </div>
                     <div class="modal-body">
-                          <div class="applymodalbody" style="height: 60%;">
-                            <table class="table dataTable table-bordered no-footer table-striped myRevieweRec" style="font-size: 14px;">
-                                <thead class="showThead" style="display: none;font-size: 14px;">
+                          <div class="applymodalbody">
+                            <table class="table dataTable table-bordered no-footer table-striped myRevieweRec">
+                                <thead class="showThead" style="display: none;">
                                 <tr role="row">
                                 <th class="sorting">序号</th>
+                                <th class="sorting">申报人</th>
                                 <th class="sorting">条目名称</th>
+                                 <th class="sorting">所占权重</th>
                                 <th class="sorting">申报描述</th>
                                 <th class="sorting">申报形式</th>
                                 <th class="sorting">工作量</th>
@@ -65,7 +79,7 @@
                                 <th class="sorting">版本</th>
                                 <th class="sorting">审核截止时间</th>
                                 <th class="sorting">审核状态</th>
-                                <th class="sorting" style="width: 135px;">操作</th>
+                                <th class="sorting">操作</th>
                                 </tr>
                                 </thead>
 

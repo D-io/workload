@@ -227,14 +227,27 @@
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal -->
                     </div>
-
-
-                </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                    <table class="table table-striped table-bordered dataTable no-footer reviewerRec">
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting">序号</th>
+                            <th class="sorting">操作时间</th>
+                            <th class="sorting">具体内容</th>
+                            <th class="sorting">操作形式</th>
+
+                        </tr>
+                        </thead>
+                        <tbody class="historyRecTbody">
+                        </tbody>
+                    </table>
+                </div>
 
                 </div>
+
             </div>
-        </div>
+
+    </div>
         <div class="modal fade bs-example-modal-lg" id="importModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">

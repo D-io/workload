@@ -224,14 +224,16 @@ function showapplydata(item) {
         var Info = item[t];
         $(".showDesc").append(rowInfo);
 
-        for (var j = 0; j < 12; j++)//单元格
+        for (var j = 0; j < 14; j++)//单元格
         {
             $(".showDesc tr:last").append(cellInfo);
         }
         var id = t;
         $(".showDesc tr:last td:eq(0)").text(id + 1);
-        $(".showDesc tr:last td:eq(1)").text(Info.itemName);
-        $(".showDesc tr:last td:eq(2)").text(Info.applyDesc);
+        $(".showDesc tr:last td:eq(1)").text(Info.teacherName);
+        $(".showDesc tr:last td:eq(2)").text(Info.itemName);
+        $(".showDesc tr:last td:eq(3)").text(Info.jsonChildWeight);
+        $(".showDesc tr:last td:eq(4)").text(Info.applyDesc);
         var applyType='';
         switch (Info.isGroup){
             case 1:applyType="小组形式";
@@ -239,16 +241,16 @@ function showapplydata(item) {
             case 0:applyType="个人申报";
             break;
         }
-        $(".showDesc tr:last td:eq(3)").text(applyType);
-        $(".showDesc tr:last td:eq(4)").text(Info.workload);
-        $(".showDesc tr:last td:eq(5)").text();
+        $(".showDesc tr:last td:eq(5)").text(applyType);
+        $(".showDesc tr:last td:eq(6)").text(Info.workload);
+        $(".showDesc tr:last td:eq(7)").text(Info.formula);
         var paramArray = Info.parameterValues;
         var str = '';
         for (var paramCount = 0; paramCount < paramArray.length; paramCount++) {
 
             str += paramArray[paramCount].symbol + ':' + paramArray[paramCount].value;
         }
-        $(".showDesc tr:last td:eq(6)").text(str);
+        $(".showDesc tr:last td:eq(8)").text(str);
         var otherparamArray = Info.otherJsonParameters;
         var otherstr = '';
         if(otherparamArray!=null){
@@ -257,9 +259,9 @@ function showapplydata(item) {
             }
         }
 
-        $(".showDesc tr:last td:eq(7)").text(otherstr);
-        $(".showDesc tr:last td:eq(8)").text(Info.version);
-        $(".showDesc tr:last td:eq(9)").text('2017-12-31');
+        $(".showDesc tr:last td:eq(9)").text(otherstr);
+        $(".showDesc tr:last td:eq(10)").text(Info.version);
+        $(".showDesc tr:last td:eq(11)").text($(".checkDeadT_"+Info.categoryId).text());
         var statusName;
         switch (Info.status) {
             case -1:
@@ -284,11 +286,11 @@ function showapplydata(item) {
                 statusName = '审核拒绝';
                 break;
         }
-        $(".showDesc tr:last td:eq(10)").text(statusName);
-        $(".showDesc tr:last td:eq(10)").attr("id","reviewe_"+Info.itemId);
+        $(".showDesc tr:last td:eq(12)").text(statusName);
+        $(".showDesc tr:last td:eq(12)").attr("id","reviewe_"+Info.itemId);
 
         var act = "<a class=\"btn btn-success pass\" id=\"pass_" + Info.itemId + "\">审核通过</a><a class=\"btn btn-danger refuse\" data-toggle=\"modal\" data-target=\"#refuseModal\" id=\"refuse_" + Info.itemId + "\">审核拒绝</a> ";
-        $(".showDesc tr:last td:eq(11)").append(act);
+        $(".showDesc tr:last td:eq(13)").append(act);
     }
 
 }
@@ -309,6 +311,7 @@ function showall(menu_list, parent) {
         }
         else if(menu_list[menu].importRequired==0){
             $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<button  id='auditor_" + menu_list[menu].categoryId + "' class='btn btn-primary auditor' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击审核</button><div style='clear: both;'></div>").appendTo(parent);
+       $(".hiddendistrict").append("<span class='checkDeadT_"+menu_list[menu].categoryId+"' style='display: none;'>"+getLocalTime(menu_list[menu].reviewDeadline)+"</span>");
         }
 
     }
