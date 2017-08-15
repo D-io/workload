@@ -64,7 +64,7 @@ function ztree() {
                     'applyDeadline': appDeadline,
                     'formula': item.formula,
                     'reviewerId':item.reviewerId,
-                    'jsonParameters':item.jsonParameters,
+                    'formulaParameterList':item.formulaParameterList,
                     'otherJsonParameters':item.otherJsonParameters,
                     'isLeaf':item.isLeaf,
                     'importRequired':item.importRequired,
@@ -154,8 +154,8 @@ function ztree() {
 
             $('.AddPramter').empty();
             var jsonstrArray='';
-            if(treeNode.jsonParameters!=null) {
-                jsonstrArray = treeNode.jsonParameters;
+            if(treeNode.formulaParameterList!=null) {
+                jsonstrArray = treeNode.formulaParameterList;
             }
             /*else {
              jsonstrArray='';
@@ -223,7 +223,7 @@ function ztree() {
                         importRequired: radio.val(),
                         version: $('#version').val(),
                         categoryId: treeNode.id,
-                        jsonParameters: newArray,
+                        formulaParameterList: newArray,
                         otherJson:otherArray
                     },
                     function (data) {
@@ -246,7 +246,7 @@ function ztree() {
                                     'applyDeadline': appDeadline,
                                     'formula': data.data.category.formula,
                                     'reviewerId':data.data.category.reviewerId,
-                                    'jsonParameters':data.data.category.jsonParameters,
+                                    'formulaParameterList':data.data.category.formulaParameterList,
                                     'isLeaf':data.data.category.isLeaf,
                                     'importRequired':data.data.category.importRequired,
                                     'otherJsonParameters':data.data.category.otherJsonParameters
@@ -423,7 +423,7 @@ function ztree() {
                             'applyDeadline': appDeadline,
                             'formula': data.data.category.formula,
                             'reviewerId':data.data.category.reviewerId,
-                            'jsonParameters':data.data.category.jsonParameters,
+                            'formulaParameterList':data.data.category.formulaParameterList,
                             'otherJsonParameters':data.data.category.otherJsonParameters,
                             'isLeaf':data.data.category.isLeaf,
                             'importRequired':data.data.category.importRequired
@@ -514,7 +514,7 @@ function ztree() {
                         'applyDeadline':y[1]/y[2]/y[0],
                         'formula':data.data.category.formula,
                         'reviewerId':data.data.category.reviewerId,
-                        'jsonParameters':data.data.category.jsonParameters,
+                        'formulaParameterList':data.data.category.formulaParameterList,
                         'otherJsonParameters':data.data.category.otherJsonParameters,
                         'isLeaf':data.data.category.isLeaf,
                         'importRequired':data.data.category.importRequired

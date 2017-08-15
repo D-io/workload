@@ -1,4 +1,13 @@
 $(document).ready(function () {
+    $(function () {
+        $(".datepicker").datepicker({
+            language: "zh-CN",
+            autoclose: true,//选中之后自动隐藏日期选择框
+            clearBtn: true,//清除按钮
+            todayBtn: true,//今日按钮
+            format: "yyyy-mm-dd"//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
+        });
+    });
     getSideBar(currentRole,roleList);
     $.get(commonYearsUrl,function (data) {
         var arry=new Array;
