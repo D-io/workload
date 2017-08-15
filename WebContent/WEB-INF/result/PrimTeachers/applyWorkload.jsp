@@ -162,10 +162,10 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                 </label>
                                 <label>
-                                    <input type="radio"  value="0"  name="optionsRadios" class="radioChange"> 个人申报
+                                    <input type="radio"  value="0"  name="optionsRadios" class="showradioChange"> 个人申报
                                 </label>
                                 <label>
-                                    <input type="radio"  value="1"  name="optionsRadios" class="radioChange"> 小组申报
+                                    <input type="radio"  value="1"  name="optionsRadios" class="showradioChange"> 小组申报
                                 </label>
                             </div>
                             <div class="form-group">
@@ -335,10 +335,10 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                 </label>
                                 <label>
-                                    <input type="radio" value="0"  name="showoptionsRadios" class="radioChange changeDis" id="single"> 个人申报
+                                    <input type="radio" value="0"  name="showoptionsRadios" class="radioChange changeDis showradioChange" id="single"> 个人申报
                                 </label>
                                 <label>
-                                    <input type="radio"  value="1"  name="showoptionsRadios" class="radioChange changeDis" id="group"> 小组申报
+                                    <input type="radio"  value="1"  name="showoptionsRadios" class="radioChange changeDis showradioChange" id="group"> 小组申报
                                 </label>
                             </div>
                             <div class="form-group">
@@ -410,7 +410,7 @@
                                 </div>
                                 <span><a class="downloadAdded">查看附件</a></span>
                             </div>
-                            <div class="form-group item_manager" style="display: none;">
+                            <div class="form-group showitem_manager" style="display: none;">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">项目负责人</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <select class="form-control teacherName changeDis" id="showitemmanager">
@@ -427,7 +427,7 @@
                                  </div>
                                  -->
 
-                            <div class="form-group item_group" style="display: none;">
+                            <div class="form-group showitem_group" style="display: none;">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组成员</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 

@@ -299,14 +299,16 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">审核截止时间</label>
-                                <div class="col-sm-9">
-                                    <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </span>
-                                        <input type="text" data-plugin-datepicker class="form-control" id="reviewDeadline">
-                                    </div>
-                                </div>
+                                 <div class="col-sm-9">
+                                     <div class="input-group">
+                                             <span class="input-group-addon">
+                                                 <i class="fa fa-calendar"></i>
+                                             </span>
+                                         <input type="text" data-plugin-datepicker class="form-control" id="reviewDeadline">
+                                     </div>
+                                 </div>
+
+
 
                             </div>
 

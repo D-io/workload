@@ -14,7 +14,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="HTML5 Admin Template" />
+    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
+    <meta name="author" content="okler.net">
 
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <!-- Web Fonts  -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
     <title>教学工作量计算系统 | </title>
 
     <!-- Bootstrap -->
@@ -23,15 +31,15 @@
     <link href="${contextPath}/vendor/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
     <!-- bootstrap-progressbar -->
     <link href="${contextPath}/vendor/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.css" rel="stylesheet" type="text/css">
-    <!--PNotify-->
-    <%--<link href="${contextPath}/css/PNotify/pnotify.buttons.css" rel="stylesheet" type="text/css">
-    <link href="${contextPath}/css/PNotify/pnotify.nonblock.css" rel="stylesheet" type="text/css">
-    <link href="${contextPath}/css/PNotify/pnotify.css" rel="stylesheet" type="text/css">--%>
 
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/bootstrap-timepicker.css" />
-    <link rel="stylesheet" type="text/css" href="${contextPath}/vendor/bootstrap-datepicker/css/datepicker3.css" />
+
+   <link rel="stylesheet" type="text/css" href="${contextPath}/vendor/bootstrap-datepicker/css/datepicker3.css" />
     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/panel-content.css" />
+
+    <link rel="stylesheet" type="text/css" href="${contextPath}/css/normalize.css" />
+
 
     <!-- Skin CSS (颜色)-->
    <%-- <link rel="stylesheet" href="${contextPath}/css/default.css" />--%>
@@ -136,34 +144,6 @@
                             </a>
                         </div>
 
-                        <%--<li role="presentation" class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-envelope-o"></i>
-                                <span class="badge bg-green">学期切换</span>
-                            </a>
-                            <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                                <li>
-                                    <a href="#">
-                                 &lt;%&ndash;       <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-
-                        </span>&ndash;%&gt;
-                                           2016-2017
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        &lt;%&ndash;<span></span>&ndash;%&gt;
-                                        2017-2018
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>--%>
                     </ul>
                 </nav>
             </div>
@@ -208,20 +188,18 @@
 </div>
 
 <!-- jQuery -->
-<script language='javascript' src="${contextPath}/vendor/js/jquery.js"></script>
+<%--<script language='javascript' src="${contextPath}/vendor/js/jquery.js"></script>--%>
+<script language='javascript' src="${contextPath}/js/jquery.min.js"></script>
 <!-- Bootstrap -->
-<script language='javascript' src="${contextPath}/vendor/js/bootstrap.js"></script>
+<script language='javascript' src="${contextPath}/js/bootstrap.min.js"></script>
+<%--<script language='javascript' src="${contextPath}/vendor/js/bootstrap.js"></script>--%>
 
 <!-- bootstrap-progressbar -->
 <script src="${contextPath}/vendor/bootstrap-progressbar/js/bootstrap-progressbar.min.js"></script>
-<!--PNotify-->
-<%--<script src="${contextPath}/vendor/PNotify/pnotify.buttons.js"></script>
-<script src="${contextPath}/vendor/PNotify/pnotify.nonblock.js"></script>
-<script src="${contextPath}/vendor/PNotify/pnotify.js"></script>--%>
+
 <!-- Custom Theme Scripts -->
 
-<script src="${contextPath}/vendor/js/custom.js"></script>
-
+<script src="${contextPath}/js/custom.min.js"></script>
 <script src="${contextPath}/js/reviewRecord.js"></script>
 <script src="${contextPath}/js/treenodeList.js"></script>
 <script src="${contextPath}/js/reviewerSummary.js"></script>
@@ -230,17 +208,8 @@
 <script src="${contextPath}/js/ajax-ztree.js"></script>
 <script src="${contextPath}/js/Bftheme_jquery.js"></script>
 
-<%--<script language='javascript' src="${contextPath}/js/theme.js"></script>
-<script language='javascript' src="${contextPath}/js/theme.custom.js"></script>--%>
-
-<!-- Theme Initialization Files -->
-<%--<script language='javascript' src="${contextPath}/js/theme.init.js"></script>
-<script language='javascript' src="${contextPath}/vendor/js/nanoscroller.js"></script>--%>
-<!-- 日历 -->
-
 <script language='javascript' src="${contextPath}/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-
-<%--<script language='javascript' src="${contextPath}/vendor/js/modernizr.js"></script>--%>
+<script language='javascript' src="${contextPath}/vendor/js/modernizr.js"></script>
 
 <script language='javascript'src="${contextPath}/js/jquery.ztree.core.js"></script>
 <script language='javascript' src="${contextPath}/js/jquery.ztree.excheck.js"></script>

@@ -297,9 +297,9 @@ function applyworkload() {
                         $(".tbody tr:last td:eq(0)").text(id);
                         $(".tbody tr:last td:eq(1)").text(Info.itemName);
                         $(".tbody tr:last td:eq(2)").text(Info.workload);
-                        $(".tbody tr:last td:eq(3)").attr("class","applyDead")
+                      //  $(".tbody tr:last td:eq(3)").attr("class","applyDead");
                       //  $(".tbody tr:last td:eq(3)").text($(""));
-                        $(".applyDead").text($(".applyDeadline_"+reg).text());
+                        $(".tbody tr:last td:eq(3)").text($(".applyDeadline_"+reg).text());
                         var statusName;
                         switch (Info.status) {
                             case 0:

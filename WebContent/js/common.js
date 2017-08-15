@@ -354,6 +354,19 @@ $(document).ready(function () {
 
         }
     });
+    $(document).on("click",".showradioChange",function () {
+        var selectedvValue=$("input[name='showoptionsRadios']:checked").val();
+        if(selectedvValue=="1"){
+            $(".showitem_manager").show();
+            $(".showitem_group").show();
+
+        }
+        else {
+            $(".showitem_manager").css("display","none");
+            $(".showitem_group").css("display","none");
+
+        }
+    });
     $(document).off("click","#addGroupMessage");
     $(document).on("click","#addGroupMessage",function () {
         var addMessage="<tr><td><select class='groupMemberName teacherName' style='width: 30%;'><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol'></td><td><input type='text' class='groupMemberWeight'></td></tr>";
@@ -407,6 +420,8 @@ $(document).ready(function () {
         if(window.Temp[newReg-1].isGroup==0){
             $("#single").attr("checked",'checked');
             $("#group").attr("disabled","true");
+            $(".item_manager").hide();
+            $(".item_group").hide();
 
         }
         else{
@@ -422,7 +437,7 @@ $(document).ready(function () {
 
         }
         var showOtherPara=window.Temp[newReg-1].otherJsonParameters;
-        if(showOtherPara.length){
+        if(showOtherPara!=null){
             for(var n=0;n<showOtherPara.length;n++){
                 $(".showotherparameterName").eq(n).val(showOtherPara[n].value);
 
@@ -451,7 +466,12 @@ $(document).ready(function () {
         $(".showgroupMemberSymbol").attr("disabled","true");
         $(".showgroupMemberWeight").attr("disabled","true");
     });
+
     var currentId='';
+    var CurrentName='';
+    $.get(currentTeaIdUrl,function (data) {
+        CurrentName =data.data.teacher.name;
+    });
     $(document).on("click",".editApply",function () {
         var editId=parseInt(this.id.match(/\d+/g));
         $(".savemyApplyAgain").attr("id",editId);
@@ -939,8 +959,8 @@ $(document).ready(function () {
                 data: {
                     categoryId: window.Categry,
                     itemId:saveReg,
-                    itemName: $('#itemName').val(),
-                    applyDesc: $('#applyDesc').val(),
+                    itemName: $('#showitemName').val(),
+                    applyDesc: $('#showapplyDesc').val(),
                     //   workload: $('#workload').val(),
                     //   ownerId: applicant.val(),
                     groupManagerId: itemmanager.val(),

@@ -168,7 +168,7 @@ function itemSummary() {
         var option0=$("#ispassed option:selected").val();
         var option1=$("#itemRequired option:selected").val();
         var option2=$("#teacherName option:selected").val();
-        var option3=$("#datatable_length option:selected").val();
+      //  var option3=$("#datatable_length option:selected").val();
         if(option0==0){
             option0=null;
         }
@@ -178,9 +178,7 @@ function itemSummary() {
         if(option2==0){
             option2=null;
         }
-        if(option3==0){
-            option3=null;
-        }
+
         $.get(itemAllUrl,{
             categoryId:option1,
             status:option0,
@@ -196,7 +194,7 @@ function itemSummary() {
         var option0=$("#ispassed option:selected");
         var option1=$("#itemRequired option:selected");
         var option2=$("#teacherName option:selected");
-        var option3=$("#datatable_length option:selected");
+       // var option3=$("#datatable_length option:selected");
         /*$.get(itemAllUrl+"?"+"categoryId="+option1.val()+"&status="+option0.val()+"&ownerId="+option2.val()+"&isExport=yes",function (data) {
 
         });*/
