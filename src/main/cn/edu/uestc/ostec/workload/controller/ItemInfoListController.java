@@ -92,7 +92,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		List<ItemDto> itemDtoList = itemService
-				.findAll(categoryId, status, null, ownerId, getCurrentSemester());
+				.findAll(categoryId, status, ownerId, null, getCurrentSemester());
 		if (isEmptyList(itemDtoList)) {
 			return successResponse();
 		}
