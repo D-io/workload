@@ -83,21 +83,7 @@ function ownerApply(domId) {
 
                     },
                     success: function (data) {
-                        /*var $showThead=$(".showThead");
-                         if($showThead.css("display")=="none"){
-                         $(".showThead").show();
-                         }
 
-                         $(".showDesc").append("<tr><td>'+data.data.itemList.itemId+'</td><td>'+data.data.itemList.itemName+'</td><td>data.data.itemList.workload</td><td>未提交状态</td><td><a class='btn btn-primary"+data.data.itemList.itemId+"' data-target='#showContent' data-toggle='modal'>查看详情</a></td></tr>")
-                         $(document).on("click","."+data.data.itemList.itemId,function () {
-                         $(".changeDis").attr("disabled","true");
-                         $("#showitemName").val(data.data.itemList.itemName);
-                         $("#showapplyDesc").val(data.data.itemList.applyDesc);
-
-                         });
-                         $(document).on("click",".editApply",function () {
-                         $(".changeDis").attr("disabled","false");
-                         })*/
                         var analyseList = data.data.itemList;
                         var listLength = data.data.itemList.length;
                         var rowInfo = "<tr></tr>";
