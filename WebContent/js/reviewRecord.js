@@ -171,6 +171,7 @@ function  reviewerRec() {
             var listLength= data.data.itemList.length;
             for(var i=0;i<listLength;i++)
             {
+                RevNum++;
                 var Info=analyseList[i];
                 $(".reviewerRecTbody").append(rowInfo);
                 for(var j=0;j<12;j++)//单元格
@@ -347,8 +348,8 @@ function applyworkload() {
                         $('.AddPramter').append("<td><input type='text' class='parameterName'></td>");
                         $('.showparameterTh').append("<th class='showpramterDesc' id='"+symbolname+"'>"+item[comp].formulaParameterList[t].desc+"</th>");
                         $('.showAddPramter').append("<td><input type='text' class='showparameterName'></td>");*/
-                        $('#parameterTable').append("<tr><th class='pramterDesc' id='"+symbolname+"'>"+item[comp].formulaParameterList[t].desc+"</th><td><input type='text' class='parameterName'></td></tr>");
-                        $("#showparameterTable").append("<tr><th class='showpramterDesc' id='"+symbolname+"'>"+item[comp].formulaParameterList[t].desc+"</th><td><input type='text' class='showparameterName'></td></tr>")
+                        $('#parameterTable').append("<tr><th class='pramterDesc' id='"+symbolname+"' style='font-size: 13px;'>"+item[comp].formulaParameterList[t].desc+"</th><td><input type='text' class='parameterName'></td></tr>");
+                        $("#showparameterTable").append("<tr><th class='showpramterDesc' id='"+symbolname+"' style='font-size: 13px;'>"+item[comp].formulaParameterList[t].desc+"</th><td><input type='text' class='showparameterName'></td></tr>")
                     }
                     for(var s=0;s<item[comp].otherJsonParameters.length;s++){
 
@@ -356,8 +357,8 @@ function applyworkload() {
                         $('#AddOtherPramter').append( "<td><input type='text' class='otherparameterName'></td>");
                         $('.showotherParaTh').append("<th class='showotherPramterkey'>"+item[comp].otherJsonParameters[s].key+"</th>");
                         $('#showAddOtherPramter').append("<td><input type='text' class='showotherparameterName'></td>");*/
-                        $('#otherparameterTable').append("<tr><th class='otherPramterkey'>"+item[comp].otherJsonParameters[s].key+"</th><td><input type='text' class='otherparameterName'></td></tr>");
-                        $('#showotherparameterTable').append("<tr><th class='showotherPramterkey'>"+item[comp].otherJsonParameters[s].key+"</th><td><input type='text' class='showotherparameterName'></td></tr>");
+                        $('#otherparameterTable').append("<tr><th class='otherPramterkey' style='font-size: 13px'>"+item[comp].otherJsonParameters[s].key+"</th><td><input type='text' class='otherparameterName'></td></tr>");
+                        $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>"+item[comp].otherJsonParameters[s].key+"</th><td><input type='text' class='showotherparameterName'></td></tr>");
                     }
 
                 }
