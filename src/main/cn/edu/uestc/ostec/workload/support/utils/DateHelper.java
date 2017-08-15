@@ -184,7 +184,7 @@ public class DateHelper {
 
 	public static int getCurrentScheme() {
 
-		if(getCurrentMonth() >= 8) {
+		if(getCurrentMonth() >= 8 || getCurrentMonth() <= 2) {
 			return 1;
 		} else {
 			return 2;

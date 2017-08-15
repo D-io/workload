@@ -16,7 +16,7 @@ import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_IDENTIFI
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
 
 /**
- * Description:标准session域属性上下文 Version:v1.0 (author:刘文哲 update: 无 )
+ * Description:标准session域属性上下文 Version:v1.0
  */
 public interface StandardSessionAttributeContext extends ServletContextAdapter {
 

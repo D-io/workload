@@ -352,15 +352,15 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			return invalidOperationResponse();
 		}
 
-		if (UNCOMMITTED.equals(fileInfo.getStatus())) {
+		if (!SUBMITTED.equals(fileInfo.getStatus())) {
 			return invalidOperationResponse("无法提交");
 		}
 
-		fileInfo.setStatus(SUBMITTED);
-		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
-		if (!submitSuccess) {
-			return systemErrResponse("文件上传失败");
-		}
+//		fileInfo.setStatus(SUBMITTED);
+//		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
+//		if (!submitSuccess) {
+//			return systemErrResponse("文件上传失败");
+//		}
 
 		Map<String, Object> data = getData();
 		data.put("fileInfo", fileInfo);
@@ -373,6 +373,10 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		if (null == category) {
 			return invalidOperationResponse();
 		}
+		if(DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
+			return invalidOperationResponse("上传已经截止");
+		}
+
 		CategoryDto categoryDto = categoryConverter.poToDto(category);
 
 		Map<String, Object> errorData = getData();

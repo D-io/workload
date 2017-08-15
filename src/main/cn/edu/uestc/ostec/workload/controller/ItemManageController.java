@@ -498,6 +498,11 @@ public class ItemManageController extends ApplicationController {
 		}
 
 		Item item = itemService.findItem(itemId);
+		Category category = categoryService.getCategory(item.getCategoryId());
+		if(DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
+			return invalidOperationResponse("复核已经截止");
+		}
+
 		if (!NON_CHECKED.equals(item.getStatus())) {
 			return invalidOperationResponse();
 		}

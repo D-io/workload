@@ -28,6 +28,7 @@ import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGE_PATH;
@@ -86,6 +87,10 @@ public class ReviewManageController extends ApplicationController {
 
 		//参数校验
 		Item item = itemService.findItem(itemId);
+		Category category = categoryService.getCategory(item.getCategoryId());
+		if(DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
+			return invalidOperationResponse("审核已经截止");
+		}
 		if (null == item) {
 			return parameterNotSupportResponse("无效参数");
 		}

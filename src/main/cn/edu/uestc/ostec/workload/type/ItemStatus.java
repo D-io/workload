@@ -6,7 +6,7 @@ package cn.edu.uestc.ostec.workload.type;
 public enum ItemStatus {
 
 	UNCOMMITTED(0, "未提交"), NON_CHECKED(1, "待审核"), CHECKED(2, "审核通过"), DOUBTED(3,
-			"存疑"), DOUBTED_CHECKED(4, "存疑通过"), DENIED(5, "拒绝"), DISABLE(-1, "删除");
+			"存疑"), DOUBTED_CHECKED(4, "存疑解决"), DENIED(5, "拒绝"), DISABLE(-1, "删除");
 
 	private Integer status;
 

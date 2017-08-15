@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.uestc.ostec.workload.BaseTest;
+import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.RoleInfo;
 import cn.edu.uestc.ostec.workload.event.UserRoleEvent;
+import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.Teacher;
 import cn.edu.uestc.ostec.workload.pojo.User;
@@ -26,6 +28,8 @@ public class ItemDaoTest extends BaseTest {
 
 	private ItemDao itemDao;
 
+	private CategoryDao categoryDao;
+
 	private HistoryService historyService;
 
 	private Item item;
@@ -36,6 +40,7 @@ public class ItemDaoTest extends BaseTest {
 
 	{
 		itemDao = getBean(ItemDao.class);
+		categoryDao = getBean(CategoryDao.class);
 		historyService = getBean(HistoryService.class);
 		userRoleEvent = getBean(UserRoleEvent.class);
 		teacherDao = getBean(TeacherDao.class);
@@ -76,6 +81,16 @@ public class ItemDaoTest extends BaseTest {
 	public void delete() throws Exception {
 //		System.out.println(itemDao.delete(1));
 //		System.out.println(itemDao.selectAll(null,null,null));
+	}
+
+	@Test
+	public void test() {
+		List<Category> categoryList = categoryDao.selectAll("2017-2018-1");
+		for(Category category:categoryList) {
+			category.setApplyDeadline(1517414400);
+			category.setReviewDeadline(1517760000);
+			categoryDao.update(category);
+		}
 	}
 
 }
