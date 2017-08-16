@@ -223,7 +223,7 @@ function ztree() {
                         importRequired: radio.val(),
                         version: $('#version').val(),
                         categoryId: treeNode.id,
-                        formulaParameterList: newArray,
+                        jsonParameters: newArray,
                         otherJson:otherArray
                     },
                     function (data) {
@@ -234,8 +234,8 @@ function ztree() {
                         var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
                         var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];
 
-                        for (var i = 0; i < window.zNodes.length; i++) {
-                            if (window.zNodes[i].id == data.data.category.categoryId) {
+                        for (var i = 0; i < zNodes.length; i++) {
+                            if (zNodes[i].id == data.data.category.categoryId) {
 
                                 var newNode = {
                                     'name': data.data.category.name,
@@ -252,11 +252,11 @@ function ztree() {
                                     'otherJsonParameters':data.data.category.otherJsonParameters
                                 };
 
-                                zTree.updateNode(window.zNodes[i]);
+                                zTree.updateNode(zNodes[i]);
                                 $('#'+treeNode.tId+'_span').text(newNode.name);
 
-                                window.zNodes.splice(i, 1, newNode);
-                                $.fn.zTree.init($("#treeDemo"), setting, window.zNodes);
+                                zNodes.splice(i, 1, newNode);
+                                $.fn.zTree.init($("#treeDemo"), setting, zNodes);
                             }
                         }
 
@@ -360,14 +360,16 @@ function ztree() {
 
                 $('#itemName').val(null);
                 $('#desc').val(null);
-                $('#reviewerId').val(null);
+                $('#teacherName').val(null);
                 $("#parentId").attr("disabled","disabled");
                 $('#parentId').val(treeNode.name);
                 $('#applyDeadline').val(null);
                 $('#reviewDeadline').val(null);
                 $('#formula').val(null);
-                $('.parameterSymbol').val(null);
-                $('.parameterName').val(null);
+               /* $('.parameterSymbol').val(null);
+                $('.parameterName').val(null);*/
+                $(".addOtherPramter").empty();
+                $(".addOtherPramter").empty();
 
              //   $('.AddPramter').empty();
                 $('#save').unbind('click');
@@ -431,7 +433,7 @@ function ztree() {
 
                         newNode = zTree.addNodes(treeNode, newNode);
 
-                        window.zNodes.push(newNode);
+                        zNodes.push(newNode);
 
                     });
                     $('#addModal').modal('hide');
@@ -520,7 +522,7 @@ function ztree() {
                         'importRequired':data.data.category.importRequired
                     };
                     newNode = zTree.addNodes(null, newNode);
-                    window.zNodes.push(newNode);
+                    zNodes.push(newNode);
                 }, "json");
 
                 $('#addModal').modal('hide');
@@ -578,7 +580,7 @@ function ztree() {
 
 
     }
-    $.fn.zTree.init($("#treeDemo"), setting, window.zNodes);
+    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
    // $("#selectAll").bind("click", selectAll);
 }
 
