@@ -304,8 +304,9 @@ function ownerApply(domId) {
                             {
                                 $(".tbody tr:last").append(cellInfo);
                             }
-
-                            $(".tbody tr:last td:eq(0)").text(parseInt(parseInt($(".tbody tr:last td:eq(0)").text())) + 1);
+                            var $itemCt=$(".itemCount");
+                            $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
+                            $(".tbody tr:last td:eq(0)").attr("class","itemCount");
                             $(".tbody tr:last td:eq(1)").text(Info.itemName);
                            /* var count="";*/
                            /* var CountId="";
@@ -434,8 +435,8 @@ function ownerApply(domId) {
                             $("#showitemmanager option[value='"+Info[0].groupManagerId+"']").attr("selected","selected");
 
                             $('#showAddgroupPramter').empty();*/
-                           $(".item_manager").hide();
-                           $(".item_group").hide();
+                           $(".showitem_manager").hide();
+                           $(".showitem_group").hide();
 
 
                         });
