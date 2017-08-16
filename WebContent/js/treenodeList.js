@@ -97,17 +97,20 @@ function ownerApply(domId) {
                             {
                                 $(".tbody tr:last").append(cellInfo);
                             }
-                            var number=parseInt($(".tbody tr:last td:eq(0)").text());
-                            $(".tbody tr:last td:eq(0)").text(number++);
+                            var $itemCt=$(".itemCount");
+                            $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
+                            $(".tbody tr:last td:eq(0)").attr("class","itemCount");
                             $(".tbody tr:last td:eq(1)").text(Info[0].itemName);
                             var count="";
                             var CountId="";
                             var CategId="";
+                            var CateValue="";
                             for (var i = 0; i < listLength; i++) {
                                 if (Info[i].teacherName == CurrentName) {
                                      count = Info[i].workload;
                                      CountId = Info[i].itemId;
                                      CategId = Info[i].categoryId;
+                                     CateValue=Info[i].ownerId;
                                 }
                             }
                             $(".tbody tr:last td:eq(2)").text(count);
@@ -143,6 +146,7 @@ function ownerApply(domId) {
                             var CategId="";
 
                             $(".tbody tr:last td:eq(0)").text(parseInt("1"));
+                            $(".tbody tr:last td:eq(0)").attr("class","itemCount");
                             $(".tbody tr:last td:eq(1)").text(Info[0].itemName);
                             for (var i = 0; i < listLength; i++) {
                                 if (Info[i].teacherName == CurrentName)
@@ -166,7 +170,7 @@ function ownerApply(domId) {
                         var formdata = new FormData;
                         formdata.append("file", $("#formName")[0].files[0]);
                         $.ajax({
-                            url: importProofUrl + "?itemId=" + analyseList,
+                            url: importProofUrl + "?itemId=" + CountId,
                             type: "POST",
                             dataType: "JSON",
                             data: formdata,
@@ -220,8 +224,8 @@ function ownerApply(domId) {
                             else{
                                 $("#group").attr("checked",'checked');
                                 $("#single").attr("disabled","true");
-                                $(".item_manager").show();
-                                $(".item_group").show();
+                                $(".showitem_manager").show();
+                                $(".showitem_group").show();
                             }
                             /*$(".showAddPramter").empty();
                             $(".showAddOtherPramter").empty();
@@ -249,8 +253,9 @@ function ownerApply(domId) {
                             if($group&&$group.length){
                                 for(var pramterCount=0;pramterCount<$(".groupMember_"+newReg).length;pramterCount++){
 
-                                    addStr="<tr><td><select class='showgroupMemberName teacherName' style='width: 30%;'><option selected='selected'>"+$(".groupMember_"+newReg).eq(pramterCount).text()+"</option></select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
+                                    addStr="<tr><td><select class='showgroupMemberName teacherName' style='width: 30%;'></select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
                                     $('#showAddgroupPramter').append(addStr);
+                                    $(".showgroupMemberName").eq(pramterCount).append("<option value='"+CateValue+"' selected='selected'>"+$(".groupMember_"+newReg).eq(pramterCount).text()+"</option>");
                                     $(".showgroupMemberSymbol").eq(pramterCount).val($(".jobDesc_"+newReg).eq(pramterCount).text());
                                     $(".showgroupMemberWeight").eq(pramterCount).val($(".jobWeight_"+newReg).eq(pramterCount).text());
                                 }

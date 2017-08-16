@@ -293,7 +293,7 @@
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
-                                        <input type="text" data-plugin-datepicker class="form-control" id="applyDeadline">
+                                        <input type="text" data-plugin-datepicker class="form-control datepicker" id="applyDeadline">
                                     </div>
                                 </div>
                             </div>
@@ -304,7 +304,7 @@
                                              <span class="input-group-addon">
                                                  <i class="fa fa-calendar"></i>
                                              </span>
-                                         <input type="text" data-plugin-datepicker class="form-control" id="reviewDeadline">
+                                         <input type="text" data-plugin-datepicker class="form-control datepicker" id="reviewDeadline">
                                      </div>
                                  </div>
 

@@ -162,10 +162,10 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                 </label>
                                 <label>
-                                    <input type="radio"  value="0"  name="optionsRadios" class="showradioChange"> 个人申报
+                                    <input type="radio"  value="0"  name="optionsRadios" class="radioChange"> 个人申报
                                 </label>
                                 <label>
-                                    <input type="radio"  value="1"  name="optionsRadios" class="showradioChange"> 小组申报
+                                    <input type="radio"  value="1"  name="optionsRadios" class="radioChange"> 小组申报
                                 </label>
                             </div>
                             <div class="form-group">
