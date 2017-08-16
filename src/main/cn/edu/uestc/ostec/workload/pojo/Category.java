@@ -203,4 +203,75 @@ public class Category {
 				+ '\'' + ", status='" + status + '\'' + ", reviewDeadline=" + reviewDeadline
 				+ ", applyDeadline=" + applyDeadline + '}';
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		Category category = (Category) o;
+
+		if (categoryId != null ?
+				!categoryId.equals(category.categoryId) :
+				category.categoryId != null)
+			return false;
+		if (name != null ? !name.equals(category.name) : category.name != null)
+			return false;
+		if (desc != null ? !desc.equals(category.desc) : category.desc != null)
+			return false;
+		if (parentId != null ? !parentId.equals(category.parentId) : category.parentId != null)
+			return false;
+		if (isLeaf != null ? !isLeaf.equals(category.isLeaf) : category.isLeaf != null)
+			return false;
+		if (importRequired != null ?
+				!importRequired.equals(category.importRequired) :
+				category.importRequired != null)
+			return false;
+		if (jsonParameters != null ?
+				!jsonParameters.equals(category.jsonParameters) :
+				category.jsonParameters != null)
+			return false;
+		if (formula != null ? !formula.equals(category.formula) : category.formula != null)
+			return false;
+		if (version != null ? !version.equals(category.version) : category.version != null)
+			return false;
+		if (status != null ? !status.equals(category.status) : category.status != null)
+			return false;
+		if (reviewDeadline != null ?
+				!reviewDeadline.equals(category.reviewDeadline) :
+				category.reviewDeadline != null)
+			return false;
+		if (applyDeadline != null ?
+				!applyDeadline.equals(category.applyDeadline) :
+				category.applyDeadline != null)
+			return false;
+		if (reviewerId != null ?
+				!reviewerId.equals(category.reviewerId) :
+				category.reviewerId != null)
+			return false;
+		return otherJson != null ?
+				otherJson.equals(category.otherJson) :
+				category.otherJson == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = categoryId != null ? categoryId.hashCode() : 0;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (desc != null ? desc.hashCode() : 0);
+		result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
+		result = 31 * result + (isLeaf != null ? isLeaf.hashCode() : 0);
+		result = 31 * result + (importRequired != null ? importRequired.hashCode() : 0);
+		result = 31 * result + (jsonParameters != null ? jsonParameters.hashCode() : 0);
+		result = 31 * result + (formula != null ? formula.hashCode() : 0);
+		result = 31 * result + (version != null ? version.hashCode() : 0);
+		result = 31 * result + (status != null ? status.hashCode() : 0);
+		result = 31 * result + (reviewDeadline != null ? reviewDeadline.hashCode() : 0);
+		result = 31 * result + (applyDeadline != null ? applyDeadline.hashCode() : 0);
+		result = 31 * result + (reviewerId != null ? reviewerId.hashCode() : 0);
+		result = 31 * result + (otherJson != null ? otherJson.hashCode() : 0);
+		return result;
+	}
 }
