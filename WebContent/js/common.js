@@ -183,6 +183,7 @@ $(document).ready(function () {
                 }
 
                 $(".showImportbodyList tr:last td:eq(9)").text(statusName);
+                $(".showImportbodyList tr:last td:eq(9)").attr("class","status_"+Info.itemId);
                 var act="<a class='btn btn-primary itemToImport' id='itemToImport_"+Info.itemId+"'>提交</a> ";
                 $(".showImportbodyList tr:last td:eq(10)").append(act);
             }
@@ -210,7 +211,7 @@ $(document).ready(function () {
             }
             ,function () {
                 alert("提交成功！");
-
+                $(".status_"+flagId).text("已提交");
                 $("#itemToImport_"+flagId).css("disabled","true");
             })
     });
