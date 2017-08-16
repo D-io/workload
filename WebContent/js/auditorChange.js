@@ -37,25 +37,26 @@ function auditworkload() {
            var showimport=  $("<ul></ul>");
             showall(data.data.applyCategories, showimport);
             $("#tab_content1").append(showimport);
-
+           $(document).off("click",".pass");
             $(document).on("click",".pass",function () {
                 var flag=this.id;
                 var passItemId=flag.match(/\d+/g);
                 $.post(reviewerCheckUrl+"?"+"itemId="+passItemId+"&status=2",function () {
                     alert('操作成功！');
-                    $("reviewe_"+passItemId).text("审核通过");
+                    $("#reviewe_"+passItemId).text("审核通过");
 
                 })
             });
            $(document).on("click",".refuse",function () {
                var reflag=this.id;
                var refuItemId=reflag.match(/\d+/g);
+               $("#refusedesc").val(null);
                $(document).off("click","#refucommit");
                $(document).on("click","#refucommit",function () {
                    var refudesc=$("#refusedesc").val();
                    $.post(reviewerCheckUrl+"?"+"itemId="+refuItemId+"&status=5"+"&message="+refudesc,function () {
                        alert('操作成功！');
-                       $(".reviewe_"+refuItemId).text("审核拒绝");
+                       $("#reviewe_"+refuItemId).text("审核拒绝");
                        $("#refuseModal").modal("hide");
                    })
                });
