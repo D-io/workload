@@ -2,7 +2,10 @@ package cn.edu.uestc.ostec.workload.dto;
 
 import java.util.List;
 
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
+
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NOT_LEAF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 
@@ -39,12 +42,12 @@ public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 	/**
 	 * 工作量类目类型，0：审核类，1：复核类
 	 */
-	private Integer importRequired;
+	private Integer importRequired = APPLY_SELF;
 
 	/**
 	 * 参数以json格式存储如：{人数：A}
 	 */
-	private String jsonParameters;
+	private String jsonParameters = null;
 
 	/**
 	 * 参数描述
@@ -54,12 +57,12 @@ public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 	/**
 	 * 计算工作量公式，如:A*0.4
 	 */
-	private String formula;
+	private String formula = null;
 
 	/**
 	 * 工作量类目公式适宜版本，以学期形式表示，如：2016-2017-1
 	 */
-	private String version;
+	private String version = DateHelper.getCurrentTerm();
 
 	/**
 	 * 状态，0：未提交，1：已提交，-1：disable（删除）

@@ -277,7 +277,7 @@ public class ItemManageController extends ApplicationController {
 				.calculate(category.getFormula(), newItemDto.getParameterValues());
 
 		if (GROUP.equals(newItemDto.getIsGroup())) {
-			if(!newItemDto.getGroupManagerId().equals(user.getUserId())) {
+			if (!newItemDto.getGroupManagerId().equals(user.getUserId())) {
 				return invalidOperationResponse("非小组组长不能申报小组工作量");
 			}
 			List<Item> itemList = new ArrayList<>();
@@ -411,7 +411,9 @@ public class ItemManageController extends ApplicationController {
 
 				boolean saveSuccess = itemService.saveItem(item);
 
-				boolean fileSubmitSuccess = fileEvent.submitFileInfo(item.getProof());
+				boolean fileSubmitSuccess = (null == item.getProof() ?
+						true :
+						fileEvent.submitFileInfo(item.getProof()));
 				if (!saveSuccess || !fileSubmitSuccess) {
 					errorData.put(item.getItemName(), "提交失败");
 				} else {
@@ -499,7 +501,7 @@ public class ItemManageController extends ApplicationController {
 
 		Item item = itemService.findItem(itemId);
 		Category category = categoryService.getCategory(item.getCategoryId());
-		if(DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
+		if (DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
 			return invalidOperationResponse("复核已经截止");
 		}
 
@@ -523,13 +525,12 @@ public class ItemManageController extends ApplicationController {
 			//			subjectService.addSubject(subject);
 			//			data.put("subject", subjectConverter.poToDto(subject));
 			item.setStatus(status);
-			updateSuccess = subjectEvent
-					.sendMessageAboutItem(item, message, user.getUserId());
+			updateSuccess = subjectEvent.sendMessageAboutItem(item, message, user.getUserId());
 		} else {
 			updateSuccess = itemService.saveItem(item);
 		}
-//		item.setStatus(status);
-//		boolean updateSuccess = itemService.saveItem(item);
+		//		item.setStatus(status);
+		//		boolean updateSuccess = itemService.saveItem(item);
 
 		if (!updateSuccess) {
 			return systemErrResponse("更新状态失败");

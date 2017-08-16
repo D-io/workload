@@ -89,12 +89,12 @@ public class ItemManageAspectImpl implements IAspect {
 			return;
 		}
 		Object[] args = getParameters(joinPoint);
+		Integer[] itemIdList = (Integer[]) args[0];
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 
-		for (Object arg : args) {
-			Integer itemId = (Integer) arg;
+		for (Integer itemId:itemIdList) {
 			Item item = itemService.findItem(itemId);
 			ItemDto itemDto = itemConverter.poToDto(item);
 			Integer importedRequired = itemDto.getImportRequired();
