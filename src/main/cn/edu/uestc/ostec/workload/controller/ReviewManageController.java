@@ -37,6 +37,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECKED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.UserType.REVIEWER;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -87,16 +88,26 @@ public class ReviewManageController extends ApplicationController {
 
 		//参数校验
 		Item item = itemService.findItem(itemId);
+
+		if (null == item || !(CHECKED.equals(status) || DENIED.equals(status))) {
+			return parameterNotSupportResponse("无效参数");
+		}
+
+		if(!SUBMITTED.equals(item.getStatus())) {
+			return invalidOperationResponse("非法操作");
+		}
+
+		if(DENIED.equals(status) && null == message) {
+			return parameterNotSupportResponse("未填写拒绝理由");
+		}
+
 		Category category = categoryService.getCategory(item.getCategoryId());
 		if(DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
 			return invalidOperationResponse("审核已经截止");
 		}
-		if (null == item) {
-			return parameterNotSupportResponse("无效参数");
-		}
 
-		if (!(CHECKED.equals(status) || DENIED.equals(status))) {
-			return parameterNotSupportResponse("无效参数");
+		if(!user.getUserId().equals(category.getReviewerId())) {
+			return invalidOperationResponse("非法请求");
 		}
 
 		//设置为对应的状态
@@ -107,6 +118,8 @@ public class ReviewManageController extends ApplicationController {
 
 		if (null != message && DENIED.equals(status)) {
 			saveSuccess = subjectEvent.sendMessageAboutItem(item, message, user.getUserId());
+		} else {
+			saveSuccess = itemService.saveItem(item);
 		}
 
 		if (!saveSuccess) {
