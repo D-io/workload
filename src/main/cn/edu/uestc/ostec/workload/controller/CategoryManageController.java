@@ -23,6 +23,7 @@ import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGE_PATH;
@@ -64,8 +65,21 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		//参数检验
-		if (null == categoryDto || ZERO_INT == categoryDto.getReviewerId()) {
+		if (null == categoryDto) {
 			return parameterNotSupportResponse("参数不能为空");
+		}
+
+		//相关参数的校验，若为空，使用相应的默认值
+		if (null == categoryDto.getReviewerId() || ZERO_INT == categoryDto.getReviewerId()) {
+			categoryDto.setReviewerId(user.getUserId());
+		}
+
+		if (null == categoryDto.getApplyDeadline() || "".equals(categoryDto.getReviewDeadline())) {
+			categoryDto.setApplyDeadline(DateHelper.getCurrentYear() +"年12月31日");
+		}
+
+		if (null == categoryDto.getReviewDeadline() || "".equals(categoryDto.getReviewDeadline())) {
+			categoryDto.setReviewDeadline(DateHelper.getCurrentYear() + "年12月28日");
 		}
 
 		//将dto对象转为pojo（转换时间）
