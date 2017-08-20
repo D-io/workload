@@ -33,7 +33,7 @@ public class UserRoleConverter implements Converter<UserRole, User> {
 			user.setRoleInfoList(roleInfoList);
 			user.setStatus(po.getStatus());
 			user.setDeadline(
-					isNull(po.getDeadline()) ? null : DateHelper.getDateTime(po.getDeadline()));
+					isNull(po.getDeadline()) ? null : DateHelper.getDefaultDateTime(po.getDeadline()));
 		}
 
 		return user;
@@ -44,7 +44,7 @@ public class UserRoleConverter implements Converter<UserRole, User> {
 		UserRole userRole = new UserRole();
 		if (dto != null) {
 			userRole.setUserId(dto.getUserId());
-			userRole.setDeadline(DateHelper.getDateTimeStamp(dto.getDeadline()));
+			userRole.setDeadline(DateHelper.getDefaultTimeStamp(dto.getDeadline()));
 			userRole.setStatus(dto.getStatus());
 			String roleInfo = null;
 			try {

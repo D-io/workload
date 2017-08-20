@@ -85,12 +85,12 @@ public interface WorkloadObjects {
 	/**
 	 * 默认审核截止时间
 	 */
-	String DEFAULT_REVIEW_DATE_TIME = "12-31 12:00:00";
+	String DEFAULT_REVIEW_DATE_TIME = "-12-31 12:00:00";
 
 	/**
 	 * 默认申报截止时间
 	 */
-	String DEFAULT_APPLY_DATE_TIME = "12-28 12:00:00";
+	String DEFAULT_APPLY_DATE_TIME = "-12-28 12:00:00";
 
 	/**
 	 * 获取空的Map&lt;K, V&gt;

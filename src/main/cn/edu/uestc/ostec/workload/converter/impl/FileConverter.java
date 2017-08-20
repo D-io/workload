@@ -23,7 +23,7 @@ public class FileConverter implements Converter<File,FileDto> {
 		FileDto fileDto = new FileDto();
 
 		fileDto.setCreateTime(po.getCreateTime());
-		fileDto.setDeadlineDate(DateHelper.getDateTime(po.getDeadline()));
+		fileDto.setDeadlineDate(DateHelper.getDefaultDateTime(po.getDeadline()));
 		fileDto.setFileId(po.getFileId());
 		fileDto.setMime(po.getMime());
 		fileDto.setPublisher(teacherDao.findNameById(po.getUserId()));
@@ -39,7 +39,7 @@ public class FileConverter implements Converter<File,FileDto> {
 		File file = new File();
 		file.setCreateTime(dto.getCreateTime());
 		file.setUserId(dto.getUserId());
-		file.setDeadline(DateHelper.getDateTimeStamp(dto.getDeadlineDate()));
+		file.setDeadline(DateHelper.getDefaultTimeStamp(dto.getDeadlineDate()));
 		file.setMime(dto.getMime());
 		file.setSize(dto.getSize());
 		file.setType(dto.getType());

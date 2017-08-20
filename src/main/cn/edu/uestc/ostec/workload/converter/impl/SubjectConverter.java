@@ -30,7 +30,7 @@ public class SubjectConverter implements Converter<Subject, SubjectDto> {
 				isNull(po.getSendFromId()) ? null : teacherDao.findNameById(po.getSendFromId()));
 
 		subjectDto.setSendTime(
-				isNull(po.getSendTime()) ? null : DateHelper.getDateTime(po.getSendTime()));
+				isNull(po.getSendTime()) ? null : DateHelper.getDefaultDateTime(po.getSendTime()));
 		return subjectDto;
 	}
 

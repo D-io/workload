@@ -48,11 +48,11 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 		categoryDto.setParentId(po.getParentId());
 		categoryDto.setApplyDeadline(isNull(po.getApplyDeadline()) ?
 				null :
-				DateHelper.getDateTime(po.getApplyDeadline()));
+				DateHelper.getDefaultDateTime(po.getApplyDeadline()));
 
 		categoryDto.setReviewDeadline(isNull(po.getReviewDeadline()) ?
 				null :
-				DateHelper.getDateTime(po.getReviewDeadline()));
+				DateHelper.getDefaultDateTime(po.getReviewDeadline()));
 
 		categoryDto.setReviewerId(po.getReviewerId());
 		categoryDto.setReviewerName(isNull(categoryDto.getReviewerId()) ?
@@ -86,11 +86,11 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 
 		category.setApplyDeadline(isNull(dto.getApplyDeadline()) ?
 				null :
-				DateHelper.getDateTimeStamp(dto.getApplyDeadline()));
+				DateHelper.getDefaultTimeStamp(dto.getApplyDeadline()));
 
 		category.setReviewDeadline(isNull(dto.getReviewDeadline()) ?
 				null :
-				DateHelper.getDateTimeStamp(dto.getReviewDeadline()));
+				DateHelper.getDefaultTimeStamp(dto.getReviewDeadline()));
 
 		category.setReviewerId(dto.getReviewerId());
 		category.setOtherJson((dto.getOtherJson()));

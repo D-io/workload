@@ -110,6 +110,12 @@ public class DateHelper {
 		return getDateTime(time, DATE_TIME_FORMAT_DEFAULT);
 	}
 
+	public static String getDefaultDateTime(int timestamp) {
+		LocalDateTime time = LocalDateTime
+				.ofInstant(Instant.ofEpochSecond(timestamp), TimeZone.getDefault().toZoneId());
+		return getDateTime(time, DATE_TIME_FORMAT_DEFAULT);
+	}
+
 	public static String getDateTime(int timestamp) {
 		LocalDateTime time = LocalDateTime
 				.ofInstant(Instant.ofEpochSecond(timestamp), TimeZone.getDefault().toZoneId());
@@ -135,6 +141,10 @@ public class DateHelper {
 
 	public static int getDateTimeStamp(String date) {
 		return getTimeStamp(date + " 00时00分00秒", DATE_TIME_FORMAT_CN);
+	}
+
+	public static int getDefaultTimeStamp(String time) {
+		return getTimeStamp(time,DATE_TIME_FORMAT_DEFAULT);
 	}
 
 	public static int getTimeStamp(String date) {
