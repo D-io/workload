@@ -38,7 +38,7 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/panel-content.css" />
 
-    <link rel="stylesheet" type="text/css" href="${contextPath}/css/normalize.css" />
+   <%-- <link rel="stylesheet" type="text/css" href="${contextPath}/css/normalize.css" />--%>
 
 
     <!-- Skin CSS (颜色)-->
@@ -116,15 +116,15 @@
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 
-                                <span class=" fa fa-angle-down"></span>
+                                <i class="fa fa-sign-out pull-right"></i><span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
 
-                                <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i>退出系统</a></li>
+                                <li><a href="${contextPath}/auth/logout">退出系统</a></li>
                             </ul>
                         </li>
 
-                                   <div class="col-md-4 col-sm-4 col-xs-12" style="margin-left:440px;width:160px">
+                                   <div class="col-md-4 col-sm-4 col-xs-12" style="margin-left:400px;width:160px">
                                        <select class="form-control" id="year">
                                          <%--  <option value="1">2017-2018</option>
                                            <option value="0">2016-2017</option>
@@ -209,7 +209,7 @@
 <script src="${contextPath}/js/Bftheme_jquery.js"></script>
 
 <script language='javascript' src="${contextPath}/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script language='javascript' src="${contextPath}/vendor/js/modernizr.js"></script>
+<script language='javascript' src="${contextPath}/vendor/js/datapicker.js"></script>
 
 <script language='javascript'src="${contextPath}/js/jquery.ztree.core.js"></script>
 <script language='javascript' src="${contextPath}/js/jquery.ztree.excheck.js"></script>

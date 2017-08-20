@@ -72,7 +72,7 @@ function ztree() {
                 };
                 var zTree=$.fn.zTree.getZTreeObj("treeDemo");
 
-                zNodes.push(nodes);
+               zNodes.push(nodes);
                 $.fn.zTree.init($("#treeDemo"), setting, zNodes);
 
                 if (item.children) {
@@ -227,7 +227,7 @@ function ztree() {
                         otherJson:otherArray
                     },
                     function (data) {
-                        var x=data.data.category.reviewDeadline;
+                       /* var x=data.data.category.reviewDeadline;
                         var y=data.data.category.applyDeadline;
                         var a=x.match(/\d+/g);
                         var b=y.match(/\d+/g);
@@ -251,14 +251,15 @@ function ztree() {
                                     'importRequired':data.data.category.importRequired,
                                     'otherJsonParameters':data.data.category.otherJsonParameters
                                 };
-
+                                zNodes.splice(i, 1, newNode);
                                 zTree.updateNode(zNodes[i]);
                                 $('#'+treeNode.tId+'_span').text(newNode.name);
 
-                                zNodes.splice(i, 1, newNode);
+
                                 $.fn.zTree.init($("#treeDemo"), setting, zNodes);
                             }
-                        }
+                        }*/
+                       ztree();
 
                     }
                 );
@@ -285,19 +286,20 @@ function ztree() {
             success:function(data){
                 if(data.status==1004) {
                     alert('非解锁条目不可删！');
-                    jumpToAdd();
+                    ztree();
                     return false;
 
                 }
                 else {
                     return confirm("删除节点成功！");
-
-                    for(var m=0;m<window.zNodes.length;m++){
-                        if(window.zNodes[m].id==data.data.oldategory.categoryId){
-                            window.zNodes.splice(i-1,1);
+/*
+                    for(var m=0;m<zNodes.length;m++){
+                        if(zNodes[m].id==data.data.oldategory.categoryId){
+                            zNodes.splice(i-1,1);
                         }
                     }
-                    $('#'+treeNode.tId).remove();
+                    $('#'+treeNode.tId).remove();*/
+                    ztree();
                 }
 
             },
@@ -408,7 +410,7 @@ function ztree() {
                         jsonParameters: newArray,
                         otherJson:otherArray
                     }, function (data) {
-                        var x=data.data.category.reviewDeadline;
+                        /*var x=data.data.category.reviewDeadline;
                         var y=data.data.category.applyDeadline;
                         var a=x.match(/\d+/g);
                         var b=y.match(/\d+/g);
@@ -433,7 +435,7 @@ function ztree() {
 
                         newNode = zTree.addNodes(treeNode, newNode);
 
-                        zNodes.push(newNode);
+                        zNodes.push(newNode);*/
 
                     });
                     $('#addModal').modal('hide');
@@ -502,7 +504,7 @@ function ztree() {
                     otherJson:otherArray
                 }, function (data) {
 
-                    var x=data.data.category.reviewDeadline;
+                   /* var x=data.data.category.reviewDeadline;
                     var y=data.data.category.applyDeadline;
                     var a=x.match(/\d+/g);
                     var b=y.match(/\d+/g);
@@ -522,7 +524,8 @@ function ztree() {
                         'importRequired':data.data.category.importRequired
                     };
                     newNode = zTree.addNodes(null, newNode);
-                    zNodes.push(newNode);
+                    zNodes.push(newNode);*/
+                   ztree();
                 }, "json");
 
                 $('#addModal').modal('hide');

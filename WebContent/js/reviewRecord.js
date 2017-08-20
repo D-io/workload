@@ -256,9 +256,8 @@ function applyworkload() {
                    showapplyall(menu_list[menu].children, $(li).children().eq(0));
                }
                else if(menu_list[menu].importRequired==0){
-                   $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+"<button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击申报</button><div style='clear: both;'></div>").appendTo(parent);
-               $(".hiddendistrict").append("<span class='applyDeadline_"+menu_list[menu].categoryId+"' style='display: none;'>"+menu_list[menu].applyDeadline+"</span> <span class='revieDeadline_"+menu_list[menu].categoryId+"' style='display: none;'>"+menu_list[menu].reviewDeadline+"</span>");
-               }
+                   $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+"<span class='applyDeadline_"+menu_list[menu].categoryId+"' style='display: none;'>"+menu_list[menu].applyDeadline+"</span> <span class='revieDeadline_"+menu_list[menu].categoryId+"' style='display: none;'>"+menu_list[menu].reviewDeadline+"</span><button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击申报</button><div style='clear: both;'></div>").appendTo(parent);
+                   }
 
            }
         }
@@ -313,7 +312,7 @@ function applyworkload() {
                         $(".tbody tr:last td:eq(4)").text(statusName);
                         $(".tbody tr:last td:eq(4)").attr("id","statusChange_"+Info.itemId);
 
-                        var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id+ "\">查看详情</a> ";
+                        var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id+ "\">查看详情</a> <a class='btn btn-primary uploadAdded' id='upLAdd_"+Info.itemId+"'>上传附件</a><a class='btn btn-primary downloadAdded' id='downLoadAdd_"+Info.itemId+"'>下载附件</a>";
                         $(".tbody tr:last td:eq(5)").append(act);
 
                     }
@@ -395,7 +394,7 @@ function applyworkload() {
             $("#showitemmanager option[value='"+window.Temp[newReg-1].groupManagerId+"']").attr("selected","selected");
             $('#showAddgroupPramter').empty();
             var addStr='';
-            var $group=$(".groupMember_"+window.Temp[newReg-1].itemId);
+           /* var $group=$(".groupMember_"+window.Temp[newReg-1].itemId);
             if($group&&$group.length){
                 for(var pramterCount=0;pramterCount<$group.length;pramterCount++){
 
@@ -403,6 +402,19 @@ function applyworkload() {
                     $('#showAddgroupPramter').append(addStr);
                     $(".showgroupMemberSymbol").eq(pramterCount).val($(".jobDesc_"+window.Temp[newReg-1].itemId).eq(pramterCount).text());
                     $(".showgroupMemberWeight").eq(pramterCount).val($(".jobWeight_"+window.Temp[newReg-1].itemId).eq(pramterCount).text());
+                }
+            }*/
+           $("#showAddgroupPramter").empty();
+            var b = localStorage.getItem("item_"+window.Temp[newReg-1].itemId);
+            b=JSON.parse(b);
+            if(b&&b.length){
+                for(var pramterCount=0;pramterCount<b.length;pramterCount++){
+
+                   var addStr="<tr><td><select class='showgroupMemberName teacherName'></select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
+                    $('#showAddgroupPramter').append(addStr);
+                    $(".showgroupMemberName").eq(pramterCount).append("<option value='"+b[pramterCount].userId+"' selected='selected'>"+b[pramterCount].userName+"</option>");
+                    $(".showgroupMemberSymbol").eq(pramterCount).val(b[pramterCount].jobDesc);
+                    $(".showgroupMemberWeight").eq(pramterCount).val(b[pramterCount].weight);
                 }
             }
 
@@ -626,7 +638,7 @@ function applyRec() {
                 $(".reviewerRecTbody tr:last td:eq(0)").text(Num);
                 $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
                 $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-                $(".reviewerRecTbody tr:last td:eq(3)").text();
+                $(".reviewerRecTbody tr:last td:eq(3)").text(Info.formula);
                 var showtype='';
                 switch (Info.isGroup){
 

@@ -235,6 +235,26 @@ $(document).ready(function () {
             showapplydata(dataArray);
         });
     });
+    $(document).on("click",".uploadAdded",function () {
+        var CountId=this.id.match(/\d+/g);
+        $.ajax({
+            url: importProofUrl + "?itemId=" + CountId,
+            type: "POST",
+            dataType: "JSON",
+            data: formdata,
+            contentType: false,
+            processData: false,
+            success: function () {
+                alert("上传成功！");
+             //   $("#downLoadAdd_"+CountId).attr("id","")
+            }
+
+        });
+    });
+   /* $(document).on("click",".downloadAdded",function () {
+
+
+    });*/
 
     /*reviewer-reviewe*/
 
@@ -457,14 +477,32 @@ $(document).ready(function () {
         }
         otherArray = JSON.stringify(otherArray);
         var grouparray = new Array();
+        var sumArray=new Array();
         var groupmessageArray = $('.showgroupMemberName');
         for (var c = 0; c < groupmessageArray.length; c++) {
             grouparray.push({
                 userId: parseInt($(".showgroupMemberName option:selected").eq(c).val()),
                 jobDesc: $(".showgroupMemberSymbol").eq(c).val()
             });
+            sumArray.push({
+                userId: parseInt($(".showgroupMemberName option:selected").eq(c).val()),
+                userName: $(".showgroupMemberName option:selected").eq(c).text(),
+                jobDesc: $(".showgroupMemberSymbol").eq(c).val(),
+                weight: parseFloat($(".showgroupMemberWeight").eq(c).val())
+            })
         }
         grouparray = JSON.stringify(grouparray);
+        sumArray=JSON.stringify(sumArray);
+        if(!window.localStorage){
+            alert("浏览器支持localstorage");
+        }else{
+            var storage=window.localStorage;
+            if(storage.item_+saveReg){
+                storage.removeItem(storage.item_+saveReg);
+            }
+            storage.setItem("item_"+saveReg,sumArray);
+
+        }
         var childWeight = new Array();
         for (m = 0; m < groupmessageArray.length; m++) {
             childWeight.push({
@@ -581,6 +619,7 @@ $(document).ready(function () {
         $.post(itemManaPublicUrl+"?itemId="+submitId,function () {
             alert("提交成功！");
             $("#statusChange_"+submitId).text("已提交");
+            $("#downLoadAdd_"+submitId).hide();
             $("#showContent").modal("hide");
 
         })
@@ -597,7 +636,11 @@ $(document).ready(function () {
             success:function () {
                 alert("操作成功！");
                 $("#statusChange_"+deleteId).text("已删除");
+                $("#upLAdd_"+deleteId).hide();
+                $("#downLoadAdd_"+deleteId).hide();
                 $("#showContent").modal("hide");
+                var storage=window.localStorage;
+                storage.removeItem("item_"+deleteId);
             }
 
         });

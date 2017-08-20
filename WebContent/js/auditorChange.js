@@ -70,7 +70,7 @@ function showimportRec() {
 
     $(".reviewerRec").show();
     $(".reviewerRecTbody").empty();
-    $.get(itemTeacherInfo+"?"+"importedRequired=1&status=3",function (data) {
+    /*$.get(itemTeacherInfo+"?"+"importedRequired=1&status=3",function (data) {
         var rowInfo="<tr></tr>";
         var cellInfo="<td></td>";
         if(data.data.itemList&&data.data.itemList.length){
@@ -136,7 +136,132 @@ function showimportRec() {
                 });
             }
         }
+    });*/
+    var doubtedItem='';
+    var doubleChecked='';
+
+    $.get(auditorManageItemUrl+"?"+"importRequired=1",function (data) {
+        doubtedItem=data.data.doubtedItem;
+        doubleChecked=data.data.doubtedCheckedItem;
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+        var Count_double=0;
+        if(doubleChecked&&doubleChecked.length){
+            var analyseList= doubleChecked;
+            var listLength= doubleChecked.length;
+            for(var i=0;i<listLength;i++)
+            {
+                Count_double++;
+                var Info=analyseList[i];
+                $(".reviewerRecTbody").append(rowInfo);
+                //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
+                for(var j=0;j<12;j++)//单元格
+                {
+                    $(".reviewerRecTbody tr:last").append(cellInfo);
+                }
+                $(".reviewerRecTbody tr:last td:eq(0)").text( Count_double);
+                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.teacherName);
+                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.itemName);
+                $(".reviewerRecTbody tr:last td:eq(3)").text(Info.workload);
+                $(".reviewerRecTbody tr:last td:eq(3)").attr("id","workload_"+Info.itemId);
+                $(".reviewerRecTbody tr:last td:eq(4)").text(Info.formula);
+                var showtype='';
+                switch (Info.isGroup){
+
+                    case 1:showtype="小组形式";
+                        break;
+                    case 0:showtype="个人形式";
+                        break;
+
+                }
+                $(".reviewerRecTbody tr:last td:eq(5)").text(showtype);
+
+                var praValues='';
+                for(var m=0;m<Info.parameterValues.length;m++){
+                    praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
+                    $(".hiddendistrict").append("<div class='paraValues_"+Info.categoryId+"'>"+Info.parameterValues[m].value+"</div>")
+
+                }
+                var otherpraValue='';
+                for(var n=0;n<Info.otherJsonParameters.length;n++){
+                    otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
+                    $(".hiddendistrict").append("<div class='otherParaKey_"+Info.categoryId+"'>"+Info.otherJsonParameters[n].key+"</div><div class='otherParaValue_"+Info.categoryId+"'>"+Info.otherJsonParameters[n].value+"</div>")
+
+                }
+                $(".reviewerRecTbody tr:last td:eq(6)").text(praValues);
+
+                $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
+
+
+                $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
+                $(".reviewerRecTbody tr:last td:eq(9)").text($(".time_"+Info.categoryId).text());
+                $(".reviewerRecTbody tr:last td:eq(10)").text("提交存疑");
+                var act="<a class='btn btn-primary reviewerApply' id='showImportRec_"+Info.itemId+"'>存疑原因</a><a class='btn btn-info editInfo "+Info.itemId+"' id='editInfo_"+Info.categoryId+"' data-target='#editModal' data-toggle='modal'><i class='fa fa-pencil'></i>修改存疑</a> ";
+                $(".reviewerRecTbody tr:last td:eq(11)").append(act);
+                $("[data-toggle='popover']").popover();
+                $(".reviewerApply").popover({
+                    placement: "top",
+                    trigger: "click",
+                    html: true,
+                    title: "回复信息",
+                    content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
+
+                });
+            }
+        }
+        if(doubtedItem&&doubtedItem.length){
+            var analyseList= doubtedItem;
+            var listLength= doubtedItem.length;
+            for(var i=0;i<listLength;i++)
+            {
+                Count_double++;
+                var Info=analyseList[i];
+                $(".reviewerRecTbody").append(rowInfo);
+                //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
+                for(var j=0;j<12;j++)//单元格
+                {
+                    $(".reviewerRecTbody tr:last").append(cellInfo);
+                }
+                $(".reviewerRecTbody tr:last td:eq(0)").text( Count_double);
+                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.teacherName);
+                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.itemName);
+                $(".reviewerRecTbody tr:last td:eq(3)").text(Info.workload);
+                $(".reviewerRecTbody tr:last td:eq(3)").attr("id","workload_"+Info.itemId);
+                $(".reviewerRecTbody tr:last td:eq(4)").text(Info.formula);
+                var showtype='';
+                switch (Info.isGroup){
+
+                    case 1:showtype="小组形式";
+                        break;
+                    case 0:showtype="个人形式";
+                        break;
+
+                }
+                $(".reviewerRecTbody tr:last td:eq(5)").text(showtype);
+
+                var praValues='';
+                for(var m=0;m<Info.parameterValues.length;m++){
+                    praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
+                    $(".hiddendistrict").append("<div class='paraValues_"+Info.categoryId+"'>"+Info.parameterValues[m].value+"</div>")
+
+                }
+                var otherpraValue='';
+                for(var n=0;n<Info.otherJsonParameters.length;n++){
+                    otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
+                    $(".hiddendistrict").append("<div class='otherParaKey_"+Info.categoryId+"'>"+Info.otherJsonParameters[n].key+"</div><div class='otherParaValue_"+Info.categoryId+"'>"+Info.otherJsonParameters[n].value+"</div>")
+
+                }
+                $(".reviewerRecTbody tr:last td:eq(6)").text(praValues);
+                $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
+                $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
+                $(".reviewerRecTbody tr:last td:eq(9)").text($(".time_"+Info.categoryId).text());
+                $(".reviewerRecTbody tr:last td:eq(10)").text("存疑解决");
+                $(".reviewerRecTbody tr:last td:eq(11)").text();
+
+            }
+        }
     });
+
     $(document).on("click",".editInfo",function () {
         $(".parameterTh").empty();
         $(".editorPram").empty();

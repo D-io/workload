@@ -101,22 +101,6 @@
                 </div>
             </div>
         </div>
-        <!--
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    <button class="add btn btn-primary" data-toggle="modal" data-target="#addContent">添加申报</button>
-                    <button type="button" class="btn btn-primary applyCommit">提交</button>
-                </div>
-            </div>
-            <div class="panel-body applymodalbody">
-                <div class="zTreeDemoBackground left">
-                    <ul id="treeDemo" class="ztree"></ul>
-            </div>
-        </div>
-        </div>
-        -->
-
         <div class="modal fade" id="addContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -472,6 +456,46 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" style="text-align: center" >
+                            上传附件
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <%--<div class="explain" style="margin-bottom: 5px;" >
+                            特别提示：上传文件时，请传入合法格式的文件，“上传”与“提交”是两个不同操作，“上传”文件后，须检查无误后再行“提交”。一旦提交，不可更改；
+                            没有“提交”之前，可以更新文件（须确保文件有修改，否则无法更新）。“上传”、“提交”之后，均可下载查阅。
+                        </div>--%>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label " >上传文件</label>
+
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control" name="file" id="fileName"><hr/>
+                                <input type="button" class="btn btn-primary commit" value="上传" style="float: right;">
+                            </div>
+
+
+                            <p>请上传小于20M的文件</p>
+
+                        </div>
+
+                    </div>
+                    <!--
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+
+                                        </div>
+                    -->
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
 
     </div>
 </div>

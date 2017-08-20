@@ -38,6 +38,7 @@ function ownerApply(domId) {
 
             }
             otherArray = JSON.stringify(otherArray);
+            var sumArray=new Array();
             var grouparray = new Array();
             var groupmessageArray = $('.groupMemberName');
             for (var c = 0; c < groupmessageArray.length; c++) {
@@ -45,8 +46,15 @@ function ownerApply(domId) {
                     userId: parseInt($(".groupMemberName option:selected").eq(c).val()),
                     jobDesc: $(".groupMemberSymbol").eq(c).val()
                 });
+                sumArray.push({
+                    userId: parseInt($(".groupMemberName option:selected").eq(c).val()),
+                    userName:$(".groupMemberName option:selected").eq(c).text(),
+                    jobDesc: $(".groupMemberSymbol").eq(c).val(),
+                    weight: parseFloat($(".groupMemberWeight").eq(c).val())
+                })
             }
             grouparray = JSON.stringify(grouparray);
+            sumArray=JSON.stringify(sumArray);
             var childWeight = new Array();
             for (m = 0; m < groupmessageArray.length; m++) {
                 childWeight.push({
@@ -56,13 +64,10 @@ function ownerApply(domId) {
             }
             childWeight = JSON.stringify((childWeight));
 
-            // var reviewTimetodate = $('#reviewDeadline').val();
-            //var applyTimetodate = $('#applyDeadline').val();
             var radio = $("input:radio[name='optionsRadios']:checked");
             //  var applicant = $('#applicant option:selected');
             var itemmanager = $('#itemmanager option:selected');
-            //  var formdata=new FormData();
-            // formdata.append("file",$("#fileName")[0]);
+
             if(radio.val()==1){
                 $.ajax({
                     type: "POST",
@@ -113,6 +118,13 @@ function ownerApply(domId) {
                                      CateValue=Info[i].ownerId;
                                 }
                             }
+                            if(!window.localStorage){
+                                alert("浏览器支持localstorage");
+                            }else{
+                                var storage=window.localStorage;
+                                storage.setItem("item_"+CountId,sumArray);
+
+                            }
                             $(".tbody tr:last td:eq(2)").text(count);
                             $(".tbody tr:last td:eq(3)").attr("class", "applyDead");
                             $(".applyDead").text($(".applyDeadline_" + CategId).text());
@@ -121,7 +133,7 @@ function ownerApply(domId) {
                             $(".tbody tr:last td:eq(4)").attr("id", "statusChange_" + CountId);
 
 
-                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + CountId + "\">查看详情</a> ";
+                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + CountId + "\">查看详情</a><a class='btn btn-primary uploadAdded' id='upLAdd_"+CountId+"' data-toggle='modal' data-target='#myModal'>上传附件</a><a class='btn btn-primary downloadAdded' id='downLoadAdd_"+CountId+"'>下载附件</a> ";
                             $(".tbody tr:last td:eq(5)").append(act);
 
 
@@ -154,6 +166,13 @@ function ownerApply(domId) {
                                  CountId = Info[i].itemId;
                                 CategId=Info[i].categoryId;
                             }
+                            if(!window.localStorage){
+                                alert("浏览器支持localstorage");
+                            }else{
+                                var storage=window.localStorage;
+                                storage.setItem("item_"+CountId,sumArray);
+
+                            }
                             $(".tbody tr:last td:eq(2)").text(count);
                             //  $(".tbody tr:last td:eq(3)").text();
                             $(".tbody tr:last td:eq(3)").attr("class", "applyDead");
@@ -163,24 +182,12 @@ function ownerApply(domId) {
                             $(".tbody tr:last td:eq(4)").attr("id", "statusChange_" + CountId);
 
 
-                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + CountId + "\">查看详情</a> ";
+                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + CountId + "\">查看详情</a><a class='btn btn-primary uploadAdded' id='upLAdd_"+CountId+"'  data-toggle='modal' data-target='#myModal'>上传附件</a><a class='btn btn-primary downloadAdded' id='downLoadAdd_"+CountId+"'>下载附件</a> ";
                             $(".tbody tr:last td:eq(5)").append(act);
                         }
 
                         var formdata = new FormData;
                         formdata.append("file", $("#formName")[0].files[0]);
-                        $.ajax({
-                            url: importProofUrl + "?itemId=" + CountId,
-                            type: "POST",
-                            dataType: "JSON",
-                            data: formdata,
-                            contentType: false,
-                            processData: false,
-                            success: function () {
-                            }
-
-                        });
-
                         $('#addContent').modal('hide');
                         for(var hideCount=0;hideCount<listLength;hideCount++){
                             if (Info[hideCount].teacherName == CurrentName) {
@@ -249,7 +256,7 @@ function ownerApply(domId) {
 
                             $('#showAddgroupPramter').empty();
                             var addStr='';
-                            var $group=$(".groupMember_"+newReg);
+                          /*  var $group=$(".groupMember_"+newReg);
                             if($group&&$group.length){
                                 for(var pramterCount=0;pramterCount<$(".groupMember_"+newReg).length;pramterCount++){
 
@@ -259,8 +266,19 @@ function ownerApply(domId) {
                                     $(".showgroupMemberSymbol").eq(pramterCount).val($(".jobDesc_"+newReg).eq(pramterCount).text());
                                     $(".showgroupMemberWeight").eq(pramterCount).val($(".jobWeight_"+newReg).eq(pramterCount).text());
                                 }
-                            }
+                            }*/
+                            var b = localStorage.getItem("item_"+newReg);
+                            b=JSON.parse(b);
+                            if(b&&b.length){
+                                for(var pramterCount=0;pramterCount<b.length;pramterCount++){
 
+                                    addStr="<tr><td><select class='showgroupMemberName teacherName'></select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
+                                    $('#showAddgroupPramter').append(addStr);
+                                    $(".showgroupMemberName").eq(pramterCount).append("<option value='"+b[pramterCount].userId+"' selected='selected'"+b[pramterCount].userName+"</option>");
+                                    $(".showgroupMemberSymbol").eq(pramterCount).val(b[pramterCount].jobDesc);
+                                    $(".showgroupMemberWeight").eq(pramterCount).val(b[pramterCount].weight);
+                                }
+                            }
 
                             $(".showgroupMemberName").attr("disabled","true");
                             $(".showgroupMemberSymbol").attr("disabled","true");
@@ -326,7 +344,7 @@ function ownerApply(domId) {
                             $(".tbody tr:last td:eq(4)").attr("id", "statusChange_" + Info.itemId);
 
 
-                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + Info.itemId + "\">查看详情</a> ";
+                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + Info.itemId + "\">查看详情</a> <a class='btn btn-primary uploadAdded' id='upLAdd_"+Info.itemId+"'  data-toggle='modal' data-target='#myModal'>上传附件</a><a class='btn btn-primary downloadAdded' id='downLoadAdd_"+Info.itemId+"'>下载附件</a>";
                             $(".tbody tr:last td:eq(5)").append(act);
 
                         }
@@ -366,7 +384,7 @@ function ownerApply(domId) {
                             $(".tbody tr:last td:eq(4)").attr("id", "statusChange_" + Info.itemId);
 
 
-                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + Info.itemId + "\">查看详情</a> ";
+                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + Info.itemId + "\">查看详情</a><a class='btn btn-primary uploadAdded' id='upLAdd_"+Info.itemId+"'  data-toggle='modal' data-target='#myModal'>上传附件</a><a class='btn btn-primary downloadAdded' id='downLoadAdd_"+Info.itemId+"'>下载附件</a> ";
                             $(".tbody tr:last td:eq(5)").append(act);
                         }
                         $('#addContent').modal('hide');
@@ -416,8 +434,8 @@ function ownerApply(domId) {
                             else{
                                 $("#group").attr("checked",'checked');
                                 $("#single").attr("disabled","true");
-                                $(".item_manager").show();
-                                $(".item_group").show();
+                                $(".showitem_manager").show();
+                                $(".showitem_group").show();
                             }
                             var showPram=Info.parameterValues;
                             for(var i=0;i<showPram.length;i++){

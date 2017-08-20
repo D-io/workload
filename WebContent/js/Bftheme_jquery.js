@@ -145,25 +145,25 @@ function itemSummary() {
 
         });
     });
-    $(document).ready(function () {
+    var teachersInfo='';
         $.get(TeacherInfoUrl,function (data) {
-            for(var i=0;i<data.data.teacherList.length;i++){
-                $('#teacherName').append('<option value=\"'+data.data.teacherList[i].teacherId+'\">'+data.data.teacherList[i].name+data.data.teacherList[i].teacherId+'</option>');
-            }
+            teachersInfo=data.data.teacherList;
         });
-
-    });
-    $(document).ready(function () {
+    for(var i=0;i<teachersInfo.length;i++){
+        $('#teacherName').append('<option value=\"'+teachersInfo[i].teacherId+'\">'+teachersInfo[i].name+teachersInfo[i].teacherId+'</option>');
+    }
+        var itemAuditorInfo='';
         $.get(itemAuditorUrl,function (data) {
-            if(data.data.categoryList&&data.data.categoryList.length>0){
-                for(var i=0;i<data.data.categoryList.length;i++){
-                    $('#itemRequired').append('<option value=\"'+data.data.categoryList[i].categoryId+'\">'+data.data.categoryList[i].categoryName+'</option>');
-                }
+            if(data.data.categoryList){
+                 itemAuditorInfo=data.data.categoryList;
             }
-
         });
+    if(itemAuditorInfo&&itemAuditorInfo.length>0){
+        for(var i=0;i<itemAuditorInfo.length;i++){
+            $('#itemRequired').append('<option value=\"'+itemAuditorInfo[i].categoryId+'\">'+itemAuditorInfo[i].categoryName+'</option>');
+        }
+    }
 
-    });
     $(document).on("click","#sumItemSearch",function () {
         var option0=$("#ispassed option:selected").val();
         var option1=$("#itemRequired option:selected").val();
@@ -413,9 +413,12 @@ $(document).on("click","#addOtherParameter",function () {
     $('.addOtherPramter').append(addStr);
 });
 $(document).ready(function () {
+    var teacherInfo='';
     $.get(TeacherInfoUrl,function (data) {
-        for(var i=0;i<data.data.teacherList.length;i++){
-            $('#teacherName').append('<option value=\"'+data.data.teacherList[i].teacherId+'\">'+data.data.teacherList[i].name+'</option>');
-        }
+         teacherInfo=data.data.teacherList;
+
     });
+    for(var i=0;i<teacherInfo.length;i++){
+        $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
+    }
 });
