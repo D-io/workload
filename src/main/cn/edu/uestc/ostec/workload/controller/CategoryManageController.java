@@ -69,21 +69,17 @@ public class CategoryManageController extends ApplicationController {
 			return parameterNotSupportResponse("参数不能为空");
 		}
 
-		//相关参数的校验，若为空，使用相应的默认值
-		if (null == categoryDto.getReviewerId() || ZERO_INT == categoryDto.getReviewerId()) {
-			categoryDto.setReviewerId(user.getUserId());
+		//校验条目名称
+		if (isEmptyString(categoryDto.getName())) {
+			return parameterNotSupportResponse("项目名称不能为空");
 		}
 
-		if (null == categoryDto.getApplyDeadline() || "".equals(categoryDto.getReviewDeadline())) {
-			categoryDto.setApplyDeadline(DateHelper.getCurrentYear() +"年12月31日");
-		}
-
-		if (null == categoryDto.getReviewDeadline() || "".equals(categoryDto.getReviewDeadline())) {
-			categoryDto.setReviewDeadline(DateHelper.getCurrentYear() + "年12月28日");
-		}
+		//设置默认参数
+		setDefaultParams(categoryDto);
 
 		//将dto对象转为pojo（转换时间）
 		Category category = categoryConverter.dtoToPo(categoryDto);
+
 		//设置状态值(未提交)
 		category.setStatus(UNCOMMITTED);
 
@@ -164,7 +160,8 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		//获取状态为SUBMITTED的工作量条目
-		List<Category> categoryList = categoryService.getCategoriesByStatus(SUBMITTED,getCurrentSemester());
+		List<Category> categoryList = categoryService
+				.getCategoriesByStatus(SUBMITTED, getCurrentSemester());
 
 		//修改相应的状态
 		for (Category category : categoryList) {
@@ -192,7 +189,7 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		//校验
-		if (null == categoryDto) {
+		if (null == categoryDto || isEmptyString(categoryDto.getName())) {
 			return parameterNotSupportResponse("参数有误");
 		}
 
@@ -200,6 +197,10 @@ public class CategoryManageController extends ApplicationController {
 			return invalidOperationResponse("非解锁工作量不可修改，请先解锁！");
 		}
 
+		//设置默认参数
+		setDefaultParams(categoryDto);
+
+		//设置对应的状态
 		categoryDto.setStatus(UNCOMMITTED);
 
 		//将dto对象转为pojo对象并保存
@@ -306,6 +307,29 @@ public class CategoryManageController extends ApplicationController {
 		//		data.put("categoryList", categoryConverter.poListToDtoList(categoryList));
 
 		return successResponse(categoryEvent.submitCategories(categoryIdList));
+	}
+
+	private void setDefaultParams(CategoryDto categoryDto) {
+		//相关参数的校验，若为空，使用相应的默认值
+		if (isEmptyNumber(categoryDto.getReviewerId())) {
+			categoryDto.setReviewerId(getUserId());
+		}
+
+		//设置申报时间默认值
+		if (isEmptyString(categoryDto.getApplyDeadline())) {
+			categoryDto.setApplyDeadline(DateHelper.getCurrentYear() + DEFAULT_APPLY_DATE_TIME);
+		}
+
+		//设置审核时间默认值
+		if (isEmptyString(categoryDto.getReviewDeadline())) {
+			categoryDto.setReviewDeadline(DateHelper.getCurrentYear() + DEFAULT_REVIEW_DATE_TIME);
+		}
+
+		//根据有无公式判断是否为叶子节点
+		categoryDto.setIsLeaf(isEmptyString(categoryDto.getFormula()) ? NOT_LEAF : IS_LEAF);
+
+		//设置默认学期
+		categoryDto.setVersion(getCurrentSemester());
 	}
 
 }

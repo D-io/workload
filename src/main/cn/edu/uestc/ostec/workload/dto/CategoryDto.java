@@ -22,12 +22,12 @@ public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 	/**
 	 * 工作量类目名称
 	 */
-	private String name;
+	private String name = null;
 
 	/**
 	 * 工作量类目简介
 	 */
-	private String desc;
+	private String desc = null;
 
 	/**
 	 * 上一级工作量类目编号，传入“0”则为第一级工作量类目

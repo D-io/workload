@@ -40,6 +40,9 @@ public class CategoryEventImpl implements CategoryEvent {
 		List<Category> categoryList = new ArrayList<>();
 		for (int categoryId : categoryIdList) {
 			Category category = categoryService.getCategory(categoryId);
+			if(null == category) {
+				continue;
+			}
 			int reviewerId = category.getReviewerId();
 			if (UNCOMMITTED.equals(category.getStatus())) {
 				boolean appendSuccess = userRoleEvent.appendRoleInfo(reviewerId, REVIEWER_ROLE);

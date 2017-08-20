@@ -53,6 +53,16 @@ public interface WorkloadObjects {
 	String ROLE_PROPOSER = "proposer";
 
 	/**
+	 * 是叶子节点
+	 */
+	String IS_LEAF = "Y";
+
+	/**
+	 * 不是叶子节点
+	 */
+	String NOT_LEAF = "N";
+
+	/**
 	 * 小组
 	 */
 	Integer GROUP = 1;
@@ -62,13 +72,25 @@ public interface WorkloadObjects {
 	 */
 	Integer SINGLE = 0;
 
+	/**
+	 * 文件附件对应的文件编号
+	 */
 	Integer ATTACHMENT_FILE_ID = 5;
 
 	/**
 	 * 审核人角色信息
 	 */
-	RoleInfo REVIEWER_ROLE = new RoleInfo("RE","工作量审核人");
+	RoleInfo REVIEWER_ROLE = new RoleInfo("RE", "工作量审核人");
 
+	/**
+	 * 默认审核截止时间
+	 */
+	String DEFAULT_REVIEW_DATE_TIME = "12-31 12:00:00";
+
+	/**
+	 * 默认申报截止时间
+	 */
+	String DEFAULT_APPLY_DATE_TIME = "12-28 12:00:00";
 
 	/**
 	 * 获取空的Map&lt;K, V&gt;

@@ -151,6 +151,14 @@ public class ApplicationController extends ResultController
 		return null == arrayList || arrayList.isEmpty();
 	}
 
+	public boolean isEmptyString(String str) {
+		return null == str || "".equals(str);
+	}
+
+	public boolean isEmptyNumber(Integer num) {
+		return null == num || ZERO_INT == num;
+	}
+
 	/**
 	 * 获取转发或重定向请求路径
 	 *
