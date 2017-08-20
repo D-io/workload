@@ -2557,7 +2557,7 @@ span.tag a {
 .not_valid {
     background: #FBD8DB !important;
     color: #90111A !important
-}
+}*/
 ul.bar_tabs {
     overflow: visible;
     background: #F5F7FA;
@@ -2600,7 +2600,7 @@ ul.bar_tabs.right {
 }
 ul.bar_tabs.right li {
     float: right
-}*/
+}
 
 a:focus {
     outline: none
