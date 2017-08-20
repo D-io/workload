@@ -15,10 +15,10 @@ function ownerApply(domId) {
             $('.otherparameterName').val(null);
 
         });
-        var CurrentName='';
+      /*  var CurrentName='';
         $.get(currentTeaIdUrl,function (data) {
             CurrentName =data.data.teacher.name;
-        });
+        });*/
         $(document).off("click",".savemyApply");
         $(document).on("click", ".savemyApply", function () {
 
@@ -111,7 +111,7 @@ function ownerApply(domId) {
                             var CategId="";
                             var CateValue="";
                             for (var i = 0; i < listLength; i++) {
-                                if (Info[i].teacherName == CurrentName) {
+                                if (Info[i].teacherName == userNameUrl) {
                                      count = Info[i].workload;
                                      CountId = Info[i].itemId;
                                      CategId = Info[i].categoryId;
@@ -161,7 +161,7 @@ function ownerApply(domId) {
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
                             $(".tbody tr:last td:eq(1)").text(Info[0].itemName);
                             for (var i = 0; i < listLength; i++) {
-                                if (Info[i].teacherName == CurrentName)
+                                if (Info[i].teacherName == userNameUrl)
                                      count = Info[i].workload;
                                  CountId = Info[i].itemId;
                                 CategId=Info[i].categoryId;
@@ -190,7 +190,7 @@ function ownerApply(domId) {
                         formdata.append("file", $("#formName")[0].files[0]);
                         $('#addContent').modal('hide');
                         for(var hideCount=0;hideCount<listLength;hideCount++){
-                            if (Info[hideCount].teacherName == CurrentName) {
+                            if (Info[hideCount].teacherName == userNameUrl) {
                                 /* var count = Info[i].workload;
                                  var CategId = Info[i].categoryId;*/
 

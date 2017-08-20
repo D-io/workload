@@ -20,6 +20,8 @@
 
      var currentTermUrl="${currentScheme}";
 
+     var userNameUrl="${userName}";
+
     var currentRoleUrl=contextPath+"/page/sidebar/list";
 
     var categoryListUrl=contextPath+"/category/info";
@@ -95,6 +97,7 @@
     var currentTeaIdUrl=contextPath+"/common/user-info";
 
     var historyUrl=contextPath+"/history/info/histories-user";
+
 
 
 </script>

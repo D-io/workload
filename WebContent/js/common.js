@@ -427,11 +427,11 @@ $(document).ready(function () {
        if()
     });*/
 
-    var currentId='';
+ /*   var currentId='';
     var CurrentName='';
     $.get(currentTeaIdUrl,function (data) {
         CurrentName =data.data.teacher.name;
-    });
+    });*/
     $(document).on("click",".editApply",function () {
         var editId=parseInt(this.id.match(/\d+/g));
         $(".savemyApplyAgain").attr("id",editId);
@@ -449,9 +449,9 @@ $(document).ready(function () {
         $("#group").removeAttr("disabled");
         $(".showotherparameterName").removeAttr("disabled");
         $("#showitemmanager").removeAttr("disabled");
-        $.get(currentTeaIdUrl,function (data) {
+    /*    $.get(currentTeaIdUrl,function (data) {
             window.currentId=data.data.teacher.name;
-        })
+        })*/
         $(".showgroupMemberName").removeAttr("disabled");
         $(".showgroupMemberSymbol").removeAttr("disabled");
         $(".showgroupMemberWeight").removeAttr("disabled");
@@ -562,7 +562,7 @@ $(document).ready(function () {
 
                     $('#addContent').modal('hide');
                     for(var hideCount=0;hideCount<listLength;hideCount++){
-                        if (Info[hideCount].teacherName == CurrentName) {
+                        if (Info[hideCount].teacherName == userNameUrl) {
                             /* var count = Info[i].workload;
                              var CategId = Info[i].categoryId;*/
 
