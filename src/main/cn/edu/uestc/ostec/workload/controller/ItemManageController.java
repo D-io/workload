@@ -97,12 +97,11 @@ public class ItemManageController extends ApplicationController {
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
-		Integer status = itemDto.getImportRequired();
+		Integer importRequired = itemDto.getImportRequired();
 
-		if (ROLE_REVIEWER.equals(role) && APPLY_SELF.equals(status)) {
+		if ((ROLE_REVIEWER.equals(role) && APPLY_SELF.equals(importRequired)) || (
+				ROLE_PROPOSER.equals(role) && IMPORT_EXCEL.equals(importRequired))) {
 			item.setStatus(NON_CHECKED);
-		} else if (ROLE_PROPOSER.equals(role) && IMPORT_EXCEL.equals(status)) {
-			item.setStatus(DOUBTED);
 		} else {
 			item.setStatus(UNCOMMITTED);
 		}
