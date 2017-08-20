@@ -85,12 +85,13 @@ public class ItemDaoTest extends BaseTest {
 
 	@Test
 	public void test() {
-		List<Category> categoryList = categoryDao.selectAll("2017-2018-1");
-		for(Category category:categoryList) {
-			category.setApplyDeadline(1517414400);
-			category.setReviewDeadline(1517760000);
-			categoryDao.update(category);
-		}
+//		List<Category> categoryList = categoryDao.selectAll("2017-2018-1");
+//		for(Category category:categoryList) {
+//			category.setApplyDeadline(1517414400);
+//			category.setReviewDeadline(1517760000);
+//			categoryDao.update(category);
+//		}
+		System.out.println(categoryDao.selectYears());
 	}
 
 }

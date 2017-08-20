@@ -217,12 +217,13 @@ public class DateHelper {
 		List<String> schemeList = new ArrayList<>();
 		for (int i = 1; i <= 3; i++) {
 			Integer lastYear = year - 1;
-			Integer nextYear = tempYear + 1;
 			schemeList.add(lastYear.toString() + "-" + year.toString());
-			schemeList.add(tempYear.toString() + "-" + nextYear.toString());
 			year -= 1;
-			tempYear += 1;
 		}
+		Integer nextYear = tempYear + 1;
+		Integer nextTwoYear = tempYear + 2;
+		schemeList.add(tempYear.toString() + "-" + nextYear.toString());
+		schemeList.add(nextYear.toString() + "-" + nextTwoYear.toString());
 		Collections.sort(schemeList);
 		return schemeList;
 	}

@@ -134,4 +134,8 @@
           and status = 1
   </select>
 
+  <select id="selectYears" resultType="String">
+    SELECT DISTINCT(version) FROM category WHERE status != -1
+  </select>
+
 </mapper>

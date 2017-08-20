@@ -130,4 +130,6 @@ public interface CategoryDao extends BaseDao<Category> {
 					Integer status,
 			@Param("version")
 					String version);
+
+	List<String> selectYears();
 }

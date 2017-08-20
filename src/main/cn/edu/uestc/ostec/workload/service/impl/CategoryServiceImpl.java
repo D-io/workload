@@ -41,6 +41,11 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	}
 
 	@Override
+	public List<String> getAllVersions() {
+		return listResult(categoryDao.selectYears());
+	}
+
+	@Override
 	public Boolean deleteCategory(Integer categoryId) {
 
 		return categoryDao.delete(categoryId);

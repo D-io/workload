@@ -44,4 +44,6 @@ public interface SessionConstants {
 
 	String SESSION_CURRENT_SCHEME = "currentScheme";
 
+	String SESSION_CURRENT_SCHOOL_YEARS = "years";
+
 }

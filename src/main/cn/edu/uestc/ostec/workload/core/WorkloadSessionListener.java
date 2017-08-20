@@ -35,6 +35,7 @@ public class WorkloadSessionListener implements HttpSessionListener, WorkloadObj
 		session = httpSessionEvent.getSession();
 		session.setAttribute(SESSION_CURRENT_YEAR,DateHelper.getCurrentSchemeYear());
 		session.setAttribute(SESSION_CURRENT_SCHEME,DateHelper.getCurrentScheme());
+		session.setAttribute(SESSION_CURRENT_SCHOOL_YEARS,DateHelper.getCurrentSchoolYears());
 
 	}
 

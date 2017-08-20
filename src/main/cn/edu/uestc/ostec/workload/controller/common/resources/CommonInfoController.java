@@ -17,6 +17,7 @@ import java.util.Map;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
+import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
 import cn.edu.uestc.ostec.workload.support.utils.Date;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
@@ -34,6 +35,9 @@ public class CommonInfoController extends ApplicationController {
 
 	@Autowired
 	private TeacherService teacherService;
+
+	@Autowired
+	private CategoryService categoryService;
 
 	/**
 	 * 获取教师信息列表
@@ -75,6 +79,15 @@ public class CommonInfoController extends ApplicationController {
 	@RequestMapping(value = "years",method = GET)
 	public RestResponse getSchoolYearList() {
 		return successResponse(DateHelper.getCurrentSchoolYears());
+	}
+
+	/**
+	 * 获取所有的版本信息
+	 * @return
+	 */
+	@RequestMapping(value = "all-versions",method = GET)
+	public RestResponse getAllYears() {
+		return successResponse(categoryService.getAllVersions());
 	}
 
 	/**

@@ -88,4 +88,10 @@ public interface CategoryService extends MultiLevelService<CategoryDto> {
 	 * @return List
 	 */
 	List<Category> getRootCategories();
+
+	/**
+	 * 获取所有版本信息
+	 * @return string
+	 */
+	List<String> getAllVersions();
 }
