@@ -265,7 +265,7 @@ public class CategoryManageController extends ApplicationController {
 	@RequestMapping(value = "public-selective", method = POST)
 	public RestResponse submitCategory(
 			@RequestParam("categoryId")
-					int... categoryIdList) {
+					Integer ...categoryIdList) {
 
 		//验证管理员身份
 		User user = getUser();

@@ -31,6 +31,7 @@ import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
+import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.HISTORY_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
@@ -40,7 +41,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  * Version:v1.0 (description:  )
  */
 @RestController
-@RequestMapping("history" + INFO_PATH)
+@RequestMapping(HISTORY_PATH + INFO_PATH)
 public class HistoryInfoController extends ApplicationController {
 
 	@Autowired

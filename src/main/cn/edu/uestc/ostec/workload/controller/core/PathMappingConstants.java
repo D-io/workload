@@ -34,6 +34,11 @@ public interface PathMappingConstants {
 	String CATEGORY_PATH = "category";
 
 	/**
+	 * 历史记录路径
+	 */
+	String HISTORY_PATH = "history";
+
+	/**
 	 * 工作量条目路径
 	 */
 	String ITEM_PATH = "item";

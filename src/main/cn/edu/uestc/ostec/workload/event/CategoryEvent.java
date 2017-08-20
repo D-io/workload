@@ -22,6 +22,6 @@ public interface CategoryEvent extends IEvent {
 	 * @return boolean
 	 */
 	@Transactional
-	Map<String,Object> submitCategories(int ...categoryIdList);
+	Map<String,Object> submitCategories(Integer ...categoryIdList);
 
 }

@@ -34,7 +34,7 @@ public class CategoryEventImpl implements CategoryEvent {
 	private UserRoleEvent userRoleEvent;
 
 	@Override
-	public Map<String,Object> submitCategories(int... categoryIdList) {
+	public Map<String,Object> submitCategories(Integer ...categoryIdList) {
 
 		Map<String,Object> data = new HashMap<>();
 		List<Category> categoryList = new ArrayList<>();
