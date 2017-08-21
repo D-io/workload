@@ -24,4 +24,9 @@ public class FormulaParameter {
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
+
+	@Override
+	public String toString() {
+		return "FormulaParameter{" + "desc='" + desc + '\'' + ", symbol='" + symbol + '\'' + '}';
+	}
 }

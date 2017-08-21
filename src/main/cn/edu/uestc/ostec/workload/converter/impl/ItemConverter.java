@@ -3,10 +3,14 @@ package cn.edu.uestc.ostec.workload.converter.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.edu.uestc.ostec.workload.converter.Converter;
 import cn.edu.uestc.ostec.workload.dao.CategoryDao;
 import cn.edu.uestc.ostec.workload.dao.TeacherDao;
 import cn.edu.uestc.ostec.workload.dto.ChildWeight;
+import cn.edu.uestc.ostec.workload.dto.DescAndValue;
 import cn.edu.uestc.ostec.workload.dto.FormulaParameter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.JobDesc;
@@ -85,6 +89,19 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		itemDto.setParamDesc(isNull(category) ?
 				null :
 				readValueFromJson(category.getJsonParameters(), FormulaParameter.class));
+
+		List<DescAndValue> descAndValues = new ArrayList<>();
+		List<ParameterValue> parameterValueList = itemDto.getParameterValues();
+		List<FormulaParameter> formulaParameterList = itemDto.getParamDesc();
+		for (int i = 0; i < parameterValueList.size(); i++) {
+			if (parameterValueList.get(i).getSymbol()
+					.equals(formulaParameterList.get(i).getSymbol())) {
+				DescAndValue descAndValue = new DescAndValue(formulaParameterList.get(i).getDesc(),
+						parameterValueList.get(i).getValue());
+				descAndValues.add(descAndValue);
+			}
+		}
+		itemDto.setDescAndValues(descAndValues);
 		//		double workload = FormulaCalculate
 		//				.calculate(category.getFormula(), itemDto.getParameterValues());
 		//		itemDto.setWorkload(workload);

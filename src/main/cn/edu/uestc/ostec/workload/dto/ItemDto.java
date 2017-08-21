@@ -2,8 +2,12 @@ package cn.edu.uestc.ostec.workload.dto;
 
 import java.util.List;
 
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
+
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.SINGLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 
 /**
  * Version:v1.0 (description:  )
@@ -18,22 +22,22 @@ public class ItemDto {
 	/**
 	 * 工作量对应的项目名称
 	 */
-	private String itemName;
+	private String itemName = null;
 
 	/**
 	 * 工作量类目编号，确定工作量所属类目
 	 */
-	private Integer categoryId;
+	private Integer categoryId = ZERO_INT;
 
 	/**
 	 * 所属人编号，与教师表中工号一致
 	 */
-	private Integer ownerId;
+	private Integer ownerId = ZERO_INT;
 
 	/**
 	 * 参数以json格式存储，与类目表公式中参数一致，如{A：40}
 	 */
-	private String jsonParameter;
+	private String jsonParameter = null;
 
 	/**
 	 * 映射json参数的结果
@@ -48,7 +52,7 @@ public class ItemDto {
 	/**
 	 * 组长编号，默认当前申请人为组长。当前登录人编号与此字段一致时，方可进行工作量的修改操作
 	 */
-	private Integer groupManagerId;
+	private Integer groupManagerId = ZERO_INT;
 
 	/**
 	 * 申请描述
@@ -68,12 +72,12 @@ public class ItemDto {
 	/**
 	 * 状态
 	 */
-	private Integer status;
+	private Integer status = ZERO_INT;
 
 	/**
 	 * Json格式存储组员权重，用于计算个人工作量，存储如：{组员1编号：0.4}
 	 */
-	private String jsonChildWeight;
+	private String jsonChildWeight = null;
 
 	/**
 	 * 映射Json组员权重的集合
@@ -88,42 +92,42 @@ public class ItemDto {
 	/**
 	 * 教师姓名
 	 */
-	private String teacherName;
+	private String teacherName = null;
 
 	/**
 	 * 审核人编号
 	 */
-	private Integer reviewerId;
+	private Integer reviewerId = ZERO_INT;
 
 	/**
 	 * 审核人姓名
 	 */
-	private String reviewerName;
+	private String reviewerName = null;
 
 	/**
 	 * 组长姓名
 	 */
-	private String groupManagerName;
+	private String groupManagerName = null;
 
 	/**
 	 * 对应的类目姓名
 	 */
-	private String categoryName;
+	private String categoryName = null;
 
 	/**
 	 * 申报方式or导入方式
 	 */
-	private Integer importRequired;
+	private Integer importRequired = APPLY_SELF;
 
 	/**
 	 * 是否为小组
 	 */
-	private Integer isGroup;
+	private Integer isGroup = SINGLE;
 
 	/**
 	 * 学期版本号
 	 */
-	private String version;
+	private String version = DateHelper.getCurrentTerm();
 
 	/**
 	 * 其他Json字段
@@ -139,6 +143,16 @@ public class ItemDto {
 	 * 对应的参数描述
 	 */
 	private List<FormulaParameter> paramDesc = null;
+
+   	private List<DescAndValue> descAndValues = null;
+
+	public List<DescAndValue> getDescAndValues() {
+		return descAndValues;
+	}
+
+	public void setDescAndValues(List<DescAndValue> descAndValues) {
+		this.descAndValues = descAndValues;
+	}
 
 	public String getFormula() {
 		return formula;
@@ -356,5 +370,22 @@ public class ItemDto {
 
 	public void setIsGroup(Integer isGroup) {
 		this.isGroup = isGroup;
+	}
+
+	@Override
+	public String toString() {
+		return "ItemDto{" + "itemId=" + itemId + ", itemName='" + itemName + '\'' + ", categoryId="
+				+ categoryId + ", ownerId=" + ownerId + ", jsonParameter='" + jsonParameter + '\''
+				+ ", parameterValues=" + parameterValues + ", workload=" + workload
+				+ ", groupManagerId=" + groupManagerId + ", applyDesc='" + applyDesc + '\''
+				+ ", jobDesc='" + jobDesc + '\'' + ", jobDescList=" + jobDescList + ", status="
+				+ status + ", jsonChildWeight='" + jsonChildWeight + '\'' + ", childWeightList="
+				+ childWeightList + ", proof=" + proof + ", teacherName='" + teacherName + '\''
+				+ ", reviewerId=" + reviewerId + ", reviewerName='" + reviewerName + '\''
+				+ ", groupManagerName='" + groupManagerName + '\'' + ", categoryName='"
+				+ categoryName + '\'' + ", importRequired=" + importRequired + ", isGroup="
+				+ isGroup + ", version='" + version + '\'' + ", otherJson='" + otherJson + '\''
+				+ ", formula='" + formula + '\'' + ", paramDesc=" + paramDesc + ", descAndValues="
+				+ descAndValues + ", otherJsonParameters=" + otherJsonParameters + '}';
 	}
 }

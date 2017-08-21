@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
-import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.History;
@@ -44,9 +43,6 @@ public class CategoryManageAspectImpl implements IAspect {
 
 	@Autowired
 	private HistoryService historyService;
-
-	@Autowired
-	private CategoryConverter categoryConverter;
 
 	/**
 	 * 日志对象
@@ -192,7 +188,7 @@ public class CategoryManageAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setOperation(
 				user.getName() + "于" + history.getCreateTime() + "修改了工作量计算规则" + categoryDto
-						.getName() + ":" + oldCategoryDto.contrastObj(oldCategoryDto,categoryDto));
+						.getName() + ":" + oldCategoryDto.contrastObj(oldCategoryDto, categoryDto));
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {

@@ -20,9 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
-import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
@@ -59,7 +57,6 @@ public class WorkloadModifyAspectImpl implements IAspect {
 
 	private static final String DATE_MODIFY_INFO_LOG_PATTERN = "review deadline modify operation {}, result {}";
 
-
 	@Autowired
 	private ItemService itemService;
 
@@ -71,9 +68,6 @@ public class WorkloadModifyAspectImpl implements IAspect {
 
 	@Autowired
 	private CategoryService categoryService;
-
-	@Autowired
-	private CategoryConverter categoryConverter;
 
 	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ReviewManageController.modifyWorkload(..))")
 	private void pointCut() {
@@ -106,7 +100,8 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setItemId(buildHistoryItemId(itemId));
 
 		history.setOperation(
-				"工作量" + item.getItemName() + "被审核人" + user.getName() + "于" + history.getCreateTime() + "修改为" + args[1]);
+				"工作量" + item.getItemName() + "被审核人" + user.getName() + "于" + history.getCreateTime()
+						+ "修改为" + args[1]);
 		history.setType(IMPORT_EXCEL.equals(itemDto.getImportRequired()) ? "import" : "apply");
 		history.setAimUserId(item.getOwnerId());
 
@@ -119,11 +114,11 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		}
 	}
 
-	@AfterReturning(returning = "rvt",pointcut = "dateModifyPointCut()")
-	public void recordReviewDateModify(JoinPoint joinPoint,Object rvt) {
+	@AfterReturning(returning = "rvt", pointcut = "dateModifyPointCut()")
+	public void recordReviewDateModify(JoinPoint joinPoint, Object rvt) {
 
 		RestResponse restResponse = (RestResponse) rvt;
-		if(OK.value() != restResponse.getStatus()) {
+		if (OK.value() != restResponse.getStatus()) {
 			return;
 		}
 
@@ -144,8 +139,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setOperation(
-				user.getName() + "于" + history.getCreateTime() + "将审核截止时间提前到"
-						+ newDate);
+				user.getName() + "于" + history.getCreateTime() + "将审核截止时间提前到" + newDate);
 		history.setType(APPLY_SELF.equals(category.getImportRequired()) ? "apply" : "import");
 		//TODO 目标用户编号设置为所有人
 		history.setAimUserId(0000000);

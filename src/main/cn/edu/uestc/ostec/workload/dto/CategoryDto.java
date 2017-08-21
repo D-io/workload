@@ -17,17 +17,6 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
  */
 public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 
-	@Test
-	public void test() {
-		CategoryDto category = new CategoryDto();
-		category.setCategoryId(1);
-		category.setDesc("12");
-		CategoryDto category1 = new CategoryDto();
-		category1.setCategoryId(2);
-		category1.setDesc("123");
-		System.out.println(category.contrastObj(category,category1));
-	}
-
 	/**
 	 * 工作量类目编号
 	 */

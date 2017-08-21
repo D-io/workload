@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.uestc.ostec.workload.BaseTest;
+import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.RoleInfo;
 import cn.edu.uestc.ostec.workload.event.UserRoleEvent;
@@ -32,6 +33,8 @@ public class ItemDaoTest extends BaseTest {
 
 	private HistoryService historyService;
 
+	private ItemConverter itemConverter;
+
 	private Item item;
 
 	private UserRoleEvent userRoleEvent;
@@ -40,6 +43,7 @@ public class ItemDaoTest extends BaseTest {
 
 	{
 		itemDao = getBean(ItemDao.class);
+		itemConverter = getBean(ItemConverter.class);
 		categoryDao = getBean(CategoryDao.class);
 		historyService = getBean(HistoryService.class);
 		userRoleEvent = getBean(UserRoleEvent.class);
@@ -91,7 +95,8 @@ public class ItemDaoTest extends BaseTest {
 //			category.setReviewDeadline(1517760000);
 //			categoryDao.update(category);
 //		}
-		System.out.println(categoryDao.selectYears());
+//		System.out.println(categoryDao.selectYears());
+		System.out.println(itemConverter.poToDto(itemDao.select(28)).getDescAndValues());
 	}
 
 }
