@@ -10,6 +10,8 @@ package cn.edu.uestc.ostec.workload.aspect;
 import org.aspectj.lang.JoinPoint;
 
 import cn.edu.uestc.ostec.workload.adaptor.ServletContextAdapter;
+import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import static org.springframework.http.HttpStatus.OK;
 
 /**
  * Description: 切面标记接口
@@ -48,6 +50,14 @@ public interface IAspect extends ServletContextAdapter {
 	default Object[] getParameters(JoinPoint joinPoint) {
 		
 		return joinPoint.getArgs();
+	}
+
+	default Boolean vertifyStatus(Object rvt) {
+		RestResponse restResponse = (RestResponse) rvt;
+		if(OK.value() != restResponse.getStatus()) {
+			return false;
+		}
+		return true;
 	}
 
 	default String buildHistoryItemId(Integer itemId) {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -103,45 +104,51 @@ public class CategoryManageController extends ApplicationController {
 	/**
 	 * 置对应的条目信息为Disable
 	 *
-	 * @param categoryId 类目编号
+	 * @param categoryIdList 类目编号集合
 	 * @return RestResponse
 	 */
-	@RequestMapping(method = DELETE)
+	@RequestMapping(value = "disable", method = DELETE)
 	public RestResponse removeCategories(
 			@RequestParam(value = "categoryId")
-					Integer categoryId) {
+					Integer... categoryIdList) {
 		//验证管理员身份
 		User user = getUser();
 		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
 			return invalidOperationResponse("非法请求");
 		}
 
-		Category category = categoryService.getCategory(categoryId);
-		if (null == category) {
-			return parameterNotSupportResponse("参数有误");
-		}
-
-		if (SUBMITTED.equals(category.getStatus())) {
-			return invalidOperationResponse("非解锁工作量不可删除，请先解锁！");
-		}
-
-		//设置为disable状态
-		boolean removeSuccess = categoryService.removeCategory(categoryId);
-
-		if (!removeSuccess) {
-			return systemErrResponse("删除失败！");
-		}
-
-		Category oldCategory = categoryService.getCategory(categoryId);
-		CategoryDto categoryDto = categoryConverter.poToDto(oldCategory);
-
-		categoryDto.setOtherJson(null);
-		categoryDto.setJsonParameters(null);
-
-		//展示删除的categoryDto信息
 		Map<String, Object> data = getData();
-		data.put("oldCategory", categoryDto);
+		Map<String, Object> errorData = getData();
+		List<CategoryDto> categoryList = new ArrayList<>();
+		for (Integer categoryId : categoryIdList) {
 
+			Category category = categoryService.getCategory(categoryId);
+			if (null == category) {
+				errorData.put(categoryId.toString(), "参数有误");
+				continue;
+			}
+
+			if (SUBMITTED.equals(category.getStatus())) {
+				errorData.put(category.getName(), "非解锁工作量不可删除！");
+				continue;
+			}
+
+			boolean removeSuccess = categoryService.removeCategory(categoryId);
+			if (!removeSuccess) {
+				errorData.put(category.getName(), "删除失败！");
+				continue;
+			}
+
+			Category oldCategory = categoryService.getCategory(categoryId);
+			CategoryDto categoryDto = categoryConverter.poToDto(oldCategory);
+			categoryDto.setOtherJson(null);
+			categoryDto.setJsonParameters(null);
+			categoryList.add(categoryDto);
+		}
+
+		data.put("categoryList", categoryList);
+		data.put("errorData", errorData);
+		//展示删除的categoryDto信息
 		return successResponse(data);
 	}
 
@@ -265,7 +272,7 @@ public class CategoryManageController extends ApplicationController {
 	@RequestMapping(value = "public-selective", method = POST)
 	public RestResponse submitCategory(
 			@RequestParam("categoryId")
-					Integer ...categoryIdList) {
+					Integer... categoryIdList) {
 
 		//验证管理员身份
 		User user = getUser();

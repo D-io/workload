@@ -54,6 +54,10 @@ public class CategoryManageAspectImpl implements IAspect {
 
 	@AfterReturning(returning = "rvt", pointcut = "categoryDeletePointcut()")
 	public void recordCategoryDelete(JoinPoint joinPoint, Object rvt) {
+		if(!vertifyStatus(rvt)) {
+			return;
+		}
+
 
 	}
 
