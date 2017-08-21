@@ -107,7 +107,7 @@ public class CategoryManageController extends ApplicationController {
 	 * @param categoryIdList 类目编号集合
 	 * @return RestResponse
 	 */
-	@RequestMapping(value = "disable", method = DELETE)
+	@RequestMapping(value = "disable", method = POST)
 	public RestResponse removeCategories(
 			@RequestParam(value = "categoryId")
 					Integer... categoryIdList) {
@@ -204,6 +204,9 @@ public class CategoryManageController extends ApplicationController {
 			return invalidOperationResponse("非解锁工作量不可修改，请先解锁！");
 		}
 
+		Integer categoryId = categoryDto.getCategoryId();
+		CategoryDto oldCategory = categoryConverter
+				.poToDto(categoryService.getCategory(categoryId));
 		//设置默认参数
 		setDefaultParams(categoryDto);
 
@@ -219,11 +222,12 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		Map<String, Object> data = getData();
-		CategoryDto categoryDto1 = categoryConverter.poToDto(category);
-		categoryDto1.setOtherJson(null);
-		categoryDto1.setJsonParameters(null);
+		CategoryDto newCategoryDto = categoryConverter.poToDto(category);
+		newCategoryDto.setOtherJson(null);
+		newCategoryDto.setJsonParameters(null);
 
-		data.put("category", categoryDto1);
+		data.put("category", newCategoryDto);
+		data.put("oldCategory",oldCategory);
 
 		return successResponse(data);
 	}

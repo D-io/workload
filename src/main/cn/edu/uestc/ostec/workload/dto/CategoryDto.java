@@ -1,7 +1,10 @@
 package cn.edu.uestc.ostec.workload.dto;
 
+import org.junit.Test;
+
 import java.util.List;
 
+import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
@@ -13,6 +16,17 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
  * Version:v1.0 (description: Category包装对象)
  */
 public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
+
+	@Test
+	public void test() {
+		CategoryDto category = new CategoryDto();
+		category.setCategoryId(1);
+		category.setDesc("12");
+		CategoryDto category1 = new CategoryDto();
+		category1.setCategoryId(2);
+		category1.setDesc("123");
+		System.out.println(category.contrastObj(category,category1));
+	}
 
 	/**
 	 * 工作量类目编号

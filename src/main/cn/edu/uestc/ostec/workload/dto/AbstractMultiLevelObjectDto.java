@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Description:多层级对象标记接口
  */
-public abstract class AbstractMultiLevelObjectDto<T> {
+public abstract class AbstractMultiLevelObjectDto<T> implements CompareObjectDifferences<T> {
 
 	/**
 	 * 获取当前对象父节点编号
@@ -32,6 +32,7 @@ public abstract class AbstractMultiLevelObjectDto<T> {
 
 	/**
 	 * 获取当前对象的状态
+	 *
 	 * @return 当前对象的状态
 	 */
 	public abstract Integer getStatus();
