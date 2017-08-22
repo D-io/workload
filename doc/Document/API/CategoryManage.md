@@ -137,7 +137,7 @@ categoryTree.status | 工作量类目状态 | 若为0，则为未提交状态，
 - 接口地址：`/category/manage/unlock`
 - 支持格式：`json`
 - 请求方式：`POST`
-- 请求示例：`localhost:8080/category/manage/unlock`
+- 请求示例：`http://127.0.0.1:8080/category/manage/unlock?categoryId=1&categoryId=2&categoryId=3`
 
 - 返回参数具体说明：
 
@@ -153,7 +153,10 @@ data | String | 结果集
     "status": 200,
     "statusName": "OK",
     "data": {
-        "info": "解锁成功"
+        "培养方案相关人才培养当量": "解锁成功",
+        "年度人才培养服务当量": "解锁成功",
+        "教研、教改等教学当量": "解锁成功",
+        "errorData": {}
     }
 }
 ```

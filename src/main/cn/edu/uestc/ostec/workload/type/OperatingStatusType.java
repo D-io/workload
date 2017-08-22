@@ -61,6 +61,11 @@ public interface OperatingStatusType {
 	Integer APPLY_SELF = 0;
 
 	/**
+	 * 父类类目对应的importedRequired
+	 */
+	Integer NON_TYPE = 2;
+
+	/**
 	 * 工作量未审核状态,审核中,工作量条目已提交状态
 	 */
 	Integer NON_CHECKED = 1;

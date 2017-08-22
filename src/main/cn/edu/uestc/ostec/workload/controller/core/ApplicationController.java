@@ -27,6 +27,7 @@ import javafx.concurrent.Service;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.DEFAULT_WEB_URL_SEPARATOR;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_TYPE;
 
 /**
  * Description: 应用控制器
@@ -144,7 +145,8 @@ public class ApplicationController extends ResultController
 	}
 
 	public boolean isValidImportedRequired(Integer importedRequired) {
-		return IMPORT_EXCEL.equals(importedRequired) || APPLY_SELF.equals(importedRequired);
+		return IMPORT_EXCEL.equals(importedRequired) || APPLY_SELF.equals(importedRequired)
+				|| NON_TYPE.equals(importedRequired);
 	}
 
 	public <T> boolean isEmptyList(List<T> arrayList) {

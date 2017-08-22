@@ -75,6 +75,10 @@ public class CategoryManageController extends ApplicationController {
 			return parameterNotSupportResponse("项目名称不能为空");
 		}
 
+		if (!isValidImportedRequired(categoryDto.getImportRequired())) {
+			return parameterNotSupportResponse("导入类型参数有误");
+		}
+
 		//设置默认参数
 		setDefaultParams(categoryDto);
 
@@ -158,7 +162,9 @@ public class CategoryManageController extends ApplicationController {
 	 * @return RestResponse
 	 */
 	@RequestMapping(value = "unlock", method = POST)
-	public RestResponse undoCategories() {
+	public RestResponse undoCategories(
+			@RequestParam("categoryId")
+					Integer... categoryIdList) {
 
 		//验证管理员身份
 		User user = getUser();
@@ -166,18 +172,23 @@ public class CategoryManageController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		//获取状态为SUBMITTED的工作量条目
-		List<Category> categoryList = categoryService
-				.getCategoriesByStatus(SUBMITTED, getCurrentSemester());
-
-		//修改相应的状态
-		for (Category category : categoryList) {
-			if (!categoryService.saveCategory(UNCOMMITTED, category.getCategoryId())) {
-				return invalidOperationResponse("解锁失败");
+		Map<String, Object> data = getData();
+		Map<String, Object> errorData = getData();
+		for (Integer categoryId : categoryIdList) {
+			Category category = categoryService.getCategory(categoryId);
+			if (null == category) {
+				errorData.put(categoryId.toString(), "参数有误");
+			}
+			category.setStatus(UNCOMMITTED);
+			boolean saveSuccess = categoryService.saveCategory(category);
+			if (!saveSuccess) {
+				errorData.put(category.getName(), "解锁失败");
+			} else {
+				data.put(category.getName(), "解锁成功");
 			}
 		}
-
-		return successResponse("解锁成功");
+		data.put("errorData", errorData);
+		return successResponse(data);
 	}
 
 	/**
@@ -204,6 +215,10 @@ public class CategoryManageController extends ApplicationController {
 			return invalidOperationResponse("非解锁工作量不可修改，请先解锁！");
 		}
 
+		if (!isValidImportedRequired(categoryDto.getImportRequired())) {
+			return parameterNotSupportResponse("导入类型参数有误");
+		}
+
 		Integer categoryId = categoryDto.getCategoryId();
 		CategoryDto oldCategory = categoryConverter
 				.poToDto(categoryService.getCategory(categoryId));
@@ -227,7 +242,7 @@ public class CategoryManageController extends ApplicationController {
 		newCategoryDto.setJsonParameters(null);
 
 		data.put("category", newCategoryDto);
-		data.put("oldCategory",oldCategory);
+		data.put("oldCategory", oldCategory);
 
 		return successResponse(data);
 	}
