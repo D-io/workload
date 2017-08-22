@@ -39,4 +39,6 @@ public interface HistoryService extends BaseService {
 
 	boolean saveHistory(History history);
 
+	List<History> getCategoryHistories(Integer userId);
+
 }

@@ -35,6 +35,7 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.H
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
+import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
@@ -57,6 +58,30 @@ public class HistoryInfoController extends ApplicationController {
 	private ItemConverter itemConverter;
 
 	/**
+	 * 获取类目相关的历史记录
+	 * @return historyList
+	 */
+	@RequestMapping(value = "history-category",method = GET)
+	public RestResponse getCategoryHistories() {
+
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
+		int userId = user.getUserId();
+
+		List<History> historyList = historyService.getCategoryHistories(userId);
+		if(isEmptyList(historyList)) {
+			return successResponse("无相关记录");
+		}
+
+		Map<String, Object> data = getData();
+		data.put("historyList", historyList);
+
+		return successResponse(data);
+	}
+
+	/**
 	 * 获取指定条目对应的全部历史操作记录
 	 *
 	 * @param itemId 条目编号
@@ -73,8 +98,8 @@ public class HistoryInfoController extends ApplicationController {
 		}
 
 		List<History> historyList = historyService.getHistoriesByItem(itemId);
-		if (null == historyList || historyList.isEmpty()) {
-			return systemErrResponse("无相关记录");
+		if (isEmptyList(historyList)) {
+			return successResponse("无相关记录");
 		}
 
 		Map<String, Object> data = getData();
@@ -119,16 +144,16 @@ public class HistoryInfoController extends ApplicationController {
 		Map<String, Object> data = getData();
 		if (ROLE_REVIEWER.equals(role)) {
 			//若为工作当量审核页面，则移除自己的工作当量历史记录，仅保留自己负责审核的历史记录
-//			List<History> histories1 = new ArrayList<>();
-//			for(History history:histories) {
-//				Integer itemId = Integer.valueOf(history.getItemId().substring(1));
-//				Item item = itemService.findItem(itemId);
-//				ItemDto itemDto = itemConverter.poToDto(item);
-//				if(!item.getItemId().equals(itemDto.getReviewerId())) {
-//					histories1.add(history);
-//				}
-//			}
-//			historyList.removeAll(histories1);
+			//			List<History> histories1 = new ArrayList<>();
+			//			for(History history:histories) {
+			//				Integer itemId = Integer.valueOf(history.getItemId().substring(1));
+			//				Item item = itemService.findItem(itemId);
+			//				ItemDto itemDto = itemConverter.poToDto(item);
+			//				if(!item.getItemId().equals(itemDto.getReviewerId())) {
+			//					histories1.add(history);
+			//				}
+			//			}
+			//			historyList.removeAll(histories1);
 
 			historyList.removeAll(histories);
 			data.put("historyList", historyList);

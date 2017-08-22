@@ -70,4 +70,9 @@ public class HistoryServiceImpl extends BaseServiceImpl implements HistoryServic
 		return historyDao.update(history);
 	}
 
+	@Override
+	public List<History> getCategoryHistories(Integer userId) {
+		return listResult(historyDao.selectAllCategoryHistory(userId));
+	}
+
 }

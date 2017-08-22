@@ -45,4 +45,6 @@ public interface HistoryDao extends BaseDao<History> {
 			@Param("type")
 					String type);
 
+	List<History> selectAllCategoryHistory(Integer userId);
+
 }

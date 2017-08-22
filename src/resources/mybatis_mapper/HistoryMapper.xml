@@ -5,7 +5,7 @@
   ~  * File: RegionManagerController.java
   ~  * Author: 张健顺
   ~  * Email: 1224522500@qq.com
-  ~  * opyright: Copyright (c) 2017 OSTEC. All rights reserved.
+  ~  * Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
   ~  */
   -->
 
@@ -38,6 +38,7 @@
             <if test="null != type">
                 AND type = #{type}
             </if>
+            ORDER BY create_time DESC
         </where>
 
         ORDER BY create_time ASC
@@ -50,6 +51,7 @@
             <if test="null != type">
                 AND type = #{type}
             </if>
+            ORDER BY create_time DESC
         </where>
 
     </select>
@@ -68,5 +70,10 @@
     <delete id="delete">
     DELETE FROM history WHERE history_id =#{historyId}
   </delete>
+
+    <select id="selectAllCategoryHistory" resultMap="historyResultMap">
+        SELECT * FROM history WHERE (user_id = #{userId} OR aim_user_id = #{userId} OR aim_user_id = 0000000)
+        AND item_id LIKE 'C%' ORDER BY create_time DESC
+    </select>
 
 </mapper>
