@@ -33,6 +33,7 @@ import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
+import cn.edu.uestc.ostec.workload.support.utils.PageHelper;
 import cn.edu.uestc.ostec.workload.support.utils.TreeGenerateHelper;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
 
@@ -69,13 +70,14 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 	/**
 	 * 不采用分页查询的方式进行条件查询条目信息
+	 *
 	 * @param categoryId 类目编号
-	 * @param status 状态值
-	 * @param ownerId 条目归属人编号
-	 * @param ifExport 是否导出
+	 * @param status     状态值
+	 * @param ownerId    条目归属人编号
+	 * @param ifExport   是否导出
 	 * @return itemDtoList
 	 */
-	@RequestMapping(value = "item-all",method = GET)
+	@RequestMapping(value = "item-all", method = GET)
 	public RestResponse getAllItems(
 			@RequestParam(required = false)
 					Integer categoryId,
@@ -101,7 +103,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		if (null == ifExport) {
 			data.put("itemDtoList", itemDtoList);
 			return successResponse(data);
-		}else if ("yes".equals(ifExport)) {
+		} else if ("yes".equals(ifExport)) {
 			return getExportExcel(itemDtoList);
 		} else {
 			return parameterNotSupportResponse();
@@ -136,25 +138,41 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return invalidOperationResponse("非法请求");
 		}
 
-		pageSize = (null == pageSize ? 100000 : pageSize);
-		pageNum = (null == pageNum ? 1 : pageNum);
-		Map<String, Object> info = itemService
-				.findAll(categoryId, status, ownerId, null, pageNum, pageSize);
-		List<Item> itemList = (List<Item>) info.get("itemList");
-		Integer pageCount = (Integer) info.get("pageCount");
-		Long totalLines = (Long) info.get("totalLines");
+		List<ItemDto> itemDtoList = itemService
+				.findAll(categoryId, status, ownerId, null, getCurrentSemester());
+		if (isEmptyList(itemDtoList)) {
+			return successResponse();
+		}
+
+		int totalRecords = itemDtoList.size();
+
 		Map<String, Object> data = getData();
-		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
 		if (null == ifExport) {
-			data.put("itemList", itemDtoList);
-			data.put("pageCount", pageCount);
-			data.put("totalLines", totalLines);
+			data.put("itemDtoList", PageHelper.paginate(itemDtoList, pageNum, pageSize));
+			data.put("totalRecords", totalRecords);
 			return successResponse(data);
 		} else if ("yes".equals(ifExport)) {
 			return getExportExcel(itemDtoList);
 		} else {
 			return parameterNotSupportResponse();
 		}
+		//		Map<String, Object> info = itemService
+		//				.findAll(categoryId, status, ownerId, null, pageNum, pageSize);
+		//		List<Item> itemList = (List<Item>) info.get("itemList");
+		//		Integer pageCount = (Integer) info.get("pageCount");
+		//		Long totalLines = (Long) info.get("totalLines");
+		//		Map<String, Object> data = getData();
+		//		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
+		//		if (null == ifExport) {
+		//			data.put("itemList", itemDtoList);
+		//			data.put("pageCount", pageCount);
+		//			data.put("totalLines", totalLines);
+		//			return successResponse(data);
+		//		} else if ("yes".equals(ifExport)) {
+		//			return getExportExcel(itemDtoList);
+		//		} else {
+		//			return parameterNotSupportResponse();
+		//		}
 
 	}
 
@@ -225,13 +243,13 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		TreeGenerateHelper treeGenerateHelper = new TreeGenerateHelper(categoryDtoList);
 		Map<String, Object> data = getData();
 
-		List<CategoryDto> parentList = categoryConverter.poListToDtoList(categoryService.getCategoryChildren(SUBMITTED,ZERO_INT,getCurrentSemester()));
+		List<CategoryDto> parentList = categoryConverter.poListToDtoList(
+				categoryService.getCategoryChildren(SUBMITTED, ZERO_INT, getCurrentSemester()));
 		List<CategoryDto> tree = new ArrayList<>();
-		for(CategoryDto categoryDto : parentList) {
+		for (CategoryDto categoryDto : parentList) {
 			tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
 		}
 		data.put("categoryTree", tree);
-
 
 		//data.put("categoryList",treeGenerateHelper.generateTree(ROOT));
 		return successResponse(data);
@@ -469,7 +487,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		List<Item> newItemList = new ArrayList<>();
 		for (Item item : itemList) {
 			ItemDto itemDto = itemConverter.poToDto(item);
-			if(getCurrentSemester().equals(itemDto.getVersion())) {
+			if (getCurrentSemester().equals(itemDto.getVersion())) {
 				newItemList.add(item);
 				workload += item.getWorkload();
 			}
