@@ -34,7 +34,7 @@
             </div>
             <div class="profile_info">
                 <span>欢迎,</span>
-                <h2>学院教师</h2>
+                <h2 class="userName">学院教师</h2>
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -47,9 +47,9 @@
                 <ul class="nav side-menu" style="margin-top: 0px;">
                     <li class="active"><a><i class="fa fa-home"></i> 管理 <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu" style="display: block;">
-                            <li><a onclick="jumpToAdd()">类目管理</a></li>
-                            <li><a onclick="jumpToSum()">类目统计</a></li>
-                            <li><a onclick="reset()">权限重置</a></li>
+                            <li><a onclick="jumpToAdd()">计算规则管理</a></li>
+                            <%--<li><a onclick="jumpToSum()">类目统计</a></li>--%>
+                            <li><a onclick="reset()">教师项目管理</a></li>
                             <li><a onclick="itemSummary()">工作当量统计</a></li>
 
                         </ul>

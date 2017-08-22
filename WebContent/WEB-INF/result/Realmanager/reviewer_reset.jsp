@@ -211,6 +211,12 @@
     <div class="x_content" id="showsumitem" style="display: block;">
         <!--
         <div class="form-group col-sm-3">
+            <select class="form-control" id="teacherName">
+                <option>教师姓名</option>
+
+            </select>
+        </div>
+        <div class="form-group col-sm-3">
             <select class="form-control" id="ispassed">
                 <option value="2">审核通过</option>
                 <option value="3">审核未通过</option>
@@ -220,17 +226,12 @@
 
         <div class="form-group col-sm-3">
             <select class="form-control" id="itemRequired">
-                <option>条目类别</option>
+                <option>规则名称</option>
 
 
             </select>
         </div>
-        <div class="form-group col-sm-3">
-            <select class="form-control" id="teacherName">
-                <option>教师姓名</option>
 
-            </select>
-        </div>
         <div class="col-sm-3">
         <span  id="sumItemSearch" style="height: 34px;">
             <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
@@ -249,18 +250,51 @@
             </div>
         </div>
         -->
-        <table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;">
+        <div class="form-group col-sm-3">
+            <select class="form-control" id="teacherName">
+                <option value="0">教师姓名</option>
+
+            </select>
+        </div>
+        <div class="form-group col-sm-3">
+            <select class="form-control" id="itemName">
+                <option value="0">项目名称</option>
+
+            </select>
+        </div>
+
+        <div class="form-group col-sm-3">
+            <select class="form-control" id="itemRequired">
+                <option value="0">规则名称</option>
+
+            </select>
+        </div>
+        <div class="col-sm-3">
+        <span  id="sumItemSearch" style="height: 34px;">
+            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+        </span>
+           <%-- <span>
+            <button class="btn btn-success pull-right Toexcell"><i class="fa fa-download"></i> 导出</button>
+        </span>--%>
+        </div>
+
+        <table  class="table table-striped table-bordered dataTable no-footer">
             <thead>
             <tr role="row">
                 <th  class="sorting">序号</th>
+                <%--<th class="sorting">规则名称</th>
+                <th class="sorting">规则类别</th>
+                <th class="sorting">项目名称</th>--%>
                 <th  class="sorting">教师姓名</th>
-                <th class="sorting">条目名称</th>
-                <th class="sorting">公式</th>
+                <th class="sorting">项目名称</th>
+                <th class="sorting">计算公式</th>
                 <th class="sorting">公式参数</th>
                 <th class="sorting">参数描述</th>
-                <th class="sorting">其他参数</th>
-                <th class="sorting">工作量</th>
-                <th class="sorting">状态 </th>
+                <%--<th  class="sorting">公式描述</th>--%>
+                <th class="sorting">附加属性</th>
+                <th class="sorting">工作当量</th>
+                <%--<th  class="sorting">教师姓名</th>--%>
+                <th class="sorting">项目状态 </th>
                 <th class="sorting">操作</th>
             </tr>
             </thead>

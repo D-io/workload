@@ -274,7 +274,7 @@ function ownerApply(domId) {
 
                                     addStr="<tr><td><select class='showgroupMemberName teacherName'></select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
                                     $('#showAddgroupPramter').append(addStr);
-                                    $(".showgroupMemberName").eq(pramterCount).append("<option value='"+b[pramterCount].userId+"' selected='selected'"+b[pramterCount].userName+"</option>");
+                                    $(".showgroupMemberName").eq(pramterCount).append("<option value='"+b[pramterCount].userId+"' selected='selected'>"+b[pramterCount].userName+"</option>");
                                     $(".showgroupMemberSymbol").eq(pramterCount).val(b[pramterCount].jobDesc);
                                     $(".showgroupMemberWeight").eq(pramterCount).val(b[pramterCount].weight);
                                 }

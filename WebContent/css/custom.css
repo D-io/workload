@@ -451,13 +451,13 @@ body .container.body .right_col {
     background: #E74C3C !important;
     border: 1px solid #E74C3C !important;
     color: #fff
-}
+}*/
 .bg-blue {
     background: #3498DB !important;
     border: 1px solid #3498DB !important;
     color: #fff
 }
-.bg-orange {
+/*.bg-orange {
     background: #F39C12 !important;
     border: 1px solid #F39C12 !important;
     color: #fff
@@ -1546,9 +1546,10 @@ ul.msg_list li a .message {
 }
 .info-number .badge {
     font-size: 10px;
-    font-weight: normal;
+    font-weight: lighter;
     line-height: 13px;
     padding: 2px 6px;
+    margin-top: 5px;
     position: absolute;
     right: 2px;
     top: 8px
