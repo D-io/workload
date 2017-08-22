@@ -22,6 +22,10 @@
 
      var userNameUrl="${userName}";
 
+     //console.log(${years});
+     //var thisYear="${years}";
+     //console.log(thisYear);
+
     var currentRoleUrl=contextPath+"/page/sidebar/list";
 
     var categoryListUrl=contextPath+"/category/info";
@@ -90,6 +94,10 @@
 
     var itemAllUrl=itemInfoUrl+"/item-all";
 
+    var itemSummaryUrl=itemInfoUrl+"/total-workload";
+
+    var itemWithPageUrl=itemAllUrl+"/paginate";
+
     var reviewerModifyUrl=reviewerManagerUrl+"/workload-modify";
 
     var itemSubmitUrl=itemManageUrl+"/public-selective";
@@ -99,6 +107,8 @@
     var currentTeaIdUrl=contextPath+"/common/user-info";
 
     var historyUrl=contextPath+"/history/info/histories-user";
+
+    var manageHistoryUrl=contextPath+"/history/info/history-category";
 
 
 </script>

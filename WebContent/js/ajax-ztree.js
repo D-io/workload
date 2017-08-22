@@ -235,12 +235,18 @@ function ztree() {
                     $(this).attr("selected",true);
 
                     if($(this).val()==1){
+                        $(".requiredtime").show();
                         $(".applyDeadLabel").text("复核截止时间");
                         $(".revDeadLabel").text("导入截止时间");
                     }
-                    else{
+                    else if($(this).val()==0){
+                        $(".fomulaPara").show();
+                        $(".requiredtime").show();
                         $(".applyDeadLabel").text("申报截止时间");
                         $(".revDeadLabel").text("审核截止时间");
+                    }
+                    else{
+                        $(".requiredtime").hide();
                     }
                 }
             });
@@ -837,10 +843,15 @@ function ztree() {
             if(options.val()==1){
                 $(".applyDeadLabel").text("复核截止时间");
                 $(".revDeadLabel").text("导入截止时间");
+                $(".requiredtime").show();
             }
-            else{
+            else if(options.val()==0){
                 $(".applyDeadLabel").text("申报截止时间");
                 $(".revDeadLabel").text("审核截止时间");
+                $(".requiredtime").show();
+            }
+            else {
+                $(".requiredtime").hide();
             }
 
         });

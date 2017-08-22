@@ -191,7 +191,7 @@
     <div class="x_title">
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-bars"></i>管理</a></li>
-            <li class="active curentPage" id="Managerreset">权限重置</li>
+            <li class="active curentPage" id="Managerreset">教师项目管理</li>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -209,56 +209,20 @@
         <div class="clearfix"></div>
     </div>
     <div class="x_content" id="showsumitem" style="display: block;">
-        <!--
-        <div class="form-group col-sm-3">
-            <select class="form-control" id="teacherName">
-                <option>教师姓名</option>
 
-            </select>
-        </div>
         <div class="form-group col-sm-3">
             <select class="form-control" id="ispassed">
-                <option value="2">审核通过</option>
-                <option value="3">审核未通过</option>
-
+                <option value="0">审核状态</option>
+                <option value="1">待审核</option>
+                <option value="2">确认通过</option>
+                <option value="3">复核存疑</option>
+                <option value="4">存疑解决</option>
+                <option value="5">审核拒绝</option>
             </select>
         </div>
-
-        <div class="form-group col-sm-3">
-            <select class="form-control" id="itemRequired">
-                <option>规则名称</option>
-
-
-            </select>
-        </div>
-
-        <div class="col-sm-3">
-        <span  id="sumItemSearch" style="height: 34px;">
-            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-        </span>
-            <span>
-            <button class="btn btn-success pull-right"><i class="fa fa-download"></i> 导出</button>
-        </span>
-        </div>
-        <!--
-        <div class="col-sm-6">
-            <div class="dataTables_length" id="datatable_length"><label><span class="span-inline">显示</span><select name="datatable_length" aria-controls="datatable" class="form-control input-sm span-inline">
-                <option value="10">10</option>
-                <option value="20">20</option>
-            </select> <span class="span-inline">条工作量</span>
-            </label>
-            </div>
-        </div>
-        -->
         <div class="form-group col-sm-3">
             <select class="form-control" id="teacherName">
                 <option value="0">教师姓名</option>
-
-            </select>
-        </div>
-        <div class="form-group col-sm-3">
-            <select class="form-control" id="itemName">
-                <option value="0">项目名称</option>
 
             </select>
         </div>
@@ -271,29 +235,35 @@
         </div>
         <div class="col-sm-3">
         <span  id="sumItemSearch" style="height: 34px;">
-            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+            <button class="btn btn-primary"><i class="fa fa-search"></i></button>
         </span>
-           <%-- <span>
+            <span>
             <button class="btn btn-success pull-right Toexcell"><i class="fa fa-download"></i> 导出</button>
-        </span>--%>
+        </span>
+        </div>
+        <div class="col-sm-6">
+            <div class="dataTables_length" id="datatable-checkbox_length">
+                <label style="display: -webkit-box;">展示
+                    <select name="datatable-checkbox_length" aria-controls="datatable-checkbox" class="form-control input-sm" style="width: auto;">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                </select> 工作当量条目</label>
+            </div>
         </div>
 
         <table  class="table table-striped table-bordered dataTable no-footer">
             <thead>
             <tr role="row">
                 <th  class="sorting">序号</th>
-                <%--<th class="sorting">规则名称</th>
+                <th class="sorting">规则名称</th>
                 <th class="sorting">规则类别</th>
-                <th class="sorting">项目名称</th>--%>
-                <th  class="sorting">教师姓名</th>
                 <th class="sorting">项目名称</th>
                 <th class="sorting">计算公式</th>
-                <th class="sorting">公式参数</th>
-                <th class="sorting">参数描述</th>
-                <%--<th  class="sorting">公式描述</th>--%>
+                <th  class="sorting">公式描述</th>
                 <th class="sorting">附加属性</th>
                 <th class="sorting">工作当量</th>
-                <%--<th  class="sorting">教师姓名</th>--%>
+                <th  class="sorting">教师姓名</th>
                 <th class="sorting">项目状态 </th>
                 <th class="sorting">操作</th>
             </tr>
@@ -316,6 +286,37 @@
             </div>--%>
 
         <%--</div>--%>
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="dataTables_info" id="datatable-checkbox_info" role="status" aria-live="polite">
+                 共<span class="totalItem"></span>条工作量条目
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <div class="dataTables_paginate paging_simple_numbers" id="datatable-checkbox_paginate">
+                    <ul class="pagination">
+                       <%-- <li class="paginate_button previous disabled" id="datatable-checkbox_previous">
+                            <a href="#" aria-controls="datatable-checkbox" data-dt-idx="0" tabindex="0">Previous</a>
+                        </li>
+                        <li class="paginate_button active">
+                            <a href="#" aria-controls="datatable-checkbox" data-dt-idx="1" tabindex="0">1</a>
+                        </li>
+                        <li class="paginate_button "><a href="#" aria-controls="datatable-checkbox" data-dt-idx="2" tabindex="0">2</a></li>
+                        <li class="paginate_button ">
+                            <a href="#" aria-controls="datatable-checkbox" data-dt-idx="3" tabindex="0">3
+                            </a>
+                        </li>
+                        <li class="paginate_button ">
+                            <a href="#" aria-controls="datatable-checkbox" data-dt-idx="4" tabindex="0">4</a>
+                        </li><li class="paginate_button "><a href="#" aria-controls="datatable-checkbox" data-dt-idx="5" tabindex="0">5</a></li><li class="paginate_button ">
+                        <a href="#" aria-controls="datatable-checkbox" data-dt-idx="6" tabindex="0">6</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next">
+                            <a href="#" aria-controls="datatable-checkbox" data-dt-idx="7" tabindex="0">Next</a>
+                        </li>
+              --%>      </ul>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>
