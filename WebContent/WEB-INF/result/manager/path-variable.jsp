@@ -36,6 +36,8 @@
 
     var categoryEditUrl=categoryManageUrl+"/modify";
 
+    var categoryDeleteUrl=categoryManageUrl+"/disable";
+
     var categorySubmitUrl=categoryManageUrl+"/public-selective";
 
     var pageManageUrl=contextPath+"/region";
@@ -97,7 +99,6 @@
     var currentTeaIdUrl=contextPath+"/common/user-info";
 
     var historyUrl=contextPath+"/history/info/histories-user";
-
 
 
 </script>

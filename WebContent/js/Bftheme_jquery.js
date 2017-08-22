@@ -42,17 +42,19 @@ $(document).on("click",".collapse-link",function () {
     });
 */
 function jumpToSum() {
-
+/*
     var resetStr='regionName=Realmanager/sum';
     $.get(pageManageUrl+"?"+resetStr,function (data) {
-        $('.right_hole').empty();
-        $('.right_hole').append(data);
+        $('#tab_content2').empty();
+        $('#tab_content2').append(data);
 
-    });
+    });*/
     $.get(categoryInfoListUrl, function (data) {
+        $('#tab_content2').empty();
         var showlist = $("<ul></ul>");
         showall(data.data.categoryTree, showlist);
-        $(".panel-body").append(showlist);
+        $('#tab_content2').append(showlist);
+       /* $(".panel-body").append(showlist);*/
         function showall(item, parent) {
             for (var menu in item) {
                 //如果有子节点，则遍历该子节点
@@ -73,19 +75,26 @@ function jumpToSum() {
                 //如果该节点没有子节点，则直接将该节点li以及文本创建好直接添加到父亲节点中
                 else {
                     if(item[menu].formula) {
+                        var cateShort='';
+                        switch (item[menu].importRequired){
+                            case 1:cateShort='导入复核类';
+                                $("<li class='itemList'></li>").append("<br>["+item[menu].name+"]</br>"+item[menu].desc+ "<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 60%; '> <thead> <tr role='row'> <th class='sorting' style='padding: 5px;'>复核截止时间:<span>"+item[menu].applyDeadline+"</span></th><th class='sorting' style='padding: 5px;'>导入截止时间:<span>"+item[menu].reviewDeadline+"</span></th><th class='sorting' style='padding: 5px;'><a  class='badge bg-green' style='float: right;'>"+cateShort+"</a></th></tr></thread></table><div style='clear:both;'></div>").appendTo(parent);
+                                  break;
+                            case 0:cateShort='申报审核类';
+                                $("<li class='itemList'></li>").append("<br>["+item[menu].name+"]</br>"+item[menu].desc+"<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 60%; '> <thead> <tr role='row'> <th class='sorting' style='padding: 5px;'>申请截止时间:<span>"+item[menu].applyDeadline+"</span></th><th class='sorting' style='padding: 5px;'>审核截止时间:<span>"+item[menu].reviewDeadline+"</span></th><th class='sorting' style='padding: 5px;'><a  class='badge bg-blue' style='float: right;'>"+cateShort+"</a></th></tr></thread></table><div style='clear:both;'></div>").appendTo(parent);
+                                break;
+                        }
 
-                        $("<li class='itemList'></li>").append(item[menu].name+":"+item[menu].desc).appendTo(parent);
                     }
-                    else{
-                        $("<li class='itemList'></li>").append(item[menu].name+":"+item[menu].desc).appendTo(parent);
-                    }
+                    /*else{
+                        $("<li class='itemList'></li>").append("["+item[menu].name+"]"+item[menu].desc).appendTo(parent);
+                    }*/
                 }
             }
         }
 
 
     });
-
 }
 function jumpToAdd() {
 
@@ -98,8 +107,11 @@ function jumpToAdd() {
   ztree();
 }
 function reset() {
+    $.ajaxSetup({
+        async : false
+    });
     var resetStr = 'regionName=Realmanager/reviewer_reset';
-    $.get(pageManageUrl+"?"+resetStr, function (data) {
+    $.get(pageManageUrl+"?"+resetStr, {test : 12}, function (data) {
         $('.right_hole').empty();
         $('.right_hole').append(data);
         $.get(itemAllUrl+"?"+"status=2", function (data) {
@@ -110,6 +122,24 @@ function reset() {
         });*/
 
     });
+    var teachersInfo='';
+    $.get(TeacherInfoUrl, {test : 12},function (data) {
+        teachersInfo=data.data.teacherList;
+    });
+    for(var i=0;i<teachersInfo.length;i++){
+        $('#teacherName').append('<option value=\"'+teachersInfo[i].teacherId+'\">'+teachersInfo[i].name+teachersInfo[i].teacherId+'</option>');
+    }
+    var itemAuditorInfo='';
+    $.get(itemAuditorUrl, {test : 12},function (data) {
+        if(data.data.categoryList){
+            itemAuditorInfo=data.data.categoryList;
+        }
+    });
+    if(itemAuditorInfo&&itemAuditorInfo.length>0){
+        for(var i=0;i<itemAuditorInfo.length;i++){
+            $('#itemRequired').append('<option value=\"'+itemAuditorInfo[i].categoryId+'\">'+itemAuditorInfo[i].categoryName+'</option>');
+        }
+    }
     $(document).on("click", ".reset_reviewer", function () {
         var flag = this.id;
         var item_id = flag.match(/\d+/g);
@@ -137,8 +167,11 @@ function reset() {
     });
 }
 function itemSummary() {
+    $.ajaxSetup({
+        async : false
+    });
     $('.right_hole').empty();
-    $.get(pageManageUrl+"?"+'regionName=Realmanager/itemSummary',function (result) {
+    $.get(pageManageUrl+"?"+'regionName=Realmanager/itemSummary', {test : 12},function (result) {
         $('.right_hole').append(result);
         $.get(itemAllUrl,function (data) {
             appendAllItem(data);
@@ -146,14 +179,14 @@ function itemSummary() {
         });
     });
     var teachersInfo='';
-        $.get(TeacherInfoUrl,function (data) {
+        $.get(TeacherInfoUrl, {test : 12},function (data) {
             teachersInfo=data.data.teacherList;
         });
     for(var i=0;i<teachersInfo.length;i++){
         $('#teacherName').append('<option value=\"'+teachersInfo[i].teacherId+'\">'+teachersInfo[i].name+teachersInfo[i].teacherId+'</option>');
     }
         var itemAuditorInfo='';
-        $.get(itemAuditorUrl,function (data) {
+        $.get(itemAuditorUrl, {test : 12},function (data) {
             if(data.data.categoryList){
                  itemAuditorInfo=data.data.categoryList;
             }
@@ -284,17 +317,37 @@ function appendAllItem(data) {
             $(".sumItemSort tr:last td:eq(6)").text(isGroup);
             //  var act="<a href=\"#\" class=\"pass btn btn-primary\" type=\"button\">查看详情</a> ";
             var statusName='';
-            switch(Info.status){
-                case 2:statusName="确认通过";
-                break;
-                case 3:statusName="提交存疑";
-                break;
-                case 4:statusName="存疑解决";
-                break;
-                case 5:statusName="审核拒绝";
-                break;
+            if(Info.importRequired==1){
+                switch(Info.status){
+                    case 1:statusName="待复核";
+                        break;
+                    case 2:statusName="确认通过";
+                        break;
+                    case 3:statusName="提交存疑";
+                        break;
+                    case 4:statusName="存疑解决";
+                        break;
+                    case 5:statusName="审核拒绝";
+                        break;
 
+                }
             }
+            else
+                switch(Info.status){
+                    case 1:statusName="待审核";
+                        break;
+                    case 2:statusName="确认通过";
+                        break;
+                    case 3:statusName="提交存疑";
+                        break;
+                    case 4:statusName="存疑解决";
+                        break;
+                    case 5:statusName="审核拒绝";
+                        break;
+
+                }
+
+
             $(".sumItemSort tr:last td:eq(7)").text(statusName);
         }
     }
@@ -405,20 +458,10 @@ function reviewerResetItem(data) {
         }
     }
 $(document).on("click","#addParameter",function () {
-    var addStr="<tr><td><input type='text' class='parameterName' name='parameterName'></td><td><input type='text' class='parameterSymbol' name='parameterSymbol'></td></tr>";
+    var addStr="<tr><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'></td></tr>";
     $('.AddPramter').append(addStr);
 });
 $(document).on("click","#addOtherParameter",function () {
-    var addStr="<tr><td><input type='text' class='otherParameterName' name='parameterName'></td></tr>";
+    var addStr="<tr><td><input type='text' class='form-control otherParameterName' name='parameterName'></td></tr>";
     $('.addOtherPramter').append(addStr);
-});
-$(document).ready(function () {
-    var teacherInfo='';
-    $.get(TeacherInfoUrl,function (data) {
-         teacherInfo=data.data.teacherList;
-
-    });
-    for(var i=0;i<teacherInfo.length;i++){
-        $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
-    }
 });

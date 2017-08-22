@@ -35,7 +35,7 @@
             </div>
             <div class="profile_info">
                 <span>欢迎,</span>
-                <h2>学院教师</h2>
+                <h2 class="userName">学院教师</h2>
             </div>
         </div>
         <!-- /menu profile quick info -->

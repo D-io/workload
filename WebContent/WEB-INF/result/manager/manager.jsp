@@ -56,6 +56,8 @@
             font-size: 12px;
         }
         .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+        .ztree li span.button.icon02_ico_docu{margin-right:2px; background: url(${contextPath}/css/zTreeStyle/img/diy/4.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
+        .ztree li span.button.icon06_ico_docu{margin-right:2px; background: url(${contextPath}/css/zTreeStyle/img/diy/8.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
         .bs-example-modal-lg .modal-dialog {
             position: absolute;
             top: 0;
@@ -123,26 +125,28 @@
                                 <li><a href="${contextPath}/auth/logout">退出系统</a></li>
                             </ul>
                         </li>
-
-                                   <div class="col-md-4 col-sm-4 col-xs-12" style="margin-left:400px;width:160px">
-                                       <select class="form-control" id="year">
-                                         <%--  <option value="1">2017-2018</option>
-                                           <option value="0">2016-2017</option>
-                                           <option value="2">2018-2019</option>--%>
-                                       </select>
-                                   </div>
-                        <div class="col-md-2 col-sm-2 col-xs-12" style="margin-left:0px;width: 80px;">
-                            <select class="form-control" id="term">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
-                        </div>
-                        <div>
+                        <div style="float: right;">
                             <a href="javascript:;" class="badge bg-green" id="itemChange">
                                 <%--<i class="fa fa-envelope-o"></i>--%>
                                 学期切换
                             </a>
                         </div>
+
+                        <div class="col-md-2 col-sm-2 col-xs-12" style="float:right;width: 80px;">
+                            <select class="form-control" id="term">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12" style="float:right;width:160px">
+                            <select class="form-control" id="year">
+                                <%--  <option value="1">2017-2018</option>
+                                  <option value="0">2016-2017</option>
+                                  <option value="2">2018-2019</option>--%>
+                            </select>
+                        </div>
+
+                        <div style="clear: both;"></div>
 
                     </ul>
                 </nav>
