@@ -1,9 +1,12 @@
 function importWorkload(){
+    $.ajaxSetup({
+        async : false
+    });
     $('.right_hole').empty();
-    $.get(pageManageUrl+"?"+'regionName=auditor/auditorcontent',function (result) {
+    $.get(pageManageUrl+"?"+'regionName=auditor/auditorcontent',{test : 12},function (result) {
         $('.right_hole').append(result);
     });
-        $.get(itemAuditorUrl,function (data) {
+        $.get(itemAuditorUrl,{test : 12},function (data) {
           showimportall(data.data.importCategories);
 
         });
@@ -28,12 +31,15 @@ function importWorkload(){
 
 }
 function auditworkload() {
+    $.ajaxSetup({
+        async : false
+    });
     $('.right_hole').empty();
 
-   $.get(pageManageUrl+"?"+'regionName=auditor/auditworkload',function (result) {
+   $.get(pageManageUrl+"?"+'regionName=auditor/auditworkload',{test : 12},function (result) {
       $('.right_hole').append(result);
    });
-       $.get(itemAuditorUrl,function (data) {
+       $.get(itemAuditorUrl,{test : 12},function (data) {
            var showimport=  $("<ul></ul>");
             showall(data.data.applyCategories, showimport);
             $("#tab_content1").append(showimport);

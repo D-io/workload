@@ -648,13 +648,26 @@ $(document).ready(function () {
 });
 function getSideBar(role,roleList) {
     if(role=="ADMIN"){
-        $.get(pageManageUrl+"?"+"regionName=manager/Manager-left-sidebar",function (html) {
+        $.ajaxSetup({
+            async : false
+        });
+        $.get(pageManageUrl+"?"+"regionName=manager/Manager-left-sidebar",{test : 12},function (html) {
             $(".scroll-view").empty();
             $(".scroll-view").append(html);
         });
-        $.get(pageManageUrl+"?"+"regionName=manager/Manager-right-col",function (html) {
+        $.get(pageManageUrl+"?"+"regionName=manager/Manager-right-col",{test : 12},function (html) {
             $(".right_hole").empty();
             $(".right_hole").append(html);
+
+                var teacherInfo='';
+                $.get(TeacherInfoUrl,{test : 12},function (data) {
+                    teacherInfo=data.data.teacherList;
+
+                });
+                for(var i=0;i<teacherInfo.length;i++){
+                    $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
+                }
+
         });
        /* $(".scroll-view").append("<jsp:include page='Manager-left-sidebar.jsp'/>");
         $(".right_hole").append("<jsp:include page='Manager-right-col.jsp'/>");*/
