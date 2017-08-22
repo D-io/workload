@@ -106,11 +106,19 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 			Double checkedWorkload = itemService.selectTotalWorkload(id, CHECKED);
 			Double nonCheckedWorkload = itemService.selectTotalWorkload(id, NON_CHECKED);
+			Double doubtedWorkload = itemService.selectTotalWorkload(id, DOUBTED);
+			Double doubtedCheckedWorkload = itemService.selectTotalWorkload(id, DOUBTED_CHECKED);
 
-			teacherWorkload
-					.setCheckedWorkload(null == checkedWorkload ? ZERO_DOUBLE : checkedWorkload);
+			checkedWorkload = (null == checkedWorkload ? ZERO_DOUBLE : checkedWorkload);
+			nonCheckedWorkload = (null == nonCheckedWorkload ? ZERO_DOUBLE : nonCheckedWorkload);
+			doubtedWorkload = (null == doubtedWorkload ? ZERO_DOUBLE : doubtedWorkload);
+			doubtedCheckedWorkload = (null == doubtedCheckedWorkload ?
+					ZERO_DOUBLE :
+					doubtedCheckedWorkload);
+
+			teacherWorkload.setCheckedWorkload(checkedWorkload);
 			teacherWorkload.setUncheckedWorkload(
-					null == nonCheckedWorkload ? ZERO_DOUBLE : nonCheckedWorkload);
+					nonCheckedWorkload + doubtedWorkload + doubtedCheckedWorkload);
 
 			teacherWorkloadList.add(teacherWorkload);
 		}
@@ -382,139 +390,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		return successResponse(data);
 
 	}
-	//
-	//	/**
-	//	 * 申报审核情况 </br>
-	//	 * 获取教师各自申报的工作量信息(Apply_Self) </br>
-	//	 *
-	//	 * 审核未通过 DENIED </br>
-	//	 * 待审核 NON_CHECKED </br>
-	//	 * 审核通过 CHECKED </br>
-	//	 *
-	//	 *
-	//	 * abnormalItemList：审核未通过的工作量条目（DENIED）</br> normalItemList：审核通过和待审核的工作量条目（CHECKED,NON_CHECKED）</br>
-	//	 *
-	//	 * @return RestResponse
-	//	 */
-	//	@RequestMapping(value = "apply-list", method = GET)
-	//	public RestResponse getTeacherApplyItems() {
-	//
-	//		User user = getUser();
-	//		System.out.println(user);
-	//
-	//		if (null == user) {
-	//			return invalidOperationResponse("非法请求");
-	//		}
-	//
-	//		//获取教师ID对应的两类状态的工作量对象（申报类）
-	//		int teacherId = user.getUserId();
-	//
-	//		//		List<ItemDto> abnormalItemList = findItemsByStatus(APPLY_SELF, DENIED, teacherId);
-	//		//		List<ItemDto> normalItemList = findItems(APPLY_SELF, getNormalStatusList(), teacherId);
-	//		//
-	//		//		//获取否定理由信息
-	//		//		Map<String, Object> subjectMap = new HashMap<>();
-	//		//		for (ItemDto item : abnormalItemList) {
-	//		//			subjectMap.put(item.getItemName(), subjectConverter
-	//		//					.poListToDtoList(subjectService.getSubjectsByItem(item.getItemId())));
-	//		//		}
-	//		//
-	//		//		Map<String, Object> data = getData();
-	//		//		data.put("abnormalItemList", abnormalItemList);
-	//		//		data.put("normalItemList", normalItemList);
-	//		//		data.put("subjectList", subjectMap);
-	//
-	//		List<ItemDto> deniedItemList = findItemsByStatus(APPLY_SELF, DENIED, teacherId);
-	//		List<ItemDto> nonCheckedItemList = findItemsByStatus(APPLY_SELF, NON_CHECKED, teacherId);
-	//		List<ItemDto> checkedItemList = findItemsByStatus(APPLY_SELF, CHECKED, teacherId);
-	//
-	//		Map<Integer, Object> subjectMap = new HashMap<>();
-	//		for (ItemDto itemDto : deniedItemList) {
-	//			int itemId = itemDto.getItemId();
-	//			subjectMap.put(itemId,
-	//					subjectConverter.poListToDtoList(subjectService.getSubjectsByItem(itemId)));
-	//		}
-	//
-	//		Map<String, Object> data = getData();
-	//		data.put("deniedItemNumbers", deniedItemList.size());
-	//		data.put("deniedItemList", deniedItemList);
-	//		data.put("subjectMap", subjectMap);
-	//		data.put("nonCheckedItemNumbers", nonCheckedItemList.size());
-	//		data.put("nonCheckedItemList", nonCheckedItemList);
-	//		data.put("checkedItemNumbers", checkedItemList.size());
-	//		data.put("checkedItemList", checkedItemList);
-	//
-	//		return successResponse(data);
-	//	}
-
-	//	/**
-	//	 * 获取审核人导入的工作量信息(Excel_Import) </br>
-	//	 *
-	//	 * 存疑状态 DOUBTED </br>
-	//	 * 存疑解决状态 DOUBTED_CHECKED </br>
-	//	 * 审核通过状态 CHECKED <br/>
-	//	 * 待审核状态 NON_CHECKED <br/>
-	//	 *
-	//	 * abnormalItemList：存疑的工作量条目（存疑未解决，存疑已解决）DOUBTED,DOUBTED_CHECKED </br>
-	//	 * normalItemList：正常的工作量条目（尚未复核，审核通过） </br>
-	//	 *
-	//	 * @return RestResponse
-	//	 */
-	//	@RequestMapping(value = "import-list", method = GET)
-	//	public RestResponse getTeacherImportItems() {
-	//
-	//		User user = getUser();
-	//		System.out.println(user);
-	//
-	//		if (null == user) {
-	//			return invalidOperationResponse("非法请求");
-	//		}
-	//
-	//		//获取教师ID对应的两类状态的工作量对象（导入类）
-	//		int teacherId = user.getUserId();
-	////		List<ItemDto> abnormalItemList = findItems(IMPORT_EXCEL, getAbnormalStatusList(),
-	////				teacherId);
-	////		List<ItemDto> normalItemList = findItems(IMPORT_EXCEL, getNormalStatusList(), teacherId);
-	////
-	////		Map<String, Object> subjectMap = new HashMap<>();
-	////
-	////		for (ItemDto itemDto : abnormalItemList) {
-	////			if (DOUBTED.equals(itemDto.getStatus())) {
-	////				subjectMap.put(itemDto.getItemName(), subjectConverter
-	////						.poListToDtoList(subjectService.getSubjectsByItem(itemDto.getItemId())));
-	////			}
-	////		}
-	////
-	////		Map<String, Object> data = getData();
-	////		data.put("abnormalItemList", abnormalItemList);
-	////		data.put("normalItemList", normalItemList);
-	////		data.put("subjectList", subjectMap);
-	//
-	//		List<ItemDto> doubtedItemList = findItemsByStatus(IMPORT_EXCEL,DOUBTED,teacherId);
-	//		List<ItemDto> doubtedCheckedItemList = findItemsByStatus(IMPORT_EXCEL,DOUBTED_CHECKED,teacherId);
-	//		List<ItemDto> checkedItemList = findItemsByStatus(IMPORT_EXCEL,CHECKED,teacherId);
-	//		List<ItemDto> nonCheckedItemList = findItemsByStatus(IMPORT_EXCEL,NON_CHECKED,teacherId);
-	//
-	//		Map<Integer, Object> subjectMap = new HashMap<>();
-	//		for(ItemDto itemDto : doubtedItemList) {
-	//			int itemId = itemDto.getItemId();
-	//			subjectMap.put(itemId,subjectConverter.poListToDtoList(subjectService.getSubjectsByItem(itemId)));
-	//		}
-	//
-	//		Map<String,Object> data = getData();
-	//		data.put("doubtedItemNumbers",doubtedItemList.size());
-	//		data.put("doubtedItemList",doubtedItemList);
-	//		data.put("subjectMap",subjectMap);
-	//		data.put("doubtedCheckedItemNumbers",doubtedCheckedItemList.size());
-	//		data.put("doubtedCheckedItemList",doubtedCheckedItemList);
-	//		data.put("checkedItemNumbers",checkedItemList.size());
-	//		data.put("checkedItemList",checkedItemList);
-	//		data.put("nonCheckedItemNumbers",nonCheckedItemList.size());
-	//		data.put("nonCheckedItemList",nonCheckedItemList);
-	//
-	//
-	//		return successResponse(data);
-	//	}
 
 	/**
 	 * 个人工作量汇总统计
@@ -522,7 +397,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	 * @return RestResponse
 	 */
 	@RequestMapping(value = "collection", method = GET)
-	public RestResponse getAllItemDtoList() {
+	public RestResponse getAllItemDtoList(
+			@RequestParam(required = false)
+					Integer teacherId) {
 
 		User user = getUser();
 
@@ -530,24 +407,25 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return invalidOperationResponse("非法请求");
 		}
 
-		int teacherId = user.getUserId();
-		double workload = 0;
-
-		List<Item> itemList = itemService.findItemsByStatus(CHECKED, teacherId);
-		itemList.addAll(itemService.findItemsByStatus(DOUBTED_CHECKED, teacherId));
-
-		List<Item> newItemList = new ArrayList<>();
-		for (Item item : itemList) {
-			ItemDto itemDto = itemConverter.poToDto(item);
-			if (getCurrentSemester().equals(itemDto.getVersion())) {
-				newItemList.add(item);
-				workload += item.getWorkload();
+		List<Integer> statusList = new ArrayList<>();
+		if (isEmptyNumber(teacherId)) {
+			teacherId = user.getUserId();
+			statusList.add(CHECKED);
+		} else {
+			if(!getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+				return invalidOperationResponse("非法访问");
 			}
+			statusList.addAll(getImportStatus());
+		}
+
+		List<ItemDto> itemList = findItems(null, statusList, teacherId, getCurrentSemester());
+		if(isEmptyList(itemList)) {
+			return successResponse();
 		}
 
 		Map<String, Object> data = getData();
-		data.put("itemDtoList", itemConverter.poListToDtoList(newItemList));
-		data.put("totalWorkload", workload);
+		data.put("itemDtoList", itemList);
+		data.put("totalWorkload", itemService.selectTotalWorkload(teacherId, CHECKED));
 
 		return successResponse(data);
 	}
@@ -592,8 +470,10 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		List<ItemDto> itemDtoGroup = new ArrayList<>();
 
 		for (ItemDto itemDto : itemDtoList) {
-			if (importRequired.equals(itemDto.getImportRequired()) && version
-					.equals(itemDto.getVersion())) {
+			if (!isEmptyNumber(importRequired) && importRequired.equals(itemDto.getImportRequired())
+					&& version.equals(itemDto.getVersion())) {
+				itemDtoGroup.add(itemDto);
+			} else if (isEmptyNumber(importRequired) && version.equals(itemDto.getVersion())) {
 				itemDtoGroup.add(itemDto);
 			}
 		}
