@@ -12,7 +12,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 /**
  * Version:v1.0 (description:  )
  */
-public class ItemDto {
+public class ItemDto implements CompareObjectDifferences<ItemDto> {
 
 	/**
 	 * 工作量编号

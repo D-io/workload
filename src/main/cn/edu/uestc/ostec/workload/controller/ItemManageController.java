@@ -80,8 +80,9 @@ public class ItemManageController extends ApplicationController {
 
 	/**
 	 * 管理员对条目信息进行部分修改
-	 * @param itemId 条目编号
-	 * @param itemName 条目名称
+	 *
+	 * @param itemId      条目编号
+	 * @param itemName    条目名称
 	 * @param otherParams 其他参数
 	 * @return itemDto
 	 */
@@ -99,9 +100,10 @@ public class ItemManageController extends ApplicationController {
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		if(!CHECKED.equals(item.getStatus())) {
+		if (!CHECKED.equals(item.getStatus())) {
 			return invalidOperationResponse("无法修改");
 		}
+		ItemDto itemDto = itemConverter.poToDto(item);
 
 		itemName = isEmptyString(itemName) ? item.getItemName() : itemName;
 		otherParams = isEmptyString(otherParams) ? item.getOtherJson() : otherParams;
@@ -116,6 +118,7 @@ public class ItemManageController extends ApplicationController {
 
 		Map<String, Object> data = getData();
 		data.put("itemDto", itemConverter.poToDto(item));
+		data.put("oldItemDto", itemDto);
 
 		return successResponse(data);
 

@@ -18,9 +18,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -78,6 +82,45 @@ public class ItemManageAspectImpl implements IAspect {
 	private void itemStatusResetPointCut() {
 	}
 
+	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ItemManageController.correctItemInfo(..))")
+	private void itemCorrectByAdminPointCut() {
+	}
+
+	@AfterReturning(returning = "rvt", pointcut = "itemCorrectByAdminPointCut()")
+	public void recordItemCorrect(JoinPoint joinPoint, Object rvt) {
+		if (!vertifyStatus(rvt)) {
+			return;
+		}
+		RestResponse restResponse = (RestResponse) rvt;
+		ItemDto oldItem = (ItemDto) restResponse.getData().get("oldItemDto");
+
+		Object[] params = getParameters(joinPoint);
+
+		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
+		Integer userId = user.getUserId();
+
+		Integer itemId = (Integer) params[0];
+		Item item = itemService.findItem(itemId);
+
+		History history = new History();
+		history.setItemId(buildHistoryItemId(itemId));
+		history.setUserId(userId);
+		history.setCreateTime(DateHelper.getDateTime());
+		history.setOperation(
+				user.getName() + "于" + history.getCreateTime() + "修改了工作量条目的部分信息:  项目名称 (原)"
+						+ oldItem.getItemName() + " -> (新)" + item.getItemName() + "的部分信息（包括参数信息）");
+
+		history.setType(APPLY_SELF.equals(oldItem.getImportRequired()) ? "apply" : "import");
+		history.setAimUserId(oldItem.getOwnerId());
+
+		boolean saveSuccess = historyService.saveHistory(history);
+		if (!saveSuccess) {
+			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
+		} else {
+			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
+		}
+	}
+
 	/**
 	 * 工作量条目提交日志切面
 	 */
@@ -94,7 +137,7 @@ public class ItemManageAspectImpl implements IAspect {
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 
-		for (Integer itemId:itemIdList) {
+		for (Integer itemId : itemIdList) {
 			Item item = itemService.findItem(itemId);
 			ItemDto itemDto = itemConverter.poToDto(item);
 			Integer importedRequired = itemDto.getImportRequired();
