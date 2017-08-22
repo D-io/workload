@@ -305,7 +305,7 @@
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
-                                                    <input type="text" data-plugin-datepicker class="form-control datepicker" id="applyDeadline">
+                                                    <input type="text" class="form-control datetimepicker" id="applyDeadline">
                                                 </div>
                                             </div>
                                         </div>
@@ -316,30 +316,11 @@
                                              <span class="input-group-addon">
                                                  <i class="fa fa-calendar"></i>
                                              </span>
-                                                    <input type="text" data-plugin-datepicker class="form-control datepicker" id="reviewDeadline">
+                                                    <input type="text"  class="form-control datetimepicker" id="reviewDeadline">
+
+                                                </div>
                                                 </div>
                                             </div>
-
-
-
-                                        </div>
-
-
-
-                                       <%-- <div class="form-group">
-                                            <label class="col-sm-3 control-label">适用学期</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control" id="version">
-                                                    <option>2017-2018-1</option>
-                                                    <option>2017-2018-2</option>
-                                                    <option>2016-2017-1</option>
-                                                    <option>2016-2017-2</option>
-                                                    <option>2015-2016-1</option>
-                                                    <option>2015-2016-2</option>
-
-                                                </select>
-                                            </div>
-                                        </div>--%>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">公式参数</label>
                                             <div class="col-sm-9">
@@ -363,8 +344,8 @@
                                                             <tbody class="AddPramter">
                                                             <tr>
 
-                                                               <%-- <td><input type="text" class="parameterName" name="parameterName"></td>
-                                                                <td><input type="text" class="parameterSymbol" name="parameterSymbol"></td>--%>
+                                                                <%-- <td><input type="text" class="parameterName" name="parameterName"></td>
+                                                                 <td><input type="text" class="parameterSymbol" name="parameterSymbol"></td>--%>
 
                                                             </tr>
                                                             </tbody>
@@ -405,6 +386,27 @@
                                                 </div>
                                             </div>
                                         </div>
+
+
+
+
+
+
+                                       <%-- <div class="form-group">
+                                            <label class="col-sm-3 control-label">适用学期</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" id="version">
+                                                    <option>2017-2018-1</option>
+                                                    <option>2017-2018-2</option>
+                                                    <option>2016-2017-1</option>
+                                                    <option>2016-2017-2</option>
+                                                    <option>2015-2016-1</option>
+                                                    <option>2015-2016-2</option>
+
+                                                </select>
+                                            </div>
+                                        </div>--%>
+
                                     </form>
                                 </div>
                                 <div class="modal-footer">

@@ -22,8 +22,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <!-- Web Fonts  -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
-    <title>教学工作量计算系统 | </title>
+  <%--  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+ --%>   <title>教学工作量计算系统 | </title>
 
     <!-- Bootstrap -->
     <link href="${contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -32,10 +32,10 @@
     <!-- bootstrap-progressbar -->
     <link href="${contextPath}/vendor/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.css" rel="stylesheet" type="text/css">
 
-    <link rel="stylesheet" type="text/css" href="${contextPath}/css/bootstrap-timepicker.css" />
 
-   <link rel="stylesheet" type="text/css" href="${contextPath}/vendor/bootstrap-datepicker/css/datepicker3.css" />
-    <!-- Theme CSS -->
+    <link rel="stylesheet" type="text/css" href="${contextPath}/css/bootstrap-datetimepicker.css" />
+
+     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/panel-content.css" />
 
    <%-- <link rel="stylesheet" type="text/css" href="${contextPath}/css/normalize.css" />--%>
@@ -212,9 +212,8 @@
 <script src="${contextPath}/js/ajax-ztree.js"></script>
 <script src="${contextPath}/js/Bftheme_jquery.js"></script>
 
-<script language='javascript' src="${contextPath}/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script language='javascript' src="${contextPath}/vendor/js/datapicker.js"></script>
 
+<script language='javascript' src="${contextPath}/vendor/bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
 <script language='javascript'src="${contextPath}/js/jquery.ztree.core.js"></script>
 <script language='javascript' src="${contextPath}/js/jquery.ztree.excheck.js"></script>
 <script language='javascript' src="${contextPath}/js/jquery.ztree.exedit.js"></script>
