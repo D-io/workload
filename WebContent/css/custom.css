@@ -864,11 +864,17 @@ a:focus {
 .toggle {
     float: left;
     margin: 0;
+    padding-left: 5px;
+    padding-bottom: 16px;
     padding-top: 16px;
-    width: 70px
+    width: 50px
+}
+.showZhContent{
+    float: left;
+    margin-top: 8px;
 }
 .toggle a {
-    padding: 15px 15px 0;
+    padding: 5px 10px;
     margin: 0;
     cursor: pointer
 }
@@ -2179,7 +2185,7 @@ span.section {
     border-bottom: 1px solid #e5e5e5
 }
 .form-control {
-    border-radius: 0;
+    border-radius: 3;
     width: 100%
 }
 .form-horizontal .control-label {

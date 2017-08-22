@@ -32,10 +32,11 @@
     <!-- bootstrap-progressbar -->
     <link href="${contextPath}/vendor/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.css" rel="stylesheet" type="text/css">
 
-
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/bootstrap-datetimepicker.css" />
 
-     <!-- Theme CSS -->
+    <link rel="stylesheet" type="text/css" href="${contextPath}/css/select2.min.css" />
+
+    <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/panel-content.css" />
 
    <%-- <link rel="stylesheet" type="text/css" href="${contextPath}/css/normalize.css" />--%>
@@ -113,6 +114,7 @@
                     <div class="nav toggle">
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     </div>
+                    <div class="showZhContent"><h4>教学工作当量计算系统</h4></div>
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
@@ -125,20 +127,20 @@
                                 <li><a href="${contextPath}/auth/logout">退出系统</a></li>
                             </ul>
                         </li>
-                        <div style="float: right;">
+                        <div style="float: right;padding-top: 10px;">
                             <a href="javascript:;" class="badge bg-green" id="itemChange">
                                 <%--<i class="fa fa-envelope-o"></i>--%>
                                 学期切换
                             </a>
                         </div>
 
-                        <div class="col-md-2 col-sm-2 col-xs-12" style="float:right;width: 80px;">
+                        <div class="col-md-2 col-sm-2 col-xs-12" style="float:right;width: 80px;padding-top: 10px;">
                             <select class="form-control" id="term">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                             </select>
                         </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12" style="float:right;width:160px">
+                        <div class="col-md-4 col-sm-4 col-xs-12" style="float:right;width:160px;padding-top: 10px;">
                             <select class="form-control" id="year">
                                 <%--  <option value="1">2017-2018</option>
                                   <option value="0">2016-2017</option>
@@ -172,9 +174,8 @@
 
         <!-- footer content -->
         <footer>
-            <div class="pull-right">
-                <a href="https://colorlib.com"></a>
-            </div>
+           <div style="text-align: center">电子科技大学信息与软件工程学院卓越工程师实验教育中心提供技术支持（OSTEC@ISE）</div>
+            <div style="text-align: center">Copyright © 2014-2017 SynX Studio, All Rights Reserved</div>
             <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
@@ -214,6 +215,7 @@
 
 
 <script language='javascript' src="${contextPath}/vendor/bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
+<script language='javascript' src="${contextPath}/vendor/js/select2.js"></script>
 <script language='javascript'src="${contextPath}/js/jquery.ztree.core.js"></script>
 <script language='javascript' src="${contextPath}/js/jquery.ztree.excheck.js"></script>
 <script language='javascript' src="${contextPath}/js/jquery.ztree.exedit.js"></script>

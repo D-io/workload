@@ -226,7 +226,7 @@
                 </li>
                 <li role="presentation" onclick="jumpToSum()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">计算规则预览</a>
                 </li>
-                <li role="presentation"  onclick=""><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
+                <li role="presentation"  onclick="manageHistory()"><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
                 </li>
             </ul>
             <div id="myTabContent" class="tab-content">
@@ -271,12 +271,13 @@
                                                 <select class="form-control" id="importRequired" name="sorting">
                                                     <option value="1">导入复核类</option>
                                                     <option value="0">申报审核类</option>
+                                                    <option value="2">无特殊类别</option>
 
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">审核人员</label>
+                                            <label class="col-sm-3 control-label requiredtime">审核人员</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control" id="teacherName">
                                                     <option value=""></option>
@@ -298,7 +299,7 @@
                                                 <input type="radio" class="isLeaf" name="hasChildNode"  value="N">否
                                             </div>
                                         </div>--%>
-                                        <div class="form-group">
+                                        <div class="form-group requiredtime">
                                             <label class="col-sm-3 control-label"><span class="applyDeadLabel">复核截止时间</span><span style="margin-left: 30px;font-size: 11px;color: #ccc;">(默认为当前年份的12月28号)</span></label>
                                             <div class="col-sm-9">
                                                 <div class="input-group">
@@ -309,7 +310,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group requiredtime">
                                             <label class="col-sm-3 control-label"><span class="revDeadLabel">导入截止时间</span><span style="margin-left: 30px;font-size: 11px;color: #ccc;">(默认为当前年份的12月31号)</span></label>
                                             <div class="col-sm-9">
                                                 <div class="input-group">
@@ -321,7 +322,7 @@
                                                 </div>
                                                 </div>
                                             </div>
-                                        <div class="form-group">
+                                        <div class="form-group requiredtime">
                                             <label class="col-sm-3 control-label">公式参数</label>
                                             <div class="col-sm-9">
 
@@ -354,13 +355,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group requiredtime">
                                             <label class="col-sm-3 control-label">计算公式</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" id="formula">
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group requiredtime">
                                             <label class="col-sm-3 control-label">附加属性</label>
                                             <div class="col-sm-9">
 

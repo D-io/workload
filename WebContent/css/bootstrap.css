@@ -1144,8 +1144,8 @@ img {
   border-radius: 50%;
 }
 hr {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  /*margin-top: 20px;
+  margin-bottom: 20px;*/
   border: 0;
   border-top: 1px solid #eee;
 }
@@ -1276,7 +1276,8 @@ h3,
 }
 h4,
 .h4 {
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: bold;
 }
 h5,
 .h5 {
