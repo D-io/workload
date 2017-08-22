@@ -1,5 +1,114 @@
 ## 工作量条目Item接口
 
+### 管理员修正条目统计的部分信息（条目名称 和 其他参数）
+- 接口地址:`/item/manage/coorect`
+- 支持格式：`json`
+- 请求方式：`POST`
+- 请求示例：`http://127.0.0.1:8080/item/manage/correct?itemId=27&itemName=信息安全大赛&otherParams=[{"key":"竞赛名称","value":"创新杯"},{"key":"参赛项目","value":"AEMS"},{"key":"类型（团队或个人）","value":"团队"},{"key":"获奖级别","value":"国家奖"},{"key":"赛事级别","value":"国家级"}]`
+- 请求参数具体说明：
+
+参数名 | 类型 | 说明 | 备注
+---|---|---|---
+itemId | int | 工作量条目编号 | 必填
+itemName | String | 工作量条目名称 | 可选
+otherParams | String | 工作量条目其他参数 | 可选
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "itemDto": {
+            "itemId": 27,
+            "itemName": "信息安全大赛",
+            "categoryId": 33,
+            "ownerId": 3210343,
+            "jsonParameter": "[{\"symbol\":\"A\",\"value\":1.0},{\"symbol\":\"B\",\"value\":1.0}]",
+            "parameterValues": [
+                {
+                    "symbol": "A",
+                    "value": 1
+                },
+                {
+                    "symbol": "B",
+                    "value": 1
+                }
+            ],
+            "workload": 11.2,
+            "groupManagerId": 3210343,
+            "applyDesc": null,
+            "jobDesc": "指导老师",
+            "jobDescList": null,
+            "status": 1,
+            "jsonChildWeight": "0.8",
+            "childWeightList": null,
+            "proof": 22,
+            "teacherName": "张翔",
+            "reviewerId": 3203753,
+            "reviewerName": "蔡竟业",
+            "groupManagerName": "张翔",
+            "categoryName": "学生竞赛",
+            "importRequired": 0,
+            "isGroup": 1,
+            "version": "2017-2018-1",
+            "otherJson": "[{\"key\":\"竞赛名称\",\"value\":\"创新杯\"},{\"key\":\"参赛项目\",\"value\":\"AEMS\"},{\"key\":\"类型（团队或个人）\",\"value\":\"团队\"},{\"key\":\"获奖级别\",\"value\":\"国家奖\"},{\"key\":\"赛事级别\",\"value\":\"国家级\"}]",
+            "formula": "10*A+4*B",
+            "paramDesc": [
+                {
+                    "desc": "团体赛（指导参赛队伍数）",
+                    "symbol": "A"
+                },
+                {
+                    "desc": "个人赛（指导参赛人数）",
+                    "symbol": "B"
+                }
+            ],
+            "descAndValues": [
+                {
+                    "desc": "团体赛（指导参赛队伍数）",
+                    "value": 1
+                },
+                {
+                    "desc": "个人赛（指导参赛人数）",
+                    "value": 1
+                }
+            ],
+            "otherJsonParameters": [
+                {
+                    "key": "竞赛名称",
+                    "value": "创新杯"
+                },
+                {
+                    "key": "参赛项目",
+                    "value": "AEMS"
+                },
+                {
+                    "key": "类型（团队或个人）",
+                    "value": "团队"
+                },
+                {
+                    "key": "获奖级别",
+                    "value": "国家奖"
+                },
+                {
+                    "key": "赛事级别",
+                    "value": "国家级"
+                }
+            ]
+        }
+    }
+}
+```
+
 ### 添加工作量条目信息/修改工作量条目信息
 - 接口地址:`/item/manage`
 - 支持格式：`json`

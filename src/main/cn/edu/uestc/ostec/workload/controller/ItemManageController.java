@@ -7,6 +7,8 @@
  */
 package cn.edu.uestc.ostec.workload.controller;
 
+import com.sun.org.apache.regexp.internal.RE;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,9 +49,11 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -73,6 +77,49 @@ public class ItemManageController extends ApplicationController {
 
 	@Autowired
 	private FileEvent fileEvent;
+
+	/**
+	 * 管理员对条目信息进行部分修改
+	 * @param itemId 条目编号
+	 * @param itemName 条目名称
+	 * @param otherParams 其他参数
+	 * @return itemDto
+	 */
+	@RequestMapping(value = "correct", method = POST)
+	public RestResponse correctItemInfo(
+			@RequestParam("itemId")
+					Integer itemId,
+			@RequestParam(required = false)
+					String itemName,
+			@RequestParam(required = false)
+					String otherParams) {
+
+		Item item = itemService.findItem(itemId);
+		if (null == item) {
+			return parameterNotSupportResponse("参数有误");
+		}
+
+		if(!CHECKED.equals(item.getStatus())) {
+			return invalidOperationResponse("无法修改");
+		}
+
+		itemName = isEmptyString(itemName) ? item.getItemName() : itemName;
+		otherParams = isEmptyString(otherParams) ? item.getOtherJson() : otherParams;
+
+		item.setItemName(itemName);
+		item.setOtherJson(otherParams);
+
+		boolean saveSuccess = itemService.saveItem(item);
+		if (!saveSuccess) {
+			return systemErrResponse("保存失败");
+		}
+
+		Map<String, Object> data = getData();
+		data.put("itemDto", itemConverter.poToDto(item));
+
+		return successResponse(data);
+
+	}
 
 	/**
 	 * 重置申请人或者审核人状态
