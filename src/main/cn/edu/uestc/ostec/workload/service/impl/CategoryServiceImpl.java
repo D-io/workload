@@ -29,15 +29,15 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	 * @return Boolean
 	 */
 	@Override
-	public Boolean removeCategory(Integer categoryId) {
+	public Boolean removeCategory(Integer categoryId,String version) {
 
-		return categoryDao.updateStatus(DELETED, categoryId);
+		return categoryDao.updateStatus(DELETED, categoryId,version);
 	}
 
 	@Override
-	public List<Category> getRootCategories() {
+	public List<Category> getRootCategories(String version) {
 
-		return listResult(categoryDao.selectRoot());
+		return listResult(categoryDao.selectRoot(version));
 	}
 
 	@Override
@@ -46,9 +46,14 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	}
 
 	@Override
-	public Boolean deleteCategory(Integer categoryId) {
+	public Boolean deleteCategory(Integer categoryId,String version) {
 
-		return categoryDao.delete(categoryId);
+		return categoryDao.delete(categoryId,version);
+	}
+
+	@Override
+	public Boolean addCategory(Category category) {
+		return categoryDao.insert(category);
 	}
 
 	/**
@@ -68,14 +73,14 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	}
 
 	@Override
-	public Boolean saveCategory(Integer status, Integer categoryId) {
-		return categoryDao.updateStatus(status, categoryId);
+	public Boolean saveCategory(Integer status, Integer categoryId,String version) {
+		return categoryDao.updateStatus(status, categoryId,version);
 	}
 
 	@Override
-	public Category getCategory(Integer categoryId) {
+	public Category getCategory(Integer categoryId,String version) {
 
-		return objectResult(categoryDao.select(categoryId, null, null, null, null, null),
+		return objectResult(categoryDao.select(categoryId, null, null, null, null, version),
 				EMPTY_CATEGORY);
 	}
 

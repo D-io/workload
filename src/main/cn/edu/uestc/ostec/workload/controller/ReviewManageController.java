@@ -101,7 +101,7 @@ public class ReviewManageController extends ApplicationController {
 			return parameterNotSupportResponse("未填写拒绝理由");
 		}
 
-		Category category = categoryService.getCategory(item.getCategoryId());
+		Category category = categoryService.getCategory(item.getCategoryId(),getCurrentSemester());
 		if(DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
 			return invalidOperationResponse("审核已经截止");
 		}
@@ -150,7 +150,7 @@ public class ReviewManageController extends ApplicationController {
 		}
 
 		//根据categoryId查询到Category对象，并转换为dto对象
-		Category category = categoryService.getCategory(categoryId);
+		Category category = categoryService.getCategory(categoryId,getCurrentSemester());
 		if (null == category) {
 			return parameterNotSupportResponse("参数有误");
 		}

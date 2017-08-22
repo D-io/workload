@@ -39,14 +39,14 @@ public class CategoryEventImpl implements CategoryEvent {
 		Map<String,Object> data = new HashMap<>();
 		List<Category> categoryList = new ArrayList<>();
 		for (int categoryId : categoryIdList) {
-			Category category = categoryService.getCategory(categoryId);
+			Category category = categoryService.getCategory(categoryId,getCurrentSemester());
 			if(null == category) {
 				continue;
 			}
 			int reviewerId = category.getReviewerId();
 			if (UNCOMMITTED.equals(category.getStatus())) {
 				boolean appendSuccess = userRoleEvent.appendRoleInfo(reviewerId, REVIEWER_ROLE);
-				boolean saveSuccess = categoryService.saveCategory(SUBMITTED, categoryId);
+				boolean saveSuccess = categoryService.saveCategory(SUBMITTED, categoryId,getCurrentSemester());
 				if (!saveSuccess) {
 					data.put(category.getName(),"保存失败");
 				}

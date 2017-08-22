@@ -51,6 +51,43 @@ public class CategoryManageController extends ApplicationController {
 	private CategoryEvent categoryEvent;
 
 	/**
+	 * 导入以往学期的类目信息
+	 *
+	 * @param version 学期
+	 */
+	@RequestMapping(value = "import-previous",method = POST)
+	public RestResponse importPreviousData(
+			@RequestParam("version")
+					String version) {
+
+		//验证管理员身份
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		List<Category> categoryList = categoryService.getAllValidCategory(version);
+		if (isEmptyList(categoryList)) {
+			return successResponse();
+		}
+
+		List<Category> categoryList1 = new ArrayList<>();
+		Map<String, Object> data = getData();
+		Map<String, Object> errorData = getData();
+		for (Category category : categoryList) {
+			category.setVersion(getCurrentSemester());
+			if (!categoryService.addCategory(category)) {
+				errorData.put(category.getName(), "导入失败");
+			}
+			categoryList1.add(category);
+		}
+
+		data.put("categoryList", categoryList);
+		return successResponse(data);
+
+	}
+
+	/**
 	 * 添加工作量类目信息
 	 *
 	 * @param categoryDto category包装对象
@@ -126,7 +163,7 @@ public class CategoryManageController extends ApplicationController {
 		List<CategoryDto> categoryList = new ArrayList<>();
 		for (Integer categoryId : categoryIdList) {
 
-			Category category = categoryService.getCategory(categoryId);
+			Category category = categoryService.getCategory(categoryId,getCurrentSemester());
 			if (null == category) {
 				errorData.put(categoryId.toString(), "参数有误");
 				continue;
@@ -137,13 +174,13 @@ public class CategoryManageController extends ApplicationController {
 				continue;
 			}
 
-			boolean removeSuccess = categoryService.removeCategory(categoryId);
+			boolean removeSuccess = categoryService.removeCategory(categoryId,getCurrentSemester());
 			if (!removeSuccess) {
 				errorData.put(category.getName(), "删除失败！");
 				continue;
 			}
 
-			Category oldCategory = categoryService.getCategory(categoryId);
+			Category oldCategory = categoryService.getCategory(categoryId,getCurrentSemester());
 			CategoryDto categoryDto = categoryConverter.poToDto(oldCategory);
 			categoryDto.setOtherJson(null);
 			categoryDto.setJsonParameters(null);
@@ -175,7 +212,7 @@ public class CategoryManageController extends ApplicationController {
 		Map<String, Object> data = getData();
 		Map<String, Object> errorData = getData();
 		for (Integer categoryId : categoryIdList) {
-			Category category = categoryService.getCategory(categoryId);
+			Category category = categoryService.getCategory(categoryId,getCurrentSemester());
 			if (null == category) {
 				errorData.put(categoryId.toString(), "参数有误");
 			}
@@ -221,7 +258,7 @@ public class CategoryManageController extends ApplicationController {
 
 		Integer categoryId = categoryDto.getCategoryId();
 		CategoryDto oldCategory = categoryConverter
-				.poToDto(categoryService.getCategory(categoryId));
+				.poToDto(categoryService.getCategory(categoryId,getCurrentSemester()));
 		//设置默认参数
 		setDefaultParams(categoryDto);
 

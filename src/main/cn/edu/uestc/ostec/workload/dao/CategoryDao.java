@@ -34,8 +34,11 @@ public interface CategoryDao extends BaseDao<Category> {
 	 * @param id 条目Id
 	 * @return Boolean
 	 */
-	@Override
-	Boolean delete(Integer id);
+	Boolean delete(
+			@Param("categoryId")
+					Integer id,
+			@Param("version")
+					String version);
 
 	//	/**
 	//	 * 根据主键查询工作量条目
@@ -57,7 +60,9 @@ public interface CategoryDao extends BaseDao<Category> {
 			@Param("status")
 					Integer status,
 			@Param("categoryId")
-					Integer categoryId);
+					Integer categoryId,
+			@Param("version")
+					String version);
 
 	/**
 	 * 查询某一工作量条目下某种状态的工作量条目
@@ -70,7 +75,9 @@ public interface CategoryDao extends BaseDao<Category> {
 			@Param("status")
 					Integer status,
 			@Param("parentId")
-					Integer parentId);
+					Integer parentId,
+			@Param("version")
+					String version);
 
 	/**
 	 * 查询子节点（有效状态，不包含删除状态）
@@ -90,7 +97,11 @@ public interface CategoryDao extends BaseDao<Category> {
 	 * @param status 状态
 	 * @return List<Category>
 	 */
-	List<Category> selectByStatus(Integer status);
+	List<Category> selectByStatus(
+			@Param("status")
+					Integer status,
+			@Param("version")
+					String version);
 
 	List<Category> selectAll(String version);
 
@@ -99,7 +110,7 @@ public interface CategoryDao extends BaseDao<Category> {
 	 *
 	 * @return List
 	 */
-	List<Category> selectRoot();
+	List<Category> selectRoot(String version);
 
 	/**
 	 * 根据工作量类型查询工作量条目
@@ -107,7 +118,11 @@ public interface CategoryDao extends BaseDao<Category> {
 	 * @param importRequired 标识工作量为审核类：0；还是复核类：1
 	 * @return List<Category>
 	 */
-	List<Category> selectByImportRequired(Integer importRequired);
+	List<Category> selectByImportRequired(
+			@Param("importedRequired")
+					Integer importRequired,
+			@Param("version")
+					String version);
 
 	/**
 	 * 根据审核人查询工作量条目
@@ -115,7 +130,11 @@ public interface CategoryDao extends BaseDao<Category> {
 	 * @param reviewerId 审核人编号
 	 * @return List<Category>
 	 */
-	List<Category> selectByReviewer(Integer reviewerId);
+	List<Category> selectByReviewer(
+			@Param("reviewerId")
+					Integer reviewerId,
+			@Param("version")
+					String version);
 
 	List<Category> select(
 			@Param("categoryId")

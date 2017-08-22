@@ -276,7 +276,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			@RequestParam("type")
 					String type) {
 
-		Category category = categoryService.getCategory(categoryId);
+		Category category = categoryService.getCategory(categoryId,getCurrentSemester());
 		CategoryDto categoryDto = categoryConverter.poToDto(category);
 		List<FormulaParameter> parameterList = categoryDto.getFormulaParameterList();
 		List<OtherJsonParameter> otherJsonParameterList = categoryDto.getOtherJsonParameters();
@@ -369,7 +369,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		List<Item> itemList = new ArrayList<>();
 		List<ItemBrief> itemBriefList = new ArrayList<>();
 
-		Category category = categoryService.getCategory(categoryId);
+		Category category = categoryService.getCategory(categoryId,getCurrentSemester());
 		if (null == category) {
 			return invalidOperationResponse();
 		}
@@ -563,7 +563,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		itemBrief.setJsonParameter(item.getJsonParameter());
 		itemBrief.setWorkload(item.getWorkload());
 
-		itemBrief.setCategoryName(categoryService.getCategory(itemBrief.getCategoryId()).getName());
+		itemBrief.setCategoryName(categoryService.getCategory(itemBrief.getCategoryId(),getCurrentSemester()).getName());
 		itemBrief.setOtherJson(item.getOtherJson());
 
 		return itemBrief;

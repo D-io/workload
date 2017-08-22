@@ -82,7 +82,7 @@ public class CategoryManageAspectImpl implements IAspect {
 		Integer userId = user.getUserId();
 
 		for (Integer categoryId : categoryIdList) {
-			Category category = categoryService.getCategory(categoryId);
+			Category category = categoryService.getCategory(categoryId,getCurrentSemester());
 
 			History history = new History();
 			history.setAimUserId(0000000);
@@ -146,7 +146,7 @@ public class CategoryManageAspectImpl implements IAspect {
 		Integer userId = user.getUserId();
 
 		for (Integer categoryId : categoryIdList) {
-			Category category = categoryService.getCategory(categoryId);
+			Category category = categoryService.getCategory(categoryId,getCurrentSemester());
 
 			History history = new History();
 			history.setAimUserId(0000000);

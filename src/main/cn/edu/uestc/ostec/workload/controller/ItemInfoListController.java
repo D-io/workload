@@ -289,13 +289,13 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				getCurrentSemester());
 		List<Category> categoryList = new ArrayList<>();
 		for (ItemDto itemDto : itemDtoList) {
-			Category category = categoryService.getCategory(itemDto.getCategoryId());
+			Category category = categoryService.getCategory(itemDto.getCategoryId(),getCurrentSemester());
 			if (!categoryList.contains(category)) {
 				categoryList.add(category);
 			}
 		}
 
-		List<Category> categories = categoryService.getRootCategories();
+		List<Category> categories = categoryService.getRootCategories(getCurrentSemester());
 		categoryList.addAll(categories);
 
 		List<CategoryDto> categoryDtoList = categoryConverter.poListToDtoList(categoryList);

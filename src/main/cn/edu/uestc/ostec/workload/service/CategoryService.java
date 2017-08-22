@@ -16,14 +16,16 @@ public interface CategoryService extends MultiLevelService<CategoryDto> {
 	 * @param categoryId 工作量条目Id
 	 * @return String
 	 */
-	Boolean removeCategory(Integer categoryId);
+	Boolean removeCategory(Integer categoryId,String version);
 
 	/**
 	 * 彻底删除工作量类目
 	 * @param categoryId 工作量类目编号
 	 * @return Boolean
 	 */
-	Boolean deleteCategory(Integer categoryId);
+	Boolean deleteCategory(Integer categoryId,String version);
+
+	Boolean addCategory(Category category);
 
 	/**
 	 * 保存工作量条目
@@ -38,14 +40,14 @@ public interface CategoryService extends MultiLevelService<CategoryDto> {
 	 * @param categoryId 工作量条目Id
 	 * @return String
 	 */
-	Boolean saveCategory(Integer status, Integer categoryId);
+	Boolean saveCategory(Integer status, Integer categoryId,String version);
 
 	/**
 	 * 查看工作量条目详情
 	 * @param categoryId 工作量条目Id
 	 * @return Category
 	 */
-	Category getCategory(Integer categoryId);
+	Category getCategory(Integer categoryId,String version);
 
 	/**
 	 * 查询某一工作量条目下的子条目
@@ -87,7 +89,7 @@ public interface CategoryService extends MultiLevelService<CategoryDto> {
 	 * 获取类目根节点
 	 * @return List
 	 */
-	List<Category> getRootCategories();
+	List<Category> getRootCategories(String version);
 
 	/**
 	 * 获取所有版本信息

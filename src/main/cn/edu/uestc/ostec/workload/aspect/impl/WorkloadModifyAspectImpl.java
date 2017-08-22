@@ -129,7 +129,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		Integer categoryId = (Integer) args[0];
 		String newDate = args[1].toString();
 
-		Category category = categoryService.getCategory(categoryId);
+		Category category = categoryService.getCategory(categoryId,getCurrentSemester());
 		if (null == category) {
 			return;
 		}

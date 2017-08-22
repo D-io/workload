@@ -226,7 +226,7 @@ public class ItemManageController extends ApplicationController {
 		}
 
 		// 截止时间限定
-		Category category = categoryService.getCategory(item.getCategoryId());
+		Category category = categoryService.getCategory(item.getCategoryId(),getCurrentSemester());
 		if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
 			return invalidOperationResponse("申请已经截止");
 		}
@@ -297,7 +297,7 @@ public class ItemManageController extends ApplicationController {
 		itemDto.setOwnerId(teacherId);
 
 		//设置对应的proof属性
-		int importRequired = categoryService.getCategory(itemDto.getCategoryId())
+		int importRequired = categoryService.getCategory(itemDto.getCategoryId(),getCurrentSemester())
 				.getImportRequired();
 
 		Map<String, Object> data = getData();
@@ -320,7 +320,7 @@ public class ItemManageController extends ApplicationController {
 		Item oldItem = itemConverter.dtoToPo(itemDto);
 		ItemDto newItemDto = itemConverter.poToDto(oldItem);
 
-		Category category = categoryService.getCategory(itemDto.getCategoryId());
+		Category category = categoryService.getCategory(itemDto.getCategoryId(),getCurrentSemester());
 		//小组总的工作量或者个人的工作量结果
 		double workload = FormulaCalculate
 				.calculate(category.getFormula(), newItemDto.getParameterValues());
@@ -449,7 +449,7 @@ public class ItemManageController extends ApplicationController {
 			if (item.getOwnerId().equals(teacherId) && UNCOMMITTED.equals(item.getStatus())) {
 
 				//申请截止时间限制
-				Category category = categoryService.getCategory(item.getCategoryId());
+				Category category = categoryService.getCategory(item.getCategoryId(),getCurrentSemester());
 				if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
 					errorData.put(item.getItemName(), "申请已经截止");
 					continue;
@@ -505,7 +505,7 @@ public class ItemManageController extends ApplicationController {
 		for (Item item : itemList) {
 
 			//申请截止时间限制
-			Category category = categoryService.getCategory(item.getCategoryId());
+			Category category = categoryService.getCategory(item.getCategoryId(),getCurrentSemester());
 			if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
 				errorData.put(item.getItemName(), "申请已经截止");
 				continue;
@@ -549,7 +549,7 @@ public class ItemManageController extends ApplicationController {
 		}
 
 		Item item = itemService.findItem(itemId);
-		Category category = categoryService.getCategory(item.getCategoryId());
+		Category category = categoryService.getCategory(item.getCategoryId(),getCurrentSemester());
 		if (DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
 			return invalidOperationResponse("复核已经截止");
 		}

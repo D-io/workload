@@ -11,6 +11,9 @@ import org.aspectj.lang.JoinPoint;
 
 import cn.edu.uestc.ostec.workload.adaptor.ServletContextAdapter;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+
+import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_CURRENT_SCHEME;
+import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
@@ -68,4 +71,7 @@ public interface IAspect extends ServletContextAdapter {
 		return "C" + categoryId.toString();
 	}
 
+	default String getCurrentSemester() {
+		return (String) getSessionContext().getAttribute(SESSION_CURRENT_SCHEME);
+	}
 }

@@ -36,6 +36,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.ROOT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Version:v1.0 (description: 工作量类目信息展示控制器 )
@@ -53,6 +54,7 @@ public class CategoryInfoListController extends ApplicationController
 
 	/**
 	 * 查询已经提交状态对应的类目信息生成的树结构
+	 *
 	 * @return categoryTree
 	 */
 	@RequestMapping(value = "list", method = GET)
@@ -77,7 +79,7 @@ public class CategoryInfoListController extends ApplicationController
 					Integer categoryId) {
 
 		CategoryDto categoryDto = categoryConverter
-				.poToDto(categoryService.getCategory(categoryId));
+				.poToDto(categoryService.getCategory(categoryId,getCurrentSemester()));
 
 		categoryDto.setOtherJson(null);
 		categoryDto.setJsonParameters(null);
@@ -109,8 +111,9 @@ public class CategoryInfoListController extends ApplicationController
 			data.put("categoryTree", getCategoryDto(null, ROOT));
 		} else {
 			//获取状态为Disable的工作量类目信息
-			List<CategoryDto> categoryDtos = categoryConverter.poListToDtoList(categoryService.getCategoriesByStatus(DELETED,getCurrentSemester()));
-			for(CategoryDto categoryDto:categoryDtos) {
+			List<CategoryDto> categoryDtos = categoryConverter.poListToDtoList(
+					categoryService.getCategoriesByStatus(DELETED, getCurrentSemester()));
+			for (CategoryDto categoryDto : categoryDtos) {
 				categoryDto.setOtherJson(null);
 				categoryDto.setJsonParameters(null);
 			}
@@ -154,10 +157,10 @@ public class CategoryInfoListController extends ApplicationController
 
 		if (null == status) {
 			//由父节点获取状态有效的子节点对应的dto对象
-			categoryDtoList = categoryService.getDtoObjects(parentId,getCurrentSemester());
+			categoryDtoList = categoryService.getDtoObjects(parentId, getCurrentSemester());
 		} else {
 			//由父节点和状态值查询对应的子节点dto对象
-			categoryDtoList = categoryService.getDtoObjects(status, parentId,getCurrentSemester());
+			categoryDtoList = categoryService.getDtoObjects(status, parentId, getCurrentSemester());
 		}
 
 		if (categoryDtoList.size() < 0) {
