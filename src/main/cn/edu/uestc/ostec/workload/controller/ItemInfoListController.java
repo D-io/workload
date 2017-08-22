@@ -24,6 +24,7 @@ import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.SubjectDto;
+import cn.edu.uestc.ostec.workload.dto.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -84,7 +85,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			@RequestParam(required = false)
 					Integer teacherId,
 			@RequestParam(required = false)
-					String option) {
+					String ifExport) {
 
 		User user = getUser();
 		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
@@ -123,7 +124,12 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			teacherWorkloadList.add(teacherWorkload);
 		}
 
-		return successResponse(teacherWorkloadList);
+		if(("yes".equals(ifExport))) {
+			return getExportWorkloadExcel(teacherWorkloadList);
+		} else{
+			return successResponse(teacherWorkloadList);
+		}
+
 	}
 
 	/**
@@ -497,60 +503,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		return itemDtoList;
-	}
-
-	class TeacherWorkload {
-
-		private String teacherName;
-
-		private Integer teacherId;
-
-		private Double checkedWorkload;
-
-		private Double uncheckedWorkload;
-
-		public String getTeacherName() {
-			return teacherName;
-		}
-
-		public void setTeacherName(String teacherName) {
-			this.teacherName = teacherName;
-		}
-
-		public Integer getTeacherId() {
-			return teacherId;
-		}
-
-		public void setTeacherId(Integer teacherId) {
-			this.teacherId = teacherId;
-		}
-
-		public Double getCheckedWorkload() {
-			return checkedWorkload;
-		}
-
-		public void setCheckedWorkload(Double checkedWorkload) {
-			this.checkedWorkload = checkedWorkload;
-		}
-
-		public Double getUncheckedWorkload() {
-			return uncheckedWorkload;
-		}
-
-		public void setUncheckedWorkload(Double uncheckedWorkload) {
-			this.uncheckedWorkload = uncheckedWorkload;
-		}
-
-		public TeacherWorkload(String teacherName, Integer teacherId, Double checkedWorkload,
-				Double uncheckedWorkload) {
-			this.teacherName = teacherName;
-			this.teacherId = teacherId;
-			this.checkedWorkload = checkedWorkload;
-			this.uncheckedWorkload = uncheckedWorkload;
-		}
-
-		public TeacherWorkload() {
-		}
 	}
 
 }

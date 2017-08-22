@@ -1,5 +1,52 @@
 ## 工作量类目接口
 
+### 导入往年工作量类目信息
+- 接口地址：`/category/manage`
+- 支持格式：`json`
+- 请求方式：`POST`
+- 请求示例：`localhost:8080/category/manage?name=教学&desc=就是简单的教学&parentId=0&isLeaf=N&importRequired=0&jsonParameters={“人数”:“A”}&formula=A%2BB%2BC&version=2017-2018-1&reviewDeadline=2017年12月21日&applyDeadline=2017年12月10日&reviewerId=1`
+- 请求参数说明：
+
+参数名 | 类型 | 必填 | 说明
+---|--- | --- | ---
+version | String | 是 | 学期号 例如2017-2018-1
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- Json返回成功示例如下：
+```json
+{
+ "status": 200,
+    "statusName": "OK",
+    "data": {
+        "categoryList": [
+            {
+                "categoryId": 1,
+                "name": "培养方案相关人才培养当量",
+                "desc": "培养方案相关人才培养工作是指教师从事与学院人才培养方案相关的课程教学、实践教学等（由多位老师共同参与完成的项目，工作当量由该项工作负责人根据教师参与情况分配。）",
+                "parentId": 0,
+                "isLeaf": "N",
+                "importRequired": 2,
+                "jsonParameters": null,
+                "formula": "",
+                "version": "2017-2018-2",
+                "status": 1,
+                "reviewDeadline": 1517760000,
+                "applyDeadline": 1517414400,
+                "reviewerId": 3210343,
+                "otherJson": ""
+            },
+	    }
+
+```
+
+
 ### 添加工作量类目信息
 - 接口地址：`/category/manage`
 - 支持格式：`json`

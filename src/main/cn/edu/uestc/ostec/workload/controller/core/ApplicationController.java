@@ -19,6 +19,7 @@ import cn.edu.uestc.ostec.workload.context.StandardApplicationAttributeContext;
 import cn.edu.uestc.ostec.workload.context.StandardSessionAttributeContext;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.RoleInfo;
+import cn.edu.uestc.ostec.workload.dto.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.support.utils.ExcelExportHelper;
@@ -85,7 +86,20 @@ public class ApplicationController extends ResultController
 			e.printStackTrace();
 			return systemErrResponse();
 		}
+	}
 
+	public RestResponse getExportWorkloadExcel(List<TeacherWorkload> workloadList){
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse();
+		}
+		byte[] file = ExcelExportHelper.exportTotalWorkload(workloadList);
+		try {
+			return streamResponse(file, "工作量汇总.xlsx");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return systemErrResponse();
+		}
 	}
 
 	/**
