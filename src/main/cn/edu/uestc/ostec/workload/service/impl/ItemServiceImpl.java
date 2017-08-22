@@ -86,7 +86,7 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 			Integer isGroup, int pageNum, int pageSize) {
 
 		PageHelper.startPage(pageNum, pageSize);
-		List<Item> items = itemDao.selectAll(null,categoryId, status, ownerId, isGroup);
+		List<Item> items = itemDao.selectAll(null, categoryId, status, ownerId, isGroup);
 		List<Item> itemList = new ArrayList<>();
 		for (Item item : items) {
 			itemList.add(item);
@@ -105,6 +105,12 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	public List<Item> findItemByCategory(Integer categoryId) {
 
 		return listResult(itemDao.selectValidItemByCategory(categoryId));
+	}
+
+	@Override
+	public Double selectTotalWorkload(Integer teacherId, Integer status) {
+
+		return itemDao.selectWorkload(teacherId, status);
 	}
 
 	@Override

@@ -100,4 +100,16 @@ public interface ItemDao extends BaseDao<Item> {
 					Integer ownerId,
 			@Param("isGroup")
 					Integer isGroup);
+
+	/**
+	 * 查询教师对应状态的工作量条目对应工作量统计汇总
+	 * @param teacherId
+	 * @param status
+	 * @return
+	 */
+	Double selectWorkload(
+			@Param("teacherId")
+					Integer teacherId,
+			@Param("status")
+					Integer status);
 }

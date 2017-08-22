@@ -28,11 +28,13 @@ import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
+import cn.edu.uestc.ostec.workload.pojo.Teacher;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
+import cn.edu.uestc.ostec.workload.service.TeacherService;
 import cn.edu.uestc.ostec.workload.support.utils.PageHelper;
 import cn.edu.uestc.ostec.workload.support.utils.TreeGenerateHelper;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
@@ -67,6 +69,54 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 	@Autowired
 	private CategoryConverter categoryConverter;
+
+	@Autowired
+	private TeacherService teacherService;
+
+	/**
+	 * 统计所有教师的工作量情况
+	 *
+	 * @param teacherId 教师编号
+	 * @return workloadList
+	 */
+	@RequestMapping(value = "total-workload", method = GET)
+	public RestResponse getAllTeachersWorkload(
+			@RequestParam(required = false)
+					Integer teacherId,
+			@RequestParam(required = false)
+					String option) {
+
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		List<Teacher> teacherList = teacherService.findAll();
+		if (isEmptyList(teacherList)) {
+			return successResponse();
+		}
+
+		List<TeacherWorkload> teacherWorkloadList = new ArrayList<>();
+		for (Teacher teacher : teacherList) {
+			int id = teacher.getTeacherId();
+
+			TeacherWorkload teacherWorkload = new TeacherWorkload();
+			teacherWorkload.setTeacherId(teacher.getTeacherId());
+			teacherWorkload.setTeacherName(teacher.getName());
+
+			Double checkedWorkload = itemService.selectTotalWorkload(id, CHECKED);
+			Double nonCheckedWorkload = itemService.selectTotalWorkload(id, NON_CHECKED);
+
+			teacherWorkload
+					.setCheckedWorkload(null == checkedWorkload ? ZERO_DOUBLE : checkedWorkload);
+			teacherWorkload.setUncheckedWorkload(
+					null == nonCheckedWorkload ? ZERO_DOUBLE : nonCheckedWorkload);
+
+			teacherWorkloadList.add(teacherWorkload);
+		}
+
+		return successResponse(teacherWorkloadList);
+	}
 
 	/**
 	 * 不采用分页查询的方式进行条件查询条目信息
@@ -567,6 +617,60 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		return itemDtoList;
+	}
+
+	class TeacherWorkload {
+
+		private String teacherName;
+
+		private Integer teacherId;
+
+		private Double checkedWorkload;
+
+		private Double uncheckedWorkload;
+
+		public String getTeacherName() {
+			return teacherName;
+		}
+
+		public void setTeacherName(String teacherName) {
+			this.teacherName = teacherName;
+		}
+
+		public Integer getTeacherId() {
+			return teacherId;
+		}
+
+		public void setTeacherId(Integer teacherId) {
+			this.teacherId = teacherId;
+		}
+
+		public Double getCheckedWorkload() {
+			return checkedWorkload;
+		}
+
+		public void setCheckedWorkload(Double checkedWorkload) {
+			this.checkedWorkload = checkedWorkload;
+		}
+
+		public Double getUncheckedWorkload() {
+			return uncheckedWorkload;
+		}
+
+		public void setUncheckedWorkload(Double uncheckedWorkload) {
+			this.uncheckedWorkload = uncheckedWorkload;
+		}
+
+		public TeacherWorkload(String teacherName, Integer teacherId, Double checkedWorkload,
+				Double uncheckedWorkload) {
+			this.teacherName = teacherName;
+			this.teacherId = teacherId;
+			this.checkedWorkload = checkedWorkload;
+			this.uncheckedWorkload = uncheckedWorkload;
+		}
+
+		public TeacherWorkload() {
+		}
 	}
 
 }

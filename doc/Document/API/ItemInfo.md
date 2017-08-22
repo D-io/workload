@@ -1,5 +1,44 @@
 ## 工作量条目Item接口
 
+
+### 管理员获取全部教师统计情况
+- 接口地址：`/item/info/total-workload`
+- 支持格式：`json`
+- 请求方式：`GET`
+- 请求示例：`http://127.0.0.1:8080/item/info/total-workload`
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "info": [
+            {
+                "teacherName": "GORDHAN DA",
+                "teacherId": 7140003,
+                "checkedWorkload": 0,
+                "uncheckedWorkload": 0
+            },
+            {
+                "teacherName": "白忠建",
+                "teacherId": 3204242,
+                "checkedWorkload": 0,
+                "uncheckedWorkload": 0
+            },
+		
+
+```
+
+
 ### 管理员获取全部工作量条目信息（不使用分页查询，加上了学期限制）
 - 接口地址：`/item/info/item-all`
 - 支持格式：`json`

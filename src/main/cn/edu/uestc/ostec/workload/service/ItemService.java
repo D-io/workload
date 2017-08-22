@@ -80,6 +80,14 @@ public interface ItemService extends BaseService {
 	List<Item> findItemByCategory(Integer categoryId);
 
 	/**
+	 * 统计某个教师对应的工作量
+	 * @param teacherId 教师编号
+	 * @param status 条目状态
+	 * @return Double
+	 */
+	Double selectTotalWorkload(Integer teacherId,Integer status);
+
+	/**
 	 * 分页查询所有的条目信息
 	 *
 	 * @param categoryId 类目编号
