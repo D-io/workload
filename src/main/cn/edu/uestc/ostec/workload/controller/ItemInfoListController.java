@@ -94,7 +94,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		List<ItemDto> itemDtoList = itemService
-				.findAll(categoryId, status, ownerId, null, getCurrentSemester());
+				.findAll(null, categoryId, status, ownerId, null, getCurrentSemester());
 		if (isEmptyList(itemDtoList)) {
 			return successResponse();
 		}
@@ -121,6 +121,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	@RequestMapping(value = "item-all/paginate", method = GET)
 	public RestResponse getAllItems(
 			@RequestParam(required = false)
+					String itemName,
+			@RequestParam(required = false)
 					Integer categoryId,
 			@RequestParam(required = false)
 					Integer status,
@@ -139,7 +141,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		List<ItemDto> itemDtoList = itemService
-				.findAll(categoryId, status, ownerId, null, getCurrentSemester());
+				.findAll(itemName, categoryId, status, ownerId, null, getCurrentSemester());
 		if (isEmptyList(itemDtoList)) {
 			return successResponse();
 		}

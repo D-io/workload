@@ -110,7 +110,7 @@ data | String | 结果集
 - 接口地址：`/item/info/item-all/paginate`
 - 支持格式：`json`
 - 请求方式：`GET`
-- 请求示例：`http://127.0.0.1:8080/item/info/item-all/paginate?pageNum=1&pageSize=100&categoryId=33&status=1`
+- 请求示例：`http://127.0.0.1:8080/item/info/item-all/paginate?itemName=workl&pageNum=1&pageSize=100&categoryId=33&status=1`
     - `/item/info/item-all/paginate?categoryId=33&status=1&ifExport=yes` //导出实例
 
     - PS.导出时不用输入页号pageNum和页的大小pageSize，不导出时不填ifExport属性
@@ -120,6 +120,7 @@ data | String | 结果集
 ---|---|---|---
 pageNum | int | 页码编号 | 否
 pageSize | int | 页的大小 | 否
+itemName | String | 项目名称关键字 | 否 模糊查询
 categoryId | int | 类目编号 | 否 （查询条件）
 status | int | 状态值 | 否（查询条件） 
 ownerId | int | 教师Id | 否 （查询条件）

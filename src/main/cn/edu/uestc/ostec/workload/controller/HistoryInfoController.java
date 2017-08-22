@@ -136,7 +136,7 @@ public class HistoryInfoController extends ApplicationController {
 
 		//查找用户自己拥有的全部工作量条目信息
 		List<ItemDto> itemDtoList = itemService
-				.findAll(null, null, user.getUserId(), null, getCurrentSemester());
+				.findAll(null,null, null, user.getUserId(), null, getCurrentSemester());
 
 		//根据自己的工作量条目查询对应的历史记录
 		List<History> histories = getHistoriesByItems(itemDtoList, type);
@@ -200,7 +200,7 @@ public class HistoryInfoController extends ApplicationController {
 			}
 		} else {
 			itemList = itemService
-					.findAll(null, null, user.getUserId(), null, getCurrentSemester());
+					.findAll(null,null, null, user.getUserId(), null, getCurrentSemester());
 		}
 
 		for (History history : historyList) {

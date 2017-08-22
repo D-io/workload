@@ -92,6 +92,6 @@ public interface ItemService extends BaseService {
 	Map<String, Object> findAll(Integer categoryId, Integer status, Integer ownerId,
 			Integer isGroup, int pageNum, int pageSize);
 
-	List<ItemDto> findAll(Integer categoryId, Integer status, Integer ownerId,
+	List<ItemDto> findAll(String itemName,Integer categoryId, Integer status, Integer ownerId,
 			Integer isGroup, String version);
 }

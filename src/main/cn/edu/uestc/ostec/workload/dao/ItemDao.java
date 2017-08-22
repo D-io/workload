@@ -90,6 +90,8 @@ public interface ItemDao extends BaseDao<Item> {
 	 * @return List<Item>
 	 */
 	List<Item> selectAll(
+			@Param("itemName")
+					String itemName,
 			@Param("categoryId")
 					Integer categoryId,
 			@Param("status")

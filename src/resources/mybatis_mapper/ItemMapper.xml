@@ -106,6 +106,9 @@
       <if test="null != isGroup">
         AND is_group = #{isGroup}
       </if>
+      <if test="null != itemName">
+        AND item_name LIKE CONCAT(CONCAT('%', #{itemName}), '%')
+      </if>
     </where>
   </select>
 </mapper>

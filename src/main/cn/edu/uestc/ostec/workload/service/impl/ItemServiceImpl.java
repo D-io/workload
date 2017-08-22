@@ -66,9 +66,9 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	}
 
 	@Override
-	public List<ItemDto> findAll(Integer categoryId, Integer status, Integer ownerId,
-			Integer isGroup, String version) {
-		List<Item> itemList = itemDao.selectAll(categoryId, status, ownerId, isGroup);
+	public List<ItemDto> findAll(String itemName, Integer categoryId, Integer status,
+			Integer ownerId, Integer isGroup, String version) {
+		List<Item> itemList = itemDao.selectAll(itemName, categoryId, status, ownerId, isGroup);
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
 
 		List<ItemDto> itemDtos = new ArrayList<>();
@@ -86,7 +86,7 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 			Integer isGroup, int pageNum, int pageSize) {
 
 		PageHelper.startPage(pageNum, pageSize);
-		List<Item> items = itemDao.selectAll(categoryId, status, ownerId, isGroup);
+		List<Item> items = itemDao.selectAll(null,categoryId, status, ownerId, isGroup);
 		List<Item> itemList = new ArrayList<>();
 		for (Item item : items) {
 			itemList.add(item);
