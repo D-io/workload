@@ -345,24 +345,43 @@ function reset() {
             }
         });
     });
-    $(document).on("click",".itemName",function () {
-        var thisId=this.id.match(/\d+/g);
+    /*$(document).on("click",".itemName",*/
+    $(".itemName").click(function () {
+        var thisId=parseInt(this.id.match(/\d+/g));
         if(!$(this).is('.input')){
             $(this).addClass('input').html('<input type="text" value="'+ $(this).text() +'" />').find('input').focus().blur(function(){
                 $(this).parent().removeClass('input').html($(this).val() || 0);
+                alert("确定保存修改？");
+                $.post(itemeditNameUrl,{
+                    itemId:thisId,
+                    itemName:$("#itemName_"+thisId).text()
+                },function () {
+                    alert("修改成功!");
+                });
             });
         }
-    }).hover(function(){
-        $(this).addClass('hover');
-    },function(){
-        $(this).removeClass('hover');
-        alert("确定保存修改？");
-        $.post(itemeditNameUrl,{
-            itemId:thisId,
-            itemName:$(".itemName_"+thisId).text()
-        },function () {
-            alert("修改成功!");
-        });
+    });
+    $(".otherParaval").click(function () {
+        var thisId=parseInt(this.id.match(/\d+/g));
+
+        if(!$(this).is('.input')){
+            $(this).addClass('input').html('<input type="text" value="'+ $(this).text() +'" />').find('input').focus().blur(function(){
+                $(this).parent().removeClass('input').html($(this).val() || 0);
+                var $otherstr=$(".otherstr_"+thisId);
+                var strArr=new Array();
+                for(var t=0;t<$otherstr.length;t++){
+                    strArr.push({key:$otherstr.eq(t).text(),value:$(".otherParaval_"+thisId).eq(t).text()});
+                }
+                strArr=JSON.stringify(strArr);
+                alert("确定保存修改？");
+                $.post(itemeditNameUrl,{
+                    itemId:thisId,
+                    otherParams:strArr
+                },function () {
+                    alert("修改成功!");
+                });
+            });
+        }
     });
     $("#teacherName").select2({
         allowClear: true,
@@ -674,11 +693,11 @@ function reviewerResetItem(data) {
                 if(otherparamArray&&otherparamArray.length>0){
                     for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
                         if(otherparamCount!=otherparamArray.length-1){
-                            otherstr +='<p style="width: max-content;">'+ otherparamArray[otherparamCount].key + ':'+ otherparamArray[otherparamCount].value+'</p><hr/>';
+                            otherstr +='<div style="width: max-content;"><span  class="otherstr_'+Info.itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+Info.itemId+'" id="otherParaval_'+Info.itemId+'">'+ otherparamArray[otherparamCount].value+'</span></div><hr/>';
 
                         }
                         else
-                            otherstr +='<p style="width: max-content;">'+ otherparamArray[otherparamCount].key + ':'+ otherparamArray[otherparamCount].value+'</p>';
+                            otherstr +='<div style="width: max-content;"><span  class="otherstr_'+Info.itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+Info.itemId+'" id="otherParaval_'+Info.itemId+'">'+ otherparamArray[otherparamCount].value+'</span></div>';
 
                     }
                 }

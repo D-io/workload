@@ -22,7 +22,7 @@
 
      var userNameUrl="${userName}";
 
-     //console.log(${years});
+     console.log(${years});
      //var thisYear="${years}";
      //console.log(thisYear);
 
@@ -68,7 +68,7 @@
 
     var itemManageUrl=contextPath+"/item/manage";
 
-    var itemeditNameUrl=itemManageUrl+"/cooret";
+    var itemeditNameUrl=itemManageUrl+"/correct";
 
     var importProofUrl=itemManageUrl+"/file-proof";
 
@@ -111,6 +111,5 @@
     var historyUrl=contextPath+"/history/info/histories-user";
 
     var manageHistoryUrl=contextPath+"/history/info/history-category";
-
 
 </script>
