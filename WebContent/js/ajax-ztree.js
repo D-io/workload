@@ -429,7 +429,7 @@ function ztree() {
                                             'otherJsonParameters':data.data.category.otherJsonParameters,
                                             'isLeaf':data.data.category.isLeaf,
                                             'importRequired':data.data.category.importRequired,
-                                            'font':{'color':'rgba(29,125,228,0.74)'},
+                                            'font':{'color':'#FFB951'},
                                             'iconSkin':"icon06"
                                         };
                                     }
@@ -447,7 +447,7 @@ function ztree() {
                                             'otherJsonParameters':data.data.category.otherJsonParameters,
                                             'isLeaf':data.data.category.isLeaf,
                                             'importRequired':data.data.category.importRequired,
-                                            'font':{'color':'rgba(29,125,228,0.74)'},
+                                            'font':{'color':'#FFB951'},
                                             'iconSkin':"icon02"
                                         };
                                     }
@@ -465,12 +465,12 @@ function ztree() {
                                             'otherJsonParameters':data.data.category.otherJsonParameters,
                                             'isLeaf':data.data.category.isLeaf,
                                             'importRequired':data.data.category.importRequired,
-                                            'font':{'color':'rgba(29,125,228,0.74)'}
+                                            'font':{'color':'#FFB951'}
                                         };
                                     }
                                     zNodes.splice(i, 1, newNode);
-                                    zTree.updateNode(zNodes[i]);
-                                    $('#'+treeNode.tId+'_span').text(newNode.name);
+                                 //   zTree.updateNode(zNodes[i]);
+                                    $('#'+treeNode.tId+1+'_span').text(newNode.name);
 
                                     $.fn.zTree.init($("#treeDemo"), setting, zNodes);
                                 }
