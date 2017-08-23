@@ -25,6 +25,7 @@ import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.SubjectDto;
 import cn.edu.uestc.ostec.workload.dto.TeacherWorkload;
+import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -43,6 +44,7 @@ import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.ITEM_PATH;
 
+import static cn.edu.uestc.ostec.workload.service.ItemService.EMPTY_WORKLOAD;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -105,28 +107,38 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			teacherWorkload.setTeacherId(teacher.getTeacherId());
 			teacherWorkload.setTeacherName(teacher.getName());
 
-			Double checkedWorkload = itemService.selectTotalWorkload(id, CHECKED,getCurrentSemester());
-			Double nonCheckedWorkload = itemService.selectTotalWorkload(id, NON_CHECKED,getCurrentSemester());
-			Double doubtedWorkload = itemService.selectTotalWorkload(id, DOUBTED,getCurrentSemester());
-			Double doubtedCheckedWorkload = itemService.selectTotalWorkload(id, DOUBTED_CHECKED,getCurrentSemester());
+			TotalWorkloadAndCount checkedWorkload = itemService
+					.selectTotalWorkload(id, CHECKED, getCurrentSemester());
+			TotalWorkloadAndCount nonCheckedWorkload = itemService
+					.selectTotalWorkload(id, NON_CHECKED, getCurrentSemester());
+			TotalWorkloadAndCount doubtedWorkload = itemService
+					.selectTotalWorkload(id, DOUBTED, getCurrentSemester());
+			TotalWorkloadAndCount doubtedCheckedWorkload = itemService
+					.selectTotalWorkload(id, DOUBTED_CHECKED, getCurrentSemester());
 
-			checkedWorkload = (null == checkedWorkload ? ZERO_DOUBLE : checkedWorkload);
-			nonCheckedWorkload = (null == nonCheckedWorkload ? ZERO_DOUBLE : nonCheckedWorkload);
-			doubtedWorkload = (null == doubtedWorkload ? ZERO_DOUBLE : doubtedWorkload);
+			checkedWorkload = (null == checkedWorkload ? EMPTY_WORKLOAD : checkedWorkload);
+			nonCheckedWorkload = (null == nonCheckedWorkload ? EMPTY_WORKLOAD : nonCheckedWorkload);
+			doubtedWorkload = (null == doubtedWorkload ? EMPTY_WORKLOAD : doubtedWorkload);
 			doubtedCheckedWorkload = (null == doubtedCheckedWorkload ?
-					ZERO_DOUBLE :
+					EMPTY_WORKLOAD :
 					doubtedCheckedWorkload);
 
-			teacherWorkload.setCheckedWorkload(checkedWorkload);
+			teacherWorkload.setCheckedWorkload(checkedWorkload.getWorkload());
+			teacherWorkload.setCheckedItems(checkedWorkload.getCount());
+
 			teacherWorkload.setUncheckedWorkload(
-					nonCheckedWorkload + doubtedWorkload + doubtedCheckedWorkload);
+					nonCheckedWorkload.getWorkload() + doubtedCheckedWorkload.getWorkload()
+							+ doubtedWorkload.getWorkload());
+			teacherWorkload.setUncheckedItems(
+					nonCheckedWorkload.getCount() + doubtedCheckedWorkload.getCount()
+							+ doubtedWorkload.getCount());
 
 			teacherWorkloadList.add(teacherWorkload);
 		}
 
-		if(("yes".equals(ifExport))) {
+		if (("yes".equals(ifExport))) {
 			return getExportWorkloadExcel(teacherWorkloadList);
-		} else{
+		} else {
 			return successResponse(teacherWorkloadList);
 		}
 
@@ -259,7 +271,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 		int teacherId = user.getUserId();
 
-		List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(),categoryId);
+		List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(), categoryId);
 
 		if (null == itemList || itemList.isEmpty()) {
 			return parameterNotSupportResponse("参数有误");
@@ -295,7 +307,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				getCurrentSemester());
 		List<Category> categoryList = new ArrayList<>();
 		for (ItemDto itemDto : itemDtoList) {
-			Category category = categoryService.getCategory(itemDto.getCategoryId(),getCurrentSemester());
+			Category category = categoryService
+					.getCategory(itemDto.getCategoryId(), getCurrentSemester());
 			if (!categoryList.contains(category)) {
 				categoryList.add(category);
 			}
@@ -338,7 +351,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return invalidOperationResponse("非法请求");
 		}
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 		if (null == item) {
 			return parameterNotSupportResponse("无效参数");
 		}
@@ -405,7 +418,11 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	@RequestMapping(value = "collection", method = GET)
 	public RestResponse getAllItemDtoList(
 			@RequestParam(required = false)
-					Integer teacherId) {
+					Integer teacherId,
+			@RequestParam(required = false)
+					String option,
+			@RequestParam(required = false)
+					String ifExport) {
 
 		User user = getUser();
 
@@ -418,20 +435,27 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			teacherId = user.getUserId();
 			statusList.add(CHECKED);
 		} else {
-			if(!getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			if (!getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
 				return invalidOperationResponse("非法访问");
 			}
-			statusList.addAll(getImportStatus());
+			if ("checked".equals(option)) {
+				statusList.add(CHECKED);
+			} else if ("unchecked".equals(option)) {
+				statusList.addAll(getUncheckedStatus());
+			} else {
+				return parameterNotSupportResponse("参数有误");
+			}
 		}
 
 		List<ItemDto> itemList = findItems(null, statusList, teacherId, getCurrentSemester());
-		if(isEmptyList(itemList)) {
+
+		if (isEmptyList(itemList)) {
 			return successResponse();
 		}
 
 		Map<String, Object> data = getData();
 		data.put("itemDtoList", itemList);
-		data.put("totalWorkload", itemService.selectTotalWorkload(teacherId, CHECKED,getCurrentSemester()));
+		data.put("recordCount", itemList.size());
 
 		return successResponse(data);
 	}
@@ -471,8 +495,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	private List<ItemDto> findItemsByStatus(Integer importRequired, Integer status,
 			Integer teacherId, String version) {
 
-		List<ItemDto> itemDtoList = itemConverter
-				.poListToDtoList(itemService.findItemsByStatus(status, teacherId,getCurrentSemester()));
+		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(
+				itemService.findItemsByStatus(status, teacherId, getCurrentSemester()));
 		List<ItemDto> itemDtoGroup = new ArrayList<>();
 
 		for (ItemDto itemDto : itemDtoList) {

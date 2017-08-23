@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 
 @Component
@@ -122,7 +123,7 @@ public interface ItemDao extends BaseDao<Item> {
 	/**
 	 * 查询教师对应状态的工作量条目对应工作量统计汇总
 	 */
-	Double selectWorkload(
+	TotalWorkloadAndCount selectWorkload(
 			@Param("teacherId")
 					Integer teacherId,
 			@Param("status")

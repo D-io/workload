@@ -117,7 +117,7 @@
         </where>
     </select>
 
-    <select id="selectWorkload" resultType="Double">
-    SELECT SUM(workload) FROM item WHERE owner_id = #{teacherId} AND status = #{status} AND version = #{version}
+    <select id="selectWorkload" resultType="cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount">
+    SELECT SUM(workload) workload,COUNT(workload) count FROM item WHERE owner_id = #{teacherId} AND status = #{status} AND version = #{version}
   </select>
 </mapper>

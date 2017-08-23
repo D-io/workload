@@ -230,12 +230,13 @@ totalRecords | int | 总记录数
 }
 ```
 
-### 获取教师审核通过的工作量信息汇总
+### 获取教师审核通过的工作量信息汇总（管理员获取教师对应的工作量条目的的信息）
 - 接口地址：`/item/info/collection`
 - 支持格式：`json`
 - 请求方式：`GET`
-- 请求示例：`localhost:8080/item/info/collection`
-
+- 请求示例：`localhost:8080/item/info/collection` 教师获取个人已经通过的工作量信息列表
+- http://127.0.0.1:8080/item/info/collection?teacherId=3210343&option=unchecked 管理员获取已经通过的工作量条目列表
+- http://127.0.0.1:8080/item/info/collection?teacherId=3210343&option=checked 管理员获取还未通过的工作量条目信息列表
 - 返回参数具体说明：
 
 参数名 |类型 | 说明
@@ -253,6 +254,7 @@ abnormalItemList | json | 存疑条目
 normalItemList | json | 正常条目
 
 - Json返回成功示例如下：
+
 {
     "status": 200,
     "statusName": "OK",
@@ -291,62 +293,58 @@ normalItemList | json | 正常条目
                 "importRequired": 0,
                 "isGroup": 1,
                 "version": "2017-2018-1",
-                "otherJson": null,
-                "otherJsonParameters": null
-            },
-            {
-                "itemId": 14,
-                "itemName": "团队国家奖",
-                "categoryId": 22,
-                "ownerId": 3210343,
-                "jsonParameter": "[{\"symbol\":\"A\",\"value\":3.0},{\"symbol\":\"B\",\"value\":1.0},{\"symbol\":\"C\",\"value\":1.0}]",
-                "parameterValues": [
+                "otherJson": "[{\"key\":\"竞赛名称\",\"value\":\"创新杯\"},{\"key\":\"参赛项目\",\"value\":\"基于xxx\"},{\"key\":\"类型（团队或个人）\",\"value\":\"团队\"},{\"key\":\"获奖级别\",\"value\":\"国家奖\"},{\"key\":\"赛事级别\",\"value\":\"国家级\"}]",
+                "formula": "10*A+4*B",
+                "paramDesc": [
                     {
-                        "symbol": "A",
-                        "value": 3
+                        "desc": "团体赛（指导参赛队伍数）",
+                        "symbol": "A"
                     },
                     {
-                        "symbol": "B",
-                        "value": 1
-                    },
-                    {
-                        "symbol": "C",
-                        "value": 1
+                        "desc": "个人赛（指导参赛人数）",
+                        "symbol": "B"
                     }
                 ],
-                "workload": 100,
-                "groupManagerId": 3200223,
-                "applyDesc": null,
-                "jobDesc": "架构师",
-                "jobDescList": null,
-                "status": 4,
-                "jsonChildWeight": "0.6",
-                "childWeightList": null,
-                "proof": 0,
-                "teacherName": "张翔",
-                "reviewerId": 3210343,
-                "reviewerName": "张翔",
-                "groupManagerName": "谭浩",
-                "categoryName": "个人教学、教研、教改成果奖（含教学竞赛）",
-                "importRequired": 1,
-                "isGroup": 1,
-                "version": "2017-2018-1",
-                "otherJson": "[{\"key\":\"获奖项目\",\"value\":\"AEMS\"},{\"key\":\"获奖名称\",\"value\":\"创新奖\"}]",
-                "otherJsonParameters": [
+                "descAndValues": [
                     {
-                        "key": "获奖项目",
-                        "value": "AEMS"
+                        "desc": "团体赛（指导参赛队伍数）",
+                        "value": 12
                     },
                     {
-                        "key": "获奖名称",
-                        "value": "创新奖"
+                        "desc": "个人赛（指导参赛人数）",
+                        "value": 12
+                    }
+                ],
+                "otherJsonParameters": [
+                    {
+                        "key": "竞赛名称",
+                        "value": "创新杯"
+                    },
+                    {
+                        "key": "参赛项目",
+                        "value": "基于xxx"
+                    },
+                    {
+                        "key": "类型（团队或个人）",
+                        "value": "团队"
+                    },
+                    {
+                        "key": "获奖级别",
+                        "value": "国家奖"
+                    },
+                    {
+                        "key": "赛事级别",
+                        "value": "国家级"
                     }
                 ]
-            }
+            },
+            {},
+            {}
         ],
-        "totalWorkload": 133.6
+        "recordCount": 3
     }
 }
+
 ```
 
 ### 获取工作量条目对应的消息队列

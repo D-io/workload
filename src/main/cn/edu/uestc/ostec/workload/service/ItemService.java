@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 
 /**
@@ -20,6 +21,11 @@ public interface ItemService extends BaseService {
 	 * 空的ItemService对象
 	 */
 	Item EMPTY_ITEM = new Item();
+
+	/**
+	 * 空的workload-count对象
+	 */
+	TotalWorkloadAndCount EMPTY_WORKLOAD = new TotalWorkloadAndCount();
 
 	/**
 	 * 保存Item信息
@@ -85,7 +91,7 @@ public interface ItemService extends BaseService {
 	 * @param status 条目状态
 	 * @return Double
 	 */
-	Double selectTotalWorkload(Integer teacherId,Integer status,String version);
+	TotalWorkloadAndCount selectTotalWorkload(Integer teacherId,Integer status,String version);
 
 	/**
 	 * 分页查询所有的条目信息

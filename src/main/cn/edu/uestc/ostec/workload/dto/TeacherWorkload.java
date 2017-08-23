@@ -20,7 +20,27 @@ public class TeacherWorkload {
 
 	private Double checkedWorkload;
 
+	private Integer checkedItems;
+
 	private Double uncheckedWorkload;
+
+	private Integer uncheckedItems;
+
+	public Integer getCheckedItems() {
+		return checkedItems;
+	}
+
+	public void setCheckedItems(Integer checkedItems) {
+		this.checkedItems = checkedItems;
+	}
+
+	public Integer getUncheckedItems() {
+		return uncheckedItems;
+	}
+
+	public void setUncheckedItems(Integer uncheckedItems) {
+		this.uncheckedItems = uncheckedItems;
+	}
 
 	public String getTeacherName() {
 		return teacherName;

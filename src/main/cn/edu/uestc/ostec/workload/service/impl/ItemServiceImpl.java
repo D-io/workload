@@ -14,6 +14,7 @@ import java.util.Map;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dao.ItemDao;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
+import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
@@ -101,9 +102,9 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	}
 
 	@Override
-	public Double selectTotalWorkload(Integer teacherId, Integer status,String version) {
+	public TotalWorkloadAndCount selectTotalWorkload(Integer teacherId, Integer status,String version) {
 
-		return itemDao.selectWorkload(teacherId, status,version);
+		return objectResult(itemDao.selectWorkload(teacherId, status,version),EMPTY_WORKLOAD);
 	}
 
 	@Override

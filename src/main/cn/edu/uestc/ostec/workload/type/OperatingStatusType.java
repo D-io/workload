@@ -135,4 +135,12 @@ public interface OperatingStatusType {
 		return statusList;
 	}
 
+	default List<Integer> getUncheckedStatus() {
+		List<Integer> statusList = new ArrayList<>();
+		statusList.addAll(getAbnormalStatusList());
+		statusList.add(NON_CHECKED);
+
+		return statusList;
+	}
+
 }
