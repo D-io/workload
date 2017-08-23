@@ -50,10 +50,8 @@ function ztree() {
 
                 var x=item.reviewDeadline;
                 var y=item.applyDeadline;
-                var a=x.match(/\d+/g);
-                var b=y.match(/\d+/g);
-                var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
-                var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];
+                var appDeadline=x;
+                var rewDeadline=y;
                 if(item.status==1){
                     if(item.importRequired==1){
                         var nodes = {
