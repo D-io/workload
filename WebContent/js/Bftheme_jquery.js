@@ -765,9 +765,9 @@ function reviewerResetItem(data) {
                 switch (Info.importRequired){
                     case 2:itemImport='无特殊类别';
                     break;
-                    case 1:itemImport='申报审核类';
+                    case 0:itemImport='申报审核类';
                     break;
-                    case 0:itemImport='导入复核类';
+                    case 1:itemImport='导入复核类';
                     break;
                 }
                 $(".ResetItem tr:last td:eq(2)").text(itemImport);
