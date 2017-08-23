@@ -87,7 +87,7 @@ public class ReviewManageController extends ApplicationController {
 		}
 
 		//参数校验
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 
 		if (null == item || !(CHECKED.equals(status) || DENIED.equals(status))) {
 			return parameterNotSupportResponse("无效参数");
@@ -195,7 +195,7 @@ public class ReviewManageController extends ApplicationController {
 		}
 
 		//审核人身份校验
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
@@ -238,7 +238,7 @@ public class ReviewManageController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 
 		if (null == item || !DOUBTED.equals(item.getStatus())) {
 			return invalidOperationResponse("非法操作");

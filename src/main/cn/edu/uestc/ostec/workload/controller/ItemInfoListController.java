@@ -105,10 +105,10 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			teacherWorkload.setTeacherId(teacher.getTeacherId());
 			teacherWorkload.setTeacherName(teacher.getName());
 
-			Double checkedWorkload = itemService.selectTotalWorkload(id, CHECKED);
-			Double nonCheckedWorkload = itemService.selectTotalWorkload(id, NON_CHECKED);
-			Double doubtedWorkload = itemService.selectTotalWorkload(id, DOUBTED);
-			Double doubtedCheckedWorkload = itemService.selectTotalWorkload(id, DOUBTED_CHECKED);
+			Double checkedWorkload = itemService.selectTotalWorkload(id, CHECKED,getCurrentSemester());
+			Double nonCheckedWorkload = itemService.selectTotalWorkload(id, NON_CHECKED,getCurrentSemester());
+			Double doubtedWorkload = itemService.selectTotalWorkload(id, DOUBTED,getCurrentSemester());
+			Double doubtedCheckedWorkload = itemService.selectTotalWorkload(id, DOUBTED_CHECKED,getCurrentSemester());
 
 			checkedWorkload = (null == checkedWorkload ? ZERO_DOUBLE : checkedWorkload);
 			nonCheckedWorkload = (null == nonCheckedWorkload ? ZERO_DOUBLE : nonCheckedWorkload);
@@ -259,7 +259,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 		int teacherId = user.getUserId();
 
-		List<Item> itemList = itemService.findItemByCategory(categoryId);
+		List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(),categoryId);
 
 		if (null == itemList || itemList.isEmpty()) {
 			return parameterNotSupportResponse("参数有误");
@@ -338,7 +338,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return invalidOperationResponse("非法请求");
 		}
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		if (null == item) {
 			return parameterNotSupportResponse("无效参数");
 		}
@@ -431,7 +431,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		Map<String, Object> data = getData();
 		data.put("itemDtoList", itemList);
-		data.put("totalWorkload", itemService.selectTotalWorkload(teacherId, CHECKED));
+		data.put("totalWorkload", itemService.selectTotalWorkload(teacherId, CHECKED,getCurrentSemester()));
 
 		return successResponse(data);
 	}
@@ -472,7 +472,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			Integer teacherId, String version) {
 
 		List<ItemDto> itemDtoList = itemConverter
-				.poListToDtoList(itemService.findItemsByStatus(status, teacherId));
+				.poListToDtoList(itemService.findItemsByStatus(status, teacherId,getCurrentSemester()));
 		List<ItemDto> itemDtoGroup = new ArrayList<>();
 
 		for (ItemDto itemDto : itemDtoList) {

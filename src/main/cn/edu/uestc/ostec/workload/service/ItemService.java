@@ -35,7 +35,7 @@ public interface ItemService extends BaseService {
 	 * @param itemId 工作量对应的Id
 	 * @return Item
 	 */
-	Item findItem(Integer itemId);
+	Item findItem(Integer itemId,String version);
 
 	/**
 	 * 查找对应老师的全部工作量条目信息
@@ -44,7 +44,7 @@ public interface ItemService extends BaseService {
 	 * @param teacherId 教师编号
 	 * @return List<Item>
 	 */
-	List<Item> findItemsByStatus(Integer status, Integer teacherId);
+	List<Item> findItemsByStatus(Integer status, Integer teacherId,String version);
 
 	/**
 	 * 删除Item信息(置为Disable状态)
@@ -52,7 +52,7 @@ public interface ItemService extends BaseService {
 	 * @param itemId 工作量编号
 	 * @return Boolean
 	 */
-	Boolean removeItem(Integer itemId);
+	Boolean removeItem(Integer itemId,String version);
 
 	/**
 	 * 彻底删除对应的item对象
@@ -60,7 +60,7 @@ public interface ItemService extends BaseService {
 	 * @param itemId item编号
 	 * @return Boolean
 	 */
-	Boolean deleteItem(Integer itemId);
+	Boolean deleteItem(Integer itemId,String version);
 
 	/**
 	 * 根绝类目编号和状态查询条目信息
@@ -69,7 +69,7 @@ public interface ItemService extends BaseService {
 	 * @param status     状态
 	 * @return List<Item>
 	 */
-	List<Item> findItemsByCategory(Integer categoryId, Integer status);
+	List<Item> findItemsByCategory(Integer categoryId, Integer status,String version);
 
 	/**
 	 * 根据类目编号查询所有有效的条目信息
@@ -77,7 +77,7 @@ public interface ItemService extends BaseService {
 	 * @param categoryId 类目编号
 	 * @return List<Item>
 	 */
-	List<Item> findItemByCategory(Integer categoryId);
+	List<Item> findItemByCategory(String version,Integer categoryId);
 
 	/**
 	 * 统计某个教师对应的工作量
@@ -85,7 +85,7 @@ public interface ItemService extends BaseService {
 	 * @param status 条目状态
 	 * @return Double
 	 */
-	Double selectTotalWorkload(Integer teacherId,Integer status);
+	Double selectTotalWorkload(Integer teacherId,Integer status,String version);
 
 	/**
 	 * 分页查询所有的条目信息
@@ -98,7 +98,7 @@ public interface ItemService extends BaseService {
 	 * @return List<Item>
 	 */
 	Map<String, Object> findAll(Integer categoryId, Integer status, Integer ownerId,
-			Integer isGroup, int pageNum, int pageSize);
+			Integer isGroup, int pageNum, int pageSize,String version);
 
 	List<ItemDto> findAll(String itemName,Integer categoryId, Integer status, Integer ownerId,
 			Integer isGroup, String version);

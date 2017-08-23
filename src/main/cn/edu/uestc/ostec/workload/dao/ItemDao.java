@@ -34,8 +34,7 @@ public interface ItemDao extends BaseDao<Item> {
 	 * @param id 工作量对象Id
 	 * @return Boolean
 	 */
-	@Override
-	Boolean delete(Integer id);
+	Boolean delete(Integer id,String version);
 
 	/**
 	 * 根据主键查询工作量对象
@@ -43,8 +42,7 @@ public interface ItemDao extends BaseDao<Item> {
 	 * @param id 工作量对象Id
 	 * @return Item
 	 */
-	@Override
-	Item select(Integer id);
+	Item select(Integer id,String version);
 
 	/**
 	 * 根据教师编号查找对应该教师的工作量条目
@@ -56,7 +54,9 @@ public interface ItemDao extends BaseDao<Item> {
 			@Param("status")
 					Integer status,
 			@Param("ownerId")
-					Integer teacherId);
+					Integer teacherId,
+			@Param("version")
+					String version);
 
 	/**
 	 * 修改itemId对应的Item对象的status
@@ -65,7 +65,9 @@ public interface ItemDao extends BaseDao<Item> {
 			@Param("status")
 					Integer status,
 			@Param("itemId")
-					Integer itemId);
+					Integer itemId,
+			@Param("version")
+					String version);
 
 	/**
 	 * 根据CategoryId查找对应的item信息
@@ -77,9 +79,15 @@ public interface ItemDao extends BaseDao<Item> {
 			@Param("categoryId")
 					Integer categoryId,
 			@Param("status")
-					Integer status);
+					Integer status,
+			@Param("version")
+					String version);
 
-	List<Item> selectValidItemByCategory(Integer categoryId);
+	List<Item> selectValidItemByCategory(
+			@Param("categoryId")
+					Integer categoryId,
+			@Param("version")
+					String version);
 
 	/**
 	 * 条件查询所有条目信息
@@ -90,6 +98,8 @@ public interface ItemDao extends BaseDao<Item> {
 	 * @return List<Item>
 	 */
 	List<Item> selectAll(
+			@Param("version")
+					String version,
 			@Param("itemName")
 					String itemName,
 			@Param("categoryId")
@@ -103,13 +113,12 @@ public interface ItemDao extends BaseDao<Item> {
 
 	/**
 	 * 查询教师对应状态的工作量条目对应工作量统计汇总
-	 * @param teacherId
-	 * @param status
-	 * @return
 	 */
 	Double selectWorkload(
 			@Param("teacherId")
 					Integer teacherId,
 			@Param("status")
-					Integer status);
+					Integer status,
+			@Param("version")
+					String version);
 }

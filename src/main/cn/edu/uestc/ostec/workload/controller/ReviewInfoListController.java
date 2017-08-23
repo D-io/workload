@@ -323,7 +323,7 @@ public class ReviewInfoListController extends ApplicationController {
 		pageNum = (null == pageNum ? 1 : pageNum);
 
 		Map<String, Object> info = itemService
-				.findAll(categoryId, null, ownerId, isGroup, pageNum, pageSize);
+				.findAll(categoryId, null, ownerId, isGroup, pageNum, pageSize,getCurrentSemester());
 		List<Item> itemList = (List<Item>) info.get("itemList");
 		Integer pageCount = (Integer) info.get("pageCount");
 		Long totalLines = (Long) info.get("totalLines");
@@ -385,7 +385,7 @@ public class ReviewInfoListController extends ApplicationController {
 		//查找对应的导入方式下的为指定状态的Item条目信息
 		for (Category category : categoryList) {
 			if (importRequired.equals(category.getImportRequired())) {
-				items = itemService.findItemsByCategory(category.getCategoryId(), status);
+				items = itemService.findItemsByCategory(category.getCategoryId(), status,getCurrentSemester());
 				itemList.addAll(items);
 			}
 		}

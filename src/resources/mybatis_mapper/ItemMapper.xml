@@ -17,23 +17,24 @@
         <result column="proof" property="proof" jdbcType="INTEGER"/>
         <result column="is_group" property="isGroup" jdbcType="INTEGER"/>
         <result column="other_json" property="otherJson" jdbcType="VARCHAR"/>
+        <result column="version" property="version" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="Base_Column_List">
     item_id, item_name, category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc,
-    job_desc, status, json_child_weight,proof,is_group,other_json
+    job_desc, status, json_child_weight,proof,is_group,other_json,version
   </sql>
 
     <select id="select" resultMap="itemResultMap">
         select
         <include refid="Base_Column_List"/>
         from item
-        where item_id = #{itemId,jdbcType=INTEGER}
+        where item_id = #{itemId,jdbcType=INTEGER} and version = #{version}
     </select>
 
     <delete id="delete">
     delete from item
-    where item_id = #{itemId,jdbcType=INTEGER}
+    where item_id = #{itemId,jdbcType=INTEGER} and version = #{version}
   </delete>
 
     <insert id="insert">
@@ -44,7 +45,7 @@
         #{groupManagerId,jdbcType=INTEGER},
         #{applyDesc,jdbcType=VARCHAR}, #{jobDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
         #{jsonChildWeight,jdbcType=VARCHAR},
-        #{proof,jdbcType=INTEGER},#{isGroup,jdbcType=INTEGER},#{otherJson,jdbcType=VARCHAR})
+        #{proof,jdbcType=INTEGER},#{isGroup,jdbcType=INTEGER},#{otherJson,jdbcType=VARCHAR},#{version})
     </insert>
 
     <update id="update">
@@ -61,35 +62,35 @@
       json_child_weight = #{jsonChildWeight,jdbcType=VARCHAR},
       proof = #{proof,jdbcType=INTEGER},
       is_group = #{isGroup,jdbcType=INTEGER},
-      other_json = #{otherJson,jdbcType=VARCHAR}
-    where item_id = #{itemId,jdbcType=INTEGER}
+      other_json = #{otherJson,jdbcType=VARCHAR},
+    where item_id = #{itemId,jdbcType=INTEGER} and version = #{version}
   </update>
 
     <select id="selectItemsByStatus" resultMap="itemResultMap">
         select
         <include refid="Base_Column_List"/>
         from item
-        where status = #{status,jdbcType=INTEGER} and owner_id = #{ownerId,jdbcType=INTEGER}
+        where status = #{status,jdbcType=INTEGER} and owner_id = #{ownerId,jdbcType=INTEGER} and version = #{version}
     </select>
 
     <update id="updateStatus">
     update item
     set status = #{status,jdbcType=INTEGER}
-    where item_id = #{itemId,jdbcType=INTEGER}
+    where item_id = #{itemId,jdbcType=INTEGER} and version = #{version}
   </update>
 
     <select id="selectItemsByCategory" resultMap="itemResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM item
-        WHERE category_id = #{categoryId} AND status = #{status}
+        WHERE category_id = #{categoryId} AND status = #{status} and version = #{version}
     </select>
 
     <select id="selectValidItemByCategory" resultMap="itemResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM item
-        WHERE category_id = #{categoryId} AND status != -1
+        WHERE category_id = #{categoryId} AND status != -1 and version = #{version}
     </select>
 
     <select id="selectAll" resultMap="itemResultMap">
@@ -97,7 +98,7 @@
         <include refid="Base_Column_List"/>
         FROM item
         <where>
-            status != -1 AND status != 0
+            status != -1 AND status != 0 AND version = #{version}
             <if test="null != categoryId">
                 AND category_id = #{categoryId}
             </if>
@@ -117,6 +118,6 @@
     </select>
 
     <select id="selectWorkload" resultType="Double">
-    SELECT SUM(workload) FROM item WHERE owner_id = #{teacherId} AND status = #{status}
+    SELECT SUM(workload) FROM item WHERE owner_id = #{teacherId} AND status = #{status} AND version = #{version}
   </select>
 </mapper>

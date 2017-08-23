@@ -95,7 +95,7 @@ public class ItemManageController extends ApplicationController {
 			@RequestParam(required = false)
 					String otherParams) {
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
@@ -142,7 +142,7 @@ public class ItemManageController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
@@ -178,14 +178,14 @@ public class ItemManageController extends ApplicationController {
 			@RequestParam(value = "itemId")
 					Integer itemId) {
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
 
 		boolean removeSuccess;
 		if (UNCOMMITTED.equals(item.getStatus()) || DENIED.equals(item.getStatus())) {
-			removeSuccess = itemService.removeItem(itemId);
+			removeSuccess = itemService.removeItem(itemId,getCurrentSemester());
 		} else {
 			return invalidOperationResponse("无法删除");
 		}
@@ -216,7 +216,7 @@ public class ItemManageController extends ApplicationController {
 		}
 		int teacherId = user.getUserId();
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
@@ -400,7 +400,7 @@ public class ItemManageController extends ApplicationController {
 		}
 
 		for (Integer itemId : itemIdList) {
-			Item item = itemService.findItem(itemId);
+			Item item = itemService.findItem(itemId,getCurrentSemester());
 			if (null == item) {
 				return parameterNotSupportResponse("参数有误");
 			}
@@ -445,7 +445,7 @@ public class ItemManageController extends ApplicationController {
 		Map<String, Object> errorData = getData();
 
 		for (Integer itemId : itemIdList) {
-			Item item = itemService.findItem(itemId);
+			Item item = itemService.findItem(itemId,getCurrentSemester());
 			if (item.getOwnerId().equals(teacherId) && UNCOMMITTED.equals(item.getStatus())) {
 
 				//申请截止时间限制
@@ -466,7 +466,7 @@ public class ItemManageController extends ApplicationController {
 				if (!saveSuccess || !fileSubmitSuccess) {
 					errorData.put(item.getItemName(), "提交失败");
 				} else {
-					item = itemService.findItem(itemId);
+					item = itemService.findItem(itemId,getCurrentSemester());
 					itemList.add(item);
 				}
 			} else {
@@ -495,7 +495,7 @@ public class ItemManageController extends ApplicationController {
 		int teacherId = user.getUserId();
 
 		//根据教师编号查询对应的未提交状态的工作量
-		List<Item> itemList = itemService.findItemsByStatus(UNCOMMITTED, teacherId);
+		List<Item> itemList = itemService.findItemsByStatus(UNCOMMITTED, teacherId,getCurrentSemester());
 		if (null == itemList) {
 			return invalidOperationResponse("无可提交的项目");
 		}
@@ -548,7 +548,7 @@ public class ItemManageController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		Category category = categoryService.getCategory(item.getCategoryId(),getCurrentSemester());
 		if (DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
 			return invalidOperationResponse("复核已经截止");

@@ -42,25 +42,25 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	}
 
 	@Override
-	public Item findItem(Integer itemId) {
+	public Item findItem(Integer itemId,String version) {
 
 		return objectResult(itemDao.select(itemId), EMPTY_ITEM);
 	}
 
 	@Override
-	public List<Item> findItemsByStatus(Integer status, Integer teacherId) {
+	public List<Item> findItemsByStatus(Integer status, Integer teacherId,String version) {
 
-		return listResult(itemDao.selectItemsByStatus(status, teacherId));
+		return listResult(itemDao.selectItemsByStatus(status, teacherId,version));
 	}
 
 	@Override
-	public Boolean removeItem(Integer itemId) {
+	public Boolean removeItem(Integer itemId,String version) {
 
-		return itemDao.updateStatus(DELETED, itemId);
+		return itemDao.updateStatus(DELETED, itemId, version);
 	}
 
 	@Override
-	public Boolean deleteItem(Integer itemId) {
+	public Boolean deleteItem(Integer itemId,String version) {
 
 		return itemDao.delete(itemId);
 	}
@@ -68,25 +68,18 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	@Override
 	public List<ItemDto> findAll(String itemName, Integer categoryId, Integer status,
 			Integer ownerId, Integer isGroup, String version) {
-		List<Item> itemList = itemDao.selectAll(itemName, categoryId, status, ownerId, isGroup);
+		List<Item> itemList = itemDao.selectAll(version,itemName, categoryId, status, ownerId, isGroup);
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
 
-		List<ItemDto> itemDtos = new ArrayList<>();
-		for (ItemDto itemDto : itemDtoList) {
-			if (version.equals(itemDto.getVersion())) {
-				itemDtos.add(itemDto);
-			}
-		}
-
-		return itemDtos;
+		return itemDtoList;
 	}
 
 	@Override
 	public Map<String, Object> findAll(Integer categoryId, Integer status, Integer ownerId,
-			Integer isGroup, int pageNum, int pageSize) {
+			Integer isGroup, int pageNum, int pageSize,String version) {
 
 		PageHelper.startPage(pageNum, pageSize);
-		List<Item> items = itemDao.selectAll(null, categoryId, status, ownerId, isGroup);
+		List<Item> items = itemDao.selectAll(version,null, categoryId, status, ownerId, isGroup);
 		List<Item> itemList = new ArrayList<>();
 		for (Item item : items) {
 			itemList.add(item);
@@ -102,20 +95,20 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	}
 
 	@Override
-	public List<Item> findItemByCategory(Integer categoryId) {
+	public List<Item> findItemByCategory(String version,Integer categoryId) {
 
-		return listResult(itemDao.selectValidItemByCategory(categoryId));
+		return listResult(itemDao.selectValidItemByCategory(categoryId,version));
 	}
 
 	@Override
-	public Double selectTotalWorkload(Integer teacherId, Integer status) {
+	public Double selectTotalWorkload(Integer teacherId, Integer status,String version) {
 
-		return itemDao.selectWorkload(teacherId, status);
+		return itemDao.selectWorkload(teacherId, status,version);
 	}
 
 	@Override
-	public List<Item> findItemsByCategory(Integer categoryId, Integer status) {
+	public List<Item> findItemsByCategory(Integer categoryId, Integer status,String version) {
 
-		return itemDao.selectItemsByCategory(categoryId, status);
+		return itemDao.selectItemsByCategory(categoryId, status,version);
 	}
 }

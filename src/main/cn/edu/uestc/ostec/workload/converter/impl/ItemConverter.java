@@ -56,6 +56,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		itemDto.setStatus(po.getStatus());
 		itemDto.setWorkload(po.getWorkload());
 		itemDto.setOtherJson(po.getOtherJson());
+		itemDto.setVersion(po.getVersion());
 
 		Category category = isNull(itemDto.getCategoryId()) ?
 				null :
@@ -65,7 +66,6 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		itemDto.setFormula(isNull(category) ? null : category.getFormula());
 		itemDto.setCategoryName(isNull(category) ? null : category.getName());
 		itemDto.setImportRequired(isNull(category) ? null : category.getImportRequired());
-		itemDto.setVersion(isNull(category) ? null : category.getVersion());
 
 		Integer reviewerId = category.getReviewerId();
 		itemDto.setReviewerId(reviewerId);
@@ -130,6 +130,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		item.setStatus(dto.getStatus());
 		item.setIsGroup(dto.getIsGroup());
 		item.setOtherJson(dto.getOtherJson());
+		item.setVersion(dto.getVersion());
 
 		return item;
 	}

@@ -196,7 +196,7 @@ public class HistoryInfoController extends ApplicationController {
 					.getCategoriesByReviewer(user.getUserId(), getCurrentSemester());
 			for (Category category : categoryList) {
 				itemList.addAll(itemConverter
-						.poListToDtoList(itemService.findItemByCategory(category.getCategoryId())));
+						.poListToDtoList(itemService.findItemByCategory(getCurrentSemester(),category.getCategoryId())));
 			}
 		} else {
 			itemList = itemService

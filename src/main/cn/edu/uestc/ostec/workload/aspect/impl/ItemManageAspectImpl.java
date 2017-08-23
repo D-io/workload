@@ -100,7 +100,7 @@ public class ItemManageAspectImpl implements IAspect {
 		Integer userId = user.getUserId();
 
 		Integer itemId = (Integer) params[0];
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 
 		History history = new History();
 		history.setItemId(buildHistoryItemId(itemId));
@@ -138,7 +138,7 @@ public class ItemManageAspectImpl implements IAspect {
 		Integer userId = user.getUserId();
 
 		for (Integer itemId : itemIdList) {
-			Item item = itemService.findItem(itemId);
+			Item item = itemService.findItem(itemId,getCurrentSemester());
 			ItemDto itemDto = itemConverter.poToDto(item);
 			Integer importedRequired = itemDto.getImportRequired();
 
@@ -179,7 +179,7 @@ public class ItemManageAspectImpl implements IAspect {
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
 
 		History history = new History();
@@ -226,7 +226,7 @@ public class ItemManageAspectImpl implements IAspect {
 		Object[] args = joinPoint.getArgs();
 		Integer itemId = (Integer) args[0];
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
@@ -264,7 +264,7 @@ public class ItemManageAspectImpl implements IAspect {
 		Integer itemId = (Integer) args[0];
 		String role = args[1].toString();
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);

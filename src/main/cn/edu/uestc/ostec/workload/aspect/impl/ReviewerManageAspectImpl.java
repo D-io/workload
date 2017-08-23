@@ -86,7 +86,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		ItemStatus checkStatus = ItemStatus.getItemStatus((Integer) args[1]);
 
 		History history = new History();
@@ -124,7 +124,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		History history = new History();
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);

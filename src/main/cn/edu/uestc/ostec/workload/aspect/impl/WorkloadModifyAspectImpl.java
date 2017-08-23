@@ -89,7 +89,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 
 		Object[] args = getParameters(joinPoint);
 		Integer itemId = (Integer) args[0];
-		Item item = itemService.findItem(itemId);
+		Item item = itemService.findItem(itemId,getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
