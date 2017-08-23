@@ -33,7 +33,149 @@ type | String | 模板类型（single或group）小组还是个人
 
 
 
-### 导入指定格式的Excel接口（v1.1)  请使用该接口
+### 导入指定格式的Excel接口（v1.2)  
+- 接口地址：`/file/import`
+- 支持格式：`json`
+- 请求方式：`POST`
+- 请求示例：`localhost:8080/file/import?categoryId=3`  
+- PS. 注意上传文件 file
+
+- 请求参数说明：
+参数名 |类型 | 说明
+---|---|---
+categoryId | int | 类目编号
+file | File | 要导入的文件
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "fileInfo": {
+            "fileInfoId": 6,
+            "path": "C:\\Users\\Administrator\\Desktop\\fileUploadTest\\个人教学、教研、教改成果奖（含教学竞赛）工作量导入模板.xlsx",
+            "size": 18944,
+            "md5Summary": "7dbf0ba39eb39a1f328fa0b06619745",
+            "type": "xlsx",
+            "createTime": 1501147169,
+            "status": 1,
+            "fileId": 4,
+            "authorId": 3210343,
+            "recipientsList": ""
+        },
+        "itemList": [
+            {
+                "itemId": 14,
+                "itemName": "团队国家奖",
+                "categoryId": 22,
+                "ownerId": 3210343,
+                "jsonParameter": "[{\"symbol\":\"A\",\"value\":3.0},{\"symbol\":\"B\",\"value\":1.0},{\"symbol\":\"C\",\"value\":1.0}]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 3
+                    },
+                    {
+                        "symbol": "B",
+                        "value": 1
+                    },
+                    {
+                        "symbol": "C",
+                        "value": 1
+                    }
+                ],
+                "workload": 120,
+                "groupManagerId": 3200223,
+                "applyDesc": null,
+                "jobDesc": "架构师",
+                "jobDescList": null,
+                "status": 0,
+                "jsonChildWeight": "0.6",
+                "childWeightList": null,
+                "proof": "个人教学、教研、教改成果奖（含教学竞赛）工作量导入模板.xlsx",
+                "teacherName": "张翔",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "谭浩",
+                "categoryName": "个人教学、教研、教改成果奖（含教学竞赛）",
+                "importRequired": 1,
+                "isGroup": 1,
+                "otherJson": "[{\"key\":\"获奖项目\",\"value\":\"AEMS\"},{\"key\":\"获奖名称\",\"value\":\"创新奖\"}]",
+                "otherJsonParameters": [
+                    {
+                        "key": "获奖项目",
+                        "value": "AEMS"
+                    },
+                    {
+                        "key": "获奖名称",
+                        "value": "创新奖"
+                    }
+                ]
+            },
+            {
+                "itemId": 15,
+                "itemName": "团队国家奖",
+                "categoryId": 22,
+                "ownerId": 3203158,
+                "jsonParameter": "[{\"symbol\":\"A\",\"value\":3.0},{\"symbol\":\"B\",\"value\":1.0},{\"symbol\":\"C\",\"value\":1.0}]",
+                "parameterValues": [
+                    {
+                        "symbol": "A",
+                        "value": 3
+                    },
+                    {
+                        "symbol": "B",
+                        "value": 1
+                    },
+                    {
+                        "symbol": "C",
+                        "value": 1
+                    }
+                ],
+                "workload": 80,
+                "groupManagerId": 3200223,
+                "applyDesc": null,
+                "jobDesc": "程序员",
+                "jobDescList": null,
+                "status": 0,
+                "jsonChildWeight": "0.4",
+                "childWeightList": null,
+                "proof": "个人教学、教研、教改成果奖（含教学竞赛）工作量导入模板.xlsx",
+                "teacherName": "兰刚",
+                "reviewerId": 3210343,
+                "reviewerName": "张翔",
+                "groupManagerName": "谭浩",
+                "categoryName": "个人教学、教研、教改成果奖（含教学竞赛）",
+                "importRequired": 1,
+                "isGroup": 1,
+                "otherJson": "[{\"key\":\"获奖项目\",\"value\":\"AEMS\"},{\"key\":\"获奖名称\",\"value\":\"创新奖\"}]",
+                "otherJsonParameters": [
+                    {
+                        "key": "获奖项目",
+                        "value": "AEMS"
+                    },
+                    {
+                        "key": "获奖名称",
+                        "value": "创新奖"
+                    }
+                ]
+            }
+        ],
+        "errorData": {}
+    }
+}
+```
+
+### 导入指定格式的Excel接口（v1.1)  
 - 接口地址：`/file/import-template`
 - 支持格式：`json`
 - 请求方式：`POST`
@@ -167,82 +309,6 @@ data | String | 结果集
                         "value": "创新奖"
                     }
                 ]
-            }
-        ],
-        "errorData": {}
-    }
-}
-```
-
-### 导入指定格式的Excel接口（v1.0）
-- 接口地址：`/file/import`
-- 支持格式：`json`
-- 请求方式：`POST`
-- 请求示例：`localhost:8080/file/import?categoryId=2&fileInfoId=4`
-
-- 请求参数说明：
-参数名 |类型 | 说明
----|---|---
-fileInfoId | int | 上传的文件编号
-categoryId | int | 类目编号
-
-
-- 返回参数具体说明：
-
-参数名 |类型 | 说明
----|---|---
-status | int |状态值
-statusName | String | 状态名
-data | String | 结果集
-
-- Json返回成功示例如下：
-```json
-{
-    "status": 200,
-    "statusName": "OK",
-    "data": {
-        "fileInfo": {
-            "fileInfoId": 4,
-            "path": "C:\\Users\\Administrator\\Desktop\\fileUploadTest\\工作量导入模板-v1.0 - 副本.xlsx",
-            "size": 11105,
-            "md5Summary": "b5b888418f082227a3c94d93fc7e1434",
-            "type": "xlsx",
-            "createTime": 1500688680,
-            "status": 1,
-            "fileId": 4,
-            "authorId": 3210343,
-            "recipientsList": ""
-        },
-        "itemList": [
-            {
-                "itemId": 36,
-                "itemName": "计网",
-                "categoryId": 2,
-                "ownerId": 3210343,
-                "jsonParameter": "A:12,B:12",
-                "workload": 4.800000000000001,
-                "groupManagerId": 5130121,
-                "applyDesc": null,
-                "jobDesc": "负责准备工作",
-                "status": 1,
-                "jsonChildWeight": "0.2",
-                "proof": "工作量导入模板-v1.0 - 副本.xlsx",
-                "isGroup": 1
-            },
-            {
-                "itemId": 37,
-                "itemName": "计组",
-                "categoryId": 2,
-                "ownerId": 3210343,
-                "jsonParameter": "A:50,B:60",
-                "workload": 110,
-                "groupManagerId": 5130121,
-                "applyDesc": null,
-                "jobDesc": "教学",
-                "status": 1,
-                "jsonChildWeight": "1.0",
-                "proof": "工作量导入模板-v1.0 - 副本.xlsx",
-                "isGroup": 0
             }
         ],
         "errorData": {}

@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,179 +90,8 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 	@Autowired
 	private TeacherService teacherService;
 
-	@Autowired
-	private FileInfoService fileInfoService;
-
-	/**
-	 * 导入Excel中的信息到数据库 （提交文件） </br>
-	 *
-	 * 三个步骤： </br>
-	 * 1、先根据文件要求上传文件；</br>
-	 * 2、提交文件之后进行Excel的信息导入数据库的操作； </br>
-	 * 3、导入之后查看导入的工作量列表进行确认；</br>
-	 * 4、确认无误后进行提交工作量的操作 </br>
-	 *
-	 * PS.导入的格式待确定 格式不同对应的计算方式不同
-	 *
-	 * @param fileInfoId 文件信息编号
-	 * @return RestResponse
-	 */
-	//	@RequestMapping(value = "import", method = POST)
-	//	public RestResponse importExcel(
-	//			@RequestParam("categoryId")
-	//					int categoryId,
-	//			@RequestParam("fileInfoId")
-	//					int fileInfoId) {
-	//
-	//		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
-	//		if (isNull(fileInfo)) {
-	//			return invalidOperationResponse();
-	//		}
-	//
-	//		if (UNCOMMITTED.equals(fileInfo.getStatus())) {
-	//			return invalidOperationResponse("无法提交");
-	//		}
-	//
-	//		fileInfo.setStatus(SUBMITTED);
-	//		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
-	//		if (!submitSuccess) {
-	//			return systemErrResponse("文件上传失败");
-	//		}
-	//
-	//		Map<String, Object> data = getData();
-	//		data.put("fileInfo", fileInfo);
-	//
-	//		Item item = null;
-	//		List<Item> itemList = new ArrayList<>();
-	//		List<ItemBrief> itemBriefList = new ArrayList<>();
-	//
-	//		Category category = categoryService.getCategory(categoryId);
-	//		if (null == category) {
-	//			return invalidOperationResponse();
-	//		}
-	//
-	//		Map<String, Object> errorData = getData();
-	//
-	//		//获取对应FileInfo的文件File（java.io.file）对象
-	//		String path = fileInfo.getPath();
-	//		File excelFile = new File(path);
-	//
-	//		//文件名用作Item的proof属性
-	//		String fileName = FileHelper.getFileName(path);
-	//
-	//		//获取文件流
-	//		FileInputStream fileInputStream;
-	//		try {
-	//			fileInputStream = new FileInputStream(excelFile);
-	//
-	//			//版本不同创建不同的工作簿
-	//			Workbook book = null;
-	//			try {
-	//				book = new XSSFWorkbook(excelFile);
-	//			} catch (Exception ex) {
-	//				book = new HSSFWorkbook(fileInputStream);
-	//			}
-	//
-	//			//得到第一个工作表
-	//			Sheet sheet = null;
-	//			Row row = null;
-	//
-	//			//遍历工作簿中所有的表格
-	//			for (int i = 0; i < book.getNumberOfSheets(); i++) {
-	//				sheet = book.getSheetAt(i);
-	//				if (null == sheet) {
-	//					continue;
-	//				}
-	//				//遍历每一个表中所有的行
-	//				for (int j = 1; j < sheet.getPhysicalNumberOfRows(); j++) {
-	//					row = sheet.getRow(j);
-	//					if (null == row) {
-	//						continue;
-	//					}
-	//					item = new Item();
-	//
-	//					//顺序由最终决定的模板决定
-	//					Cell itemName = row.getCell(ITEM_NAME_INDEX);
-	//					//					HSSFCell categoryName = row.getCell(CATEGORY_NAME_INDEX);
-	//					Cell ownerId = row.getCell(OWNER_ID_INDEX);
-	//					//					HSSFCell ownerName = row.getCell(OWNER_NAME_INDEX);
-	//					Cell groupManagerId = row.getCell(GROUP_MANAGER_INDEX);
-	//					Cell jsonParameters = row.getCell(JSON_PARAMETERS_INDEX);
-	//					Cell jobDesc = row.getCell(JOB_DESC_INDEX);
-	//					Cell jsonChildWeight = row.getCell(JSON_WEIGHT_INDEX);
-	//					Cell isGroup = row.getCell(IS_GROUP_INDEX);
-	//					//					HSSFCell groupManagerName = row.getCell(GROUP_MANAGER_NAME_INDEX);
-	//
-	//					item.setItemName(itemName.getStringCellValue());
-	//					//					itemDto.setCategoryName(categoryName.getStringCellValue());
-	//					item.setOwnerId(((Double) ownerId.getNumericCellValue()).intValue());
-	//					//					itemDto.setTeacherName(ownerName.getStringCellValue());
-	//					item.setGroupManagerId(
-	//							((Double) groupManagerId.getNumericCellValue()).intValue());
-	//					//					itemDto.setGroupManagerName(groupManagerName.getStringCellValue());
-	//					item.setJsonParameter(jsonParameters.getStringCellValue());
-	//					item.setJobDesc(jobDesc.getStringCellValue());
-	//					item.setJsonChildWeight(
-	//							((Double) jsonChildWeight.getNumericCellValue()).toString());
-	//					item.setIsGroup(((Double) isGroup.getNumericCellValue()).intValue());
-	//
-	//					item.setProof(fileName);
-	//					item.setCategoryId(categoryId);
-	//					item.setStatus(UNCOMMITTED);
-	//
-	//					//计算workload(先获取公式对应的参数)
-	//					List<ParameterValue> parameterValues = getParams(item.getJsonParameter());
-	//					double totalWorkload = FormulaCalculate
-	//							.calculate(category.getFormula(), parameterValues);
-	//					double childWeight = Double.valueOf(item.getJsonChildWeight());
-	//					double workload = totalWorkload * childWeight;
-	//
-	//					//工作量四舍五入获取两位小数
-	//					BigDecimal b = new BigDecimal(workload);
-	//					double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-	//					item.setWorkload(formatWorkload);
-	//
-	//					item.setJsonParameter(OBJECT_MAPPER.writeValueAsString(parameterValues));
-	//
-	//					//保存时相应的生成Item的编号
-	//					boolean saveSuccess = itemService.saveItem(item);
-	//					if (!saveSuccess) {
-	//						errorData.put(item.getItemName(), "导入失败");
-	//					}
-	//
-	//					ItemBrief itemBrief = itemToBrief(item);
-	//					itemBriefList.add(itemBrief);
-	//
-	//					itemList.add(item);
-	//				}
-	//			}
-	//
-	//		} catch (FileNotFoundException e) {
-	//			e.printStackTrace();
-	//		} catch (IOException e) {
-	//			e.printStackTrace();
-	//		}
-	//
-	//		data.put("itemList", itemList);
-	//		data.put("errorData", errorData);
-	//
-	//		return successResponse(data);
-	//	}
-
-	//	@RequestMapping(value = "export", method = GET)
-	//	public RestResponse exportExcel(ExportItemList exportItemList) throws IOException {
-	//
-	//		User user = getUser();
-	//		if (null == user) {
-	//			return invalidOperationResponse("非法请求");
-	//		}
-	//
-	//		int userId = user.getUserId();
-	//
-	//
-	//
-	//		return streamResponse(fileContent, userId + ".xsl");
-	//	}
+//	@Autowired
+//	private FileInfoService fileInfoService;
 
 	/**
 	 * 根据不同类目不同的类型生成不同的Excel模板文件
@@ -369,20 +199,14 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 		Map<String, Object> errorData = getData();
 
-		//获取对应FileInfo的文件File（java.io.file）对象
-		//File excelFile = new File(file);
-		File excelFile = null;
-		//获取文件流
-		FileInputStream fileInputStream;
 		try {
-			fileInputStream = new FileInputStream(excelFile);
 
 			//版本不同创建不同的工作簿
 			Workbook book = null;
 			try {
-				book = new XSSFWorkbook(excelFile);
+				book = new XSSFWorkbook(file.getInputStream());
 			} catch (Exception ex) {
-				book = new HSSFWorkbook(fileInputStream);
+				book = new HSSFWorkbook(file.getInputStream());
 			}
 
 			//得到第一个工作表
@@ -507,210 +331,206 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		return successResponse(data);
 	}
 
-	/**
-	 * 根据不同类目对应的模板文件进行导入
-	 *
-	 * @param categoryId 类目编号
-	 * @param fileInfoId 上传的文件编号
-	 * @return RestResponse
-	 */
-	@RequestMapping(value = "import-template", method = POST)
-	public RestResponse importByTemplate(
-			@RequestParam("categoryId")
-					int categoryId,
-			@RequestParam("fileInfoId")
-					int fileInfoId) {
-
-		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
-		if (isNull(fileInfo)) {
-			return invalidOperationResponse();
-		}
-
-		if (!SUBMITTED.equals(fileInfo.getStatus())) {
-			return invalidOperationResponse("无法提交");
-		}
-
-		//		fileInfo.setStatus(SUBMITTED);
-		//		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
-		//		if (!submitSuccess) {
-		//			return systemErrResponse("文件上传失败");
-		//		}
-
-		Map<String, Object> data = getData();
-		data.put("fileInfo", fileInfo);
-
-		Item item = null;
-		List<Item> itemList = new ArrayList<>();
-		List<ItemBrief> itemBriefList = new ArrayList<>();
-
-		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
-		if (null == category) {
-			return invalidOperationResponse();
-		}
-		if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
-			return invalidOperationResponse("上传已经截止");
-		}
-
-		CategoryDto categoryDto = categoryConverter.poToDto(category);
-
-		Map<String, Object> errorData = getData();
-
-		//获取对应FileInfo的文件File（java.io.file）对象
-		String path = fileInfo.getPath();
-		File excelFile = new File(path);
-
-		//获取文件流
-		FileInputStream fileInputStream;
-		try {
-			fileInputStream = new FileInputStream(excelFile);
-
-			//版本不同创建不同的工作簿
-			Workbook book = null;
-			try {
-				book = new XSSFWorkbook(excelFile);
-			} catch (Exception ex) {
-				book = new HSSFWorkbook(fileInputStream);
-			}
-
-			//得到第一个工作表
-			Sheet sheet = null;
-			Row row = null;
-
-			//遍历工作簿中所有的表格
-			for (int i = 0; i < book.getNumberOfSheets(); i++) {
-				sheet = book.getSheetAt(i);
-				if (null == sheet) {
-					continue;
-				}
-
-				//遍历每一个表中所有的行
-				for (int j = 1; j < sheet.getPhysicalNumberOfRows(); j++) {
-					row = sheet.getRow(j);
-					if (null == row) {
-						continue;
-					}
-					item = new Item();
-
-					//顺序由最终决定的模板决定
-					Cell itemName = row.getCell(T_ITEM_NAME_INDEX);
-					item.setItemName(itemName.getStringCellValue());
-
-					Cell ownerId = row.getCell(T_TEACHER_ID_INDEX);
-					int teacherId = ((Double) ownerId.getNumericCellValue()).intValue();
-					item.setOwnerId(teacherId);
-
-					Cell jobDesc = row.getCell(T_JOB_DESC_INDEX);
-					item.setJobDesc(jobDesc.getStringCellValue());
-
-					List<ParameterValue> parameterValues = new ArrayList<>();
-					int index = T_JOB_DESC_INDEX + 1;
-					for (FormulaParameter formulaParameter : categoryDto
-							.getFormulaParameterList()) {
-						Cell cell = row.getCell(index);
-						double value = cell.getNumericCellValue();
-						ParameterValue parameterValue = new ParameterValue(
-								formulaParameter.getSymbol(), value);
-						parameterValues.add(parameterValue);
-						index++;
-					}
-
-					List<OtherJsonParameter> otherJsonParameterList = new ArrayList<>();
-					for (OtherJsonParameter otherJsonParameter : categoryDto
-							.getOtherJsonParameters()) {
-						Cell cell = row.getCell(index);
-						String value = cell.getStringCellValue();
-						OtherJsonParameter otherJson = new OtherJsonParameter(
-								otherJsonParameter.getKey(), value);
-						otherJsonParameterList.add(otherJson);
-						index++;
-					}
-
-					Cell groupManagerId = row.getCell(index);
-					int managerId = (null == groupManagerId ?
-							teacherId :
-							((Double) groupManagerId.getNumericCellValue()).intValue());
-					item.setGroupManagerId(managerId);
-
-					Cell weight = row.getCell(index + 2);
-					String childWeight = (null == weight ?
-							"1" :
-							((Double) weight.getNumericCellValue()).toString());
-					item.setJsonChildWeight(childWeight);
-
-					if (null == groupManagerId && null == weight) {
-						item.setIsGroup(SINGLE);
-					} else {
-						item.setIsGroup(GROUP);
-					}
-
-					//文件信息编号对应为该条目的proof
-					item.setProof(fileInfoId);
-					item.setCategoryId(categoryId);
-					item.setStatus(UNCOMMITTED);
-
-					//计算workload(先获取公式对应的参数)
-					double totalWorkload = FormulaCalculate
-							.calculate(category.getFormula(), parameterValues);
-					double personalWeight = Double.valueOf(item.getJsonChildWeight());
-					double workload = totalWorkload * personalWeight;
-
-					//工作量四舍五入获取两位小数
-					BigDecimal b = new BigDecimal(workload);
-					double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-					item.setWorkload(formatWorkload);
-
-					item.setJsonParameter(OBJECT_MAPPER.writeValueAsString(parameterValues));
-					item.setOtherJson(OBJECT_MAPPER.writeValueAsString(otherJsonParameterList));
-
-					//					//把权重仍然按照json格式写回数据库，防止转换过程中出现问题
-					//					item.setJsonChildWeight(OBJECT_MAPPER
-					//							.writeValueAsString(new ChildWeight(teacherId, personalWeight)));
-					//					//职责描述同理
-					//					item.setJobDesc(OBJECT_MAPPER
-					//							.writeValueAsString(new JobDesc(teacherId, item.getJobDesc())));
-
-					//保存时相应的生成Item的编号
-					boolean saveSuccess = itemService.saveItem(item);
-					if (!saveSuccess) {
-						errorData.put(item.getItemName(), "导入失败");
-					}
-
-					ItemBrief itemBrief = itemToBrief(item);
-					itemBriefList.add(itemBrief);
-
-					itemList.add(item);
-				}
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		data.put("itemList", itemConverter.poListToDtoList(itemList));
-		data.put("errorData", errorData);
-
-		return successResponse(data);
-	}
-
-	//	/**
-	//	 * 从Excel模板中提取对应的参数
-	//	 *
-	//	 * @param str 模板中填写的参数列对应的字符串
-	//	 * @return List<ParameterValue>
-	//	 */
-	//	public List<ParameterValue> getParams(String str) {
-	//		List<ParameterValue> parameterValues = new ArrayList<>();
-	//		String[] params = str.split(",");
-	//		for (String param : params) {
-	//			String[] values = param.split(":");
-	//			ParameterValue parameterValue = new ParameterValue(values[0],
-	//					Double.valueOf(values[1]));
-	//			parameterValues.add(parameterValue);
-	//		}
-	//		return parameterValues;
-	//	}
+//	/**
+//	 * 导入Excel中的信息到数据库 （提交文件） </br>
+//	 *
+//	 * 三个步骤： </br>
+//	 * 1、先根据文件要求上传文件；</br>
+//	 * 2、提交文件之后进行Excel的信息导入数据库的操作； </br>
+//	 * 3、导入之后查看导入的工作量列表进行确认；</br>
+//	 * 4、确认无误后进行提交工作量的操作 </br>
+//	 *
+//	 * PS.导入的格式待确定 格式不同对应的计算方式不同
+//	 *
+//	 * @param fileInfoId 文件信息编号
+//	 * @return RestResponse
+//	 */
+//	/**
+//	 * 根据不同类目对应的模板文件进行导入
+//	 *
+//	 * @param categoryId 类目编号
+//	 * @param fileInfoId 上传的文件编号
+//	 * @return RestResponse
+//	 */
+//	@RequestMapping(value = "import-template", method = POST)
+//	public RestResponse importByTemplate(
+//			@RequestParam("categoryId")
+//					int categoryId,
+//			@RequestParam("fileInfoId")
+//					int fileInfoId) {
+//
+//		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
+//		if (isNull(fileInfo)) {
+//			return invalidOperationResponse();
+//		}
+//
+//		if (!SUBMITTED.equals(fileInfo.getStatus())) {
+//			return invalidOperationResponse("无法提交");
+//		}
+//
+//		//		fileInfo.setStatus(SUBMITTED);
+//		//		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
+//		//		if (!submitSuccess) {
+//		//			return systemErrResponse("文件上传失败");
+//		//		}
+//
+//		Map<String, Object> data = getData();
+//		data.put("fileInfo", fileInfo);
+//
+//		Item item = null;
+//		List<Item> itemList = new ArrayList<>();
+//		List<ItemBrief> itemBriefList = new ArrayList<>();
+//
+//		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
+//		if (null == category) {
+//			return invalidOperationResponse();
+//		}
+//		if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
+//			return invalidOperationResponse("上传已经截止");
+//		}
+//
+//		CategoryDto categoryDto = categoryConverter.poToDto(category);
+//
+//		Map<String, Object> errorData = getData();
+//
+//		//获取对应FileInfo的文件File（java.io.file）对象
+//		String path = fileInfo.getPath();
+//		File excelFile = new File(path);
+//
+//		//获取文件流
+//		FileInputStream fileInputStream;
+//		try {
+//			fileInputStream = new FileInputStream(excelFile);
+//
+//			//版本不同创建不同的工作簿
+//			Workbook book = null;
+//			try {
+//				book = new XSSFWorkbook(excelFile);
+//			} catch (Exception ex) {
+//				book = new HSSFWorkbook(fileInputStream);
+//			}
+//
+//			//得到第一个工作表
+//			Sheet sheet = null;
+//			Row row = null;
+//
+//			//遍历工作簿中所有的表格
+//			for (int i = 0; i < book.getNumberOfSheets(); i++) {
+//				sheet = book.getSheetAt(i);
+//				if (null == sheet) {
+//					continue;
+//				}
+//
+//				//遍历每一个表中所有的行
+//				for (int j = 1; j < sheet.getPhysicalNumberOfRows(); j++) {
+//					row = sheet.getRow(j);
+//					if (null == row) {
+//						continue;
+//					}
+//					item = new Item();
+//
+//					//顺序由最终决定的模板决定
+//					Cell itemName = row.getCell(T_ITEM_NAME_INDEX);
+//					item.setItemName(itemName.getStringCellValue());
+//
+//					Cell ownerId = row.getCell(T_TEACHER_ID_INDEX);
+//					int teacherId = ((Double) ownerId.getNumericCellValue()).intValue();
+//					item.setOwnerId(teacherId);
+//
+//					Cell jobDesc = row.getCell(T_JOB_DESC_INDEX);
+//					item.setJobDesc(jobDesc.getStringCellValue());
+//
+//					List<ParameterValue> parameterValues = new ArrayList<>();
+//					int index = T_JOB_DESC_INDEX + 1;
+//					for (FormulaParameter formulaParameter : categoryDto
+//							.getFormulaParameterList()) {
+//						Cell cell = row.getCell(index);
+//						double value = cell.getNumericCellValue();
+//						ParameterValue parameterValue = new ParameterValue(
+//								formulaParameter.getSymbol(), value);
+//						parameterValues.add(parameterValue);
+//						index++;
+//					}
+//
+//					List<OtherJsonParameter> otherJsonParameterList = new ArrayList<>();
+//					for (OtherJsonParameter otherJsonParameter : categoryDto
+//							.getOtherJsonParameters()) {
+//						Cell cell = row.getCell(index);
+//						String value = cell.getStringCellValue();
+//						OtherJsonParameter otherJson = new OtherJsonParameter(
+//								otherJsonParameter.getKey(), value);
+//						otherJsonParameterList.add(otherJson);
+//						index++;
+//					}
+//
+//					Cell groupManagerId = row.getCell(index);
+//					int managerId = (null == groupManagerId ?
+//							teacherId :
+//							((Double) groupManagerId.getNumericCellValue()).intValue());
+//					item.setGroupManagerId(managerId);
+//
+//					Cell weight = row.getCell(index + 2);
+//					String childWeight = (null == weight ?
+//							"1" :
+//							((Double) weight.getNumericCellValue()).toString());
+//					item.setJsonChildWeight(childWeight);
+//
+//					if (null == groupManagerId && null == weight) {
+//						item.setIsGroup(SINGLE);
+//					} else {
+//						item.setIsGroup(GROUP);
+//					}
+//
+//					//文件信息编号对应为该条目的proof
+//					item.setProof(fileInfoId);
+//					item.setCategoryId(categoryId);
+//					item.setStatus(UNCOMMITTED);
+//
+//					//计算workload(先获取公式对应的参数)
+//					double totalWorkload = FormulaCalculate
+//							.calculate(category.getFormula(), parameterValues);
+//					double personalWeight = Double.valueOf(item.getJsonChildWeight());
+//					double workload = totalWorkload * personalWeight;
+//
+//					//工作量四舍五入获取两位小数
+//					BigDecimal b = new BigDecimal(workload);
+//					double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+//					item.setWorkload(formatWorkload);
+//
+//					item.setJsonParameter(OBJECT_MAPPER.writeValueAsString(parameterValues));
+//					item.setOtherJson(OBJECT_MAPPER.writeValueAsString(otherJsonParameterList));
+//
+//					//					//把权重仍然按照json格式写回数据库，防止转换过程中出现问题
+//					//					item.setJsonChildWeight(OBJECT_MAPPER
+//					//							.writeValueAsString(new ChildWeight(teacherId, personalWeight)));
+//					//					//职责描述同理
+//					//					item.setJobDesc(OBJECT_MAPPER
+//					//							.writeValueAsString(new JobDesc(teacherId, item.getJobDesc())));
+//
+//					//保存时相应的生成Item的编号
+//					boolean saveSuccess = itemService.saveItem(item);
+//					if (!saveSuccess) {
+//						errorData.put(item.getItemName(), "导入失败");
+//					}
+//
+//					ItemBrief itemBrief = itemToBrief(item);
+//					itemBriefList.add(itemBrief);
+//
+//					itemList.add(item);
+//				}
+//			}
+//
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		data.put("itemList", itemConverter.poListToDtoList(itemList));
+//		data.put("errorData", errorData);
+//
+//		return successResponse(data);
+//	}
 
 	/**
 	 * 将Item信息做转换
