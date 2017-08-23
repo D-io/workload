@@ -45,7 +45,7 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	@Override
 	public Item findItem(Integer itemId,String version) {
 
-		return objectResult(itemDao.select(itemId), EMPTY_ITEM);
+		return objectResult(itemDao.select(itemId,version), EMPTY_ITEM);
 	}
 
 	@Override

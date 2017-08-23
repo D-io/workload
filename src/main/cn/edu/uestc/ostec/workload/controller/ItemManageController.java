@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.Multipart;
+
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
@@ -270,12 +272,6 @@ public class ItemManageController extends ApplicationController {
 		//		return successResponse(data);
 	}
 
-	@RequestMapping
-	public RestResponse modify(ItemDto itemDto) {
-
-		return successResponse();
-	}
-
 	/**
 	 * 添加Item信息
 	 *
@@ -283,8 +279,7 @@ public class ItemManageController extends ApplicationController {
 	 * @return RestResponse
 	 */
 	@RequestMapping(method = POST)
-	public RestResponse addItem(ItemDto itemDto, MultipartFile file)
-			throws IOException {
+	public RestResponse addItem(ItemDto itemDto, MultipartFile file,String option) throws IOException {
 
 		User user = getUser();
 		if (null == user) {
@@ -296,23 +291,24 @@ public class ItemManageController extends ApplicationController {
 			return invalidOperationResponse("非法操作");
 		}
 
-		//		if ("modify".equals(option)) {
-		//
-		//			//必须为未提交状态的工作量条目才能进行修改
-		//			if (NON_CHECKED.equals(itemDto.getStatus())) {
-		//				return invalidOperationResponse("已提交的工作量，无法修改");
-		//			}
-		//
-		//			//验证当前用户是否具有修改工作量条目的权限
-		//			if (!userId.equals(itemDto.getGroupManagerId()) || !userId
-		//					.equals(itemDto.getReviewerId())) {
-		//				return invalidOperationResponse("非法操作");
-		//			}
-		//		}
+		//必须为未提交状态的工作量条目才能进行修改
+		if("modify".equals(option)) {
+			if (NON_CHECKED.equals(itemDto.getStatus())) {
+				return invalidOperationResponse("已提交的工作量，无法修改");
+			}
 
-		//若为 添加，则设置当前相应的条目 拥有者 为登录的用户编号
-		//若为 修改，则设置当前相应的条目 拥有者 为原条目拥有者
-		itemDto.setOwnerId(userId);
+			//验证当前用户是否具有修改工作量条目的权限
+			if (!(userId.equals(itemDto.getGroupManagerId()) || userId.equals(itemDto.getReviewerId()))) {
+				return invalidOperationResponse("非法操作");
+			}
+
+			//若为 修改，则设置当前相应的条目 拥有者 为原条目拥有者
+
+		} else {
+
+			//若为 添加，则设置当前相应的条目 拥有者 为登录的用户编号
+			itemDto.setOwnerId(userId);
+		}
 
 		Category category = categoryService
 				.getCategory(itemDto.getCategoryId(), getCurrentSemester());
@@ -348,55 +344,55 @@ public class ItemManageController extends ApplicationController {
 		double workload = FormulaCalculate
 				.calculate(category.getFormula(), newItemDto.getParameterValues());
 
-		// 获取对应的权重列表
-		List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
-
-		// 权重列表不为空时，去为每个成员生成对应的条目信息
-		if (GROUP.equals(newItemDto.getIsGroup()) && !isEmptyList(childWeightList)) {
-
-			List<Item> itemList = new ArrayList<>();
-
-			// 成员职责列表
-			List<JobDesc> jobDescList = newItemDto.getJobDescList();
-
-			Item item = itemConverter.dtoToPo(itemDto);
-
-			// 对组员的工作量信息进行保存，分别计算工作量
-			for (int index = 0; index < childWeightList.size(); index++) {
-
-				// 获取对应成员教师的工作量信息进行组装
-				Integer ownerId = childWeightList.get(index).getUserId();
-
-				if (jobDescList.get(index).getUserId().equals(ownerId)) {
-
-					// 克隆Item工作量条目，以克隆公共信息
-					Item itemTemp = (Item) item.clone();
-
-					// 设置成员各自的工作量属性信息
-					itemTemp.setOwnerId(ownerId);
-					itemTemp.setJobDesc(jobDescList.get(index).getJobDesc());
-
-					// 获取对应的权重进行相应的计算
-					double weight = childWeightList.get(index).getWeight();
-					itemTemp.setJsonChildWeight(String.valueOf(weight));
-					itemTemp.setStatus(UNCOMMITTED);
-
-					// 计算组员各自的工作量
-					itemTemp.setWorkload(workload * weight);
-
-					// 保存成员老师的工作量条目到数据库中
-					boolean saveSuccess = itemService.saveItem(itemTemp);
-					if (!saveSuccess) {
-						errorData.put(teacherService.findTeacherNameById(ownerId), "保存失败");
-					}
-
-					// 保存成功的item集合，用于返回前端的数据展示
-					itemList.add(itemTemp);
-				}
-			}
-			data.put("itemList", itemConverter.poListToDtoList(itemList));
-
-		} else {
+//		// 获取对应的权重列表
+//		List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
+//
+//		// 权重列表不为空时，去为每个成员生成对应的条目信息
+//		if (GROUP.equals(newItemDto.getIsGroup()) && !isEmptyList(childWeightList)) {
+//
+//			List<Item> itemList = new ArrayList<>();
+//
+//			// 成员职责列表
+//			List<JobDesc> jobDescList = newItemDto.getJobDescList();
+//
+//			Item item = itemConverter.dtoToPo(itemDto);
+//
+//			// 对组员的工作量信息进行保存，分别计算工作量
+//			for (int index = 0; index < childWeightList.size(); index++) {
+//
+//				// 获取对应成员教师的工作量信息进行组装
+//				Integer ownerId = childWeightList.get(index).getUserId();
+//
+//				if (jobDescList.get(index).getUserId().equals(ownerId)) {
+//
+//					// 克隆Item工作量条目，以克隆公共信息
+//					Item itemTemp = (Item) item.clone();
+//
+//					// 设置成员各自的工作量属性信息
+//					itemTemp.setOwnerId(ownerId);
+//					itemTemp.setJobDesc(jobDescList.get(index).getJobDesc());
+//
+//					// 获取对应的权重进行相应的计算
+//					double weight = childWeightList.get(index).getWeight();
+//					itemTemp.setJsonChildWeight(String.valueOf(weight));
+//					itemTemp.setStatus(UNCOMMITTED);
+//
+//					// 计算组员各自的工作量
+//					itemTemp.setWorkload(workload * weight);
+//
+//					// 保存成员老师的工作量条目到数据库中
+//					boolean saveSuccess = itemService.saveItem(itemTemp);
+//					if (!saveSuccess) {
+//						errorData.put(teacherService.findTeacherNameById(ownerId), "保存失败");
+//					}
+//
+//					// 保存成功的item集合，用于返回前端的数据展示
+//					itemList.add(itemTemp);
+//				}
+//			}
+//			data.put("itemList", itemConverter.poListToDtoList(itemList));
+//
+//		} else {
 			// 个人申报
 			newItemDto.setWorkload(workload);
 			newItemDto.setStatus(UNCOMMITTED);
@@ -411,7 +407,7 @@ public class ItemManageController extends ApplicationController {
 			}
 			newItemDto.setItemId(item.getItemId());
 			data.put("item", newItemDto);
-		}
+//		}
 
 		return successResponse(data);
 	}
@@ -494,19 +490,66 @@ public class ItemManageController extends ApplicationController {
 					continue;
 				}
 
-				//修改对应的item状态为提交（待审核）
-				item.setStatus(NON_CHECKED);
+				ItemDto itemDto = itemConverter.poToDto(item);
 
-				boolean saveSuccess = itemService.saveItem(item);
+				List<ChildWeight> childWeightList = itemDto.getChildWeightList();
+				if(GROUP.equals(itemDto.getIsGroup()) && !isEmptyList(childWeightList)) {
 
-				boolean fileSubmitSuccess = (null == item.getProof() ?
-						true :
-						fileEvent.submitFileInfo(item.getProof()));
-				if (!saveSuccess || !fileSubmitSuccess) {
-					errorData.put(item.getItemName(), "提交失败");
+					double workload = FormulaCalculate
+							.calculate(category.getFormula(), itemDto.getParameterValues());
+
+					// 成员职责列表
+					List<JobDesc> jobDescList = itemDto.getJobDescList();
+
+					// 对组员的工作量信息进行保存，分别计算工作量
+					for (int index = 0; index < childWeightList.size(); index++) {
+
+						// 获取对应成员教师的工作量信息进行组装
+						Integer ownerId = childWeightList.get(index).getUserId();
+
+						if (jobDescList.get(index).getUserId().equals(ownerId)) {
+
+							// 克隆Item工作量条目，以克隆公共信息
+							Item itemTemp = (Item) item.clone();
+
+							// 设置成员各自的工作量属性信息
+							itemTemp.setItemId(null);
+							itemTemp.setOwnerId(ownerId);
+							itemTemp.setJobDesc(jobDescList.get(index).getJobDesc());
+
+							// 获取对应的权重进行相应的计算
+							double weight = childWeightList.get(index).getWeight();
+							itemTemp.setJsonChildWeight(String.valueOf(weight));
+							itemTemp.setStatus(NON_CHECKED);
+
+							// 计算组员各自的工作量
+							itemTemp.setWorkload(workload * weight);
+
+							// 保存成员老师的工作量条目到数据库中
+							boolean saveSuccess = itemService.saveItem(itemTemp);
+							if (!saveSuccess) {
+								errorData.put(teacherService.findTeacherNameById(ownerId) + item.getItemName(), "提交失败");
+							}
+
+							// 保存成功的item集合，用于返回前端的数据展示
+							itemList.add(itemTemp);
+						}
+					}
+					itemService.removeItem(itemId,getCurrentSemester());
 				} else {
-					item = itemService.findItem(itemId, getCurrentSemester());
-					itemList.add(item);
+
+					//修改对应的item状态为提交（待审核）
+					item.setStatus(NON_CHECKED);
+
+					boolean saveSuccess = itemService.saveItem(item);
+
+					boolean fileSubmitSuccess = (null == item.getProof() ? true : fileEvent.submitFileInfo(item.getProof()));
+					if (!saveSuccess || !fileSubmitSuccess) {
+						errorData.put(item.getItemName(), "提交失败");
+					} else {
+						item = itemService.findItem(itemId, getCurrentSemester());
+						itemList.add(item);
+					}
 				}
 			} else {
 				errorData.put(item.getItemName(), "无法提交");
