@@ -279,7 +279,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label requiredtime">审核人员</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control" id="teacherName">
+                                                <select class="form-control select2" id="teacherName">
                                                     <option value=""></option>
 
                                                 </select>
@@ -378,9 +378,7 @@
 
                                                             </thead>
                                                             <tbody class="addOtherPramter">
-                                                            <tr>
-                                                                <td><input type="text" class="otherParameterName" name="otherParameterName"></td>
-                                                            </tr>
+
                                                             </tbody>
                                                         </table>
                                                     </div>

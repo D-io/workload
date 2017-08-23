@@ -68,6 +68,8 @@
 
     var itemManageUrl=contextPath+"/item/manage";
 
+    var itemeditNameUrl=itemManageUrl+"/cooret";
+
     var importProofUrl=itemManageUrl+"/file-proof";
 
     var itemManaPublicUrl=itemManageUrl+"/public-selective";

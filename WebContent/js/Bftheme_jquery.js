@@ -121,10 +121,13 @@ function reset() {
             $(".totalItem").text(data.data.totalRecords);
             reviewerResetItem(data);
             var str='';
-            if(data.data.pageCount<10){
-                for(var pageNum=0;pageNum<data.data.pageCount;pageNum++){
+            var totalPage=data.data.totalRecords;
+            var pageCountNum=totalPage/5;
+            pageCountNum--;
+            if(pageCountNum<10){
+                for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                     var pagestore=pageNum+1;
-                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="1" tabindex="0">'+pagestore+'</a> </li>';
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
                 }
                 $(".pagination").empty();
                 $(".pagination").append(str);
@@ -177,12 +180,14 @@ function reset() {
             $(".ResetItem").empty();
             reviewerResetItem(data);
             var str='';
-            if(data.data.pageCount<10){
-                for(var pageNum=0;pageNum<data.data.pageCount;pageNum++){
+            var totalPage=data.data.totalRecords;
+            var $pageSize=$(".input-sm option:selected").val();
+            var pageCountNum=totalPage/$pageSize-1;
+            if(pageCountNum<10){
+                for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                     var pagestore=pageNum+1;
-                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="1" tabindex="0">'+pagestore+'</a> </li>';
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pagestore+'" tabindex="0">'+pagestore+'</a> </li>';
                 }
-                $(".pagination").empty();
                 $(".pagination").append(str);
             }
 
@@ -215,10 +220,13 @@ function reset() {
                 $(".ResetItem").empty();
                 reviewerResetItem(data);
                 var str='';
-                if(data.data.pageCount<10){
-                    for(var pageNum=0;pageNum<data.data.pageCount;pageNum++){
+                var totalPage=data.data.totalRecords;
+                var $pageSize=$(".input-sm option:selected").val();
+                var pageCountNum=totalPage/$pageSize-1;
+                if(pageCountNum<10){
+                    for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                         var pagestore=pageNum+1;
-                        str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="1" tabindex="0">'+pagestore+'</a> </li>';
+                        str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pagestore+'"tabindex="0">'+pagestore+'</a> </li>';
                     }
                     $(".pagination").empty();
                     $(".pagination").append(str);
@@ -299,6 +307,7 @@ function reset() {
         });
     });
     $(document).on("click",".activePage",function () {
+        var thispagesize=$(this).attr("data-dt-idx");
         var option0=$("#ispassed option:selected").val();
         var option1=$("#itemRequired option:selected").val();
         var option2=$("#teacherName option:selected").val();
@@ -313,7 +322,7 @@ function reset() {
             option2=null;
         }
         $.get(itemWithPageUrl,{
-            pageNum:this.val(),
+            pageNum:thispagesize,
             pageSize:$(".input-sm option:selected").val(),
             categoryId:option1,
             status:option0,
@@ -323,18 +332,47 @@ function reset() {
             $(".ResetItem").empty();
             reviewerResetItem(data);
             var str='';
-            if(data.data.pageCount<10){
-                for(var pageNum=0;pageNum<data.data.pageCount;pageNum++){
+            var totalPage=data.data.totalRecords;
+            var $pageSize=$(".input-sm option:selected").val();
+            var pageCountNum=totalPage/$pageSize-1;
+            if(pageCountNum<10){
+                for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                     var pagestore=pageNum+1;
-                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="1" tabindex="0">'+pagestore+'</a> </li>';
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pagestore+'" tabindex="0">'+pagestore+'</a> </li>';
                 }
                 $(".pagination").empty();
                 $(".pagination").append(str);
             }
         });
     });
+    $(document).on("click",".itemName",function () {
+        var thisId=this.id.match(/\d+/g);
+        if(!$(this).is('.input')){
+            $(this).addClass('input').html('<input type="text" value="'+ $(this).text() +'" />').find('input').focus().blur(function(){
+                $(this).parent().removeClass('input').html($(this).val() || 0);
+            });
+        }
+    }).hover(function(){
+        $(this).addClass('hover');
+    },function(){
+        $(this).removeClass('hover');
+        alert("确定保存修改？");
+        $.post(itemeditNameUrl,{
+            itemId:thisId,
+            itemName:$(".itemName_"+thisId).text()
+        },function () {
+            alert("修改成功!");
+        });
+    });
+    $("#teacherName").select2({
+        allowClear: true,
+        width:"100%"
+    });
+    $("#itemRequired").select2({
+        allowClear: true,
+        width:"100%"
+    });
 }
-
 function itemSummary() {
     $.ajaxSetup({
         async : false
@@ -715,6 +753,8 @@ function reviewerResetItem(data) {
                 }
                 $(".ResetItem tr:last td:eq(2)").text(itemImport);
                 $(".ResetItem tr:last td:eq(3)").text(Info.itemName);
+                $(".ResetItem tr:last td:eq(3)").attr("class","itemName");
+                $(".ResetItem tr:last td:eq(3)").attr("id","itemName_"+Info.itemId);
                 $(".ResetItem tr:last td:eq(4)").text(Info.formula);
 
                 $(".ResetItem tr:last td:eq(5)").append(str);
@@ -742,11 +782,33 @@ function manageHistory() {
         showhistory(data);
     });
 }
-$(document).on("click","#addParameter",function () {
-    var addStr="<tr><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'></td></tr>";
+$(document).ready(function () {
+    var Count=0;
+    $(document).on("click","#addParameter",function () {
+        Count++;
+    var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><a class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='float: right;'><i class='fa fa-trash'></i></a></td></tr>";
     $('.AddPramter').append(addStr);
 });
 $(document).on("click","#addOtherParameter",function () {
-    var addStr="<tr><td><input type='text' class='form-control otherParameterName' name='parameterName'></td></tr>";
+    Count++;
+    var addStr="<tr class='otherCount_"+Count+"'><td><input type='text' class='form-control otherParameterName' name='parameterName'><a class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='float:right;'><i class='fa fa-trash'></i></a></td></tr>";
     $('.addOtherPramter').append(addStr);
+});
+$(document).on("click",".removeParaRow",function () {
+    var trId=this.id.match(/\d+/g);
+    $(".trCount_"+trId).remove();
+});
+    $(document).on("click",".removeOtherRow",function () {
+        var trId=this.id.match(/\d+/g);
+        $(".otherCount_"+trId).remove();
+    });
+    $(document).on("click",".editOtherRow",function () {
+        var trId=this.id.match(/\d+/g);
+        $(".editOtherCount_"+trId).remove();
+    });
+    $(document).on("click",".editParaRow",function () {
+        var trId=this.id.match(/\d+/g);
+        $(".editParaCount_"+trId).remove();
+    });
+
 });

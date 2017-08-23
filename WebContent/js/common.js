@@ -8,7 +8,7 @@ $(document).ready(function () {
          autoclose: true,
          todayBtn: true,
          pickerPosition: "bottom-left",
-         format: "yyyy-mm-dd hh:ii"//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
+         format: "yyyy-mm-dd hh:ii:ss"//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
          });
 
        /* data-plugin-datepicker*/
@@ -669,9 +669,12 @@ function getSideBar(role,roleList) {
                     teacherInfo=data.data.teacherList;
 
                 });
+            var selectdata=new Array();
                 for(var i=0;i<teacherInfo.length;i++){
                     $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
+
                 }
+
 
         });
        /* $(".scroll-view").append("<jsp:include page='Manager-left-sidebar.jsp'/>");
