@@ -30,6 +30,9 @@ public interface FileEvent extends IEvent {
 	@Transactional
 	boolean uploadFile(MultipartFile file, FileInfo fileInfo) throws IOException;
 
+	@Transactional
+	boolean deleteFile(Integer fileInfoId);
+
 	/**
 	 * 文件下载
 	 */

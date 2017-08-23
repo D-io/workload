@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
@@ -20,12 +21,15 @@ import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.service.FileInfoService;
 import cn.edu.uestc.ostec.workload.service.FileService;
+import cn.edu.uestc.ostec.workload.support.utils.FileHelper;
 
 import static cn.edu.uestc.ostec.workload.support.utils.DateHelper.getCurrentTimestamp;
 import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.buildFilePath;
+import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.clearFiles;
 import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.getFileExtension;
 import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.getFileMd5Digest;
 import static cn.edu.uestc.ostec.workload.support.utils.ObjectHelper.isNull;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 
@@ -76,6 +80,31 @@ public class FileEventImpl implements FileEvent {
 
 		//将文件信息保存至数据库
 		return fileInfoService.saveFileInfo(fileInfo);
+	}
+
+	/**
+	 * 删除指定文件
+	 * @param fileInfoId 文件编号
+	 * @return boolean
+	 */
+	@Override
+	public boolean deleteFile(Integer fileInfoId) {
+
+		if(isNull(fileInfoId)) {
+			return false;
+		}
+		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
+		if(isNull(fileInfo)) {
+			return false;
+		}
+
+		String path = fileInfo.getPath();
+		fileInfo.setStatus(DELETED);
+		clearFiles(path);
+
+		boolean saveSuccess = fileInfoService.saveFileInfo(fileInfo);
+
+		return saveSuccess;
 	}
 
 	@Override

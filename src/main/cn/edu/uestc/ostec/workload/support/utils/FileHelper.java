@@ -23,8 +23,7 @@ import javax.validation.constraints.NotNull;
 import static cn.edu.uestc.ostec.workload.support.utils.ObjectHelper.isNull;
 
 /**
- * Description: 文件工具类
- * Version:v1.0 (author:刘文哲 update: 无 )
+ * Description: 文件工具类 Version:v1.0 (author:刘文哲 update: 无 )
  */
 public class FileHelper {
 
@@ -68,9 +67,11 @@ public class FileHelper {
 	 * @param fileName 文件名称
 	 * @return 生成文件路径
 	 */
-	public static String buildFilePath(@NotNull
-			String baseDir, @NotNull
-			String fileName) {
+	public static String buildFilePath(
+			@NotNull
+					String baseDir,
+			@NotNull
+					String fileName) {
 		if (isNull(fileName) || isNull(baseDir)) {
 			return DEFAULT_RESULT_STRING;
 		}
@@ -87,8 +88,9 @@ public class FileHelper {
 	 * @param fileName 文件名
 	 * @return 返回文件扩展名
 	 */
-	public static String getFileExtension(@NotNull
-			String fileName) {
+	public static String getFileExtension(
+			@NotNull
+					String fileName) {
 		if (isNull(fileName)) {
 			return DEFAULT_RESULT_STRING;
 		}
@@ -134,9 +136,9 @@ public class FileHelper {
 	 * @throws NoSuchAlgorithmException 系统不支持md5时抛出异常
 	 * @throws IOException              读文件时可能存在异常
 	 */
-	public static final String getFileMd5Digest(@NotNull
-			File file)
-			throws NoSuchAlgorithmException, IOException {
+	public static final String getFileMd5Digest(
+			@NotNull
+					File file) throws NoSuchAlgorithmException, IOException {
 
 		//获取文件的字节数组
 		FileInputStream fileInputStream = new FileInputStream(file);
@@ -161,5 +163,22 @@ public class FileHelper {
 	 */
 	private static final String getFileSeparator() {
 		return File.separator;
+	}
+
+	public static void clearFiles(String workspaceRootPath) {
+		File file = new File(workspaceRootPath);
+		if (file.exists()) {
+			deleteFile(file);
+		}
+	}
+
+	private static void deleteFile(File file) {
+		if (file.isDirectory()) {
+			File[] files = file.listFiles();
+			for (int i = 0; i < files.length; i++) {
+				deleteFile(files[i]);
+			}
+		}
+		file.delete();
 	}
 }
