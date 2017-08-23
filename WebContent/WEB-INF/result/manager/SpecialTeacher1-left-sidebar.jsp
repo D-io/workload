@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
     <div class="navbar nav_title" style="border: 0;">
-        <a class="site_title" ><span><img src="${contextPath}/css/images/logo.png" alt="..." class="left_span" style="width: 40px;height: 40px;"></span><span style="font-size: 16px;">教学工作当量计算系统</span></a>
+        <a class="site_title" ><span><img src="${contextPath}/css/images/systemLogo.png" alt="..." class="left_span" style="width: 40px;height: 40px;"></span><span style="font-size: 16px;">信息与软件工程学院
+                   <span style="font-size: 5px;">School of Information and Software Engineering</span></span></a>
     </div>
 
     <div class="clearfix"></div>
