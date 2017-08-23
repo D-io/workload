@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -276,7 +277,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			@RequestParam("type")
 					String type) {
 
-		Category category = categoryService.getCategory(categoryId,getCurrentSemester());
+		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
 		CategoryDto categoryDto = categoryConverter.poToDto(category);
 		List<FormulaParameter> parameterList = categoryDto.getFormulaParameterList();
 		List<OtherJsonParameter> otherJsonParameterList = categoryDto.getOtherJsonParameters();
@@ -337,6 +338,179 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 	 * 根据不同类目对应的模板文件进行导入
 	 *
 	 * @param categoryId 类目编号
+	 * @return RestResponse
+	 */
+	@RequestMapping(value = "import", method = POST)
+	public RestResponse importByTemplate(
+			@RequestParam("categoryId")
+					int categoryId,
+			@RequestParam("file")
+					MultipartFile file) {
+
+		if (isNull(file)) {
+			return invalidOperationResponse();
+		}
+
+		Map<String, Object> data = getData();
+
+		Item item = null;
+		List<Item> itemList = new ArrayList<>();
+		List<ItemBrief> itemBriefList = new ArrayList<>();
+
+		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
+		if (null == category) {
+			return invalidOperationResponse();
+		}
+		if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
+			return invalidOperationResponse("上传已经截止");
+		}
+
+		CategoryDto categoryDto = categoryConverter.poToDto(category);
+
+		Map<String, Object> errorData = getData();
+
+		//获取对应FileInfo的文件File（java.io.file）对象
+		//File excelFile = new File(file);
+		File excelFile = null;
+		//获取文件流
+		FileInputStream fileInputStream;
+		try {
+			fileInputStream = new FileInputStream(excelFile);
+
+			//版本不同创建不同的工作簿
+			Workbook book = null;
+			try {
+				book = new XSSFWorkbook(excelFile);
+			} catch (Exception ex) {
+				book = new HSSFWorkbook(fileInputStream);
+			}
+
+			//得到第一个工作表
+			Sheet sheet = null;
+			Row row = null;
+
+			//遍历工作簿中所有的表格
+			for (int i = 0; i < book.getNumberOfSheets(); i++) {
+				sheet = book.getSheetAt(i);
+				if (null == sheet) {
+					continue;
+				}
+
+				//遍历每一个表中所有的行
+				for (int j = 1; j < sheet.getPhysicalNumberOfRows(); j++) {
+					row = sheet.getRow(j);
+					if (null == row) {
+						continue;
+					}
+					item = new Item();
+
+					//顺序由最终决定的模板决定
+					Cell itemName = row.getCell(T_ITEM_NAME_INDEX);
+					item.setItemName(itemName.getStringCellValue());
+
+					Cell ownerId = row.getCell(T_TEACHER_ID_INDEX);
+					int teacherId = ((Double) ownerId.getNumericCellValue()).intValue();
+					item.setOwnerId(teacherId);
+
+					Cell jobDesc = row.getCell(T_JOB_DESC_INDEX);
+					item.setJobDesc(jobDesc.getStringCellValue());
+
+					List<ParameterValue> parameterValues = new ArrayList<>();
+					int index = T_JOB_DESC_INDEX + 1;
+					for (FormulaParameter formulaParameter : categoryDto
+							.getFormulaParameterList()) {
+						Cell cell = row.getCell(index);
+						double value = cell.getNumericCellValue();
+						ParameterValue parameterValue = new ParameterValue(
+								formulaParameter.getSymbol(), value);
+						parameterValues.add(parameterValue);
+						index++;
+					}
+
+					List<OtherJsonParameter> otherJsonParameterList = new ArrayList<>();
+					for (OtherJsonParameter otherJsonParameter : categoryDto
+							.getOtherJsonParameters()) {
+						Cell cell = row.getCell(index);
+						String value = cell.getStringCellValue();
+						OtherJsonParameter otherJson = new OtherJsonParameter(
+								otherJsonParameter.getKey(), value);
+						otherJsonParameterList.add(otherJson);
+						index++;
+					}
+
+					Cell groupManagerId = row.getCell(index);
+					int managerId = (null == groupManagerId ?
+							teacherId :
+							((Double) groupManagerId.getNumericCellValue()).intValue());
+					item.setGroupManagerId(managerId);
+
+					Cell weight = row.getCell(index + 2);
+					String childWeight = (null == weight ?
+							"1" :
+							((Double) weight.getNumericCellValue()).toString());
+					item.setJsonChildWeight(childWeight);
+
+					if (null == groupManagerId && null == weight) {
+						item.setIsGroup(SINGLE);
+					} else {
+						item.setIsGroup(GROUP);
+					}
+
+					//文件信息编号对应为该条目的proof
+					item.setProof(null);
+					item.setCategoryId(categoryId);
+					item.setStatus(UNCOMMITTED);
+
+					//计算workload(先获取公式对应的参数)
+					double totalWorkload = FormulaCalculate
+							.calculate(category.getFormula(), parameterValues);
+					double personalWeight = Double.valueOf(item.getJsonChildWeight());
+					double workload = totalWorkload * personalWeight;
+
+					//工作量四舍五入获取两位小数
+					BigDecimal b = new BigDecimal(workload);
+					double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					item.setWorkload(formatWorkload);
+
+					item.setJsonParameter(OBJECT_MAPPER.writeValueAsString(parameterValues));
+					item.setOtherJson(OBJECT_MAPPER.writeValueAsString(otherJsonParameterList));
+
+					//					//把权重仍然按照json格式写回数据库，防止转换过程中出现问题
+					//					item.setJsonChildWeight(OBJECT_MAPPER
+					//							.writeValueAsString(new ChildWeight(teacherId, personalWeight)));
+					//					//职责描述同理
+					//					item.setJobDesc(OBJECT_MAPPER
+					//							.writeValueAsString(new JobDesc(teacherId, item.getJobDesc())));
+
+					//保存时相应的生成Item的编号
+					boolean saveSuccess = itemService.saveItem(item);
+					if (!saveSuccess) {
+						errorData.put(item.getItemName(), "导入失败");
+					}
+
+					ItemBrief itemBrief = itemToBrief(item);
+					itemBriefList.add(itemBrief);
+
+					itemList.add(item);
+				}
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		data.put("itemList", itemConverter.poListToDtoList(itemList));
+		data.put("errorData", errorData);
+
+		return successResponse(data);
+	}
+
+	/**
+	 * 根据不同类目对应的模板文件进行导入
+	 *
+	 * @param categoryId 类目编号
 	 * @param fileInfoId 上传的文件编号
 	 * @return RestResponse
 	 */
@@ -356,11 +530,11 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			return invalidOperationResponse("无法提交");
 		}
 
-//		fileInfo.setStatus(SUBMITTED);
-//		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
-//		if (!submitSuccess) {
-//			return systemErrResponse("文件上传失败");
-//		}
+		//		fileInfo.setStatus(SUBMITTED);
+		//		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
+		//		if (!submitSuccess) {
+		//			return systemErrResponse("文件上传失败");
+		//		}
 
 		Map<String, Object> data = getData();
 		data.put("fileInfo", fileInfo);
@@ -369,11 +543,11 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		List<Item> itemList = new ArrayList<>();
 		List<ItemBrief> itemBriefList = new ArrayList<>();
 
-		Category category = categoryService.getCategory(categoryId,getCurrentSemester());
+		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
 		if (null == category) {
 			return invalidOperationResponse();
 		}
-		if(DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
+		if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
 			return invalidOperationResponse("上传已经截止");
 		}
 
@@ -488,12 +662,12 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					item.setJsonParameter(OBJECT_MAPPER.writeValueAsString(parameterValues));
 					item.setOtherJson(OBJECT_MAPPER.writeValueAsString(otherJsonParameterList));
 
-//					//把权重仍然按照json格式写回数据库，防止转换过程中出现问题
-//					item.setJsonChildWeight(OBJECT_MAPPER
-//							.writeValueAsString(new ChildWeight(teacherId, personalWeight)));
-//					//职责描述同理
-//					item.setJobDesc(OBJECT_MAPPER
-//							.writeValueAsString(new JobDesc(teacherId, item.getJobDesc())));
+					//					//把权重仍然按照json格式写回数据库，防止转换过程中出现问题
+					//					item.setJsonChildWeight(OBJECT_MAPPER
+					//							.writeValueAsString(new ChildWeight(teacherId, personalWeight)));
+					//					//职责描述同理
+					//					item.setJobDesc(OBJECT_MAPPER
+					//							.writeValueAsString(new JobDesc(teacherId, item.getJobDesc())));
 
 					//保存时相应的生成Item的编号
 					boolean saveSuccess = itemService.saveItem(item);
@@ -563,7 +737,9 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		itemBrief.setJsonParameter(item.getJsonParameter());
 		itemBrief.setWorkload(item.getWorkload());
 
-		itemBrief.setCategoryName(categoryService.getCategory(itemBrief.getCategoryId(),getCurrentSemester()).getName());
+		itemBrief.setCategoryName(
+				categoryService.getCategory(itemBrief.getCategoryId(), getCurrentSemester())
+						.getName());
 		itemBrief.setOtherJson(item.getOtherJson());
 
 		return itemBrief;

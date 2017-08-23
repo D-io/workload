@@ -72,12 +72,11 @@
       import_required = #{importRequired,jdbcType=INTEGER},
       json_parameters = #{jsonParameters,jdbcType=VARCHAR},
       formula = #{formula,jdbcType=VARCHAR},
-      version = #{version,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       review_deadline = #{reviewDeadline,jdbcType=INTEGER},
       apply_deadline = #{applyDeadline,jdbcType=INTEGER},
       other_json = #{otherJson,jdbcType=VARCHAR}
-    where category_id = #{categoryId,jdbcType=INTEGER}
+    where category_id = #{categoryId,jdbcType=INTEGER} and version = #{version,jdbcType=VARCHAR}
   </update>
 
   <update id="updateStatus">

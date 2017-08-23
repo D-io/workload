@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.pojo;
 
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
+
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NOT_LEAF;
@@ -55,7 +57,7 @@ public class Category {
 	/**
 	 * 工作量类目公式适宜版本，以学期形式表示，如：2016-2017-1
 	 */
-	private String version = null;
+	private String version = DateHelper.getCurrentTerm();
 
 	/**
 	 * 状态，0：未提交，1：已提交，-1：disable（删除）

@@ -7,8 +7,6 @@
  */
 package cn.edu.uestc.ostec.workload.controller;
 
-import com.sun.org.apache.regexp.internal.RE;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -100,9 +98,10 @@ public class ItemManageController extends ApplicationController {
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		if (!CHECKED.equals(item.getStatus())) {
-			return invalidOperationResponse("无法修改");
-		}
+//		if (!CHECKED.equals(item.getStatus())) {
+//			return invalidOperationResponse("无法修改");
+//		}
+
 		ItemDto itemDto = itemConverter.poToDto(item);
 
 		itemName = isEmptyString(itemName) ? item.getItemName() : itemName;
