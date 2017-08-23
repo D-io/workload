@@ -62,7 +62,7 @@
       json_child_weight = #{jsonChildWeight,jdbcType=VARCHAR},
       proof = #{proof,jdbcType=INTEGER},
       is_group = #{isGroup,jdbcType=INTEGER},
-      other_json = #{otherJson,jdbcType=VARCHAR},
+      other_json = #{otherJson,jdbcType=VARCHAR}
     where item_id = #{itemId,jdbcType=INTEGER} and version = #{version}
   </update>
 

@@ -35,6 +35,7 @@ import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
+import cn.edu.uestc.ostec.workload.service.TeacherService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 
@@ -76,6 +77,9 @@ public class ItemManageController extends ApplicationController {
 	@Autowired
 	private FileEvent fileEvent;
 
+	@Autowired
+	private TeacherService teacherService;
+
 	/**
 	 * 管理员对条目信息进行部分修改
 	 *
@@ -93,14 +97,14 @@ public class ItemManageController extends ApplicationController {
 			@RequestParam(required = false)
 					String otherParams) {
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
 
-//		if (!CHECKED.equals(item.getStatus())) {
-//			return invalidOperationResponse("无法修改");
-//		}
+		//		if (!CHECKED.equals(item.getStatus())) {
+		//			return invalidOperationResponse("无法修改");
+		//		}
 
 		ItemDto itemDto = itemConverter.poToDto(item);
 
@@ -141,7 +145,7 @@ public class ItemManageController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
@@ -177,14 +181,14 @@ public class ItemManageController extends ApplicationController {
 			@RequestParam(value = "itemId")
 					Integer itemId) {
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
 
 		boolean removeSuccess;
 		if (UNCOMMITTED.equals(item.getStatus()) || DENIED.equals(item.getStatus())) {
-			removeSuccess = itemService.removeItem(itemId,getCurrentSemester());
+			removeSuccess = itemService.removeItem(itemId, getCurrentSemester());
 		} else {
 			return invalidOperationResponse("无法删除");
 		}
@@ -215,7 +219,7 @@ public class ItemManageController extends ApplicationController {
 		}
 		int teacherId = user.getUserId();
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
@@ -225,7 +229,7 @@ public class ItemManageController extends ApplicationController {
 		}
 
 		// 截止时间限定
-		Category category = categoryService.getCategory(item.getCategoryId(),getCurrentSemester());
+		Category category = categoryService.getCategory(item.getCategoryId(), getCurrentSemester());
 		if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
 			return invalidOperationResponse("申请已经截止");
 		}
@@ -266,103 +270,138 @@ public class ItemManageController extends ApplicationController {
 		//		return successResponse(data);
 	}
 
+	@RequestMapping
+	public RestResponse modify(ItemDto itemDto) {
+
+		return successResponse();
+	}
+
 	/**
-	 * 添加Item信息 & 修改Item信息
+	 * 添加Item信息
 	 *
 	 * @param itemDto 工作量信息
 	 * @return RestResponse
 	 */
 	@RequestMapping(method = POST)
-	public RestResponse addItem(ItemDto itemDto, MultipartFile file, String option)
+	public RestResponse addItem(ItemDto itemDto, MultipartFile file)
 			throws IOException {
 
 		User user = getUser();
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
 		}
+		Integer userId = user.getUserId();
 
 		if (null == itemDto) {
 			return invalidOperationResponse("非法操作");
 		}
 
-		if ("modify".equals(option)) {
-			if (NON_CHECKED.equals(itemDto.getStatus())) {
-				return invalidOperationResponse("已提交的工作量，无法修改");
-			}
-		}
+		//		if ("modify".equals(option)) {
+		//
+		//			//必须为未提交状态的工作量条目才能进行修改
+		//			if (NON_CHECKED.equals(itemDto.getStatus())) {
+		//				return invalidOperationResponse("已提交的工作量，无法修改");
+		//			}
+		//
+		//			//验证当前用户是否具有修改工作量条目的权限
+		//			if (!userId.equals(itemDto.getGroupManagerId()) || !userId
+		//					.equals(itemDto.getReviewerId())) {
+		//				return invalidOperationResponse("非法操作");
+		//			}
+		//		}
 
-		//根据登陆的用户设置相应的item信息中owner属性
-		int teacherId = user.getUserId();
-		itemDto.setOwnerId(teacherId);
+		//若为 添加，则设置当前相应的条目 拥有者 为登录的用户编号
+		//若为 修改，则设置当前相应的条目 拥有者 为原条目拥有者
+		itemDto.setOwnerId(userId);
 
-		//设置对应的proof属性
-		int importRequired = categoryService.getCategory(itemDto.getCategoryId(),getCurrentSemester())
-				.getImportRequired();
+		Category category = categoryService
+				.getCategory(itemDto.getCategoryId(), getCurrentSemester());
+
+		// 获取对应的申报方式  申报类：可选上传相关附件，导入类：无需上传相关附件
+		int importRequired = itemDto.getImportRequired();
 
 		Map<String, Object> data = getData();
+		Map<String, Object> errorData = getData();
 
-		//判断是手动申报类还是系统导入类来决定proof的值
+		// 申报类：上传相关的文件附件（文件不为空的前提下） 导入类：设置proof属性为null
 		if (APPLY_SELF.equals(importRequired) && null != file && !file.isEmpty()) {
+
 			FileInfo fileInfo = new FileInfo(ATTACHMENT_FILE_ID, getUserId(), "");
-			//TODO 文件的相关校验，可以抽象到ApplicationController中
 			boolean uploadSuccess = fileEvent.uploadFile(file, fileInfo);
 			if (!uploadSuccess) {
 				data.put("errorData", "文件附件上传失败");
 			}
+
 			//考虑设置为文件信息编号，展示时不做文件信息展示，仅仅展示 查看附件
 			itemDto.setProof(fileInfo.getFileInfoId());
+
 		} else if (IMPORT_EXCEL.equals(importRequired)) {
-			return invalidOperationResponse();
+			itemDto.setProof(null);
 		}
 
-		//利用转换的方式获得相应的参数列表、职责描述列表和权重列表
+		// 添加时，将对应的json串全部转换为相应的list，便于生成成员各自的工作量条目
+		// 修改时，数据库（pojo）中存放的属性已经是该教师自己对应的参数值，若要修改参数值，需要为 该条目拥有者编号：对应的参数
 		Item oldItem = itemConverter.dtoToPo(itemDto);
 		ItemDto newItemDto = itemConverter.poToDto(oldItem);
 
-		Category category = categoryService.getCategory(itemDto.getCategoryId(),getCurrentSemester());
-		//小组总的工作量或者个人的工作量结果
+		// 根据转换获得的参数列表和权重列表计算出总的工作量
 		double workload = FormulaCalculate
 				.calculate(category.getFormula(), newItemDto.getParameterValues());
 
-		if (GROUP.equals(newItemDto.getIsGroup())) {
-			if (!newItemDto.getGroupManagerId().equals(user.getUserId())) {
-				return invalidOperationResponse("非小组组长不能申报小组工作量");
-			}
+		// 获取对应的权重列表
+		List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
+
+		// 权重列表不为空时，去为每个成员生成对应的条目信息
+		if (GROUP.equals(newItemDto.getIsGroup()) && !isEmptyList(childWeightList)) {
+
 			List<Item> itemList = new ArrayList<>();
-			List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
+
+			// 成员职责列表
 			List<JobDesc> jobDescList = newItemDto.getJobDescList();
 
 			Item item = itemConverter.dtoToPo(itemDto);
 
-			//对组员的工作量信息进行保存，分别计算工作量
+			// 对组员的工作量信息进行保存，分别计算工作量
 			for (int index = 0; index < childWeightList.size(); index++) {
-				int ownerId = childWeightList.get(index).getUserId();
+
+				// 获取对应成员教师的工作量信息进行组装
+				Integer ownerId = childWeightList.get(index).getUserId();
+
 				if (jobDescList.get(index).getUserId().equals(ownerId)) {
-					//设置组员各自的工作量信息
-					//克隆Item工作量条目，以克隆公共信息
+
+					// 克隆Item工作量条目，以克隆公共信息
 					Item itemTemp = (Item) item.clone();
+
+					// 设置成员各自的工作量属性信息
 					itemTemp.setOwnerId(ownerId);
 					itemTemp.setJobDesc(jobDescList.get(index).getJobDesc());
+
+					// 获取对应的权重进行相应的计算
 					double weight = childWeightList.get(index).getWeight();
 					itemTemp.setJsonChildWeight(String.valueOf(weight));
 					itemTemp.setStatus(UNCOMMITTED);
 
-					//计算组员各自的工作量
+					// 计算组员各自的工作量
 					itemTemp.setWorkload(workload * weight);
-					//保存成员老师的工作量条目到数据库中
+
+					// 保存成员老师的工作量条目到数据库中
 					boolean saveSuccess = itemService.saveItem(itemTemp);
 					if (!saveSuccess) {
-						return systemErrResponse();
+						errorData.put(teacherService.findTeacherNameById(ownerId), "保存失败");
 					}
-					//用于返回前端的数据展示
+
+					// 保存成功的item集合，用于返回前端的数据展示
 					itemList.add(itemTemp);
 				}
 			}
 			data.put("itemList", itemConverter.poListToDtoList(itemList));
 
 		} else {
+			// 个人申报
 			newItemDto.setWorkload(workload);
 			newItemDto.setStatus(UNCOMMITTED);
+
+			// 设置小组负责人为他自己
 			newItemDto.setGroupManagerId(newItemDto.getOwnerId());
 			Item item = itemConverter.dtoToPo(newItemDto);
 
@@ -399,7 +438,7 @@ public class ItemManageController extends ApplicationController {
 		}
 
 		for (Integer itemId : itemIdList) {
-			Item item = itemService.findItem(itemId,getCurrentSemester());
+			Item item = itemService.findItem(itemId, getCurrentSemester());
 			if (null == item) {
 				return parameterNotSupportResponse("参数有误");
 			}
@@ -444,11 +483,12 @@ public class ItemManageController extends ApplicationController {
 		Map<String, Object> errorData = getData();
 
 		for (Integer itemId : itemIdList) {
-			Item item = itemService.findItem(itemId,getCurrentSemester());
+			Item item = itemService.findItem(itemId, getCurrentSemester());
 			if (item.getOwnerId().equals(teacherId) && UNCOMMITTED.equals(item.getStatus())) {
 
 				//申请截止时间限制
-				Category category = categoryService.getCategory(item.getCategoryId(),getCurrentSemester());
+				Category category = categoryService
+						.getCategory(item.getCategoryId(), getCurrentSemester());
 				if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
 					errorData.put(item.getItemName(), "申请已经截止");
 					continue;
@@ -465,7 +505,7 @@ public class ItemManageController extends ApplicationController {
 				if (!saveSuccess || !fileSubmitSuccess) {
 					errorData.put(item.getItemName(), "提交失败");
 				} else {
-					item = itemService.findItem(itemId,getCurrentSemester());
+					item = itemService.findItem(itemId, getCurrentSemester());
 					itemList.add(item);
 				}
 			} else {
@@ -494,7 +534,8 @@ public class ItemManageController extends ApplicationController {
 		int teacherId = user.getUserId();
 
 		//根据教师编号查询对应的未提交状态的工作量
-		List<Item> itemList = itemService.findItemsByStatus(UNCOMMITTED, teacherId,getCurrentSemester());
+		List<Item> itemList = itemService
+				.findItemsByStatus(UNCOMMITTED, teacherId, getCurrentSemester());
 		if (null == itemList) {
 			return invalidOperationResponse("无可提交的项目");
 		}
@@ -504,7 +545,8 @@ public class ItemManageController extends ApplicationController {
 		for (Item item : itemList) {
 
 			//申请截止时间限制
-			Category category = categoryService.getCategory(item.getCategoryId(),getCurrentSemester());
+			Category category = categoryService
+					.getCategory(item.getCategoryId(), getCurrentSemester());
 			if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
 				errorData.put(item.getItemName(), "申请已经截止");
 				continue;
@@ -547,8 +589,8 @@ public class ItemManageController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
-		Category category = categoryService.getCategory(item.getCategoryId(),getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
+		Category category = categoryService.getCategory(item.getCategoryId(), getCurrentSemester());
 		if (DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
 			return invalidOperationResponse("复核已经截止");
 		}

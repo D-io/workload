@@ -117,6 +117,8 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		}
 
 		Item item = new Item();
+		item.setItemId(
+				(null == dto.getItemId() || ZERO_INT == dto.getItemId()) ? null : dto.getItemId());
 		item.setJsonChildWeight(dto.getJsonChildWeight());
 		item.setProof(dto.getProof());
 		item.setJobDesc(dto.getJobDesc());
