@@ -206,7 +206,7 @@ function ztree() {
         zTree.selectNode(treeNode);
 
         setTimeout(function () {
-
+            var editCount=0;
             var zTree = $.fn.zTree.getZTreeObj("treeDemo");
             var sNodes = zTree.getSelectedNodes();
             $(".manageEdit").show();
@@ -214,6 +214,8 @@ function ztree() {
             $("#cancel").hide();
             $("#save").hide();
             $(".form-control").attr("disabled","disabled");
+            $("#year").removeAttr("disabled");
+            $("#term").removeAttr("disabled");
 
             if (sNodes.length > 0) {
                 var parentNode = sNodes[0].getParentNode();
@@ -236,17 +238,20 @@ function ztree() {
 
                     if($(this).val()==1){
                         $(".requiredtime").show();
+                        $(".select2").show();
                         $(".applyDeadLabel").text("复核截止时间");
                         $(".revDeadLabel").text("导入截止时间");
                     }
                     else if($(this).val()==0){
                         $(".fomulaPara").show();
                         $(".requiredtime").show();
+                        $(".select2").show();
                         $(".applyDeadLabel").text("申报截止时间");
                         $(".revDeadLabel").text("审核截止时间");
                     }
                     else{
                         $(".requiredtime").hide();
+                        $(".select2").hide();
                     }
                 }
             });
@@ -255,8 +260,8 @@ function ztree() {
                     $(this).attr("selected",true);
                 }
             });*/
-           /* $("#teacherName option[value='"+treeNode.reviewerId+"']").attr("selected","selected");*/
-           $("#teacherName").val(treeNode.reviewerId);
+         //   $("#teacherName option[value='"+treeNode.reviewerId+"']").attr("selected","selected");
+          $("#teacherName").val(treeNode.reviewerId);
 
             $("input:radio[name='hasChildNode']").each(function (){
                 if($(this).val()==treeNode.isLeaf){
@@ -275,8 +280,8 @@ function ztree() {
             var addOtherStr='';
 
             for(var pramterCount=0;pramterCount<otherjsonstrArray.length;pramterCount++){
-
-                addOtherStr+="<tr><td><input type='text' class='form-control otherParameterName' name='otherParameterName'></td></tr>";
+                editCount++;
+                addOtherStr+="<tr class='editOtherCount_"+editCount+"'><td><input type='text' class='form-control otherParameterName' name='otherParameterName'><a class='btn btn-danger editOtherRow' id='editOtherRow_"+editCount+"' style='float:right;'><i class='fa fa-trash'></i></a></td></tr>";
 
             }
             $('.addOtherPramter').append(addOtherStr);
@@ -291,8 +296,8 @@ function ztree() {
              }*/
             var addStr='';
             for(var pramterCount=0;pramterCount<jsonstrArray.length;pramterCount++){
-
-                addStr+="<tr><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'></td></tr>";
+                editCount++;
+                addStr+="<tr class='editParaCount_"+editCount+"'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><a class='btn btn-danger editParaRow' id='editParaRow_"+editCount+"' style='float: right;'><i class='fa fa-trash'></i></a></td></tr>";
 
             }
             $('.AddPramter').append(addStr);
@@ -372,8 +377,8 @@ function ztree() {
                         desc: $('#desc').val(),
                         parentId: parNodeId,
                         isLeaf: ischild,
-                        reviewDeadline: format(reviewTimetodate),
-                        applyDeadline: format(applyTimetodate),
+                        reviewDeadline: reviewTimetodate,
+                        applyDeadline: applyTimetodate,
                         reviewerId: reviewerid.val(),
                         formula: $('#formula').val(),
                         importRequired: radio.val(),
@@ -383,90 +388,97 @@ function ztree() {
                         otherJson:otherArray
                     },
                     function (data) {
-                        var x=data.data.category.reviewDeadline;
-                        var y=data.data.category.applyDeadline;
-                        var a=x.match(/\d+/g);
+
+                    /*    var a=x.match(/\d+/g);
                         var b=y.match(/\d+/g);
                         var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
-                        var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];
+                        var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];*/
+                        if(data.status==200){
+                            alert("编辑规则成功！");
+                        }
+                        if(data.data.category){
+                            var x=data.data.category.reviewDeadline;
+                            var y=data.data.category.applyDeadline;
+                            for (var i = 0; i < zNodes.length; i++) {
 
-                        for (var i = 0; i < zNodes.length; i++) {
-                            if (zNodes[i].id == data.data.category.categoryId) {
+                                if (zNodes[i].id == data.data.category.categoryId) {
 
-                                /*var newNode = {
-                                    'name': data.data.category.name,
-                                    'id': data.data.category.categoryId,
-                                    'parentId': data.data.category.parentId,
-                                    'desc': data.data.category.desc,
-                                    'reviewDeadline': rewDeadline,
-                                    'applyDeadline': appDeadline,
-                                    'formula': data.data.category.formula,
-                                    'reviewerId':data.data.category.reviewerId,
-                                    'formulaParameterList':data.data.category.formulaParameterList,
-                                    'isLeaf':data.data.category.isLeaf,
-                                    'importRequired':data.data.category.importRequired,
-                                    'otherJsonParameters':data.data.category.otherJsonParameters
-                                };*/
-                                if(data.data.importRequired==1){
-                                    var newNode = {
-                                        'name': data.data.category.name,
-                                        'id': data.data.category.categoryId,
-                                        'parentId': data.data.category.parentId,
-                                        'desc': data.data.category.desc,
-                                        'reviewDeadline': rewDeadline,
-                                        'applyDeadline': appDeadline,
-                                        'formula': data.data.category.formula,
-                                        'reviewerId':data.data.category.reviewerId,
-                                        'formulaParameterList':data.data.category.formulaParameterList,
-                                        'otherJsonParameters':data.data.category.otherJsonParameters,
-                                        'isLeaf':data.data.category.isLeaf,
-                                        'importRequired':data.data.category.importRequired,
-                                        'font':{'color':'rgba(29,125,228,0.74)'},
-                                        'iconSkin':"icon06"
-                                    };
-                                }
-                                else if(data.data.importRequired==0){
-                                    var newNode = {
-                                        'name': data.data.category.name,
-                                        'id': data.data.category.categoryId,
-                                        'parentId': data.data.category.parentId,
-                                        'desc': data.data.category.desc,
-                                        'reviewDeadline': rewDeadline,
-                                        'applyDeadline': appDeadline,
-                                        'formula': data.data.category.formula,
-                                        'reviewerId':data.data.category.reviewerId,
-                                        'formulaParameterList':data.data.category.formulaParameterList,
-                                        'otherJsonParameters':data.data.category.otherJsonParameters,
-                                        'isLeaf':data.data.category.isLeaf,
-                                        'importRequired':data.data.category.importRequired,
-                                        'font':{'color':'rgba(29,125,228,0.74)'},
-                                        'iconSkin':"icon02"
-                                    };
-                                }
-                                else {
-                                    var newNode = {
-                                        'name': data.data.category.name,
-                                        'id': data.data.category.categoryId,
-                                        'parentId': data.data.category.parentId,
-                                        'desc': data.data.category.desc,
-                                        'reviewDeadline': rewDeadline,
-                                        'applyDeadline': appDeadline,
-                                        'formula': data.data.category.formula,
-                                        'reviewerId':data.data.category.reviewerId,
-                                        'formulaParameterList':data.data.category.formulaParameterList,
-                                        'otherJsonParameters':data.data.category.otherJsonParameters,
-                                        'isLeaf':data.data.category.isLeaf,
-                                        'importRequired':data.data.category.importRequired,
-                                        'font':{'color':'rgba(29,125,228,0.74)'}
-                                    };
-                                }
-                                zNodes.splice(i, 1, newNode);
-                                zTree.updateNode(zNodes[i]);
-                                $('#'+treeNode.tId+'_span').text(newNode.name);
+                                    /*var newNode = {
+                                     'name': data.data.category.name,
+                                     'id': data.data.category.categoryId,
+                                     'parentId': data.data.category.parentId,
+                                     'desc': data.data.category.desc,
+                                     'reviewDeadline': rewDeadline,
+                                     'applyDeadline': appDeadline,
+                                     'formula': data.data.category.formula,
+                                     'reviewerId':data.data.category.reviewerId,
+                                     'formulaParameterList':data.data.category.formulaParameterList,
+                                     'isLeaf':data.data.category.isLeaf,
+                                     'importRequired':data.data.category.importRequired,
+                                     'otherJsonParameters':data.data.category.otherJsonParameters
+                                     };*/
+                                    if(data.data.importRequired==1){
+                                        var newNode = {
+                                            'name': data.data.category.name,
+                                            'id': data.data.category.categoryId,
+                                            'parentId': data.data.category.parentId,
+                                            'desc': data.data.category.desc,
+                                            'reviewDeadline': x,
+                                            'applyDeadline': y,
+                                            'formula': data.data.category.formula,
+                                            'reviewerId':data.data.category.reviewerId,
+                                            'formulaParameterList':data.data.category.formulaParameterList,
+                                            'otherJsonParameters':data.data.category.otherJsonParameters,
+                                            'isLeaf':data.data.category.isLeaf,
+                                            'importRequired':data.data.category.importRequired,
+                                            'font':{'color':'rgba(29,125,228,0.74)'},
+                                            'iconSkin':"icon06"
+                                        };
+                                    }
+                                    else if(data.data.importRequired==0){
+                                        var newNode = {
+                                            'name': data.data.category.name,
+                                            'id': data.data.category.categoryId,
+                                            'parentId': data.data.category.parentId,
+                                            'desc': data.data.category.desc,
+                                            'reviewDeadline': x,
+                                            'applyDeadline':y,
+                                            'formula': data.data.category.formula,
+                                            'reviewerId':data.data.category.reviewerId,
+                                            'formulaParameterList':data.data.category.formulaParameterList,
+                                            'otherJsonParameters':data.data.category.otherJsonParameters,
+                                            'isLeaf':data.data.category.isLeaf,
+                                            'importRequired':data.data.category.importRequired,
+                                            'font':{'color':'rgba(29,125,228,0.74)'},
+                                            'iconSkin':"icon02"
+                                        };
+                                    }
+                                    else {
+                                        var newNode = {
+                                            'name': data.data.category.name,
+                                            'id': data.data.category.categoryId,
+                                            'parentId': data.data.category.parentId,
+                                            'desc': data.data.category.desc,
+                                            'reviewDeadline': x,
+                                            'applyDeadline': y,
+                                            'formula': data.data.category.formula,
+                                            'reviewerId':data.data.category.reviewerId,
+                                            'formulaParameterList':data.data.category.formulaParameterList,
+                                            'otherJsonParameters':data.data.category.otherJsonParameters,
+                                            'isLeaf':data.data.category.isLeaf,
+                                            'importRequired':data.data.category.importRequired,
+                                            'font':{'color':'rgba(29,125,228,0.74)'}
+                                        };
+                                    }
+                                    zNodes.splice(i, 1, newNode);
+                                    zTree.updateNode(zNodes[i]);
+                                    $('#'+treeNode.tId+'_span').text(newNode.name);
 
-                                $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                                    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                                }
                             }
                         }
+
 
 
                     }
@@ -497,15 +509,14 @@ function ztree() {
             },
             datatype:'json',
             success:function(data){
-                if(data.data.categoryList) {
-                    return confirm("删除节点成功！");
+                if(data.status==200) {
                     for(var m=0;m<zNodes.length;m++){
                         if(zNodes[m].id==data.data.categoryList.categoryId){
                             zNodes.splice(m-1,1);
                         }
                     }
                     $('#'+treeNode.tId).remove();
-
+                    return confirm("删除节点成功！");
                 }
                 else {
 
@@ -625,8 +636,8 @@ function ztree() {
                         desc: $('#desc').val(),
                         parentId: treeNode.id,
                         isLeaf: ischild,
-                        reviewDeadline: format(reviewTimetodate),
-                        applyDeadline: format(applyTimetodate),
+                        reviewDeadline: reviewTimetodate,
+                        applyDeadline: applyTimetodate,
                         reviewerId:reviewerid.val() ,
                         formula: $('#formula').val(),
                         importRequired: radio.val(),
@@ -634,70 +645,76 @@ function ztree() {
                         jsonParameters: newArray,
                         otherJson:otherArray
                     }, function (data) {
-                        var x=data.data.category.reviewDeadline;
-                        var y=data.data.category.applyDeadline;
-                        var a=x.match(/\d+/g);
-                        var b=y.match(/\d+/g);
-                        var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
-                        var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];
-                        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                        if(data.data.importRequired==1){
-                            var newNode = {
-                                'name': data.data.category.name,
-                                'id': data.data.category.categoryId,
-                                'parentId': data.data.category.parentId,
-                                'desc': data.data.category.desc,
-                                'reviewDeadline': rewDeadline,
-                                'applyDeadline': appDeadline,
-                                'formula': data.data.category.formula,
-                                'reviewerId':data.data.category.reviewerId,
-                                'formulaParameterList':data.data.category.formulaParameterList,
-                                'otherJsonParameters':data.data.category.otherJsonParameters,
-                                'isLeaf':data.data.category.isLeaf,
-                                'importRequired':data.data.category.importRequired,
-                                'font':{'color':'rgba(29,125,228,0.74)'},
-                                'iconSkin':"icon06"
-                            };
+                        if(data.status==200){
+                            alert("添加规则成功！");
                         }
-                        else if(data.data.importRequired==0){
-                            var newNode = {
-                                'name': data.data.category.name,
-                                'id': data.data.category.categoryId,
-                                'parentId': data.data.category.parentId,
-                                'desc': data.data.category.desc,
-                                'reviewDeadline': rewDeadline,
-                                'applyDeadline': appDeadline,
-                                'formula': data.data.category.formula,
-                                'reviewerId':data.data.category.reviewerId,
-                                'formulaParameterList':data.data.category.formulaParameterList,
-                                'otherJsonParameters':data.data.category.otherJsonParameters,
-                                'isLeaf':data.data.category.isLeaf,
-                                'importRequired':data.data.category.importRequired,
-                                'font':{'color':'rgba(29,125,228,0.74)'},
-                                'iconSkin':"icon02"
-                            };
-                        }
-                        else {
-                            var newNode = {
-                                'name': data.data.category.name,
-                                'id': data.data.category.categoryId,
-                                'parentId': data.data.category.parentId,
-                                'desc': data.data.category.desc,
-                                'reviewDeadline': rewDeadline,
-                                'applyDeadline': appDeadline,
-                                'formula': data.data.category.formula,
-                                'reviewerId':data.data.category.reviewerId,
-                                'formulaParameterList':data.data.category.formulaParameterList,
-                                'otherJsonParameters':data.data.category.otherJsonParameters,
-                                'isLeaf':data.data.category.isLeaf,
-                                'importRequired':data.data.category.importRequired,
-                                'font':{'color':'rgba(29,125,228,0.74)'}
-                            };
+                        if(data.data.category){
+                            var rewDeadline=data.data.category.reviewDeadline;
+                            var appDeadline=data.data.category.applyDeadline;
+                            /*  var a=x.match(/\d+/g);
+                             var b=y.match(/\d+/g);*/
+                            /* var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
+                             var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];*/
+                            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                            if(data.data.category.importRequired==1){
+                                var newNode = {
+                                    'name': data.data.category.name,
+                                    'id': data.data.category.categoryId,
+                                    'parentId': data.data.category.parentId,
+                                    'desc': data.data.category.desc,
+                                    'reviewDeadline': rewDeadline,
+                                    'applyDeadline': appDeadline,
+                                    'formula': data.data.category.formula,
+                                    'reviewerId':data.data.category.reviewerId,
+                                    'formulaParameterList':data.data.category.formulaParameterList,
+                                    'otherJsonParameters':data.data.category.otherJsonParameters,
+                                    'isLeaf':data.data.category.isLeaf,
+                                    'importRequired':data.data.category.importRequired,
+                                    'font':{'color':'#FFB951'},
+                                    'iconSkin':"icon06"
+                                };
+                            }
+                            else if(data.data.category.importRequired==0){
+                                var newNode = {
+                                    'name': data.data.category.name,
+                                    'id': data.data.category.categoryId,
+                                    'parentId': data.data.category.parentId,
+                                    'desc': data.data.category.desc,
+                                    'reviewDeadline': rewDeadline,
+                                    'applyDeadline': appDeadline,
+                                    'formula': data.data.category.formula,
+                                    'reviewerId':data.data.category.reviewerId,
+                                    'formulaParameterList':data.data.category.formulaParameterList,
+                                    'otherJsonParameters':data.data.category.otherJsonParameters,
+                                    'isLeaf':data.data.category.isLeaf,
+                                    'importRequired':data.data.category.importRequired,
+                                    'font':{'color':'#FFB951'},
+                                    'iconSkin':"icon02"
+                                };
+                            }
+                            else {
+                                var newNode = {
+                                    'name': data.data.category.name,
+                                    'id': data.data.category.categoryId,
+                                    'parentId': data.data.category.parentId,
+                                    'desc': data.data.category.desc,
+                                    'reviewDeadline': rewDeadline,
+                                    'applyDeadline': appDeadline,
+                                    'formula': data.data.category.formula,
+                                    'reviewerId':data.data.category.reviewerId,
+                                    'formulaParameterList':data.data.category.formulaParameterList,
+                                    'otherJsonParameters':data.data.category.otherJsonParameters,
+                                    'isLeaf':data.data.category.isLeaf,
+                                    'importRequired':data.data.category.importRequired,
+                                    'font':{'color':'#FFB951'}
+                                };
+                            }
+
+                            newNode = zTree.addNodes(treeNode, newNode);
+
+                            zNodes.push(newNode);
                         }
 
-                        newNode = zTree.addNodes(treeNode, newNode);
-
-                        zNodes.push(newNode);
 
                     });
                     $('#addModal').modal('hide');
@@ -760,8 +777,8 @@ function ztree() {
                     desc: $('#desc').val(),
                     parentId: 0,
                     isLeaf: ischild,
-                    reviewDeadline: format(reviewTimetodate),
-                    applyDeadline: format(applyTimetodate),
+                    reviewDeadline: reviewTimetodate,
+                    applyDeadline: applyTimetodate,
                     reviewerId:reviewerid.val() ,
                     formula: $('#formula').val(),
                     importRequired: radio.val(),
@@ -769,65 +786,70 @@ function ztree() {
                     jsonParameters: newArray,
                     otherJson:otherArray
                 }, function (data) {
+                    if(data.status==200){
+                        alert("添加规则成功！");
+                    }
+                    if(data.data.category){
+                        var x=data.data.category.reviewDeadline;
+                        var y=data.data.category.applyDeadline;
+                        /* var a=x.match(/\d+/g);
+                         var b=y.match(/\d+/g);*/
+                        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                        if(data.data.importRequired==1){
+                            var newNode= {'name': data.data.category.name,
+                                'id': data.data.category.categoryId,
+                                'parentId': data.data.category.parentId,
+                                'desc':data.data.category.desc,
+                                'reviewDeadline':x,
+                                'applyDeadline':y,
+                                'formula':data.data.category.formula,
+                                'reviewerId':data.data.category.reviewerId,
+                                'formulaParameterList':data.data.category.formulaParameterList,
+                                'otherJsonParameters':data.data.category.otherJsonParameters,
+                                'isLeaf':data.data.category.isLeaf,
+                                'importRequired':data.data.category.importRequired,
+                                'font':{'color':'#FFB951'},
+                                'iconSkin':'icon06'
+                            };
+                        }
+                        else if(data.data.importRequired==0){
+                            var newNode= {'name': data.data.category.name,
+                                'id': data.data.category.categoryId,
+                                'parentId': data.data.category.parentId,
+                                'desc':data.data.category.desc,
+                                'reviewDeadline':x,
+                                'applyDeadline':y,
+                                'formula':data.data.category.formula,
+                                'reviewerId':data.data.category.reviewerId,
+                                'formulaParameterList':data.data.category.formulaParameterList,
+                                'otherJsonParameters':data.data.category.otherJsonParameters,
+                                'isLeaf':data.data.category.isLeaf,
+                                'importRequired':data.data.category.importRequired,
+                                'font':{'color':'#FFB951'},
+                                'iconSkin':'icon02'
+                            };
+                        }
+                        else {
+                            var newNode= {'name': data.data.category.name,
+                                'id': data.data.category.categoryId,
+                                'parentId': data.data.category.parentId,
+                                'desc':data.data.category.desc,
+                                'reviewDeadline':x,
+                                'applyDeadline':y,
+                                'formula':data.data.category.formula,
+                                'reviewerId':data.data.category.reviewerId,
+                                'formulaParameterList':data.data.category.formulaParameterList,
+                                'otherJsonParameters':data.data.category.otherJsonParameters,
+                                'isLeaf':data.data.category.isLeaf,
+                                'importRequired':data.data.category.importRequired,
+                                'font':{'color':'#FFB951'}
+                            };
+                        }
 
-                    var x=data.data.category.reviewDeadline;
-                    var y=data.data.category.applyDeadline;
-                    var a=x.match(/\d+/g);
-                    var b=y.match(/\d+/g);
-                    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                    if(data.data.importRequired==1){
-                        var newNode= {'name': data.data.category.name,
-                            'id': data.data.category.categoryId,
-                            'parentId': data.data.category.parentId,
-                            'desc':data.data.category.desc,
-                            'reviewDeadline':x[1]/x[2]/x[0],
-                            'applyDeadline':y[1]/y[2]/y[0],
-                            'formula':data.data.category.formula,
-                            'reviewerId':data.data.category.reviewerId,
-                            'formulaParameterList':data.data.category.formulaParameterList,
-                            'otherJsonParameters':data.data.category.otherJsonParameters,
-                            'isLeaf':data.data.category.isLeaf,
-                            'importRequired':data.data.category.importRequired,
-                            'font':{'color':'rgba(29,125,228,0.74)'},
-                            'iconSkin':'icon06'
-                        };
-                    }
-                    else if(data.data.importRequired==0){
-                        var newNode= {'name': data.data.category.name,
-                            'id': data.data.category.categoryId,
-                            'parentId': data.data.category.parentId,
-                            'desc':data.data.category.desc,
-                            'reviewDeadline':x[1]/x[2]/x[0],
-                            'applyDeadline':y[1]/y[2]/y[0],
-                            'formula':data.data.category.formula,
-                            'reviewerId':data.data.category.reviewerId,
-                            'formulaParameterList':data.data.category.formulaParameterList,
-                            'otherJsonParameters':data.data.category.otherJsonParameters,
-                            'isLeaf':data.data.category.isLeaf,
-                            'importRequired':data.data.category.importRequired,
-                            'font':{'color':'rgba(29,125,228,0.74)'},
-                            'iconSkin':'icon02'
-                        };
-                    }
-                    else {
-                        var newNode= {'name': data.data.category.name,
-                            'id': data.data.category.categoryId,
-                            'parentId': data.data.category.parentId,
-                            'desc':data.data.category.desc,
-                            'reviewDeadline':x[1]/x[2]/x[0],
-                            'applyDeadline':y[1]/y[2]/y[0],
-                            'formula':data.data.category.formula,
-                            'reviewerId':data.data.category.reviewerId,
-                            'formulaParameterList':data.data.category.formulaParameterList,
-                            'otherJsonParameters':data.data.category.otherJsonParameters,
-                            'isLeaf':data.data.category.isLeaf,
-                            'importRequired':data.data.category.importRequired,
-                            'font':{'color':'rgba(29,125,228,0.74)'}
-                        };
+                        newNode = zTree.addNodes(null, newNode);
+                        zNodes.push(newNode);
                     }
 
-                    newNode = zTree.addNodes(null, newNode);
-                    zNodes.push(newNode);
 
                 }, "json");
 
@@ -844,17 +866,25 @@ function ztree() {
                 $(".applyDeadLabel").text("复核截止时间");
                 $(".revDeadLabel").text("导入截止时间");
                 $(".requiredtime").show();
+                $(".select2").show();
             }
             else if(options.val()==0){
                 $(".applyDeadLabel").text("申报截止时间");
                 $(".revDeadLabel").text("审核截止时间");
                 $(".requiredtime").show();
+                $(".select2").show();
             }
             else {
                 $(".requiredtime").hide();
+                $(".select2").hide();
             }
 
         });
+        $("#teacherName").select2({
+            allowClear: true,
+            width:"100%",
+        });
+        $.fn.modal.Constructor.prototype.enforceFocus = function () {};
 
     });
     function add0(m){return m<10?'0'+m:m }
