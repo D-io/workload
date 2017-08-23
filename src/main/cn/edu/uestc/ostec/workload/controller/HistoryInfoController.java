@@ -70,7 +70,7 @@ public class HistoryInfoController extends ApplicationController {
 		}
 		int userId = user.getUserId();
 
-		List<History> historyList = historyService.getCategoryHistories(userId);
+		List<History> historyList = historyService.getCategoryHistories(userId,getCurrentSemester());
 		if(isEmptyList(historyList)) {
 			return successResponse("无相关记录");
 		}
@@ -97,7 +97,7 @@ public class HistoryInfoController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		List<History> historyList = historyService.getHistoriesByItem(itemId);
+		List<History> historyList = historyService.getHistoriesByItem(itemId,getCurrentSemester());
 		if (isEmptyList(historyList)) {
 			return successResponse("无相关记录");
 		}
@@ -128,7 +128,7 @@ public class HistoryInfoController extends ApplicationController {
 		int userId = user.getUserId();
 
 		//获取用户相关的历史记录，同时对应类型type
-		List<History> historyList = historyService.getHistoriesByUserRelated(userId, type);
+		List<History> historyList = historyService.getHistoriesByUserRelated(userId, type,getCurrentSemester());
 
 		if (isEmptyList(historyList)) {
 			return successResponse();
@@ -182,7 +182,7 @@ public class HistoryInfoController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		List<History> historyList = historyService.getHistoriesByType(type);
+		List<History> historyList = historyService.getHistoriesByType(type,getCurrentSemester());
 
 		if (isEmptyList(historyList)) {
 			return successResponse();
@@ -236,7 +236,7 @@ public class HistoryInfoController extends ApplicationController {
 		//根据对应的条目查找相应的历史记录
 		for (ItemDto item : itemDtoList) {
 			List<History> historyList = historyService
-					.getHistoriesByItem(buildHistoryItemId(item.getItemId()));
+					.getHistoriesByItem(buildHistoryItemId(item.getItemId()),getCurrentSemester());
 			histories.addAll(historyList);
 		}
 		return histories;

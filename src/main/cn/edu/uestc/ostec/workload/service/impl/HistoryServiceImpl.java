@@ -29,33 +29,33 @@ public class HistoryServiceImpl extends BaseServiceImpl implements HistoryServic
 	private HistoryDao historyDao;
 
 	@Override
-	public History getHistory(Integer historyId) {
-		return objectResult(historyDao.selectHistories(historyId,null,null,null),EMPTY_HISTORY);
+	public History getHistory(Integer historyId,String version) {
+		return objectResult(historyDao.selectHistories(historyId,null,null,null,version),EMPTY_HISTORY);
 	}
 
 	@Override
-	public List<History> getHistoriesByUser(Integer userId) {
-		return listResult(historyDao.selectHistories(null,userId,null,null));
+	public List<History> getHistoriesByUser(Integer userId,String version) {
+		return listResult(historyDao.selectHistories(null,userId,null,null,version));
 	}
 
 	@Override
-	public List<History> getHistoriesByItem(String itemId) {
-		return listResult(historyDao.selectHistories(null,null,itemId,null));
+	public List<History> getHistoriesByItem(String itemId,String version) {
+		return listResult(historyDao.selectHistories(null,null,itemId,null,version));
 	}
 
 	@Override
-	public List<History> getHistoriesByType(String type) {
-		return listResult(historyDao.selectHistories(null,null,null,type));
+	public List<History> getHistoriesByType(String type,String version) {
+		return listResult(historyDao.selectHistories(null,null,null,type,version));
 	}
 
 	@Override
-	public List<History> getHistoriesByUserRelated(Integer userId,String type) {
-		return listResult(historyDao.selectByUserRelated(userId,type));
+	public List<History> getHistoriesByUserRelated(Integer userId,String type,String version) {
+		return listResult(historyDao.selectByUserRelated(userId,type,version));
 	}
 
 	@Override
-	public List<History> getHistories() {
-		return listResult(historyDao.selectHistories(null,null,null,null));
+	public List<History> getHistories(String version) {
+		return listResult(historyDao.selectHistories(null,null,null,null,version));
 	}
 
 	@Override
@@ -71,8 +71,8 @@ public class HistoryServiceImpl extends BaseServiceImpl implements HistoryServic
 	}
 
 	@Override
-	public List<History> getCategoryHistories(Integer userId) {
-		return listResult(historyDao.selectAllCategoryHistory(userId));
+	public List<History> getCategoryHistories(Integer userId,String version) {
+		return listResult(historyDao.selectAllCategoryHistory(userId,version));
 	}
 
 }

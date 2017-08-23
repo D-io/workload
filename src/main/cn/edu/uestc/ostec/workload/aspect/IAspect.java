@@ -13,6 +13,7 @@ import cn.edu.uestc.ostec.workload.adaptor.ServletContextAdapter;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_CURRENT_SCHEME;
+import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_CURRENT_YEAR;
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -51,13 +52,13 @@ public interface IAspect extends ServletContextAdapter {
 	 * @return 方法入参组成的Object数组
 	 */
 	default Object[] getParameters(JoinPoint joinPoint) {
-		
+
 		return joinPoint.getArgs();
 	}
 
 	default Boolean vertifyStatus(Object rvt) {
 		RestResponse restResponse = (RestResponse) rvt;
-		if(OK.value() != restResponse.getStatus()) {
+		if (OK.value() != restResponse.getStatus()) {
 			return false;
 		}
 		return true;
@@ -71,7 +72,25 @@ public interface IAspect extends ServletContextAdapter {
 		return "C" + categoryId.toString();
 	}
 
+	default String getCurrentYear() {
+		return (String) getSessionContext().getAttribute(SESSION_CURRENT_YEAR);
+	}
+
+	/**
+	 * 获取当前学期
+	 *
+	 * @return 学期对应的整形数据
+	 */
+	default Integer getCurrentScheme() {
+		return (Integer) getSessionContext().getAttribute(SESSION_CURRENT_SCHEME);
+	}
+
+	/**
+	 * 获取version
+	 *
+	 * @return version对应的字符串
+	 */
 	default String getCurrentSemester() {
-		return (String) getSessionContext().getAttribute(SESSION_CURRENT_SCHEME);
+		return getCurrentYear() + "-" + getCurrentScheme().toString();
 	}
 }

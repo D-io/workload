@@ -20,12 +20,13 @@
         <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
         <result column="type" jdbcType="VARCHAR" property="type" />
         <result column="aim_user_id" jdbcType="INTEGER" property="aimUserId"/>
+        <result column="version" jdbcType="VARCHAR" property="version"/>
     </resultMap>
 
     <select id="selectHistories" resultMap="historyResultMap">
         SELECT * FROM history
         <where>
-            1 = 1
+            1 = 1 AND version = #{version}
             <if test="null != historyId">
                 AND history_id = #{historyId}
             </if>
@@ -45,7 +46,8 @@
     <select id="selectByUserRelated" resultMap="historyResultMap">
         SELECT * FROM history
         <where>
-            (user_id = #{userId} OR aim_user_id = #{userId}) OR aim_user_id = 0000000
+            1 = 1 AND version = #{version}
+            AND (user_id = #{userId} OR aim_user_id = #{userId}) OR aim_user_id = 0000000
             <if test="null != type">
                 AND type = #{type}
             </if>
@@ -55,22 +57,22 @@
     </select>
 
     <insert id="insert">
-    INSERT INTO history(history_id,user_id,create_time,operation,item_id,type,aim_user_id)
-    VALUES(#{historyId},#{userId},#{createTime},#{operation},#{itemId},#{type},#{aimUserId})
+    INSERT INTO history(history_id,user_id,create_time,operation,item_id,type,aim_user_id,version)
+    VALUES(#{historyId},#{userId},#{createTime},#{operation},#{itemId},#{type},#{aimUserId},#{version})
   </insert>
 
     <update id="update">
     UPDATE history
     SET user_id =#{userId},create_time=#{createTime},operation=#{operation},item_id = #{itemId},type=#{type},aim_user_id=#{aimUserId}
-    WHERE history_id = #{historyId}
+    WHERE history_id = #{historyId} and version = #{version}
   </update>
 
     <delete id="delete">
-    DELETE FROM history WHERE history_id =#{historyId}
+    DELETE FROM history WHERE history_id =#{historyId} and version = #{version}
   </delete>
 
     <select id="selectAllCategoryHistory" resultMap="historyResultMap">
-        SELECT * FROM history WHERE (user_id = #{userId} OR aim_user_id = #{userId} OR aim_user_id = 0000000)
+        SELECT * FROM history WHERE (user_id = #{userId} OR aim_user_id = #{userId} OR aim_user_id = 0000000) AND version = #{version}
         AND item_id LIKE 'C%' ORDER BY create_time DESC
     </select>
 

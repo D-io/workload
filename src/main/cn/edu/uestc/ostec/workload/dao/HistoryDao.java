@@ -27,7 +27,11 @@ public interface HistoryDao extends BaseDao<History> {
 
 	Boolean update(History entity);
 
-	Boolean delete(Integer id);
+	Boolean delete(
+			@Param("historyId")
+					Integer id,
+			@Param("version")
+					String version);
 
 	List<History> selectHistories(
 			@Param("historyId")
@@ -37,14 +41,22 @@ public interface HistoryDao extends BaseDao<History> {
 			@Param("itemId")
 					String itemId,
 			@Param("type")
-					String type);
+					String type,
+			@Param("version")
+					String version);
 
 	List<History> selectByUserRelated(
 			@Param("userId")
 					Integer userId,
 			@Param("type")
-					String type);
+					String type,
+			@Param("version")
+					String version);
 
-	List<History> selectAllCategoryHistory(Integer userId);
+	List<History> selectAllCategoryHistory(
+			@Param("userId")
+					Integer userId,
+			@Param("version")
+					String version);
 
 }

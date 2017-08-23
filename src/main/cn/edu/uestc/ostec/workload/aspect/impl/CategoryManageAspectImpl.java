@@ -85,6 +85,7 @@ public class CategoryManageAspectImpl implements IAspect {
 			Category category = categoryService.getCategory(categoryId,getCurrentSemester());
 
 			History history = new History();
+			history.setVersion(getCurrentSemester());
 			history.setAimUserId(0000000);
 			history.setType(APPLY_SELF.equals(category.getImportRequired()) ? "apply" : "import");
 			history.setItemId(buildHistoryCategoryId(categoryId));
@@ -116,6 +117,7 @@ public class CategoryManageAspectImpl implements IAspect {
 		Integer userId = user.getUserId();
 
 		History history = new History();
+		history.setVersion(getCurrentSemester());
 		history.setAimUserId(userId);
 		history.setType(APPLY_SELF.equals(categoryDto.getImportRequired()) ? "apply" : "import");
 		history.setItemId(buildHistoryCategoryId(categoryDto.getCategoryId()));
@@ -149,6 +151,7 @@ public class CategoryManageAspectImpl implements IAspect {
 			Category category = categoryService.getCategory(categoryId,getCurrentSemester());
 
 			History history = new History();
+			history.setVersion(getCurrentSemester());
 			history.setAimUserId(0000000);
 			history.setType(APPLY_SELF.equals(category.getImportRequired()) ? "apply" : "import");
 			history.setItemId(buildHistoryCategoryId(categoryId));
@@ -181,6 +184,7 @@ public class CategoryManageAspectImpl implements IAspect {
 		Integer userId = user.getUserId();
 
 		History history = new History();
+		history.setVersion(getCurrentSemester());
 		history.setAimUserId(0000000);
 		history.setType(APPLY_SELF.equals(categoryDto.getImportRequired()) ? "apply" : "import");
 		history.setItemId(buildHistoryCategoryId(categoryDto.getCategoryId()));

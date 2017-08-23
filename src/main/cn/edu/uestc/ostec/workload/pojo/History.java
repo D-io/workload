@@ -9,6 +9,8 @@
 
 package cn.edu.uestc.ostec.workload.pojo;
 
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
+
 /**
  * Description: 历史记录
  */
@@ -53,6 +55,19 @@ public class History {
 	 * 目标用户编号
 	 */
 	private Integer aimUserId;
+
+	/**
+	 * 版本号，学期号
+	 */
+	private String version = DateHelper.getCurrentTerm();
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
 	public Integer getAimUserId() {
 		return aimUserId;

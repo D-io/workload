@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.pojo;
 
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
+
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 
 public class Item implements Cloneable {
@@ -82,7 +84,7 @@ public class Item implements Cloneable {
 	/**
 	 * 版本号
 	 */
-	private String version = null;
+	private String version = DateHelper.getCurrentTerm();
 
 	public String getVersion() {
 		return version;

@@ -98,6 +98,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setItemId(buildHistoryItemId(itemId));
+		history.setVersion(getCurrentSemester());
 
 		history.setOperation(
 				"工作量" + item.getItemName() + "被审核人" + user.getName() + "于" + history.getCreateTime()
@@ -138,6 +139,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setItemId(buildHistoryCategoryId(categoryId));
 		history.setUserId(userId);
 		history.setCreateTime(DateHelper.getDateTime());
+		history.setVersion(getCurrentSemester());
 		history.setOperation(
 				user.getName() + "于" + history.getCreateTime() + "将审核截止时间提前到" + newDate);
 		history.setType(APPLY_SELF.equals(category.getImportRequired()) ? "apply" : "import");

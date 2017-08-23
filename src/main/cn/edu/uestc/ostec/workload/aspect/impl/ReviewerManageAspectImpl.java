@@ -91,6 +91,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 
 		History history = new History();
 		history.setCreateTime(DateHelper.getDateTime());
+		history.setVersion(getCurrentSemester());
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setOperation(
@@ -126,6 +127,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 
 		Item item = itemService.findItem(itemId,getCurrentSemester());
 		History history = new History();
+		history.setVersion(getCurrentSemester());
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));

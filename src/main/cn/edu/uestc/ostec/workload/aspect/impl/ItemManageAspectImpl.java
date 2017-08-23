@@ -103,6 +103,7 @@ public class ItemManageAspectImpl implements IAspect {
 		Item item = itemService.findItem(itemId,getCurrentSemester());
 
 		History history = new History();
+		history.setVersion(getCurrentSemester());
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setUserId(userId);
 		history.setCreateTime(DateHelper.getDateTime());
@@ -143,6 +144,7 @@ public class ItemManageAspectImpl implements IAspect {
 			Integer importedRequired = itemDto.getImportRequired();
 
 			History history = new History();
+			history.setVersion(getCurrentSemester());
 			history.setItemId(buildHistoryItemId(itemId));
 			history.setUserId(userId);
 			history.setCreateTime(DateHelper.getDateTime());
@@ -183,6 +185,7 @@ public class ItemManageAspectImpl implements IAspect {
 		ItemDto itemDto = itemConverter.poToDto(item);
 
 		History history = new History();
+		history.setVersion(getCurrentSemester());
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setCreateTime(DateHelper.getDateTime());
@@ -232,6 +235,7 @@ public class ItemManageAspectImpl implements IAspect {
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 		History history = new History();
+		history.setVersion(getCurrentSemester());
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
@@ -270,6 +274,7 @@ public class ItemManageAspectImpl implements IAspect {
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 		History history = new History();
+		history.setVersion(getCurrentSemester());
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));

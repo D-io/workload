@@ -34,7 +34,11 @@ public interface ItemDao extends BaseDao<Item> {
 	 * @param id 工作量对象Id
 	 * @return Boolean
 	 */
-	Boolean delete(Integer id,String version);
+	Boolean delete(
+			@Param("itemId")
+					Integer id,
+			@Param("version")
+					String version);
 
 	/**
 	 * 根据主键查询工作量对象
@@ -42,7 +46,11 @@ public interface ItemDao extends BaseDao<Item> {
 	 * @param id 工作量对象Id
 	 * @return Item
 	 */
-	Item select(Integer id,String version);
+	Item select(
+			@Param("itemId")
+					Integer id,
+			@Param("version")
+					String version);
 
 	/**
 	 * 根据教师编号查找对应该教师的工作量条目

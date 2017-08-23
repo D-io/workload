@@ -25,20 +25,20 @@ public interface HistoryService extends BaseService {
 
 	String NAME = "historyService";
 
-	History getHistory(Integer historyId);
+	History getHistory(Integer historyId,String version);
 
-	List<History> getHistoriesByUser(Integer userId);
+	List<History> getHistoriesByUser(Integer userId,String version);
 
-	List<History> getHistoriesByUserRelated(Integer userId,String type);
+	List<History> getHistoriesByUserRelated(Integer userId,String type,String version);
 
-	List<History> getHistoriesByItem(String itemId);
+	List<History> getHistoriesByItem(String itemId,String version);
 
-	List<History> getHistoriesByType(String type);
+	List<History> getHistoriesByType(String type,String version);
 
-	List<History> getHistories();
+	List<History> getHistories(String version);
 
 	boolean saveHistory(History history);
 
-	List<History> getCategoryHistories(Integer userId);
+	List<History> getCategoryHistories(Integer userId,String version);
 
 }
