@@ -100,7 +100,7 @@ public class ItemManageAspectImpl implements IAspect {
 		Integer userId = user.getUserId();
 
 		Integer itemId = (Integer) params[0];
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 
 		History history = new History();
 		history.setVersion(getCurrentSemester());
@@ -108,8 +108,8 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setOperation(
-				user.getName() + "于" + history.getCreateTime() + "修改了工作量条目的部分信息:  项目名称 (原)"
-						+ oldItem.getItemName() + " -> (新)" + item.getItemName() + "的部分信息（包括参数信息）");
+				history.getCreateTime() + "，" + user.getName() + "，修改了工作量项目的部分信息:  项目名称 (原)"
+						+ oldItem.getItemName() + " -> (新)" + item.getItemName());
 
 		history.setType(APPLY_SELF.equals(oldItem.getImportRequired()) ? "apply" : "import");
 		history.setAimUserId(oldItem.getOwnerId());
@@ -139,7 +139,7 @@ public class ItemManageAspectImpl implements IAspect {
 		Integer userId = user.getUserId();
 
 		for (Integer itemId : itemIdList) {
-			Item item = itemService.findItem(itemId,getCurrentSemester());
+			Item item = itemService.findItem(itemId, getCurrentSemester());
 			ItemDto itemDto = itemConverter.poToDto(item);
 			Integer importedRequired = itemDto.getImportRequired();
 
@@ -148,8 +148,9 @@ public class ItemManageAspectImpl implements IAspect {
 			history.setItemId(buildHistoryItemId(itemId));
 			history.setUserId(userId);
 			history.setCreateTime(DateHelper.getDateTime());
-			history.setOperation(user.getName() + "于" + history.getCreateTime() + "提交了工作量条目" + item
-					.getItemName());
+			history.setOperation(
+					history.getCreateTime() + "，" + user.getName() + "，提交了工作量项目：" + item
+							.getItemName() + "。");
 
 			history.setType(APPLY_SELF.equals(importedRequired) ? "apply" : "import");
 			history.setAimUserId(itemDto.getReviewerId());
@@ -181,7 +182,7 @@ public class ItemManageAspectImpl implements IAspect {
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
 
 		History history = new History();
@@ -195,10 +196,12 @@ public class ItemManageAspectImpl implements IAspect {
 		String operation = null;
 		if (CHECKED.equals(status)) {
 			operation =
-					user.getName() + "于" + history.getCreateTime() + "通过了工作量" + item.getItemName();
+					history.getCreateTime() + "，" + user.getName() + "，通过了工作量：" + item.getItemName()
+							+ "。";
 		} else if (DENIED.equals(status)) {
-			operation = user.getName() + "于" + history.getCreateTime() + "对工作量" + item.getItemName()
-					+ "存疑";
+			operation =
+					history.getCreateTime() + "，" + user.getName() + "，存疑了工作量：" + item.getItemName()
+							+ "。";
 		} else {
 
 		}
@@ -229,7 +232,7 @@ public class ItemManageAspectImpl implements IAspect {
 		Object[] args = joinPoint.getArgs();
 		Integer itemId = (Integer) args[0];
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
@@ -240,7 +243,8 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setOperation(
-				user.getName() + "于" + history.getCreateTime() + "重新申请工作量条目" + item.getItemName());
+				history.getCreateTime() + "，" + user.getName() + "，重新申请了工作量项目：" + item.getItemName()
+						+ "。");
 
 		history.setType("apply");
 		history.setAimUserId(itemDto.getReviewerId());
@@ -268,7 +272,7 @@ public class ItemManageAspectImpl implements IAspect {
 		Integer itemId = (Integer) args[0];
 		String role = args[1].toString();
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
@@ -279,8 +283,8 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setOperation(
-				user.getName() + "于" + history.getCreateTime() + "重置工作量条目" + item.getItemName()
-						+ "的状态信息" + "(" + role + ")");
+				history.getCreateTime() + "，" + user.getName() + "，重置了工作量项目：" + item.getItemName()
+						+ "的状态信息" + "(" + role + ")。");
 
 		history.setType(APPLY_SELF.equals(itemDto.getImportRequired()) ? "apply" : "import");
 

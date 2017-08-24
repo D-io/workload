@@ -82,7 +82,7 @@ public class CategoryManageAspectImpl implements IAspect {
 		Integer userId = user.getUserId();
 
 		for (Integer categoryId : categoryIdList) {
-			Category category = categoryService.getCategory(categoryId,getCurrentSemester());
+			Category category = categoryService.getCategory(categoryId, getCurrentSemester());
 
 			History history = new History();
 			history.setVersion(getCurrentSemester());
@@ -92,8 +92,8 @@ public class CategoryManageAspectImpl implements IAspect {
 			history.setCreateTime(DateHelper.getDateTime());
 			history.setUserId(userId);
 			history.setOperation(
-					user.getName() + "于" + history.getCreateTime() + "删除了工作量计算规则" + category
-							.getName());
+					history.getCreateTime() + "，" + user.getName() + "，删除了工作量计算规则：" + category
+							.getName() + "。");
 
 			boolean saveSuccess = historyService.saveHistory(history);
 			if (!saveSuccess) {
@@ -124,8 +124,8 @@ public class CategoryManageAspectImpl implements IAspect {
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
 		history.setOperation(
-				user.getName() + "于" + history.getCreateTime() + "添加了工作量计算规则" + categoryDto
-						.getName());
+				history.getCreateTime() + "，" + user.getName() + "，添加了工作量计算规则：" + categoryDto
+						.getName() + "。");
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {
@@ -148,7 +148,7 @@ public class CategoryManageAspectImpl implements IAspect {
 		Integer userId = user.getUserId();
 
 		for (Integer categoryId : categoryIdList) {
-			Category category = categoryService.getCategory(categoryId,getCurrentSemester());
+			Category category = categoryService.getCategory(categoryId, getCurrentSemester());
 
 			History history = new History();
 			history.setVersion(getCurrentSemester());
@@ -158,8 +158,8 @@ public class CategoryManageAspectImpl implements IAspect {
 			history.setCreateTime(DateHelper.getDateTime());
 			history.setUserId(userId);
 			history.setOperation(
-					user.getName() + "于" + history.getCreateTime() + "提交了工作量计算规则" + category
-							.getName());
+					history.getCreateTime() + "，" + user.getName() + "，提交了工作量计算规则：" + category
+							.getName() + "。");
 
 			boolean saveSuccess = historyService.saveHistory(history);
 			if (!saveSuccess) {
@@ -191,8 +191,9 @@ public class CategoryManageAspectImpl implements IAspect {
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
 		history.setOperation(
-				user.getName() + "于" + history.getCreateTime() + "修改了工作量计算规则" + categoryDto
-						.getName() + ":" + oldCategoryDto.contrastObj(oldCategoryDto, categoryDto));
+				history.getCreateTime() + "，" + user.getName() + "，修改了工作量计算规则：" + categoryDto
+						.getName() + "：" + oldCategoryDto.contrastObj(oldCategoryDto, categoryDto)
+						+ "。");
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {

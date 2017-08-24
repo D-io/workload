@@ -95,8 +95,8 @@ public class ReviewerManageAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setOperation(
-				user.getName() + "于" + history.getCreateTime() + checkStatus.getDesc() + "了工作量条目"
-						+ item.getItemName());
+				history.getCreateTime() + "，" + user.getName() + "，" + checkStatus.getDesc() + "了工作量项目："
+						+ item.getItemName() + "。");
 		history.setType("apply");
 		history.setAimUserId(item.getOwnerId());
 
@@ -131,8 +131,8 @@ public class ReviewerManageAspectImpl implements IAspect {
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
-		history.setOperation(user.getName() + "于" + history.getCreateTime() + "解决了工作量条目" + item
-				.getItemName() + "的存疑，并修改了相应的参数");
+		history.setOperation(history.getCreateTime() + "，" + user.getName() + "，解决了工作量项目存疑：" + item
+				.getItemName() + "。");
 		history.setType("import");
 		history.setAimUserId(item.getOwnerId());
 
