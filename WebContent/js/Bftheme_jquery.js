@@ -556,39 +556,71 @@ function itemSummary() {
             teacherId:teacherid,
             option:"checked"
         },function (data) {
-            appendAllItem(data,"sumItemSort");
+            var impjsonObject=[];
+            var chejsonObject=[];
+            if(data.data.itemDtoList){
+                for(var key in data.data.itemDtoList){
+                    if(data.data.itemDtoList[key].importRequired==1){
+                        impjsonObject.push(data.data.itemDtoList[key]);
+                    }
+                }
+                JSON.stringify(impjsonObject);
+                $(".sumItemSort").empty();
+                appendAllItem(impjsonObject,"sumItemSort");
+                for(var anotherkey in data.data.itemDtoList){
+                    if(data.data.itemDtoList[anotherkey].importRequired==0){
+                        chejsonObject.push(data.data.itemDtoList[anotherkey]);
+                    }
+                }
+                JSON.stringify(chejsonObject);
+                $(".sumuncheckedItemSort").empty();
+                appendAllItem(chejsonObject,"sumuncheckedItemSort");
+            }
         });
-        $.get(itemCollection,{
+       /* $.get(itemCollection,{
             teacherId:teacherid,
             option:"unchecked"
         },function (data) {
             appendAllItem(data,"sumuncheckedItemSort");
-        })
+        })*/
     });
     $(document).on("click",".uncheckedWork",function () {
         var idCount=parseInt(this.id.match(/\d+/g));
         var teacherid=$("#teacherId_"+idCount).text();
-        $.get(itemCollection,{
-            teacherId:teacherid,
-            option:"checked"
-        },function (data) {
-            appendAllItem(data,"sumItemSort");
-        });
+
         $.get(itemCollection,{
             teacherId:teacherid,
             option:"unchecked"
         },function (data) {
-            appendAllItem(data,"sumuncheckedItemSort");
+            var impjsonObject=[];
+            var chejsonObject=[];
+            if(data.data.itemDtoList){
+                for(var key in data.data.itemDtoList){
+                    if(data.data.itemDtoList[key].importRequired==1){
+                        impjsonObject.push(data.data.itemDtoList[key]);
+                    }
+                }
+                JSON.stringify(impjsonObject);
+                $(".sumItemSort").empty();
+                appendAllItem(impjsonObject,"sumItemSort");
+                for(var anotherkey in data.data.itemDtoList){
+                    if(data.data.itemDtoList[anotherkey].importRequired==0){
+                        chejsonObject.push(data.data.itemDtoList[anotherkey]);
+                    }
+                }
+                JSON.stringify(chejsonObject);
+                $(".sumuncheckedItemSort").empty();
+                appendAllItem(chejsonObject,"sumuncheckedItemSort");
+            }
+        });
         })
-    });
-
 }
 function appendAllItem(data,mystr) {
     var rowInfo="<tr></tr>";
     var cellInfo="<td></td>";
-    if(data.data.itemDtoList&&data.data.itemDtoList.length){
-        var analyseList= data.data.itemDtoList;
-        var listLength= data.data.itemDtoList.length;
+    if(data&&data.length){
+        var analyseList= data;
+        var listLength= data.length;
         for(var i=0;i<listLength;i++)
         {
             var Info=analyseList[i];
@@ -686,9 +718,9 @@ function appendAllItem(data,mystr) {
             switch (Info.importRequired){
                 case 2:itemImport='无特殊类别';
                     break;
-                case 1:itemImport='申报审核类';
+                case 0:itemImport='申报审核类';
                     break;
-                case 0:itemImport='导入复核类';
+                case 1:itemImport='导入复核类';
                     break;
             }
             $("."+mystr+" tr:last td:eq(2)").text(itemImport);
