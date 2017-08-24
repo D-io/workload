@@ -412,7 +412,7 @@ function itemSummary() {
                     var Info=analyseList[i];
                     $(".sumItemPreview").append(rowInfo);
                     $(".sumItemPreview tr:last").attr("class","resetNum");
-                    for(var j=0;j<6;j++)//单元格
+                    for(var j=0;j<5;j++)//单元格
                     {
                         $(".sumItemPreview tr:last").append(cellInfo);
                     }
@@ -420,12 +420,23 @@ function itemSummary() {
 
                     $(".sumItemPreview tr:last td:eq(0)").text(id);
                     $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherId);
+                    $(".sumItemPreview tr:last td:eq(1)").attr("id","teacherId_"+id);
                     $(".sumItemPreview tr:last td:eq(2)").text(Info.teacherName);
-                    $(".sumItemPreview tr:last td:eq(2)").attr("id","teacherId_"+id);
+
                     $(".sumItemPreview tr:last td:eq(3)").text(Info.checkedWorkload);
+                    $(".sumItemPreview tr:last td:eq(3)").attr("class","checkedwork");
+                    $(".sumItemPreview tr:last td:eq(3)").attr("id","checkedwork_"+id);
+                    $(".sumItemPreview tr:last td:eq(3)").attr("data-toggle","modal");
+                    $(".sumItemPreview tr:last td:eq(3)").attr("data-target","#applyModal");
+
                     $(".sumItemPreview tr:last td:eq(4)").text(Info.uncheckedWorkload);
-                    var act="<a class=\"btn btn-primary btn-xs previewAll\" id=\"previewAll_"+ id+"\" data-toggle='modal' data-target='#applyModal'>查看详情</a>";
-                    $(".sumItemPreview tr:last td:eq(5)").append(act);
+                    $(".sumItemPreview tr:last td:eq(4)").attr("class","uncheckedWork");
+                    $(".sumItemPreview tr:last td:eq(4)").attr("id","uncheckedwork_"+id);
+                    $(".sumItemPreview tr:last td:eq(4)").attr("data-toggle","modal");
+                    $(".sumItemPreview tr:last td:eq(4)").attr("data-target","#applyModal");
+
+                   /* var act="<a class=\"btn btn-primary btn-xs previewAll\" id=\"previewAll_"+ id+"\" data-toggle='modal' data-target='#applyModal'>查看详情</a>";
+                    $(".sumItemPreview tr:last td:eq(5)").append(act);*/
                 }
             }
         });
@@ -522,10 +533,42 @@ function itemSummary() {
         form.submit();
         form.remove();
     })*/
-    $(document).on("click",".previewAll",function () {
+    /*$(document).on("click",".previewAll",function () {
        var idCount=parseInt(this.id.match(/\d+/g));
        var teacherid=$("#teacherId_"+idCount).text();
        $.get(itemCollection,{
+            teacherId:teacherid,
+            option:"checked"
+        },function (data) {
+            appendAllItem(data,"sumItemSort");
+        });
+        $.get(itemCollection,{
+            teacherId:teacherid,
+            option:"unchecked"
+        },function (data) {
+            appendAllItem(data,"sumuncheckedItemSort");
+        })
+    });*/
+    $(document).on("click",".checkedwork",function () {
+        var idCount=parseInt(this.id.match(/\d+/g));
+        var teacherid=$("#teacherId_"+idCount).text();
+        $.get(itemCollection,{
+            teacherId:teacherid,
+            option:"checked"
+        },function (data) {
+            appendAllItem(data,"sumItemSort");
+        });
+        $.get(itemCollection,{
+            teacherId:teacherid,
+            option:"unchecked"
+        },function (data) {
+            appendAllItem(data,"sumuncheckedItemSort");
+        })
+    });
+    $(document).on("click",".uncheckedWork",function () {
+        var idCount=parseInt(this.id.match(/\d+/g));
+        var teacherid=$("#teacherId_"+idCount).text();
+        $.get(itemCollection,{
             teacherId:teacherid,
             option:"checked"
         },function (data) {

@@ -70,7 +70,7 @@
                     <th  class="sorting">教师姓名</th>
                     <th class="sorting">通过审核(复核)工作当量</th>
                     <th class="sorting" >有待审核(复核)工作当量</th>
-                    <th class="sorting" >操作</th>
+
                 </tr>
                 </thead>
                 <tbody class="sumItemPreview">
@@ -88,9 +88,9 @@
                         <div class="modal-body">
                             <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">通过审核(复核)工作当量</a>
+                                    <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">导入复核类</a>
                                     </li>
-                                    <li role="presentation"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">有待审核(复核)工作当量</a>
+                                    <li role="presentation"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">申报审核类</a>
                                     </li>
 
                                 </ul>
