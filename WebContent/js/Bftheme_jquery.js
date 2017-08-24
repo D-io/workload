@@ -122,8 +122,7 @@ function reset() {
             reviewerResetItem(data);
             var str='';
             var totalPage=data.data.totalRecords;
-            var pageCountNum=totalPage/5;
-            pageCountNum--;
+            var pageCountNum=Math.ceil(totalPage/5);
             if(pageCountNum<10){
                 for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                     var pagestore=pageNum+1;
@@ -182,7 +181,7 @@ function reset() {
             var str='';
             var totalPage=data.data.totalRecords;
             var $pageSize=$(".input-sm option:selected").val();
-            var pageCountNum=totalPage/$pageSize-1;
+            var pageCountNum=Math.ceil(totalPage/$pageSize);
             if(pageCountNum<10){
                 for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                     var pagestore=pageNum+1;
@@ -222,7 +221,7 @@ function reset() {
                 var str='';
                 var totalPage=data.data.totalRecords;
                 var $pageSize=$(".input-sm option:selected").val();
-                var pageCountNum=totalPage/$pageSize-1;
+                var pageCountNum=Math.ceil(totalPage/$pageSize);
                 if(pageCountNum<10){
                     for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                         var pagestore=pageNum+1;
@@ -334,7 +333,7 @@ function reset() {
             var str='';
             var totalPage=data.data.totalRecords;
             var $pageSize=$(".input-sm option:selected").val();
-            var pageCountNum=totalPage/$pageSize-1;
+            var pageCountNum=Math.ceil(totalPage/$pageSize);
             if(pageCountNum<10){
                 for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                     var pagestore=pageNum+1;
