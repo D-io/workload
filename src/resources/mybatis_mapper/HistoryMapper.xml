@@ -76,4 +76,9 @@
         AND item_id LIKE 'C%' ORDER BY create_time DESC
     </select>
 
+    <select id="selectResetItemHistory" resultMap="historyResultMap">
+        SELECT * FROM history WHERE (user_id = #{userId} OR aim_user_id = #{userId} OR aim_user_id = 0000000) AND version = #{version}
+        AND item_id LIKE 'R%' ORDER BY create_time DESC
+    </select>
+
 </mapper>

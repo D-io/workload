@@ -41,4 +41,6 @@ public interface HistoryService extends BaseService {
 
 	List<History> getCategoryHistories(Integer userId,String version);
 
+	List<History> getResetHistories(Integer userId,String version);
+
 }

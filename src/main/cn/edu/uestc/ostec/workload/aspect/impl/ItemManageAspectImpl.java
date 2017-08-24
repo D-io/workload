@@ -202,8 +202,6 @@ public class ItemManageAspectImpl implements IAspect {
 			operation =
 					history.getCreateTime() + "，" + user.getName() + "，存疑了工作量：" + item.getItemName()
 							+ "。";
-		} else {
-
 		}
 
 		history.setOperation(operation);
@@ -281,7 +279,7 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setVersion(getCurrentSemester());
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
-		history.setItemId(buildHistoryItemId(itemId));
+		history.setItemId(buildHistoryResetItemId(itemId));
 		history.setOperation(
 				history.getCreateTime() + "，" + user.getName() + "，重置了工作量项目：" + item.getItemName()
 						+ "的状态信息" + "(" + role + ")。");

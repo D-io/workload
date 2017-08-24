@@ -58,6 +58,29 @@ public class HistoryInfoController extends ApplicationController {
 	private ItemConverter itemConverter;
 
 	/**
+	 * 获取重置相关的历史记录
+	 * @return
+	 */
+	@RequestMapping(value = "history-reset",method = GET)
+	public RestResponse getResetHistories() {
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
+		int userId = user.getUserId();
+
+		List<History> historyList = historyService.getResetHistories(userId,getCurrentSemester());
+		if(isEmptyList(historyList)) {
+			return successResponse("无相关记录");
+		}
+
+		Map<String, Object> data = getData();
+		data.put("historyList", historyList);
+
+		return successResponse(data);
+	}
+
+	/**
 	 * 获取类目相关的历史记录
 	 * @return historyList
 	 */

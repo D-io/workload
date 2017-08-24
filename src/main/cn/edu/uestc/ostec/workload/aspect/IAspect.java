@@ -72,6 +72,10 @@ public interface IAspect extends ServletContextAdapter {
 		return "C" + categoryId.toString();
 	}
 
+	default String buildHistoryResetItemId(Integer itemId) {
+		return "R" + itemId.toString();
+	}
+
 	default String getCurrentYear() {
 		return (String) getSessionContext().getAttribute(SESSION_CURRENT_YEAR);
 	}

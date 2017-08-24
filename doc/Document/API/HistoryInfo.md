@@ -1,3 +1,43 @@
+
+### 管理员查询对应的重置记录
+- 接口地址:`/history/info/history-reset`
+- 支持格式：`json`
+- 请求方式：`GET`
+- 请求示例：`http://127.0.0.1:8080/history/info/history-reset`
+
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+
+- Json返回成功示例如下：
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "historyList": [
+            {
+				"itemId": "R18",
+				"userId": 3210343,
+				"createTime": "2017-08-24 19:05:26",
+				"operation": "2017-08-24 19:05:26，张翔，重置了工作量项目：workload的状态信息(proposer)。",
+				"type": "apply",
+				"aimUserId": 3210343,
+				"version": "2017-2018-1"
+            }
+        ]
+    }
+}
+```
+
+
+
+
 ### 查询某条条目对应的全部历史记录
 - 接口地址:`/history/info/histories`
 - 支持格式：`json`

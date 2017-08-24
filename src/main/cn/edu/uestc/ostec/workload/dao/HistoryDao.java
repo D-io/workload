@@ -59,4 +59,10 @@ public interface HistoryDao extends BaseDao<History> {
 			@Param("version")
 					String version);
 
+	List<History> selectResetItemHistory(
+			@Param("userId")
+					Integer userId,
+			@Param("version")
+					String version);
+
 }
