@@ -9,6 +9,9 @@
 
 package cn.edu.uestc.ostec.workload.dto;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
+
 /**
  * Version:v1.0 (description:  )
  */
@@ -18,13 +21,13 @@ public class TeacherWorkload {
 
 	private Integer teacherId;
 
-	private Double checkedWorkload;
+	private Double checkedWorkload = ZERO_DOUBLE;
 
-	private Integer checkedItems;
+	private Integer checkedItems = ZERO_INT;
 
-	private Double uncheckedWorkload;
+	private Double uncheckedWorkload = ZERO_DOUBLE;
 
-	private Integer uncheckedItems;
+	private Integer uncheckedItems = ZERO_INT;
 
 	public Integer getCheckedItems() {
 		return checkedItems;

@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.dto;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
+
 /**
  * Version:v1.0 (description: 输入的参数具体值，用于Json字段的映射 )
  */
@@ -7,7 +9,7 @@ public class ParameterValue {
 
 	private String symbol;
 
-	private double value;
+	private double value = ZERO_DOUBLE;
 
 	public String getSymbol() {
 		return symbol;
