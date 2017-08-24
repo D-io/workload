@@ -419,8 +419,8 @@ function itemSummary() {
                     var id=i+1;
 
                     $(".sumItemPreview tr:last td:eq(0)").text(id);
-                    $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherName);
-                    $(".sumItemPreview tr:last td:eq(2)").text(Info.teacherId);
+                    $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherId);
+                    $(".sumItemPreview tr:last td:eq(2)").text(Info.teacherName);
                     $(".sumItemPreview tr:last td:eq(2)").attr("id","teacherId_"+id);
                     $(".sumItemPreview tr:last td:eq(3)").text(Info.checkedWorkload);
                     $(".sumItemPreview tr:last td:eq(4)").text(Info.uncheckedWorkload);
@@ -526,14 +526,21 @@ function itemSummary() {
        var idCount=parseInt(this.id.match(/\d+/g));
        var teacherid=$("#teacherId_"+idCount).text();
        $.get(itemCollection,{
-           teacherId:teacherid
-       },function (data) {
-           appendAllItem(data);
-       })
+            teacherId:teacherid,
+            option:"checked"
+        },function (data) {
+            appendAllItem(data,"sumItemSort");
+        });
+        $.get(itemCollection,{
+            teacherId:teacherid,
+            option:"unchecked"
+        },function (data) {
+            appendAllItem(data,"sumuncheckedItemSort");
+        })
     });
 
 }
-function appendAllItem(data) {
+function appendAllItem(data,mystr) {
     var rowInfo="<tr></tr>";
     var cellInfo="<td></td>";
     if(data.data.itemDtoList&&data.data.itemDtoList.length){
@@ -542,11 +549,11 @@ function appendAllItem(data) {
         for(var i=0;i<listLength;i++)
         {
             var Info=analyseList[i];
-            $(".sumItemSort").append(rowInfo);
-            $(".sumItemSort tr:last").attr("class","resetNum");
+            $("."+mystr).append(rowInfo);
+            $("."+mystr+" tr:last").attr("class","resetNum");
             for(var j=0;j<10;j++)//单元格
             {
-                $(".sumItemSort tr:last").append(cellInfo);
+                $("."+mystr+" tr:last").append(cellInfo);
             }
             var id=i;
             var paramArray=Info.descAndValues;
@@ -630,8 +637,8 @@ function appendAllItem(data) {
                         break;
                 }
             }
-            $(".sumItemSort tr:last td:eq(0)").text(id+1);
-            $(".sumItemSort tr:last td:eq(1)").text(Info.categoryName);
+            $("."+mystr+" tr:last td:eq(0)").text(id+1);
+            $("."+mystr+" tr:last td:eq(1)").text(Info.categoryName);
             var itemImport='';
             switch (Info.importRequired){
                 case 2:itemImport='无特殊类别';
@@ -641,19 +648,19 @@ function appendAllItem(data) {
                 case 0:itemImport='导入复核类';
                     break;
             }
-            $(".sumItemSort tr:last td:eq(2)").text(itemImport);
-            $(".sumItemSort tr:last td:eq(3)").text(Info.itemName);
-            $(".sumItemSort tr:last td:eq(4)").text(Info.formula);
+            $("."+mystr+" tr:last td:eq(2)").text(itemImport);
+            $("."+mystr+" tr:last td:eq(3)").text(Info.itemName);
+            $("."+mystr+" tr:last td:eq(4)").text(Info.formula);
 
-            $(".sumItemSort tr:last td:eq(5)").append(str);
+            $("."+mystr+" tr:last td:eq(5)").append(str);
 
 
             /*  $(".ResetItem tr:last td:eq(5)").text(paramDescstr);*/
-            $(".sumItemSort tr:last td:eq(6)").append(otherstr);
+            $("."+mystr+" tr:last td:eq(6)").append(otherstr);
 
-            $(".sumItemSort tr:last td:eq(7)").text(Info.workload);
-            $(".sumItemSort tr:last td:eq(8)").text(Info.teacherName);
-            $(".sumItemSort tr:last td:eq(9)").text(statusName);
+            $("."+mystr+" tr:last td:eq(7)").text(Info.workload);
+            $("."+mystr+" tr:last td:eq(8)").text(Info.teacherName);
+            $("."+mystr+" tr:last td:eq(9)").text(statusName);
 
 
         }

@@ -60,6 +60,8 @@
 
     var fileInfoUrl=contextPath+"/file";
 
+    var importFileUrl=fileInfoUrl+"/import";
+
     var downloadInfoUrl=fileInfoUrl+"/template";
 
     var fileTempUrl=fileInfoUrl+"/import-template";

@@ -66,10 +66,10 @@
                 <thead>
                 <tr role="row">
                     <th  class="sorting">序号</th>
-                    <th  class="sorting">教师姓名</th>
                     <th class="sorting">教师工号</th>
-                    <th class="sorting">已获工作当量</th>
-                    <th class="sorting" >待获工作当量</th>
+                    <th  class="sorting">教师姓名</th>
+                    <th class="sorting">通过审核(复核)工作当量</th>
+                    <th class="sorting" >有待审核(复核)工作当量</th>
                     <th class="sorting" >操作</th>
                 </tr>
                 </thead>
@@ -86,24 +86,59 @@
                             <h4 class="modal-title" id="myModalLabel"></h4>
                         </div>
                         <div class="modal-body">
-                              <table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;">
-               <thead>
-               <tr role="row">
-                   <th  class="sorting">序号</th>
-                   <th  class="sorting">规则名称</th>
-                   <th  class="sorting">规则类别</th>
-                   <th class="sorting">条目名称</th>
-                   <th  class="sorting">计算公式</th>
-                   <th class="sorting" >公式描述</th>
-                   <th class="sorting" >其他参数</th>
-                   <th class="sorting">工作量</th>
-                   <th  class="sorting">教师姓名</th>
-                   <th class="sorting">状态</th>
-               </tr>
-               </thead>
-               <tbody class="sumItemSort">
-               </tbody>
-           </table>
+                            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">通过审核(复核)工作当量</a>
+                                    </li>
+                                    <li role="presentation"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">有待审核(复核)工作当量</a>
+                                    </li>
+
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                                        <table  class="table table-striped table-bordered dataTable no-footer">
+                                            <thead>
+                                            <tr role="row">
+                                                <th  class="sorting">序号</th>
+                                                <th  class="sorting">规则名称</th>
+                                                <th  class="sorting">规则类别</th>
+                                                <th class="sorting">条目名称</th>
+                                                <th  class="sorting">计算公式</th>
+                                                <th class="sorting" >公式描述</th>
+                                                <th class="sorting" >其他参数</th>
+                                                <th class="sorting">工作量</th>
+                                                <th  class="sorting">教师姓名</th>
+                                                <th class="sorting">状态</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="sumItemSort">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                                        <table  class="table table-striped table-bordered dataTable no-footer">
+                                            <thead>
+                                            <tr role="row">
+                                                <th  class="sorting">序号</th>
+                                                <th  class="sorting">规则名称</th>
+                                                <th  class="sorting">规则类别</th>
+                                                <th class="sorting">条目名称</th>
+                                                <th  class="sorting">计算公式</th>
+                                                <th class="sorting" >公式描述</th>
+                                                <th class="sorting" >其他参数</th>
+                                                <th class="sorting">工作量</th>
+                                                <th  class="sorting">教师姓名</th>
+                                                <th class="sorting">状态</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="sumuncheckedItemSort">
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>

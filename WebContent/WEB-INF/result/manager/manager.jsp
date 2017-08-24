@@ -47,6 +47,7 @@
 
     <!-- ztree -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="${contextPath}/vendor/css/green.css" type="text/css">
 
     <!-- Custom Theme Style -->
     <link href="${contextPath}/css/custom.css" rel="stylesheet">
@@ -215,6 +216,7 @@
 
 
 <script language='javascript' src="${contextPath}/vendor/bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
+<script language='javascript' src="${contextPath}/vendor/js/icheck.min.js"></script>
 <script language='javascript' src="${contextPath}/vendor/js/select2.min.js"></script>
 <script language='javascript'src="${contextPath}/js/jquery.ztree.core.js"></script>
 <script language='javascript' src="${contextPath}/js/jquery.ztree.excheck.js"></script>

@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
     <div class="navbar nav_title" style="border: 0;">
-        <a class="site_title" ><span><img src="${contextPath}/css/images/systemLogo.png" alt="..." class="left_span" style="width: 40px;height: 40px;"></span><span style="font-size: 16px;">信息与软件工程学院
+        <a class="site_title" ><span><img src="<%=request.getContextPath()%>/css/images/systemLogo.png" alt="..." class="left_span" style="width: 40px;height: 40px;"></span><span style="font-size: 16px;">信息与软件工程学院
                    <span style="font-size: 5px;">School of Information and Software Engineering</span></span></a>
     </div>
 
