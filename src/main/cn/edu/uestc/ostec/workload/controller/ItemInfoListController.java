@@ -425,6 +425,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 					String ifExport) {
 
 		User user = getUser();
+		Map<String, Object> data = getData();
 
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
@@ -434,6 +435,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		if (isEmptyNumber(teacherId)) {
 			teacherId = user.getUserId();
 			statusList.add(CHECKED);
+			data.put("totalWorkload",
+					itemService.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester()));
 		} else {
 			if (!getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
 				return invalidOperationResponse("非法访问");
@@ -453,7 +456,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return successResponse();
 		}
 
-		Map<String, Object> data = getData();
 		data.put("itemDtoList", itemList);
 		data.put("recordCount", itemList.size());
 

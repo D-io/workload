@@ -279,7 +279,8 @@ public class ItemManageController extends ApplicationController {
 	 * @return RestResponse
 	 */
 	@RequestMapping(method = POST)
-	public RestResponse addItem(ItemDto itemDto, MultipartFile file,String option) throws IOException {
+	public RestResponse addItem(ItemDto itemDto, MultipartFile file, String option)
+			throws IOException {
 
 		User user = getUser();
 		if (null == user) {
@@ -292,13 +293,14 @@ public class ItemManageController extends ApplicationController {
 		}
 
 		//必须为未提交状态的工作量条目才能进行修改
-		if("modify".equals(option)) {
+		if ("modify".equals(option)) {
 			if (NON_CHECKED.equals(itemDto.getStatus())) {
 				return invalidOperationResponse("已提交的工作量，无法修改");
 			}
 
 			//验证当前用户是否具有修改工作量条目的权限
-			if (!(userId.equals(itemDto.getGroupManagerId()) || userId.equals(itemDto.getReviewerId()))) {
+			if (!(userId.equals(itemDto.getGroupManagerId()) || userId
+					.equals(itemDto.getReviewerId()))) {
 				return invalidOperationResponse("非法操作");
 			}
 
@@ -344,73 +346,84 @@ public class ItemManageController extends ApplicationController {
 		double workload = FormulaCalculate
 				.calculate(category.getFormula(), newItemDto.getParameterValues());
 
-//		// 获取对应的权重列表
-//		List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
-//
-//		// 权重列表不为空时，去为每个成员生成对应的条目信息
-//		if (GROUP.equals(newItemDto.getIsGroup()) && !isEmptyList(childWeightList)) {
-//
-//			List<Item> itemList = new ArrayList<>();
-//
-//			// 成员职责列表
-//			List<JobDesc> jobDescList = newItemDto.getJobDescList();
-//
-//			Item item = itemConverter.dtoToPo(itemDto);
-//
-//			// 对组员的工作量信息进行保存，分别计算工作量
-//			for (int index = 0; index < childWeightList.size(); index++) {
-//
-//				// 获取对应成员教师的工作量信息进行组装
-//				Integer ownerId = childWeightList.get(index).getUserId();
-//
-//				if (jobDescList.get(index).getUserId().equals(ownerId)) {
-//
-//					// 克隆Item工作量条目，以克隆公共信息
-//					Item itemTemp = (Item) item.clone();
-//
-//					// 设置成员各自的工作量属性信息
-//					itemTemp.setOwnerId(ownerId);
-//					itemTemp.setJobDesc(jobDescList.get(index).getJobDesc());
-//
-//					// 获取对应的权重进行相应的计算
-//					double weight = childWeightList.get(index).getWeight();
-//					itemTemp.setJsonChildWeight(String.valueOf(weight));
-//					itemTemp.setStatus(UNCOMMITTED);
-//
-//					// 计算组员各自的工作量
-//					itemTemp.setWorkload(workload * weight);
-//
-//					// 保存成员老师的工作量条目到数据库中
-//					boolean saveSuccess = itemService.saveItem(itemTemp);
-//					if (!saveSuccess) {
-//						errorData.put(teacherService.findTeacherNameById(ownerId), "保存失败");
-//					}
-//
-//					// 保存成功的item集合，用于返回前端的数据展示
-//					itemList.add(itemTemp);
-//				}
-//			}
-//			data.put("itemList", itemConverter.poListToDtoList(itemList));
-//
-//		} else {
-			// 个人申报
-		    if(SINGLE.equals(newItemDto.getIsGroup())) {
-		    	newItemDto.setJsonChildWeight();
-			}
-			newItemDto.setWorkload(workload);
-			newItemDto.setStatus(UNCOMMITTED);
-
-			// 设置小组负责人为他自己
+		//		// 获取对应的权重列表
+		//		List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
+		//
+		//		// 权重列表不为空时，去为每个成员生成对应的条目信息
+		//		if (GROUP.equals(newItemDto.getIsGroup()) && !isEmptyList(childWeightList)) {
+		//
+		//			List<Item> itemList = new ArrayList<>();
+		//
+		//			// 成员职责列表
+		//			List<JobDesc> jobDescList = newItemDto.getJobDescList();
+		//
+		//			Item item = itemConverter.dtoToPo(itemDto);
+		//
+		//			// 对组员的工作量信息进行保存，分别计算工作量
+		//			for (int index = 0; index < childWeightList.size(); index++) {
+		//
+		//				// 获取对应成员教师的工作量信息进行组装
+		//				Integer ownerId = childWeightList.get(index).getUserId();
+		//
+		//				if (jobDescList.get(index).getUserId().equals(ownerId)) {
+		//
+		//					// 克隆Item工作量条目，以克隆公共信息
+		//					Item itemTemp = (Item) item.clone();
+		//
+		//					// 设置成员各自的工作量属性信息
+		//					itemTemp.setOwnerId(ownerId);
+		//					itemTemp.setJobDesc(jobDescList.get(index).getJobDesc());
+		//
+		//					// 获取对应的权重进行相应的计算
+		//					double weight = childWeightList.get(index).getWeight();
+		//					itemTemp.setJsonChildWeight(String.valueOf(weight));
+		//					itemTemp.setStatus(UNCOMMITTED);
+		//
+		//					// 计算组员各自的工作量
+		//					itemTemp.setWorkload(workload * weight);
+		//
+		//					// 保存成员老师的工作量条目到数据库中
+		//					boolean saveSuccess = itemService.saveItem(itemTemp);
+		//					if (!saveSuccess) {
+		//						errorData.put(teacherService.findTeacherNameById(ownerId), "保存失败");
+		//					}
+		//
+		//					// 保存成功的item集合，用于返回前端的数据展示
+		//					itemList.add(itemTemp);
+		//				}
+		//			}
+		//			data.put("itemList", itemConverter.poListToDtoList(itemList));
+		//
+		//		} else {
+		// 个人申报
+		if (SINGLE.equals(newItemDto.getIsGroup())) {
+			newItemDto.setJsonChildWeight(String.valueOf(DEFAULT_CHILD_WEIGHT));
 			newItemDto.setGroupManagerId(newItemDto.getOwnerId());
-			Item item = itemConverter.dtoToPo(newItemDto);
+		} else if (GROUP.equals(newItemDto.getIsGroup()) && IMPORT_EXCEL
+				.equals(newItemDto.getImportRequired())) {
+			workload = workload * Double.valueOf(newItemDto.getJsonChildWeight());
+		} else if(newItemDto.getChildWeightList().size() <= 1){
+			return parameterNotSupportResponse("小组成员数需大于等于2");
+		}
 
-			boolean saveSuccess = itemService.saveItem(item);
-			if (!saveSuccess) {
-				return systemErrResponse("保存失败");
-			}
-			newItemDto.setItemId(item.getItemId());
-			data.put("item", newItemDto);
-//		}
+		if (!(userId.equals(itemDto.getGroupManagerId()) || userId
+				.equals(itemDto.getReviewerId()))) {
+			return invalidOperationResponse("非法操作");
+		}
+
+		newItemDto.setWorkload(workload);
+		newItemDto.setStatus(UNCOMMITTED);
+
+		// 设置小组负责人为他自己
+		Item item = itemConverter.dtoToPo(newItemDto);
+
+		boolean saveSuccess = itemService.saveItem(item);
+		if (!saveSuccess) {
+			return systemErrResponse("保存失败");
+		}
+		newItemDto.setItemId(item.getItemId());
+		data.put("item", newItemDto);
+		//		}
 
 		return successResponse(data);
 	}
@@ -496,7 +509,7 @@ public class ItemManageController extends ApplicationController {
 				ItemDto itemDto = itemConverter.poToDto(item);
 
 				List<ChildWeight> childWeightList = itemDto.getChildWeightList();
-				if(GROUP.equals(itemDto.getIsGroup()) && !isEmptyList(childWeightList)) {
+				if (GROUP.equals(itemDto.getIsGroup()) && !isEmptyList(childWeightList)) {
 
 					double workload = FormulaCalculate
 							.calculate(category.getFormula(), itemDto.getParameterValues());
@@ -531,14 +544,15 @@ public class ItemManageController extends ApplicationController {
 							// 保存成员老师的工作量条目到数据库中
 							boolean saveSuccess = itemService.saveItem(itemTemp);
 							if (!saveSuccess) {
-								errorData.put(teacherService.findTeacherNameById(ownerId) + item.getItemName(), "提交失败");
+								errorData.put(teacherService.findTeacherNameById(ownerId) + item
+										.getItemName(), "提交失败");
 							}
 
 							// 保存成功的item集合，用于返回前端的数据展示
 							itemList.add(itemTemp);
 						}
 					}
-					itemService.removeItem(itemId,getCurrentSemester());
+					itemService.removeItem(itemId, getCurrentSemester());
 				} else {
 
 					//修改对应的item状态为提交（待审核）
@@ -546,7 +560,9 @@ public class ItemManageController extends ApplicationController {
 
 					boolean saveSuccess = itemService.saveItem(item);
 
-					boolean fileSubmitSuccess = (null == item.getProof() ? true : fileEvent.submitFileInfo(item.getProof()));
+					boolean fileSubmitSuccess = (null == item.getProof() ?
+							true :
+							fileEvent.submitFileInfo(item.getProof()));
 					if (!saveSuccess || !fileSubmitSuccess) {
 						errorData.put(item.getItemName(), "提交失败");
 					} else {

@@ -42,6 +42,8 @@ public interface WorkloadObjects {
 	 */
 	double ZERO_DOUBLE = 0.0;
 
+	double DEFAULT_CHILD_WEIGHT = 1.0;
+
 	/**
 	 * 审核人角色信息
 	 */

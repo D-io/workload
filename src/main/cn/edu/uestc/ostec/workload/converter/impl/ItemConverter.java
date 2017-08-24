@@ -111,7 +111,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		List<ChildWeight> childWeightList = itemDto.getChildWeightList();
 		itemDto.setJsonChildWeight((null != childWeightList && childWeightList.size() == 1) ?
 				String.valueOf(childWeightList.get(ZERO_INT).getWeight()) :
-				po.getJobDesc());
+				po.getJsonChildWeight());
 		//		double workload = FormulaCalculate
 		//				.calculate(category.getFormula(), itemDto.getParameterValues());
 		//		itemDto.setWorkload(workload);
