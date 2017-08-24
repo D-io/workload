@@ -394,6 +394,9 @@ public class ItemManageController extends ApplicationController {
 //
 //		} else {
 			// 个人申报
+		    if(SINGLE.equals(newItemDto.getIsGroup())) {
+		    	newItemDto.setJsonChildWeight();
+			}
 			newItemDto.setWorkload(workload);
 			newItemDto.setStatus(UNCOMMITTED);
 

@@ -102,6 +102,16 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 			}
 		}
 		itemDto.setDescAndValues(descAndValues);
+
+		List<JobDesc> jobDescList = itemDto.getJobDescList();
+		itemDto.setJobDesc((null != jobDescList && jobDescList.size() == 1) ?
+				jobDescList.get(ZERO_INT).getJobDesc() :
+				po.getJobDesc());
+
+		List<ChildWeight> childWeightList = itemDto.getChildWeightList();
+		itemDto.setJsonChildWeight((null != childWeightList && childWeightList.size() == 1) ?
+				String.valueOf(childWeightList.get(ZERO_INT).getWeight()) :
+				po.getJobDesc());
 		//		double workload = FormulaCalculate
 		//				.calculate(category.getFormula(), itemDto.getParameterValues());
 		//		itemDto.setWorkload(workload);

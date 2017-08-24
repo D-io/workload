@@ -9,14 +9,17 @@
 
 package cn.edu.uestc.ostec.workload.dto;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
+
 /**
  * Version:v1.0 (description:  )
  */
 public class TotalWorkloadAndCount {
 
-	private Integer count;
+	private Integer count = ZERO_INT;
 
-	private Double workload;
+	private Double workload = ZERO_DOUBLE;
 
 	public Integer getCount() {
 		return count;
