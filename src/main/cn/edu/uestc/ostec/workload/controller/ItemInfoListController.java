@@ -131,6 +131,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 			teacherWorkload.setUncheckedItems(nonCheckedWorkload.getCount());
 			teacherWorkload.setUncheckedWorkload(nonCheckedWorkload.getWorkload());
+			teacherWorkload.setTotalWorkload(
+					teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
 
 			//			teacherWorkload.setUncheckedWorkload(
 			//					nonCheckedWorkload.getWorkload() + doubtedCheckedWorkload.getWorkload()

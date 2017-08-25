@@ -31,6 +31,16 @@ public class TeacherWorkload {
 
 	private Integer uncheckedItems = ZERO_INT;
 
+	private Double totalWorkload = ZERO_DOUBLE;
+
+	public Double getTotalWorkload() {
+		return totalWorkload;
+	}
+
+	public void setTotalWorkload(Double totalWorkload) {
+		this.totalWorkload = totalWorkload;
+	}
+
 	public String getProfessionalTitle() {
 		return professionalTitle;
 	}
