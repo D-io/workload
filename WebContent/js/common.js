@@ -96,6 +96,7 @@ $(document).ready(function () {
     var myFlag='';
     var allItem=[];
     var itemCount=0;
+    var cateId=0;
     /*$(document).off("click",".importList");
     $(document).on("click",".importList",function () {
         var flag = this.id;
@@ -106,6 +107,8 @@ $(document).ready(function () {
     $(document).on("click",".importList",function () {
         var flag = this.id;
         flag = parseInt(flag.match(/\d+/g));
+        window.cateId=flag;
+        console.log(window.cateId);
         allItem=[];
         itemCount=0;
         $(".importNewFile").attr("id","importNewFile_"+flag);
@@ -135,7 +138,7 @@ $(document).ready(function () {
     });
     $(document).on("click",".showImportAll",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
-
+        $(".savemyEdit").attr("id","savemyEdit_"+allItem[thisId].itemId);
         $("#itemName").val(allItem[thisId].itemName);
         $("#itemName").attr("disabled","disabled");
         $("#applyDesc").val(allItem[thisId].applyDesc);
@@ -143,18 +146,18 @@ $(document).ready(function () {
 
         var showPram=allItem[thisId].parameterValues;
         for(var i=0;i<showPram.length;i++){
-            $("#importpara_0").text(showPram[i].value);
-            console.log($("#importpara_"+i));
+            $(".importpara_"+i).val(showPram[i].value);
 
         }
-     //   $(".importpara").attr("disabled","true");
+      $(".importpara").attr("disabled","true");
         var showOtherPara=allItem[thisId].otherJsonParameters;
         if(showOtherPara!=null){
             for(var n=0;n<showOtherPara.length;n++){
-                $("#otherimportpara_"+n).text(showOtherPara[n].value);
+                $("#otherimportpara_"+n).val(showOtherPara[n].value);
             }
         }
-      //  $(".otherimportpara").attr("disabled","disabled");
+        $("#groupMember").val(allItem[thisId].ownerId);
+       $(".otherimportpara").attr("disabled","disabled");
         if(allItem[thisId].isGroup==1){
             $("#isGroup").attr("checked","checked");
             $("#isSingle").attr("disabled","disabled");
@@ -172,20 +175,182 @@ $(document).ready(function () {
             $(".required").hide();
         }
 
-
-
     });
     $(document).on("click",".editor",function () {
        $(".form-control").removeAttr("disabled");
+        $(".editor").hide();
+        $(".submitTo").hide();
        $(".dismiss").show();
        $(".savemyEdit").show();
+
     });
     $(document).on("click",".savemyEdit",function () {
+        var thisId=this.id.match(/\d+/g);
+
         $(".form-control").attr("disabled");
         $("#year").removeAttr("disabled");
         $("#term").removeAttr("disabled");
         $(".dismiss").hide();
         $(".savemyEdit").hide();
+        $(".editor").show();
+        $(".submitTo").show();
+        var radioGroup=$("input:radio[name='optionsRadios']:checked").val();
+        var $parametername = $(".pramterDesc");
+        var newArray = new Array();
+        for (var i = 0; i < $(".importpara").length; i++) {
+            var dom = $(".pramterDesc").eq(i).attr("id");
+            newArray.push({symbol: dom, value:parseInt($(".importpara").eq(i).val())});
+        }
+        newArray = JSON.stringify(newArray);
+        var otherArray = new Array();
+        var otherPramterkey = $(".otherPramterkey");
+        for (var j = 0; j < otherPramterkey.length; j++) {
+            var otherKey=$(".otherParaTh").eq(j);
+            otherArray.push({key: otherKey.text(), value: $(".otherimportpara").eq(j).val()});
+        }
+        otherArray = JSON.stringify(otherArray);
+        var grouparray = new Array();
+        var sumArray=new Array();
+      //  var groupmessageArray = $('.showgroupMemberName');
+
+            grouparray={
+                userId: parseInt($("#itemMember option:selected").val()),
+                jobDesc: $("#jobDesc").val()
+            };
+            sumArray={
+                userId: parseInt($("#itemMember option:selected").val()),
+                weight: parseFloat($("#childWeight").val())
+            };
+        grouparray = JSON.stringify(grouparray);
+        sumArray=JSON.stringify(sumArray);
+        if(radioGroup==1){
+            $.ajax({
+                type: "POST",
+                url: itemManageUrl,
+                data: {
+                    categoryId: window.cateId,
+                    itemId:thisId,
+                    itemName: $('#itemName').val(),
+                    applyDesc: $('#applyDesc').val(),
+                    //   workload: $('#workload').val(),
+                    //   ownerId: applicant.val(),
+                    groupManagerId: $("#itemmanager").val(),
+                    isGroup: 1,
+                    jsonParameter: newArray,
+                    otherJson: otherArray,
+                    jobDesc: grouparray,
+                    jsonChildWeight: childWeight,
+                    option:"modify"
+
+                },
+                success: function (data) {
+                    alert("修改成功!");
+                    $("#applyModal").modal('hide');
+                    $('#showContent').modal('hide');
+
+                    var analyseList = data.data.itemList;
+                    var listLength = data.data.itemList.length;
+                    var rowInfo = "<tr></tr>";
+                    var cellInfo = "<td></td>";
+                    var Info = analyseList;
+                    var formdata = new FormData;
+                    formdata.append("file", $("#formName")[0].files[0]);
+                    $.ajax({
+                        url: importProofUrl + "?itemId=" + analyseList,
+                        type: "POST",
+                        dataType: "JSON",
+                        data: formdata,
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                        }
+
+                    });
+
+                    $('#addContent').modal('hide');
+                    for(var hideCount=0;hideCount<listLength;hideCount++){
+                        if (Info[hideCount].teacherName == userNameUrl) {
+                            /* var count = Info[i].workload;
+                             var CategId = Info[i].categoryId;*/
+
+                            var CountId = Info[hideCount].itemId;
+                        }
+                        // $(".hiddendistrict").append("<div class='groupMember_"+CountId+"'>"+Info[hideCount].teacherName+"</div><div class='jobDesc_"+CountId+"'>"+Info[hideCount].jobDesc+"</div><div class='jobWeight_"+CountId+"'>"+Info[hideCount].jsonChildWeight+"</div>")
+
+                        $(".groupMember_"+CountId).text(Info[hideCount].teacherName);
+                        $("jobDesc_"+CountId).text(Info[hideCount].jobDesc);
+                        $("jobWeight_"+CountId).text(Info[hideCount].jsonChildWeight);
+                    }
+
+                }
+
+            })
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: itemManageUrl,
+                data: {
+                    categoryId: window.cateId,
+                    itemId:thisId,
+                    itemName: $('#itemName').val(),
+                    applyDesc: $('#applyDesc').val(),
+                    //   workload: $('#workload').val(),
+                    //   ownerId: applicant.val(),
+                 //   groupManagerId: $("#itemmanager").val(),
+                    isGroup: 0,
+                    jsonParameter: newArray,
+                    otherJson: otherArray,
+                 //   jobDesc: grouparray,
+                  //  jsonChildWeight: childWeight,
+                    option:"modify"
+
+                },
+                success: function (data) {
+                    alert("修改成功!");
+                    $("#applyModal").modal('hide');
+                    $('#showContent').modal('hide');
+
+                    var analyseList = data.data.itemList;
+                    var listLength = data.data.itemList.length;
+                    var rowInfo = "<tr></tr>";
+                    var cellInfo = "<td></td>";
+                    var Info = analyseList;
+                    var formdata = new FormData;
+                    formdata.append("file", $("#formName")[0].files[0]);
+                    $.ajax({
+                        url: importProofUrl + "?itemId=" + analyseList,
+                        type: "POST",
+                        dataType: "JSON",
+                        data: formdata,
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                        }
+
+                    });
+
+                    $('#addContent').modal('hide');
+                    for(var hideCount=0;hideCount<listLength;hideCount++){
+                        if (Info[hideCount].teacherName == userNameUrl) {
+                            /* var count = Info[i].workload;
+                             var CategId = Info[i].categoryId;*/
+
+                            var CountId = Info[hideCount].itemId;
+                        }
+                        // $(".hiddendistrict").append("<div class='groupMember_"+CountId+"'>"+Info[hideCount].teacherName+"</div><div class='jobDesc_"+CountId+"'>"+Info[hideCount].jobDesc+"</div><div class='jobWeight_"+CountId+"'>"+Info[hideCount].jsonChildWeight+"</div>")
+
+                        $(".groupMember_"+CountId).text(Info[hideCount].teacherName);
+                        $("jobDesc_"+CountId).text(Info[hideCount].jobDesc);
+                        $("jobWeight_"+CountId).text(Info[hideCount].jsonChildWeight);
+                    }
+
+                }
+
+            })
+        }
+
+
 
     });
 
@@ -939,12 +1104,18 @@ function showPara(item) {
 
     for(var t=0;t<item.parameterValues.length;t++){
         var symbolname=item.parameterValues[t].symbol;
-        $('.parameterTh').append("<tr><th class='pramterDesc' id='"+symbolname+"' style='font-size: 13px;'>"+item.descAndValues[t].desc+"</th><td><input type='text' class='importpara form-control' id='importpara_"+t+"'></td></tr>");
+        $('.parameterTh').append("<tr><th class='pramterDesc' id='"+symbolname+"' style='font-size: 13px;'>"+item.descAndValues[t].desc+"</th><td><input type='text' class='importpara form-control importpara_"+t+"'></td></tr>");
       //  $(".otherParaTh").append("<tr><th class='showpramterDesc' id='"+symbolname+"' style='font-size: 13px;'>"+item[comp].formulaParameterList[t].desc+"</th><td><input type='text' class='showparameterName'></td></tr>")
-    console.log($(".importpara").attr("class"));
+
     }
-    for(var s=0;s<item.otherJsonParameters.length;s++){
-        $('.otherParaTh').append("<tr><th class='otherPramterkey' style='font-size: 13px'>"+item.otherJsonParameters[s].key+"</th><td><input type='text' class='otherimportpara form-control' id='otherimportpara_"+s+"'></td></tr>");
-      //  $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>"+item[comp].otherJsonParameters[s].key+"</th><td><input type='text' class='showotherparameterName'></td></tr>");
+    if(item.otherJsonParameters!=null){
+        for(var s=0;s<item.otherJsonParameters.length;s++){
+            $('.otherParaTh').append("<tr><th class='otherPramterkey' style='font-size: 13px'>"+item.otherJsonParameters[s].key+"</th><td><input type='text' class='otherimportpara form-control otherimportpara_"+s+"'></td></tr>");
+            //  $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>"+item[comp].otherJsonParameters[s].key+"</th><td><input type='text' class='showotherparameterName'></td></tr>");
+        }
     }
+    else {
+        $(".hiddenRequired").hide();
+    }
+
 }
