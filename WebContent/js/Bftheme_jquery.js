@@ -415,7 +415,7 @@ function itemSummary() {
                     var Info=analyseList[i];
                     $(".sumItemPreview").append(rowInfo);
                     $(".sumItemPreview tr:last").attr("class","resetNum");
-                    for(var j=0;j<5;j++)//单元格
+                    for(var j=0;j<6;j++)//单元格
                     {
                         $(".sumItemPreview tr:last").append(cellInfo);
                     }
@@ -426,24 +426,25 @@ function itemSummary() {
 
                     $(".sumItemPreview tr:last td:eq(1)").attr("id","teacherId_"+id);
                     $(".sumItemPreview tr:last td:eq(2)").text(Info.teacherName);
-
-                    $(".sumItemPreview tr:last td:eq(3)").text(Info.checkedWorkload);
+                    $(".sumItemPreview tr:last td:eq(3)").text(Info.professionalTitle);
+                    $(".sumItemPreview tr:last td:eq(4)").text(Info.checkedWorkload);
                     if(Info.checkedWorkload>100){
-                        $(".sumItemPreview tr:last td:eq(3)").css({"background-color":"#6fcd54","color":"#fff"});
+                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#6fcd54","color":"#fff","cursor":"pointer"});
                     }
                     else {
-                        $(".sumItemPreview tr:last td:eq(3)").css({"background-color":"#ffe746","color":"#2A3F54"});
+                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#ffe746","color":"#2A3F54","cursor":"pointer"});
                     }
-                    $(".sumItemPreview tr:last td:eq(3)").attr("class","checkedwork");
-                    $(".sumItemPreview tr:last td:eq(3)").attr("id","checkedwork_"+id);
-                    $(".sumItemPreview tr:last td:eq(3)").attr("data-toggle","modal");
-                    $(".sumItemPreview tr:last td:eq(3)").attr("data-target","#applyModal");
-
-                    $(".sumItemPreview tr:last td:eq(4)").text(Info.uncheckedWorkload);
-                    $(".sumItemPreview tr:last td:eq(4)").attr("class","uncheckedWork");
-                    $(".sumItemPreview tr:last td:eq(4)").attr("id","uncheckedwork_"+id);
+                    $(".sumItemPreview tr:last td:eq(4)").attr("class","checkedwork");
+                    $(".sumItemPreview tr:last td:eq(4)").attr("id","checkedwork_"+id);
                     $(".sumItemPreview tr:last td:eq(4)").attr("data-toggle","modal");
                     $(".sumItemPreview tr:last td:eq(4)").attr("data-target","#applyModal");
+
+                    $(".sumItemPreview tr:last td:eq(5)").text(Info.uncheckedWorkload);
+                    $(".sumItemPreview tr:last td:eq(5)").attr("class","uncheckedWork");
+                    $(".sumItemPreview tr:last td:eq(5)").attr("id","uncheckedwork_"+id);
+                    $(".sumItemPreview tr:last td:eq(5)").attr("data-toggle","modal");
+                    $(".sumItemPreview tr:last td:eq(5)").attr("data-target","#applyModal");
+                    $(".sumItemPreview tr:last td:eq(5)").css("cursor","pointer");
 
                    /* var act="<a class=\"btn btn-primary btn-xs previewAll\" id=\"previewAll_"+ id+"\" data-toggle='modal' data-target='#applyModal'>查看详情</a>";
                     $(".sumItemPreview tr:last td:eq(5)").append(act);*/

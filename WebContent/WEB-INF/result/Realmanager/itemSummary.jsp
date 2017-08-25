@@ -68,6 +68,7 @@
                     <th  class="sorting">序号</th>
                     <th class="sorting">教师工号</th>
                     <th  class="sorting">教师姓名</th>
+                    <th  class="sorting">专业职称</th>
                     <th class="sorting">通过审核(复核)工作当量</th>
                     <th class="sorting" >有待审核(复核)工作当量</th>
 
