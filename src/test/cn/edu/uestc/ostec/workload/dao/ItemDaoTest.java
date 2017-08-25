@@ -18,6 +18,7 @@ import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.Teacher;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
+import cn.edu.uestc.ostec.workload.service.ItemService;
 
 import static cn.edu.uestc.ostec.workload.type.UserType.TEACHER;
 import static org.junit.Assert.*;
@@ -28,6 +29,8 @@ import static org.junit.Assert.*;
 public class ItemDaoTest extends BaseTest {
 
 	private ItemDao itemDao;
+
+	private ItemService itemService;
 
 	private CategoryDao categoryDao;
 
@@ -48,6 +51,7 @@ public class ItemDaoTest extends BaseTest {
 		historyService = getBean(HistoryService.class);
 		userRoleEvent = getBean(UserRoleEvent.class);
 		teacherDao = getBean(TeacherDao.class);
+		itemService = getBean(ItemService.class);
 		item = new Item();
 		item.setItemId(1);
 		item.setCategoryId(1);
@@ -59,6 +63,7 @@ public class ItemDaoTest extends BaseTest {
 		item.setJobDesc("asdasd");
 		item.setStatus(-1);
 		item.setJsonChildWeight("21");
+
 	}
 
 	@Test
@@ -97,7 +102,7 @@ public class ItemDaoTest extends BaseTest {
 //		}
 //		System.out.println(categoryDao.selectYears());
 //		System.out.println(itemConverter.poToDto(itemDao.select(28)).getDescAndValues());
-		System.out.println(itemDao.selectWorkload(3210343,2,"2017-2018-1"));
+		System.out.println(itemService.selectTotalWorkload(5130121,null,"2017-2018-1"));
 	}
 
 }

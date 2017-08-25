@@ -110,29 +110,34 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 			TotalWorkloadAndCount checkedWorkload = itemService
 					.selectTotalWorkload(id, CHECKED, getCurrentSemester());
+			//			TotalWorkloadAndCount nonCheckedWorkload = itemService
+			//					.selectTotalWorkload(id, NON_CHECKED, getCurrentSemester());
+			//			TotalWorkloadAndCount doubtedWorkload = itemService
+			//					.selectTotalWorkload(id, DOUBTED, getCurrentSemester());
+			//			TotalWorkloadAndCount doubtedCheckedWorkload = itemService
+			//					.selectTotalWorkload(id, DOUBTED_CHECKED, getCurrentSemester());
 			TotalWorkloadAndCount nonCheckedWorkload = itemService
-					.selectTotalWorkload(id, NON_CHECKED, getCurrentSemester());
-			TotalWorkloadAndCount doubtedWorkload = itemService
-					.selectTotalWorkload(id, DOUBTED, getCurrentSemester());
-			TotalWorkloadAndCount doubtedCheckedWorkload = itemService
-					.selectTotalWorkload(id, DOUBTED_CHECKED, getCurrentSemester());
+					.selectTotalWorkload(id, null, getCurrentSemester());
 
 			checkedWorkload = (null == checkedWorkload ? EMPTY_WORKLOAD : checkedWorkload);
 			nonCheckedWorkload = (null == nonCheckedWorkload ? EMPTY_WORKLOAD : nonCheckedWorkload);
-			doubtedWorkload = (null == doubtedWorkload ? EMPTY_WORKLOAD : doubtedWorkload);
-			doubtedCheckedWorkload = (null == doubtedCheckedWorkload ?
-					EMPTY_WORKLOAD :
-					doubtedCheckedWorkload);
+			//			doubtedWorkload = (null == doubtedWorkload ? EMPTY_WORKLOAD : doubtedWorkload);
+			//			doubtedCheckedWorkload = (null == doubtedCheckedWorkload ?
+			//					EMPTY_WORKLOAD :
+			//					doubtedCheckedWorkload);
 
 			teacherWorkload.setCheckedWorkload(checkedWorkload.getWorkload());
 			teacherWorkload.setCheckedItems(checkedWorkload.getCount());
 
-			teacherWorkload.setUncheckedWorkload(
-					nonCheckedWorkload.getWorkload() + doubtedCheckedWorkload.getWorkload()
-							+ doubtedWorkload.getWorkload());
-			teacherWorkload.setUncheckedItems(
-					nonCheckedWorkload.getCount() + doubtedCheckedWorkload.getCount()
-							+ doubtedWorkload.getCount());
+			teacherWorkload.setUncheckedItems(nonCheckedWorkload.getCount());
+			teacherWorkload.setUncheckedWorkload(nonCheckedWorkload.getWorkload());
+
+			//			teacherWorkload.setUncheckedWorkload(
+			//					nonCheckedWorkload.getWorkload() + doubtedCheckedWorkload.getWorkload()
+			//							+ doubtedWorkload.getWorkload());
+			//			teacherWorkload.setUncheckedItems(
+			//					nonCheckedWorkload.getCount() + doubtedCheckedWorkload.getCount()
+			//							+ doubtedWorkload.getCount());
 
 			teacherWorkloadList.add(teacherWorkload);
 		}

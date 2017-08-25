@@ -118,6 +118,17 @@
     </select>
 
     <select id="selectWorkload" resultType="cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount">
-    SELECT SUM(workload) workload,COUNT(workload) count FROM item WHERE owner_id = #{teacherId} AND status = #{status} AND version = #{version}
+    SELECT SUM(workload) workload,COUNT(workload) count FROM item
+    <where>
+        owner_id = #{teacherId} AND version = #{version}
+        <if test="null != status">
+            AND status = #{status}
+        </if>
+        <if test="null == status">
+            AND (status = 1 OR status = 3 OR status = 4)
+        </if>
+    </where>
+
   </select>
+
 </mapper>
