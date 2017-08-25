@@ -992,7 +992,7 @@ function ztree() {
             $.ajaxSetup({
                 async : false
             });
-            $.post(categorySubmitUrl+"?categoryId="+str,{test:12},function (data){
+            $.post(categorySubmitUrl+"?"+str,{test:12},function (data){
                 if(data.status==200){
                     window.location.reload();
                     return confirm("提交规则成功！");
