@@ -231,7 +231,7 @@
             </ul>
             <div id="myTabContent" class="tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                    <button id="addToTable" class="btn btn-primary"  data-target="#firstaddModal" data-toggle="modal">添加规则 <i class="fa fa-plus"></i></button>
+                    <button id="addToTable" class="btn btn-primary"  data-target="#addModal" data-toggle="modal">添加规则 <i class="fa fa-plus"></i></button>
                     <button id="submit" class="btn btn-primary">提交规则</button>
                     <%--<button id="unlock" class="btn btn-primary">unlock</button>--%>
                     <%-- <header class="panel-heading">
@@ -300,7 +300,7 @@
                                             </div>
                                         </div>--%>
                                         <div class="form-group requiredtime">
-                                            <label class="col-sm-3 control-label"><span class="applyDeadLabel">复核截止时间</span><span style="margin-left: 30px;font-size: 11px;color: #ccc;">(默认为当前年份的12月28号)</span></label>
+                                            <label class="col-sm-3 control-label">复核截止时间</label>
                                             <div class="col-sm-9">
                                                 <div class="input-group">
                                             <span class="input-group-addon">
@@ -311,7 +311,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group requiredtime">
-                                            <label class="col-sm-3 control-label"><span class="revDeadLabel">导入截止时间</span><span style="margin-left: 30px;font-size: 11px;color: #ccc;">(默认为当前年份的12月31号)</span></label>
+                                            <label class="col-sm-3 control-label"><span class="revDeadLabel">导入截止时间</span></label>
                                             <div class="col-sm-9">
                                                 <div class="input-group">
                                              <span class="input-group-addon">
@@ -417,7 +417,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal fade" id="firstaddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
+                   <%-- <div class="modal fade" id="firstaddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -466,13 +466,13 @@
                                                 <input type="text" class="form-control" id="firstparentId" name="parentId">
                                             </div>
                                         </div>
-                                        <%--<div class="form-group">
+                                        &lt;%&ndash;<div class="form-group">
                                             <label class="col-sm-3 control-label">是否为叶子节点</label>
                                             <div class="col-sm-9">
                                                 <input type="radio" class="isLeaf" name="hasChildNode" value="Y">是
                                                 <input type="radio" class="isLeaf" name="hasChildNode"  value="N">否
                                             </div>
-                                        </div>--%>
+                                        </div>&ndash;%&gt;
                                         <div class="form-group requiredtime">
                                             <label class="col-sm-3 control-label"><span class="firstapplyDeadLabel">复核截止时间</span><span style="margin-left: 30px;font-size: 11px;color: #ccc;">(默认为当前年份的12月28号)</span></label>
                                             <div class="col-sm-9">
@@ -499,11 +499,11 @@
                                         <div class="form-group requiredtime">
                                             <label class="col-sm-3 control-label">公式参数</label>
                                             <div class="col-sm-9">
-<%--
+&lt;%&ndash;
                                                 <a class="btn btn-primary" role="button" data-toggle="collapse" href="#firstparameter" aria-expanded="false" aria-controls="collapseExample">
                                                     <i class="fa fa-plus"></i>
                                                 </a>
-                                                <div class="collapse" id="firstparameter">--%>
+                                                <div class="collapse" id="firstparameter">&ndash;%&gt;
                                                     <div class="well">
                                                         <table class="table" id="firstparameterTable">
                                                             <thead>
@@ -517,16 +517,16 @@
 
                                                             </thead>
                                                             <tbody class="firstAddPramter">
-                                                            <tr>
+                                                          &lt;%&ndash;  <tr>&ndash;%&gt;
 
-                                                                <%-- <td><input type="text" class="parameterName" name="parameterName"></td>
-                                                                 <td><input type="text" class="parameterSymbol" name="parameterSymbol"></td>--%>
+                                                                &lt;%&ndash; <td><input type="text" class="parameterName" name="parameterName"></td>
+                                                                 <td><input type="text" class="parameterSymbol" name="parameterSymbol"></td>&ndash;%&gt;
 
-                                                            </tr>
+                                                           &lt;%&ndash; </tr>&ndash;%&gt;
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                               <%-- </div>--%>
+                                               &lt;%&ndash; </div>&ndash;%&gt;
                                             </div>
                                         </div>
                                         <div class="form-group requiredtime">
@@ -539,10 +539,10 @@
                                             <label class="col-sm-3 control-label">附加属性</label>
                                             <div class="col-sm-9">
 
-                                                <%--<a class="btn btn-primary" role="button" data-toggle="collapse" href="#firstotherParameter" aria-expanded="false" aria-controls="collapseExample">
+                                                &lt;%&ndash;<a class="btn btn-primary" role="button" data-toggle="collapse" href="#firstotherParameter" aria-expanded="false" aria-controls="collapseExample">
                                                     <i class="fa fa-plus"></i>
                                                 </a>
-                                                <div class="collapse" id="firstotherParameter">--%>
+                                                <div class="collapse" id="firstotherParameter">&ndash;%&gt;
                                                     <div class="well">
                                                         <table class="table" id="firstotherParameterTable">
                                                             <thead>
@@ -556,7 +556,7 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                            <%--    </div>--%>
+                                            &lt;%&ndash;    </div>&ndash;%&gt;
                                             </div>
                                         </div>
 
@@ -565,7 +565,7 @@
 
 
 
-                                        <%-- <div class="form-group">
+                                        &lt;%&ndash; <div class="form-group">
                                              <label class="col-sm-3 control-label">适用学期</label>
                                              <div class="col-sm-9">
                                                  <select class="form-control" id="version">
@@ -578,21 +578,21 @@
 
                                                  </select>
                                              </div>
-                                         </div>--%>
+                                         </div>&ndash;%&gt;
 
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary " data-dismiss="modal" id="firstcancel">取消</button>
                                     <button type="button" class="btn btn-primary" id="firstsave">保存</button>
-                                    <%--<button class="btn btn-primary manageEdit" style="display: none;">编辑</button>
-                                    <button class="btn btn-primary submitEdit" style="display: none;">提交</button>--%>
+                                    &lt;%&ndash;<button class="btn btn-primary manageEdit" style="display: none;">编辑</button>
+                                    <button class="btn btn-primary submitEdit" style="display: none;">提交</button>&ndash;%&gt;
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
+--%>
 
                     <div class="allTree">
 

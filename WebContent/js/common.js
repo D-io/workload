@@ -796,14 +796,18 @@ function getSideBar(role,roleList) {
                     var selectdata=new Array();
                     for(var i=0;i<teacherInfo.length;i++){
                         $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
+                       /* $('#firstteacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
 
-                    }
+             */       }
                 });
             $("#teacherName").select2({
                 allowClear: true,
                 width:"100%",
             });
-
+        /*    $("#firstteacherName").select2({
+                allowClear: true,
+                width:"100%",
+            });*/
 
         });
        /* $(".scroll-view").append("<jsp:include page='Manager-left-sidebar.jsp'/>");

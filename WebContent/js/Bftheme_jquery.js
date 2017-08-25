@@ -900,27 +900,27 @@ function resetHistory() {
 }
 $(document).ready(function () {
     var Count=0;
-    var newCount=0;
+   // var newCount=0;
     $(document).on("click","#addParameter",function () {
         Count++;
     var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><a class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='float: right;'><i class='fa fa-trash'></i></a></td></tr>";
     $('.AddPramter').append(addStr);
 });
-    $(document).on("click","#firstaddParameter",function () {
+  /*  $(document).on("click","#firstaddParameter",function () {
         newCount++;
         var addStr="<tr class='firsttrCount_"+newCount+"'><td><input type='text' class='form-control firstparameterName' name='firstparameterName'></td><td><input type='text' class='form-control firstparameterSymbol' name='parameterSymbol'><a class='btn btn-danger firstremoveParaRow' id='firstremoveParaRow_"+newCount+"' style='float: right;'><i class='fa fa-trash'></i></a></td></tr>";
         $('.firstAddPramter').append(addStr);
-    });
+    });*/
 $(document).on("click","#addOtherParameter",function () {
     Count++;
     var addStr="<tr class='otherCount_"+Count+"'><td><input type='text' class='form-control otherParameterName' name='parameterName'><a class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='float:right;'><i class='fa fa-trash'></i></a></td></tr>";
     $('.addOtherPramter').append(addStr);
 });
-    $(document).on("click","#firstaddOtherParameter",function () {
+/*    $(document).on("click","#firstaddOtherParameter",function () {
         newCount++;
         var addStr="<tr class='firstotherCount_"+newCount+"'><td><input type='text' class='form-control firstotherParameterName' name='parameterName'><a class='btn btn-danger firstremoveOtherRow' id='firstremoveOtherRow_"+newCount+"' style='float:right;'><i class='fa fa-trash'></i></a></td></tr>";
         $('.firstaddOtherPramter').append(addStr);
-    });
+    });*/
 
 $(document).on("click",".removeParaRow",function () {
     var trId=this.id.match(/\d+/g);
@@ -930,14 +930,14 @@ $(document).on("click",".removeParaRow",function () {
         var trId=this.id.match(/\d+/g);
         $(".otherCount_"+trId).remove();
     });
-    $(document).on("click",".firstremoveParaRow",function () {
+/*    $(document).on("click",".firstremoveParaRow",function () {
         var trId=this.id.match(/\d+/g);
         $(".firsttrCount_"+trId).remove();
     });
     $(document).on("click",".firstremoveOtherRow",function () {
         var trId=this.id.match(/\d+/g);
         $(".firstotherCount_"+trId).remove();
-    });
+    });*/
 
     $(document).on("click",".editOtherRow",function () {
         var trId=this.id.match(/\d+/g);

@@ -31,10 +31,11 @@ function ztree() {
         callback: {
             beforeEditName: beforeEditName,
             beforeRemove:beforeRemove,
-          //  beforeRename: beforeRename,
+            //  beforeRename: beforeRename,
             onCheck: zTreeOnClick,
            onRemove: onRemove,
-            onDblClick: onClick
+            onDblClick: onClick,
+          //  onNodeCreated: zTreeOnNodeCreated
         }
 
     };
@@ -214,25 +215,30 @@ function ztree() {
                     }
                 }
             }
-       // $.fn.zTree.init($("#treeDemo"), setting, zNodes);
         }
 
     );
 
     var log, className = "dark";
 //捕获节点被拖拽前回调
-   /* function beforeDrag(treeId, treeNodes) {
-        return false;
+    /* function beforeDrag(treeId, treeNodes) {
+     return false;
+     }*/
+ /*   function zTreeOnNodeCreated(event, treeId, treeNode) {
+        if(treeNode.type != "folder"){
+            $('#'+treeNode.tId+'_ico').css("background", "center center/16px 16px no-repeat");
+        }
     }*/
+
 //捕获节点编辑按钮回调函数
     function beforeEditName(treeId, treeNode) {
-      /*  className = (className === "dark" ? "" : "dark");
-        showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);*/
+        className = (className === "dark" ? "" : "dark");
+        showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         zTree.selectNode(treeNode);
 
-        setTimeout(function() {
-            var editCount = 0;
+        setTimeout(function () {
+            var editCount=0;
             var zTree = $.fn.zTree.getZTreeObj("treeDemo");
             var sNodes = zTree.getSelectedNodes();
             $(".manageEdit").show();
@@ -243,8 +249,7 @@ function ztree() {
             else {
                 $(".submitEdit").hide();
             }
-            $(".manageEdit").attr("id", "edit_" + treeNode.id);
-
+            $(".manageEdit").attr("id","edit_"+treeNode.id);
             $("#cancel").hide();
             $("#save").hide();
             $(".form-control").attr("disabled", "disabled");
@@ -336,7 +341,7 @@ function ztree() {
             }
             $('.AddPramter').append(addStr);
 
-            for (var count = 0; count < jsonstrArray.length; count++) {
+            for(var count=0;count<jsonstrArray.length;count++){
                 $(".parameterName").eq(count).val(jsonstrArray[count].desc);
                 $(".parameterSymbol").eq(count).val(jsonstrArray[count].symbol);
             }
@@ -353,18 +358,18 @@ function ztree() {
             $('#reviewDeadline').val(treeNode.reviewDeadline);
             $('#parentId').val(parNodeName);
             $('#formula').val(treeNode.formula);
-            $("#parentId").attr("disabled", "disabled");
+            $("#parentId").attr("disabled","disabled");
 
 
             $('#addModal').modal('show');
-            $(document).off("click", ".manageEdit");
-            $(document).on("click", ".manageEdit", function () {
+            $(document).off("click",".manageEdit");
+            $(document).on("click",".manageEdit",function () {
                 $.ajaxSetup({
-                    async: false
+                    async : false
                 });
-                var str = this.id.match(/\d+/g);
-                $.post(unlockCateUrl + "?categoryId=" + str, {test: 12}, function (data) {
-                    if (data.status == 200) {
+                var str=this.id.match(/\d+/g);
+                $.post(unlockCateUrl+"?categoryId="+str,{test:12},function (data){
+                    if(data.status==200){
 
                         $("#save").show();
                         $("#cancel").show();
@@ -380,31 +385,31 @@ function ztree() {
 
                     else
                         alert("解锁规则失败！");
-                });
+                } );
 
             });
-            $('#save').off("click");
-            $('#save').on("click", function () {
+            $(document).off("click",'#save');
+            $(document).on("click",'#save', function () {
                 var parametername = $('.parameterName');
-                var newArray = new Array();
-                for (var i = 0; i < parametername.length; i++) {
+                var newArray=new Array();
+                for(var i=0;i<parametername.length;i++){
 
-                    newArray.push({desc: $(".parameterName").eq(i).val(), symbol: $(".parameterSymbol").eq(i).val()});
+                    newArray.push({desc:$(".parameterName").eq(i).val(),symbol:$(".parameterSymbol").eq(i).val()});
 
                 }
-                var otherParamterName = $(".otherParameterName");
-                var otherArray = new Array();
-                for (var m = 0; m < otherParamterName.length; m++) {
-                    otherArray.push({key: $(".otherParameterName").eq(m).val(), value: ""});
+                var otherParamterName=$(".otherParameterName");
+                var otherArray=new Array();
+                for(var m=0;m<otherParamterName.length;m++){
+                    otherArray.push({key:$(".otherParameterName").eq(m).val(),value:""});
                 }
-                newArray = JSON.stringify(newArray);
-                otherArray = JSON.stringify(otherArray);
+                newArray=JSON.stringify(newArray);
+                otherArray=JSON.stringify(otherArray);
                 var reviewTimetodate = $('#reviewDeadline').val();
                 var applyTimetodate = $('#applyDeadline').val();
 
-                var radio = $("#importRequired option:selected");
-                var ischild = $("input:radio[name='hasChildNode']:checked").val();
-                var reviewerid = $('#teacherName option:selected');
+                var radio=$("#importRequired option:selected");
+                var ischild=$("input:radio[name='hasChildNode']:checked").val();
+                var reviewerid=$('#teacherName option:selected');
 
                 $.post(categoryEditUrl,
                     {
@@ -420,7 +425,7 @@ function ztree() {
                         version: $('#version').val(),
                         categoryId: treeNode.id,
                         jsonParameters: newArray,
-                        otherJson: otherArray
+                        otherJson:otherArray
                     },
                     function (data) {
 
@@ -428,17 +433,18 @@ function ztree() {
                          var b=y.match(/\d+/g);
                          var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
                          var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];*/
-                        if (data.status == 200) {
+                        if(data.status==200){
                             alert("编辑规则成功！");
+                            window.location.reload();
                         }
-                        if (data.data.category) {
-                            var x = data.data.category.reviewDeadline;
-                            var y = data.data.category.applyDeadline;
+                      /*  if(data.data.category){
+                            var x=data.data.category.reviewDeadline;
+                            var y=data.data.category.applyDeadline;
                             for (var i = 0; i < zNodes.length; i++) {
 
                                 if (zNodes[i].id == data.data.category.categoryId) {
 
-                                    /*var newNode = {
+                                    /!*var newNode = {
                                      'name': data.data.category.name,
                                      'id': data.data.category.categoryId,
                                      'parentId': data.data.category.parentId,
@@ -451,14 +457,13 @@ function ztree() {
                                      'isLeaf':data.data.category.isLeaf,
                                      'importRequired':data.data.category.importRequired,
                                      'otherJsonParameters':data.data.category.otherJsonParameters
-                                     };*/
-                                    if (data.data.category.importRequired == 1) {
+                                     };*!/
+                                    if(data.data.importRequired==1){
                                         var newNode = {
                                             'name': data.data.category.name,
                                             'id': data.data.category.categoryId,
                                             'parentId': data.data.category.parentId,
                                             'desc': data.data.category.desc,
-                                            'status': data.data.category.status,
                                             'reviewDeadline': x,
                                             'applyDeadline': y,
                                             'formula': data.data.category.formula,
@@ -487,7 +492,7 @@ function ztree() {
                                             'isLeaf': data.data.category.isLeaf,
                                             'importRequired': data.data.category.importRequired,
                                             'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
-                                            'iconSkin': "icon02"
+                                            'iconSkin':"icon02"
                                         };
                                     }
                                     else {
@@ -500,30 +505,31 @@ function ztree() {
                                             'reviewDeadline': x,
                                             'applyDeadline': y,
                                             'formula': data.data.category.formula,
-                                            'reviewerId': data.data.category.reviewerId,
-                                            'formulaParameterList': data.data.category.formulaParameterList,
-                                            'otherJsonParameters': data.data.category.otherJsonParameters,
-                                            'isLeaf': data.data.category.isLeaf,
-                                            'importRequired': data.data.category.importRequired,
+                                            'reviewerId':data.data.category.reviewerId,
+                                            'formulaParameterList':data.data.category.formulaParameterList,
+                                            'otherJsonParameters':data.data.category.otherJsonParameters,
+                                            'isLeaf':data.data.category.isLeaf,
+                                            'importRequired':data.data.category.importRequired,
                                             'font': {'background-color': '#ffe746', 'color': '#2A3F54'}
                                         };
                                     }
                                     zNodes.splice(i, 1, newNode);
+                                    zTree.updateNode(zNodes[i]);
+                                    $('#'+treeNode.tId+'_span').text(newNode.name);
 
-                                   //  zTree.updateNode(sNodes[i]);
-
-                                    $('#' + treeNode.tId + 1 + '_span').text(newNode.name);
-
-                                          $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                                    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
                                 }
                             }
-                        }
+                        }*/
+
+
+
                     }
                 );
                 $('#addModal').modal('hide');
             });
-        }, 0);
-            return false;
+        },0);
+        return false;
 
     }
 //自定义节点颜色
@@ -572,23 +578,23 @@ function ztree() {
         });
     }
 //更新节点名称之前的回调函数
-/*    function beforeRename(treeId, treeNode, newName, isCancel) {
-        className = (className === "dark" ? "":"dark");
-        showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
-        if (newName.length == 0) {
-            setTimeout(function() {
-                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                zTree.cancelEditName();
-                alert("节点名称不能为空.");
-            }, 0);
-            return false;
-        }
-        return true;
-    }
-//节点名称编辑只有的回调函数
-    function onRename(e, treeId, treeNode, isCancel) {
-        showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
-    }*/
+    /*    function beforeRename(treeId, treeNode, newName, isCancel) {
+     className = (className === "dark" ? "":"dark");
+     showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
+     if (newName.length == 0) {
+     setTimeout(function() {
+     var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+     zTree.cancelEditName();
+     alert("节点名称不能为空.");
+     }, 0);
+     return false;
+     }
+     return true;
+     }
+     //节点名称编辑只有的回调函数
+     function onRename(e, treeId, treeNode, isCancel) {
+     showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
+     }*/
 //是否显示移除按钮
     function showRemoveBtn(treeId, treeNode) {
         return treeNode;
@@ -636,8 +642,8 @@ function ztree() {
                 $('#teacherName').val(null);
                 $('#parentId').val(treeNode.name);
                 $("#parentId").attr("disabled","disabled");
-                $('#applyDeadline').val(null);
-                $('#reviewDeadline').val(null);
+                $('#applyDeadline').val(format());
+                $('#reviewDeadline').val(importFormat());
                 $('#formula').val(null);
                /* $('.parameterSymbol').val(null);
                 $('.parameterName').val(null);*/
@@ -651,8 +657,8 @@ function ztree() {
                 $(".parameterSymbol").removeAttr("disabled","disabled");
                 $(".otherParameterName").removeAttr("disabled","disabled");*/
              //   $('.AddPramter').empty();
-                $('#save').off('click');
-                $('#save').on('click', function () {
+                $(document).off('click','#save');
+                $(document).on('click','#save', function () {
                     var parametername = $('.parameterName');
                     var newArray=new Array();
                     for(var i=0;i<parametername.length;i++){
@@ -755,18 +761,18 @@ function ztree() {
                                 };
                             }
 
-                            newNode = zTree.addNodes(treeNode, newNode);
-                            zNodes.push(newNode);
-                          //  $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-                        }
+                        newNode = zTree.addNodes(treeNode, newNode);
+
+                        zNodes.push(newNode);
+                    }
 
 
-                    });
-                    $('#addModal').modal('hide');
                 });
-
-
+                $('#addModal').modal('hide');
             });
+
+
+        });
 
     };
     function removeHoverDom(treeId, treeNode) {
@@ -777,64 +783,64 @@ function ztree() {
         zTree.setting.edit.editNameSelectAll =  $("#selectAll").attr("checked");
     }
     $(document).ready(function(){
+        $(document).off("click","#addToTable");
         $(document).on('click','#addToTable',function() {
-          //  $('.AddPramter').empty();
-         //   $(".form-control").removeAttr("disabled","disabled");
-            $('#firstitemName').val(null);
-            $('#firstdesc').val(null);
-            $('#firstteacherName').val(null);
-            $("#firstparentId").attr("disabled","disabled");
-            $('#firstparentId').val(null);
-            $('#firstapplyDeadline').val(null);
-            $('#firstreviewDeadline').val(null);
-            $('#firstformula').val(null);
-            $('.firstparameterSymbol').val(null);
-            $('.firstparameterName').val(null);
-            $("#firstsave").show();
-            $("#firstcancel").show();
-            /*$(".firstmanageEdit").hide();
-            $(".firstsubmitEdit").hide();*/
-          //  $('#addModal').modal('show');
+            //  $('.AddPramter').empty();
+            $(".form-control").removeAttr("disabled","disabled");
+            $('#itemName').val(null);
+            $('#desc').val(null);
+            $('#teacherName').val(null);
+            $("#parentId").attr("disabled","disabled");
+            $('#parentId').val(null);
+            $('#applyDeadline').val(format());
+            $('#reviewDeadline').val(importFormat());
+            $('#formula').val(null);
+            $('.parameterSymbol').val(null);
+            $('.parameterName').val(null);
+            $("#save").show();
+            $("#cancel").show();
+            $(".manageEdit").hide();
+            //  $('#addModal').modal('show');
 
-         //   $(document).off('click','#save');
-            $(document).off("click");
-            $(document).on("click","firstsave",function () {
-                var parametername =$(".firstparameterName") ;
+            $(document).off('click','#save');
+            $(document).on('click','#save',function () {
+                var parametername =$(".parameterName") ;
                 var newArray=new Array();
                 for(var i=0;i<parametername.length;i++){
 
-                    newArray.push({desc:$(".firstparameterName").eq(i).val(),symbol:$(".firstparameterSymbol").eq(i).val()});
+                    newArray.push({desc:$(".parameterName").eq(i).val(),symbol:$(".parameterSymbol").eq(i).val()});
 
                 }
-                var otherParamterName=$(".firstotherParameterName");
+                var otherParamterName=$(".otherParameterName");
                 var otherArray=new Array();
                 for(var m=0;m<otherParamterName.length;m++){
-                    otherArray.push({key:$(".firstotherParameterName").eq(m).val(),value:""});
+                    otherArray.push({key:$(".otherParameterName").eq(m).val(),value:""});
                 }
                 newArray=JSON.stringify(newArray);
                 otherArray=JSON.stringify(otherArray);
-                var reviewTimetodate = $('#firstreviewDeadline').val();
-                var applyTimetodate = $('#firstapplyDeadline').val();
-                var radio=$("#firstimportRequired option:selected");
-              //  var ischild=$("input:radio[name='firsthasChildNode']:checked").val();
-                var reviewerid=$('#firstteacherName option:selected');
+                var reviewTimetodate = $('#reviewDeadline').val();
+                var applyTimetodate = $('#applyDeadline').val();
+                var radio=$("#importRequired option:selected");
+                var ischild=$("input:radio[name='hasChildNode']:checked").val();
+                var reviewerid=$('#teacherName option:selected');
 
                 $.post(categoryManageUrl, {
-                    name: $('#firstitemName').val(),
-                    desc: $('#firstdesc').val(),
+                    name: $('#itemName').val(),
+                    desc: $('#desc').val(),
                     parentId: 0,
-                 //   isLeaf: ischild,
+                    isLeaf: ischild,
                     reviewDeadline: reviewTimetodate,
                     applyDeadline: applyTimetodate,
                     reviewerId:reviewerid.val() ,
-                    formula: $('#firstformula').val(),
+                    formula: $('#formula').val(),
                     importRequired: radio.val(),
-                  //  version: $('#version').val(),
+                    version: $('#version').val(),
                     jsonParameters: newArray,
                     otherJson:otherArray
                 }, function (data) {
                     if(data.status==200){
                         alert("添加规则成功！");
+                    }
                         if(data.data.category){
                             var x=data.data.category.reviewDeadline;
                             var y=data.data.category.applyDeadline;
@@ -897,14 +903,17 @@ function ztree() {
 
                             newNode = zTree.addNodes(null, newNode);
                             zNodes.push(newNode);
-                            //  $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-                        }
                     }
+
 
                 }, "json");
 
                 $('#addModal').modal('hide');
+
+
             });
+
+
         });
         $(document).on("click","#importRequired",function () {
             var options=$("#importRequired option:selected");
@@ -941,20 +950,28 @@ function ztree() {
                 else
                     alert("提交规则失败！");
             } )
+
         });
-        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
         $.fn.modal.Constructor.prototype.enforceFocus = function () {};
 
     });
-    function add0(m){return m<10?'0'+m:m }
-    function format(shijianchuo)
+   /* function add0(m){return m<10?'0'+m:m }*/
+    function format()
     {
-        var time = new Date(shijianchuo);
+        var time = new Date();
         var y = time.getFullYear();
-        var m = time.getMonth()+1;
-        var d = time.getDate();
+       /* var m = time.getMonth()+1;
+        var d = time.getDate();*/
 
-        return y+'年'+add0(m)+'月'+add0(d)+'日';
+        return y+'-12-31 00:00:00';
+    }
+    function importFormat() {
+        var time = new Date();
+        var y = time.getFullYear();
+        /* var m = time.getMonth()+1;
+         var d = time.getDate();*/
+
+        return y+'-12-28 00:00:00';
     }
     function zTreeOnClick(event, treeId, treeNode) {
         var zTree= $.fn.zTree.getZTreeObj("treeDemo");
@@ -980,8 +997,8 @@ function ztree() {
                     window.location.reload();
                     return confirm("提交规则成功！");
                     /*for(var m=0;m<nodes.length;nodes++){
-                        $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");
-                    }*/
+                     $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");
+                     }*/
 
                 }
                 else
@@ -991,19 +1008,19 @@ function ztree() {
         });
 
         /*$(document).off("click","#unlock");
-        $(document).on("click","#unlock",function () {
-            $.post(unlockCateUrl+"?"+str,function (data){
-                if(data.status==200)
-                    return confirm("解锁节点成功！");
-                else
-                    alert("解锁节点失败！");
-            } )
-        });*/
+         $(document).on("click","#unlock",function () {
+         $.post(unlockCateUrl+"?"+str,function (data){
+         if(data.status==200)
+         return confirm("解锁节点成功！");
+         else
+         alert("解锁节点失败！");
+         } )
+         });*/
 
 
 
     }
-
-   // $("#selectAll").bind("click", selectAll);
+    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    // $("#selectAll").bind("click", selectAll);
 }
 
