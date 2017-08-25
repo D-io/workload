@@ -733,7 +733,7 @@ function showhistory(data) {
             var Info = analyseList[t];
             $(".historyRecTbody").append(rowInfo);
 
-            for (var j = 0; j < 3; j++)//单元格
+            for (var j = 0; j < 4; j++)//单元格
             {
                 $(".historyRecTbody tr:last").append(cellInfo);
             }
@@ -741,6 +741,7 @@ function showhistory(data) {
             $(".historyRecTbody tr:last td:eq(0)").text(id+1);
             $(".historyRecTbody tr:last td:eq(1)").text(Info.createTime);
             $(".historyRecTbody tr:last td:eq(2)").text(Info.operation);
+            $(".historyRecTbody tr:last td:eq(3)").text(Info.userName);
           /*  var type="审核人操作";
             switch (Info.type){
                 case "admin":type="管理员操作";

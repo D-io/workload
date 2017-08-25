@@ -143,45 +143,6 @@
                                     </form>
                                         </div>
 
-
-
-                                       <%-- <div class="form-group item_group" style="display: none;">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组成员</label>
-                                            <div class="col-md-9 col-sm-9 col-xs-12">
-
-                                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#groupMessage" aria-expanded="false" aria-controls="collapseExample">
-                                                    <i class="fa fa-plus"></i>
-                                                </a>
-                                                <div class="collapse" id="groupMessage">
-                                                    <div class="well">
-                                                        <table class="table" id="groupMessageTable">
-                                                            <thead>
-                                                            <tr style="font-size: 13px;">
-
-                                                                <th>成员姓名</th>
-                                                                <th>成员职责描述</th>
-                                                                <th>成员所占权重<span style="float: right;"><a class="btn btn-success" id="addGroupMessage"><i class="fa fa-plus"></i></a></span></th>
-                                                            </tr>
-
-                                                            </thead>
-                                                            <tbody id="AddgroupPramter">
-                                                            <tr>
-
-                                                                <td><select  class="groupMemberName teacherName"><option value=" "></option> </select></td>
-                                                                <td><input type="text"  class="groupMemberSymbol"></td>
-                                                                <td><input type="text"  class="groupMemberWeight"></td>
-
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>--%>
-
-
-
-
                                 </div>
 
 
@@ -194,7 +155,8 @@
                     <tr role="row">
                         <th class="sorting" width="31px">序号</th>
                         <th class="sorting" width="130px;">操作时间</th>
-                        <th class="sorting">具体内容</th>
+                        <th class="sorting">操作内容</th>
+                        <th class="sorting">操作人员</th>
                        <%-- <th class="sorting">操作形式</th>--%>
 
                     </tr>
@@ -301,8 +263,7 @@
                     </h5>
                 </div>
                 <div class="modal-body">
-                    <button class="btn btn-info editor"><i class="fa fa-pencil"></i>编辑</button>
-                    <button class="btn btn-success submitTo">提交</button>
+
                     <form class="form-horizontal form-label-left">
 
                         <div class="form-group">
@@ -341,6 +302,14 @@
                                 <input type="radio"  value="1"  name="optionsRadios" class="radioChange" id="isGroup"> 小组申形式
                             </label>
                         </div>
+                        <div class="form-group item_manager required" style="display: none;">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目成员</label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <select class="form-control teacherName" id="itemMember">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">主要参数</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -362,7 +331,7 @@
                              <%--   </div>--%>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group hiddenRequired">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">附加属性</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
 
@@ -447,6 +416,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary dismiss" data-dismiss="modal" style="display:none">取消</button>
                     <button type="button" class="btn btn-success savemyEdit" style="display:none">保存</button>
+                    <button class="btn btn-primary editor">编辑</button>
+                    <button class="btn btn-primary submitTo">提交</button>
                     <%--<input type="submit" value="提交">--%>
                 </div>
             </div><!-- /.modal-content -->

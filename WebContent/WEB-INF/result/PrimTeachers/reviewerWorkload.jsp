@@ -66,7 +66,8 @@
                         <tr role="row">
                             <th class="sorting" width="31px;">序号</th>
                             <th class="sorting" width="131px">操作时间</th>
-                            <th class="sorting">具体内容</th>
+                            <th class="sorting">操作内容</th>
+                            <th class="sorting">操作人员</th>
                           <%--  <th class="sorting">操作形式</th>--%>
 
                         </tr>
