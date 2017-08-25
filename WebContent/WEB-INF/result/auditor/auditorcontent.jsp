@@ -192,10 +192,10 @@
                     <table class="table table-striped table-bordered dataTable no-footer reviewerRec">
                     <thead>
                     <tr role="row">
-                        <th class="sorting">序号</th>
-                        <th class="sorting">操作时间</th>
+                        <th class="sorting" width="31px">序号</th>
+                        <th class="sorting" width="130px;">操作时间</th>
                         <th class="sorting">具体内容</th>
-                        <th class="sorting">操作形式</th>
+                       <%-- <th class="sorting">操作形式</th>--%>
 
                     </tr>
                     </thead>
@@ -345,28 +345,21 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">主要参数</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#mainparameter" aria-expanded="false" aria-controls="collapseExample">
+                                <%--<a class="btn btn-primary" role="button" data-toggle="collapse" href="#mainparameter" aria-expanded="false" aria-controls="collapseExample">
                                     <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="collapse" id="mainparameter">
+                                </a>--%>
+                               <%-- <div class="collapse" id="mainparameter">--%>
                                     <div class="well">
                                         <table class="table" id="mainparameterTable">
-                                            <thead>
-                                            <tr class="parameterTh" style="font-size: 13px;">
-
-                                                <!--
-                                                                                                    <span style="float: right;"><a class="btn btn-success" id="addParameter"><i class="fa fa-plus"></i></a></span>
-                                                                                                    -->
-                                            </tr>
-
-                                            </thead>
+                                            <thead class="parameterTh">
+                                               </thead>
                                             <tbody class="AddPramter">
 
 
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>
+                             <%--   </div>--%>
                             </div>
                         </div>
                         <div class="form-group">
@@ -379,12 +372,8 @@
                                 <div class="collapse" id="addotherparameter">
                                     <div class="well">
                                         <table class="table" id="addotherparameterTable">
-                                            <thead>
-                                            <tr class="otherParaTh" style="font-size: 13px;">
-                                                <!--
-                                                                                                    <span style="float: right;"><a class="btn btn-success" id="addOtherParameter"><i class="fa fa-plus"></i></a></span>
-                                                                                                    -->
-                                            </tr>
+                                            <thead class="otherParaTh">
+
 
                                             </thead>
                                             <tbody id="addotherparamter">

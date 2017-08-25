@@ -114,4 +114,6 @@
 
     var manageHistoryUrl=contextPath+"/history/info/history-category";
 
+    var resetHistoryUrl=contextPath+"/history/info/history-reset";
+
 </script>

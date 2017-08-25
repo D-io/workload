@@ -37,10 +37,10 @@
                     <table class="table table-striped table-bordered dataTable no-footer reviewerRec">
                         <thead>
                         <tr role="row">
-                            <th class="sorting">序号</th>
-                            <th class="sorting">操作时间</th>
+                            <th class="sorting" width="31px;">序号</th>
+                            <th class="sorting" width="130px;">操作时间</th>
                             <th class="sorting">具体内容</th>
-                            <th class="sorting">操作形式</th>
+                           <%-- <th class="sorting">操作形式</th>--%>
 
                         </tr>
                         </thead>

@@ -346,6 +346,7 @@ public class ItemManageController extends ApplicationController {
 		double workload = FormulaCalculate
 				.calculate(category.getFormula(), newItemDto.getParameterValues());
 
+<<<<<<< Updated upstream
 		//		// 获取对应的权重列表
 		//		List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
 		//
@@ -398,6 +399,65 @@ public class ItemManageController extends ApplicationController {
 		// 个人申报
 		if (SINGLE.equals(newItemDto.getIsGroup())) {
 			newItemDto.setJsonChildWeight(String.valueOf(DEFAULT_CHILD_WEIGHT));
+=======
+//		// 获取对应的权重列表
+//		List<ChildWeight> childWeightList = newItemDto.getChildWeightList();
+//
+//		// 权重列表不为空时，去为每个成员生成对应的条目信息
+//		if (GROUP.equals(newItemDto.getIsGroup()) && !isEmptyList(childWeightList)) {
+//
+//			List<Item> itemList = new ArrayList<>();
+//
+//			// 成员职责列表
+//			List<JobDesc> jobDescList = newItemDto.getJobDescList();
+//
+//			Item item = itemConverter.dtoToPo(itemDto);
+//
+//			// 对组员的工作量信息进行保存，分别计算工作量
+//			for (int index = 0; index < childWeightList.size(); index++) {
+//
+//				// 获取对应成员教师的工作量信息进行组装
+//				Integer ownerId = childWeightList.get(index).getUserId();
+//
+//				if (jobDescList.get(index).getUserId().equals(ownerId)) {
+//
+//					// 克隆Item工作量条目，以克隆公共信息
+//					Item itemTemp = (Item) item.clone();
+//
+//					// 设置成员各自的工作量属性信息
+//					itemTemp.setOwnerId(ownerId);
+//					itemTemp.setJobDesc(jobDescList.get(index).getJobDesc());
+//
+//					// 获取对应的权重进行相应的计算
+//					double weight = childWeightList.get(index).getWeight();
+//					itemTemp.setJsonChildWeight(String.valueOf(weight));
+//					itemTemp.setStatus(UNCOMMITTED);
+//
+//					// 计算组员各自的工作量
+//					itemTemp.setWorkload(workload * weight);
+//
+//					// 保存成员老师的工作量条目到数据库中
+//					boolean saveSuccess = itemService.saveItem(itemTemp);
+//					if (!saveSuccess) {
+//						errorData.put(teacherService.findTeacherNameById(ownerId), "保存失败");
+//					}
+//
+//					// 保存成功的item集合，用于返回前端的数据展示
+//					itemList.add(itemTemp);
+//				}
+//			}
+//			data.put("itemList", itemConverter.poListToDtoList(itemList));
+//
+//		} else {
+			// 个人申报
+//		    if(SINGLE.equals(newItemDto.getIsGroup())) {
+//		    	newItemDto.setJsonChildWeight();
+//			}
+			newItemDto.setWorkload(workload);
+			newItemDto.setStatus(UNCOMMITTED);
+
+			// 设置小组负责人为他自己
+>>>>>>> Stashed changes
 			newItemDto.setGroupManagerId(newItemDto.getOwnerId());
 		} else if (GROUP.equals(newItemDto.getIsGroup()) && IMPORT_EXCEL
 				.equals(newItemDto.getImportRequired())) {
