@@ -86,7 +86,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 		ItemStatus checkStatus = ItemStatus.getItemStatus((Integer) args[1]);
 
 		History history = new History();
@@ -94,9 +94,7 @@ public class ReviewerManageAspectImpl implements IAspect {
 		history.setVersion(getCurrentSemester());
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
-		history.setOperation(
-				history.getCreateTime() + "，" + user.getName() + "，" + checkStatus.getDesc() + "了工作量项目："
-						+ item.getItemName() + "。");
+		history.setOperation(checkStatus.getDesc() + "工作量项目：" + item.getItemName() + "。");
 		history.setType("apply");
 		history.setAimUserId(item.getOwnerId());
 
@@ -125,14 +123,13 @@ public class ReviewerManageAspectImpl implements IAspect {
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 		History history = new History();
 		history.setVersion(getCurrentSemester());
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
-		history.setOperation(history.getCreateTime() + "，" + user.getName() + "，解决了工作量项目存疑：" + item
-				.getItemName() + "。");
+		history.setOperation("解决工作量项目存疑：" + item.getItemName() + "。");
 		history.setType("import");
 		history.setAimUserId(item.getOwnerId());
 

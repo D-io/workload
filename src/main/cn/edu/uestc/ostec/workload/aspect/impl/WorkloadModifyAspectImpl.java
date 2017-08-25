@@ -100,9 +100,8 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setVersion(getCurrentSemester());
 
-		history.setOperation(
-				history.getCreateTime() + "，" + user.getName() + "，修改了工作量项目的工作量：" + item
-						.getItemName() + "修改为" + args[1] + "。");
+		history.setOperation("修改工作量项目：" + item
+						.getItemName() + "将工作量修改为" + args[1] + "。");
 		history.setType(IMPORT_EXCEL.equals(itemDto.getImportRequired()) ? "import" : "apply");
 		history.setAimUserId(item.getOwnerId());
 
@@ -140,9 +139,8 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setVersion(getCurrentSemester());
-		history.setOperation(
-				history.getCreateTime() + "，" + user.getName() + "，将工作量计算规则：" + category.getName()
-						+ "审核截止时间提前到" + newDate + "。");
+		history.setOperation("提前工作量计算规则：" + category.getName()
+						+ "的审核截止时间为" + newDate + "。");
 		history.setType(APPLY_SELF.equals(category.getImportRequired()) ? "apply" : "import");
 		//TODO 目标用户编号设置为所有人
 		history.setAimUserId(0000000);

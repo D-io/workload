@@ -108,8 +108,7 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setOperation(
-				history.getCreateTime() + "，" + user.getName() + "，修改了工作量项目的部分信息:  项目名称 (原)"
-						+ oldItem.getItemName() + " -> (新)" + item.getItemName());
+				"修改工作量项目的部分信息:  项目名称 (原)" + oldItem.getItemName() + " -> (新)" + item.getItemName());
 
 		history.setType(APPLY_SELF.equals(oldItem.getImportRequired()) ? "apply" : "import");
 		history.setAimUserId(oldItem.getOwnerId());
@@ -148,9 +147,7 @@ public class ItemManageAspectImpl implements IAspect {
 			history.setItemId(buildHistoryItemId(itemId));
 			history.setUserId(userId);
 			history.setCreateTime(DateHelper.getDateTime());
-			history.setOperation(
-					history.getCreateTime() + "，" + user.getName() + "，提交了工作量项目：" + item
-							.getItemName() + "。");
+			history.setOperation("提交工作量项目：" + item.getItemName() + "。");
 
 			history.setType(APPLY_SELF.equals(importedRequired) ? "apply" : "import");
 			history.setAimUserId(itemDto.getReviewerId());
@@ -195,13 +192,9 @@ public class ItemManageAspectImpl implements IAspect {
 
 		String operation = null;
 		if (CHECKED.equals(status)) {
-			operation =
-					history.getCreateTime() + "，" + user.getName() + "，通过了工作量：" + item.getItemName()
-							+ "。";
+			operation = "通过工作量项目：" + item.getItemName() + "。";
 		} else if (DENIED.equals(status)) {
-			operation =
-					history.getCreateTime() + "，" + user.getName() + "，存疑了工作量：" + item.getItemName()
-							+ "。";
+			operation = "存疑工作量项目：" + item.getItemName() + "。";
 		}
 
 		history.setOperation(operation);
@@ -240,9 +233,7 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
 		history.setItemId(buildHistoryItemId(itemId));
-		history.setOperation(
-				history.getCreateTime() + "，" + user.getName() + "，重新申请了工作量项目：" + item.getItemName()
-						+ "。");
+		history.setOperation("重新申请工作量项目：" + item.getItemName() + "。");
 
 		history.setType("apply");
 		history.setAimUserId(itemDto.getReviewerId());
@@ -280,9 +271,7 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
 		history.setItemId(buildHistoryResetItemId(itemId));
-		history.setOperation(
-				history.getCreateTime() + "，" + user.getName() + "，重置了工作量项目：" + item.getItemName()
-						+ "的状态信息" + "(" + role + ")。");
+		history.setOperation("重置工作量项目：" + item.getItemName() + "的状态信息" + "(" + role + ")。");
 
 		history.setType(APPLY_SELF.equals(itemDto.getImportRequired()) ? "apply" : "import");
 

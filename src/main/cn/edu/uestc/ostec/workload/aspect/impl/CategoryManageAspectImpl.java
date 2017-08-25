@@ -91,9 +91,7 @@ public class CategoryManageAspectImpl implements IAspect {
 			history.setItemId(buildHistoryCategoryId(categoryId));
 			history.setCreateTime(DateHelper.getDateTime());
 			history.setUserId(userId);
-			history.setOperation(
-					history.getCreateTime() + "，" + user.getName() + "，删除了工作量计算规则：" + category
-							.getName() + "。");
+			history.setOperation("删除工作量计算规则：" + category.getName() + "。");
 
 			boolean saveSuccess = historyService.saveHistory(history);
 			if (!saveSuccess) {
@@ -123,9 +121,7 @@ public class CategoryManageAspectImpl implements IAspect {
 		history.setItemId(buildHistoryCategoryId(categoryDto.getCategoryId()));
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
-		history.setOperation(
-				history.getCreateTime() + "，" + user.getName() + "，添加了工作量计算规则：" + categoryDto
-						.getName() + "。");
+		history.setOperation("添加工作量计算规则：" + categoryDto.getName() + "。");
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {
@@ -157,9 +153,7 @@ public class CategoryManageAspectImpl implements IAspect {
 			history.setItemId(buildHistoryCategoryId(categoryId));
 			history.setCreateTime(DateHelper.getDateTime());
 			history.setUserId(userId);
-			history.setOperation(
-					history.getCreateTime() + "，" + user.getName() + "，提交了工作量计算规则：" + category
-							.getName() + "。");
+			history.setOperation("提交工作量计算规则：" + category.getName() + "。");
 
 			boolean saveSuccess = historyService.saveHistory(history);
 			if (!saveSuccess) {
@@ -190,10 +184,8 @@ public class CategoryManageAspectImpl implements IAspect {
 		history.setItemId(buildHistoryCategoryId(categoryDto.getCategoryId()));
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
-		history.setOperation(
-				history.getCreateTime() + "，" + user.getName() + "，修改了工作量计算规则：" + categoryDto
-						.getName() + "：" + oldCategoryDto.contrastObj(oldCategoryDto, categoryDto)
-						+ "。");
+		history.setOperation("修改工作量计算规则：" + categoryDto.getName() + "：" + oldCategoryDto
+				.contrastObj(oldCategoryDto, categoryDto) + "。");
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {

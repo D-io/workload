@@ -42,7 +42,7 @@ public interface CompareObjectDifferences<T> {
 					if (i != 1) {
 						str += ";\n";
 					}
-					str += "(" + i + ")、将字段名称:" + field.getName() + " 从 旧值:" + o1 + " 修改为 新值:" + o2;
+					str += "(" + i + ")将字段名称:" + field.getName() + " 从 旧值:" + o1 + " 修改为 新值:" + o2;
 					i++;
 				}
 			}

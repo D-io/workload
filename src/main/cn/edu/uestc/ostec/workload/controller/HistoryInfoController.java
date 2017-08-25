@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
+import cn.edu.uestc.ostec.workload.converter.impl.HistoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
@@ -57,6 +58,9 @@ public class HistoryInfoController extends ApplicationController {
 	@Autowired
 	private ItemConverter itemConverter;
 
+	@Autowired
+	private HistoryConverter historyConverter;
+
 	/**
 	 * 获取重置相关的历史记录
 	 * @return
@@ -75,7 +79,7 @@ public class HistoryInfoController extends ApplicationController {
 		}
 
 		Map<String, Object> data = getData();
-		data.put("historyList", historyList);
+		data.put("historyList", historyConverter.poListToDtoList(historyList));
 
 		return successResponse(data);
 	}
@@ -99,7 +103,7 @@ public class HistoryInfoController extends ApplicationController {
 		}
 
 		Map<String, Object> data = getData();
-		data.put("historyList", historyList);
+		data.put("historyList", historyConverter.poListToDtoList(historyList));
 
 		return successResponse(data);
 	}
@@ -126,7 +130,7 @@ public class HistoryInfoController extends ApplicationController {
 		}
 
 		Map<String, Object> data = getData();
-		data.put("historyList", historyList);
+		data.put("historyList", historyConverter.poListToDtoList(historyList));
 
 		return successResponse(data);
 
@@ -179,10 +183,10 @@ public class HistoryInfoController extends ApplicationController {
 			//			historyList.removeAll(histories1);
 
 			historyList.removeAll(histories);
-			data.put("historyList", historyList);
+			data.put("historyList", historyConverter.poListToDtoList(historyList));
 		} else {
 			//教师个人页面，则仅仅展示自己条目信息对应的相关历史记录
-			data.put("historyList", histories);
+			data.put("historyList", historyConverter.poListToDtoList(histories));
 		}
 
 		return successResponse(data);
@@ -235,7 +239,7 @@ public class HistoryInfoController extends ApplicationController {
 		}
 
 		Map<String, Object> data = getData();
-		data.put("historyList", histories);
+		data.put("historyList", historyConverter.poListToDtoList(histories));
 
 		return successResponse(data);
 	}
