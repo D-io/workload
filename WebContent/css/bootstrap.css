@@ -1288,7 +1288,9 @@ h6,
   font-size: 12px;
 }
 p {
-  margin: 0 0 10px;
+  margin-bottom: 1px;
+  margin-top: 1px;
+  height: 17px
 }
 .lead {
   margin-bottom: 20px;
@@ -2264,7 +2266,7 @@ th {
 .table {
   width: 100%;
   max-width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,
@@ -2272,7 +2274,7 @@ th {
 .table > thead > tr > td,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
-  padding: 8px;
+  padding: 2px;
   line-height: 1.42857143;
   vertical-align: top;
   border-top: 1px solid #ddd;

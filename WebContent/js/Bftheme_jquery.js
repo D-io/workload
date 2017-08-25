@@ -78,10 +78,10 @@ function jumpToSum() {
                         var cateShort='';
                         switch (item[menu].importRequired){
                             case 1:cateShort='导入复核类';
-                                $("<li class='itemList'></li>").append("<br>["+item[menu].name+"]</br>"+item[menu].desc+ "<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 60%; '> <thead> <tr role='row'> <th class='sorting' style='padding: 5px;'>复核截止时间:<span>"+item[menu].applyDeadline+"</span></th><th class='sorting' style='padding: 5px;'>导入截止时间:<span>"+item[menu].reviewDeadline+"</span></th><th class='sorting' style='padding: 5px;background-color:#1ABB9C'><a style='float:right;color:#fff;'>"+cateShort+"</a></th></tr></thread></table><div style='clear:both;'></div>").appendTo(parent);
+                                $("<li class='itemList'></li>").append("【"+item[menu].name+"】"+"<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 545px '> <thead> <tr role='row'> <th class='sorting' style='font-weight: normal'>复核截止时间:<span>"+item[menu].applyDeadline+"</span></th><th class='sorting' style='font-weight: normal'>导入截止时间:<span>"+item[menu].reviewDeadline+"</span></th><th class='sorting' style='font-weight: normal;background-color:#1ABB9C'><a style='float:right;color:#fff;'>"+cateShort+"</a></th></tr></thread></table><div style='clear:both;'></div>"+item[menu].desc).appendTo(parent);
                                   break;
                             case 0:cateShort='申报审核类';
-                                $("<li class='itemList'></li>").append("<br>["+item[menu].name+"]</br>"+item[menu].desc+"<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 60%; '> <thead> <tr role='row'> <th class='sorting' style='padding: 5px;'>申请截止时间:<span>"+item[menu].applyDeadline+"</span></th><th class='sorting' style='padding: 5px;'>审核截止时间:<span>"+item[menu].reviewDeadline+"</span></th><th class='sorting' style='padding: 5px;background-color:#3498DB'><a style='float:right;color: #fff;'>"+cateShort+"</a></th></tr></thread></table><div style='clear:both;'></div>").appendTo(parent);
+                                $("<li class='itemList'></li>").append("【"+item[menu].name+"】"+"<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 545px '> <thead> <tr role='row'> <th class='sorting' style='font-weight: normal'>申请截止时间:<span>"+item[menu].applyDeadline+"</span></th><th class='sorting' style='font-weight: normal'>审核截止时间:<span>"+item[menu].reviewDeadline+"</span></th><th class='sorting' style='font-weight: normal;background-color:#3498DB'><a style='float:right;color: #fff;'>"+cateShort+"</a></th></tr></thread></table><div style='clear:both;'></div>"+item[menu].desc).appendTo(parent);
                                 break;
                         }
 
@@ -280,10 +280,12 @@ function reset() {
         form.submit();
         form.remove();
     });
+    $(document).off("click",".reset_reviewer");
     $(document).on("click", ".reset_reviewer", function () {
         var flag = this.id;
         var item_id = flag.match(/\d+/g);
         var someparamster = "itemId=" + item_id + "&role=reviewer";
+        alert("确定退回该项目？");
         $.post(itemResetUrl+"?" + someparamster,function (data) {
             if (data.status == 200) {
                 alert('重置成功！');
@@ -293,10 +295,12 @@ function reset() {
         });
 
     });
+    $(document).off("click",".reset_applicant");
     $(document).on("click", ".reset_applicant", function () {
         var appflag = this.id;
         var myitemid = appflag.match(/\d+/g);
         var someparamster = "itemId=" + myitemid + "&role=proposer";
+        alert("确定退回该项目？");
         $.post(itemResetUrl+"?" + someparamster,function (data) {
             if (data.status == 200) {
                 alert('重置成功！');
@@ -350,7 +354,7 @@ function reset() {
         if(!$(this).is('.input')){
             $(this).addClass('input').html('<input type="text" value="'+ $(this).text() +'" />').find('input').focus().blur(function(){
                 $(this).parent().removeClass('input').html($(this).val() || 0);
-                alert("确定保存修改？");
+              //  alert("确定保存修改？");
                 $.post(itemeditNameUrl,{
                     itemId:thisId,
                     itemName:$("#itemName_"+thisId).text()
@@ -419,10 +423,17 @@ function itemSummary() {
 
                     $(".sumItemPreview tr:last td:eq(0)").text(id);
                     $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherId);
+
                     $(".sumItemPreview tr:last td:eq(1)").attr("id","teacherId_"+id);
                     $(".sumItemPreview tr:last td:eq(2)").text(Info.teacherName);
 
                     $(".sumItemPreview tr:last td:eq(3)").text(Info.checkedWorkload);
+                    if(Info.checkedWorkload>100){
+                        $(".sumItemPreview tr:last td:eq(3)").css({"background-color":"#6fcd54","color":"#fff"});
+                    }
+                    else {
+                        $(".sumItemPreview tr:last td:eq(3)").css({"background-color":"#ffe746","color":"#2A3F54"});
+                    }
                     $(".sumItemPreview tr:last td:eq(3)").attr("class","checkedwork");
                     $(".sumItemPreview tr:last td:eq(3)").attr("id","checkedwork_"+id);
                     $(".sumItemPreview tr:last td:eq(3)").attr("data-toggle","modal");
@@ -774,11 +785,11 @@ function reviewerResetItem(data) {
                 if(otherparamArray&&otherparamArray.length>0){
                     for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
                         if(otherparamCount!=otherparamArray.length-1){
-                            otherstr +='<div style="width: max-content;"><span  class="otherstr_'+Info.itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+Info.itemId+'" id="otherParaval_'+Info.itemId+'">'+ otherparamArray[otherparamCount].value+'</span></div><hr/>';
+                            otherstr +='<p style="width: max-content;"><span  class="otherstr_'+Info.itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+Info.itemId+'" id="otherParaval_'+Info.itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p><hr/>';
 
                         }
                         else
-                            otherstr +='<div style="width: max-content;"><span  class="otherstr_'+Info.itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+Info.itemId+'" id="otherParaval_'+Info.itemId+'">'+ otherparamArray[otherparamCount].value+'</span></div>';
+                            otherstr +='<p style="width: max-content;"><span  class="otherstr_'+Info.itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+Info.itemId+'" id="otherParaval_'+Info.itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p>';
 
                     }
                 }
@@ -882,18 +893,35 @@ function manageHistory() {
         showhistory(data);
     });
 }
+function resetHistory() {
+    $.get(resetHistoryUrl,function (data) {
+        showhistory(data);
+    });
+}
 $(document).ready(function () {
     var Count=0;
+    var newCount=0;
     $(document).on("click","#addParameter",function () {
         Count++;
     var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><a class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='float: right;'><i class='fa fa-trash'></i></a></td></tr>";
     $('.AddPramter').append(addStr);
 });
+    $(document).on("click","#firstaddParameter",function () {
+        newCount++;
+        var addStr="<tr class='firsttrCount_"+newCount+"'><td><input type='text' class='form-control firstparameterName' name='firstparameterName'></td><td><input type='text' class='form-control firstparameterSymbol' name='parameterSymbol'><a class='btn btn-danger firstremoveParaRow' id='firstremoveParaRow_"+newCount+"' style='float: right;'><i class='fa fa-trash'></i></a></td></tr>";
+        $('.firstAddPramter').append(addStr);
+    });
 $(document).on("click","#addOtherParameter",function () {
     Count++;
     var addStr="<tr class='otherCount_"+Count+"'><td><input type='text' class='form-control otherParameterName' name='parameterName'><a class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='float:right;'><i class='fa fa-trash'></i></a></td></tr>";
     $('.addOtherPramter').append(addStr);
 });
+    $(document).on("click","#firstaddOtherParameter",function () {
+        newCount++;
+        var addStr="<tr class='firstotherCount_"+newCount+"'><td><input type='text' class='form-control firstotherParameterName' name='parameterName'><a class='btn btn-danger firstremoveOtherRow' id='firstremoveOtherRow_"+newCount+"' style='float:right;'><i class='fa fa-trash'></i></a></td></tr>";
+        $('.firstaddOtherPramter').append(addStr);
+    });
+
 $(document).on("click",".removeParaRow",function () {
     var trId=this.id.match(/\d+/g);
     $(".trCount_"+trId).remove();
@@ -902,6 +930,15 @@ $(document).on("click",".removeParaRow",function () {
         var trId=this.id.match(/\d+/g);
         $(".otherCount_"+trId).remove();
     });
+    $(document).on("click",".firstremoveParaRow",function () {
+        var trId=this.id.match(/\d+/g);
+        $(".firsttrCount_"+trId).remove();
+    });
+    $(document).on("click",".firstremoveOtherRow",function () {
+        var trId=this.id.match(/\d+/g);
+        $(".firstotherCount_"+trId).remove();
+    });
+
     $(document).on("click",".editOtherRow",function () {
         var trId=this.id.match(/\d+/g);
         $(".editOtherCount_"+trId).remove();

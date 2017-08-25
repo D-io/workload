@@ -58,8 +58,8 @@
             font-size: 12px;
         }
         .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
-        .ztree li span.button.icon02_ico_docu{margin-right:2px; background: url(${contextPath}/css/zTreeStyle/img/diy/4.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
-        .ztree li span.button.icon06_ico_docu{margin-right:2px; background: url(${contextPath}/css/zTreeStyle/img/diy/8.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
+        .ztree li span.button.icon02_ico_docu{margin-right:2px; background: url(${contextPath}/css/images/shenbaolei.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
+        .ztree li span.button.icon06_ico_docu{margin-right:2px; background: url(${contextPath}/css/images/import.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
         .bs-example-modal-lg .modal-dialog {
             position: absolute;
             top: 0;

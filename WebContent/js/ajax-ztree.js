@@ -33,7 +33,7 @@ function ztree() {
             beforeRemove:beforeRemove,
           //  beforeRename: beforeRename,
             onCheck: zTreeOnClick,
-          //  onRename: onRename,
+           onRemove: onRemove,
             onDblClick: onClick
         }
 
@@ -52,130 +52,157 @@ function ztree() {
                 var y=item.applyDeadline;
                 var appDeadline=x;
                 var rewDeadline=y;
-                if(item.status==1){
-                    if(item.importRequired==1){
-                        var nodes = {
-                            'name': item.name,
-                            'font':{'color':'rgba(29,125,228,0.74)'},
-                            'id': item.categoryId,
-                            'parentId': item.parentId,
-                            'desc': item.desc,
-                            'reviewDeadline': rewDeadline,
-                            'applyDeadline': appDeadline,
-                            'formula': item.formula,
-                            'reviewerId':item.reviewerId,
-                            'formulaParameterList':item.formulaParameterList,
-                            'otherJsonParameters':item.otherJsonParameters,
-                            'isLeaf':item.isLeaf,
-                            'importRequired':item.importRequired,
-                            'iconSkin':"icon06",
-                            //  'status':item.status,
-                            'open':true
-                        };
-                    }
-                    else if(item.importRequired==0){
-                        var nodes = {
-                            'name': item.name,
-                            'font':{'color':'rgba(29,125,228,0.74)'},
-                            'id': item.categoryId,
-                            'parentId': item.parentId,
-                            'desc': item.desc,
-                            'reviewDeadline': rewDeadline,
-                            'applyDeadline': appDeadline,
-                            'formula': item.formula,
-                            'reviewerId':item.reviewerId,
-                            'formulaParameterList':item.formulaParameterList,
-                            'otherJsonParameters':item.otherJsonParameters,
-                            'isLeaf':item.isLeaf,
-                            'importRequired':item.importRequired,
-                            'iconSkin':"icon02",
-                            //  'status':item.status,
-                            'open':true
-                        };
+
+                if(item.children.length>0) {
+                    var nodes = {
+                        'name': item.name,
+                        'font':{'color':'#2A3F54'},
+                        'id': item.categoryId,
+                        'parentId': item.parentId,
+                        'desc': item.desc,
+                        'reviewDeadline': rewDeadline,
+                        'applyDeadline': appDeadline,
+                        'formula': item.formula,
+                        'reviewerId':item.reviewerId,
+                        'formulaParameterList':item.formulaParameterList,
+                        'otherJsonParameters':item.otherJsonParameters,
+                        'isLeaf':item.isLeaf,
+                        'status':item.status,
+                        'importRequired':item.importRequired,
+                        //  'status':item.status,
+                        'open':true
+                    };
+                }
+                else{
+                    if(item.status==1){
+                        if(item.importRequired==1){
+                            var nodes = {
+                                'name': item.name,
+                                'font':{'background-color':'#6fcd54','color':'#fff'},
+                                'id': item.categoryId,
+                                'parentId': item.parentId,
+                                'desc': item.desc,
+                                'reviewDeadline': rewDeadline,
+                                'applyDeadline': appDeadline,
+                                'formula': item.formula,
+                                'reviewerId':item.reviewerId,
+                                'formulaParameterList':item.formulaParameterList,
+                                'otherJsonParameters':item.otherJsonParameters,
+                                'isLeaf':item.isLeaf,
+                                'importRequired':item.importRequired,
+                                'iconSkin':"icon06",
+                                'status':item.status,
+                                //  'status':item.status,
+                                'open':true
+                            };
+                        }
+                        else if(item.importRequired==0){
+                            var nodes = {
+                                'name': item.name,
+                                'font':{'background-color':'#6fcd54','color':'#fff'},
+                                'id': item.categoryId,
+                                'parentId': item.parentId,
+                                'desc': item.desc,
+                                'status':item.status,
+                                'reviewDeadline': rewDeadline,
+                                'applyDeadline': appDeadline,
+                                'formula': item.formula,
+                                'reviewerId':item.reviewerId,
+                                'formulaParameterList':item.formulaParameterList,
+                                'otherJsonParameters':item.otherJsonParameters,
+                                'isLeaf':item.isLeaf,
+                                'importRequired':item.importRequired,
+                                'iconSkin':"icon02",
+                                //  'status':item.status,
+                                'open':true
+                            };
+                        }
+                        else {
+                            var nodes = {
+                                'name': item.name,
+                                'font':{'background-color':'#6fcd54','color':'#fff'},
+                                'id': item.categoryId,
+                                'parentId': item.parentId,
+                                'desc': item.desc,
+                                'reviewDeadline': rewDeadline,
+                                'applyDeadline': appDeadline,
+                                'formula': item.formula,
+                                'reviewerId':item.reviewerId,
+                                'formulaParameterList':item.formulaParameterList,
+                                'otherJsonParameters':item.otherJsonParameters,
+                                'isLeaf':item.isLeaf,
+                                'status':item.status,
+                                'importRequired':item.importRequired,
+                                'open':true
+                            };
+                        }
+
                     }
                     else {
-                        var nodes = {
-                            'name': item.name,
-                            'font':{'color':'rgba(29,125,228,0.74)'},
-                            'id': item.categoryId,
-                            'parentId': item.parentId,
-                            'desc': item.desc,
-                            'reviewDeadline': rewDeadline,
-                            'applyDeadline': appDeadline,
-                            'formula': item.formula,
-                            'reviewerId':item.reviewerId,
-                            'formulaParameterList':item.formulaParameterList,
-                            'otherJsonParameters':item.otherJsonParameters,
-                            'isLeaf':item.isLeaf,
-                            'importRequired':item.importRequired,
-                            'open':true
-                        };
-                    }
+                        if(item.importRequired==1){
+                            var nodes = {
+                                'name': item.name,
+                                'font':{'background-color':'#ffe746','color':'#2A3F54'},
+                                'id': item.categoryId,
+                                'parentId': item.parentId,
+                                'desc': item.desc,
+                                'status':item.status,
+                                'reviewDeadline': rewDeadline,
+                                'applyDeadline': appDeadline,
+                                'formula': item.formula,
+                                'reviewerId':item.reviewerId,
+                                'formulaParameterList':item.formulaParameterList,
+                                'otherJsonParameters':item.otherJsonParameters,
+                                'isLeaf':item.isLeaf,
+                                'importRequired':item.importRequired,
+                                'iconSkin':"icon06",
+                                //  'status':item.status,
+                                'open':true
+                            };
+                        }
+                        else if(item.importRequired==0){
+                            var nodes = {
+                                'name': item.name,
+                                'font':{'background-color':'#ffe746','color':'#2A3F54'},
+                                'id': item.categoryId,
+                                'parentId': item.parentId,
+                                'desc': item.desc,
+                                'status':item.status,
+                                'reviewDeadline': rewDeadline,
+                                'applyDeadline': appDeadline,
+                                'formula': item.formula,
+                                'reviewerId':item.reviewerId,
+                                'formulaParameterList':item.formulaParameterList,
+                                'otherJsonParameters':item.otherJsonParameters,
+                                'isLeaf':item.isLeaf,
+                                'importRequired':item.importRequired,
+                                'iconSkin':"icon02",
+                                //  'status':item.status,
+                                'open':true
+                            };
+                        }
+                        else {
+                            var nodes = {
+                                'name': item.name,
+                                'font':{'background-color':'#ffe746','color':'#2A3F54'},
+                                'id': item.categoryId,
+                                'parentId': item.parentId,
+                                'desc': item.desc,
+                                'status':item.status,
+                                'reviewDeadline': rewDeadline,
+                                'applyDeadline': appDeadline,
+                                'formula': item.formula,
+                                'reviewerId':item.reviewerId,
+                                'formulaParameterList':item.formulaParameterList,
+                                'otherJsonParameters':item.otherJsonParameters,
+                                'isLeaf':item.isLeaf,
+                                'importRequired':item.importRequired,
+                                'open':true
+                            };
+                        }
 
+                    }
                 }
-                else {
-                    if(item.importRequired==1){
-                        var nodes = {
-                            'name': item.name,
-                            'font':{'color':'#FFB951'},
-                            'id': item.categoryId,
-                            'parentId': item.parentId,
-                            'desc': item.desc,
-                            'reviewDeadline': rewDeadline,
-                            'applyDeadline': appDeadline,
-                            'formula': item.formula,
-                            'reviewerId':item.reviewerId,
-                            'formulaParameterList':item.formulaParameterList,
-                            'otherJsonParameters':item.otherJsonParameters,
-                            'isLeaf':item.isLeaf,
-                            'importRequired':item.importRequired,
-                            'iconSkin':"icon06",
-                            //  'status':item.status,
-                            'open':true
-                        };
-                    }
-                    else if(item.importRequired==0){
-                        var nodes = {
-                            'name': item.name,
-                            'font':{'color':'#FFB951'},
-                            'id': item.categoryId,
-                            'parentId': item.parentId,
-                            'desc': item.desc,
-                            'reviewDeadline': rewDeadline,
-                            'applyDeadline': appDeadline,
-                            'formula': item.formula,
-                            'reviewerId':item.reviewerId,
-                            'formulaParameterList':item.formulaParameterList,
-                            'otherJsonParameters':item.otherJsonParameters,
-                            'isLeaf':item.isLeaf,
-                            'importRequired':item.importRequired,
-                            'iconSkin':"icon02",
-                            //  'status':item.status,
-                            'open':true
-                        };
-                    }
-                    else {
-                        var nodes = {
-                            'name': item.name,
-                            'font':{'color':'#FFB951'},
-                            'id': item.categoryId,
-                            'parentId': item.parentId,
-                            'desc': item.desc,
-                            'reviewDeadline': rewDeadline,
-                            'applyDeadline': appDeadline,
-                            'formula': item.formula,
-                            'reviewerId':item.reviewerId,
-                            'formulaParameterList':item.formulaParameterList,
-                            'otherJsonParameters':item.otherJsonParameters,
-                            'isLeaf':item.isLeaf,
-                            'importRequired':item.importRequired,
-                            'open':true
-                        };
-                    }
-
-                }
-
-
                 var zTree=$.fn.zTree.getZTreeObj("treeDemo");
 
                zNodes.push(nodes);
@@ -187,6 +214,7 @@ function ztree() {
                     }
                 }
             }
+       // $.fn.zTree.init($("#treeDemo"), setting, zNodes);
         }
 
     );
@@ -198,20 +226,28 @@ function ztree() {
     }*/
 //捕获节点编辑按钮回调函数
     function beforeEditName(treeId, treeNode) {
-        className = (className === "dark" ? "" : "dark");
-        showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+      /*  className = (className === "dark" ? "" : "dark");
+        showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);*/
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         zTree.selectNode(treeNode);
 
-        setTimeout(function () {
-            var editCount=0;
+        setTimeout(function() {
+            var editCount = 0;
             var zTree = $.fn.zTree.getZTreeObj("treeDemo");
             var sNodes = zTree.getSelectedNodes();
             $(".manageEdit").show();
-            $(".manageEdit").attr("id","edit_"+treeNode.id);
+            if (treeNode.status == 0) {
+                $(".submitEdit").show();
+                $(".submitEdit").attr("id", "submitEdit_" + treeNode.id);
+            }
+            else {
+                $(".submitEdit").hide();
+            }
+            $(".manageEdit").attr("id", "edit_" + treeNode.id);
+
             $("#cancel").hide();
             $("#save").hide();
-            $(".form-control").attr("disabled","disabled");
+            $(".form-control").attr("disabled", "disabled");
             $("#year").removeAttr("disabled");
             $("#term").removeAttr("disabled");
 
@@ -219,155 +255,156 @@ function ztree() {
                 var parentNode = sNodes[0].getParentNode();
                 var parNodeId;
                 var parNodeName;
-                if(parentNode==null){
-                    parNodeId=0;
-                    parNodeName='';
+                if (parentNode == null) {
+                    parNodeId = 0;
+                    parNodeName = '';
                 }
-                else{
-                    parNodeId=parentNode.id;
-                    parNodeName=parentNode.name;
+                else {
+                    parNodeId = parentNode.id;
+                    parNodeName = parentNode.name;
                 }
 
             }
 
-            $("#importRequired option").each(function() {
-                if($(this).val() == treeNode.importRequired){
-                    $(this).attr("selected",true);
+            $("#importRequired option").each(function () {
+                if ($(this).val() == treeNode.importRequired) {
+                    $(this).attr("selected", true);
 
-                    if($(this).val()==1){
+                    if ($(this).val() == 1) {
                         $(".requiredtime").show();
                         $(".select2").show();
                         $(".applyDeadLabel").text("复核截止时间");
                         $(".revDeadLabel").text("导入截止时间");
                     }
-                    else if($(this).val()==0){
+                    else if ($(this).val() == 0) {
                         $(".fomulaPara").show();
                         $(".requiredtime").show();
                         $(".select2").show();
                         $(".applyDeadLabel").text("申报截止时间");
                         $(".revDeadLabel").text("审核截止时间");
                     }
-                    else{
+                    else {
                         $(".requiredtime").hide();
                         $(".select2").hide();
                     }
                 }
             });
             /*$("#teacherName option").each(function() {
-                if($(this).val() == treeNode.reviewerId){
-                    $(this).attr("selected",true);
-                }
-            });*/
-         //   $("#teacherName option[value='"+treeNode.reviewerId+"']").attr("selected","selected");
-          $("#teacherName").val(treeNode.reviewerId);
+             if($(this).val() == treeNode.reviewerId){
+             $(this).attr("selected",true);
+             }
+             });*/
+            //   $("#teacherName option[value='"+treeNode.reviewerId+"']").attr("selected","selected");
+            $("#teacherName").val(treeNode.reviewerId);
 
-            $("input:radio[name='hasChildNode']").each(function (){
-                if($(this).val()==treeNode.isLeaf){
-                    $(this).attr("checked",true);
+            $("input:radio[name='hasChildNode']").each(function () {
+                if ($(this).val() == treeNode.isLeaf) {
+                    $(this).attr("checked", true);
                 }
 
             });
             $('.addOtherPramter').empty();
-            var otherjsonstrArray='';
-            if(treeNode.otherJsonParameters!=null) {
+            var otherjsonstrArray = '';
+            if (treeNode.otherJsonParameters != null) {
                 otherjsonstrArray = treeNode.otherJsonParameters;
             }
             /*else {
-                jsonstrArray='';
-            }*/
-            var addOtherStr='';
+             jsonstrArray='';
+             }*/
+            var addOtherStr = '';
 
-            for(var pramterCount=0;pramterCount<otherjsonstrArray.length;pramterCount++){
+            for (var pramterCount = 0; pramterCount < otherjsonstrArray.length; pramterCount++) {
                 editCount++;
-                addOtherStr+="<tr class='editOtherCount_"+editCount+"'><td><input type='text' class='form-control otherParameterName' name='otherParameterName'><a class='btn btn-danger editOtherRow' id='editOtherRow_"+editCount+"' style='float:right;'><i class='fa fa-trash'></i></a></td></tr>";
+                addOtherStr += "<tr class='editOtherCount_" + editCount + "'><td><input type='text' class='form-control otherParameterName' name='otherParameterName'><a class='btn btn-danger editOtherRow' id='editOtherRow_" + editCount + "' style='float:right;'><i class='fa fa-trash'></i></a></td></tr>";
 
             }
             $('.addOtherPramter').append(addOtherStr);
 
             $('.AddPramter').empty();
-            var jsonstrArray='';
-            if(treeNode.formulaParameterList!=null) {
+            var jsonstrArray = '';
+            if (treeNode.formulaParameterList != null) {
                 jsonstrArray = treeNode.formulaParameterList;
             }
             /*else {
              jsonstrArray='';
              }*/
-            var addStr='';
-            for(var pramterCount=0;pramterCount<jsonstrArray.length;pramterCount++){
+            var addStr = '';
+            for (var pramterCount = 0; pramterCount < jsonstrArray.length; pramterCount++) {
                 editCount++;
-                addStr+="<tr class='editParaCount_"+editCount+"'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><a class='btn btn-danger editParaRow' id='editParaRow_"+editCount+"' style='float: right;'><i class='fa fa-trash'></i></a></td></tr>";
+                addStr += "<tr class='editParaCount_" + editCount + "'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><a class='btn btn-danger editParaRow' id='editParaRow_" + editCount + "' style='float: right;'><i class='fa fa-trash'></i></a></td></tr>";
 
             }
             $('.AddPramter').append(addStr);
 
-            for(var count=0;count<jsonstrArray.length;count++){
+            for (var count = 0; count < jsonstrArray.length; count++) {
                 $(".parameterName").eq(count).val(jsonstrArray[count].desc);
                 $(".parameterSymbol").eq(count).val(jsonstrArray[count].symbol);
             }
-            for(var othercount=0;othercount<otherjsonstrArray.length;othercount++){
+            for (var othercount = 0; othercount < otherjsonstrArray.length; othercount++) {
                 $(".otherParameterName").eq(othercount).val(otherjsonstrArray[othercount].key);
 
             }
-            $(".parameterName").attr("disabled","disabled");
-            $(".parameterSymbol").attr("disabled","disabled");
-            $(".otherParameterName").attr("disabled","disabled");
+            $(".parameterName").attr("disabled", "disabled");
+            $(".parameterSymbol").attr("disabled", "disabled");
+            $(".otherParameterName").attr("disabled", "disabled");
             $('#itemName').val(treeNode.name);
             $('#desc').val(treeNode.desc);
             $('#applyDeadline').val(treeNode.applyDeadline);
             $('#reviewDeadline').val(treeNode.reviewDeadline);
             $('#parentId').val(parNodeName);
             $('#formula').val(treeNode.formula);
-            $("#parentId").attr("disabled","disabled");
+            $("#parentId").attr("disabled", "disabled");
 
 
             $('#addModal').modal('show');
-            $(document).off("click",".manageEdit");
-            $(document).on("click",".manageEdit",function () {
+            $(document).off("click", ".manageEdit");
+            $(document).on("click", ".manageEdit", function () {
                 $.ajaxSetup({
-                    async : false
+                    async: false
                 });
-                var str=this.id.match(/\d+/g);
-                $.post(unlockCateUrl+"?categoryId="+str,{test:12},function (data){
-                    if(data.status==200){
+                var str = this.id.match(/\d+/g);
+                $.post(unlockCateUrl + "?categoryId=" + str, {test: 12}, function (data) {
+                    if (data.status == 200) {
 
                         $("#save").show();
                         $("#cancel").show();
                         $(".manageEdit").hide();
+                        $(".submitEdit").hide();
                         $(".form-control").removeAttr("disabled");
                         $(".parameterName").removeAttr("disabled");
                         $(".parameterSymbol").removeAttr("disabled");
                         $(".otherParameterName").removeAttr("disabled");
-                         $('#'+treeNode.tId+'_span').css("color","#FFB951");
-                     //   return confirm("解锁节点成功！");
+                        $('#' + treeNode.tId + '_a').css({'background-color': '#ffe746', "color": "#2A3F54"});
+                        //   return confirm("解锁节点成功！");
                     }
 
                     else
                         alert("解锁规则失败！");
-                } );
+                });
 
             });
-            $('#save').unbind("click");
-            $('#save').bind("click", function () {
+            $('#save').off("click");
+            $('#save').on("click", function () {
                 var parametername = $('.parameterName');
-                var newArray=new Array();
-                for(var i=0;i<parametername.length;i++){
+                var newArray = new Array();
+                for (var i = 0; i < parametername.length; i++) {
 
-                    newArray.push({desc:$(".parameterName").eq(i).val(),symbol:$(".parameterSymbol").eq(i).val()});
+                    newArray.push({desc: $(".parameterName").eq(i).val(), symbol: $(".parameterSymbol").eq(i).val()});
 
                 }
-                var otherParamterName=$(".otherParameterName");
-                var otherArray=new Array();
-                for(var m=0;m<otherParamterName.length;m++){
-                    otherArray.push({key:$(".otherParameterName").eq(m).val(),value:""});
+                var otherParamterName = $(".otherParameterName");
+                var otherArray = new Array();
+                for (var m = 0; m < otherParamterName.length; m++) {
+                    otherArray.push({key: $(".otherParameterName").eq(m).val(), value: ""});
                 }
-                newArray=JSON.stringify(newArray);
-                otherArray=JSON.stringify(otherArray);
+                newArray = JSON.stringify(newArray);
+                otherArray = JSON.stringify(otherArray);
                 var reviewTimetodate = $('#reviewDeadline').val();
                 var applyTimetodate = $('#applyDeadline').val();
 
-                var radio=$("#importRequired option:selected");
-                var ischild=$("input:radio[name='hasChildNode']:checked").val();
-                var reviewerid=$('#teacherName option:selected');
+                var radio = $("#importRequired option:selected");
+                var ischild = $("input:radio[name='hasChildNode']:checked").val();
+                var reviewerid = $('#teacherName option:selected');
 
                 $.post(categoryEditUrl,
                     {
@@ -383,20 +420,20 @@ function ztree() {
                         version: $('#version').val(),
                         categoryId: treeNode.id,
                         jsonParameters: newArray,
-                        otherJson:otherArray
+                        otherJson: otherArray
                     },
                     function (data) {
 
-                    /*    var a=x.match(/\d+/g);
-                        var b=y.match(/\d+/g);
-                        var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
-                        var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];*/
-                        if(data.status==200){
+                        /*    var a=x.match(/\d+/g);
+                         var b=y.match(/\d+/g);
+                         var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
+                         var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];*/
+                        if (data.status == 200) {
                             alert("编辑规则成功！");
                         }
-                        if(data.data.category){
-                            var x=data.data.category.reviewDeadline;
-                            var y=data.data.category.applyDeadline;
+                        if (data.data.category) {
+                            var x = data.data.category.reviewDeadline;
+                            var y = data.data.category.applyDeadline;
                             for (var i = 0; i < zNodes.length; i++) {
 
                                 if (zNodes[i].id == data.data.category.categoryId) {
@@ -415,40 +452,42 @@ function ztree() {
                                      'importRequired':data.data.category.importRequired,
                                      'otherJsonParameters':data.data.category.otherJsonParameters
                                      };*/
-                                    if(data.data.importRequired==1){
+                                    if (data.data.category.importRequired == 1) {
                                         var newNode = {
                                             'name': data.data.category.name,
                                             'id': data.data.category.categoryId,
                                             'parentId': data.data.category.parentId,
                                             'desc': data.data.category.desc,
+                                            'status': data.data.category.status,
                                             'reviewDeadline': x,
                                             'applyDeadline': y,
                                             'formula': data.data.category.formula,
-                                            'reviewerId':data.data.category.reviewerId,
-                                            'formulaParameterList':data.data.category.formulaParameterList,
-                                            'otherJsonParameters':data.data.category.otherJsonParameters,
-                                            'isLeaf':data.data.category.isLeaf,
-                                            'importRequired':data.data.category.importRequired,
-                                            'font':{'color':'#FFB951'},
-                                            'iconSkin':"icon06"
+                                            'reviewerId': data.data.category.reviewerId,
+                                            'formulaParameterList': data.data.category.formulaParameterList,
+                                            'otherJsonParameters': data.data.category.otherJsonParameters,
+                                            'isLeaf': data.data.category.isLeaf,
+                                            'importRequired': data.data.category.importRequired,
+                                            'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
+                                            'iconSkin': "icon06"
                                         };
                                     }
-                                    else if(data.data.importRequired==0){
+                                    else if (data.data.category.importRequired == 0) {
                                         var newNode = {
                                             'name': data.data.category.name,
                                             'id': data.data.category.categoryId,
                                             'parentId': data.data.category.parentId,
                                             'desc': data.data.category.desc,
+                                            'status': data.data.category.status,
                                             'reviewDeadline': x,
-                                            'applyDeadline':y,
+                                            'applyDeadline': y,
                                             'formula': data.data.category.formula,
-                                            'reviewerId':data.data.category.reviewerId,
-                                            'formulaParameterList':data.data.category.formulaParameterList,
-                                            'otherJsonParameters':data.data.category.otherJsonParameters,
-                                            'isLeaf':data.data.category.isLeaf,
-                                            'importRequired':data.data.category.importRequired,
-                                            'font':{'color':'#FFB951'},
-                                            'iconSkin':"icon02"
+                                            'reviewerId': data.data.category.reviewerId,
+                                            'formulaParameterList': data.data.category.formulaParameterList,
+                                            'otherJsonParameters': data.data.category.otherJsonParameters,
+                                            'isLeaf': data.data.category.isLeaf,
+                                            'importRequired': data.data.category.importRequired,
+                                            'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
+                                            'iconSkin': "icon02"
                                         };
                                     }
                                     else {
@@ -457,34 +496,34 @@ function ztree() {
                                             'id': data.data.category.categoryId,
                                             'parentId': data.data.category.parentId,
                                             'desc': data.data.category.desc,
+                                            'status': data.data.category.status,
                                             'reviewDeadline': x,
                                             'applyDeadline': y,
                                             'formula': data.data.category.formula,
-                                            'reviewerId':data.data.category.reviewerId,
-                                            'formulaParameterList':data.data.category.formulaParameterList,
-                                            'otherJsonParameters':data.data.category.otherJsonParameters,
-                                            'isLeaf':data.data.category.isLeaf,
-                                            'importRequired':data.data.category.importRequired,
-                                            'font':{'color':'#FFB951'}
+                                            'reviewerId': data.data.category.reviewerId,
+                                            'formulaParameterList': data.data.category.formulaParameterList,
+                                            'otherJsonParameters': data.data.category.otherJsonParameters,
+                                            'isLeaf': data.data.category.isLeaf,
+                                            'importRequired': data.data.category.importRequired,
+                                            'font': {'background-color': '#ffe746', 'color': '#2A3F54'}
                                         };
                                     }
                                     zNodes.splice(i, 1, newNode);
-                                 //   zTree.updateNode(zNodes[i]);
-                                    $('#'+treeNode.tId+1+'_span').text(newNode.name);
 
-                                    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                                   //  zTree.updateNode(sNodes[i]);
+
+                                    $('#' + treeNode.tId + 1 + '_span').text(newNode.name);
+
+                                          $.fn.zTree.init($("#treeDemo"), setting, zNodes);
                                 }
                             }
                         }
-
-
-
                     }
                 );
                 $('#addModal').modal('hide');
             });
-        },0);
-        return false;
+        }, 0);
+            return false;
 
     }
 //自定义节点颜色
@@ -497,7 +536,10 @@ function ztree() {
 
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         zTree.selectNode(treeNode);
-        alert("确认删除 " + treeNode.name + " 吗？");
+        return confirm("确认删除 " + treeNode.name + " 吗？");
+
+    }
+    function onRemove(e, treeId, treeNode) {
         var str='categoryId'+'='+treeNode.id;
         $.ajax({
             type:"POST",
@@ -559,6 +601,7 @@ function ztree() {
     function onClick(event, treeId, treeNode){
         beforeEditName(treeId, treeNode) ;
         $(".manageEdit").hide();
+        $(".submitEdit").hide();
     }
     function showLog(str) {
         if (!log) log = $("#log");
@@ -583,10 +626,10 @@ function ztree() {
             + "' title='add node' data-target='#addModal' data-toggle='modal' onfocus='this.blur();'></span>";
         sObj.after(addStr);
         var btn = $("#addBtn_"+treeNode.tId);
-        /*if(btn)
-            btn.bind("click", function() {*/
-        $(document).off("click","#addBtn_"+treeNode.tId);
-        $(document).on("click","#addBtn_"+treeNode.tId,function () {
+        if(btn)
+            btn.bind("click", function() {
+        /*$(document).off("click","#addBtn_"+treeNode.tId);*/
+       /* $(document).on("click","#addBtn_"+treeNode.tId,function () {*/
                 $(".form-control").removeAttr("disabled","disabled");
                 $('#itemName').val(null);
                 $('#desc').val(null);
@@ -603,12 +646,13 @@ function ztree() {
                 $("#save").show();
                 $("#cancel").show();
                 $(".manageEdit").hide();
+                $(".submitEdit").hide();
            /*     $(".parameterName").removeAttr("disabled","disabled");
                 $(".parameterSymbol").removeAttr("disabled","disabled");
                 $(".otherParameterName").removeAttr("disabled","disabled");*/
              //   $('.AddPramter').empty();
-                $('#save').unbind('click');
-                $('#save').bind('click', function () {
+                $('#save').off('click');
+                $('#save').on('click', function () {
                     var parametername = $('.parameterName');
                     var newArray=new Array();
                     for(var i=0;i<parametername.length;i++){
@@ -659,6 +703,7 @@ function ztree() {
                                     'name': data.data.category.name,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
+                                    'status':data.data.category.status,
                                     'desc': data.data.category.desc,
                                     'reviewDeadline': rewDeadline,
                                     'applyDeadline': appDeadline,
@@ -668,7 +713,7 @@ function ztree() {
                                     'otherJsonParameters':data.data.category.otherJsonParameters,
                                     'isLeaf':data.data.category.isLeaf,
                                     'importRequired':data.data.category.importRequired,
-                                    'font':{'color':'#FFB951'},
+                                    'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                     'iconSkin':"icon06"
                                 };
                             }
@@ -678,6 +723,7 @@ function ztree() {
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'desc': data.data.category.desc,
+                                    'status':data.data.category.status,
                                     'reviewDeadline': rewDeadline,
                                     'applyDeadline': appDeadline,
                                     'formula': data.data.category.formula,
@@ -686,7 +732,7 @@ function ztree() {
                                     'otherJsonParameters':data.data.category.otherJsonParameters,
                                     'isLeaf':data.data.category.isLeaf,
                                     'importRequired':data.data.category.importRequired,
-                                    'font':{'color':'#FFB951'},
+                                    'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                     'iconSkin':"icon02"
                                 };
                             }
@@ -696,6 +742,7 @@ function ztree() {
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'desc': data.data.category.desc,
+                                    'status':data.data.category.status,
                                     'reviewDeadline': rewDeadline,
                                     'applyDeadline': appDeadline,
                                     'formula': data.data.category.formula,
@@ -704,13 +751,13 @@ function ztree() {
                                     'otherJsonParameters':data.data.category.otherJsonParameters,
                                     'isLeaf':data.data.category.isLeaf,
                                     'importRequired':data.data.category.importRequired,
-                                    'font':{'color':'#FFB951'}
+                                    'font':{'background-color':'#ffe746','color':'#2A3F54'}
                                 };
                             }
 
                             newNode = zTree.addNodes(treeNode, newNode);
-
                             zNodes.push(newNode);
+                          //  $.fn.zTree.init($("#treeDemo"), setting, zNodes);
                         }
 
 
@@ -732,131 +779,132 @@ function ztree() {
     $(document).ready(function(){
         $(document).on('click','#addToTable',function() {
           //  $('.AddPramter').empty();
-            $(".form-control").removeAttr("disabled","disabled");
-            $('#itemName').val(null);
-            $('#desc').val(null);
-            $('#reviewerId').val(null);
-            $("#parentId").attr("disabled","disabled");
-            $('#parentId').val(null);
-            $('#applyDeadline').val(null);
-            $('#reviewDeadline').val(null);
-            $('#formula').val(null);
-            $('.parameterSymbol').val(null);
-            $('.parameterName').val(null);
-            $("#save").show();
-            $("#cancel").show();
-            $(".manageEdit").hide();
+         //   $(".form-control").removeAttr("disabled","disabled");
+            $('#firstitemName').val(null);
+            $('#firstdesc').val(null);
+            $('#firstteacherName').val(null);
+            $("#firstparentId").attr("disabled","disabled");
+            $('#firstparentId').val(null);
+            $('#firstapplyDeadline').val(null);
+            $('#firstreviewDeadline').val(null);
+            $('#firstformula').val(null);
+            $('.firstparameterSymbol').val(null);
+            $('.firstparameterName').val(null);
+            $("#firstsave").show();
+            $("#firstcancel").show();
+            /*$(".firstmanageEdit").hide();
+            $(".firstsubmitEdit").hide();*/
           //  $('#addModal').modal('show');
 
-            $(document).off('click','#save');
-            $(document).on('click','#save',function () {
-                var parametername =$(".parameterName") ;
+         //   $(document).off('click','#save');
+            $(document).off("click");
+            $(document).on("click","firstsave",function () {
+                var parametername =$(".firstparameterName") ;
                 var newArray=new Array();
                 for(var i=0;i<parametername.length;i++){
 
-                    newArray.push({desc:$(".parameterName").eq(i).val(),symbol:$(".parameterSymbol").eq(i).val()});
+                    newArray.push({desc:$(".firstparameterName").eq(i).val(),symbol:$(".firstparameterSymbol").eq(i).val()});
 
                 }
-                var otherParamterName=$(".otherParameterName");
+                var otherParamterName=$(".firstotherParameterName");
                 var otherArray=new Array();
                 for(var m=0;m<otherParamterName.length;m++){
-                    otherArray.push({key:$(".otherParameterName").eq(m).val(),value:""});
+                    otherArray.push({key:$(".firstotherParameterName").eq(m).val(),value:""});
                 }
                 newArray=JSON.stringify(newArray);
                 otherArray=JSON.stringify(otherArray);
-                var reviewTimetodate = $('#reviewDeadline').val();
-                var applyTimetodate = $('#applyDeadline').val();
-                var radio=$("#importRequired option:selected");
-                var ischild=$("input:radio[name='hasChildNode']:checked").val();
-                var reviewerid=$('#teacherName option:selected');
+                var reviewTimetodate = $('#firstreviewDeadline').val();
+                var applyTimetodate = $('#firstapplyDeadline').val();
+                var radio=$("#firstimportRequired option:selected");
+              //  var ischild=$("input:radio[name='firsthasChildNode']:checked").val();
+                var reviewerid=$('#firstteacherName option:selected');
 
                 $.post(categoryManageUrl, {
-                    name: $('#itemName').val(),
-                    desc: $('#desc').val(),
+                    name: $('#firstitemName').val(),
+                    desc: $('#firstdesc').val(),
                     parentId: 0,
-                    isLeaf: ischild,
+                 //   isLeaf: ischild,
                     reviewDeadline: reviewTimetodate,
                     applyDeadline: applyTimetodate,
                     reviewerId:reviewerid.val() ,
-                    formula: $('#formula').val(),
+                    formula: $('#firstformula').val(),
                     importRequired: radio.val(),
-                    version: $('#version').val(),
+                  //  version: $('#version').val(),
                     jsonParameters: newArray,
                     otherJson:otherArray
                 }, function (data) {
                     if(data.status==200){
                         alert("添加规则成功！");
-                    }
-                    if(data.data.category){
-                        var x=data.data.category.reviewDeadline;
-                        var y=data.data.category.applyDeadline;
-                        /* var a=x.match(/\d+/g);
-                         var b=y.match(/\d+/g);*/
-                        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                        if(data.data.importRequired==1){
-                            var newNode= {'name': data.data.category.name,
-                                'id': data.data.category.categoryId,
-                                'parentId': data.data.category.parentId,
-                                'desc':data.data.category.desc,
-                                'reviewDeadline':x,
-                                'applyDeadline':y,
-                                'formula':data.data.category.formula,
-                                'reviewerId':data.data.category.reviewerId,
-                                'formulaParameterList':data.data.category.formulaParameterList,
-                                'otherJsonParameters':data.data.category.otherJsonParameters,
-                                'isLeaf':data.data.category.isLeaf,
-                                'importRequired':data.data.category.importRequired,
-                                'font':{'color':'#FFB951'},
-                                'iconSkin':'icon06'
-                            };
-                        }
-                        else if(data.data.importRequired==0){
-                            var newNode= {'name': data.data.category.name,
-                                'id': data.data.category.categoryId,
-                                'parentId': data.data.category.parentId,
-                                'desc':data.data.category.desc,
-                                'reviewDeadline':x,
-                                'applyDeadline':y,
-                                'formula':data.data.category.formula,
-                                'reviewerId':data.data.category.reviewerId,
-                                'formulaParameterList':data.data.category.formulaParameterList,
-                                'otherJsonParameters':data.data.category.otherJsonParameters,
-                                'isLeaf':data.data.category.isLeaf,
-                                'importRequired':data.data.category.importRequired,
-                                'font':{'color':'#FFB951'},
-                                'iconSkin':'icon02'
-                            };
-                        }
-                        else {
-                            var newNode= {'name': data.data.category.name,
-                                'id': data.data.category.categoryId,
-                                'parentId': data.data.category.parentId,
-                                'desc':data.data.category.desc,
-                                'reviewDeadline':x,
-                                'applyDeadline':y,
-                                'formula':data.data.category.formula,
-                                'reviewerId':data.data.category.reviewerId,
-                                'formulaParameterList':data.data.category.formulaParameterList,
-                                'otherJsonParameters':data.data.category.otherJsonParameters,
-                                'isLeaf':data.data.category.isLeaf,
-                                'importRequired':data.data.category.importRequired,
-                                'font':{'color':'#FFB951'}
-                            };
-                        }
+                        if(data.data.category){
+                            var x=data.data.category.reviewDeadline;
+                            var y=data.data.category.applyDeadline;
+                            /* var a=x.match(/\d+/g);
+                             var b=y.match(/\d+/g);*/
+                            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                            if(data.data.category.importRequired==1){
+                                var newNode= {'name': data.data.category.name,
+                                    'id': data.data.category.categoryId,
+                                    'parentId': data.data.category.parentId,
+                                    'desc':data.data.category.desc,
+                                    'reviewDeadline':x,
+                                    'applyDeadline':y,
+                                    'formula':data.data.category.formula,
+                                    'status':data.data.category.status,
+                                    'reviewerId':data.data.category.reviewerId,
+                                    'formulaParameterList':data.data.category.formulaParameterList,
+                                    'otherJsonParameters':data.data.category.otherJsonParameters,
+                                    'isLeaf':data.data.category.isLeaf,
+                                    'importRequired':data.data.category.importRequired,
+                                    'font':{'background-color':'#ffe746','color':'#2A3F54'},
+                                    'iconSkin':'icon06'
+                                };
+                            }
+                            else if(data.data.category.importRequired==0){
+                                var newNode= {'name': data.data.category.name,
+                                    'id': data.data.category.categoryId,
+                                    'parentId': data.data.category.parentId,
+                                    'status':data.data.category.status,
+                                    'desc':data.data.category.desc,
+                                    'reviewDeadline':x,
+                                    'applyDeadline':y,
+                                    'formula':data.data.category.formula,
+                                    'reviewerId':data.data.category.reviewerId,
+                                    'formulaParameterList':data.data.category.formulaParameterList,
+                                    'otherJsonParameters':data.data.category.otherJsonParameters,
+                                    'isLeaf':data.data.category.isLeaf,
+                                    'importRequired':data.data.category.importRequired,
+                                    'font':{'background-color':'#ffe746','color':'#2A3F54'},
+                                    'iconSkin':'icon02'
+                                };
+                            }
+                            else {
+                                var newNode= {'name': data.data.category.name,
+                                    'id': data.data.category.categoryId,
+                                    'parentId': data.data.category.parentId,
+                                    'desc':data.data.category.desc,
+                                    'status':data.data.category.status,
+                                    'reviewDeadline':x,
+                                    'applyDeadline':y,
+                                    'formula':data.data.category.formula,
+                                    'reviewerId':data.data.category.reviewerId,
+                                    'formulaParameterList':data.data.category.formulaParameterList,
+                                    'otherJsonParameters':data.data.category.otherJsonParameters,
+                                    'isLeaf':data.data.category.isLeaf,
+                                    'importRequired':data.data.category.importRequired,
+                                    'font':{'background-color':'#ffe746','color':'#2A3F54'}
+                                };
+                            }
 
-                        newNode = zTree.addNodes(null, newNode);
-                        zNodes.push(newNode);
+                            newNode = zTree.addNodes(null, newNode);
+                            zNodes.push(newNode);
+                            //  $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                        }
                     }
-
 
                 }, "json");
 
                 $('#addModal').modal('hide');
-
-
             });
-
-
         });
         $(document).on("click","#importRequired",function () {
             var options=$("#importRequired option:selected");
@@ -878,10 +926,23 @@ function ztree() {
             }
 
         });
-        $("#teacherName").select2({
-            allowClear: true,
-            width:"100%",
+        $(document).off("click",".submitEdit");
+        $(document).on("click",".submitEdit",function () {
+            var thisId=this.id.match(/\d+/g);
+            $.post(categorySubmitUrl+"?categoryId="+thisId,function (data){
+                if(data.status==200){
+                    window.location.reload();
+                    return confirm("提交规则成功！");
+                    /*for(var m=0;m<nodes.length;nodes++){
+                     $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");
+                     }*/
+
+                }
+                else
+                    alert("提交规则失败！");
+            } )
         });
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
         $.fn.modal.Constructor.prototype.enforceFocus = function () {};
 
     });
@@ -914,7 +975,7 @@ function ztree() {
             $.ajaxSetup({
                 async : false
             });
-            $.post(categorySubmitUrl+"?"+str,{test:12},function (data){
+            $.post(categorySubmitUrl+"?categoryId="+str,{test:12},function (data){
                 if(data.status==200){
                     window.location.reload();
                     return confirm("提交规则成功！");
@@ -942,7 +1003,7 @@ function ztree() {
 
 
     }
-    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
    // $("#selectAll").bind("click", selectAll);
 }
 

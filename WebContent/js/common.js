@@ -94,13 +94,102 @@ $(document).ready(function () {
     /*auditor-import*/
 
     var myFlag='';
-    $(document).off("click",".importList");
+    var allItem=[];
+    var itemCount=0;
+    /*$(document).off("click",".importList");
     $(document).on("click",".importList",function () {
         var flag = this.id;
         window.myFlag = parseInt(flag.match(/\d+/g));
         $("#file").empty();
+    });*/
+    $(document).off("click",".importList");
+    $(document).on("click",".importList",function () {
+        var flag = this.id;
+        flag = parseInt(flag.match(/\d+/g));
+        allItem=[];
+        itemCount=0;
+        $(".importNewFile").attr("id","importNewFile_"+flag);
+        $(".importItemShow").show();
+        $.get(auditorManageItemUrl,{
+            importRequired:1,
+            option:"uncommitted"
+        },function (msg) {
+            if(msg.data.unCommittedItem){
+            //    $(".parameterTh").append("")
+                $(".parameterTh").empty();
+                $(".otherParaTh").empty();
+                  showPara(msg.data.unCommittedItem[0]);
+                $(".importItemTbody").empty();
+                showImportPreview(msg.data.unCommittedItem,itemCount);
+                if(itemCount<msg.data.unCommittedItem.length){
+                    itemCount++;
+                }
+              //  window.itemDouble=msg.data.unCommittedItem;
+                for(var key in msg.data.unCommittedItem){
+                    allItem.push(msg.data.unCommittedItem[key]);
+                }
+                JSON.stringify(allItem);
+                console.log(allItem);
+            }
+        });
     });
-    $(document).off("click",".commit");
+    $(document).on("click",".showImportAll",function () {
+       var thisId=parseInt(this.id.match(/\d+/g));
+
+        $("#itemName").val(allItem[thisId].itemName);
+        $("#itemName").attr("disabled","disabled");
+        $("#applyDesc").val(allItem[thisId].applyDesc);
+        $("#applyDesc").attr("disabled","disabled");
+
+        var showPram=allItem[thisId].parameterValues;
+        for(var i=0;i<showPram.length;i++){
+            $("#importpara_0").text(showPram[i].value);
+            console.log($("#importpara_"+i));
+
+        }
+     //   $(".importpara").attr("disabled","true");
+        var showOtherPara=allItem[thisId].otherJsonParameters;
+        if(showOtherPara!=null){
+            for(var n=0;n<showOtherPara.length;n++){
+                $("#otherimportpara_"+n).text(showOtherPara[n].value);
+            }
+        }
+      //  $(".otherimportpara").attr("disabled","disabled");
+        if(allItem[thisId].isGroup==1){
+            $("#isGroup").attr("checked","checked");
+            $("#isSingle").attr("disabled","disabled");
+            $(".required").show();
+            $("#jobDesc").val(allItem[thisId].jobDesc);
+            $("#jobDesc").attr("disabled","disabled");
+            $("#childWeight").val(allItem[thisId].jsonChildWeight);
+            $("#childWeight").attr("disabled","disabled");
+            $("#itemmanager").val(allItem[thisId].groupManagerId);
+            $("#itemmanager").attr("disabled","disabled");
+        }
+        else {
+            $("#isSingle").attr("checked","checked");
+            $("#isGroup").attr("disabled","disabled");
+            $(".required").hide();
+        }
+
+
+
+    });
+    $(document).on("click",".editor",function () {
+       $(".form-control").removeAttr("disabled");
+       $(".dismiss").show();
+       $(".savemyEdit").show();
+    });
+    $(document).on("click",".savemyEdit",function () {
+        $(".form-control").attr("disabled");
+        $("#year").removeAttr("disabled");
+        $("#term").removeAttr("disabled");
+        $(".dismiss").hide();
+        $(".savemyEdit").hide();
+
+    });
+
+   /* $(document).off("click",".commit");
     $(document).on("click",".commit",function () {
         var data=new FormData;
         data.append("file",$("#file")[0].files[0]);
@@ -129,7 +218,43 @@ $(document).ready(function () {
         });
         $("#myModal").modal("hide");
 
+    });*/
+   $(document).off("click",".importNewFile");
+    $(document).on("click",".importNewFile",function () {
+        var thisId=this.id.match(/\d+/g);
+        var data=new FormData;
+        data.append("file",$("#file")[0].files[0]);
+        $.ajax({
+            url:importFileUrl+"?categoryId="+thisId,
+            type:"POST",
+            dataType:"JSON",
+            data:data,
+            contentType: false,
+            processData: false,
+            success:function (msg) {
+                alert("上传成功！");
+                $(".submitItem").show();
+               //     window.itemDiv=  msg.data.itemList;
+               /* window.itemDiv.push(msg.data.itemList);*/
+                $(".importItemShow").show();
+             //   $(".importItemTbody").append()
+                showImportPreview(msg.data.itemList,itemCount);
+                if(itemCount<msg.data.itemList.length){
+                    itemCount++;
+                }
+
+                for(var key in msg.data.itemList){
+                    allItem.push(msg.data.itemList[key]);
+                }
+                JSON.stringify(allItem);
+                console.log(allItem);
+            },
+            error:function () {
+                alert("上传失败！");
+            }
+        });
     });
+/*
     $(document).off("click",".submitImportItem");
     $(document).on("click",".submitImportItem",function () {
         var importList=this.id;
@@ -221,7 +346,7 @@ $(document).ready(function () {
             })
     });
 
-    /*auditor-check*/
+    /!*auditor-check*!/
 
     $(document).on("click",".auditor",function () {
         $(".showThead").show();
@@ -255,7 +380,7 @@ $(document).ready(function () {
             }
 
         });
-    });
+    });*/
    /* $(document).on("click",".downloadAdded",function () {
 
 
@@ -381,12 +506,13 @@ $(document).ready(function () {
         if(selectedvValue=="1"){
             $(".item_manager").show();
             $(".item_group").show();
+            $(".required").show();
 
         }
         else {
             $(".item_manager").css("display","none");
             $(".item_group").css("display","none");
-
+            $(".required").hide();
         }
     });
     $(document).on("click",".showradioChange",function () {
@@ -667,13 +793,16 @@ function getSideBar(role,roleList) {
                 var teacherInfo='';
                 $.get(TeacherInfoUrl,{test : 12},function (data) {
                     teacherInfo=data.data.teacherList;
+                    var selectdata=new Array();
+                    for(var i=0;i<teacherInfo.length;i++){
+                        $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
 
+                    }
                 });
-            var selectdata=new Array();
-                for(var i=0;i<teacherInfo.length;i++){
-                    $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
-
-                }
+            $("#teacherName").select2({
+                allowClear: true,
+                width:"100%",
+            });
 
 
         });
@@ -766,4 +895,52 @@ function changeToManager() {
          $(".right_hole").append(html);
     });
     ztree();
+}
+function showImportPreview(data,itemCount) {
+    var rowInfo="<tr></tr>";
+    var cellInfo="<td></td>";
+    /*if($(".resetNum").length>0){
+     $(".ResetItem tr:last td:eq(0)").text();
+     }*/
+    if(data&&data.length>0){
+        var analyseList= data;
+        var listLength= data.length;
+        for(var i=0;i<listLength;i++)
+        {
+            var Info=analyseList[i];
+            $(".importItemTbody").append(rowInfo);
+            $(".importItemTbody tr:last").attr("class","resetNum");
+            for(var j=0;j<6;j++)//单元格
+            {
+                $(".importItemTbody tr:last").append(cellInfo);
+            }
+
+            var checkboxStr='<div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>'
+            $(".importItemTbody tr:last td:eq(0)").append(checkboxStr);
+            $(".importItemTbody tr:last td:eq(0)").attr("class","a-center");
+            $(".importItemTbody tr:last td:eq(1)").text(Info.itemName);
+
+            $(".importItemTbody tr:last td:eq(2)").text(Info.workload);
+            $(".importItemTbody tr:last td:eq(3)").text(Info.teacherName);
+            $(".importItemTbody tr:last td:eq(4)").text("未提交");
+            $(".importItemTbody tr:last td:eq(4)").attr("class","status_"+Info.itemId);
+            var str="<a class=\"btn btn-primary showImportAll\" id=\"showImportAll_"+ itemCount+"\" data-toggle='modal' data-target='#addContent'>查看详情</a>";
+            $(".importItemTbody tr:last td:eq(5)").append(str);
+            itemCount++;
+
+        }
+    }
+}
+function showPara(item) {
+
+    for(var t=0;t<item.parameterValues.length;t++){
+        var symbolname=item.parameterValues[t].symbol;
+        $('.parameterTh').append("<tr><th class='pramterDesc' id='"+symbolname+"' style='font-size: 13px;'>"+item.descAndValues[t].desc+"</th><td><input type='text' class='importpara form-control' id='importpara_"+t+"'></td></tr>");
+      //  $(".otherParaTh").append("<tr><th class='showpramterDesc' id='"+symbolname+"' style='font-size: 13px;'>"+item[comp].formulaParameterList[t].desc+"</th><td><input type='text' class='showparameterName'></td></tr>")
+    console.log($(".importpara").attr("class"));
+    }
+    for(var s=0;s<item.otherJsonParameters.length;s++){
+        $('.otherParaTh').append("<tr><th class='otherPramterkey' style='font-size: 13px'>"+item.otherJsonParameters[s].key+"</th><td><input type='text' class='otherimportpara form-control' id='otherimportpara_"+s+"'></td></tr>");
+      //  $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>"+item[comp].otherJsonParameters[s].key+"</th><td><input type='text' class='showotherparameterName'></td></tr>");
+    }
 }

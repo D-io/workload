@@ -231,7 +231,7 @@
             </ul>
             <div id="myTabContent" class="tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                    <button id="addToTable" class="btn btn-primary"  data-target="#addModal" data-toggle="modal">添加规则 <i class="fa fa-plus"></i></button>
+                    <button id="addToTable" class="btn btn-primary"  data-target="#firstaddModal" data-toggle="modal">添加规则 <i class="fa fa-plus"></i></button>
                     <button id="submit" class="btn btn-primary">提交规则</button>
                     <%--<button id="unlock" class="btn btn-primary">unlock</button>--%>
                     <%-- <header class="panel-heading">
@@ -251,7 +251,7 @@
                                     <h4 class="modal-title" id="myModalLabel">规则信息</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <button class="btn btn-info manageEdit" style="display: none;"><i class="fa fa-pencil"></i>编辑</button>
+
                                     <form class="form-horizontal">
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">规则名称</label>
@@ -409,12 +409,191 @@
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default " data-dismiss="modal" id="cancel">取消</button>
+                                    <button type="button" class="btn btn-primary " data-dismiss="modal" id="cancel">取消</button>
                                     <button type="button" class="btn btn-primary" id="save">保存</button>
+                                    <button class="btn btn-primary manageEdit" style="display: none;">编辑</button>
+                                    <button class="btn btn-primary submitEdit" style="display: none;">提交</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="modal fade" id="firstaddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">规则信息</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    <form class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">规则名称</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="firstitemName" name ="name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label ">规则简介</label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" id="firstdesc" rows="3" name="desc"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">规则类别</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" id="firstimportRequired" name="sorting">
+                                                    <option value="1">导入复核类</option>
+                                                    <option value="0">申报审核类</option>
+                                                    <option value="2">无特殊类别</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label requiredtime">审核人员</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control select2" id="firstteacherName">
+                                                    <option value=""></option>
+
+                                                </select>
+                                            </div>
+                                            <div id="" style="width: 400px;padding-top: 40px;padding-left:100px;text-align: center"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">父级规则</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="firstparentId" name="parentId">
+                                            </div>
+                                        </div>
+                                        <%--<div class="form-group">
+                                            <label class="col-sm-3 control-label">是否为叶子节点</label>
+                                            <div class="col-sm-9">
+                                                <input type="radio" class="isLeaf" name="hasChildNode" value="Y">是
+                                                <input type="radio" class="isLeaf" name="hasChildNode"  value="N">否
+                                            </div>
+                                        </div>--%>
+                                        <div class="form-group requiredtime">
+                                            <label class="col-sm-3 control-label"><span class="firstapplyDeadLabel">复核截止时间</span><span style="margin-left: 30px;font-size: 11px;color: #ccc;">(默认为当前年份的12月28号)</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                                    <input type="text" class="form-control datetimepicker" id="firstapplyDeadline">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group requiredtime">
+                                            <label class="col-sm-3 control-label"><span class="firstrevDeadLabel">导入截止时间</span><span style="margin-left: 30px;font-size: 11px;color: #ccc;">(默认为当前年份的12月31号)</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                             <span class="input-group-addon">
+                                                 <i class="fa fa-calendar"></i>
+                                             </span>
+                                                    <input type="text"  class="form-control datetimepicker" id="firstreviewDeadline">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group requiredtime">
+                                            <label class="col-sm-3 control-label">公式参数</label>
+                                            <div class="col-sm-9">
+<%--
+                                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#firstparameter" aria-expanded="false" aria-controls="collapseExample">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+                                                <div class="collapse" id="firstparameter">--%>
+                                                    <div class="well">
+                                                        <table class="table" id="firstparameterTable">
+                                                            <thead>
+                                                            <tr>
+
+                                                                <th style="font-size: 13px;">参数名称</th>
+                                                                <th style="font-size: 13px;">参数符号<span style="float: right;"><a class="btn btn-success" id="firstaddParameter"><i class="fa fa-plus"></i></a></span></th>
+
+
+                                                            </tr>
+
+                                                            </thead>
+                                                            <tbody class="firstAddPramter">
+                                                            <tr>
+
+                                                                <%-- <td><input type="text" class="parameterName" name="parameterName"></td>
+                                                                 <td><input type="text" class="parameterSymbol" name="parameterSymbol"></td>--%>
+
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                               <%-- </div>--%>
+                                            </div>
+                                        </div>
+                                        <div class="form-group requiredtime">
+                                            <label class="col-sm-3 control-label">计算公式</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="firstformula">
+                                            </div>
+                                        </div>
+                                        <div class="form-group requiredtime">
+                                            <label class="col-sm-3 control-label">附加属性</label>
+                                            <div class="col-sm-9">
+
+                                                <%--<a class="btn btn-primary" role="button" data-toggle="collapse" href="#firstotherParameter" aria-expanded="false" aria-controls="collapseExample">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+                                                <div class="collapse" id="firstotherParameter">--%>
+                                                    <div class="well">
+                                                        <table class="table" id="firstotherParameterTable">
+                                                            <thead>
+                                                            <tr>
+                                                                <th style="font-size: 13px;">参数名称<span style="float: right;"><a class="btn btn-success" id="firstaddOtherParameter"><i class="fa fa-plus"></i></a></span></th>
+                                                            </tr>
+
+                                                            </thead>
+                                                            <tbody class="firstaddOtherPramter">
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                            <%--    </div>--%>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+                                        <%-- <div class="form-group">
+                                             <label class="col-sm-3 control-label">适用学期</label>
+                                             <div class="col-sm-9">
+                                                 <select class="form-control" id="version">
+                                                     <option>2017-2018-1</option>
+                                                     <option>2017-2018-2</option>
+                                                     <option>2016-2017-1</option>
+                                                     <option>2016-2017-2</option>
+                                                     <option>2015-2016-1</option>
+                                                     <option>2015-2016-2</option>
+
+                                                 </select>
+                                             </div>
+                                         </div>--%>
+
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary " data-dismiss="modal" id="firstcancel">取消</button>
+                                    <button type="button" class="btn btn-primary" id="firstsave">保存</button>
+                                    <%--<button class="btn btn-primary manageEdit" style="display: none;">编辑</button>
+                                    <button class="btn btn-primary submitEdit" style="display: none;">提交</button>--%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                     <div class="allTree">
 
 
@@ -434,10 +613,10 @@
                     <table class="table table-striped table-bordered dataTable no-footer reviewerRec">
                         <thead>
                         <tr role="row">
-                            <th class="sorting">序号</th>
-                            <th class="sorting">操作时间</th>
+                            <th class="sorting" width="31px">序号</th>
+                            <th class="sorting" width="131px">操作时间</th>
                             <th class="sorting">具体内容</th>
-                            <th class="sorting">操作形式</th>
+                          <%--  <th class="sorting">操作形式</th>--%>
 
                         </tr>
                         </thead>

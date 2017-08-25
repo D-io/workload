@@ -10,13 +10,14 @@
         <div class="navbar nav_title" style="border: 0;">
             <a class="site_title" >
                 <span>
-                    <img src="<%=request.getContextPath()%>/css/images/systemLogo.png" alt="..." class="left_span" style="width: 40px;height: 40px;">
+                    <img src="<%=request.getContextPath()%>/css/images/logo+xueyuan-workload.png" alt="..." class="left_span" style="width: 210px;margin-top: 12px;">
                 </span>
-               <span style="font-size: 16px;">信息与软件工程学院
-                   <span style="font-size: 5px;">School of Information and Software Engineering</span></span></a>
+            </a>
+             <%--  <span style="font-size: 16px;">信息与软件工程学院
+                   <span style="font-size: 5px;">School of Information and Software Engineering</span></span></a>--%>
         </div>
 
-        <div class="clearfix"></div>
+       <%-- <div class="clearfix"></div>--%>
 
         <!-- menu profile quick info -->
         <div class="profile clearfix">
