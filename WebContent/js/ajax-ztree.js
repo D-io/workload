@@ -232,6 +232,7 @@ function ztree() {
 
 //捕获节点编辑按钮回调函数
     function beforeEditName(treeId, treeNode) {
+
         className = (className === "dark" ? "" : "dark");
         showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
@@ -255,21 +256,25 @@ function ztree() {
             $(".form-control").attr("disabled", "disabled");
             $("#year").removeAttr("disabled");
             $("#term").removeAttr("disabled");
+            var parNodeId=0;
+            var parNodeName='';
+            if(treeNode.parentId!=null){
+                if (sNodes.length > 0) {
+                    var parentNode = sNodes[0].getParentNode();
 
-            if (sNodes.length > 0) {
-                var parentNode = sNodes[0].getParentNode();
-                var parNodeId;
-                var parNodeName;
-                if (parentNode == null) {
-                    parNodeId = 0;
-                    parNodeName = '';
-                }
-                else {
-                    parNodeId = parentNode.id;
-                    parNodeName = parentNode.name;
-                }
 
+                   /* if (parentNode == null) {
+                           parNodeId = 0;
+                        parNodeName = '';
+                    }*/
+                    if(parentNode!=null){
+                        parNodeId = parentNode.id;
+                        parNodeName = parentNode.name;
+                    }
+
+                }
             }
+
 
             $("#importRequired option").each(function () {
                 if ($(this).val() == treeNode.importRequired) {
@@ -434,8 +439,8 @@ function ztree() {
                          var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
                          var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];*/
                         if(data.status==200){
-                            alert("编辑规则成功！");
-                            window.location.reload();
+                            alert("规则已保存！");
+                            ztree();
                         }
                       /*  if(data.data.category){
                             var x=data.data.category.reviewDeadline;
@@ -764,11 +769,12 @@ function ztree() {
                         newNode = zTree.addNodes(treeNode, newNode);
 
                         zNodes.push(newNode);
+                            beforeEditName("treeDemo",zNodes[zNodes.length-1][0]);
                     }
 
 
                 });
-                $('#addModal').modal('hide');
+             //   $('#addModal').modal('hide');
             });
 
 
@@ -800,6 +806,7 @@ function ztree() {
             $("#save").show();
             $("#cancel").show();
             $(".manageEdit").hide();
+            $(".submitEdit").hide();
             //  $('#addModal').modal('show');
 
             $(document).off('click','#save');
@@ -903,12 +910,16 @@ function ztree() {
 
                             newNode = zTree.addNodes(null, newNode);
                             zNodes.push(newNode);
+
+
+                           beforeEditName("treeDemo",zNodes[zNodes.length-1][0]);
+
                     }
 
 
                 }, "json");
 
-                $('#addModal').modal('hide');
+               // $('#addModal').modal('hide');
 
 
             });
@@ -940,7 +951,8 @@ function ztree() {
             var thisId=this.id.match(/\d+/g);
             $.post(categorySubmitUrl+"?categoryId="+thisId,function (data){
                 if(data.status==200){
-                    window.location.reload();
+                  //  window.location.reload();
+                    ztree();
                     return confirm("提交规则成功！");
                     /*for(var m=0;m<nodes.length;nodes++){
                      $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");
@@ -949,6 +961,7 @@ function ztree() {
                 }
                 else
                     alert("提交规则失败！");
+                $("#addModal").hide();
             } )
 
         });
@@ -994,8 +1007,10 @@ function ztree() {
             });
             $.post(categorySubmitUrl+"?"+str,{test:12},function (data){
                 if(data.status==200){
-                    window.location.reload();
+                   // window.location.reload();
+                    ztree();
                     return confirm("提交规则成功！");
+
                     /*for(var m=0;m<nodes.length;nodes++){
                      $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");
                      }*/
@@ -1003,6 +1018,7 @@ function ztree() {
                 }
                 else
                     alert("提交规则失败！");
+                $("#addModal").hide();
             } )
 
         });
