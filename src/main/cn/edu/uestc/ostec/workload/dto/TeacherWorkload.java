@@ -21,6 +21,8 @@ public class TeacherWorkload {
 
 	private Integer teacherId;
 
+	private String professionalTitle = null;
+
 	private Double checkedWorkload = ZERO_DOUBLE;
 
 	private Integer checkedItems = ZERO_INT;
@@ -28,6 +30,14 @@ public class TeacherWorkload {
 	private Double uncheckedWorkload = ZERO_DOUBLE;
 
 	private Integer uncheckedItems = ZERO_INT;
+
+	public String getProfessionalTitle() {
+		return professionalTitle;
+	}
+
+	public void setProfessionalTitle(String professionalTitle) {
+		this.professionalTitle = professionalTitle;
+	}
 
 	public Integer getCheckedItems() {
 		return checkedItems;

@@ -5,15 +5,23 @@
     <resultMap id="teacherResultMap" type="cn.edu.uestc.ostec.workload.pojo.Teacher" >
         <result column="teacher_id" property="teacherId" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="professional_title" property="professionalTitle" jdbcType="VARCHAR" />
     </resultMap>
-
 
     <select id="findNameById" resultType="String">
       select name from teacher where teacher_id = #{teacherId}
     </select>
 
     <select id="findTeachers" resultMap="teacherResultMap">
-      SELECT teacher_id,name FROM teacher ORDER BY convert(name using gbk) ASC
+      SELECT teacher_id,name,professional_title FROM teacher ORDER BY convert(name using gbk) ASC
+    </select>
+
+    <select id="selectBrief" resultMap="teacherResultMap">
+        SELECT teacher_id,name FROM teacher ORDER BY convert(name using gbk) ASC
+    </select>
+
+    <select id="select" resultMap="teacherResultMap">
+        SELECT * FROM teacher WHERE teacher_id = #{teacherId}
     </select>
 
     <select id="findIdByName" resultMap="teacherResultMap">

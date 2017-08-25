@@ -106,6 +106,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			TeacherWorkload teacherWorkload = new TeacherWorkload();
 			teacherWorkload.setTeacherId(teacher.getTeacherId());
 			teacherWorkload.setTeacherName(teacher.getName());
+			teacherWorkload.setProfessionalTitle(teacher.getProfessionalTitle());
 
 			TotalWorkloadAndCount checkedWorkload = itemService
 					.selectTotalWorkload(id, CHECKED, getCurrentSemester());

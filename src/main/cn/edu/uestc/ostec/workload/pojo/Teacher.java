@@ -9,6 +9,16 @@ public class Teacher {
 
 	private String name;
 
+	private String professionalTitle;
+
+	public String getProfessionalTitle() {
+		return professionalTitle;
+	}
+
+	public void setProfessionalTitle(String professionalTitle) {
+		this.professionalTitle = professionalTitle;
+	}
+
 	public Integer getTeacherId() {
 		return teacherId;
 	}

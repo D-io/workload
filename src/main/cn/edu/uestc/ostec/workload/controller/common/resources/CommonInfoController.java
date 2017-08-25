@@ -48,7 +48,7 @@ public class CommonInfoController extends ApplicationController {
 	public RestResponse getTeacherList() {
 
 		Map<String, Object> data = getData();
-		data.put("teacherList", teacherService.findAll());
+		data.put("teacherList", teacherService.findBrief());
 
 		return successResponse(data);
 	}

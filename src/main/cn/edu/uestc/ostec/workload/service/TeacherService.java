@@ -15,6 +15,10 @@ public interface TeacherService extends BaseService {
 
 	String findTeacherNameById(Integer teacherId);
 
+	List<Teacher> findBrief();
+
 	Teacher findIdByName(String name);
+
+	Teacher findTeacherById(Integer teacherId);
 
 }
