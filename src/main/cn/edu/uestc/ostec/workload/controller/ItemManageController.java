@@ -574,6 +574,7 @@ public class ItemManageController extends ApplicationController {
 		Map<String, Object> data = getData();
 		boolean updateSuccess = false;
 
+		item.setStatus(status);
 		if (DOUBTED.equals(status)) {
 			//			Subject subject = new Subject();
 			//			subject.setItemId(itemId);
@@ -582,7 +583,6 @@ public class ItemManageController extends ApplicationController {
 			//			subject.setMsgContent(message);
 			//			subjectService.addSubject(subject);
 			//			data.put("subject", subjectConverter.poToDto(subject));
-			item.setStatus(status);
 			updateSuccess = subjectEvent.sendMessageAboutItem(item, message, user.getUserId());
 		} else {
 			updateSuccess = itemService.saveItem(item);

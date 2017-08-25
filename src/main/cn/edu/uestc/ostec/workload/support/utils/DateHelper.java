@@ -143,6 +143,10 @@ public class DateHelper {
 		return getTimeStamp(date + " 00时00分00秒", DATE_TIME_FORMAT_CN);
 	}
 
+	public static int getDefaultFormatTimeStamp(String dateTime) {
+		return getTimeStamp(dateTime,DATE_TIME_FORMAT_DEFAULT);
+	}
+
 	public static int getDefaultTimeStamp(String time) {
 		return getTimeStamp(time,DATE_TIME_FORMAT_DEFAULT);
 	}

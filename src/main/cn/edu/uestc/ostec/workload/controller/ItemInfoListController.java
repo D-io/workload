@@ -279,9 +279,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(), categoryId);
 
-		if (null == itemList || itemList.isEmpty()) {
-			return parameterNotSupportResponse("参数有误");
-		}
+		//		if (null == itemList || itemList.isEmpty()) {
+		//			return parameterNotSupportResponse("参数有误");
+		//		}
 
 		List<Item> teacherItems = new ArrayList<>();
 		for (Item item : itemList) {
@@ -442,7 +442,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			teacherId = user.getUserId();
 			statusList.add(CHECKED);
 			data.put("totalWorkload",
-					itemService.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester()));
+					itemService.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester())
+							.getWorkload());
 		} else {
 			if (!getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
 				return invalidOperationResponse("非法访问");

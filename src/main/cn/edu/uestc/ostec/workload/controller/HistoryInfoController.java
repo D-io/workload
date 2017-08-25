@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +34,7 @@ import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.HISTORY_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
@@ -63,9 +67,8 @@ public class HistoryInfoController extends ApplicationController {
 
 	/**
 	 * 获取重置相关的历史记录
-	 * @return
 	 */
-	@RequestMapping(value = "history-reset",method = GET)
+	@RequestMapping(value = "history-reset", method = GET)
 	public RestResponse getResetHistories() {
 		User user = getUser();
 		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
@@ -73,8 +76,8 @@ public class HistoryInfoController extends ApplicationController {
 		}
 		int userId = user.getUserId();
 
-		List<History> historyList = historyService.getResetHistories(userId,getCurrentSemester());
-		if(isEmptyList(historyList)) {
+		List<History> historyList = historyService.getResetHistories(userId, getCurrentSemester());
+		if (isEmptyList(historyList)) {
 			return successResponse("无相关记录");
 		}
 
@@ -86,9 +89,10 @@ public class HistoryInfoController extends ApplicationController {
 
 	/**
 	 * 获取类目相关的历史记录
+	 *
 	 * @return historyList
 	 */
-	@RequestMapping(value = "history-category",method = GET)
+	@RequestMapping(value = "history-category", method = GET)
 	public RestResponse getCategoryHistories() {
 
 		User user = getUser();
@@ -97,8 +101,9 @@ public class HistoryInfoController extends ApplicationController {
 		}
 		int userId = user.getUserId();
 
-		List<History> historyList = historyService.getCategoryHistories(userId,getCurrentSemester());
-		if(isEmptyList(historyList)) {
+		List<History> historyList = historyService
+				.getCategoryHistories(userId, getCurrentSemester());
+		if (isEmptyList(historyList)) {
 			return successResponse("无相关记录");
 		}
 
@@ -124,7 +129,7 @@ public class HistoryInfoController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		List<History> historyList = historyService.getHistoriesByItem(itemId,getCurrentSemester());
+		List<History> historyList = historyService.getHistoriesByItem(itemId, getCurrentSemester());
 		if (isEmptyList(historyList)) {
 			return successResponse("无相关记录");
 		}
@@ -155,7 +160,8 @@ public class HistoryInfoController extends ApplicationController {
 		int userId = user.getUserId();
 
 		//获取用户相关的历史记录，同时对应类型type
-		List<History> historyList = historyService.getHistoriesByUserRelated(userId, type,getCurrentSemester());
+		List<History> historyList = historyService
+				.getHistoriesByUserRelated(userId, type, getCurrentSemester());
 
 		if (isEmptyList(historyList)) {
 			return successResponse();
@@ -163,25 +169,13 @@ public class HistoryInfoController extends ApplicationController {
 
 		//查找用户自己拥有的全部工作量条目信息
 		List<ItemDto> itemDtoList = itemService
-				.findAll(null,null, null, user.getUserId(), null, getCurrentSemester());
+				.findAll(null, null, null, user.getUserId(), null, getCurrentSemester());
 
 		//根据自己的工作量条目查询对应的历史记录
 		List<History> histories = getHistoriesByItems(itemDtoList, type);
 
 		Map<String, Object> data = getData();
 		if (ROLE_REVIEWER.equals(role)) {
-			//若为工作当量审核页面，则移除自己的工作当量历史记录，仅保留自己负责审核的历史记录
-			//			List<History> histories1 = new ArrayList<>();
-			//			for(History history:histories) {
-			//				Integer itemId = Integer.valueOf(history.getItemId().substring(1));
-			//				Item item = itemService.findItem(itemId);
-			//				ItemDto itemDto = itemConverter.poToDto(item);
-			//				if(!item.getItemId().equals(itemDto.getReviewerId())) {
-			//					histories1.add(history);
-			//				}
-			//			}
-			//			historyList.removeAll(histories1);
-
 			historyList.removeAll(histories);
 			data.put("historyList", historyConverter.poListToDtoList(historyList));
 		} else {
@@ -209,7 +203,7 @@ public class HistoryInfoController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		List<History> historyList = historyService.getHistoriesByType(type,getCurrentSemester());
+		List<History> historyList = historyService.getHistoriesByType(type, getCurrentSemester());
 
 		if (isEmptyList(historyList)) {
 			return successResponse();
@@ -222,12 +216,12 @@ public class HistoryInfoController extends ApplicationController {
 			List<Category> categoryList = categoryService
 					.getCategoriesByReviewer(user.getUserId(), getCurrentSemester());
 			for (Category category : categoryList) {
-				itemList.addAll(itemConverter
-						.poListToDtoList(itemService.findItemByCategory(getCurrentSemester(),category.getCategoryId())));
+				itemList.addAll(itemConverter.poListToDtoList(itemService
+						.findItemByCategory(getCurrentSemester(), category.getCategoryId())));
 			}
 		} else {
 			itemList = itemService
-					.findAll(null,null, null, user.getUserId(), null, getCurrentSemester());
+					.findAll(null, null, null, user.getUserId(), null, getCurrentSemester());
 		}
 
 		for (History history : historyList) {
@@ -263,9 +257,22 @@ public class HistoryInfoController extends ApplicationController {
 		//根据对应的条目查找相应的历史记录
 		for (ItemDto item : itemDtoList) {
 			List<History> historyList = historyService
-					.getHistoriesByItem(buildHistoryItemId(item.getItemId()),getCurrentSemester());
+					.getHistoriesByItem(buildHistoryItemId(item.getItemId()), getCurrentSemester());
 			histories.addAll(historyList);
 		}
+		Collections.sort(histories, (o1, o2) -> {
+			int time1 = DateHelper.getDefaultTimeStamp(o1.getCreateTime());
+			int time2 = DateHelper.getDefaultTimeStamp(o2.getCreateTime());
+			if(time1 > time2) {
+				return -1;
+			}
+
+			if(time1 == time2) {
+				return 0;
+			}
+
+			return 1;
+		});
 		return histories;
 	}
 }
