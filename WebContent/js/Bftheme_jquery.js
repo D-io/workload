@@ -1,4 +1,3 @@
-/*
 $(document).on("click","#clickToggle1",function () {
     $(".ck1").toggle("slow");
 
@@ -40,7 +39,6 @@ $(document).on("click",".collapse-link",function () {
     $(".sorting_asc").on("click", function () {
         $(".sorting_asc").toggleClass("sorting_desc");
     });
-*/
 function jumpToSum() {
 /*
     var resetStr='regionName=Realmanager/sum';
@@ -118,7 +116,13 @@ function reset() {
             pageNum:1,
             pageSize:5
         }, function (data) {
-            $(".totalItem").text(data.data.totalRecords);
+            if(data.data==null){
+                $(".totalItem").text("0");
+            }
+            else {
+                $(".totalItem").text(data.data.totalRecords);
+            }
+
             reviewerResetItem(data);
             var str='';
             var totalPage=data.data.totalRecords;
@@ -174,7 +178,12 @@ function reset() {
             pageSize:$(".input-sm option:selected").val()
         },function (data) {
             $(".ResetItem").empty();
-            $(".totalItem").text(data.data.totalRecords);
+            if(data.data==null){
+                $(".totalItem").text("0");
+            }
+            else {
+                $(".totalItem").text(data.data.totalRecords);
+            }
             $(".pagination").empty();
             $(".ResetItem").empty();
             reviewerResetItem(data);
@@ -219,7 +228,12 @@ function reset() {
                 $(".ResetItem").empty();
                 reviewerResetItem(data);
                 var str='';
-                var totalPage=data.data.totalRecords;
+                if(data.data==null){
+                    $(".totalItem").text("0");
+                }
+                else {
+                    $(".totalItem").text(data.data.totalRecords);
+                }
                 var $pageSize=$(".input-sm option:selected").val();
                 var pageCountNum=Math.ceil(totalPage/$pageSize);
                 if(pageCountNum<10){
@@ -331,7 +345,12 @@ function reset() {
             status:option0,
             ownerId:option2
         }, function (data) {
-            $(".totalItem").text(data.data.totalRecords);
+            if(data.data==null){
+                $(".totalItem").text("0");
+            }
+            else {
+                $(".totalItem").text(data.data.totalRecords);
+            }
             $(".ResetItem").empty();
             reviewerResetItem(data);
             var str='';
@@ -364,7 +383,7 @@ function reset() {
             });
         }
     });
-    $(".otherParaval").click(function () {
+    $(document).on("click",".otherParaval",function () {
         var thisId=parseInt(this.id.match(/\d+/g));
 
         if(!$(this).is('.input')){
@@ -376,7 +395,7 @@ function reset() {
                     strArr.push({key:$otherstr.eq(t).text(),value:$(".otherParaval_"+thisId).eq(t).text()});
                 }
                 strArr=JSON.stringify(strArr);
-                alert("确定保存修改？");
+             //   alert("确定保存修改？");
                 $.post(itemeditNameUrl,{
                     itemId:thisId,
                     otherParams:strArr
@@ -415,7 +434,7 @@ function itemSummary() {
                     var Info=analyseList[i];
                     $(".sumItemPreview").append(rowInfo);
                     $(".sumItemPreview tr:last").attr("class","resetNum");
-                    for(var j=0;j<6;j++)//单元格
+                    for(var j=0;j<7;j++)//单元格
                     {
                         $(".sumItemPreview tr:last").append(cellInfo);
                     }
@@ -429,10 +448,10 @@ function itemSummary() {
                     $(".sumItemPreview tr:last td:eq(3)").text(Info.professionalTitle);
                     $(".sumItemPreview tr:last td:eq(4)").text(Info.checkedWorkload);
                     if(Info.checkedWorkload>100){
-                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#6fcd54","color":"#fff","cursor":"pointer"});
+                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#6fcd54","color":"#fff","cursor":"pointer","text-align":"center"});
                     }
                     else {
-                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#ffe746","color":"#2A3F54","cursor":"pointer"});
+                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#ffe746","color":"#fff","cursor":"pointer","text-align":"center"});
                     }
                     $(".sumItemPreview tr:last td:eq(4)").attr("class","checkedwork");
                     $(".sumItemPreview tr:last td:eq(4)").attr("id","checkedwork_"+id);
@@ -444,8 +463,9 @@ function itemSummary() {
                     $(".sumItemPreview tr:last td:eq(5)").attr("id","uncheckedwork_"+id);
                     $(".sumItemPreview tr:last td:eq(5)").attr("data-toggle","modal");
                     $(".sumItemPreview tr:last td:eq(5)").attr("data-target","#applyModal");
-                    $(".sumItemPreview tr:last td:eq(5)").css("cursor","pointer");
-
+                    $(".sumItemPreview tr:last td:eq(5)").css({"cursor":"pointer","text-align":"center"});
+                    $(".sumItemPreview tr:last td:eq(6)").text(Info.totalWorkload);
+                    $(".sumItemPreview tr:last td:eq(6)").css("text-align","center");
                    /* var act="<a class=\"btn btn-primary btn-xs previewAll\" id=\"previewAll_"+ id+"\" data-toggle='modal' data-target='#applyModal'>查看详情</a>";
                     $(".sumItemPreview tr:last td:eq(5)").append(act);*/
                 }
@@ -624,7 +644,8 @@ function itemSummary() {
                 appendAllItem(chejsonObject,"sumuncheckedItemSort");
             }
         });
-        })
+        });
+
 }
 function appendAllItem(data,mystr) {
     var rowInfo="<tr></tr>";
@@ -766,41 +787,12 @@ function reviewerResetItem(data) {
                 var Info=analyseList[i];
                 $(".ResetItem").append(rowInfo);
                 $(".ResetItem tr:last").attr("class","resetNum");
-                for(var j=0;j<11;j++)//单元格
+                for(var j=0;j<8;j++)//单元格
                 {
                     $(".ResetItem tr:last").append(cellInfo);
                 }
                 var id=i;
-                var paramArray=Info.descAndValues;
-                var str='';
-                for(var paramCount=0;paramCount<paramArray.length;paramCount++){
-                    if(paramCount!=paramArray.length-1){
-                        str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p><hr/>';
 
-                    }
-                    else
-                        str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p>';
-                }
-                var otherparamArray = Info.otherJsonParameters;
-                var otherstr = '';
-                if(otherparamArray&&otherparamArray.length>0){
-                    for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
-                        if(otherparamCount!=otherparamArray.length-1){
-                            otherstr +='<p style="width: max-content;"><span  class="otherstr_'+Info.itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+Info.itemId+'" id="otherParaval_'+Info.itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p><hr/>';
-
-                        }
-                        else
-                            otherstr +='<p style="width: max-content;"><span  class="otherstr_'+Info.itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+Info.itemId+'" id="otherParaval_'+Info.itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p>';
-
-                    }
-                }
-                var paramDesc = Info.paramDesc;
-                var paramDescstr = '';
-                if(paramDesc&&paramDesc.length>0){
-                    for (var paramDescCount = 0; paramDescCount < paramDesc.length; paramDescCount++) {
-                        paramDescstr +='<p>'+ paramDesc[paramDescCount].symbol +'<p>'+ ':' +'<p>'+ paramDesc[paramDescCount].desc+'<p><hr/>';
-                    }
-                }
                 var statusName;
                 if(Info.importRequired==0) {
                     switch (Info.status) {
@@ -857,37 +849,79 @@ function reviewerResetItem(data) {
                 var itemImport='';
                 switch (Info.importRequired){
                     case 2:itemImport='无特殊类别';
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/img.png' </span>");
                     break;
                     case 0:itemImport='申报审核类';
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/newChecked.png' </span>");
                     break;
                     case 1:itemImport='导入复核类';
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/newImport.png'</span>");
                     break;
                 }
-                $(".ResetItem tr:last td:eq(2)").text(itemImport);
+
                 $(".ResetItem tr:last td:eq(3)").text(Info.itemName);
                 $(".ResetItem tr:last td:eq(3)").attr("class","itemName");
                 $(".ResetItem tr:last td:eq(3)").attr("id","itemName_"+Info.itemId);
-                $(".ResetItem tr:last td:eq(4)").text(Info.formula);
-
-                $(".ResetItem tr:last td:eq(5)").append(str);
-
-
-              /*  $(".ResetItem tr:last td:eq(5)").text(paramDescstr);*/
-                $(".ResetItem tr:last td:eq(6)").append(otherstr);
-
-                $(".ResetItem tr:last td:eq(7)").text(Info.workload);
-                $(".ResetItem tr:last td:eq(8)").text(Info.teacherName);
-                $(".ResetItem tr:last td:eq(9)").text(statusName);
-                var checkAct="<a class=\"btn btn-info btn-xs reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回审核人</a> <a class=\"btn btn-info btn-xs reset_applicant\" id=\"applyReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回申报人</a>";
-                var importAct="<a class=\"btn btn-info btn-xs reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回审核人</a> <a class=\"btn btn-info btn-xs reset_applicant\" id=\"applyReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回复核人</a>";
+                $(".ResetItem tr:last td:eq(4)").text(Info.workload);
+                $(".ResetItem tr:last td:eq(5)").text(Info.teacherName);
+                $(".ResetItem tr:last td:eq(6)").text(statusName);
+                var checkAct="<a class=\"btn btn-info btn-xs reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回审核人</a> <a class=\"btn btn-info btn-xs reset_applicant\" id=\"applyReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回申报人</a><a class='btn btn-primary viewdetail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</a>";
+                var importAct="<a class=\"btn btn-info btn-xs reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回审核人</a> <a class=\"btn btn-info btn-xs reset_applicant\" id=\"applyReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回复核人</a><a class='btn btn-primary viewdetail' id='viewdetail_"+i+"'  data-toggle='modal' data-target='#showdetail'>查看详情</a>";
                 if(Info.importRequired==0){
-                    $(".ResetItem tr:last td:eq(10)").append(checkAct);
+                    $(".ResetItem tr:last td:eq(7)").append(checkAct);
                 }
                 else
-                    $(".ResetItem tr:last td:eq(10)").append(importAct);
+                    $(".ResetItem tr:last td:eq(7)").append(importAct);
 
+                $(document).on("click",".viewdetail",function () {
+                    var thisId=parseInt(this.id.match(/\d+/g));
+
+                    $(".revDetail").empty();
+                    $(".revDetail").append(rowInfo);
+
+                    var paramArray=analyseList[thisId].descAndValues;
+                    var str='';
+                    for(var paramCount=0;paramCount<paramArray.length;paramCount++){
+                        if(paramCount!=paramArray.length-1){
+                            str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p><hr/>';
+
+                        }
+                        else
+                            str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p>';
+                    }
+                    var otherparamArray = analyseList[thisId].otherJsonParameters;
+                    var otherstr = '';
+                    if(otherparamArray&&otherparamArray.length>0){
+                        for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
+                            if(otherparamCount!=otherparamArray.length-1){
+                                otherstr +='<p style="width: max-content;"><span  class="otherstr_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+analyseList[thisId].itemId+'" id="otherParaval_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p><hr/>';
+
+                            }
+                            else
+                                otherstr +='<p style="width: max-content;"><span  class="otherstr_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+analyseList[thisId].itemId+'" id="otherParaval_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p>';
+
+                        }
+                    }
+                    var paramDesc = analyseList[thisId].paramDesc;
+                    var paramDescstr = '';
+                    if(paramDesc&&paramDesc.length>0){
+                        for (var paramDescCount = 0; paramDescCount < paramDesc.length; paramDescCount++) {
+                            paramDescstr +='<p>'+ paramDesc[paramDescCount].symbol +'<p>'+ ':' +'<p>'+ paramDesc[paramDescCount].desc+'<p><hr/>';
+                        }
+                    }
+                    for(var t=0;t<3;t++)//单元格
+                    {
+                        $(".revDetail tr:last").append(cellInfo);
+                    }
+                    $(".revDetail tr:last td:eq(0)").text(analyseList[thisId].formula);
+
+                    $(".revDetail tr:last td:eq(1)").append(str);
+                    /*  $(".ResetItem tr:last td:eq(5)").text(paramDescstr);*/
+                    $(".revDetail tr:last td:eq(2)").append(otherstr);
+                })
             }
         }
+
     }
 function manageHistory() {
     $.get(manageHistoryUrl,function (data) {
