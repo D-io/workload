@@ -63,7 +63,7 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	@Override
 	public Boolean deleteItem(Integer itemId, String version) {
 
-		return itemDao.delete(itemId);
+		return itemDao.delete(itemId,version);
 	}
 
 	@Override

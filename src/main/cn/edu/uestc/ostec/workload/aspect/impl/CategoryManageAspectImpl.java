@@ -18,14 +18,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.History;
+import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
+import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
@@ -43,6 +47,9 @@ public class CategoryManageAspectImpl implements IAspect {
 
 	@Autowired
 	private HistoryService historyService;
+
+	@Autowired
+	private ItemService itemService;
 
 	/**
 	 * 日志对象
@@ -99,6 +106,13 @@ public class CategoryManageAspectImpl implements IAspect {
 			} else {
 				LOGGER.info(CATEGORY_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
 			}
+
+			//			// 相应的删除条目
+			//			List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(),categoryId);
+			//			for(Item item:itemList) {
+			//				itemService.removeItem(item.getItemId(),getCurrentSemester());
+			//			}
+
 		}
 
 	}
@@ -184,8 +198,9 @@ public class CategoryManageAspectImpl implements IAspect {
 		history.setItemId(buildHistoryCategoryId(categoryDto.getCategoryId()));
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setUserId(userId);
-		history.setOperation("修改工作量计算规则：" + categoryDto.getName() + "：" + oldCategoryDto
-				.contrastObj(oldCategoryDto, categoryDto) + "。");
+
+		String differences = oldCategoryDto.contrastObj(oldCategoryDto, categoryDto);
+		history.setOperation("修改工作量计算规则：" + categoryDto.getName() + "：" + differences + "。");
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {
@@ -193,6 +208,15 @@ public class CategoryManageAspectImpl implements IAspect {
 		} else {
 			LOGGER.info(CATEGORY_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
 		}
+
+//		if (differences.contains("jsonParameters")) {
+//			List<Item> itemList = itemService
+//					.findItemByCategory(getCurrentSemester(), oldCategoryDto.getCategoryId());
+//			for (Item item : itemList) {
+//				itemService.removeItem(item.getItemId(), getCurrentSemester());
+//			}
+//		}
+
 	}
 
 }

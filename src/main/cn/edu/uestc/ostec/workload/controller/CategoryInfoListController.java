@@ -25,9 +25,11 @@ import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
+import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
+import cn.edu.uestc.ostec.workload.service.ItemService;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
@@ -51,6 +53,25 @@ public class CategoryInfoListController extends ApplicationController
 
 	@Autowired
 	private CategoryConverter categoryConverter;
+
+	@Autowired
+	private ItemService itemService;
+
+	/**
+	 * 对规则进行修改或者删除时，提示会有相应的多少教师已经申报的项目会受影响
+	 */
+	@RequestMapping(value = "affected-items", method = GET)
+	public RestResponse getAffectedItemsNum(
+			@RequestParam("categoryId")
+					Integer categoryId) {
+
+		List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(), categoryId);
+		int count = itemList.size();
+
+		Map<String, Object> data = getData();
+		data.put("itemCount", count);
+		return successResponse(data);
+	}
 
 	/**
 	 * 查询已经提交状态对应的类目信息生成的树结构
@@ -79,7 +100,7 @@ public class CategoryInfoListController extends ApplicationController
 					Integer categoryId) {
 
 		CategoryDto categoryDto = categoryConverter
-				.poToDto(categoryService.getCategory(categoryId,getCurrentSemester()));
+				.poToDto(categoryService.getCategory(categoryId, getCurrentSemester()));
 
 		categoryDto.setOtherJson(null);
 		categoryDto.setJsonParameters(null);
