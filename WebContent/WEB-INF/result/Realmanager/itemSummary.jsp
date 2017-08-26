@@ -71,6 +71,7 @@
                     <th  class="sorting">专业职称</th>
                     <th class="sorting">通过审核(复核)工作当量</th>
                     <th class="sorting" >有待审核(复核)工作当量</th>
+                    <th class="sorting" >预期总工作当量</th>
 
                 </tr>
                 </thead>
@@ -78,8 +79,8 @@
                 </tbody>
             </table>
             <div class="modal fade bs-example-modal-lg" id="applyModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog modal-lg" style="margin-left: 100px;">
-                    <div class="modal-content" style="width: 1200px;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
 
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>

@@ -13,6 +13,7 @@ $(document).ready(function () {
 
        /* data-plugin-datepicker*/
     });
+
     getSideBar(currentRole,roleList);
     $.get(commonYearsUrl,function (data) {
         var arry=new Array;
@@ -97,6 +98,7 @@ $(document).ready(function () {
     var allItem=[];
     var itemCount=0;
     var cateId=0;
+    var countToCount=0;
     /*$(document).off("click",".importList");
     $(document).on("click",".importList",function () {
         var flag = this.id;
@@ -138,7 +140,17 @@ $(document).ready(function () {
     });
     $(document).on("click",".showImportAll",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
+       window.countToCount=thisId;
+       console.log(window.countToCount);
+       console.log(countToCount);
+
+        if($(".status_"+thisId).text()=="已提交"){
+            $(".savemyEdit").hide();
+            $(".submitTo").hide();
+        }
+
         $(".savemyEdit").attr("id","savemyEdit_"+allItem[thisId].itemId);
+        $(".submitTo").attr("id","submitTo_"+allItem[thisId].itemId);
         $("#itemName").val(allItem[thisId].itemName);
         $("#itemName").attr("disabled","disabled");
         $("#applyDesc").val(allItem[thisId].applyDesc);
@@ -203,12 +215,20 @@ $(document).ready(function () {
         }
         newArray = JSON.stringify(newArray);
         var otherArray = new Array();
-        var otherPramterkey = $(".otherPramterkey");
-        for (var j = 0; j < otherPramterkey.length; j++) {
-            var otherKey=$(".otherParaTh").eq(j);
-            otherArray.push({key: otherKey.text(), value: $(".otherimportpara").eq(j).val()});
+        if($(".otherPramterkey>tr").length==0){
+            if($(".otherPramterkey:has(tr)").length==0){
+                otherArray=null;
+            }
+            else {
+                var otherPramterkey = $(".otherPramterkey");
+                for (var j = 0; j < otherPramterkey.length; j++) {
+                    var otherKey=$(".otherParaTh").eq(j);
+                    otherArray.push({key: otherKey.text(), value: $(".otherimportpara").eq(j).val()});
+                }
+                otherArray = JSON.stringify(otherArray);
+            }
         }
-        otherArray = JSON.stringify(otherArray);
+
         var grouparray = new Array();
         var sumArray=new Array();
       //  var groupmessageArray = $('.showgroupMemberName');
@@ -245,52 +265,20 @@ $(document).ready(function () {
                 },
                 success: function (data) {
                     alert("修改成功!");
-                    $("#applyModal").modal('hide');
-                    $('#showContent').modal('hide');
-
-                    var analyseList = data.data.itemList;
-                    var listLength = data.data.itemList.length;
-                    var rowInfo = "<tr></tr>";
-                    var cellInfo = "<td></td>";
-                    var Info = analyseList;
-                    var formdata = new FormData;
-                    formdata.append("file", $("#formName")[0].files[0]);
-                    $.ajax({
-                        url: importProofUrl + "?itemId=" + analyseList,
-                        type: "POST",
-                        dataType: "JSON",
-                        data: formdata,
-                        contentType: false,
-                        processData: false,
-                        success: function () {
-                        }
-
-                    });
-
-                    $('#addContent').modal('hide');
-                    for(var hideCount=0;hideCount<listLength;hideCount++){
-                        if (Info[hideCount].teacherName == userNameUrl) {
-                            /* var count = Info[i].workload;
-                             var CategId = Info[i].categoryId;*/
-
-                            var CountId = Info[hideCount].itemId;
-                        }
-                        // $(".hiddendistrict").append("<div class='groupMember_"+CountId+"'>"+Info[hideCount].teacherName+"</div><div class='jobDesc_"+CountId+"'>"+Info[hideCount].jobDesc+"</div><div class='jobWeight_"+CountId+"'>"+Info[hideCount].jsonChildWeight+"</div>")
-
-                        $(".groupMember_"+CountId).text(Info[hideCount].teacherName);
-                        $("jobDesc_"+CountId).text(Info[hideCount].jobDesc);
-                        $("jobWeight_"+CountId).text(Info[hideCount].jsonChildWeight);
-                    }
+                    $(".form-control").attr("disacled","disabled");
+                    $("#year").removeAttr("disacled");
+                    $("#term").removeAttr("disabled");
+                   allItem.splice(window.countToCount,1,data.data.itemList);
+                   $("#itemName_"+window.countToCount).text(data.data.itemList.itemName);
+                    $("#workload_"+window.countToCount).text(data.data.itemList.workload);
+                    $("#teacherName_"+window.countToCount).text(data.data.itemList.teacherName);
 
                 }
 
             })
         }
         else {
-            $.ajax({
-                type: "POST",
-                url: itemManageUrl,
-                data: {
+            $.post(itemManageUrl,{
                     categoryId: window.cateId,
                     itemId:thisId,
                     itemName: $('#itemName').val(),
@@ -305,52 +293,20 @@ $(document).ready(function () {
                   //  jsonChildWeight: childWeight,
                     option:"modify"
 
-                },
-                success: function (data) {
+                }, function (data) {
                     alert("修改成功!");
-                    $("#applyModal").modal('hide');
-                    $('#showContent').modal('hide');
-
-                    var analyseList = data.data.itemList;
-                    var listLength = data.data.itemList.length;
-                    var rowInfo = "<tr></tr>";
-                    var cellInfo = "<td></td>";
-                    var Info = analyseList;
-                    var formdata = new FormData;
-                    formdata.append("file", $("#formName")[0].files[0]);
-                    $.ajax({
-                        url: importProofUrl + "?itemId=" + analyseList,
-                        type: "POST",
-                        dataType: "JSON",
-                        data: formdata,
-                        contentType: false,
-                        processData: false,
-                        success: function () {
-                        }
-
-                    });
-
-                    $('#addContent').modal('hide');
-                    for(var hideCount=0;hideCount<listLength;hideCount++){
-                        if (Info[hideCount].teacherName == userNameUrl) {
-                            /* var count = Info[i].workload;
-                             var CategId = Info[i].categoryId;*/
-
-                            var CountId = Info[hideCount].itemId;
-                        }
-                        // $(".hiddendistrict").append("<div class='groupMember_"+CountId+"'>"+Info[hideCount].teacherName+"</div><div class='jobDesc_"+CountId+"'>"+Info[hideCount].jobDesc+"</div><div class='jobWeight_"+CountId+"'>"+Info[hideCount].jsonChildWeight+"</div>")
-
-                        $(".groupMember_"+CountId).text(Info[hideCount].teacherName);
-                        $("jobDesc_"+CountId).text(Info[hideCount].jobDesc);
-                        $("jobWeight_"+CountId).text(Info[hideCount].jsonChildWeight);
-                    }
+                    $(".form-control").attr("disacled","disabled");
+                    $("#year").removeAttr("disacled");
+                    $("#term").removeAttr("disabled");
+                    allItem.splice(window.countToCount,1,data.data.itemList);
+                    $("#itemName_"+window.countToCount).text(data.data.itemList.itemName);
+                    $("#workload_"+window.countToCount).text(data.data.itemList.workload);
+                    $("#teacherName_"+window.countToCount).text(data.data.itemList.teacherName);
 
                 }
 
-            })
+            )
         }
-
-
 
     });
 
@@ -419,6 +375,35 @@ $(document).ready(function () {
             }
         });
     });
+    $(document).off("click",".submitTo");
+    $(document).on("click",".submitTo",function () {
+       var thisId=parseInt(this.id.match(/\d+/g));
+        $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
+            alert("提交成功！");
+            $("#statusChange_"+submitId).text("已提交");
+            $(".status_"+thisId).text("已提交");
+            $("#addContent").modal("hide");
+
+        })
+    });
+    $(document).off("click",".deleteAll");
+    $(document).on("click",".deleteAll",function () {
+       var thisId=parseInt(this.id.match(/\d+/g));
+        $.ajax({
+            url:itemManageUrl+"?itemId="+thisId,
+            type:"DELETE",
+            data:{
+                itemId:thisId
+            },
+            success:function () {
+              //  alert("操作成功！");
+                $(".trDele_"+thisId).remove();
+            }
+
+        });
+
+    });
+
 /*
     $(document).off("click",".submitImportItem");
     $(document).on("click",".submitImportItem",function () {
@@ -546,10 +531,7 @@ $(document).ready(function () {
 
         });
     });*/
-   /* $(document).on("click",".downloadAdded",function () {
 
-
-    });*/
 
     /*reviewer-reviewe*/
 
@@ -943,13 +925,15 @@ $(document).ready(function () {
     });
 });
 function getSideBar(role,roleList) {
+    $.ajaxSetup({
+        async : false
+    });
     if(role=="ADMIN"){
-        $.ajaxSetup({
-            async : false
-        });
+
         $.get(pageManageUrl+"?"+"regionName=manager/Manager-left-sidebar",{test : 12},function (html) {
             $(".scroll-view").empty();
             $(".scroll-view").append(html);
+            $(".userName").text(userNameUrl);
         });
         $.get(pageManageUrl+"?"+"regionName=manager/Manager-right-col",{test : 12},function (html) {
             $(".right_hole").empty();
@@ -985,9 +969,10 @@ function getSideBar(role,roleList) {
     else if(role=="RE"){
         $("#dropdownMenu1").hide();
         if(roleList.length==2){
-            $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher-left-sidebar",function (html) {
+            $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher-left-sidebar",{test:12},function (html) {
                 $(".scroll-view").empty();
                 $(".scroll-view").append(html);
+                $(".userName").text(userNameUrl);
             });
            /* $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",function (html) {
                 $(".right_hole").empty();
@@ -997,9 +982,10 @@ function getSideBar(role,roleList) {
 
         }
         else {
-            $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher1-left-sidebar",function (html) {
+            $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher1-left-sidebar",{test:12},function (html) {
                 $(".scroll-view").empty();
                 $(".scroll-view").append(html);
+                $(".userName").text(userNameUrl);
             });
            /* $.get(pageManageUrl+"?"+"regionName=auditor/auditorcontent",function (html) {
                 $(".right_hole").empty();
@@ -1012,11 +998,12 @@ function getSideBar(role,roleList) {
     }
     else{
         $("#dropdownMenu1").hide();
-        $.get(pageManageUrl+"?"+"regionName=manager/PrimaryTeacher-left-sidebar",function (html) {
+        $.get(pageManageUrl+"?"+"regionName=manager/PrimaryTeacher-left-sidebar",{test:12},function (html) {
             $(".scroll-view").empty();
             $(".scroll-view").append(html);
+            $(".userName").text(userNameUrl);
         });
-        $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",function (html) {
+        $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",{test:12},function (html) {
             /*$(".right_hole").empty();
             $(".right_hole").append(html);*/
         });
@@ -1024,11 +1011,14 @@ function getSideBar(role,roleList) {
     }
 }
 function changeSideBar(role,roleList) {
-
+    $.ajaxSetup({
+        async : false
+    });
         if(roleList.length==3){
-            $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher-left-sidebar",function (html) {
+            $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher-left-sidebar",{test:12},function (html) {
                 $(".scroll-view").empty();
                 $(".scroll-view").append(html);
+                $(".userName").text(userNameUrl);
             });
           /*  $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",function (html) {
                 $(".right_hole").empty();
@@ -1040,9 +1030,10 @@ function changeSideBar(role,roleList) {
         else {
             for(var leng=0;leng<roleList.length;leng++){
                 if(roleList[leng].role=="RE"){
-                    $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher1-left-sidebar",function (html) {
+                    $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher1-left-sidebar",{test:12},function (html) {
                         $(".scroll-view").empty();
                         $(".scroll-view").append(html);
+                        $(".userName").text(userNameUrl);
                     });
                     /*$.get(pageManageUrl+"?"+"regionName=auditor/auditorcontent",function (html) {
                        $(".right_hole").empty();
@@ -1055,13 +1046,18 @@ function changeSideBar(role,roleList) {
         }
 }
 function changeToManager() {
-    $.get(pageManageUrl+"?"+"regionName=manager/Manager-left-sidebar",function (html) {
+    $.ajaxSetup({
+        async : false
+    });
+    $.get(pageManageUrl+"?"+"regionName=manager/Manager-left-sidebar",{test:12},function (html) {
         $(".scroll-view").empty();
         $(".scroll-view").append(html);
+        $(".userName").text(userNameUrl);
     });
-    $.get(pageManageUrl+"?"+"regionName=manager/Manager-right-col",function (html) {
+    $.get(pageManageUrl+"?"+"regionName=manager/Manager-right-col",{test:12},function (html) {
            $(".right_hole").empty();
          $(".right_hole").append(html);
+        $(".userName").text(userNameUrl);
     });
     ztree();
 }
@@ -1082,18 +1078,22 @@ function showImportPreview(data,itemCount) {
             for(var j=0;j<6;j++)//单元格
             {
                 $(".importItemTbody tr:last").append(cellInfo);
+                $(".importItemTbody tr:last").attr("class","trDele_"+Info.itemId);
             }
 
             var checkboxStr='<div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>'
             $(".importItemTbody tr:last td:eq(0)").append(checkboxStr);
             $(".importItemTbody tr:last td:eq(0)").attr("class","a-center");
             $(".importItemTbody tr:last td:eq(1)").text(Info.itemName);
+            $(".importItemTbody tr:last td:eq(1)").attr("id","itemName_"+itemCount);
 
             $(".importItemTbody tr:last td:eq(2)").text(Info.workload);
+            $(".importItemTbody tr:last td:eq(2)").attr("id","workload_"+itemCount);
             $(".importItemTbody tr:last td:eq(3)").text(Info.teacherName);
+            $(".importItemTbody tr:last td:eq(3)").attr("id","teacherName_"+itemCount);
             $(".importItemTbody tr:last td:eq(4)").text("未提交");
-            $(".importItemTbody tr:last td:eq(4)").attr("class","status_"+Info.itemId);
-            var str="<a class=\"btn btn-primary showImportAll\" id=\"showImportAll_"+ itemCount+"\" data-toggle='modal' data-target='#addContent'>查看详情</a>";
+            $(".importItemTbody tr:last td:eq(4)").attr("class","status_"+itemCount);
+            var str="<a class=\"btn btn-primary showImportAll\" id=\"showImportAll_"+ itemCount+"\" data-toggle='modal' data-target='#addContent'>查看详情</a><a class=\"btn btn-primary deleteAll\" id=\"deleteAll_"+ Info.itemId+"\">删除操作</a>";
             $(".importItemTbody tr:last td:eq(5)").append(str);
             itemCount++;
 
@@ -1104,13 +1104,13 @@ function showPara(item) {
 
     for(var t=0;t<item.parameterValues.length;t++){
         var symbolname=item.parameterValues[t].symbol;
-        $('.parameterTh').append("<tr><th class='pramterDesc' id='"+symbolname+"' style='font-size: 13px;'>"+item.descAndValues[t].desc+"</th><td><input type='text' class='importpara form-control importpara_"+t+"'></td></tr>");
+        $('.parameterThead').append("<tr><th class='pramterDesc' id='"+symbolname+"' style='font-size: 13px;'>"+item.descAndValues[t].desc+"</th><td><input type='text' class='importpara form-control importpara_"+t+"'></td></tr>");
       //  $(".otherParaTh").append("<tr><th class='showpramterDesc' id='"+symbolname+"' style='font-size: 13px;'>"+item[comp].formulaParameterList[t].desc+"</th><td><input type='text' class='showparameterName'></td></tr>")
 
     }
     if(item.otherJsonParameters!=null){
         for(var s=0;s<item.otherJsonParameters.length;s++){
-            $('.otherParaTh').append("<tr><th class='otherPramterkey' style='font-size: 13px'>"+item.otherJsonParameters[s].key+"</th><td><input type='text' class='otherimportpara form-control otherimportpara_"+s+"'></td></tr>");
+            $('.otherParaThead').append("<tr><th class='otherPramterkey' style='font-size: 13px'>"+item.otherJsonParameters[s].key+"</th><td><input type='text' class='otherimportpara form-control otherimportpara_"+s+"'></td></tr>");
             //  $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>"+item[comp].otherJsonParameters[s].key+"</th><td><input type='text' class='showotherparameterName'></td></tr>");
         }
     }

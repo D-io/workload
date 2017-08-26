@@ -29,7 +29,7 @@
                 </li>
                 <li role="presentation"  onclick="applyRec()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">申报审核情况</a>
                 </li>
-                <li role="presentation"  onclick="showApplyHistory()"><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
+                <li role="presentation"  onclick="showApplyHistory()"><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">查看操作日志</a>
                 </li>
             </ul>
             <div id="myTabContent" class="tab-content">
@@ -64,8 +64,9 @@
                         <tr role="row">
                             <th class="sorting" width="31px">序号</th>
                             <th class="sorting" width="130px;">操作时间</th>
+                            <th class="sorting" width="60px">操作人员</th>
                             <th class="sorting">操作内容</th>
-                            <th class="sorting">操作人员</th>
+
                        <%--     <th class="sorting">操作形式</th>--%>
 
                         </tr>

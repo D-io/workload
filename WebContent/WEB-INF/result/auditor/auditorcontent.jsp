@@ -30,7 +30,7 @@
                 </li>
                 <li role="presentation"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false"  onclick="showimportRec()">导入复核情况</a>
                 </li>
-                <li role="presentation"><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false"  onclick="showImportHis()">查看历史记录</a>
+                <li role="presentation"><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false"  onclick="showImportHis()">查看操作日志</a>
                 </li>
             </ul>
             <div id="myTabContent" class="tab-content">
@@ -155,8 +155,9 @@
                     <tr role="row">
                         <th class="sorting" width="31px">序号</th>
                         <th class="sorting" width="130px;">操作时间</th>
+                        <th class="sorting" style="width: 60px;">操作人员</th>
                         <th class="sorting">操作内容</th>
-                        <th class="sorting">操作人员</th>
+
                        <%-- <th class="sorting">操作形式</th>--%>
 
                     </tr>
@@ -320,7 +321,7 @@
                                <%-- <div class="collapse" id="mainparameter">--%>
                                     <div class="well">
                                         <table class="table" id="mainparameterTable">
-                                            <thead class="parameterTh">
+                                            <thead class="parameterThead">
                                                </thead>
                                             <tbody class="AddPramter">
 
@@ -341,7 +342,7 @@
                                 <div class="collapse" id="addotherparameter">
                                     <div class="well">
                                         <table class="table" id="addotherparameterTable">
-                                            <thead class="otherParaTh">
+                                            <thead class="otherParaThead">
 
 
                                             </thead>
