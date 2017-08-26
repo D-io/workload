@@ -58,8 +58,8 @@
             font-size: 12px;
         }
         .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
-        .ztree li span.button.icon02_ico_docu{margin-right:2px; background: url(${contextPath}/css/images/shenbaolei.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
-        .ztree li span.button.icon06_ico_docu{margin-right:2px; background: url(${contextPath}/css/images/import.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
+        .ztree li span.button.icon02_ico_docu{margin-right:2px; background: url(${contextPath}/css/images/newChecked.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
+        .ztree li span.button.icon06_ico_docu{margin-right:2px; background: url(${contextPath}/css/images/newImport.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
         .bs-example-modal-lg .modal-dialog {
             position: absolute;
             top: 0;
@@ -112,22 +112,49 @@
         <div class="top_nav">
             <div class="nav_menu">
                 <nav>
-                    <div class="nav toggle">
+                    <div class="nav toggle" style="float: left;">
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     </div>
-                    <div class="showZhContent"><h4>教学工作当量计算系统</h4></div>
+                    <%--<span style="float: left">
+                    <img src="<%=request.getContextPath()%>/css/images/logo+xueyuan-workload.png" alt="..." class="left_span" style="width: 210px;margin-top: 6px;margin-right: 30px;">
+                </span>--%>
+                    <div class="showZhContent" style="float: left"><h4>教学工作当量计算系统</h4></div>
+
+
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
-                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="padding: 8px 18px 0px 12px">
 
-                                <i class="fa fa-sign-out pull-right"></i><span class=" fa fa-angle-down"></span>
+                                <span class="userName"></span><span class=" fa fa-angle-down" style="margin-right: 10px"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
-
+                                <li><a href="">个人信息</a></li>
+                                <li><a href="">查看帮助</a></li>
                                 <li><a href="${contextPath}/auth/logout">退出系统</a></li>
                             </ul>
                         </li>
+                       <%-- <div style="float: right;padding-top: 15px;padding-left: 10px;">
+                            <span>欢迎,</span>
+
+                        </div>--%>
+<%--<li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="images/img.jpg" alt="">John Doe
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li><a href="javascript:;"> Profile</a></li>
+                    <li>
+                      <a href="javascript:;">
+                        <span class="badge bg-red pull-right">50%</span>
+                        <span>Settings</span>
+                      </a>
+                    </li>
+                    <li><a href="javascript:;">Help</a></li>
+                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                  </ul>
+                </li>--%>
                         <div style="float: right;padding-top: 10px;">
                             <a href="javascript:;" class="badge bg-green" id="itemChange">
                                 <%--<i class="fa fa-envelope-o"></i>--%>
@@ -147,6 +174,21 @@
                                   <option value="0">2016-2017</option>
                                   <option value="2">2018-2019</option>--%>
                             </select>
+                        </div>
+                        <div class="dropdown" id="changerole"  style="float:right;padding-top: 13px;">
+                            <button type="button" class="btn dropdown-toggle btn-primary" id="dropdownMenu1"
+                                    data-toggle="dropdown" style="margin: 2px;padding: 1px;">
+                                切换角色
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                <li role="presentation">
+                                    <a id="manager" tabindex="-1" class="swift-role">教务管理</a>
+                                </li>
+                                <li role="presentation">
+                                    <a id="teachers" tabindex="-1" class="swift-role">学院教师</a>
+                                </li>
+                            </ul>
                         </div>
 
                         <div style="clear: both;"></div>
@@ -175,7 +217,7 @@
 
         <!-- footer content -->
         <footer>
-           <div style="text-align: center">电子科技大学信息与软件工程学院卓越工程师实验教育中心提供技术支持（OSTEC@ISE）</div>
+           <div style="text-align: center">电子科技大学信息与软件工程学院卓越工程师实验教育中心（OSTEC@ISE）</div>
             <div style="text-align: center">Copyright © 2014-2017 SynX Studio, All Rights Reserved</div>
             <div class="clearfix"></div>
         </footer>

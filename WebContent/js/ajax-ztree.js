@@ -15,8 +15,10 @@ function ztree() {
             showRenameBtn: showRenameBtn
         },
         data: {
+            showTitle:true,
             key : {
-                name : "name"
+                name : "name",
+                "title":"title"
             },
             simpleData: {
                 enable: true,
@@ -57,10 +59,12 @@ function ztree() {
                 if(item.children.length>0) {
                     var nodes = {
                         'name': item.name,
+                        'realName':item.name,
                         'font':{'color':'#2A3F54'},
                         'id': item.categoryId,
                         'parentId': item.parentId,
                         'desc': item.desc,
+                        'title':item.desc,
                         'reviewDeadline': rewDeadline,
                         'applyDeadline': appDeadline,
                         'formula': item.formula,
@@ -78,11 +82,13 @@ function ztree() {
                     if(item.status==1){
                         if(item.importRequired==1){
                             var nodes = {
-                                'name': item.name,
+                                'name': '<span style="margin-right: 5px;">复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'</span>'+item.name,
+                                'realName':item.name,
                                 'font':{'background-color':'#6fcd54','color':'#fff'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
+                                'title':item.desc,
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
                                 'formula': item.formula,
@@ -99,11 +105,13 @@ function ztree() {
                         }
                         else if(item.importRequired==0){
                             var nodes = {
-                                'name': item.name,
+                                'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+item.name,
+                                'realName':item.name,
                                 'font':{'background-color':'#6fcd54','color':'#fff'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
+                                'title':item.desc,
                                 'status':item.status,
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
@@ -121,10 +129,12 @@ function ztree() {
                         else {
                             var nodes = {
                                 'name': item.name,
-                                'font':{'background-color':'#6fcd54','color':'#fff'},
+                                'realName':item.name,
+                             //   'font':{'background-color':'#6fcd54','color':'#fff'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
+                                'title':item.desc,
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
                                 'formula': item.formula,
@@ -142,11 +152,13 @@ function ztree() {
                     else {
                         if(item.importRequired==1){
                             var nodes = {
-                                'name': item.name,
+                                'name': '<span style="margin-right: 5px;">复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'</span>'+item.name,
+                                'realName':item.name,
                                 'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
+                                'title':item.desc,
                                 'status':item.status,
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
@@ -163,11 +175,13 @@ function ztree() {
                         }
                         else if(item.importRequired==0){
                             var nodes = {
-                                'name': item.name,
+                                'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+item.name,
+                                'realName':item.name,
                                 'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
+                                'title':item.desc,
                                 'status':item.status,
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
@@ -185,7 +199,9 @@ function ztree() {
                         else {
                             var nodes = {
                                 'name': item.name,
-                                'font':{'background-color':'#ffe746','color':'#2A3F54'},
+                                'realName':item.name,
+                                'title':item.desc,
+                           //     'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
@@ -220,21 +236,12 @@ function ztree() {
     );
 
     var log, className = "dark";
-//捕获节点被拖拽前回调
-    /* function beforeDrag(treeId, treeNodes) {
-     return false;
-     }*/
- /*   function zTreeOnNodeCreated(event, treeId, treeNode) {
-        if(treeNode.type != "folder"){
-            $('#'+treeNode.tId+'_ico').css("background", "center center/16px 16px no-repeat");
-        }
-    }*/
 
 //捕获节点编辑按钮回调函数
     function beforeEditName(treeId, treeNode) {
 
         className = (className === "dark" ? "" : "dark");
-        showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+        showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.desc);
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         zTree.selectNode(treeNode);
 
@@ -260,7 +267,12 @@ function ztree() {
             var parNodeName='';
             if(treeNode.parentId!=null){
                 if (sNodes.length > 0) {
-                    var parentNode = sNodes[0].getParentNode();
+                    var parentId = sNodes[0].parentId;
+                   for(var z=0;z<zNodes.length;z++){
+                       if(zNodes[z].id==parentId){
+                           var parentNode=zNodes[z];
+                       }
+                   }
 
 
                    /* if (parentNode == null) {
@@ -357,7 +369,7 @@ function ztree() {
             $(".parameterName").attr("disabled", "disabled");
             $(".parameterSymbol").attr("disabled", "disabled");
             $(".otherParameterName").attr("disabled", "disabled");
-            $('#itemName').val(treeNode.name);
+            $('#itemName').val(treeNode.realName);
             $('#desc').val(treeNode.desc);
             $('#applyDeadline').val(treeNode.applyDeadline);
             $('#reviewDeadline').val(treeNode.reviewDeadline);
@@ -384,8 +396,9 @@ function ztree() {
                         $(".parameterName").removeAttr("disabled");
                         $(".parameterSymbol").removeAttr("disabled");
                         $(".otherParameterName").removeAttr("disabled");
-                        $('#' + treeNode.tId + '_a').css({'background-color': '#ffe746', "color": "#2A3F54"});
+                       // $('#' + treeNode.tId + '_a').css({'background-color': '#ffe746', "color": "#2A3F54"});
                         //   return confirm("解锁节点成功！");
+                        ztree();
                     }
 
                     else
@@ -441,97 +454,51 @@ function ztree() {
                         if(data.status==200){
                             alert("规则已保存！");
                             ztree();
-                        }
-                      /*  if(data.data.category){
-                            var x=data.data.category.reviewDeadline;
-                            var y=data.data.category.applyDeadline;
-                            for (var i = 0; i < zNodes.length; i++) {
 
-                                if (zNodes[i].id == data.data.category.categoryId) {
+                            $.get(categoryAllUrl,function (data) {
+                                    for (var m = 0; m < data.data.categoryTree.length; m++) {
 
-                                    /!*var newNode = {
-                                     'name': data.data.category.name,
-                                     'id': data.data.category.categoryId,
-                                     'parentId': data.data.category.parentId,
-                                     'desc': data.data.category.desc,
-                                     'reviewDeadline': rewDeadline,
-                                     'applyDeadline': appDeadline,
-                                     'formula': data.data.category.formula,
-                                     'reviewerId':data.data.category.reviewerId,
-                                     'formulaParameterList':data.data.category.formulaParameterList,
-                                     'isLeaf':data.data.category.isLeaf,
-                                     'importRequired':data.data.category.importRequired,
-                                     'otherJsonParameters':data.data.category.otherJsonParameters
-                                     };*!/
-                                    if(data.data.importRequired==1){
-                                        var newNode = {
-                                            'name': data.data.category.name,
-                                            'id': data.data.category.categoryId,
-                                            'parentId': data.data.category.parentId,
-                                            'desc': data.data.category.desc,
-                                            'reviewDeadline': x,
-                                            'applyDeadline': y,
-                                            'formula': data.data.category.formula,
-                                            'reviewerId': data.data.category.reviewerId,
-                                            'formulaParameterList': data.data.category.formulaParameterList,
-                                            'otherJsonParameters': data.data.category.otherJsonParameters,
-                                            'isLeaf': data.data.category.isLeaf,
-                                            'importRequired': data.data.category.importRequired,
-                                            'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
-                                            'iconSkin': "icon06"
-                                        };
+                                        createTree(data.data.categoryTree[m]);
                                     }
-                                    else if (data.data.category.importRequired == 0) {
-                                        var newNode = {
-                                            'name': data.data.category.name,
-                                            'id': data.data.category.categoryId,
-                                            'parentId': data.data.category.parentId,
-                                            'desc': data.data.category.desc,
-                                            'status': data.data.category.status,
-                                            'reviewDeadline': x,
-                                            'applyDeadline': y,
-                                            'formula': data.data.category.formula,
-                                            'reviewerId': data.data.category.reviewerId,
-                                            'formulaParameterList': data.data.category.formulaParameterList,
-                                            'otherJsonParameters': data.data.category.otherJsonParameters,
-                                            'isLeaf': data.data.category.isLeaf,
-                                            'importRequired': data.data.category.importRequired,
-                                            'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
-                                            'iconSkin':"icon02"
-                                        };
+                                    function createTree(item) {
+                                        if(item.categoryId==treeNode.id){
+                                            var newnode={
+                                                'realName':item.name,
+                                                'font':{'background-color':'#6fcd54','color':'#fff'},
+                                                'id': item.categoryId,
+                                                'parentId': item.parentId,
+                                                'desc': item.desc,
+                                                'title':item.desc,
+                                                'reviewDeadline': item.reviewDeadline,
+                                                'applyDeadline': item.applyDeadline,
+                                                'formula': item.formula,
+                                                'reviewerId':item.reviewerId,
+                                                'formulaParameterList':item.formulaParameterList,
+                                                'otherJsonParameters':item.otherJsonParameters,
+                                                'isLeaf':item.isLeaf,
+                                                'importRequired':item.importRequired,
+                                                'iconSkin':"icon06",
+                                                'status':item.status,
+                                                //  'status':item.status,
+                                                'open':true}
+                                            treeNode=newnode;
+                                        }
+                                        else if (item.children) {
+                                            for(var i=0;i<item.children.length;i++) {
+                                                createTree(item.children[i]);
+                                            }
+                                        }
                                     }
-                                    else {
-                                        var newNode = {
-                                            'name': data.data.category.name,
-                                            'id': data.data.category.categoryId,
-                                            'parentId': data.data.category.parentId,
-                                            'desc': data.data.category.desc,
-                                            'status': data.data.category.status,
-                                            'reviewDeadline': x,
-                                            'applyDeadline': y,
-                                            'formula': data.data.category.formula,
-                                            'reviewerId':data.data.category.reviewerId,
-                                            'formulaParameterList':data.data.category.formulaParameterList,
-                                            'otherJsonParameters':data.data.category.otherJsonParameters,
-                                            'isLeaf':data.data.category.isLeaf,
-                                            'importRequired':data.data.category.importRequired,
-                                            'font': {'background-color': '#ffe746', 'color': '#2A3F54'}
-                                        };
-                                    }
-                                    zNodes.splice(i, 1, newNode);
-                                    zTree.updateNode(zNodes[i]);
-                                    $('#'+treeNode.tId+'_span').text(newNode.name);
-
-                                    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
                                 }
-                            }
-                        }*/
 
+                            );
+                            beforeEditName("treeDemo",treeNode);
 
+                        }
 
                     }
                 );
-                $('#addModal').modal('hide');
+             //   $('#addModal').modal('hide');
             });
         },0);
         return false;
@@ -711,7 +678,8 @@ function ztree() {
                             var zTree = $.fn.zTree.getZTreeObj("treeDemo");
                             if(data.data.category.importRequired==1){
                                 var newNode = {
-                                    'name': data.data.category.name,
+                                    'name': '<span style="margin-right: 5px;">复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'</span>'+data.data.category.name,
+                                    'realName':data.data.category.name,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'status':data.data.category.status,
@@ -730,7 +698,8 @@ function ztree() {
                             }
                             else if(data.data.category.importRequired==0){
                                 var newNode = {
-                                    'name': data.data.category.name,
+                                    'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+data.data.category.name,
+                                    'realName':data.data.category.name,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'desc': data.data.category.desc,
@@ -750,6 +719,7 @@ function ztree() {
                             else {
                                 var newNode = {
                                     'name': data.data.category.name,
+                                    'realName':data.data.category.name,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'desc': data.data.category.desc,
@@ -855,10 +825,13 @@ function ztree() {
                              var b=y.match(/\d+/g);*/
                             var zTree = $.fn.zTree.getZTreeObj("treeDemo");
                             if(data.data.category.importRequired==1){
-                                var newNode= {'name': data.data.category.name,
+                                var newNode= {
+                                    'name': '<span style="margin-right: 5px;">复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'</span>'+data.data.category.name,
+                                    'realName':data.data.category.name,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'desc':data.data.category.desc,
+                                    'title':item.desc,
                                     'reviewDeadline':x,
                                     'applyDeadline':y,
                                     'formula':data.data.category.formula,
@@ -873,7 +846,10 @@ function ztree() {
                                 };
                             }
                             else if(data.data.category.importRequired==0){
-                                var newNode= {'name': data.data.category.name,
+                                var newNode= {
+                                    'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+data.data.category.name,
+                                    'realName':data.data.category.name,
+                                    'title':item.desc,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'status':data.data.category.status,
@@ -891,10 +867,13 @@ function ztree() {
                                 };
                             }
                             else {
-                                var newNode= {'name': data.data.category.name,
+                                var newNode= {
+                                    'name': data.data.category.name,
+                                    'realName':data.data.category.name,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'desc':data.data.category.desc,
+                                    'title':item.desc,
                                     'status':data.data.category.status,
                                     'reviewDeadline':x,
                                     'applyDeadline':y,
@@ -926,6 +905,12 @@ function ztree() {
 
 
         });
+        $(".icon02_ico_docu").bind("mouseover",function () {
+           $(this).attr("title","申报类");
+        });
+        $(".icon06_ico_docu").bind("mouseover",function () {
+            $(this).attr("title","导入类");
+        });
         $(document).on("click","#importRequired",function () {
             var options=$("#importRequired option:selected");
             if(options.val()==1){
@@ -949,11 +934,12 @@ function ztree() {
         $(document).off("click",".submitEdit");
         $(document).on("click",".submitEdit",function () {
             var thisId=this.id.match(/\d+/g);
+             confirm("确认提交？");
             $.post(categorySubmitUrl+"?categoryId="+thisId,function (data){
                 if(data.status==200){
                   //  window.location.reload();
                     ztree();
-                    return confirm("提交规则成功！");
+                     alert("提交规则成功！");
                     /*for(var m=0;m<nodes.length;nodes++){
                      $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");
                      }*/
@@ -1005,11 +991,12 @@ function ztree() {
             $.ajaxSetup({
                 async : false
             });
+             confirm("确认提交？");
             $.post(categorySubmitUrl+"?"+str,{test:12},function (data){
                 if(data.status==200){
                    // window.location.reload();
                     ztree();
-                    return confirm("提交规则成功！");
+                     alert("提交规则成功！");
 
                     /*for(var m=0;m<nodes.length;nodes++){
                      $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");

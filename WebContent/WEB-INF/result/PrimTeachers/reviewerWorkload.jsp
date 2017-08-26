@@ -29,7 +29,7 @@
                 </li>
                 <li role="presentation"><a href="#tab_content2" id="history-tab" role="tab" data-toggle="tab" aria-expanded="false" onclick="reviewerRec()">导入复核情况</a>
                 </li>
-                <li role="presentation"><a href="#tab_content3" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false" onclick="showRevieHistory()">查看历史记录</a>
+                <li role="presentation"><a href="#tab_content3" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false" onclick="showRevieHistory()">查看操作日志</a>
                 </li>
 
             </ul>
@@ -66,8 +66,9 @@
                         <tr role="row">
                             <th class="sorting" width="31px;">序号</th>
                             <th class="sorting" width="131px">操作时间</th>
+                            <th class="sorting" width="60px;">操作人员</th>
                             <th class="sorting">操作内容</th>
-                            <th class="sorting">操作人员</th>
+
                           <%--  <th class="sorting">操作形式</th>--%>
 
                         </tr>
