@@ -224,9 +224,9 @@
             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">计算规则管理</a>
                 </li>
-                <li role="presentation" onclick="jumpToSum()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">计算规则预览</a>
-                </li>
-                <li role="presentation"  onclick="manageHistory()"><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">查看历史记录</a>
+               <%-- <li role="presentation" onclick="jumpToSum()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">计算规则预览</a>
+                </li>--%>
+                <li role="presentation"  onclick="manageHistory()"><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">查看操作日志</a>
                 </li>
             </ul>
             <div id="myTabContent" class="tab-content">
@@ -606,17 +606,18 @@
 
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                <%--<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
 
-                </div>
+                </div>--%>
                 <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="history-tab">
                     <table class="table table-striped table-bordered dataTable no-footer reviewerRec">
                         <thead>
                         <tr role="row">
                             <th class="sorting" width="31px">序号</th>
                             <th class="sorting" width="131px">操作时间</th>
+                            <th class="sorting" width="60px;">操作人员</th>
                             <th class="sorting">操作内容</th>
-                            <th class="sorting">操作人员</th>
+
                           <%--  <th class="sorting">操作形式</th>--%>
 
                         </tr>

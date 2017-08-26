@@ -8,14 +8,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
         <div class="navbar nav_title" style="border: 0;">
-            <a class="site_title" ><span><img src="<%=request.getContextPath()%>/css/images/systemLogo.png" alt="..." class="left_span" style="width: 40px;height: 40px;"></span><span style="font-size: 16px;">信息与软件工程学院
-                   <span style="font-size: 5px;">School of Information and Software Engineering</span></span></a>
-        </div>
+            <div class="profile_pic">
+                <span>
+                    <img src="<%=request.getContextPath()%>/css/images/img.png" alt="..." class="img-circle profile_img">
+                </span>
+            </div>
+            <div class="profile_info">
+                <span>欢迎,</span>
+                <span class="userName"></span>
+            </div>   </div>
 
         <div class="clearfix"></div>
 
         <!-- menu profile quick info -->
-        <div class="profile clearfix">
+       <%-- <div class="profile clearfix">
             <div class="profile_pic" style="padding: 25px 0px;">
                 <div class="dropdown" id="changerole" >
                     <button type="button" class="btn dropdown-toggle" id="dropdownMenu1"
@@ -37,7 +43,7 @@
                 <span>欢迎,</span>
                 <h2 class="userName">学院教师</h2>
             </div>
-        </div>
+        </div>--%>
         <!-- /menu profile quick info -->
 
         <br />
@@ -71,7 +77,11 @@
 
         </div>
         <!-- /sidebar menu -->
-
+<div class="sidebar-footer hidden-small">
+     <span>
+                    <img src="<%=request.getContextPath()%>/css/images/workloadTestlogo.png" alt="..." class="left_span"style="width: 230px;height: 50px">
+                </span>
+</div>
         <!-- /menu footer buttons -->
 
 
