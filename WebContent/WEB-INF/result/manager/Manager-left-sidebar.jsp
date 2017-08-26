@@ -45,7 +45,7 @@
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu" style="margin-top: 70px;">
             <div class="menu_section">
                 <ul class="nav side-menu" style="margin-top: 0px;">
-                    <li class="active" id="clickToggle1"><a><i class="fa fa-home"></i> 教务管理 <span class="fa fa-chevron-down"></span></a>
+                    <li class="active" ><a id="clickToggle1"><i class="fa fa-home"></i> 教务管理 <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu " style="display: block;">
                             <li class="ck1"><a onclick="jumpToAdd()">计算规则管理</a></li>
                             <%--<li><a onclick="jumpToSum()">类目统计</a></li>--%>
