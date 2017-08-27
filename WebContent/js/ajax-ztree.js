@@ -1010,18 +1010,6 @@ function ztree() {
 
         });
 
-        /*$(document).off("click","#unlock");
-         $(document).on("click","#unlock",function () {
-         $.post(unlockCateUrl+"?"+str,function (data){
-         if(data.status==200)
-         return confirm("解锁节点成功！");
-         else
-         alert("解锁节点失败！");
-         } )
-         });*/
-
-
-
     }
     $.fn.zTree.init($("#treeDemo"), setting, zNodes);
     // $("#selectAll").bind("click", selectAll);

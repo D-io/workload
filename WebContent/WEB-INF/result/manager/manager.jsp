@@ -14,16 +14,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="HTML5 Admin Template" />
-    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
-    <meta name="author" content="okler.net">
+    <meta name="keywords" content="workload " />
 
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <!-- Web Fonts  -->
   <%--  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
- --%>   <title>教学工作量计算系统 | </title>
+ --%>   <title>教学工作当量计算系统 | </title>
 
     <!-- Bootstrap -->
     <link href="${contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -232,6 +230,9 @@
     <div id="notif-group" class="tabbed_notifications"></div>
 </div>
 <div class="hiddendistrict" style="display: none;">
+
+</div>
+<div class="hiddenstrict1" style="display: none">
 
 </div>
 

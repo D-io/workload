@@ -299,7 +299,7 @@ function reset() {
         var flag = this.id;
         var item_id = flag.match(/\d+/g);
         var someparamster = "itemId=" + item_id + "&role=reviewer";
-        alert("确定退回该项目？");
+        confirm("确定退回该项目？");
         $.post(itemResetUrl+"?" + someparamster,function (data) {
             if (data.status == 200) {
                 alert('重置成功！');
@@ -314,7 +314,7 @@ function reset() {
         var appflag = this.id;
         var myitemid = appflag.match(/\d+/g);
         var someparamster = "itemId=" + myitemid + "&role=proposer";
-        alert("确定退回该项目？");
+        confirm("确定退回该项目？");
         $.post(itemResetUrl+"?" + someparamster,function (data) {
             if (data.status == 200) {
                 alert('重置成功！');
@@ -849,13 +849,13 @@ function reviewerResetItem(data) {
                 var itemImport='';
                 switch (Info.importRequired){
                     case 2:itemImport='无特殊类别';
-                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/img.png' </span>");
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/img.png'></span>");
                     break;
                     case 0:itemImport='申报审核类';
-                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/newChecked.png' </span>");
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/newChecked.png'></span>");
                     break;
                     case 1:itemImport='导入复核类';
-                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/newImport.png'</span>");
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/newImport.png'></span>");
                     break;
                 }
 
