@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
+import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
@@ -53,6 +54,9 @@ public class ReviewInfoListController extends ApplicationController {
 
 	@Autowired
 	private ItemConverter itemConverter;
+
+	@Autowired
+	private CategoryConverter categoryConverter;
 
 	/**
 	 * 获取不同导入方式下的对应的需要审核的工作量条目信息
@@ -153,8 +157,8 @@ public class ReviewInfoListController extends ApplicationController {
 
 		Map<String, Object> data = getData();
 		data.put("categoryList", categoryBriefs);
-		data.put("importCategories", importCategories);
-		data.put("applyCategories", applyCategories);
+		data.put("importCategories", categoryConverter.poListToDtoList(importCategories));
+		data.put("applyCategories", categoryConverter.poListToDtoList(applyCategories));
 
 		return successResponse(data);
 	}
