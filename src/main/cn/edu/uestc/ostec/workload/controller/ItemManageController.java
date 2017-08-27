@@ -384,6 +384,51 @@ public class ItemManageController extends ApplicationController {
 	}
 
 	/**
+	 * 上传文件附件
+	 *
+	 * @param itemIdList 条目编号
+	 * @param file       文件对象
+	 * @return itemDto，fileInfo,errorData
+	 */
+	@RequestMapping(value = "file-proof", method = POST)
+	public RestResponse uploadFileAsProof(MultipartFile file,
+			@RequestParam("itemId")
+					Integer... itemIdList) throws IOException {
+		Map<String, Object> data = getData();
+
+		FileInfo fileInfo = new FileInfo(ATTACHMENT_FILE_ID, getUserId(), "");
+		if (null != file && !file.isEmpty()) {
+			boolean uploadSuccess = fileEvent.uploadFile(file, fileInfo);
+			if (!uploadSuccess) {
+				data.put("errorData", "文件附件上传失败");
+			}
+		}
+
+		for (Integer itemId : itemIdList) {
+			Item item = itemService.findItem(itemId, getCurrentSemester());
+			if (null == item) {
+				return parameterNotSupportResponse("参数有误");
+			}
+
+			if (!UNCOMMITTED.equals(item.getStatus())) {
+				return invalidOperationResponse("无法上传附件");
+			}
+
+			//考虑设置为文件信息编号，展示时不做文件信息展示，仅仅展示 查看附件
+			item.setProof(fileInfo.getFileInfoId());
+			data.put("fileInfo", fileInfo);
+
+			boolean saveSuccess = itemService.saveItem(item);
+			if (!saveSuccess) {
+				return systemErrResponse("保存失败");
+			}
+
+			data.put("itemDto", itemConverter.poToDto(item));
+		}
+		return successResponse(data);
+	}
+
+	/**
 	 * 选择性提交工作量条目
 	 *
 	 * @param itemIdList 工作量条目列表
