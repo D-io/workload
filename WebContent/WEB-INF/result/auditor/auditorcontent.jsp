@@ -222,15 +222,17 @@
                 </div>
                 <div class="modal-body">
 
-                    <div>
-                        <tr class="row">
-                            <input type="file" class="form-control" id="file">
-                            <button class="btn btn-primary importNewFile">上传文件</button>
-                            <button class="btn btn-primary addNewItem" data-toggle="modal" data-target="#addContent"><i class="fa fa-plus"></i></button>
-                            <button class="btn btn-success submitItem" style="display: none">提交条目</button>
-                        </tr>
+                    <span>
+                            <input type="file" class=" col-md-9 col-sm-9 col-xs-12" id="file" style="    padding: 6px 12px;line-height: 1.42857143;color: #555;margin-bottom:10px;background-color: #fff;background-image: none;border: 1px solid #ccc;border-radius: 4px;">
+                            <div class="control-label col-md-3 col-sm-3 col-xs-12">
+                                <button class="btn btn-primary importNewFile "><i class="fa fa-file"></i></button>
+                                <button class="btn btn-primary addNewItem" data-toggle="modal" data-target="#addContent"><i class="fa fa-plus"></i></button>
+                                 <button class="btn btn-success submitItem" style="display: none"><i class="fa fa-check-square-o"></i></button>
 
-                    </div>
+                            </div>
+
+                    </span>
+
                     <div>
                         <table class="table table-striped table-bordered dataTable no-footer importItemShow" style="display: none;">
                             <thead>
