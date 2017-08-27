@@ -5,29 +5,61 @@ function importWorkload(){
     $('.right_hole').empty();
     $.get(pageManageUrl+"?"+'regionName=auditor/auditorcontent',{test : 12},function (result) {
         $('.right_hole').append(result);
+        $(".hiddendistrict").empty();
     });
         $.get(itemAuditorUrl,{test : 12},function (data) {
           showimportall(data.data.importCategories);
 
         });
-    function  showimportall(item) {
+        function  showimportall(item) {
         for(var i=0;i<item.length;i++){
 
             $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+"<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 40%; '> <thead> <tr role='row'> <th class='sorting' style='padding: 5px;'>上传截止时间:<span class='time_"+item[i].categoryId+"'>"+getLocalTime(item[i].reviewDeadline)+"</span></th> <th class='sorting' style='padding: 5px;'><div class='dropdown' style='display: inline'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=group'>小组类模板</a></li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div><a class='btn importList btn-info' id='import_"+item[i].categoryId+"' data-toggle='modal' data-target='#importNewModal'>点击导入</a></th> </table><div style='clear: both;'></div></li>");
-            if(item[i].jsonParameters.length>0){
-                var obj = eval ("(" + item[i].jsonParameters + ")");
+
+            if(item[i].formulaParameterList.length>0){
+            //    var obj = eval ("(" + item[i].jsonParameters + ")");
+             var obj=item[i].formulaParameterList;
                 for(var paraCount=0;paraCount<obj.length;paraCount++){
-                    $(".hiddendistrict").append("<div class='paraDesc_"+item[i].categoryId+"' id='"+item[i].categoryId+"_"+obj[paraCount].symbol+"'>"+obj[paraCount].desc+"</div>");
+                    $(".hiddendistrict").append("<div class='importParaDesc paraDesc_"+item[i].categoryId+"' id='"+item[i].categoryId+"_"+obj[paraCount].symbol+"'>"+obj[paraCount].desc+"</div>");
 
                 }
             }
-            var tablestr='<table class="showImportThead table dataTable no-footer table-bordered" id="showImportThead_'+item[i].categoryId+'" style="display: none;"> <thead> <tr role="row"> <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th> </tr> </thead> <tbody class="showImportDesc_'+item[i].categoryId+'"></tbody> </table>';
-            $('#catInfo_' + item[i].categoryId).append(tablestr);
+            if(item[i].otherJsonParameters.length>0){
+              //  var otherobj = eval ("(" + item[i].jsonParameters + ")");
+
+                var otherobj=item[i].otherJsonParameters;
+
+                for(var otherCount=0;otherCount<otherobj.length;otherCount++){
+                    $(".hiddendistrict").append("<div class='importParaDesc otherparaDesc_"+item[i].categoryId+"'>"+otherobj[otherCount].key+"</div>");
+
+                }
+            }
+       /*     var tablestr='<table class="showImportThead table dataTable no-footer table-bordered" id="showImportThead_'+item[i].categoryId+'" style="display: none;"> <thead> <tr role="row"> <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th> </tr> </thead> <tbody class="showImportDesc_'+item[i].categoryId+'"></tbody> </table>';
+            $('#catInfo_' + item[i].categoryId).append(tablestr);*/
             if(item[i].children){
                 showimportall(item[i].children);
             }
         }
     }
+        $.get(TeacherInfoUrl,{test : 12},function (data) {
+        teacherInfo=data.data.teacherList;
+        var selectdata=new Array();
+        for(var i=0;i<teacherInfo.length;i++){
+            $('#itemMember').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
+            $('#itemmanager').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
+
+        }
+    });
+        $("#itemMember").select2({
+        allowClear: true,
+        width:"100%",
+    });
+        $("#itemmanager").select2({
+        allowClear: true,
+        width:"100%",
+    });
+
+
 
 }
 function auditworkload() {

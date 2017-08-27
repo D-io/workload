@@ -226,6 +226,7 @@
                         <tr class="row">
                             <input type="file" class="form-control" id="file">
                             <button class="btn btn-primary importNewFile">上传文件</button>
+                            <button class="btn btn-primary addNewItem" data-toggle="modal" data-target="#addContent"><i class="fa fa-plus"></i></button>
                             <button class="btn btn-success submitItem" style="display: none">提交条目</button>
                         </tr>
 
@@ -260,7 +261,7 @@
                         &times;
                     </button>
                     <h5 class="modal-title" >
-                        添加项目
+                        项目信息
                     </h5>
                 </div>
                 <div class="modal-body">
@@ -303,7 +304,7 @@
                                 <input type="radio"  value="1"  name="optionsRadios" class="radioChange" id="isGroup"> 小组申形式
                             </label>
                         </div>
-                        <div class="form-group item_manager required" style="display: none;">
+                        <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">项目成员</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                                 <select class="form-control teacherName" id="itemMember">
@@ -336,10 +337,10 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">附加属性</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#addotherparameter" aria-expanded="false" aria-controls="collapseExample">
+                                <%--<a class="btn btn-primary" role="button" data-toggle="collapse" href="#addotherparameter" aria-expanded="false" aria-controls="collapseExample">
                                     <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="collapse" id="addotherparameter">
+                                </a>--%>
+                              <%--  <div class="collapse" id="addotherparameter">--%>
                                     <div class="well">
                                         <table class="table" id="addotherparameterTable">
                                             <thead class="otherParaThead">
@@ -351,7 +352,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>
+                              <%--  </div>--%>
                             </div>
                         </div>
                         <div class="form-group required" style="display: none">

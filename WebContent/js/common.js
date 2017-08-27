@@ -115,6 +115,31 @@ $(document).ready(function () {
         itemCount=0;
         $(".importNewFile").attr("id","importNewFile_"+flag);
         $(".importItemShow").show();
+        var $paraDesc=$(".paraDesc_"+flag);
+        $(".parameterThead").empty();
+        $('.otherParaThead').empty();
+        for(var t=0;t<$paraDesc.length;t++){
+            var symbolPara=$paraDesc.eq(t).attr("id");
+            var Reg=/_[a-zA-Z]*/;
+            // /appVersion\/([\d\.]*)/
+            // symbolId=Reg.exec(symbolId);
+            symbolPara=symbolPara.match(Reg)[0];
+            if (symbolPara.substr(0,1)=='_'){
+                symbolPara=symbolPara.substr(1);
+            }
+
+            $('.parameterThead').append("<tr><th class='pramterDesc' id='"+symbolPara+"' style='font-size: 13px;'>"+$paraDesc.eq(t).text()+"</th><td><input type='text' class='importpara form-control importpara_"+t+"'></td></tr>");
+
+        }
+        var $otherDesc=$(".otherparaDesc_"+flag);
+        if($(".otherparaDesc_"+flag).length&&$(".otherparaDesc_"+flag).length>0){
+
+            for(var s=0;s<$otherDesc.length;s++){
+                $('.otherParaThead').append("<tr><th class='otherPramterkey' style='font-size: 13px'>"+$otherDesc.eq(s).text()+"</th><td><input type='text' class='otherimportpara form-control otherimportpara_"+s+"'></td></tr>");
+            }
+
+        }
+
         $.get(auditorManageItemUrl,{
             importRequired:1,
             option:"uncommitted"
@@ -123,7 +148,8 @@ $(document).ready(function () {
             //    $(".parameterTh").append("")
                 $(".parameterTh").empty();
                 $(".otherParaTh").empty();
-                  showPara(msg.data.unCommittedItem[0]);
+             //    showPara(msg.data.unCommittedItem[0]);
+
                 $(".importItemTbody").empty();
                 showImportPreview(msg.data.unCommittedItem,itemCount);
                 if(itemCount<msg.data.unCommittedItem.length){
@@ -155,6 +181,7 @@ $(document).ready(function () {
         $("#itemName").attr("disabled","disabled");
         $("#applyDesc").val(allItem[thisId].applyDesc);
         $("#applyDesc").attr("disabled","disabled");
+        $(".select2").attr("disabled","disabled");
 
         var showPram=allItem[thisId].parameterValues;
         for(var i=0;i<showPram.length;i++){
@@ -165,10 +192,11 @@ $(document).ready(function () {
         var showOtherPara=allItem[thisId].otherJsonParameters;
         if(showOtherPara!=null){
             for(var n=0;n<showOtherPara.length;n++){
-                $("#otherimportpara_"+n).val(showOtherPara[n].value);
+                $(".otherimportpara_"+n).val(showOtherPara[n].value);
             }
         }
         $("#groupMember").val(allItem[thisId].ownerId);
+        $("#groupMember").attr("disabled","disabled");
        $(".otherimportpara").attr("disabled","disabled");
         if(allItem[thisId].isGroup==1){
             $("#isGroup").attr("checked","checked");
@@ -197,115 +225,203 @@ $(document).ready(function () {
 
     });
     $(document).on("click",".savemyEdit",function () {
-        var thisId=this.id.match(/\d+/g);
-
-        $(".form-control").attr("disabled");
-        $("#year").removeAttr("disabled");
-        $("#term").removeAttr("disabled");
-        $(".dismiss").hide();
-        $(".savemyEdit").hide();
-        $(".editor").show();
-        $(".submitTo").show();
-        var radioGroup=$("input:radio[name='optionsRadios']:checked").val();
-        var $parametername = $(".pramterDesc");
-        var newArray = new Array();
-        for (var i = 0; i < $(".importpara").length; i++) {
-            var dom = $(".pramterDesc").eq(i).attr("id");
-            newArray.push({symbol: dom, value:parseInt($(".importpara").eq(i).val())});
-        }
-        newArray = JSON.stringify(newArray);
-        var otherArray = new Array();
-        if($(".otherPramterkey>tr").length==0){
-            if($(".otherPramterkey:has(tr)").length==0){
-                otherArray=null;
+        var thisId=parseInt(this.id.match(/\d+/g));
+            $(".form-control").attr("disabled");
+            $("#year").removeAttr("disabled");
+            $("#term").removeAttr("disabled");
+            $(".dismiss").hide();
+            $(".savemyEdit").hide();
+            $(".editor").show();
+            $(".submitTo").show();
+            var radioGroup=$("input:radio[name='optionsRadios']:checked").val();
+            var $parametername = $(".pramterDesc");
+            var newArray = new Array();
+            for (var i = 0; i < $(".importpara").length; i++) {
+                var dom = $(".pramterDesc").eq(i).attr("id");
+                newArray.push({symbol: dom, value:parseInt($(".importpara").eq(i).val())});
             }
-            else {
-                var otherPramterkey = $(".otherPramterkey");
-                for (var j = 0; j < otherPramterkey.length; j++) {
-                    var otherKey=$(".otherParaTh").eq(j);
-                    otherArray.push({key: otherKey.text(), value: $(".otherimportpara").eq(j).val()});
+            newArray = JSON.stringify(newArray);
+            var otherArray = new Array();
+            if($(".otherParaThead>tr").length==0){
+                if($(".otherParaThead:has(tr)").length==0){
+                    otherArray=null;
                 }
-                otherArray = JSON.stringify(otherArray);
+                else {
+                    var otherPramterkey = $(".otherParaThead");
+                    for (var j = 0; j < otherPramterkey.length; j++) {
+                        var otherKey=$(".otherPramterkey").eq(j);
+                        otherArray.push({key: otherKey.text(), value: $(".otherimportpara").eq(j).val()});
+                    }
+                    otherArray = JSON.stringify(otherArray);
+                }
             }
-        }
 
-        var grouparray = new Array();
-        var sumArray=new Array();
-      //  var groupmessageArray = $('.showgroupMemberName');
+            var grouparray = new Array();
+            var sumArray=new Array();
+            //  var groupmessageArray = $('.showgroupMemberName');
 
             grouparray={
                 userId: parseInt($("#itemMember option:selected").val()),
                 jobDesc: $("#jobDesc").val()
             };
+            var childWeight=0;
+            console.log($("#childWeight").val());
+            if($("#childWeight").val()!=null){
+                childWeight=parseFloat($("#childWeight").val())
+            }
+            else
+                childWeight=1;
             sumArray={
                 userId: parseInt($("#itemMember option:selected").val()),
-                weight: parseFloat($("#childWeight").val())
+                weight: childWeight
             };
-        grouparray = JSON.stringify(grouparray);
-        sumArray=JSON.stringify(sumArray);
-        if(radioGroup==1){
-            $.ajax({
-                type: "POST",
-                url: itemManageUrl,
-                data: {
-                    categoryId: window.cateId,
-                    itemId:thisId,
-                    itemName: $('#itemName').val(),
-                    applyDesc: $('#applyDesc').val(),
-                    //   workload: $('#workload').val(),
-                    //   ownerId: applicant.val(),
-                    groupManagerId: $("#itemmanager").val(),
-                    isGroup: 1,
-                    jsonParameter: newArray,
-                    otherJson: otherArray,
-                    jobDesc: grouparray,
-                    jsonChildWeight: childWeight,
-                    option:"modify"
+            grouparray = JSON.stringify(grouparray);
+            sumArray=JSON.stringify(sumArray);
+            console.log( {
+                categoryId: window.cateId,
+                itemId:thisId,
+                itemName: $('#itemName').val(),
+                applyDesc: $('#applyDesc').val(),
+                //   workload: $('#workload').val(),
+                //   ownerId: applicant.val(),
+                groupManagerId: $("#itemmanager").val(),
+                isGroup: 1,
+                jsonParameter: newArray,
+                otherJson: otherArray,
+                jobDesc: grouparray,
+                jsonChildWeight: sumArray,
+                option:"modify"
 
-                },
-                success: function (data) {
-                    alert("修改成功!");
-                    $(".form-control").attr("disacled","disabled");
-                    $("#year").removeAttr("disacled");
-                    $("#term").removeAttr("disabled");
-                   allItem.splice(window.countToCount,1,data.data.itemList);
-                   $("#itemName_"+window.countToCount).text(data.data.itemList.itemName);
-                    $("#workload_"+window.countToCount).text(data.data.itemList.workload);
-                    $("#teacherName_"+window.countToCount).text(data.data.itemList.teacherName);
+            });
+        if($(".savemyEdit").attr("id")){
 
-                }
+            if(radioGroup==1){
+                $.ajax({
+                    type: "POST",
+                    url: itemManageUrl,
+                    data: {
+                        categoryId: window.cateId,
+                        itemId:thisId,
+                        itemName: $('#itemName').val(),
+                        applyDesc: $('#applyDesc').val(),
+                        //   workload: $('#workload').val(),
+                        //   ownerId: applicant.val(),
+                        groupManagerId: parseInt($("#itemmanager").val()),
+                        isGroup: 1,
+                        jsonParameter: newArray,
+                        otherJson: otherArray,
+                        jobDesc: grouparray,
+                        jsonChildWeight: sumArray,
+                        option:"modify"
 
-            })
+                    },
+                    success: function (data) {
+                        alert("修改成功!");
+                        $(".form-control").attr("disacled","disabled");
+                        $("#year").removeAttr("disacled");
+                        $("#term").removeAttr("disabled");
+                        allItem.splice(window.countToCount,1,data.data.itemList);
+                        $("#itemName_"+window.countToCount).text(data.data.itemList.itemName);
+                        $("#workload_"+window.countToCount).text(data.data.itemList.workload);
+                        $("#teacherName_"+window.countToCount).text(data.data.itemList.teacherName);
+
+                    }
+
+                })
+            }
+            else {
+                $.post(itemManageUrl,{
+                        categoryId: window.cateId,
+                        itemId:thisId,
+                        itemName: $('#itemName').val(),
+                        applyDesc: $('#applyDesc').val(),
+                        //   workload: $('#workload').val(),
+                        //   ownerId: applicant.val(),
+                        //   groupManagerId: $("#itemmanager").val(),
+                        isGroup: 0,
+                        jsonParameter: newArray,
+                        otherJson: otherArray,
+                        //   jobDesc: grouparray,
+                        jsonChildWeight: sumArray,
+                        option:"modify"
+
+                    }, function (data) {
+                        alert("修改成功!");
+                        $(".form-control").attr("disacled","disabled");
+                        $("#year").removeAttr("disacled");
+                        $("#term").removeAttr("disabled");
+                        allItem.splice(window.countToCount,1,data.data.itemList);
+                        $("#itemName_"+window.countToCount).text(data.data.itemList.itemName);
+                        $("#workload_"+window.countToCount).text(data.data.itemList.workload);
+                        $("#teacherName_"+window.countToCount).text(data.data.itemList.teacherName);
+
+                    }
+
+                )
+            }
         }
-        else {
-            $.post(itemManageUrl,{
-                    categoryId: window.cateId,
-                    itemId:thisId,
-                    itemName: $('#itemName').val(),
-                    applyDesc: $('#applyDesc').val(),
-                    //   workload: $('#workload').val(),
-                    //   ownerId: applicant.val(),
-                 //   groupManagerId: $("#itemmanager").val(),
-                    isGroup: 0,
-                    jsonParameter: newArray,
-                    otherJson: otherArray,
-                 //   jobDesc: grouparray,
-                  //  jsonChildWeight: childWeight,
-                    option:"modify"
+           else{
+            if(radioGroup==1){
+                $.ajax({
+                    type: "POST",
+                    url: itemManageUrl,
+                    data: {
+                        categoryId: window.cateId,
+                     //   itemId:thisId,
+                        itemName: $('#itemName').val(),
+                        applyDesc: $('#applyDesc').val(),
+                        //   workload: $('#workload').val(),
+                        //   ownerId: applicant.val(),
+                        groupManagerId:  parseInt($("#itemmanager").val()),
+                        isGroup: 1,
+                        jsonParameter: newArray,
+                        otherJson: otherArray,
+                        jobDesc: grouparray,
+                        jsonChildWeight: sumArray,
+                        //   option:"modify"
 
-                }, function (data) {
-                    alert("修改成功!");
-                    $(".form-control").attr("disacled","disabled");
-                    $("#year").removeAttr("disacled");
-                    $("#term").removeAttr("disabled");
-                    allItem.splice(window.countToCount,1,data.data.itemList);
-                    $("#itemName_"+window.countToCount).text(data.data.itemList.itemName);
-                    $("#workload_"+window.countToCount).text(data.data.itemList.workload);
-                    $("#teacherName_"+window.countToCount).text(data.data.itemList.teacherName);
+                    },
+                    success: function (data) {
+                        alert("添加成功!");
+                        allItem.push(data.data.itemList);
+                        showImportPreview(data.data.itemList,itemCount);
+                        itemCount++;
+                        $(".submitTo").removeAttr("id","submitTo_"+data.data.itemList.itemId);
 
-                }
+                    }
 
-            )
+                })
+            }
+            else {
+                $.post(itemManageUrl,{
+                        categoryId: window.cateId,
+                        //   itemId:thisId,
+                        itemName: $('#itemName').val(),
+                        applyDesc: $('#applyDesc').val(),
+                        //   workload: $('#workload').val(),
+                        //   ownerId: applicant.val(),
+                        //   groupManagerId: $("#itemmanager").val(),
+                        isGroup: 0,
+                        jsonParameter: newArray,
+                        otherJson: otherArray,
+                        //   jobDesc: grouparray,
+                        jsonChildWeight: sumArray
+                        //   option:"modify"
+
+                    }, function (data) {
+                        alert("添加成功!");
+
+                        allItem.push(data.data.itemList);
+                        showImportPreview(data.data.itemList,itemCount);
+                        itemCount++;
+                        $(".submitTo").removeAttr("id","submitTo_"+data.data.itemList.itemId);
+
+
+                    }
+
+                )
+            }
+
         }
 
     });
@@ -401,6 +517,33 @@ $(document).ready(function () {
             }
 
         });
+
+    });
+    $(document).on("click",".addNewItem",function () {
+        $(".form-control").removeAttr("disabled");
+        $(".dismiss").show();
+        $(".savemyEdit").show();
+        if($(".savemyEdit").attr("id")){
+            $(".savemyEdit").removeAttr("id");
+        }
+
+        $(".editor").hide();
+        $(".submitTo").hide();
+        $("#itemName").val(null);
+        $("#applyDesc").val(null);
+        $("#isSingle").attr("checked","checked");
+        $("#isGroup").removeAttr("checked");
+        $("#isSingle").removeAttr("checked");
+        $("#isGroup").removeAttr("disabled");
+        $("#isSingle").removeAttr("disabled");
+        $(".select2").show();
+        $("#groupMember").val(null);
+        $(".importpara").val(null);
+        $(".otherimportpara").val(null);
+        $(".required").hide();
+        $("#jobDesc").val(null);
+        $("#childWeight").val(null);
+        $("#itemmanager").val(null);
 
     });
 
@@ -655,11 +798,13 @@ $(document).ready(function () {
             $(".item_group").show();
             $(".required").show();
 
+
         }
         else {
             $(".item_manager").css("display","none");
             $(".item_group").css("display","none");
             $(".required").hide();
+
         }
     });
     $(document).on("click",".showradioChange",function () {
@@ -941,14 +1086,14 @@ function getSideBar(role,roleList) {
 
                 var teacherInfo='';
                 $.get(TeacherInfoUrl,{test : 12},function (data) {
-                    teacherInfo=data.data.teacherList;
-                    var selectdata=new Array();
-                    for(var i=0;i<teacherInfo.length;i++){
-                        $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
-                       /* $('#firstteacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
+                teacherInfo=data.data.teacherList;
+                var selectdata=new Array();
+                for(var i=0;i<teacherInfo.length;i++){
+                    $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
+                    /* $('#firstteacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
 
-             */       }
-                });
+                     */       }
+            });
             $("#teacherName").select2({
                 allowClear: true,
                 width:"100%",
