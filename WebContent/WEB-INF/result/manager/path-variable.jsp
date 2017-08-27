@@ -22,8 +22,8 @@
 
      var userNameUrl="${userName}";
 
-     console.log(${years});
-     //var thisYear="${years}";
+     var userId="${userId}";
+
      //console.log(thisYear);
 
     var currentRoleUrl=contextPath+"/page/sidebar/list";

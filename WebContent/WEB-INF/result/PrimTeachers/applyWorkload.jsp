@@ -86,7 +86,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel"></h4>
+                        <span class="modal-title" id="myModalLabel"></span>
                     </div>
                     <div class="modal-body">
                         <button class="add btn btn-primary" data-toggle="modal" data-target="#addContent">添加申报</button>
@@ -159,10 +159,7 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">主要考核参数</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#parameter" aria-expanded="false" aria-controls="collapseExample">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                                    <div class="collapse" id="parameter">
+
                                         <div class="well">
                                             <table class="table" id="parameterTable">
                                                 <thead>
@@ -180,17 +177,13 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </div>
+
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#otherparameter" aria-expanded="false" aria-controls="collapseExample">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                                    <div class="collapse" id="otherparameter">
                                         <div class="well">
                                             <table class="table" id="otherparameterTable">
                                                 <thead>
@@ -206,7 +199,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </div>
+
                                 </div>
                             </div>
                        <%--     <div class="form-group">
@@ -218,9 +211,9 @@
                                 </div>
                             </div>--%>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">上传附件</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">附件信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input type="file" name="file" id="formName">
+                                   <a data-toggle="modal" data-target="#myModal">上传附件</a>
                                 </div>
                             </div>
                             <div class="form-group item_manager" style="display: none;">
@@ -278,8 +271,11 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-                       <button type="button" class="btn btn-success savemyApply">保存</button>
+                        <button type="button" class="btn btn-primary dismiss" data-dismiss="modal">取消</button>
+                       <button type="button" class="btn btn-primary savemyApply">保存</button>
+                     <%--   <button type="button" class="btn btn-primary saveAgain" style="display: none">保存</button>--%>
+                        <button type="button" class="btn btn-primary neweditor">编辑</button>
+                        <button type="button" class="btn btn-primary newsubmit">提交</button>
                         <%--<input type="submit" value="提交">--%>
                     </div>
                 </div><!-- /.modal-content -->
@@ -297,8 +293,7 @@
                         </h4>
                     </div>
                     <div class="modal-body">
-                        <button class="btn btn-primary btn-info editApply" style="display: none"><i class="fa fa-pencil"></i>编辑</button>
-                        <button class="btn btn-primary btn-success editSubmit" style="display: none"><i class="fa fa-pencil"></i>提交</button>
+
                         <button class="btn btn-primary btn-danger editDelete" style="display: none"><i class="fa fa-pencil"></i>删除</button>
 
                         <form class="form-horizontal form-label-left">
@@ -332,10 +327,6 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">主要考核参数</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#showparameter" aria-expanded="false" aria-controls="collapseExample">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                                    <div class="collapse" id="showparameter">
                                         <div class="well">
                                             <table class="table" id="showparameterTable">
                                                 <thead>
@@ -353,17 +344,13 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </div>
+
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#showotherparameter" aria-expanded="false" aria-controls="collapseExample">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                                    <div class="collapse" id="showotherparameter">
                                         <div class="well">
                                             <table class="table" id="showotherparameterTable">
                                                 <thead>
@@ -379,7 +366,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </div>
+
                                 </div>
                             </div>
                             <%--     <div class="form-group">
@@ -391,16 +378,16 @@
                                      </div>
                                  </div>--%>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">上传附件</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">附件信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input type="file" name="file" id="showformName">
+                                    <a class="downloadAdded">下载</a><a class="uploadMore" data-toggle="modal" data-target="#myModal">重传</a>
                                 </div>
-                                <span><a class="downloadAdded">查看附件</a></span>
+
                             </div>
                             <div class="form-group showitem_manager" style="display: none;">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">项目负责人</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <select class="form-control teacherName changeDis" id="showitemmanager">
+                                    <select class="form-control teacherName changeDis select2" id="showitemmanager">
 
                                     </select>
                                 </div>
@@ -451,8 +438,10 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-success savemyApplyAgain">保存</button>
+                        <button type="button" class="btn btn-primary dismissagain" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary savemyApplyAgain">保存</button>
+                        <button class="btn btn-primary btn-primary editApply" style="display: none">编辑</button>
+                        <button class="btn btn-primary btn-primary editSubmit" style="display: none">提交</button>
                         <%--<input type="submit" value="提交">--%>
 
                     </div>

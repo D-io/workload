@@ -139,25 +139,22 @@ $(document).ready(function () {
             }
 
         }
-
-        $.get(auditorManageItemUrl,{
-            importRequired:1,
-            option:"uncommitted"
-        },function (msg) {
-            if(msg.data.unCommittedItem){
+        $.get(itemGroupUrl + "?" + 'categoryId=' + flag, function (msg) {
+            if(msg.data.itemList.length>0){
             //    $(".parameterTh").append("")
                 $(".parameterTh").empty();
                 $(".otherParaTh").empty();
+                $(".submitItem").show();
              //    showPara(msg.data.unCommittedItem[0]);
 
                 $(".importItemTbody").empty();
-                showImportPreview(msg.data.unCommittedItem,itemCount);
-                if(itemCount<msg.data.unCommittedItem.length){
+                showImportPreview(msg.data.itemList,itemCount);
+                if(itemCount<msg.data.itemList.length){
                     itemCount++;
                 }
               //  window.itemDouble=msg.data.unCommittedItem;
-                for(var key in msg.data.unCommittedItem){
-                    allItem.push(msg.data.unCommittedItem[key]);
+                for(var key in msg.data.itemList){
+                    allItem.push(msg.data.itemList[key]);
                 }
                 JSON.stringify(allItem);
                 console.log(allItem);
@@ -195,21 +192,34 @@ $(document).ready(function () {
                 $(".otherimportpara_"+n).val(showOtherPara[n].value);
             }
         }
-        $("#groupMember").val(allItem[thisId].ownerId);
-        $("#groupMember").attr("disabled","disabled");
+      //  $("#groupMember").val(allItem[thisId].ownerId);
+      //  $("#groupMember").attr("disabled","disabled");
+        $("#itemMember").select2().val(allItem[thisId].groupManagerId).trigger("change");
+        $("#itemMember").attr("disabled","disabled");
        $(".otherimportpara").attr("disabled","disabled");
         if(allItem[thisId].isGroup==1){
-            $("#isGroup").attr("checked","checked");
+            $("input:radio[name='optionsRadios']").each(function () {
+                if ($(this).val() == 1) {
+                    $(this).attr("checked", true);
+                }
+
+            });
             $("#isSingle").attr("disabled","disabled");
             $(".required").show();
-            $("#jobDesc").val(allItem[thisId].jobDesc);
+            $("#jobDesc").val(allItem[thisId].jobDesc[1]);
             $("#jobDesc").attr("disabled","disabled");
             $("#childWeight").val(allItem[thisId].jsonChildWeight);
             $("#childWeight").attr("disabled","disabled");
-            $("#itemmanager").val(allItem[thisId].groupManagerId);
+            $("#itemmanager").select2().val(allItem[thisId].groupManagerId).trigger("change");
             $("#itemmanager").attr("disabled","disabled");
         }
         else {
+            $("input:radio[name='optionsRadios']").each(function () {
+                if ($(this).val() == 0) {
+                    $(this).attr("checked", true);
+                }
+
+            });
             $("#isSingle").attr("checked","checked");
             $("#isGroup").attr("disabled","disabled");
             $(".required").hide();
@@ -225,10 +235,11 @@ $(document).ready(function () {
 
     });
     $(document).on("click",".savemyEdit",function () {
-        var thisId=parseInt(this.id.match(/\d+/g));
+
             $(".form-control").attr("disabled");
             $("#year").removeAttr("disabled");
             $("#term").removeAttr("disabled");
+            $("#file").removeAttr("disabled");
             $(".dismiss").hide();
             $(".savemyEdit").hide();
             $(".editor").show();
@@ -242,7 +253,7 @@ $(document).ready(function () {
             }
             newArray = JSON.stringify(newArray);
             var otherArray = new Array();
-            if($(".otherParaThead>tr").length==0){
+
                 if($(".otherParaThead:has(tr)").length==0){
                     otherArray=null;
                 }
@@ -254,47 +265,35 @@ $(document).ready(function () {
                     }
                     otherArray = JSON.stringify(otherArray);
                 }
-            }
+
 
             var grouparray = new Array();
             var sumArray=new Array();
             //  var groupmessageArray = $('.showgroupMemberName');
 
-            grouparray={
+            grouparray=[{
                 userId: parseInt($("#itemMember option:selected").val()),
                 jobDesc: $("#jobDesc").val()
-            };
+            }];
             var childWeight=0;
-            console.log($("#childWeight").val());
-            if($("#childWeight").val()!=null){
+          //  console.log($("#childWeight").val());
+            if($("#childWeight").is(":empty")){
+                childWeight=1;
+
+            }
+            else{
                 childWeight=parseFloat($("#childWeight").val())
             }
-            else
-                childWeight=1;
-            sumArray={
+
+            sumArray=[{
                 userId: parseInt($("#itemMember option:selected").val()),
                 weight: childWeight
-            };
+            }];
             grouparray = JSON.stringify(grouparray);
             sumArray=JSON.stringify(sumArray);
-            console.log( {
-                categoryId: window.cateId,
-                itemId:thisId,
-                itemName: $('#itemName').val(),
-                applyDesc: $('#applyDesc').val(),
-                //   workload: $('#workload').val(),
-                //   ownerId: applicant.val(),
-                groupManagerId: $("#itemmanager").val(),
-                isGroup: 1,
-                jsonParameter: newArray,
-                otherJson: otherArray,
-                jobDesc: grouparray,
-                jsonChildWeight: sumArray,
-                option:"modify"
 
-            });
         if($(".savemyEdit").attr("id")){
-
+            var thisId=parseInt(this.id.match(/\d+/g));
             if(radioGroup==1){
                 $.ajax({
                     type: "POST",
@@ -317,13 +316,14 @@ $(document).ready(function () {
                     },
                     success: function (data) {
                         alert("修改成功!");
-                        $(".form-control").attr("disacled","disabled");
-                        $("#year").removeAttr("disacled");
+                        $(".form-control").attr("disabled","disabled");
+                        $("#year").removeAttr("disabled");
                         $("#term").removeAttr("disabled");
-                        allItem.splice(window.countToCount,1,data.data.itemList);
-                        $("#itemName_"+window.countToCount).text(data.data.itemList.itemName);
-                        $("#workload_"+window.countToCount).text(data.data.itemList.workload);
-                        $("#teacherName_"+window.countToCount).text(data.data.itemList.teacherName);
+                        $("#file").removeAttr("disabled");
+                        allItem.splice(window.countToCount,1,data.data.item);
+                        $("#itemName_"+window.countToCount).text(data.data.item.itemName);
+                        $("#workload_"+window.countToCount).text(data.data.item.workload);
+                        $("#teacherName_"+window.countToCount).text(data.data.item.teacherName);
 
                     }
 
@@ -347,13 +347,14 @@ $(document).ready(function () {
 
                     }, function (data) {
                         alert("修改成功!");
-                        $(".form-control").attr("disacled","disabled");
-                        $("#year").removeAttr("disacled");
+                        $(".form-control").attr("disabled","disabled");
+                        $("#year").removeAttr("disabled");
                         $("#term").removeAttr("disabled");
-                        allItem.splice(window.countToCount,1,data.data.itemList);
-                        $("#itemName_"+window.countToCount).text(data.data.itemList.itemName);
-                        $("#workload_"+window.countToCount).text(data.data.itemList.workload);
-                        $("#teacherName_"+window.countToCount).text(data.data.itemList.teacherName);
+                        $("#file").removeAttr("disabled");
+                        allItem.splice(window.countToCount,1,data.data.item);
+                        $("#itemName_"+window.countToCount).text(data.data.item.itemName);
+                        $("#workload_"+window.countToCount).text(data.data.item.workload);
+                        $("#teacherName_"+window.countToCount).text(data.data.item.teacherName);
 
                     }
 
@@ -377,16 +378,16 @@ $(document).ready(function () {
                         jsonParameter: newArray,
                         otherJson: otherArray,
                         jobDesc: grouparray,
-                        jsonChildWeight: sumArray,
+                        jsonChildWeight: sumArray
                         //   option:"modify"
 
                     },
                     success: function (data) {
                         alert("添加成功!");
-                        allItem.push(data.data.itemList);
-                        showImportPreview(data.data.itemList,itemCount);
+                        allItem.push(data.data.item);
+                        showImportPreview(data.data.item,itemCount);
                         itemCount++;
-                        $(".submitTo").removeAttr("id","submitTo_"+data.data.itemList.itemId);
+                        $(".submitTo").removeAttr("id","submitTo_"+data.data.item.itemId);
 
                     }
 
@@ -411,10 +412,10 @@ $(document).ready(function () {
                     }, function (data) {
                         alert("添加成功!");
 
-                        allItem.push(data.data.itemList);
-                        showImportPreview(data.data.itemList,itemCount);
+                        allItem.push(data.data.item);
+                        showImportPreview(data.data.item,itemCount);
                         itemCount++;
-                        $(".submitTo").removeAttr("id","submitTo_"+data.data.itemList.itemId);
+                        $(".submitTo").removeAttr("id","submitTo_"+data.data.item.itemId);
 
 
                     }
@@ -495,9 +496,10 @@ $(document).ready(function () {
     $(document).on("click",".submitTo",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
         $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
-            alert("提交成功！");
-            $("#statusChange_"+submitId).text("已提交");
+            confirm("确认成功？");
+          //  $("#statusChange_"+submitId).text("已提交");
             $(".status_"+thisId).text("已提交");
+            $("#deleteAll_"+thisId).remove();
             $("#addContent").modal("hide");
 
         })
@@ -531,12 +533,18 @@ $(document).ready(function () {
         $(".submitTo").hide();
         $("#itemName").val(null);
         $("#applyDesc").val(null);
-        $("#isSingle").attr("checked","checked");
+        $("input:radio[name='optionsRadios']").each(function () {
+            if ($(this).val() == 0) {
+                $(this).attr("checked", true);
+            }
+
+        });
         $("#isGroup").removeAttr("checked");
-        $("#isSingle").removeAttr("checked");
+
         $("#isGroup").removeAttr("disabled");
         $("#isSingle").removeAttr("disabled");
-        $(".select2").show();
+        $("#itemMember").val(null);
+        $(".select2").val(null);
         $("#groupMember").val(null);
         $(".importpara").val(null);
         $(".otherimportpara").val(null);
@@ -824,12 +832,33 @@ $(document).ready(function () {
     $(document).on("click","#addGroupMessage",function () {
         var addMessage="<tr><td><select class='groupMemberName teacherName' style='width: 30%;'><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol'></td><td><input type='text' class='groupMemberWeight'></td></tr>";
         $('#AddgroupPramter').append(addMessage);
+        $.get(TeacherInfoUrl, {test: 12}, function (data) {
+            for (var i = 0; i < data.data.teacherList.length; i++) {
+                $('.groupMemberName:last').append('<option value=\"' + data.data.teacherList[i].teacherId + '\">' + data.data.teacherList[i].name + '</option>');
+            }
+
+        });
+        $(".groupMemberName").select2({
+            allowClear: true,
+            width: "100%",
+        });
     });
     $(document).off("click","#showaddGroupMessage");
     $(document).on("click","#showaddGroupMessage",function () {
         var addMessage="<tr><td><select class='showgroupMemberName teacherName'><option value=''></option> </select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
         $('#showAddgroupPramter').append(addMessage);
+        $.get(TeacherInfoUrl, {test: 12}, function (data) {
+            for (var i = 0; i < data.data.teacherList.length; i++) {
+                $('.showgroupMemberName:last').append('<option value=\"' + data.data.teacherList[i].teacherId + '\">' + data.data.teacherList[i].name + '</option>');
+            }
+
+        });
+        $(".showgroupMemberName").select2({
+            allowClear: true,
+            width: "100%",
+        });
     });
+
     $(document).on("click",".groupMemberName",function () {
         $.get(TeacherInfoUrl,function (data) {
             for (var i = 0; i < data.data.teacherList.length; i++) {
@@ -857,11 +886,16 @@ $(document).ready(function () {
     });*/
     $(document).on("click",".editApply",function () {
         var editId=parseInt(this.id.match(/\d+/g));
+        $(".editApply").hide();
+        $(".editSubmit").hide();
+        $(".dismissagain").show();
+        $(".savemyApplyAgain").show();
         $(".savemyApplyAgain").attr("id",editId);
         $("#showitemName").removeAttr("disabled");
         $("#showapplyDesc").removeAttr("disabled");
         $("#showaddGroupMessage").removeAttr("disabled");
         $(".showparameterName").removeAttr("disabled");
+
        /* if($("#single").disabled=="true"){
             $("#single").removeAttr("disabled");
         }
@@ -879,171 +913,24 @@ $(document).ready(function () {
         $(".showgroupMemberSymbol").removeAttr("disabled");
         $(".showgroupMemberWeight").removeAttr("disabled");
     });
-    $(document).off("click",".savemyApplyAgain");
-    $(document).on("click",".savemyApplyAgain",function () {
-        var saveId=this.id;
-        var saveReg=parseInt(saveId.match(/\d+/g));
-        var $parametername = $(".showpramterDesc");
-        var newArray = new Array();
-        for (var i = 0; i < $(".showparameterName").length; i++) {
-            var dom = $(".showpramterDesc").eq(i).attr("id");
-            newArray.push({symbol: dom, value:parseInt($(".showparameterName").eq(i).val())});
-
-        }
-        newArray = JSON.stringify(newArray);
-        var otherArray = new Array();
-        var otherPramterkey = $(".showotherPramterkey");
-        for (var j = 0; j < otherPramterkey.length; j++) {
-            var otherKey=$(".showotherPramterkey").eq(j);
-            otherArray.push({key: otherKey.text(), value: $(".showotherparameterName").eq(j).val()});
-
-        }
-        otherArray = JSON.stringify(otherArray);
-        var grouparray = new Array();
-        var sumArray=new Array();
-        var groupmessageArray = $('.showgroupMemberName');
-        for (var c = 0; c < groupmessageArray.length; c++) {
-            grouparray.push({
-                userId: parseInt($(".showgroupMemberName option:selected").eq(c).val()),
-                jobDesc: $(".showgroupMemberSymbol").eq(c).val()
-            });
-            sumArray.push({
-                userId: parseInt($(".showgroupMemberName option:selected").eq(c).val()),
-                userName: $(".showgroupMemberName option:selected").eq(c).text(),
-                jobDesc: $(".showgroupMemberSymbol").eq(c).val(),
-                weight: parseFloat($(".showgroupMemberWeight").eq(c).val())
-            })
-        }
-        grouparray = JSON.stringify(grouparray);
-        sumArray=JSON.stringify(sumArray);
-        if(!window.localStorage){
-            alert("浏览器支持localstorage");
-        }else{
-            var storage=window.localStorage;
-            if(storage.item_+saveReg){
-                storage.removeItem(storage.item_+saveReg);
-            }
-            storage.setItem("item_"+saveReg,sumArray);
-
-        }
-        var childWeight = new Array();
-        for (m = 0; m < groupmessageArray.length; m++) {
-            childWeight.push({
-                userId: parseInt($(".showgroupMemberName option:selected").eq(m).val()),
-                weight: parseFloat($(".showgroupMemberWeight").eq(m).val())
-            });
-        }
-        childWeight = JSON.stringify((childWeight));
-
-        var radio = $("input:radio[name='showoptionsRadios']:checked");
-        // var applicant = $('#applicant option:selected');
-        var itemmanager = $('#showitemmanager option:selected');
-
-        if(radio.val()==1){
-            $.ajax({
-                type: "POST",
-                url: itemManageUrl,
-                data: {
-                    categoryId: window.Categry,
-                    itemId:saveReg,
-                    itemName: $('#showitemName').val(),
-                    applyDesc: $('#showapplyDesc').val(),
-                    //   workload: $('#workload').val(),
-                    //   ownerId: applicant.val(),
-                    groupManagerId: itemmanager.val(),
-                    isGroup: 1,
-                    jsonParameter: newArray,
-                    otherJson: otherArray,
-                    jobDesc: grouparray,
-                    jsonChildWeight: childWeight,
-                    option:"modify"
-
-                },
-                success: function (data) {
-                    alert("修改成功!");
-                    $("#applyModal").modal('hide');
-                    $('#showContent').modal('hide');
-
-                    var analyseList = data.data.itemList;
-                    var listLength = data.data.itemList.length;
-                    var rowInfo = "<tr></tr>";
-                    var cellInfo = "<td></td>";
-                    var Info = analyseList;
-                    var formdata = new FormData;
-                    formdata.append("file", $("#formName")[0].files[0]);
-                    $.ajax({
-                        url: importProofUrl + "?itemId=" + analyseList,
-                        type: "POST",
-                        dataType: "JSON",
-                        data: formdata,
-                        contentType: false,
-                        processData: false,
-                        success: function () {
-                        }
-
-                    });
-
-                    $('#addContent').modal('hide');
-                    for(var hideCount=0;hideCount<listLength;hideCount++){
-                        if (Info[hideCount].teacherName == userNameUrl) {
-                            /* var count = Info[i].workload;
-                             var CategId = Info[i].categoryId;*/
-
-                            var CountId = Info[hideCount].itemId;
-                        }
-                       // $(".hiddendistrict").append("<div class='groupMember_"+CountId+"'>"+Info[hideCount].teacherName+"</div><div class='jobDesc_"+CountId+"'>"+Info[hideCount].jobDesc+"</div><div class='jobWeight_"+CountId+"'>"+Info[hideCount].jsonChildWeight+"</div>")
-
-                        $(".groupMember_"+CountId).text(Info[hideCount].teacherName);
-                        $("jobDesc_"+CountId).text(Info[hideCount].jobDesc);
-                        $("jobWeight_"+CountId).text(Info[hideCount].jsonChildWeight);
-                    }
-
-                }
-
-            })
-        }
-        else {
-            $.ajax({
-                type: "POST",
-                url: itemManageUrl,
-                data: {
-                    categoryId: window.Categry,
-                    itemId:saveReg,
-                    itemName: $('#itemName').val(),
-                    applyDesc: $('#applyDesc').val(),
-                    //   workload: $('#workload').val(),
-                    //   ownerId: applicant.val(),
-                    //  groupManagerId: ,
-                    isGroup: 0,
-                    jsonParameter: newArray,
-                    otherJson: otherArray,
-                    jsonChildWeight:1,
-                    option:"modify"
-                    // jobDesc: grouparray,
-                    //  jsonChildWeight: childWeight,
-                    //   file:formdata
-
-                }
-                , success: function (data) {
-                    alert("修改成功!");
-                    $("#applyModal").modal('hide');
-                    $('#showContent').modal('hide');
-                }
-
-            });
-        }
-
-
-    });
-
     $(document).off("click",".editSubmit");
     $(document).on("click",".editSubmit",function () {
         var submitId=parseInt(this.id.match(/\d+/g));
         $.post(itemManaPublicUrl+"?itemId="+submitId,function () {
-            alert("提交成功！");
-            $("#statusChange_"+submitId).text("已提交");
-            $("#downLoadAdd_"+submitId).hide();
+            confirm("确认提交？");
+            $("#statusChange_"+submitId).text("有待审核");
+           // $("#downLoadAdd_"+submitId).hide();
             $("#showContent").modal("hide");
+
+        })
+    });
+    $(document).on("click",".newsubmit",function () {
+        var thisId=parseInt(this.id.match(/\d+/g));
+        $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
+            confirm("确认提交？");
+            $("#statusChange_"+thisId).text("有待审核");
+          //  $("#downLoadAdd_"+submitId).hide();
+            $("#addContent").modal("hide");
 
         })
     });
@@ -1237,7 +1124,7 @@ function showImportPreview(data,itemCount) {
             $(".importItemTbody tr:last td:eq(3)").text(Info.teacherName);
             $(".importItemTbody tr:last td:eq(3)").attr("id","teacherName_"+itemCount);
             $(".importItemTbody tr:last td:eq(4)").text("未提交");
-            $(".importItemTbody tr:last td:eq(4)").attr("class","status_"+itemCount);
+            $(".importItemTbody tr:last td:eq(4)").attr("class","status_"+Info.itemId);
             var str="<a class=\"btn btn-primary showImportAll\" id=\"showImportAll_"+ itemCount+"\" data-toggle='modal' data-target='#addContent'>查看详情</a><a class=\"btn btn-primary deleteAll\" id=\"deleteAll_"+ Info.itemId+"\">删除操作</a>";
             $(".importItemTbody tr:last td:eq(5)").append(str);
             itemCount++;
