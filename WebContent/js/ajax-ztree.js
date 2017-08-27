@@ -281,7 +281,7 @@ function ztree() {
                     }*/
                     if(parentNode!=null){
                         parNodeId = parentNode.id;
-                        parNodeName = parentNode.name;
+                        parNodeName = parentNode.realName;
                     }
 
                 }
@@ -326,6 +326,7 @@ function ztree() {
 
             });
             $('.addOtherPramter').empty();
+            $("#teacherName").select2().val(treeNode.reviewerId).trigger("change");
             var otherjsonstrArray = '';
             if (treeNode.otherJsonParameters != null) {
                 otherjsonstrArray = treeNode.otherJsonParameters;
@@ -947,7 +948,7 @@ function ztree() {
                 }
                 else
                     alert("提交规则失败！");
-                $("#addModal").hide();
+                $("#addModal").modal("hide");
             } )
 
         });
