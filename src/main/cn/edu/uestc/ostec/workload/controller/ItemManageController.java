@@ -346,20 +346,25 @@ public class ItemManageController extends ApplicationController {
 		double workload = FormulaCalculate
 				.calculate(category.getFormula(), newItemDto.getParameterValues());
 
+		boolean flag = true;
+
 		// 个人申报
 		if (SINGLE.equals(newItemDto.getIsGroup())) {
 			newItemDto.setJsonChildWeight(String.valueOf(DEFAULT_CHILD_WEIGHT));
 			newItemDto.setGroupManagerId(newItemDto.getOwnerId());
+
+			if(!(userId.equals(itemDto.getReviewerId()) || userId.equals(itemDto.getReviewerId()))) {
+				flag = false;
+			}
 		} else if (GROUP.equals(newItemDto.getIsGroup()) && IMPORT_EXCEL
 				.equals(newItemDto.getImportRequired())) {
 			workload = workload * Double.valueOf(newItemDto.getJsonChildWeight());
+
+			if(!userId.equals(itemDto.getReviewerId())) {
+				flag = false;
+			}
 		} else if (newItemDto.getChildWeightList().size() <= 1) {
 			return parameterNotSupportResponse("小组成员数需大于等于2");
-		}
-
-		if (!(userId.equals(itemDto.getGroupManagerId()) || userId
-				.equals(itemDto.getReviewerId()))) {
-			return invalidOperationResponse("非法操作");
 		}
 
 		newItemDto.setWorkload(workload);
