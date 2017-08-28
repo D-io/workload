@@ -236,7 +236,7 @@ $(document).ready(function () {
     });
     $(document).on("click",".savemyEdit",function () {
 
-            $(".form-control").attr("disabled");
+            $(".form-control").attr("disabled","disabled");
             $("#year").removeAttr("disabled");
             $("#term").removeAttr("disabled");
             $("#file").removeAttr("disabled");
@@ -387,8 +387,11 @@ $(document).ready(function () {
                         allItem.push(data.data.item);
                         showImportPreview(data.data.item,itemCount);
                         itemCount++;
-                        $(".submitTo").removeAttr("id","submitTo_"+data.data.item.itemId);
-
+                        $(".submitTo").attr("id","submitTo_"+data.data.item.itemId);
+                        $(".savemyEdit").attr("id","savemyEdit_"+data.data.item.itemId);
+                       /* $(".form-control").attr("disabled","disabled");
+                         $("#year").removeAttr("disabled");
+                         $("#term").removeAttr("disabled");*/
                     }
 
                 })
@@ -415,9 +418,11 @@ $(document).ready(function () {
                         allItem.push(data.data.item);
                         showImportPreview(data.data.item,itemCount);
                         itemCount++;
-                        $(".submitTo").removeAttr("id","submitTo_"+data.data.item.itemId);
-
-
+                        $(".submitTo").attr("id","submitTo_"+data.data.item.itemId);
+                        $(".savemyEdit").attr("id","savemyEdit_"+data.data.item.itemId);
+                       /* $(".form-control").attr("disabled","disabled");
+                        $("#year").removeAttr("disabled");
+                        $("#term").removeAttr("disabled");*/
                     }
 
                 )
