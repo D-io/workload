@@ -16,8 +16,11 @@ import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.JobDesc;
 import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
+import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
+import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.Item;
+import cn.edu.uestc.ostec.workload.support.utils.FileHelper;
 import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
 
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
@@ -33,6 +36,9 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 
 	@Autowired
 	private CategoryDao categoryDao;
+
+	@Autowired
+	private FileEvent fileEvent;
 
 	@Override
 	public ItemDto poToDto(Item po) {
@@ -67,7 +73,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		itemDto.setCategoryName(isNull(category) ? null : category.getName());
 		itemDto.setImportRequired(isNull(category) ? null : category.getImportRequired());
 
-		Integer reviewerId = category.getReviewerId();
+		Integer reviewerId = isNull(category) ? category.getReviewerId() : null;
 		itemDto.setReviewerId(reviewerId);
 		itemDto.setReviewerName(isNull(reviewerId) ? null : teacherDao.findNameById(reviewerId));
 
@@ -112,6 +118,11 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		itemDto.setJsonChildWeight((null != childWeightList && childWeightList.size() == 1) ?
 				String.valueOf(childWeightList.get(ZERO_INT).getWeight()) :
 				po.getJsonChildWeight());
+
+		itemDto.setFileName((null == itemDto.getProof() || itemDto.getProof().equals(ZERO_INT) ?
+				null :
+				FileHelper.getFileName(fileEvent.downloadFile(itemDto.getProof()).getPath()  )));
+
 		//		double workload = FormulaCalculate
 		//				.calculate(category.getFormula(), itemDto.getParameterValues());
 		//		itemDto.setWorkload(workload);

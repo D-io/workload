@@ -2,6 +2,7 @@ package cn.edu.uestc.ostec.workload.dto;
 
 import java.util.List;
 
+import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.SINGLE;
@@ -140,11 +141,24 @@ public class ItemDto implements CompareObjectDifferences<ItemDto> {
 	private String formula = null;
 
 	/**
+	 * 对应的附件信息
+	 */
+	private String fileName = null;
+
+	/**
 	 * 对应的参数描述
 	 */
 	private List<FormulaParameter> paramDesc = null;
 
    	private List<DescAndValue> descAndValues = null;
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
 	public List<DescAndValue> getDescAndValues() {
 		return descAndValues;
