@@ -305,62 +305,59 @@ function applyworkload() {
                             $(".tbody tr:last").append(cellInfo);
                         }
                         var id = t + 1;
+                        $(".tbody tr:last").attr("class","tbodyTr_"+id);
                         $(".tbody tr:last td:eq(0)").text(id);
                         $(".tbody tr:last td:eq(0)").attr("class", "itemCount");
                         $(".tbody tr:last td:eq(1)").text(Info.itemName);
                         $(".tbody tr:last td:eq(1)").attr("id", "itemname_" + Info.itemId);
                         $(".tbody tr:last td:eq(2)").text(Info.workload);
                         $(".tbody tr:last td:eq(2)").attr("id", "workload_" + Info.itemId);
-                        //  $(".tbody tr:last td:eq(3)").attr("class","applyDead");
-                        //  $(".tbody tr:last td:eq(3)").text($(""));
-                        /*  $(".tbody tr:last td:eq(3)").text($(".applyDeadline_"+reg).text());*/
+                        var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id + "\">查看详情</a><a class=\"btn btn-primary delemyself\" id=\"delemyself_" + id + "\">删除操作</a> ";
+                        var newAct="<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id + "\">查看详情</a>";
                         var statusName;
                         switch (Info.status) {
                             case 0:
                                 statusName = '暂未提交';
+                                $(".tbody tr:last td:eq(4)").append(act);
                                 break;
                             case 1:
                                 statusName = '有待审核';
+                                $(".tbody tr:last td:eq(4)").append(newAct);
                                 break;
                             case 2:
                                 statusName = '确认通过';
+                                $(".tbody tr:last td:eq(4)").append(newAct);
                                 break;
                             case 3:
                                 statusName = '存疑提交';
+                                $(".tbody tr:last td:eq(4)").append(newAct);
                                 break;
                             case 4:
                                 statusName = '存疑解决';
+                                $(".tbody tr:last td:eq(4)").append(newAct);
                                 break;
                             case 5:
                                 statusName = '审核拒绝';
+                                $(".tbody tr:last td:eq(4)").append(newAct);
                                 break;
                         }
                         $(".tbody tr:last td:eq(3)").text(statusName);
                         $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
-
-                        var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id + "\">查看详情</a> ";
-                        /*<a class='btn btn-primary uploadAdded' id='upLAdd_"+Info.itemId+"'>上传附件</a><a class='btn btn-primary downloadAdded' id='downLoadAdd_"+Info.itemId+"'>下载附件</a>*/
-                        $(".tbody tr:last td:eq(4)").append(act);
-
                     }
                 }
                 window.Temp=[];
                 window.Temp = data.data.itemList;
-                console.log(window.Temp);
-            });
 
-            //  $(".modal-header").empty();
+            });
             $("#myModalLabel").empty();
             $("#myModalLabel").append($(".item_" + reg).text());
          //   ownerApply(reg);
-
             $("#parameterTable").empty();
             $("#otherparameterTable").empty();
             $("#showparameterTable").empty();
             $("#showotherparameterTable").empty();
             comparePara(data.data.categoryTree, reg);
         });
-
 
     });
     function comparePara(item, para) {
@@ -841,7 +838,7 @@ function applyworkload() {
                     success: function (data) {
 
                         var Info = data.data.item;
-                        var newCount=$(".editApply").attr("id");
+                        var newCount=$(".neweditor").attr("id");
                         newCount=newCount.match(/\d+/g);
                         window.Temp.splice(newCount-1,1,Info);
 
@@ -859,8 +856,8 @@ function applyworkload() {
                         $(".groupMemberWeight").attr("disabled","disabled");
                         $("#year").removeAttr("disabled");
                         $("#term").removeAttr("disabled");
-                        $(".itemname_"+Info.itemId).text(Info.itemName);
-                        $(".workload_"+Info.itemId).text(Info.workload);
+                        $("#itemname_"+Info.itemId).text(Info.itemName);
+                        $("#workload_"+Info.itemId).text(Info.workload);
 
 
                         //   $(".savemyApply").attr("id","savemyApply_"+Info.itemId);
@@ -1060,7 +1057,7 @@ function applyworkload() {
                     }
                     , success: function (data) {
                         var Info = data.data.item;
-                        var newCount=$(".editApply").attr("id");
+                        var newCount=$(".neweditor").attr("id");
                         newCount=newCount.match(/\d+/g);
                         window.Temp.splice(newCount-1,1,Info);
                         $(".neweditor").show();
@@ -1082,54 +1079,7 @@ function applyworkload() {
                         $("#term").removeAttr("disabled");
                         $("#itemname_"+Info.itemId).text(Info.itemName);
                         $("#workload_"+Info.itemId).text(Info.workload);
-                       /* $(document).on("click","#show_"+Info.itemId,function () {
-                            var newId=this.id;
-                            var newReg=parseInt(newId.match(/\d+/g));
-                            $(".savemyApplyAgain").hide();
-                            $(".savemyEdit").hide();
-                            if($("#statusChange_"+newReg).text()=="暂未提交"){
-                                $(".editApply").show();
-                                $(".editApply").attr("id","editApply_"+newReg);
-                                $(".editSubmit").show();
-                                $(".editSubmit").attr("id","editSubmit_"+newReg);
-                            }
-                            else{
-                                $(".editApply").hide();
-                                //  $(".editApply").attr("id","editApply_"+window.Temp[newReg-1].itemId);
-                                $(".editSubmit").hide();
-                            }
-                            $("#showitemName").val(Info.itemName);
-                            $("#showitemName").attr("disabled","true");
-                            $("#showapplyDesc").val(Info.applyDesc);
-                            $("#showapplyDesc").attr("disabled","true");
-                            if(Info.isGroup==0){
-                                $("#single").attr("checked",'checked');
-                                $("#group").attr("disabled","true");
 
-                            }
-                            else{
-                                $("#group").attr("checked",'checked');
-                                $("#single").attr("disabled","true");
-                                $(".showitem_manager").show();
-                                $(".showitem_group").show();
-                            }
-                            var showPram=Info.parameterValues;
-                            for(var i=0;i<showPram.length;i++){
-                                $(".showparameterName").eq(i).val(showPram[i].value);
-                                $(".showparameterName").eq(i).attr("disabled","true");
-
-                            }
-                            var showOtherPara=Info.otherJsonParameters;
-                            for(var n=0;n<showOtherPara.length;n++){
-                                $(".showotherparameterName").eq(n).val(showOtherPara[n].value);
-                                $(".showotherparameterName").eq(n).attr("disabled","true");
-
-                            }
-                            $(".showitem_manager").hide();
-                            $(".showitem_group").hide();
-
-
-                        });*/
                     }
 
                 });
@@ -1189,6 +1139,7 @@ function applyworkload() {
                                 $(".tbody tr:last").append(cellInfo);
                             }
                             var $itemCt=$(".itemCount");
+                            $(".tbody tr:last").attr("class","tbodyTr_"+newcount);
                             $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
                             $(".tbody tr:last td:eq(1)").text(Info.itemName);
@@ -1211,7 +1162,7 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(3)").text("暂未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
-                            var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a>";
+                            var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary delemyself\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
 
                             $(".tbody tr:last td:eq(4)").append(act);
 
@@ -1233,7 +1184,7 @@ function applyworkload() {
                             /* var count="";
                              var CountId="";
                              var CategId="";*/
-
+                            $(".tbody tr:last").attr("class","tbodyTr_"+newcount);
                             $(".tbody tr:last td:eq(0)").text(parseInt("1"));
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
                             /* $(".tbody tr:last td:eq(1)").text(Info.itemName);
@@ -1260,7 +1211,7 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
                           /*  var newcount=$(".showContent").length;
                             newcount++;*/
-                            var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount + "\">查看详情</a>";
+                            var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount + "\">查看详情</a><a class=\"btn btn-primary delemyself\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
                             $(".tbody tr:last td:eq(4)").append(act);
                         }
 
@@ -1277,86 +1228,7 @@ function applyworkload() {
                          $(".hiddendistrict").append("<div class='groupMember_"+CountId+"'>"+Info[hideCount].teacherName+"</div><div class='jobDesc_"+CountId+"'>"+Info[hideCount].jobDesc+"</div><div class='jobWeight_"+CountId+"'>"+Info[hideCount].jsonChildWeight+"</div>")
 
                          }*/
-                       /* $(document).on("click","#show_"+Info.itemId,function () {
-                            var newId=this.id;
-                            var newReg=parseInt(newId.match(/\d+/g));
-                            $(".savemyApplyAgain").hide();
-                            $(".savemyEdit").hide();
-                            if($("#statusChange_"+newReg).text()=="暂未提交"){
-                                $(".editApply").show();
-                                $(".editApply").attr("id","editApply_"+newReg);
-                                $(".editSubmit").show();
-                                $(".editSubmit").attr("id","editSubmit_"+newReg);
-                                //  $(".editDelete").show();
-                                // $(".editDelete").attr("id","editDelete"+newReg);
-                            }
-                            else{
-                                $(".editApply").hide();
-                                //  $(".editApply").attr("id","editApply_"+window.Temp[newReg-1].itemId);
-                                $(".editSubmit").hide();
-                                //  $(".editSubmit").attr("id","editSubmit_"+window.Temp[newReg-1].itemId);
-                                //   $(".editDelete").hide();
-                                //  $(".editDelete").attr("id","editDelete"+window.Temp[newReg-1].itemId);
-                            }
-                            $("#showitemName").val(Info.itemName);
-                            $("#showitemName").attr("disabled","true");
-                            $("#showapplyDesc").val(Info.applyDesc);
-                            $("#showapplyDesc").attr("disabled","true");
-                            if(Info.isGroup==0){
-                                $("#single").attr("checked",'checked');
-                                $("#group").attr("disabled","true");
 
-                            }
-                            else{
-                                $("#group").attr("checked",'checked');
-                                $("#single").attr("disabled","true");
-                                $(".showitem_manager").show();
-                                $(".showitem_group").show();
-                            }
-                            var showPram=Info.parameterValues;
-                            for(var i=0;i<showPram.length;i++){
-                                $(".showparameterName").eq(i).val(showPram[i].value);
-                                $(".showparameterName").eq(i).attr("disabled","true");
-
-                            }
-                            var showOtherPara=Info.otherJsonParameters;
-                            for(var n=0;n<showOtherPara.length;n++){
-                                $(".showotherparameterName").eq(n).val(showOtherPara[n].value);
-                                $(".showotherparameterName").eq(n).attr("disabled","true");
-
-                            }
-                            $("#showitemmanager").attr("disabled","true");
-                            $("#showitemmanager").select2().val(Info.groupManagerId).trigger("change");
-                            $('#showAddgroupPramter').empty();
-
-                            var addStr='';
-                            //    var b = localStorage.getItem("item_"+window.Temp[newReg-1].itemId);
-                            //    b=JSON.parse(b);
-
-                            for(var pramterCount=0;pramterCount<Info.jobDescList.length;pramterCount++){
-
-                                var addStr="<tr><td><select class='showgroupMemberName teacherName'></select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
-                                $('#showAddgroupPramter').append(addStr);
-                                $.get(TeacherInfoUrl,{test:12},function (data) {
-                                    for(var i=0;i<data.data.teacherList.length;i++){
-                                        $('.showgroupMemberName:last').append('<option value=\"'+data.data.teacherList[i].teacherId+'\">'+data.data.teacherList[i].name+'</option>');
-                                    }
-
-                                });
-                                $(".teacherName").select2({
-                                    allowClear: true,
-                                    width:"100%",
-                                });
-                                //  $(".showgroupMemberName").eq(pramterCount).append("<option value='"+window.Temp[newReg-1].jobDescList[pramterCount].userId+"' selected='selected'></option>");
-                                $(".showgroupMemberName").eq(pramterCount).select2().val(Info.jobDescList[pramterCount].userId).trigger("change");
-                                $(".showgroupMemberSymbol").eq(pramterCount).val(Info.jobDescList[pramterCount].jobDesc);
-                                $(".showgroupMemberWeight").eq(pramterCount).val(Info.childWeightList[pramterCount].weight);
-                            }
-                            $(".groupMemberName").attr("disabled","disabled");
-                            $(".groupMemberSymbol").attr("disabled","disabled");
-                            $(".groupMemberWeight").attr("disabled","disabled");
-
-                        });*/
                     }
 
                 })
@@ -1413,6 +1285,7 @@ function applyworkload() {
                                 $(".tbody tr:last").append(cellInfo);
                             }
                             var $itemCt=$(".itemCount");
+                            $(".tbody tr:last").attr("class","tbodyTr_"+newcount);
                             $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
                             $(".tbody tr:last td:eq(1)").text(Info.itemName);
@@ -1423,7 +1296,7 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(3)").text("暂未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
-                            var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a>";
+                            var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary delemyself\" id=\"delemyself_" + newcount+ "\">查看详情</a>";
                             $(".tbody tr:last td:eq(4)").append(act);
 
 
@@ -1538,8 +1411,28 @@ function applyworkload() {
         $(".dismiss").show();
         $(".neweditor").hide();
         $(".newsubmit").hide();
-    })
+    });
+    $(document).on("click",".delemyself",function () {
+        var thisId=parseInt(this.id.match(/\d+/g));
+        var itemid=window.Temp[thisId-1].itemId;
+        confirm("确认删除该条目吗？");
+        $.ajax({
+            url:itemManageUrl+"?itemId="+itemid,
+            type:"DELETE",
+            data:{
+                itemId:itemid
+            },
+            success:function () {
+                $(".tbodyTr_"+thisId).remove();
+                for(;thisId<=$(".itemCount").length;thisId++){
+                    $(".itemCount").eq(thisId-1).text(thisId);
 
+                }
+
+            }
+
+        });
+    })
 }
 function showApplyHistory() {
 $.get(historyUrl+"?type=apply",function (data) {

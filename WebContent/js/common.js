@@ -898,15 +898,6 @@ $(document).ready(function () {
         })
     });
 
-    /*$(document).on("click",".add",function () {
-       if()
-    });*/
-
- /*   var currentId='';
-    var CurrentName='';
-    $.get(currentTeaIdUrl,function (data) {
-        CurrentName =data.data.teacher.name;
-    });*/
     $(document).on("click",".editApply",function () {
         var editId=parseInt(this.id.match(/\d+/g));
         $(".editApply").hide();
@@ -957,6 +948,7 @@ $(document).ready(function () {
 
         })
     });
+
    /* $(document).off("click",".editDelete");
     $(document).on("click",".editDelete",function () {
         var deleteId=parseInt(this.id.match(/\d+/g));
