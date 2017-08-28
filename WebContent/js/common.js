@@ -623,8 +623,7 @@ $(document).ready(function () {
         }
     });
 
-/*
-    $(document).off("click",".submitImportItem");
+  /*  $(document).off("click",".submitImportItem");
     $(document).on("click",".submitImportItem",function () {
         var importList=this.id;
         var reg=parseInt(importList.match(/\d+/g));
@@ -713,9 +712,9 @@ $(document).ready(function () {
                 $(".status_"+flagId).text("已提交");
                 $("#itemToImport_"+flagId).css("disabled","true");
             })
-    });
+    });*/
 
-    /!*auditor-check*!/
+    /*auditor-check*/
 
     $(document).on("click",".auditor",function () {
         $(".showThead").show();
@@ -733,8 +732,13 @@ $(document).ready(function () {
             };
             showapplydata(dataArray);
         });
+       /* $.get(itemGroupUrl + "?" + 'categoryId=' + reg, function (data) {
+            $(".showDesc").empty();
+
+            showapplydata(data.data.itemList);
+        });*/
     });
-    $(document).on("click",".uploadAdded",function () {
+   /* $(document).on("click",".uploadAdded",function () {
         var CountId=this.id.match(/\d+/g);
         $.ajax({
             url: importProofUrl + "?itemId=" + CountId,
@@ -978,6 +982,7 @@ $(document).ready(function () {
         $.post(itemManaPublicUrl+"?itemId="+submitId,function () {
             confirm("确认提交？");
             $("#statusChange_"+submitId).text("有待审核");
+            
            // $("#downLoadAdd_"+submitId).hide();
             $("#showContent").modal("hide");
 
