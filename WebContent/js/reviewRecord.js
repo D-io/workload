@@ -344,7 +344,9 @@ function applyworkload() {
 
                     }
                 }
+                window.Temp=[];
                 window.Temp = data.data.itemList;
+                console.log(window.Temp);
             });
 
             //  $(".modal-header").empty();
