@@ -140,6 +140,7 @@ $(document).ready(function () {
 
         }
         $.get(itemGroupUrl + "?" + 'categoryId=' + flag, function (msg) {
+            $(".importItemTbody").empty();
             if(msg.data.itemList.length>0){
             //    $(".parameterTh").append("")
                 $(".parameterTh").empty();
@@ -147,7 +148,7 @@ $(document).ready(function () {
                 $(".submitItem").show();
              //    showPara(msg.data.unCommittedItem[0]);
 
-                $(".importItemTbody").empty();
+
                 showImportPreview(msg.data.itemList,itemCount);
                 if(itemCount<msg.data.itemList.length){
                     itemCount++;
@@ -512,6 +513,8 @@ $(document).ready(function () {
     $(document).off("click",".deleteAll");
     $(document).on("click",".deleteAll",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
+       var deletCount=$(this).parent().find("deleteAll").val();
+       console.log(deletCount);
         $.ajax({
             url:itemManageUrl+"?itemId="+thisId,
             type:"DELETE",
@@ -521,6 +524,7 @@ $(document).ready(function () {
             success:function () {
               //  alert("操作成功！");
                 $(".trDele_"+thisId).remove();
+
             }
 
         });
