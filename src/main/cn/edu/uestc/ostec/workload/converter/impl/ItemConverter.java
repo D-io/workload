@@ -73,7 +73,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		itemDto.setCategoryName(isNull(category) ? null : category.getName());
 		itemDto.setImportRequired(isNull(category) ? null : category.getImportRequired());
 
-		Integer reviewerId = isNull(category) ? category.getReviewerId() : null;
+		Integer reviewerId = isNull(category) ?  null : category.getReviewerId();
 		itemDto.setReviewerId(reviewerId);
 		itemDto.setReviewerName(isNull(reviewerId) ? null : teacherDao.findNameById(reviewerId));
 

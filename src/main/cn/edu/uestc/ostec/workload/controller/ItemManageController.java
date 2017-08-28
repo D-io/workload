@@ -298,11 +298,11 @@ public class ItemManageController extends ApplicationController {
 				return invalidOperationResponse("已提交的工作量，无法修改");
 			}
 
-			//验证当前用户是否具有修改工作量条目的权限
-			if (!(userId.equals(itemDto.getGroupManagerId()) || userId
-					.equals(itemDto.getReviewerId()))) {
-				return invalidOperationResponse("非法操作");
-			}
+//			//验证当前用户是否具有修改工作量条目的权限
+//			if (!(userId.equals(itemDto.getGroupManagerId()) || userId
+//					.equals(itemDto.getReviewerId()))) {
+//				return invalidOperationResponse("非法操作");
+//			}
 
 			//若为 修改，则设置当前相应的条目 拥有者 为原条目拥有者
 
@@ -350,21 +350,26 @@ public class ItemManageController extends ApplicationController {
 
 		// 个人申报
 		if (SINGLE.equals(newItemDto.getIsGroup())) {
+			newItemDto.setOwnerId(user.getUserId());
 			newItemDto.setJsonChildWeight(String.valueOf(DEFAULT_CHILD_WEIGHT));
 			newItemDto.setGroupManagerId(newItemDto.getOwnerId());
 
-			if(!(userId.equals(itemDto.getReviewerId()) || userId.equals(itemDto.getReviewerId()))) {
+			if(!(userId.equals(newItemDto.getGroupManagerId()) || userId.equals(itemDto.getReviewerId()))) {
 				flag = false;
 			}
 		} else if (GROUP.equals(newItemDto.getIsGroup()) && IMPORT_EXCEL
 				.equals(newItemDto.getImportRequired())) {
 			workload = workload * Double.valueOf(newItemDto.getJsonChildWeight());
 
-			if(!userId.equals(itemDto.getReviewerId())) {
+			if(!userId.equals(newItemDto.getReviewerId())) {
 				flag = false;
 			}
 		} else if (newItemDto.getChildWeightList().size() <= 1) {
 			return parameterNotSupportResponse("小组成员数需大于等于2");
+		}
+
+		if(!flag) {
+			return invalidOperationResponse("非法操作");
 		}
 
 		newItemDto.setWorkload(workload);
