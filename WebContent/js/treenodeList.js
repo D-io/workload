@@ -793,6 +793,7 @@ function ownerApply(domId) {
                 }
             }
 
+
         });
         $(document).on("click",".neweditor",function () {
             $(".form-control").removeAttr("disabled");

@@ -168,8 +168,8 @@ $(document).ready(function () {
        console.log(window.countToCount);
        console.log(countToCount);
 
-        if($(".status_"+thisId).text()=="已提交"){
-            $(".savemyEdit").hide();
+        if($(".status_"+thisId).text()!="未提交"){
+            $(".editor").hide();
             $(".submitTo").hide();
         }
 
@@ -519,7 +519,7 @@ $(document).ready(function () {
     $(document).off("click",".deleteAll");
     $(document).on("click",".deleteAll",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
-       var deletCount=$(this).attr("class");
+       /*var deletCount=$(this).attr("class");
 
         var Reg=/_[\d+]/;
 
@@ -528,7 +528,7 @@ $(document).ready(function () {
             deletCount=deletCount.substr(1);
         }
         console.log(deletCount);
-
+*/
         $.ajax({
             url:itemManageUrl+"?itemId="+thisId,
             type:"DELETE",
@@ -538,7 +538,7 @@ $(document).ready(function () {
             success:function () {
               //  alert("操作成功！");
                 $(".trDele_"+thisId).remove();
-                allItem.splice(deletCount,1)
+              //  allItem.splice(deletCount,1)
             }
 
         });
@@ -957,7 +957,7 @@ $(document).ready(function () {
 
         })
     });
-    $(document).off("click",".editDelete");
+   /* $(document).off("click",".editDelete");
     $(document).on("click",".editDelete",function () {
         var deleteId=parseInt(this.id.match(/\d+/g));
         $.ajax({
@@ -977,7 +977,7 @@ $(document).ready(function () {
             }
 
         });
-    });
+    });*/
 });
 function getSideBar(role,roleList) {
     $.ajaxSetup({
@@ -1146,10 +1146,34 @@ function showImportPreview(data,itemCount) {
             $(".importItemTbody tr:last td:eq(2)").attr("id","workload_"+itemCount);
             $(".importItemTbody tr:last td:eq(3)").text(Info.teacherName);
             $(".importItemTbody tr:last td:eq(3)").attr("id","teacherName_"+itemCount);
-            $(".importItemTbody tr:last td:eq(4)").text("未提交");
-            $(".importItemTbody tr:last td:eq(4)").attr("class","status_"+Info.itemId);
             var str="<a class=\"btn btn-primary showImportAll\" id=\"showImportAll_"+ itemCount+"\" data-toggle='modal' data-target='#addContent'>查看详情</a><a class=\"btn btn-primary deleteAll delet_"+itemCount+"\" id=\"deleteAll_"+ Info.itemId+"\">删除操作</a>";
-            $(".importItemTbody tr:last td:eq(5)").append(str);
+            var anotherstr="<a class=\"btn btn-primary showImportAll\" id=\"showImportAll_"+ itemCount+"\" data-toggle='modal' data-target='#addContent'>查看详情</a>";
+
+            var statusName='';
+
+                switch (Info.status){
+                    case 0:statusName="未提交";
+                        $(".importItemTbody tr:last td:eq(5)").append(str);
+                    break;
+                    case 1:statusName="有待复核";
+                        $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
+                    break;
+                    case 2:statusName="确认通过";
+                        $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
+                    break;
+                    case 3:statusName="存疑提交";
+                        $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
+                        break;
+                    case 4:statusName="存疑解决";
+                        $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
+                        break;
+                    case 5:statusName="审核拒绝";
+                        break;
+                }
+
+            $(".importItemTbody tr:last td:eq(4)").text(statusName);
+            $(".importItemTbody tr:last td:eq(4)").attr("class","status_"+Info.itemId);
+
             itemCount++;
 
         }
