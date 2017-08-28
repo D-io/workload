@@ -468,35 +468,41 @@ $(document).ready(function () {
         var thisId=this.id.match(/\d+/g);
         var data=new FormData;
         data.append("file",$("#file")[0].files[0]);
-        $.ajax({
-            url:importFileUrl+"?categoryId="+thisId,
-            type:"POST",
-            dataType:"JSON",
-            data:data,
-            contentType: false,
-            processData: false,
-            success:function (msg) {
-                alert("上传成功！");
-                $(".submitItem").show();
-               //     window.itemDiv=  msg.data.itemList;
-               /* window.itemDiv.push(msg.data.itemList);*/
-                $(".importItemShow").show();
-             //   $(".importItemTbody").append()
-                showImportPreview(msg.data.itemList,itemCount);
-                if(itemCount<msg.data.itemList.length){
-                    itemCount++;
-                }
+        if(!$('#file').is(":empty")){
+            $.ajax({
+                url:importFileUrl+"?categoryId="+thisId,
+                type:"POST",
+                dataType:"JSON",
+                data:data,
+                contentType: false,
+                processData: false,
+                success:function (msg) {
+                    alert("上传成功！");
+                    $(".submitItem").show();
+                    //     window.itemDiv=  msg.data.itemList;
+                    /* window.itemDiv.push(msg.data.itemList);*/
+                    $(".importItemShow").show();
+                    //   $(".importItemTbody").append()
+                    showImportPreview(msg.data.itemList,itemCount);
+                    if(itemCount<msg.data.itemList.length){
+                        itemCount++;
+                    }
 
-                for(var key in msg.data.itemList){
-                    allItem.push(msg.data.itemList[key]);
+                    for(var key in msg.data.itemList){
+                        allItem.push(msg.data.itemList[key]);
+                    }
+                    JSON.stringify(allItem);
+                    console.log(allItem);
+                },
+                error:function () {
+                    alert("上传失败！");
                 }
-                JSON.stringify(allItem);
-                console.log(allItem);
-            },
-            error:function () {
-                alert("上传失败！");
-            }
-        });
+            });
+        }
+        else{
+            alert("请先选择文件!");
+        }
+
     });
     $(document).off("click",".submitTo");
     $(document).on("click",".submitTo",function () {
