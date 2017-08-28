@@ -322,16 +322,18 @@ public class ItemManageController extends ApplicationController {
 		Map<String, Object> errorData = getData();
 
 		// 申报类：上传相关的文件附件（文件不为空的前提下） 导入类：设置proof属性为null
-		if (APPLY_SELF.equals(importRequired) && null != file && !file.isEmpty()) {
+		if (APPLY_SELF.equals(importRequired)) {
+			itemDto.setOwnerId(user.getUserId());
+			if((null != file && !file.isEmpty())) {
+				FileInfo fileInfo = new FileInfo(ATTACHMENT_FILE_ID, getUserId(), "");
+				boolean uploadSuccess = fileEvent.uploadFile(file, fileInfo);
+				if (!uploadSuccess) {
+					data.put("errorData", "文件附件上传失败");
+				}
 
-			FileInfo fileInfo = new FileInfo(ATTACHMENT_FILE_ID, getUserId(), "");
-			boolean uploadSuccess = fileEvent.uploadFile(file, fileInfo);
-			if (!uploadSuccess) {
-				data.put("errorData", "文件附件上传失败");
+				//考虑设置为文件信息编号，展示时不做文件信息展示，仅仅展示 查看附件
+				itemDto.setProof(fileInfo.getFileInfoId());
 			}
-
-			//考虑设置为文件信息编号，展示时不做文件信息展示，仅仅展示 查看附件
-			itemDto.setProof(fileInfo.getFileInfoId());
 
 		} else if (IMPORT_EXCEL.equals(importRequired)) {
 			itemDto.setProof(null);
@@ -350,7 +352,6 @@ public class ItemManageController extends ApplicationController {
 
 		// 个人申报
 		if (SINGLE.equals(newItemDto.getIsGroup())) {
-			newItemDto.setOwnerId(user.getUserId());
 			newItemDto.setJsonChildWeight(String.valueOf(DEFAULT_CHILD_WEIGHT));
 			newItemDto.setGroupManagerId(newItemDto.getOwnerId());
 
