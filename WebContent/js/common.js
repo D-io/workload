@@ -577,6 +577,51 @@ $(document).ready(function () {
         $("#itemmanager").val(null);
 
     });
+    $(document).on("click",".submitItem",function () {
+        var chooseitem=$(".submitmyself");
+        var itemStr='';
+        for(var i=0;i<chooseitem.length;i++){
+            if(i!=chooseitem.length-1){
+                if(chooseitem.eq(i).is(':checked')){
+                    itemStr+="itemId="+chooseitem.eq(i).attr("id")+"&";
+                }
+            }
+            else {
+                itemStr+="itemId="+chooseitem.eq(i).attr("id");
+            }
+
+        }
+        $.post(itemManaPublicUrl+"?"+itemStr,function () {
+            confirm("确认成功？");
+            //  $("#statusChange_"+submitId).text("已提交");
+
+            for(var i=0;i<chooseitem.length;i++){
+                    if(chooseitem.eq(i).is(':checked')){
+                        $(".status_"+chooseitem.eq(i).attr("id")).text("已提交");
+                        $("#deleteAll_"+chooseitem.eq(i).attr("id")).remove();
+                        chooseitem.eq(i).removeAttr('checked');
+                        $(".submitItem").removeAttr('checked');
+                    }
+
+            }
+
+        })
+
+    });
+    $(document).on("click",".submitall",function () {
+        var chooseitem=$(".submitmyself");
+        for(var i=0;i<chooseitem.length;i++){
+            console.log($(this).is(":checked"));
+            if($(this).is(":checked")){
+                chooseitem.eq(i).prop("checked","checked");
+            }
+            else{
+                  //  chooseitem.eq(i).removeAttr("checked");
+                chooseitem.eq(i).prop("checked",false);
+
+            }
+        }
+    });
 
 /*
     $(document).off("click",".submitImportItem");
@@ -1128,9 +1173,10 @@ function showImportPreview(data,itemCount) {
                 $(".importItemTbody tr:last").attr("class","trDele_"+Info.itemId);
             }
 
-            var checkboxStr='<div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>'
-            $(".importItemTbody tr:last td:eq(0)").append(checkboxStr);
-            $(".importItemTbody tr:last td:eq(0)").attr("class","a-center");
+           /* var checkboxStr='<div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>'
+      */   var checkboxStr='<input type="checkbox" name="checkbox1" value="checkbox" class="submitmyself" id="'+Info.itemId+'">' ;
+            var anotherboxStr='<input type="checkbox" name="checkbox1" value="checkbox" class="anothersubmit" id="'+Info.itemId+'">' ;
+
             $(".importItemTbody tr:last td:eq(1)").text(Info.itemName);
             $(".importItemTbody tr:last td:eq(1)").attr("id","itemName_"+itemCount);
 
@@ -1142,22 +1188,34 @@ function showImportPreview(data,itemCount) {
             var anotherstr="<a class=\"btn btn-primary showImportAll\" id=\"showImportAll_"+ itemCount+"\" data-toggle='modal' data-target='#addContent'>查看详情</a>";
 
             var statusName='';
-
                 switch (Info.status){
                     case 0:statusName="未提交";
+                        $(".importItemTbody tr:last td:eq(0)").append(checkboxStr);
                         $(".importItemTbody tr:last td:eq(5)").append(str);
+
                     break;
                     case 1:statusName="有待复核";
+                        $(".importItemTbody tr:last td:eq(0)").append(anotherboxStr);
+                        $(".anothersubmit:last").attr("disabled","disabled");
                         $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
                     break;
                     case 2:statusName="确认通过";
+                        $(".importItemTbody tr:last td:eq(0)").append(anotherboxStr);
+                        $(".anothersubmit:last").attr("disabled","disabled");
                         $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
+
                     break;
                     case 3:statusName="存疑提交";
+                        $(".importItemTbody tr:last td:eq(0)").append(anotherboxStr);
+                        $(".anothersubmit:last").attr("disabled","disabled");
                         $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
+
                         break;
                     case 4:statusName="存疑解决";
+                        $(".importItemTbody tr:last td:eq(0)").append(anotherboxStr);
+                        $(".anothersubmit:last").attr("disabled","disabled");
                         $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
+
                         break;
                     case 5:statusName="审核拒绝";
                         break;
@@ -1190,3 +1248,23 @@ function showPara(item) {
     }
 
 }
+//js 读取文件
+/*function jsReadFiles(files) {
+    if (files.length) {
+        var file = files[0];
+        var reader = new FileReader();//new一个FileReader实例
+    /!*    if (/text+/.test(file.type)) {//判断文件类型，是不是text类型
+            reader.onload = function() {
+                $('body').append('<pre>' + this.result + '</pre>');
+            }
+            reader.readAsText(file);
+
+        } else if(/image+/.test(file.type)) {//判断文件是不是imgage类型
+            reader.onload = function() {
+                $('body').append('<img src="' + this.result + '"/>');
+            }
+            reader.readAsDataURL(file);
+        }*!/
+   return reader.readAsBinaryString(file);
+    }
+}*/

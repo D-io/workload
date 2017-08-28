@@ -237,7 +237,10 @@
                         <table class="table table-striped table-bordered dataTable no-footer importItemShow" style="display: none;">
                             <thead>
                             <tr role="row">
-                                <th><div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></th>
+                                <%--<th><div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></th>
+                              --%>
+                              <%--  <th><input type="submitall" type="checkbox" value=""></th>
+                             --%>       <th><input type="checkbox" name="checkbox1" value="checkbox" class="submitall" ></th>
                                 <th class="sorting">项目名称</th>
                                 <th class="sorting">工作当量</th>
                                 <th class="sorting">教师姓名</th>
