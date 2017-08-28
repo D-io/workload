@@ -519,8 +519,16 @@ $(document).ready(function () {
     $(document).off("click",".deleteAll");
     $(document).on("click",".deleteAll",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
-       var deletCount=$(this).parent().find("deleteAll").val();
-       console.log(deletCount);
+       var deletCount=$(this).attr("class");
+
+        var Reg=/_[\d+]/;
+
+        deletCount=deletCount.match(Reg)[0];
+        if (deletCount.substr(0,1)=='_'){
+            deletCount=deletCount.substr(1);
+        }
+        console.log(deletCount);
+
         $.ajax({
             url:itemManageUrl+"?itemId="+thisId,
             type:"DELETE",
@@ -530,7 +538,7 @@ $(document).ready(function () {
             success:function () {
               //  alert("操作成功！");
                 $(".trDele_"+thisId).remove();
-
+                allItem.splice(deletCount,1)
             }
 
         });
@@ -1140,7 +1148,7 @@ function showImportPreview(data,itemCount) {
             $(".importItemTbody tr:last td:eq(3)").attr("id","teacherName_"+itemCount);
             $(".importItemTbody tr:last td:eq(4)").text("未提交");
             $(".importItemTbody tr:last td:eq(4)").attr("class","status_"+Info.itemId);
-            var str="<a class=\"btn btn-primary showImportAll\" id=\"showImportAll_"+ itemCount+"\" data-toggle='modal' data-target='#addContent'>查看详情</a><a class=\"btn btn-primary deleteAll\" id=\"deleteAll_"+ Info.itemId+"\">删除操作</a>";
+            var str="<a class=\"btn btn-primary showImportAll\" id=\"showImportAll_"+ itemCount+"\" data-toggle='modal' data-target='#addContent'>查看详情</a><a class=\"btn btn-primary deleteAll delet_"+itemCount+"\" id=\"deleteAll_"+ Info.itemId+"\">删除操作</a>";
             $(".importItemTbody tr:last td:eq(5)").append(str);
             itemCount++;
 
