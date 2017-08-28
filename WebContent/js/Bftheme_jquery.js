@@ -849,13 +849,13 @@ function reviewerResetItem(data) {
                 var itemImport='';
                 switch (Info.importRequired){
                     case 2:itemImport='无特殊类别';
-                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/img.png'></span>");
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='"+imaginUrl+"/css/images/img.png'></span>");
                     break;
                     case 0:itemImport='申报审核类';
-                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/newChecked.png'></span>");
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='"+imaginUrl+"/css/images/newChecked.png'></span>");
                     break;
                     case 1:itemImport='导入复核类';
-                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='/css/images/newImport.png'></span>");
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='"+imaginUrl+"/css/images/newImport.png'></span>");
                     break;
                 }
 

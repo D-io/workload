@@ -24,6 +24,8 @@
 
      var userId="${userId}";
 
+     var imaginUrl="<%=request.getContextPath()%>";
+
      //console.log(thisYear);
 
     var currentRoleUrl=contextPath+"/page/sidebar/list";
