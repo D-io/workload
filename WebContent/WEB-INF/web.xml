@@ -76,7 +76,7 @@
     <!-- 设置单点登出的URL前缀 -->
     <init-param>
       <param-name>casServerUrlPrefix</param-name>
-      <param-value>https://portal.ostec.wshugen.cn:8443/authcas/</param-value>
+      <param-value>https://ostec.uestc.edu.cn:443/authcas/</param-value>
     </init-param>
   </filter>
 
@@ -94,7 +94,7 @@
     <!-- CAS认证服务器登陆URL -->
     <init-param>
       <param-name>casServerLoginUrl</param-name>
-      <param-value>https://portal.ostec.wshugen.cn:8443/authcas/login</param-value>
+      <param-value>https://ostec.uestc.edu.cn:443/authcas/login</param-value>
     </init-param>
     <!-- 服务器名 -->
     <init-param>
@@ -116,7 +116,7 @@
     <!-- CAS认证服务器地址 -->
     <init-param>
       <param-name>casServerUrlPrefix</param-name>
-      <param-value>https://portal.ostec.wshugen.cn:8443/authcas</param-value>
+      <param-value>https://ostec.uestc.edu.cn:443/authcas</param-value>
     </init-param>
     <!-- 请求认证的服务器 -->
     <init-param>

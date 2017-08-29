@@ -23,30 +23,30 @@
   </filter-mapping>
 
   <display-name>workload</display-name>
-  <!-- ÏµÍ³²ÎÊıÅäÖÃ -->
+  <!-- ç³»ç»Ÿå‚æ•°é…ç½® -->
   <context-param>
-    <description>µ¥µãµÇ³ö·şÎñÆ÷µØÖ·</description>
+    <description>å•ç‚¹ç™»å‡ºæœåŠ¡å™¨åœ°å€</description>
     <param-name>casServerContextPath</param-name>
     <param-value>https://portal.ostec.wshugen.cn:8443/authcas</param-value>
   </context-param>
   
-  <!-- ÎÄ¼şÉÏ´«Â·¾¶ÅäÖÃ BEGIN -->
+  <!-- æ–‡ä»¶ä¸Šä¼ è·¯å¾„é…ç½® BEGIN -->
   <context-param>
     <param-name>fileUploadPath</param-name>
     <param-value>data</param-value>
   </context-param>
-  <!-- ÎÄ¼şÉÏ´«Â·¾¶ÅäÖÃ END -->
+  <!-- æ–‡ä»¶ä¸Šä¼ è·¯å¾„é…ç½® END -->
 
-  <!-- Æô¶¯ÄÚÖÃµÄÓ¦ÓÃ¼àÌıÆ÷¡¢session¼àÌıÆ÷ BEGIN -->
+  <!-- å¯åŠ¨å†…ç½®çš„åº”ç”¨ç›‘å¬å™¨ã€sessionç›‘å¬å™¨ BEGIN -->
   <listener>
     <listener-class>cn.edu.uestc.ostec.workload.core.WorkloadServletContextListener</listener-class>
   </listener>
   <listener>
     <listener-class>cn.edu.uestc.ostec.workload.core.WorkloadSessionListener</listener-class>
   </listener>
-  <!-- Æô¶¯ÄÚÖÃµÄÓ¦ÓÃ¼àÌıÆ÷¡¢session¼àÌıÆ÷ END -->
+  <!-- å¯åŠ¨å†…ç½®çš„åº”ç”¨ç›‘å¬å™¨ã€sessionç›‘å¬å™¨ END -->
 
-  <!-- ÅäÖÃ request ÉÏÏÂÎÄ¼àÌıÆ÷ -->
+  <!-- é…ç½® request ä¸Šä¸‹æ–‡ç›‘å¬å™¨ -->
   <listener>
     <listener-class>
       org.springframework.web.context.request.RequestContextListener
@@ -65,15 +65,15 @@
 
   <!--  CAS logout configuration BEGIN -->
   <listener>
-    <description>ÓÃÓÚµ¥µãÍË³ö£¬¸Ã¹ıÂËÆ÷ÓÃÓÚÊµÏÖµ¥µãµÇ³ö¹¦ÄÜ£¬¿ÉÑ¡ÅäÖÃ</description>
+    <description>ç”¨äºå•ç‚¹é€€å‡ºï¼Œè¯¥è¿‡æ»¤å™¨ç”¨äºå®ç°å•ç‚¹ç™»å‡ºåŠŸèƒ½ï¼Œå¯é€‰é…ç½®</description>
     <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
   </listener>
 
   <filter>
-    <description>¸Ã¹ıÂËÆ÷ÓÃÓÚÊµÏÖµ¥µãµÇ³ö¹¦ÄÜ£¬¿ÉÑ¡ÅäÖÃ(¸ÃFilterĞèÒª·ÅÔÚËùÓĞÆäËûFilterÖ®Ç°)</description>
+    <description>è¯¥è¿‡æ»¤å™¨ç”¨äºå®ç°å•ç‚¹ç™»å‡ºåŠŸèƒ½ï¼Œå¯é€‰é…ç½®(è¯¥Filteréœ€è¦æ”¾åœ¨æ‰€æœ‰å…¶ä»–Filterä¹‹å‰)</description>
     <filter-name>CASSingleSignOutFilter</filter-name>
     <filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
-    <!-- ÉèÖÃµ¥µãµÇ³öµÄURLÇ°×º -->
+    <!-- è®¾ç½®å•ç‚¹ç™»å‡ºçš„URLå‰ç¼€ -->
     <init-param>
       <param-name>casServerUrlPrefix</param-name>
       <param-value>https://portal.ostec.wshugen.cn:8443/authcas/</param-value>
@@ -91,15 +91,15 @@
   <filter>
     <filter-name>CASFilter</filter-name>
     <filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
-    <!-- CASÈÏÖ¤·şÎñÆ÷µÇÂ½URL -->
+    <!-- CASè®¤è¯æœåŠ¡å™¨ç™»é™†URL -->
     <init-param>
       <param-name>casServerLoginUrl</param-name>
       <param-value>https://portal.ostec.wshugen.cn:8443/authcas/login</param-value>
     </init-param>
-    <!-- ·şÎñÆ÷Ãû -->
+    <!-- æœåŠ¡å™¨å -->
     <init-param>
       <param-name>serverName</param-name>
-      <param-value>http://202.115.16.81:8080</param-value>
+      <param-value>http://127.0.0.1:8080</param-value>
     </init-param>
   </filter>
   <filter-mapping>
@@ -107,28 +107,28 @@
     <url-pattern>/auth/login</url-pattern>
   </filter-mapping>
 
-  <!--¸Ã¹ıÂËÆ÷¸ºÔğ¶ÔTicketµÄĞ£Ñé¹¤×÷£¬±ØĞëÆôÓÃËü -->
+  <!--è¯¥è¿‡æ»¤å™¨è´Ÿè´£å¯¹Ticketçš„æ ¡éªŒå·¥ä½œï¼Œå¿…é¡»å¯ç”¨å®ƒ -->
   <filter>
     <filter-name>CASValidationFilter</filter-name>
     <filter-class>
       org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter
     </filter-class>
-    <!-- CASÈÏÖ¤·şÎñÆ÷µØÖ· -->
+    <!-- CASè®¤è¯æœåŠ¡å™¨åœ°å€ -->
     <init-param>
       <param-name>casServerUrlPrefix</param-name>
       <param-value>https://portal.ostec.wshugen.cn:8443/authcas</param-value>
     </init-param>
-    <!-- ÇëÇóÈÏÖ¤µÄ·şÎñÆ÷ -->
+    <!-- è¯·æ±‚è®¤è¯çš„æœåŠ¡å™¨ -->
     <init-param>
       <param-name>serverName</param-name>
-      <param-value>http://202.115.16.81:8080</param-value>
+      <param-value>http://127.0.0.1:8080</param-value>
     </init-param>
-    <!-- ĞÅÈÎ¿âÅäÖÃ -->
+    <!-- ä¿¡ä»»åº“é…ç½® -->
     <init-param>
       <param-name>sslConfigFile</param-name>
-      <param-value>/home/zjs/sslConf/sslconf.properties</param-value>
+      <param-value>E:\ssl\sslconf.properties</param-value>
     </init-param>
-    <!-- ±àÂëÅäÖÃ -->
+    <!-- ç¼–ç é…ç½® -->
     <init-param>
       <param-name>encoding</param-name>
       <param-value>UTF-8</param-value>
@@ -141,9 +141,9 @@
   </filter-mapping>
 
   <!--
-      ¸Ã¹ıÂËÆ÷¸ºÔğÊµÏÖHttpServletRequestÇëÇóµÄ°ü¹ü£¬
-      ±ÈÈçÔÊĞí¿ª·¢ÕßÍ¨¹ıHttpServletRequestµÄgetRemoteUser()·½·¨
-      »ñµÃSSOµÇÂ¼ÓÃ»§µÄµÇÂ¼Ãû£¬¿ÉÑ¡ÅäÖÃ¡£
+      è¯¥è¿‡æ»¤å™¨è´Ÿè´£å®ç°HttpServletRequestè¯·æ±‚çš„åŒ…è£¹ï¼Œ
+      æ¯”å¦‚å…è®¸å¼€å‘è€…é€šè¿‡HttpServletRequestçš„getRemoteUser()æ–¹æ³•
+      è·å¾—SSOç™»å½•ç”¨æˆ·çš„ç™»å½•åï¼Œå¯é€‰é…ç½®ã€‚
   -->
   <filter>
     <filter-name>CASHttpServletRequestWrapperFilter</filter-name>
@@ -157,8 +157,8 @@
   </filter-mapping>
 
   <!--
-      ¸Ã¹ıÂËÆ÷Ê¹µÃ¿ª·¢Õß¿ÉÒÔÍ¨¹ıorg.jasig.cas.client.util.AssertionHolderÀ´»ñÈ¡ÓÃ»§µÄµÇÂ¼Ãû¡£
-      ±ÈÈçAssertionHolder.getAssertion().getPrincipal().getName()¡£
+      è¯¥è¿‡æ»¤å™¨ä½¿å¾—å¼€å‘è€…å¯ä»¥é€šè¿‡org.jasig.cas.client.util.AssertionHolderæ¥è·å–ç”¨æˆ·çš„ç™»å½•åã€‚
+      æ¯”å¦‚AssertionHolder.getAssertion().getPrincipal().getName()ã€‚
   -->
   <filter>
     <filter-name>CASAssertionThreadLocalFilter</filter-name>
@@ -178,7 +178,7 @@
       <param-name>contextConfigLocation</param-name>
       <param-value>classpath:spring_config/spring-mvc.xml</param-value>
     </init-param>
-    <!-- ÎÄ¼şÉÏ´«ÅäÖÃ -->
+    <!-- æ–‡ä»¶ä¸Šä¼ é…ç½® -->
     <multipart-config>
       <max-file-size>52428800</max-file-size>
       <max-request-size>52428800</max-request-size>

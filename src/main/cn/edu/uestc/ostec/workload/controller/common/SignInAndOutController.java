@@ -45,7 +45,12 @@ public class SignInAndOutController extends ApplicationController {
 		User user = new User();
 		user.setName((String) attributes.get("name"));
 		user.setUserType((String) attributes.get("userType"));
-		user.setUserId(Integer.valueOf((String) attributes.get("userId")));
+		//TODO 由于教师对应的编号位数较少，采用了短整型数据，数据范围为 -2的31次方 到 2的31次方，最大值 4 294 967 296
+		//TODO 需要将所有的 userId 类型的用户编号修改为长整形，包括数据库中数据类型
+		String userId = (String) attributes.get("userId");
+		user.setUserId(Integer.valueOf(userId.length() > 8 ? "0" : userId));
+
+		//user.setUserId(Integer.valueOf((String) attributes.get("userId")));
 		user.setEmail((String) attributes.get("email"));
 
 		// 向session中注入用户信息

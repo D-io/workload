@@ -76,6 +76,9 @@ public class DefaultController extends ApplicationController {
 	private void injectRoleInfo(ModelMap modelMap) throws JsonProcessingException {
 		User user = userRoleService.getUserRoleDto(getUserId());
 		List<RoleInfo> roleInfoList = user.getRoleInfoList();
+		if(isEmptyList(roleInfoList)) {
+			return;
+		}
 		List<String> roleList = listInstance();
 		for (RoleInfo info : roleInfoList) {
 			roleList.add(info.getRole());
