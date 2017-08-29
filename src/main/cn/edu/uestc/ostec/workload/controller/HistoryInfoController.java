@@ -171,8 +171,22 @@ public class HistoryInfoController extends ApplicationController {
 		List<ItemDto> itemDtoList = itemService
 				.findAll(null, null, null, user.getUserId(), null, getCurrentSemester());
 
-		//根据自己的工作量条目查询对应的历史记录
-		List<History> histories = getHistoriesByItems(itemDtoList, type);
+		//若条目中存在自己又是申报人（导入人），又是审核人（复核人）的情况
+		List<ItemDto> expectItemDtoList = new ArrayList<>();
+		for(ItemDto itemDto:itemDtoList) {
+			if(itemDto.getReviewerId().equals(itemDto.getOwnerId())) {
+				expectItemDtoList.add(itemDto);
+			}
+		}
+
+		List<History> expectHistories = getHistoriesByItems(itemDtoList,type);
+		List<History> histories = null;
+		if(isEmptyList(expectItemDtoList)) {
+			histories = getHistoriesByItems(itemDtoList, type);
+		} else {
+			itemDtoList.removeAll(expectItemDtoList);
+			histories = getHistoriesByItems(itemDtoList,type);
+		}
 
 		Map<String, Object> data = getData();
 		if (ROLE_REVIEWER.equals(role)) {
@@ -180,7 +194,7 @@ public class HistoryInfoController extends ApplicationController {
 			data.put("historyList", historyConverter.poListToDtoList(historyList));
 		} else {
 			//教师个人页面，则仅仅展示自己条目信息对应的相关历史记录
-			data.put("historyList", historyConverter.poListToDtoList(histories));
+			data.put("historyList", historyConverter.poListToDtoList(expectHistories));
 		}
 
 		return successResponse(data);
@@ -242,6 +256,10 @@ public class HistoryInfoController extends ApplicationController {
 
 		List<History> histories = new ArrayList<>();
 		List<ItemDto> itemDtoList = new ArrayList<>();
+
+		if(isEmptyList(itemList)) {
+			return null;
+		}
 
 		//获取和type相对应的条目信息
 		for (ItemDto itemDto : itemList) {

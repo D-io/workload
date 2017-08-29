@@ -47,7 +47,7 @@
         SELECT * FROM history
         <where>
             1 = 1 AND version = #{version}
-            AND (user_id = #{userId} OR aim_user_id = #{userId}) OR aim_user_id = 0000000
+            AND (user_id = #{userId} OR aim_user_id = #{userId} OR aim_user_id = 0000000)
             <if test="null != type">
                 AND type = #{type}
             </if>
