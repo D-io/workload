@@ -448,10 +448,10 @@ function itemSummary() {
                     $(".sumItemPreview tr:last td:eq(3)").text(Info.professionalTitle);
                     $(".sumItemPreview tr:last td:eq(4)").text(Info.checkedWorkload);
                     if(Info.checkedWorkload>100){
-                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#6fcd54","color":"#fff","cursor":"pointer","text-align":"center"});
+                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#6fcd54","color":"rgb(115, 135, 15)","cursor":"pointer","text-align":"center"});
                     }
                     else {
-                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#ffe746","color":"#fff","cursor":"pointer","text-align":"center"});
+                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#ffe746","color":"rgb(115, 135, 15)","cursor":"pointer","text-align":"center"});
                     }
                     $(".sumItemPreview tr:last td:eq(4)").attr("class","checkedwork");
                     $(".sumItemPreview tr:last td:eq(4)").attr("id","checkedwork_"+id);
@@ -800,13 +800,13 @@ function reviewerResetItem(data) {
                             statusName = '删除状态';
                             break;
                         case 0:
-                            statusName = '未提交状态';
+                            statusName = '未提交';
                             break;
                         case 1:
                             statusName = '待审核';
                             break;
                         case 2:
-                            statusName = '审核通过';
+                            statusName = '已通过';
                             break;
                         case 3:
                             statusName = '存疑提交';
@@ -815,7 +815,7 @@ function reviewerResetItem(data) {
                             statusName = '存疑已解决';
                             break;
                         case 5:
-                            statusName = '审核拒绝';
+                            statusName = '已拒绝';
                             break;
                     }
                 }
@@ -825,19 +825,19 @@ function reviewerResetItem(data) {
                             statusName = '删除状态';
                             break;
                         case 0:
-                            statusName = '未提交状态';
+                            statusName = '未提交';
                             break;
                         case 1:
                             statusName = '待复核';
                             break;
                         case 2:
-                            statusName = '复核通过';
+                            statusName = '已通过';
                             break;
                         case 3:
-                            statusName = '存疑提交';
+                            statusName = '尚存疑';
                             break;
                         case 4:
-                            statusName = '存疑已解决';
+                            statusName = '待复核';
                             break;
                         case 5:
                             statusName = '审核拒绝';
@@ -865,8 +865,9 @@ function reviewerResetItem(data) {
                 $(".ResetItem tr:last td:eq(4)").text(Info.workload);
                 $(".ResetItem tr:last td:eq(5)").text(Info.teacherName);
                 $(".ResetItem tr:last td:eq(6)").text(statusName);
-                var checkAct="<a class=\"btn btn-info btn-xs reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回审核人</a> <a class=\"btn btn-info btn-xs reset_applicant\" id=\"applyReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回申报人</a><a class='btn btn-primary viewdetail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</a>";
-                var importAct="<a class=\"btn btn-info btn-xs reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回审核人</a> <a class=\"btn btn-info btn-xs reset_applicant\" id=\"applyReset_"+ Info.itemId+"\"><i class=\"fa fa-pencil\"></i> 退回复核人</a><a class='btn btn-primary viewdetail' id='viewdetail_"+i+"'  data-toggle='modal' data-target='#showdetail'>查看详情</a>";
+                var checkAct="<a class=\"btn btn-info reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style=''>退回审核</a> <a class=\"btn btn-success reset_applicant\" id=\"applyReset_"+ Info.itemId+"\" '> 退回申请</a><a class='btn btn-primary viewdetail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</a>";
+                var importAct="<a class=\"btn btn-default reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style='background-color:rgba(231,76,60,.88);color: #fff'>退回导入</a> <a class=\"btn btn-default reset_applicant\" id=\"applyReset_"+ Info.itemId+"\" style='background-color:rgba(243,156,18,.88);color: #fff' '>退回复核</a><a class='btn btn-primary viewdetail' id='viewdetail_"+i+"'  data-toggle='modal' data-target='#showdetail'>查看详情</a>";
+               /*background-color:rgb(155, 89, 182);color: #fff*/
                 if(Info.importRequired==0){
                     $(".ResetItem tr:last td:eq(7)").append(checkAct);
                 }
