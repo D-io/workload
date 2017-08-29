@@ -79,7 +79,6 @@
                                 <th class="sorting">主要参数</th>
                                 <th class="sorting">其他参数</th>
                                 <th class="sorting">版本</th>
-                                <th class="sorting">审核截止时间</th>
                                 <th class="sorting">审核状态</th>
                                 <th class="sorting">操作</th>
                                 </tr>

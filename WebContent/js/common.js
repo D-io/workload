@@ -91,7 +91,20 @@ $(document).ready(function () {
 
         });
     });
+    $(document).on("click","body",function (event) {
+        var target = $(event.target); // One jQuery object instead of 3
 
+        // Compare length with an integer rather than with
+        if (!target.hasClass('popover')
+            && !target.hasClass('reviewerApply')
+            && !target.hasClass('popover-content')
+            && !target.hasClass('popover-title')
+            && !target.hasClass('arrow')) {
+            /* $('#folder').popover('hide');*/
+            $(".reviewerApply").popover('hide');
+        }
+
+    });
     /*auditor-import*/
 
     var myFlag='';
@@ -766,9 +779,8 @@ $(document).ready(function () {
 
         $.get(itemGroupUrl+"?" + 'categoryId=' + reg, function (data) {
 
-            var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
-                '<th class="sorting">工作量</th> <th class="sorting">计算公式</th><th class="sorting">主要参数</th><th>其他参数</th><th>版本</th> <th class="sorting">' +
-                '复核截止时间 </th> <th class="sorting">复核状态 </th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
+            var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
+                '<th class="sorting">工作量</th> <th class="sorting">计算公式</th><th class="sorting">主要参数</th><th>其他参数</th><th>版本</th><th class="sorting">复核状态 </th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
             $(".applymodalbody").empty();
             $(".applymodalbody").append(tablestr);
 
@@ -781,7 +793,7 @@ $(document).ready(function () {
                     var Info = analyseList[t];
                     $(".tbody").append(rowInfo);
 
-                    for (var j = 0; j < 10; j++)//单元格
+                    for (var j = 0; j < 9; j++)//单元格
                     {
                         $(".tbody tr:last").append(cellInfo);
                     }
@@ -804,8 +816,10 @@ $(document).ready(function () {
                     }
                     $(".tbody tr:last td:eq(5)").text(otherstr);
                     $(".tbody tr:last td:eq(6)").text(Info.version);
-                    $(".tbody tr:last td:eq(7)").text('2017-12-31');
-                    var statusName;
+
+                    var statusName='';
+                    var act = "<a class=\"btn btn-success sure\" id=\"pass_" + Info.itemId + "\">确认通过</a><a class=\"btn btn-danger LeaveQues\" data-toggle=\"modal\" data-target=\"#refuModal\" id=\"refuse_" + Info.itemId + "\">存疑提交</a> ";
+
                     switch (Info.status) {
                         case -1:
                             statusName = '删除状态';
@@ -815,6 +829,7 @@ $(document).ready(function () {
                             break;
                         case 1:
                             statusName = '首次复核';
+                            $(".tbody tr:last td:eq(8)").append(act);
                             break;
                         case 2:
                             statusName = '确认通过';
@@ -829,11 +844,9 @@ $(document).ready(function () {
                             statusName = '审核拒绝';
                             break;
                     }
-                    $(".tbody tr:last td:eq(8)").text(statusName);
-                    $(".tbody tr:last td:eq(8)").attr("id","reviewe_"+Info.itemId);
+                    $(".tbody tr:last td:eq(7)").text(statusName);
+                    $(".tbody tr:last td:eq(7)").attr("id","reviewe_"+Info.itemId);
 
-                    var act = "<a class=\"btn btn-success sure\" id=\"pass_" + Info.itemId + "\">确认通过</a><a class=\"btn btn-danger LeaveQues\" data-toggle=\"modal\" data-target=\"#refuModal\" id=\"refuse_" + Info.itemId + "\">存疑提交</a> ";
-                    $(".tbody tr:last td:eq(9)").append(act);
                 }
             }
 
@@ -849,6 +862,9 @@ $(document).ready(function () {
             url:itemStatusUrl+"?"+itemstr,
             success:function () {
                 alert("操作成功！");
+                $("#pass_"+passItemId).attr("disabled","disabled");
+                $("#refuse_"+passItemId).attr("disabled","disabled");
+
             }
 
         });
@@ -865,6 +881,8 @@ $(document).ready(function () {
                 success:function (data) {
                     alert("操作成功！");
                     $('#reviewe_'+refuItemId).text('存疑提交');
+                    $("#pass_"+refuItemId).attr("disabled","disabled");
+                    $("#refuse_"+refuItemId).attr("disabled","disabled");
                 }
             });
         });
@@ -958,6 +976,7 @@ $(document).ready(function () {
         $("#showapplyDesc").removeAttr("disabled");
         $("#showaddGroupMessage").removeAttr("disabled");
         $(".showparameterName").removeAttr("disabled");
+        $("#revfile").removeAttr("disabled");
 
        /* if($("#single").disabled=="true"){
             $("#single").removeAttr("disabled");
@@ -982,7 +1001,7 @@ $(document).ready(function () {
         $.post(itemManaPublicUrl+"?itemId="+submitId,function () {
             confirm("确认提交？");
             $("#statusChange_"+submitId).text("有待审核");
-            
+            $(".delemyself_"+submitId).remove();
            // $("#downLoadAdd_"+submitId).hide();
             $("#showContent").modal("hide");
 
@@ -993,6 +1012,7 @@ $(document).ready(function () {
         $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
             confirm("确认提交？");
             $("#statusChange_"+thisId).text("有待审核");
+            $(".delemyself_"+submitId).remove();
           //  $("#downLoadAdd_"+submitId).hide();
             $("#addContent").modal("hide");
 

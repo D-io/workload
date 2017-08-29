@@ -378,7 +378,7 @@ function reset() {
                     itemId:thisId,
                     itemName:$("#itemName_"+thisId).text()
                 },function () {
-                    alert("修改成功!");
+                   /* alert("修改成功!");*/
                 });
             });
         }
@@ -400,7 +400,7 @@ function reset() {
                     itemId:thisId,
                     otherParams:strArr
                 },function () {
-                    alert("修改成功!");
+                  /*  alert("修改成功!");*/
                 });
             });
         }
