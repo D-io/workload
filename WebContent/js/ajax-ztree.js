@@ -64,7 +64,7 @@ function ztree() {
                         'id': item.categoryId,
                         'parentId': item.parentId,
                         'desc': item.desc,
-                        'title':item.desc,
+                        'title':'【规则描述】'+item.desc,
                         'reviewDeadline': rewDeadline,
                         'applyDeadline': appDeadline,
                         'formula': item.formula,
@@ -82,13 +82,14 @@ function ztree() {
                     if(item.status==1){
                         if(item.importRequired==1){
                             var nodes = {
-                                'name': '<span style="margin-right: 5px;">复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'</span>'+item.name,
+                               /* 'name':'<span style="background-color:#6fcd54;color:#fff">'+item.name+ '</span><span style="margin-right: 5px;">【复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'】</span>',
+                              */ name:item.name,
                                 'realName':item.name,
-                                'font':{'background-color':'#6fcd54','color':'#fff'},
+                                 'font':{'background-color':'#6fcd54','color':'#fff'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
-                                'title':item.desc,
+                                'title':'【规则描述】'+item.desc+ '&#10【导入截止】'+rewDeadline+'&#10【复核截止】'+appDeadline,
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
                                 'formula': item.formula,
@@ -105,13 +106,16 @@ function ztree() {
                         }
                         else if(item.importRequired==0){
                             var nodes = {
-                                'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+item.name,
-                                'realName':item.name,
-                                'font':{'background-color':'#6fcd54','color':'#fff'},
+                              /*  'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+item.name,
+                           */
+                                'name':item.name,
+                                /*<span style="background-color:#6fcd54;color:#fff">'+item.name+ '</span><span style="margin-right: 5px;>【申报截止：'+appDeadline+'</span><span style="margin-right: 5px;>审核截止：'+rewDeadline+'】</span>',
+                            */    'realName':item.name,
+                                  'font':{'background-color':'#6fcd54','color':'#fff'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
-                                'title':item.desc,
+                                'title':'【规则描述】'+item.desc+ '&#10【申报截止】'+appDeadline+'&#10【审核截止】'+rewDeadline,
                                 'status':item.status,
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
@@ -134,7 +138,7 @@ function ztree() {
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
-                                'title':item.desc,
+                                'title':'【规则描述】'+item.desc,
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
                                 'formula': item.formula,
@@ -152,13 +156,16 @@ function ztree() {
                     else {
                         if(item.importRequired==1){
                             var nodes = {
-                                'name': '<span style="margin-right: 5px;">复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'</span>'+item.name,
+                               /* 'name': '<span style="margin-right: 5px;">复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'</span>'+item.name,
+                              */
+                                'name':item.name,/*'<span style="background-color:#ffe746;color:#2A3F54">'+item.name+ '</span><span style="margin-right: 5px;">【复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'】</span>',
+*/
                                 'realName':item.name,
-                                'font':{'background-color':'#ffe746','color':'#2A3F54'},
+                              'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
-                                'title':item.desc,
+                                'title':'【规则描述】'+item.desc+ '&#10【导入截止】'+rewDeadline+'&#10【复核截止】'+appDeadline,
                                 'status':item.status,
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
@@ -175,13 +182,16 @@ function ztree() {
                         }
                         else if(item.importRequired==0){
                             var nodes = {
-                                'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+item.name,
+                               /* 'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+item.name,
+                            */  'name':item.name,/*'<span style="background-color:#ffe746;color:#2A3F54">'+item.name+ '</span><span style="margin-right: 5px;">【申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'】</span>',
+*/
                                 'realName':item.name,
-                                'font':{'background-color':'#ffe746','color':'#2A3F54'},
+                               'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
-                                'title':item.desc,
+                                'title':'【规则描述】'+item.desc+ '&#10【申报截止】'+appDeadline+'&#10【审核截止】'+rewDeadline,
+
                                 'status':item.status,
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
@@ -200,7 +210,7 @@ function ztree() {
                             var nodes = {
                                 'name': item.name,
                                 'realName':item.name,
-                                'title':item.desc,
+                                'title':'【规则描述】'+item.desc,
                            //     'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
@@ -463,25 +473,73 @@ function ztree() {
                                     }
                                     function createTree(item) {
                                         if(item.categoryId==treeNode.id){
-                                            var newnode={
-                                                'realName':item.name,
-                                                'font':{'background-color':'#6fcd54','color':'#fff'},
-                                                'id': item.categoryId,
-                                                'parentId': item.parentId,
-                                                'desc': item.desc,
-                                                'title':item.desc,
-                                                'reviewDeadline': item.reviewDeadline,
-                                                'applyDeadline': item.applyDeadline,
-                                                'formula': item.formula,
-                                                'reviewerId':item.reviewerId,
-                                                'formulaParameterList':item.formulaParameterList,
-                                                'otherJsonParameters':item.otherJsonParameters,
-                                                'isLeaf':item.isLeaf,
-                                                'importRequired':item.importRequired,
-                                                'iconSkin':"icon06",
-                                                'status':item.status,
-                                                //  'status':item.status,
-                                                'open':true}
+                                            if(item.importRequired==1){
+                                                var newnode={
+                                                    'name':item.name,
+                                                    'realName':item.name,
+                                                    'font':{'background-color':'#6fcd54','color':'#fff'},
+                                                    'id': item.categoryId,
+                                                    'parentId': item.parentId,
+                                                    'desc': item.desc,
+                                                    'title':'【规则描述】'+item.desc+ '&#10【导入截止】'+rewDeadline+'&#10【复核截止】'+appDeadline,
+                                                    'reviewDeadline': item.reviewDeadline,
+                                                    'applyDeadline': item.applyDeadline,
+                                                    'formula': item.formula,
+                                                    'reviewerId':item.reviewerId,
+                                                    'formulaParameterList':item.formulaParameterList,
+                                                    'otherJsonParameters':item.otherJsonParameters,
+                                                    'isLeaf':item.isLeaf,
+                                                    'importRequired':item.importRequired,
+                                                    'iconSkin':"icon06",
+                                                    'status':item.status,
+                                                    //  'status':item.status,
+                                                    'open':true}
+                                            }
+                                            else if(item.importRequired==0){
+                                                var newnode={
+                                                    'name':item.name,
+                                                    'realName':item.name,
+                                                    'font':{'background-color':'#6fcd54','color':'#fff'},
+                                                    'id': item.categoryId,
+                                                    'parentId': item.parentId,
+                                                    'desc': item.desc,
+                                                    'title':'【规则描述】'+item.desc+ '&#10【申报截止】'+rewDeadline+'&#10【审核截止】'+appDeadline,
+                                                    'reviewDeadline': item.reviewDeadline,
+                                                    'applyDeadline': item.applyDeadline,
+                                                    'formula': item.formula,
+                                                    'reviewerId':item.reviewerId,
+                                                    'formulaParameterList':item.formulaParameterList,
+                                                    'otherJsonParameters':item.otherJsonParameters,
+                                                    'isLeaf':item.isLeaf,
+                                                    'importRequired':item.importRequired,
+                                                    'iconSkin':"icon06",
+                                                    'status':item.status,
+                                                    //  'status':item.status,
+                                                    'open':true}
+                                            }
+                                            else{
+                                                var newnode={
+                                                    'name':item.name,
+                                                    'realName':item.name,
+                                                 //   'font':{'background-color':'#6fcd54','color':'#fff'},
+                                                    'id': item.categoryId,
+                                                    'parentId': item.parentId,
+                                                    'desc': item.desc,
+                                                    'title':'【规则描述】'+item.desc,
+                                                    'reviewDeadline': item.reviewDeadline,
+                                                    'applyDeadline': item.applyDeadline,
+                                                    'formula': item.formula,
+                                                    'reviewerId':item.reviewerId,
+                                                    'formulaParameterList':item.formulaParameterList,
+                                                    'otherJsonParameters':item.otherJsonParameters,
+                                                    'isLeaf':item.isLeaf,
+                                                    'importRequired':item.importRequired,
+                                                  //  'iconSkin':"icon06",
+                                                    'status':item.status,
+                                                    //  'status':item.status,
+                                                    'open':true}
+                                            }
+
                                             treeNode=newnode;
                                         }
                                         else if (item.children) {
@@ -602,7 +660,7 @@ function ztree() {
 
         if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
         var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-            + "' title='add node' data-target='#addModal' data-toggle='modal' onfocus='this.blur();'></span>";
+            + "' title='添加子规则' data-target='#addModal' data-toggle='modal' onfocus='this.blur();'></span>";
         sObj.after(addStr);
         var btn = $("#addBtn_"+treeNode.tId);
         if(btn)
@@ -679,12 +737,13 @@ function ztree() {
                             var zTree = $.fn.zTree.getZTreeObj("treeDemo");
                             if(data.data.category.importRequired==1){
                                 var newNode = {
-                                    'name': '<span style="margin-right: 5px;">复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'</span>'+data.data.category.name,
+                                    'name':data.data.category.name,
                                     'realName':data.data.category.name,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'status':data.data.category.status,
-                                    'desc': data.data.category.desc,
+                                    'desc':data.data.category.desc,
+                                    'title':'【规则描述】'+data.data.category.desc+ '&#10【导入截止】'+appDeadline+'&#10【复核截止】'+rewDeadline,
                                     'reviewDeadline': rewDeadline,
                                     'applyDeadline': appDeadline,
                                     'formula': data.data.category.formula,
@@ -699,11 +758,12 @@ function ztree() {
                             }
                             else if(data.data.category.importRequired==0){
                                 var newNode = {
-                                    'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+data.data.category.name,
+                                    'name': data.data.category.name,
                                     'realName':data.data.category.name,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
-                                    'desc': data.data.category.desc,
+                                    'desc':data.data.category.desc,
+                                    'title': '【规则描述】'+data.data.category.desc+ '&#10【申报截止】'+appDeadline+'&#10【审核截止】'+rewDeadline,
                                     'status':data.data.category.status,
                                     'reviewDeadline': rewDeadline,
                                     'applyDeadline': appDeadline,
@@ -723,6 +783,7 @@ function ztree() {
                                     'realName':data.data.category.name,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
+                                    'title':'【规则描述】'+data.data.category.desc,
                                     'desc': data.data.category.desc,
                                     'status':data.data.category.status,
                                     'reviewDeadline': rewDeadline,
@@ -827,12 +888,12 @@ function ztree() {
                             var zTree = $.fn.zTree.getZTreeObj("treeDemo");
                             if(data.data.category.importRequired==1){
                                 var newNode= {
-                                    'name': '<span style="margin-right: 5px;">复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'</span>'+data.data.category.name,
+                                    'name':data.data.category.name,
                                     'realName':data.data.category.name,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'desc':data.data.category.desc,
-                                    'title':item.desc,
+                                    'title':'【规则描述】'+data.data.category.desc+ '&#10【导入截止】'+appDeadline+'&#10【复核截止】'+rewDeadline,
                                     'reviewDeadline':x,
                                     'applyDeadline':y,
                                     'formula':data.data.category.formula,
@@ -848,9 +909,9 @@ function ztree() {
                             }
                             else if(data.data.category.importRequired==0){
                                 var newNode= {
-                                    'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+data.data.category.name,
+                                    'name':data.data.category.name,
                                     'realName':data.data.category.name,
-                                    'title':item.desc,
+                                    'title':'【规则描述】'+data.data.category.desc+ '&#10【申报截止】'+appDeadline+'&#10【审核截止】'+rewDeadline,
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'status':data.data.category.status,
@@ -874,7 +935,7 @@ function ztree() {
                                     'id': data.data.category.categoryId,
                                     'parentId': data.data.category.parentId,
                                     'desc':data.data.category.desc,
-                                    'title':item.desc,
+                                    'title':'【规则描述】'+data.data.category.desc,
                                     'status':data.data.category.status,
                                     'reviewDeadline':x,
                                     'applyDeadline':y,
@@ -907,10 +968,10 @@ function ztree() {
 
         });
         $(".icon02_ico_docu").bind("mouseover",function () {
-           $(this).attr("title","申报类");
+           $(this).attr("title","申报审核类");
         });
         $(".icon06_ico_docu").bind("mouseover",function () {
-            $(this).attr("title","导入类");
+            $(this).attr("title","导入复核类");
         });
         $(document).on("click","#importRequired",function () {
             var options=$("#importRequired option:selected");

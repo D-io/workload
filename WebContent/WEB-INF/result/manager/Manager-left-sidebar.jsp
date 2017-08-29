@@ -17,8 +17,8 @@
                     <img src="<%=request.getContextPath()%>/css/images/img.png" alt="..." class="img-circle profile_img">
                 </span>
        </div>
-       <div class="profile_info">
-           <span style="margin-right: 100px;">欢迎,</span>
+       <div class="profile_info" style="padding-top: 17px;">
+           <span>欢迎,</span>
            <span class="userName"></span>
        </div>
     <%--  <span style="font-size: 16px;">信息与软件工程学院
