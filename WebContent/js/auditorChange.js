@@ -82,9 +82,11 @@ function auditworkload() {
                 $.post(reviewerCheckUrl+"?"+"itemId="+passItemId+"&status=2",function () {
                     alert('操作成功！');
                     $("#reviewe_"+passItemId).text("审核通过");
-
+                    $("#pass_"+passItemId).attr("disabled","disabled");
+                    $("#refuse_"+passItemId).attr("disabled","disabled");
                 })
             });
+            $(document).off("click",".refuse");
            $(document).on("click",".refuse",function () {
                var reflag=this.id;
                var refuItemId=reflag.match(/\d+/g);
@@ -95,6 +97,8 @@ function auditworkload() {
                    $.post(reviewerCheckUrl+"?"+"itemId="+refuItemId+"&status=5"+"&message="+refudesc,function () {
                        alert('操作成功！');
                        $("#reviewe_"+refuItemId).text("审核拒绝");
+                       $("#pass_"+refuItemId).attr("disabled","disabled");
+                       $("#refuse_"+refuItemId).attr("disabled","disabled");
                        $("#refuseModal").modal("hide");
                    })
                });
@@ -388,7 +392,7 @@ function showapplydata(item) {
         var Info = item[t];
         $(".showDesc").append(rowInfo);
 
-        for (var j = 0; j < 14; j++)//单元格
+        for (var j = 0; j < 13; j++)//单元格
         {
             $(".showDesc tr:last").append(cellInfo);
         }
@@ -425,7 +429,7 @@ function showapplydata(item) {
 
         $(".showDesc tr:last td:eq(9)").text(otherstr);
         $(".showDesc tr:last td:eq(10)").text(Info.version);
-        $(".showDesc tr:last td:eq(11)").text($(".checkDeadT_"+Info.categoryId).text());
+       /* $(".showDesc tr:last td:eq(11)").text($(".checkDeadT_"+Info.categoryId).text());*/
         var statusName;
         switch (Info.status) {
             case -1:
@@ -450,11 +454,11 @@ function showapplydata(item) {
                 statusName = '审核拒绝';
                 break;
         }
-        $(".showDesc tr:last td:eq(12)").text(statusName);
-        $(".showDesc tr:last td:eq(12)").attr("id","reviewe_"+Info.itemId);
+        $(".showDesc tr:last td:eq(11)").text(statusName);
+        $(".showDesc tr:last td:eq(11)").attr("id","reviewe_"+Info.itemId);
 
         var act = "<a class=\"btn btn-success pass\" id=\"pass_" + Info.itemId + "\">审核通过</a><a class=\"btn btn-danger refuse\" data-toggle=\"modal\" data-target=\"#refuseModal\" id=\"refuse_" + Info.itemId + "\">审核拒绝</a> ";
-        $(".showDesc tr:last td:eq(13)").append(act);
+        $(".showDesc tr:last td:eq(12)").append(act);
     }
 
 }
@@ -474,9 +478,9 @@ function showall(menu_list, parent) {
             showall(menu_list[menu].children, $(li).children().eq(0));
         }
         else if(menu_list[menu].importRequired==0){
-            $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<button  id='auditor_" + menu_list[menu].categoryId + "' class='btn btn-primary auditor' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击审核</button><div style='clear: both;'></div>").appendTo(parent);
-       $(".hiddendistrict").append("<span class='checkDeadT_"+menu_list[menu].categoryId+"' style='display: none;'>"+getLocalTime(menu_list[menu].reviewDeadline)+"</span>");
-        }
+            $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: auto; '> <thead> <tr role='row'> <th class='sorting' style='widows:th:210px;'>审核截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span></th> <th class='sorting' style='width:40px;'><button  id='auditor_" + menu_list[menu].categoryId + "' class='btn btn-primary auditor' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击审核</button></th> </table><div style='clear: both;'></div>").appendTo(parent);
+      /* $(".hiddendistrict").append("<span class='checkDeadT_"+menu_list[menu].categoryId+"' style='display: none;'>"+getLocalTime(menu_list[menu].reviewDeadline)+"</span>");
+  */      }
 
     }
 }

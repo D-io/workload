@@ -213,7 +213,10 @@
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">附件信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                   <a data-toggle="modal" data-target="#myModal">上传附件</a>
+                                   <%-- <a class="downloadFile" style="margin-left: 20px;float: right;margin-top: 4px;display: none">下载</a> <a class="revieFile" style="float: right;margin-top: 4px;;display: none">重传</a>
+                                 --%>
+                                    <span class='filestyle'><input type="file" name='testfile' id='testfile' style="float: left"><span class="showhidden"></span></span>
+
                                 </div>
                             </div>
                             <div class="form-group item_manager" style="display: none;">
@@ -380,7 +383,8 @@
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">附件信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <a class="downloadAdded">下载</a><a class="uploadMore" data-toggle="modal" data-target="#myModal">重传</a>
+                                    <span class='filestyle'><input type="file" name="revfile" id='revfile' style="float: left"><span class="showagain"></span></span>
+
                                 </div>
 
                             </div>
@@ -448,7 +452,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <%--  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -460,10 +464,10 @@
                         </h4>
                     </div>
                     <div class="modal-body">
-                        <%--<div class="explain" style="margin-bottom: 5px;" >
+                        &lt;%&ndash;<div class="explain" style="margin-bottom: 5px;" >
                             特别提示：上传文件时，请传入合法格式的文件，“上传”与“提交”是两个不同操作，“上传”文件后，须检查无误后再行“提交”。一旦提交，不可更改；
                             没有“提交”之前，可以更新文件（须确保文件有修改，否则无法更新）。“上传”、“提交”之后，均可下载查阅。
-                        </div>--%>
+                        </div>&ndash;%&gt;
                         <div class="form-group">
                             <label class="col-sm-3 control-label " >上传文件</label>
 
@@ -486,8 +490,7 @@
                     -->
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
-        </div>
-
+        </div>--%>
 
     </div>
 </div>
