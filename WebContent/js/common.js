@@ -103,7 +103,18 @@ $(document).ready(function () {
             /* $('#folder').popover('hide');*/
             $(".reviewerApply").popover('hide');
         }
+        if (!target.hasClass('click-1')) {
+            /* $('#folder').popover('hide');*/
+            $(".togglefirst").hide();
+        }
 
+    });
+    $(document).on("click",".click-group",function () {
+       switch (this.id){
+           case click1:
+               $(".togglefirst").show();
+               break;
+       }
     });
     /*auditor-import*/
 
