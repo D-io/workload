@@ -26,14 +26,17 @@ import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.type.ItemStatus;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.OBJECT_MAPPER;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
@@ -58,6 +61,9 @@ public class ReviewerManageAspectImpl implements IAspect {
 
 	@Autowired
 	private HistoryService historyService;
+
+	@Autowired
+	private TeacherWorkloadService teacherWorkloadService;
 
 	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ReviewManageController.checkItems(..))")
 	private void reviewPointCut() {
@@ -98,8 +104,16 @@ public class ReviewerManageAspectImpl implements IAspect {
 		history.setType("apply");
 		history.setAimUserId(item.getOwnerId());
 
+		//修改教师对应的工作量
+		TeacherWorkload teacherWorkload = teacherWorkloadService.getTeacherWorkload(item.getOwnerId(),getCurrentSemester());
+		if(CHECKED.equals(checkStatus.getStatus())) {
+			teacherWorkload.setCheckedWorkload(teacherWorkload.getCheckedWorkload() + item.getWorkload());
+		}
+		teacherWorkload.setUncheckedWorkload(teacherWorkload.getUncheckedWorkload() - item.getWorkload());
+		boolean recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
+
 		boolean saveSuccess = historyService.saveHistory(history);
-		if (!saveSuccess) {
+		if (!saveSuccess || !recordSuccess) {
 			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
 		} else {
 			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");

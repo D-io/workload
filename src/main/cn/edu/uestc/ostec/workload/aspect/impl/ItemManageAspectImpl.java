@@ -23,6 +23,7 @@ import java.util.List;
 
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
+import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
 import cn.edu.uestc.ostec.workload.pojo.History;
@@ -36,10 +37,14 @@ import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.GROUP;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ROLE_PROPOSER;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ROLE_REVIEWER;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.SINGLE;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
@@ -157,8 +162,30 @@ public class ItemManageAspectImpl implements IAspect {
 			history.setType(APPLY_SELF.equals(importedRequired) ? "apply" : "import");
 			history.setAimUserId(itemDto.getReviewerId());
 
+			boolean recordSuccess = false;
+
+			if (GROUP.equals(itemDto.getIsGroup()) && APPLY_SELF
+					.equals(itemDto.getImportRequired())) {
+				List<ChildWeight> childWeightList = itemDto.getChildWeightList();
+				Double groupWorkload = itemDto.getWorkload();
+				for (ChildWeight childWeight : childWeightList) {
+					TeacherWorkload teacherWorkload = teacherWorkloadService
+							.getTeacherWorkload(childWeight.getUserId(), getCurrentSemester());
+					teacherWorkload.setUncheckedWorkload(
+							teacherWorkload.getUncheckedWorkload() + groupWorkload * childWeight
+									.getWeight());
+					recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
+				}
+			} else {
+				TeacherWorkload teacherWorkload = teacherWorkloadService
+						.getTeacherWorkload(itemDto.getOwnerId(), getCurrentSemester());
+				teacherWorkload.setUncheckedWorkload(
+						teacherWorkload.getUncheckedWorkload() + itemDto.getWorkload());
+				recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
+			}
+
 			boolean saveSuccess = historyService.saveHistory(history);
-			if (!saveSuccess) {
+			if (!saveSuccess || !recordSuccess) {
 				LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
 			} else {
 				LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
@@ -187,6 +214,9 @@ public class ItemManageAspectImpl implements IAspect {
 		Item item = itemService.findItem(itemId, getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
 
+		TeacherWorkload teacherWorkload = teacherWorkloadService
+				.getTeacherWorkload(userId, getCurrentSemester());
+
 		History history = new History();
 		history.setVersion(getCurrentSemester());
 		history.setUserId(userId);
@@ -198,6 +228,13 @@ public class ItemManageAspectImpl implements IAspect {
 		String operation = null;
 		if (CHECKED.equals(status)) {
 			operation = "通过工作量项目：" + item.getItemName() + "。";
+
+			//通过之后，通过的工作量加，预期的工作量减
+			teacherWorkload
+					.setCheckedWorkload(teacherWorkload.getCheckedWorkload() + item.getWorkload());
+			teacherWorkload.setUncheckedWorkload(
+					teacherWorkload.getUncheckedWorkload() - item.getWorkload());
+			teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 		} else if (DENIED.equals(status)) {
 			operation = "存疑工作量项目：" + item.getItemName() + "。";
 		}
@@ -243,8 +280,15 @@ public class ItemManageAspectImpl implements IAspect {
 		history.setType("apply");
 		history.setAimUserId(itemDto.getReviewerId());
 
+		//修改待审核的工作量
+		TeacherWorkload teacherWorkload = teacherWorkloadService
+				.getTeacherWorkload(itemDto.getOwnerId(), getCurrentSemester());
+		teacherWorkload.setUncheckedWorkload(
+				teacherWorkload.getUncheckedWorkload() + itemDto.getWorkload());
+		boolean recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
+
 		boolean saveSuccess = historyService.saveHistory(history);
-		if (!saveSuccess) {
+		if (!saveSuccess || !recordSuccess) {
 			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
 		} else {
 			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
@@ -262,11 +306,13 @@ public class ItemManageAspectImpl implements IAspect {
 			return;
 		}
 
+		ItemDto oldItemDto = (ItemDto) restResponse.getData().get("oldItem");
+
 		Object[] args = getParameters(joinPoint);
 		Integer itemId = (Integer) args[0];
 		String role = args[1].toString();
 		String roleName = null;
-		if(ROLE_REVIEWER.equals(role)) {
+		if (ROLE_REVIEWER.equals(role)) {
 			roleName = "审核人";
 		} else {
 			roleName = "申报人";
@@ -274,6 +320,7 @@ public class ItemManageAspectImpl implements IAspect {
 
 		Item item = itemService.findItem(itemId, getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
+		Integer importRequired = itemDto.getImportRequired();
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
@@ -292,8 +339,24 @@ public class ItemManageAspectImpl implements IAspect {
 			history.setAimUserId(itemDto.getOwnerId());
 		}
 
+		TeacherWorkload teacherWorkload = teacherWorkloadService.getTeacherWorkload(item.getOwnerId(),getCurrentSemester());
+		//预计的工作量加
+		if ((ROLE_REVIEWER.equals(role) && APPLY_SELF.equals(importRequired)) || (
+				ROLE_PROPOSER.equals(role) && IMPORT_EXCEL.equals(importRequired))) {
+			if (CHECKED.equals(oldItemDto.getStatus()) || DENIED.equals(oldItemDto.getStatus())) {
+				teacherWorkload.setUncheckedWorkload(teacherWorkload.getUncheckedWorkload() + item.getWorkload());
+			}
+		}
+
+		boolean recordSuccess = true;
+		if(CHECKED.equals(oldItemDto.getStatus())) {
+			//通过的工作量减
+			teacherWorkload.setCheckedWorkload(teacherWorkload.getCheckedWorkload() - item.getWorkload());
+		}
+		recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
+
 		boolean saveSuccess = historyService.saveHistory(history);
-		if (!saveSuccess) {
+		if (!saveSuccess || !recordSuccess) {
 			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
 		} else {
 			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");

@@ -33,11 +33,13 @@ import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
+import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
+import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 
@@ -81,6 +83,9 @@ public class ItemManageController extends ApplicationController {
 
 	@Autowired
 	private TeacherService teacherService;
+
+	@Autowired
+	private TeacherWorkloadService teacherWorkloadService;
 
 	/**
 	 * 管理员对条目信息进行部分修改
@@ -152,6 +157,8 @@ public class ItemManageController extends ApplicationController {
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
+		Map<String, Object> data = getData();
+		data.put("oldItem",itemDto);
 		Integer importRequired = itemDto.getImportRequired();
 
 		if ((ROLE_REVIEWER.equals(role) && APPLY_SELF.equals(importRequired)) || (
@@ -166,7 +173,6 @@ public class ItemManageController extends ApplicationController {
 			return systemErrResponse("重置状态失败");
 		}
 
-		Map<String, Object> data = getData();
 		data.put("item", itemConverter.poToDto(item));
 
 		return successResponse(data);

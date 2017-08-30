@@ -59,7 +59,7 @@
     set
       teacher_name = #{teacherName,jdbcType=VARCHAR},
       professional_title = #{professionalTitle,jdbcType=INTEGER},
-      checeked_workload = #{checkedWorkload,jdbcType=DOUBLE},
+      checked_workload = #{checkedWorkload,jdbcType=DOUBLE},
       unchecked_workload = #{uncheckedWorkload,jdbcType=DOUBLE},
       checked_items = #{checkedItems,jdbcType=INTEGER},
       unchecked_items = #{uncheckedItems,jdbcType=INTEGER},
