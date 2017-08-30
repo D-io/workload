@@ -27,7 +27,7 @@
   <context-param>
     <description>单点登出服务器地址</description>
     <param-name>casServerContextPath</param-name>
-    <param-value>https://portal.ostec.wshugen.cn:8443/authcas</param-value>
+    <param-value>https://ostec.uestc.edu.cn:443/authcas</param-value>
   </context-param>
   
   <!-- 文件上传路径配置 BEGIN -->
@@ -99,7 +99,7 @@
     <!-- 服务器名 -->
     <init-param>
       <param-name>serverName</param-name>
-      <param-value>http://127.0.0.1:8080</param-value>
+      <param-value>http://202.115.16.81:8080</param-value>
     </init-param>
   </filter>
   <filter-mapping>
@@ -121,12 +121,12 @@
     <!-- 请求认证的服务器 -->
     <init-param>
       <param-name>serverName</param-name>
-      <param-value>http://127.0.0.1:8080</param-value>
+      <param-value>http://202.115.16.81:8080</param-value>
     </init-param>
     <!-- 信任库配置 -->
     <init-param>
       <param-name>sslConfigFile</param-name>
-      <param-value>E:\ssl\sslconf.properties</param-value>
+      <param-value>/home/zjs/sslConf/sslconf.properties</param-value>
     </init-param>
     <!-- 编码配置 -->
     <init-param>

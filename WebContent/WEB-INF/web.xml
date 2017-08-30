@@ -27,7 +27,7 @@
   <context-param>
     <description>单点登出服务器地址</description>
     <param-name>casServerContextPath</param-name>
-    <param-value>https://portal.ostec.wshugen.cn:8443/authcas</param-value>
+    <param-value>https://ostec.uestc.edu.cn:443/authcas</param-value>
   </context-param>
   
   <!-- 文件上传路径配置 BEGIN -->

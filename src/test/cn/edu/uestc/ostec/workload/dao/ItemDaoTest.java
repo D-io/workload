@@ -102,7 +102,9 @@ public class ItemDaoTest extends BaseTest {
 //		}
 //		System.out.println(categoryDao.selectYears());
 //		System.out.println(itemConverter.poToDto(itemDao.select(28)).getDescAndValues());
-		System.out.println(itemService.selectTotalWorkload(5130121,null,"2017-2018-1"));
+//		System.out.println(itemService.selectTotalWorkload(5130121,null,"2017-2018-1"));
+		Item item = itemService.findItem(23,"2017-2018-1");
+		System.out.println(itemConverter.poToDto(item).getFileName());
 	}
 
 }

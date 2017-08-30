@@ -442,24 +442,36 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		List<Integer> statusList = new ArrayList<>();
 		if (isEmptyNumber(teacherId)) {
 			teacherId = user.getUserId();
-			statusList.add(CHECKED);
-			data.put("totalWorkload",
-					itemService.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester())
-							.getWorkload());
 		} else {
 			if (!getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
 				return invalidOperationResponse("非法访问");
 			}
-			if ("checked".equals(option)) {
-				statusList.add(CHECKED);
-			} else if ("unchecked".equals(option)) {
-				statusList.addAll(getUncheckedStatus());
-			} else {
-				return parameterNotSupportResponse("参数有误");
-			}
+		}
+
+		if ("checked".equals(option)) {
+			statusList.add(CHECKED);
+		} else if ("unchecked".equals(option)) {
+			statusList.addAll(getUncheckedStatus());
+		} else {
+			return parameterNotSupportResponse("参数有误");
 		}
 
 		List<ItemDto> itemList = findItems(null, statusList, teacherId, getCurrentSemester());
+		TotalWorkloadAndCount checkedWorkload = itemService
+				.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester());
+		TotalWorkloadAndCount nonCheckedWorkload = itemService
+				.selectTotalWorkload(teacherId, null, getCurrentSemester());
+
+		checkedWorkload = (null == checkedWorkload ? EMPTY_WORKLOAD : checkedWorkload);
+		nonCheckedWorkload = (null == nonCheckedWorkload ? EMPTY_WORKLOAD : nonCheckedWorkload);
+		TeacherWorkload teacherWorkload = new TeacherWorkload();
+		teacherWorkload.setCheckedWorkload(checkedWorkload.getWorkload());
+		teacherWorkload.setCheckedItems(checkedWorkload.getCount());
+
+		teacherWorkload.setUncheckedItems(nonCheckedWorkload.getCount());
+		teacherWorkload.setUncheckedWorkload(nonCheckedWorkload.getWorkload());
+		teacherWorkload.setTotalWorkload(
+				teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
 
 		if (isEmptyList(itemList)) {
 			return successResponse();
@@ -467,6 +479,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		data.put("itemDtoList", itemList);
 		data.put("recordCount", itemList.size());
+		data.put("teacherWorkload", teacherWorkload);
 
 		return successResponse(data);
 	}

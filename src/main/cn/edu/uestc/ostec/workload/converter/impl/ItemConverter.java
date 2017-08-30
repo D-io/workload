@@ -121,7 +121,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 
 		itemDto.setFileName((null == itemDto.getProof() || itemDto.getProof().equals(ZERO_INT) ?
 				null :
-				FileHelper.getFileName(fileEvent.downloadFile(itemDto.getProof()).getPath()  )));
+				FileHelper.getFileName(fileEvent.downloadFile(itemDto.getProof()).getPath())));
 
 		//		double workload = FormulaCalculate
 		//				.calculate(category.getFormula(), itemDto.getParameterValues());
