@@ -72,15 +72,15 @@ public class ItemDaoTest extends BaseTest {
 
 	@Test
 	public void insert() throws Exception {
-		//		item.setItemId(2);
-		//		System.out.println(itemDao.insert(item));
-		//		System.out.println(historyService.getHistoriesByType("apply").size());
+//		item.setItemId(2);
+//		System.out.println(itemDao.insert(item));
+//		System.out.println(historyService.getHistoriesByType("apply").size());
 		List<Teacher> teacherList = teacherDao.findTeachers();
 		RoleInfo roleInfo = new RoleInfo();
 		roleInfo.setRole(TEACHER.getCode());
 		roleInfo.setRoleName(TEACHER.getDesc());
-		for (Teacher teacher : teacherList) {
-			userRoleEvent.appendRoleInfo(teacher.getTeacherId(), roleInfo);
+		for(Teacher teacher:teacherList) {
+			userRoleEvent.appendRoleInfo(teacher.getTeacherId(),roleInfo);
 		}
 	}
 
@@ -92,34 +92,34 @@ public class ItemDaoTest extends BaseTest {
 
 	@Test
 	public void delete() throws Exception {
-		//		System.out.println(itemDao.delete(1));
-		//		System.out.println(itemDao.selectAll(null,null,null));
+//		System.out.println(itemDao.delete(1));
+//		System.out.println(itemDao.selectAll(null,null,null));
 	}
 
 	@Test
 	public void test() {
-		//		List<Category> categoryList = categoryDao.selectAll("2017-2018-1");
-		//		for(Category category:categoryList) {
-		//			category.setApplyDeadline(1517414400);
-		//			category.setReviewDeadline(1517760000);
-		//			categoryDao.update(category);
-		//		}
-		//		System.out.println(categoryDao.selectYears());
-		//		System.out.println(itemConverter.poToDto(itemDao.select(28)).getDescAndValues());
-		//		System.out.println(itemService.selectTotalWorkload(5130121,null,"2017-2018-1"));
-		//		Item item = itemService.findItem(23,"2017-2018-1");
-		//		System.out.println(itemConverter.poToDto(item).getFileName());
-		//		List<Teacher> teacherList = teacherDao.findTeachers();
-		//		for(Teacher teacher:teacherList) {
-		//			TeacherWorkload teacherWorkload = new TeacherWorkload();
-		//			teacherWorkload.setTeacherId(teacher.getTeacherId());
-		//			teacherWorkload.setTeacherName(teacher.getName());
-		//			teacherWorkload.setProfessionalTitle(teacher.getProfessionalTitle());
-		//			teacherWorkloadDao.insert(teacherWorkload);
-		//			teacherWorkloadDao.select(null,"2017-2018-1",null);
-		//		}
-		//		System.out.println(itemDao.selectAll("2017-2018-1",null,null,null,3210343,null,0).size());
-		System.out.println(itemService.findAll(null, null, 3210343, 1, 1, "2017-2018-1", 0));
+//		List<Category> categoryList = categoryDao.selectAll("2017-2018-1");
+//		for(Category category:categoryList) {
+//			category.setApplyDeadline(1517414400);
+//			category.setReviewDeadline(1517760000);
+//			categoryDao.update(category);
+//		}
+//		System.out.println(categoryDao.selectYears());
+//		System.out.println(itemConverter.poToDto(itemDao.select(28)).getDescAndValues());
+//		System.out.println(itemService.selectTotalWorkload(5130121,null,"2017-2018-1"));
+//		Item item = itemService.findItem(23,"2017-2018-1");
+//		System.out.println(itemConverter.poToDto(item).getFileName());
+//		List<Teacher> teacherList = teacherDao.findTeachers();
+//		for(Teacher teacher:teacherList) {
+//			TeacherWorkload teacherWorkload = new TeacherWorkload();
+//			teacherWorkload.setTeacherId(teacher.getTeacherId());
+//			teacherWorkload.setTeacherName(teacher.getName());
+//			teacherWorkload.setProfessionalTitle(teacher.getProfessionalTitle());
+//			teacherWorkloadDao.insert(teacherWorkload);
+//			teacherWorkloadDao.select(null,"2017-2018-1",null);
+//		}
+//		System.out.println(itemDao.selectAll("2017-2018-1",null,null,null,3210343,null,0).size());
+//		System.out.println(itemService.findAll(null,null,3210343,1,2,"2017-2018-1"));
 	}
 
 }

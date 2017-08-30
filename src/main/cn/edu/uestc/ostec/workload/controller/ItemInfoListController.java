@@ -102,52 +102,41 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return successResponse();
 		}
 
-//		List<TeacherWorkload> teacherWorkloads = teacherWorkloadService.getAllWorkload(getCurrentSemester());
-
 		List<TeacherWorkload> teacherWorkloadList = new ArrayList<>();
-		for (Teacher teacher : teacherList) {
-			int id = teacher.getTeacherId();
-
-			TeacherWorkload teacherWorkload = new TeacherWorkload();
-			teacherWorkload.setTeacherId(teacher.getTeacherId());
-			teacherWorkload.setTeacherName(teacher.getName());
-			teacherWorkload.setProfessionalTitle(teacher.getProfessionalTitle());
-
-			TotalWorkloadAndCount checkedWorkload = itemService
-					.selectTotalWorkload(id, CHECKED, getCurrentSemester());
-			//			TotalWorkloadAndCount nonCheckedWorkload = itemService
-			//					.selectTotalWorkload(id, NON_CHECKED, getCurrentSemester());
-			//			TotalWorkloadAndCount doubtedWorkload = itemService
-			//					.selectTotalWorkload(id, DOUBTED, getCurrentSemester());
-			//			TotalWorkloadAndCount doubtedCheckedWorkload = itemService
-			//					.selectTotalWorkload(id, DOUBTED_CHECKED, getCurrentSemester());
-			TotalWorkloadAndCount nonCheckedWorkload = itemService
-					.selectTotalWorkload(id, null, getCurrentSemester());
-
-			checkedWorkload = (null == checkedWorkload ? EMPTY_WORKLOAD : checkedWorkload);
-			nonCheckedWorkload = (null == nonCheckedWorkload ? EMPTY_WORKLOAD : nonCheckedWorkload);
-			//			doubtedWorkload = (null == doubtedWorkload ? EMPTY_WORKLOAD : doubtedWorkload);
-			//			doubtedCheckedWorkload = (null == doubtedCheckedWorkload ?
-			//					EMPTY_WORKLOAD :
-			//					doubtedCheckedWorkload);
-
-			teacherWorkload.setCheckedWorkload(checkedWorkload.getWorkload());
-			teacherWorkload.setCheckedItems(checkedWorkload.getCount());
-
-			teacherWorkload.setUncheckedItems(nonCheckedWorkload.getCount());
-			teacherWorkload.setUncheckedWorkload(nonCheckedWorkload.getWorkload());
-			teacherWorkload.setTotalWorkload(
-					teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
-
-			//			teacherWorkload.setUncheckedWorkload(
-			//					nonCheckedWorkload.getWorkload() + doubtedCheckedWorkload.getWorkload()
-			//							+ doubtedWorkload.getWorkload());
-			//			teacherWorkload.setUncheckedItems(
-			//					nonCheckedWorkload.getCount() + doubtedCheckedWorkload.getCount()
-			//							+ doubtedWorkload.getCount());
-
-			teacherWorkloadList.add(teacherWorkload);
+		if (isEmptyNumber(teacherId)) {
+			teacherWorkloadList = teacherWorkloadService.getAllWorkload(getCurrentSemester());
+		} else {
+			teacherWorkloadList.add(teacherWorkloadService
+					.getTeacherWorkload(teacherId, getCurrentSemester()));
 		}
+
+		//		List<TeacherWorkload> teacherWorkloadList = new ArrayList<>();
+		//		for (Teacher teacher : teacherList) {
+		//			int id = teacher.getTeacherId();
+		//
+		//			TeacherWorkload teacherWorkload = new TeacherWorkload();
+		//			teacherWorkload.setTeacherId(teacher.getTeacherId());
+		//			teacherWorkload.setTeacherName(teacher.getName());
+		//			teacherWorkload.setProfessionalTitle(teacher.getProfessionalTitle());
+		//
+		//			TotalWorkloadAndCount checkedWorkload = itemService
+		//					.selectTotalWorkload(id, CHECKED, getCurrentSemester());
+		//			TotalWorkloadAndCount nonCheckedWorkload = itemService
+		//					.selectTotalWorkload(id, null, getCurrentSemester());
+		//
+		//			checkedWorkload = (null == checkedWorkload ? EMPTY_WORKLOAD : checkedWorkload);
+		//			nonCheckedWorkload = (null == nonCheckedWorkload ? EMPTY_WORKLOAD : nonCheckedWorkload);
+		//
+		//			teacherWorkload.setCheckedWorkload(checkedWorkload.getWorkload());
+		//			teacherWorkload.setCheckedItems(checkedWorkload.getCount());
+		//
+		//			teacherWorkload.setUncheckedItems(nonCheckedWorkload.getCount());
+		//			teacherWorkload.setUncheckedWorkload(nonCheckedWorkload.getWorkload());
+		//			teacherWorkload.setTotalWorkload(
+		//					teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
+		//
+		//			teacherWorkloadList.add(teacherWorkload);
+		//		}
 
 		if (("yes".equals(ifExport))) {
 			return getExportWorkloadExcel(teacherWorkloadList);

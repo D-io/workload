@@ -45,6 +45,7 @@
                 AND professional_title = #{professionalTitle}
             </if>
         </where>
+        ORDER BY convert(teacher_name using gbk) ASC
     </select>
 
     <insert id="insert">
