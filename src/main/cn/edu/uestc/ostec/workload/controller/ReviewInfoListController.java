@@ -294,76 +294,76 @@ public class ReviewInfoListController extends ApplicationController {
 
 	}
 
-	/**
-	 * 条件查询 & 分页查询
-	 *
-	 * @param categoryId 类目编号
-	 * @param ownerId    教师编号
-	 * @return RestResponse
-	 */
-	@RequestMapping(value = "items-all/paginate", method = GET)
-	public RestResponse getAllItems(
-			@RequestParam(required = false)
-					Integer categoryId,
-			@RequestParam(required = false)
-					Integer isGroup,
-			@RequestParam(required = false)
-					Integer ownerId,
-			@RequestParam(required = false)
-					String isExport,
-			@RequestParam(required = false)
-					Integer pageNum,
-			@RequestParam(required = false)
-					Integer pageSize) {
-
-		// 用户验证
-		User user = getUser();
-		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
-			return invalidOperationResponse("非法请求");
-		}
-
-		Map<String, Object> data = getData();
-		pageSize = (null == pageSize ? 1000000 : pageSize);
-		pageNum = (null == pageNum ? 1 : pageNum);
-
-		Map<String, Object> info = itemService
-				.findAll(categoryId, null, ownerId, isGroup, pageNum, pageSize,getCurrentSemester());
-		List<Item> itemList = (List<Item>) info.get("itemList");
-		Integer pageCount = (Integer) info.get("pageCount");
-		Long totalLines = (Long) info.get("totalLines");
-
-		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
-		List<ItemDto> newItemDtoList = new ArrayList<>();
-		if (null == categoryId) {
-			for (ItemDto itemDto : itemDtoList) {
-				if (!itemDto.getReviewerId().equals(user.getUserId())) {
-					newItemDtoList.add(itemDto);
-				}
-			}
-			itemDtoList.removeAll(newItemDtoList);
-		}
-
-		double workload = ZERO_DOUBLE;
-		for (ItemDto itemDto : itemDtoList) {
-			Integer status = itemDto.getStatus();
-			if (CHECKED.equals(status)) {
-				workload += itemDto.getWorkload();
-			}
-		}
-
-		if (null == isExport) {
-			data.put("itemDtoList", itemDtoList);
-			data.put("pageCount", pageCount);
-			data.put("totalLines", totalLines);
-			data.put("totalWorkload", workload);
-			return successResponse(data);
-		} else if ("yes".equals(isExport)) {
-			return getExportExcel(itemDtoList);
-		} else {
-			return parameterNotSupportResponse("参数有误");
-		}
-
-	}
+//	/**
+//	 * 条件查询 & 分页查询
+//	 *
+//	 * @param categoryId 类目编号
+//	 * @param ownerId    教师编号
+//	 * @return RestResponse
+//	 */
+//	@RequestMapping(value = "items-all/paginate", method = GET)
+//	public RestResponse getAllItems(
+//			@RequestParam(required = false)
+//					Integer categoryId,
+//			@RequestParam(required = false)
+//					Integer isGroup,
+//			@RequestParam(required = false)
+//					Integer ownerId,
+//			@RequestParam(required = false)
+//					String isExport,
+//			@RequestParam(required = false)
+//					Integer pageNum,
+//			@RequestParam(required = false)
+//					Integer pageSize) {
+//
+//		// 用户验证
+//		User user = getUser();
+//		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
+//			return invalidOperationResponse("非法请求");
+//		}
+//
+//		Map<String, Object> data = getData();
+//		pageSize = (null == pageSize ? 1000000 : pageSize);
+//		pageNum = (null == pageNum ? 1 : pageNum);
+//
+//		Map<String, Object> info = itemService
+//				.findAll(categoryId, null, ownerId, isGroup, pageNum, pageSize,getCurrentSemester());
+//		List<Item> itemList = (List<Item>) info.get("itemList");
+//		Integer pageCount = (Integer) info.get("pageCount");
+//		Long totalLines = (Long) info.get("totalLines");
+//
+//		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
+//		List<ItemDto> newItemDtoList = new ArrayList<>();
+//		if (null == categoryId) {
+//			for (ItemDto itemDto : itemDtoList) {
+//				if (!itemDto.getReviewerId().equals(user.getUserId())) {
+//					newItemDtoList.add(itemDto);
+//				}
+//			}
+//			itemDtoList.removeAll(newItemDtoList);
+//		}
+//
+//		double workload = ZERO_DOUBLE;
+//		for (ItemDto itemDto : itemDtoList) {
+//			Integer status = itemDto.getStatus();
+//			if (CHECKED.equals(status)) {
+//				workload += itemDto.getWorkload();
+//			}
+//		}
+//
+//		if (null == isExport) {
+//			data.put("itemDtoList", itemDtoList);
+//			data.put("pageCount", pageCount);
+//			data.put("totalLines", totalLines);
+//			data.put("totalWorkload", workload);
+//			return successResponse(data);
+//		} else if ("yes".equals(isExport)) {
+//			return getExportExcel(itemDtoList);
+//		} else {
+//			return parameterNotSupportResponse("参数有误");
+//		}
+//
+//	}
 
 	/**
 	 * 获取审核人负责的类目下的对应导入方式对应状态的工作量类目信息

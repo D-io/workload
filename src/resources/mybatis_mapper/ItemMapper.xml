@@ -17,7 +17,7 @@
         <result column="proof" property="proof" jdbcType="INTEGER"/>
         <result column="is_group" property="isGroup" jdbcType="INTEGER"/>
         <result column="other_json" property="otherJson" jdbcType="VARCHAR"/>
-        <result column="version" property="version" jdbcType="VARCHAR" />
+        <result column="version" property="version" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -70,7 +70,8 @@
         select
         <include refid="Base_Column_List"/>
         from item
-        where status = #{status,jdbcType=INTEGER} and owner_id = #{ownerId,jdbcType=INTEGER} and version = #{version}
+        where status = #{status,jdbcType=INTEGER} and owner_id = #{ownerId,jdbcType=INTEGER} and
+        version = #{version}
     </select>
 
     <update id="updateStatus">
@@ -95,15 +96,16 @@
 
     <select id="selectAll" resultMap="itemResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
-        FROM item
+        DISTINCT item_id, item_name, item.category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc,
+        job_desc, item.status, json_child_weight,proof,is_group,item.other_json,item.version
+        FROM item,category
         <where>
-            status != -1 AND status != 0 AND version = #{version}
+            item.status != -1 AND item.status != 0 AND item.version = #{version}
             <if test="null != categoryId">
-                AND category_id = #{categoryId}
+                AND item.category_id = #{categoryId}
             </if>
             <if test="null != status">
-                AND status = #{status}
+                AND item.status = #{status}
             </if>
             <if test="null != ownerId">
                 AND owner_id = #{ownerId}
@@ -114,21 +116,26 @@
             <if test="null != itemName">
                 AND item_name LIKE CONCAT(CONCAT('%', #{itemName}), '%')
             </if>
+            <if test="null != importedRequired">
+                AND item.category_id = category.category_id
+                AND item.version = category.version
+                AND category.import_required = #{importedRequired}
+            </if>
         </where>
     </select>
 
     <select id="selectWorkload" resultType="cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount">
-    SELECT SUM(workload) workload,COUNT(workload) count FROM item
-    <where>
-        owner_id = #{teacherId} AND version = #{version}
-        <if test="null != status">
-            AND status = #{status}
-        </if>
-        <if test="null == status">
-            AND (status = 1 OR status = 3 OR status = 4)
-        </if>
-    </where>
+        SELECT SUM(workload) workload,COUNT(workload) count FROM item
+        <where>
+            owner_id = #{teacherId} AND version = #{version}
+            <if test="null != status">
+                AND status = #{status}
+            </if>
+            <if test="null == status">
+                AND (status = 1 OR status = 3 OR status = 4)
+            </if>
+        </where>
 
-  </select>
+    </select>
 
 </mapper>

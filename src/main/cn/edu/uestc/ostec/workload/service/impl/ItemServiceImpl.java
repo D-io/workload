@@ -63,14 +63,14 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	@Override
 	public Boolean deleteItem(Integer itemId, String version) {
 
-		return itemDao.delete(itemId,version);
+		return itemDao.delete(itemId, version);
 	}
 
 	@Override
 	public List<ItemDto> findAll(String itemName, Integer categoryId, Integer status,
 			Integer ownerId, Integer isGroup, String version) {
 		List<Item> itemList = itemDao
-				.selectAll(version, itemName, categoryId, status, ownerId, isGroup);
+				.selectAll(version, itemName, categoryId, status, ownerId, isGroup,null);
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
 
 		return itemDtoList;
@@ -78,22 +78,24 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 
 	@Override
 	public Map<String, Object> findAll(Integer categoryId, Integer status, Integer ownerId,
-			Integer isGroup, int pageNum, int pageSize, String version) {
+			int pageNum, int pageSize, String version,Integer importedRequired) {
 
 		PageHelper.startPage(pageNum, pageSize);
-		List<Item> items = itemDao.selectAll(version, null, categoryId, status, ownerId, isGroup);
+		List<Item> items = itemDao
+				.selectAll(version, null, categoryId, status, ownerId, null,importedRequired);
 		List<Item> itemList = new ArrayList<>();
 		for (Item item : items) {
 			itemList.add(item);
 		}
 		Page<Item> page = (Page<Item>) items;
 		long total = page.getTotal();
-		int pageCount = (int) Math.ceil(total / pageSize);
+		int pageCount = (int) (total / pageSize) + 1;
 		Map<String, Object> data = new HashMap<>();
-		data.put("itemList", itemList);
+		data.put("itemList", itemConverter.poListToDtoList(itemList));
 		data.put("pageCount", pageCount);
 		data.put("totalLines", total);
 		return data;
+
 	}
 
 	@Override

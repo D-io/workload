@@ -118,7 +118,9 @@ public interface ItemDao extends BaseDao<Item> {
 			@Param("ownerId")
 					Integer ownerId,
 			@Param("isGroup")
-					Integer isGroup);
+					Integer isGroup,
+			@Param("importedRequired")
+					Integer importedRequired);
 
 	/**
 	 * 查询教师对应状态的工作量条目对应工作量统计汇总

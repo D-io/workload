@@ -204,13 +204,13 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	@RequestMapping(value = "item-all/paginate", method = GET)
 	public RestResponse getAllItems(
 			@RequestParam(required = false)
-					String itemName,
-			@RequestParam(required = false)
 					Integer categoryId,
 			@RequestParam(required = false)
 					Integer status,
 			@RequestParam(required = false)
 					Integer ownerId,
+			@RequestParam(required = false)
+					Integer importedRequired,
 			@RequestParam(required = false)
 					String ifExport,
 			@RequestParam(required = false)
@@ -223,19 +223,14 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return invalidOperationResponse("非法请求");
 		}
 
-		List<ItemDto> itemDtoList = itemService
-				.findAll(itemName, categoryId, status, ownerId, null, getCurrentSemester());
-		if (isEmptyList(itemDtoList)) {
-			return successResponse();
-		}
+		Map<String,Object> selectData = itemService
+				.findAll(categoryId, status, ownerId, pageNum, pageSize,
+						getCurrentSemester(), importedRequired);
 
-		int totalRecords = itemDtoList.size();
+		List<ItemDto> itemDtoList = (List<ItemDto>) selectData.get("itemList");
 
-		Map<String, Object> data = getData();
 		if (null == ifExport) {
-			data.put("itemDtoList", PageHelper.paginate(itemDtoList, pageNum, pageSize));
-			data.put("totalRecords", totalRecords);
-			return successResponse(data);
+			return successResponse(selectData);
 		} else if ("yes".equals(ifExport)) {
 			return getExportExcel(itemDtoList);
 		} else {
