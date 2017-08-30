@@ -166,10 +166,8 @@
                             </select>
                         </div>
                         <div class="col-md-4 col-sm-4 col-xs-12" style="float:right;width:160px;padding-top: 10px;">
-                            <select class="form-control" id="year">
-                                <%--  <option value="1">2017-2018</option>
-                                  <option value="0">2016-2017</option>
-                                  <option value="2">2018-2019</option>--%>
+                            <select class="select2_multiple form-control" multiple="multiple" id="year">
+
                             </select>
                         </div>
                         <div class="dropdown" id="changerole"  style="float:right;padding-top: 13px;">

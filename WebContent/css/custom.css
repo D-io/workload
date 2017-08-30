@@ -348,6 +348,10 @@ html , body{
     border-radius: 4px;
     width: 80%;
 }
+.sorting{
+    text-align: center;
+
+}
 .nav-md .container.body .col-md-3.left_col {
     min-height: 100%;
     width: 230px;
