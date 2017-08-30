@@ -36,6 +36,7 @@ import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
+import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
 import cn.edu.uestc.ostec.workload.support.utils.PageHelper;
 import cn.edu.uestc.ostec.workload.support.utils.TreeGenerateHelper;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
@@ -75,6 +76,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	@Autowired
 	private TeacherService teacherService;
 
+	@Autowired
+	private TeacherWorkloadService teacherWorkloadService;
+
 	/**
 	 * 统计所有教师的工作量情况
 	 *
@@ -97,6 +101,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		if (isEmptyList(teacherList)) {
 			return successResponse();
 		}
+
+//		List<TeacherWorkload> teacherWorkloads = teacherWorkloadService.getAllWorkload(getCurrentSemester());
 
 		List<TeacherWorkload> teacherWorkloadList = new ArrayList<>();
 		for (Teacher teacher : teacherList) {
@@ -223,9 +229,11 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return invalidOperationResponse("非法请求");
 		}
 
-		Map<String,Object> selectData = itemService
-				.findAll(categoryId, status, ownerId, pageNum, pageSize,
-						getCurrentSemester(), importedRequired);
+		pageNum = (null == pageNum || pageNum.equals(ZERO_INT) ? 1 : pageNum);
+
+		Map<String, Object> selectData = itemService
+				.findAll(categoryId, status, ownerId, pageNum, pageSize, getCurrentSemester(),
+						importedRequired);
 
 		List<ItemDto> itemDtoList = (List<ItemDto>) selectData.get("itemList");
 
@@ -236,23 +244,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		} else {
 			return parameterNotSupportResponse();
 		}
-		//		Map<String, Object> info = itemService
-		//				.findAll(categoryId, status, ownerId, null, pageNum, pageSize);
-		//		List<Item> itemList = (List<Item>) info.get("itemList");
-		//		Integer pageCount = (Integer) info.get("pageCount");
-		//		Long totalLines = (Long) info.get("totalLines");
-		//		Map<String, Object> data = getData();
-		//		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
-		//		if (null == ifExport) {
-		//			data.put("itemList", itemDtoList);
-		//			data.put("pageCount", pageCount);
-		//			data.put("totalLines", totalLines);
-		//			return successResponse(data);
-		//		} else if ("yes".equals(ifExport)) {
-		//			return getExportExcel(itemDtoList);
-		//		} else {
-		//			return parameterNotSupportResponse();
-		//		}
 
 	}
 

@@ -7,8 +7,8 @@ out
 target
 
 # 自定义的配置文件
-workload/src/main/jdbc.properties
-workload/WebContent/WEB-INF/web.xml
+src/resources/jdbc.properties
+WebContent/WEB-INF/web.xml
 
 # 第三方工具配置文件
 *.plist
