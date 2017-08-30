@@ -120,12 +120,12 @@ function reset() {
                 $(".totalItem").text("0");
             }
             else {
-                $(".totalItem").text(data.data.totalRecords);
+                $(".totalItem").text(data.data.totalLines);
             }
 
             reviewerResetItem(data);
             var str='';
-            var totalPage=data.data.totalRecords;
+            var totalPage=data.data.totalLines;
             var pageCountNum=Math.ceil(totalPage/10);
             if(pageCountNum<10){
                 for(var pageNum=0;pageNum<pageCountNum;pageNum++){
@@ -190,13 +190,13 @@ function reset() {
                 $(".totalItem").text("0");
             }
             else {
-                $(".totalItem").text(data.data.totalRecords);
+                $(".totalItem").text(data.data.totalLines);
             }
             $(".pagination").empty();
             $(".ResetItem").empty();
             reviewerResetItem(data);
             var str='';
-            var totalPage=data.data.totalRecords;
+            var totalPage=data.data.totalLines;
             var $pageSize=$(".input-sm option:selected").val();
             var pageCountNum=Math.ceil(totalPage/$pageSize);
             if(pageCountNum<10){
@@ -232,8 +232,8 @@ function reset() {
                 pageNum:1,
                 pageSize:$(".input-sm option:selected").val(),
             }, function (data) {
-                $(".totalItem").text(data.data.totalRecords);
-                var totalPage=data.data.totalRecords;
+                $(".totalItem").text(data.data.totalLines);
+                var totalPage=data.data.totalLines;
                 $(".ResetItem").empty();
                 reviewerResetItem(data);
                 var str='';
@@ -241,7 +241,7 @@ function reset() {
                     $(".totalItem").text("0");
                 }
                 else {
-                    $(".totalItem").text(data.data.totalRecords);
+                    $(".totalItem").text(data.data.totalLines);
                 }
                 var $pageSize=$(".input-sm option:selected").val();
                 var pageCountNum=Math.ceil(totalPage/$pageSize);
@@ -360,12 +360,12 @@ function reset() {
                 $(".totalItem").text("0");
             }
             else {
-                $(".totalItem").text(data.data.totalRecords);
+                $(".totalItem").text(data.data.totalLines);
             }
             $(".ResetItem").empty();
             reviewerResetItem(data);
             var str='';
-            var totalPage=data.data.totalRecords;
+            var totalPage=data.data.totalLines;
             var $pageSize=$(".input-sm option:selected").val();
             var pageCountNum=Math.ceil(totalPage/$pageSize);
             if(pageCountNum<10){
@@ -842,9 +842,9 @@ function reviewerResetItem(data) {
     /*if($(".resetNum").length>0){
         $(".ResetItem tr:last td:eq(0)").text();
     }*/
-        if(data.data.itemDtoList&&data.data.itemDtoList.length>0){
-            var analyseList= data.data.itemDtoList;
-            var listLength= data.data.itemDtoList.length;
+        if(data.data.itemList&&data.data.itemList.length>0){
+            var analyseList= data.data.itemList;
+            var listLength= data.data.itemList.length;
             for(var i=0;i<listLength;i++)
             {
                 var Info=analyseList[i];
