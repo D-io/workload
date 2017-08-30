@@ -21,10 +21,10 @@ $(document).ready(function () {
         for(var yearLength=0;yearLength<arry.length;yearLength++){
 
             if(arry[yearLength]==currentYearUrl){
-                $("#year").append("<option selected='true'>"+arry[yearLength]+"</option>");
+                $("#year").append("<option selected='true' style='font-size: 15px;'>"+arry[yearLength]+"</option>");
             }
             else
-                $("#year").append("<option>"+arry[yearLength]+"</option>");
+                $("#year").append("<option style='font-size: 15px;'>"+arry[yearLength]+"</option>");
         }
 
         $("#term").find("option[text=currentScheme]").attr("selected",true);

@@ -39,13 +39,18 @@
             </ul>
             <div id="myTabContent" class="tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
                     <div class="form-group col-sm-3">
                         <select class="form-control" id="ispassed">
                             <option value="0">项目状态</option>
-                            <option value="1">待审核</option>
-                            <option value="2">已通过</option>
+                            <option value="1">待审核/待复核</option>
+                            <option value="2">审核/复核已通过</option>
+                           <%-- <option value="1">待审核</option>
+                            <option value="6">待复核</option>--%>
+                          <%--  <option value="2">复核已通过</option>
+                            <option value="7">审核已通过</option>--%>
                             <option value="3">尚存疑</option>
-                            <option value="4">存疑解决</option>
+                            <option value="4">已解决</option>
                             <option value="5">已拒绝</option>
                         </select>
                     </div>
