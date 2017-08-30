@@ -24,7 +24,7 @@ import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.SubjectDto;
-import cn.edu.uestc.ostec.workload.dto.TeacherWorkload;
+import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
@@ -33,7 +33,6 @@ import cn.edu.uestc.ostec.workload.pojo.Subject;
 import cn.edu.uestc.ostec.workload.pojo.Teacher;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
-import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
@@ -457,6 +456,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		List<ItemDto> itemList = findItems(null, statusList, teacherId, getCurrentSemester());
+
+		//TODO 待建立相应的数据库表之后，从数据库中读取
 		TotalWorkloadAndCount checkedWorkload = itemService
 				.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester());
 		TotalWorkloadAndCount nonCheckedWorkload = itemService

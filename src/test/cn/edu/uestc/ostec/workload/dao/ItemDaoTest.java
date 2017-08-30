@@ -16,6 +16,7 @@ import cn.edu.uestc.ostec.workload.event.UserRoleEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.Teacher;
+import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
@@ -44,6 +45,8 @@ public class ItemDaoTest extends BaseTest {
 
 	private TeacherDao teacherDao;
 
+	private TeacherWorkloadDao teacherWorkloadDao;
+
 	{
 		itemDao = getBean(ItemDao.class);
 		itemConverter = getBean(ItemConverter.class);
@@ -51,6 +54,7 @@ public class ItemDaoTest extends BaseTest {
 		historyService = getBean(HistoryService.class);
 		userRoleEvent = getBean(UserRoleEvent.class);
 		teacherDao = getBean(TeacherDao.class);
+		teacherWorkloadDao = getBean(TeacherWorkloadDao.class);
 		itemService = getBean(ItemService.class);
 		item = new Item();
 		item.setItemId(1);
@@ -103,8 +107,17 @@ public class ItemDaoTest extends BaseTest {
 //		System.out.println(categoryDao.selectYears());
 //		System.out.println(itemConverter.poToDto(itemDao.select(28)).getDescAndValues());
 //		System.out.println(itemService.selectTotalWorkload(5130121,null,"2017-2018-1"));
-		Item item = itemService.findItem(23,"2017-2018-1");
-		System.out.println(itemConverter.poToDto(item).getFileName());
+//		Item item = itemService.findItem(23,"2017-2018-1");
+//		System.out.println(itemConverter.poToDto(item).getFileName());
+		List<Teacher> teacherList = teacherDao.findTeachers();
+		for(Teacher teacher:teacherList) {
+			TeacherWorkload teacherWorkload = new TeacherWorkload();
+			teacherWorkload.setTeacherId(teacher.getTeacherId());
+			teacherWorkload.setTeacherName(teacher.getName());
+			teacherWorkload.setProfessionalTitle(teacher.getProfessionalTitle());
+			teacherWorkloadDao.insert(teacherWorkload);
+			teacherWorkloadDao.select(null,"2017-2018-1",null);
+		}
 	}
 
 }

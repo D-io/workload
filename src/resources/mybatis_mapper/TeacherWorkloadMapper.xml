@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Project: workload（工作量计算系统）
+  ~ File: RegionManagerController.java
+  ~ Author: 张健顺
+  ~ Email: 1224522500@qq.com
+  ~ Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.edu.uestc.ostec.workload.dao.TeacherWorkloadDao">
+    <resultMap id="teacherWorkloadResultMap"
+               type="cn.edu.uestc.ostec.workload.pojo.TeacherWorkload">
+        <id column="teacher_id" property="teacherId" jdbcType="INTEGER"/>
+        <result column="teacher_name" property="teacherName" jdbcType="VARCHAR"/>
+        <result column="professional_title" property="professionalTitle" jdbcType="VARCHAR"/>
+        <result column="checked_workload" property="checkedWorkload" jdbcType="DOUBLE"/>
+        <result column="unchecked_workload" property="uncheckedWorkload" jdbcType="DOUBLE"/>
+        <result column="total_workload" property="totalWorkload" jdbcType="DOUBLE"/>
+        <result column="checked_items" property="checkedItems" jdbcType="INTEGER"/>
+        <result column="unchecked_items" property="uncheckedItems" jdbcType="VARCHAR"/>
+        <result column="version" property="version" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    teacher_id, teacher_name, professional_title, checked_workload, checked_items, unchecked_workload, unchecked_items, total_workload, version
+  </sql>
+
+    <select id="select" resultMap="teacherWorkloadResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM teacher_workload
+        <where>
+            1 = 1
+            <if test="null != teacherId">
+                AND teacher_id = #{teacherId}
+            </if>
+            <if test="null != version">
+                AND version = #{version}
+            </if>
+            <if test="null != professionalTitle">
+                AND professional_title = #{professionalTitle}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        insert into teacher_workload (<include refid="Base_Column_List"/>)
+        values
+        (#{teacherId},#{teacherName},#{professionalTitle},#{checkedWorkload},#{uncheckedWorkload},
+        #{checkedItems},#{uncheckedItems},#{totalWorkload},#{version})
+    </insert>
+
+    <update id="update">
+    update teacher_workload
+    set
+      teacher_name = #{teacherName,jdbcType=VARCHAR},
+      professional_title = #{professionalTitle,jdbcType=INTEGER},
+      checeked_workload = #{checkedWorkload,jdbcType=DOUBLE},
+      unchecked_workload = #{uncheckedWorkload,jdbcType=DOUBLE},
+      checked_items = #{checkedItems,jdbcType=INTEGER},
+      unchecked_items = #{uncheckedItems,jdbcType=INTEGER},
+      total_workload = #{totalWorkload,jdbcType=DOUBLE}
+    where teacher_id = #{teacherId,jdbcType=INTEGER} and version = #{version,jdbcType=VARCHAR}
+  </update>
+</mapper>

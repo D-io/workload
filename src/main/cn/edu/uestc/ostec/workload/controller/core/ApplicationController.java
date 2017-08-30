@@ -8,8 +8,6 @@
 
 package cn.edu.uestc.ostec.workload.controller.core;
 
-import org.apache.poi.ss.formula.functions.T;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +17,10 @@ import cn.edu.uestc.ostec.workload.context.StandardApplicationAttributeContext;
 import cn.edu.uestc.ostec.workload.context.StandardSessionAttributeContext;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.RoleInfo;
-import cn.edu.uestc.ostec.workload.dto.TeacherWorkload;
+import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.support.utils.ExcelExportHelper;
-import javafx.concurrent.Service;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.DEFAULT_WEB_URL_SEPARATOR;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;

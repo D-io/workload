@@ -7,7 +7,9 @@
  *
  */
 
-package cn.edu.uestc.ostec.workload.dto;
+package cn.edu.uestc.ostec.workload.pojo;
+
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
@@ -32,6 +34,16 @@ public class TeacherWorkload {
 	private Integer uncheckedItems = ZERO_INT;
 
 	private Double totalWorkload = ZERO_DOUBLE;
+
+	private String version = DateHelper.getCurrentTerm();
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
 	public Double getTotalWorkload() {
 		return totalWorkload;

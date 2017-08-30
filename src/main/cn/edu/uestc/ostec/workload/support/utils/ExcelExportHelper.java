@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
-import cn.edu.uestc.ostec.workload.dto.TeacherWorkload;
+import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.type.ItemStatus;
 
 /**

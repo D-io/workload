@@ -28,9 +28,11 @@ import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
@@ -65,6 +67,9 @@ public class ItemManageAspectImpl implements IAspect {
 
 	@Autowired
 	private ItemConverter itemConverter;
+
+	@Autowired
+	private TeacherWorkloadService teacherWorkloadService;
 
 	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ItemManageController.submitItem(..))")
 	private void itemSubmitPointCut() {
