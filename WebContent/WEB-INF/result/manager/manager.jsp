@@ -247,7 +247,7 @@
 
 <!-- Custom Theme Scripts -->
 
-<script src="${contextPath}/js/custom.js"></script>
+<script src="${contextPath}/js/custom_test.js"></script>
 <script src="${contextPath}/js/reviewRecord.js"></script>
 <script src="${contextPath}/js/treenodeList.js"></script>
 <script src="${contextPath}/js/reviewerSummary.js"></script>

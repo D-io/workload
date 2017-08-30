@@ -19,7 +19,7 @@
        </div>
        <div class="profile_info" style="padding-top: 17px;">
            <span>欢迎,</span>
-           <span class="userName"></span>
+           <span class="userTeacher"></span>
        </div>
     <%--  <span style="font-size: 16px;">信息与软件工程学院
           <span style="font-size: 5px;">School of Information and Software Engineering</span></span></a>--%>
@@ -39,14 +39,14 @@
         </div>--%>
         <!-- /menu profile quick info -->
 
-       <%-- <br />--%>
+        <br />
 
         <!-- sidebar menu -->
-        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu" style="margin-top: 70px;">
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu" style="margin-top: 50px;">
             <div class="menu_section">
                 <ul class="nav side-menu" style="margin-top: 0px;">
-                    <li class="active" ><a id="clickToggle1"><i class="fa fa-home"></i> 教务管理 <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu " style="display: block;">
+                    <li class="active firstToggleLi" ><a id="clickToggle1"><i class="fa fa-home"></i> 教务管理 <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu "id='child_one_menu' style="display: block;">
                             <li class="ck1"><a onclick="jumpToAdd()">计算规则管理</a></li>
                             <%--<li><a onclick="jumpToSum()">类目统计</a></li>--%>
                             <li class="ck1"><a onclick="reset()">教师项目管理</a></li>
