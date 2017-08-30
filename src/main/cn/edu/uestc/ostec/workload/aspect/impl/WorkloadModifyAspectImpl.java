@@ -27,10 +27,12 @@ import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
@@ -57,6 +59,8 @@ public class WorkloadModifyAspectImpl implements IAspect {
 
 	private static final String DATE_MODIFY_INFO_LOG_PATTERN = "review deadline modify operation {}, result {}";
 
+	private static final String CALCULATE_TOTAL_WORKLOAD_LOG_PATTERN = "calculate total workload operation {},result {}";
+
 	@Autowired
 	private ItemService itemService;
 
@@ -69,12 +73,38 @@ public class WorkloadModifyAspectImpl implements IAspect {
 	@Autowired
 	private CategoryService categoryService;
 
+	@Autowired
+	private TeacherWorkloadService teacherWorkloadService;
+
 	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ReviewManageController.modifyWorkload(..))")
 	private void pointCut() {
 	}
 
 	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ReviewManageController.modifyReviewTime(..))")
 	private void dateModifyPointCut() {
+	}
+
+	@Pointcut("execution(* cn.edu.uestc.ostec.workload.service.impl.TeacherWorkloadServiceImpl.saveTeacherWorkload(..))")
+	private void calculateTotalWorkload() {
+	}
+
+	@AfterReturning(returning = "rvt", pointcut = "calculateTotalWorkload()")
+	public void recordTotalWorkload(JoinPoint joinPoint, Object rvt) {
+		Boolean success = (Boolean) rvt;
+		if (!success) {
+			return;
+		}
+		Object[] params = getParameters(joinPoint);
+		TeacherWorkload teacherWorkload = (TeacherWorkload) params[0];
+		teacherWorkload.setTotalWorkload(
+				teacherWorkload.getUncheckedWorkload() + teacherWorkload.getCheckedWorkload());
+
+		boolean saveSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
+		if (!saveSuccess) {
+			LOGGER.info(CALCULATE_TOTAL_WORKLOAD_LOG_PATTERN,teacherWorkload.getTeacherName(),"成功");
+		} else {
+			LOGGER.info(CALCULATE_TOTAL_WORKLOAD_LOG_PATTERN,teacherWorkload.getTeacherName(),"失败");
+		}
 	}
 
 	@AfterReturning(returning = "rvt", pointcut = "pointCut()")
@@ -100,8 +130,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setItemId(buildHistoryItemId(itemId));
 		history.setVersion(getCurrentSemester());
 
-		history.setOperation("修改工作量项目：" + item
-						.getItemName() + "将工作量修改为" + args[1] + "。");
+		history.setOperation("修改工作量项目：" + item.getItemName() + "将工作量修改为" + args[1] + "。");
 		history.setType(IMPORT_EXCEL.equals(itemDto.getImportRequired()) ? "import" : "apply");
 		history.setAimUserId(item.getOwnerId());
 
@@ -139,8 +168,7 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setUserId(userId);
 		history.setCreateTime(DateHelper.getDateTime());
 		history.setVersion(getCurrentSemester());
-		history.setOperation("提前工作量计算规则：" + category.getName()
-						+ "的审核截止时间为" + newDate + "。");
+		history.setOperation("提前工作量计算规则：" + category.getName() + "的审核截止时间为" + newDate + "。");
 		history.setType(APPLY_SELF.equals(category.getImportRequired()) ? "apply" : "import");
 		//TODO 目标用户编号设置为所有人
 		history.setAimUserId(0000000);
