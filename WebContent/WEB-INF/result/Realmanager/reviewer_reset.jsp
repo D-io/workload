@@ -41,12 +41,12 @@
                 <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
                     <div class="form-group col-sm-3">
                         <select class="form-control" id="ispassed">
-                            <option value="0">审核状态</option>
+                            <option value="0">项目状态</option>
                             <option value="1">待审核</option>
-                            <option value="2">确认通过</option>
-                            <option value="3">复核存疑</option>
+                            <option value="2">已通过</option>
+                            <option value="3">尚存疑</option>
                             <option value="4">存疑解决</option>
-                            <option value="5">审核拒绝</option>
+                            <option value="5">已拒绝</option>
                         </select>
                     </div>
                     <div class="form-group col-sm-3">
@@ -74,8 +74,9 @@
                         <div class="dataTables_length" id="datatable-checkbox_length"  style="display: flex;">
                             <span style="margin: 5px 5px;">每页</span>
                                 <select name="datatable-checkbox_length" aria-controls="datatable-checkbox" class="form-control input-sm" style="width: auto;margin-bottom: 10px;">
-                                    <option value="5">5</option>
                                     <option value="10">10</option>
+                                    <option value="5">5</option>
+
                                     <option value="25">25</option>
                                 </select> <span style="margin-top: 5px;margin-left: 5px;">条</span>
                         </div>
