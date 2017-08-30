@@ -1,15 +1,15 @@
-$(document).on("click","#clickToggle1",function () {
+/*$(document).on("click","#clickToggle1",function () {
     $(".ck1").toggle("slow");
 
-});
-$(document).on("click","#clickToggle2",function () {
+});*/
+/*$(document).on("click","#clickToggle2",function () {
     $(".ck2").toggle("slow");
 
 });
 $(document).on("click","#clickToggle3",function () {
     $(".ck3").toggle("slow");
 
-});
+});*/
 $(document).on("click",".btn-sm",function () {
     $('.hidden-addedText').show();
 
@@ -24,9 +24,9 @@ $(document).on("click",".collapse-link",function () {
     $(".fa-chevron-up").toggleClass("fa-chevron-down");
 });
 
-    $(".close-link").on("click", function () {
+   /* $(".close-link").on("click", function () {
         $(".x_panel").hide();
-    });
+    });*/
     $(".sorting1").on("click", function () {
         $(".sorting1").toggleClass("sorting_asc");
 
@@ -114,7 +114,7 @@ function reset() {
         $('.right_hole').append(data);
         $.get(itemWithPageUrl,{
             pageNum:1,
-            pageSize:5
+            pageSize:10
         }, function (data) {
             if(data.data==null){
                 $(".totalItem").text("0");
@@ -126,7 +126,7 @@ function reset() {
             reviewerResetItem(data);
             var str='';
             var totalPage=data.data.totalRecords;
-            var pageCountNum=Math.ceil(totalPage/5);
+            var pageCountNum=Math.ceil(totalPage/10);
             if(pageCountNum<10){
                 for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                     var pagestore=pageNum+1;
@@ -146,13 +146,15 @@ function reset() {
         $('#teacherName').append('<option value=\"'+teachersInfo[i].teacherId+'\">'+teachersInfo[i].name+teachersInfo[i].teacherId+'</option>');
     }
     var itemAuditorInfo='';
-    $.get(itemAuditorUrl, {test : 12},function (data) {
-        if(data.data.categoryList){
-            itemAuditorInfo=data.data.categoryList;
+    $.get(categoryallListUrl, {test : 12},function (data) {
+        if(data.data.categoryBriefs){
+            itemAuditorInfo=data.data.categoryBriefs;
+           /* appendCategory(itemAuditorInfo);*/
         }
     });
     if(itemAuditorInfo&&itemAuditorInfo.length>0){
         for(var i=0;i<itemAuditorInfo.length;i++){
+
             $('#itemRequired').append('<option value=\"'+itemAuditorInfo[i].categoryId+'\">'+itemAuditorInfo[i].categoryName+'</option>');
         }
     }
@@ -225,6 +227,7 @@ function reset() {
                 pageSize:$(".input-sm option:selected").val(),
             }, function (data) {
                 $(".totalItem").text(data.data.totalRecords);
+                var totalPage=data.data.totalRecords;
                 $(".ResetItem").empty();
                 reviewerResetItem(data);
                 var str='';
@@ -303,9 +306,10 @@ function reset() {
         $.post(itemResetUrl+"?" + someparamster,function (data) {
             if (data.status == 200) {
                 alert('重置成功！');
-                reset();
+
             }
             else alert('重置失败！');
+            reset();
         });
 
     });
@@ -318,9 +322,10 @@ function reset() {
         $.post(itemResetUrl+"?" + someparamster,function (data) {
             if (data.status == 200) {
                 alert('重置成功！');
-                reset();
+
             }
             else alert('重置失败！');
+            reset();
         });
     });
     $(document).on("click",".activePage",function () {
@@ -439,32 +444,55 @@ function itemSummary() {
                         $(".sumItemPreview tr:last").append(cellInfo);
                     }
                     var id=i+1;
-
+                    if(Info.checkedWorkload>100){
+                        $(".sumItemPreview tr:last").css({"background-color":"#6fcd54","color":"#fff"});
+                    }
+                    else {
+                        $(".sumItemPreview tr:last").css({"background-color":"#ffe746","color":"rgb(115, 135, 15)"});
+                    }
                     $(".sumItemPreview tr:last td:eq(0)").text(id);
                     $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherId);
 
                     $(".sumItemPreview tr:last td:eq(1)").attr("id","teacherId_"+id);
                     $(".sumItemPreview tr:last td:eq(2)").text(Info.teacherName);
                     $(".sumItemPreview tr:last td:eq(3)").text(Info.professionalTitle);
-                    $(".sumItemPreview tr:last td:eq(4)").text(Info.checkedWorkload);
-                    if(Info.checkedWorkload>100){
-                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#6fcd54","color":"rgb(115, 135, 15)","cursor":"pointer","text-align":"center"});
-                    }
-                    else {
-                        $(".sumItemPreview tr:last td:eq(4)").css({"background-color":"#ffe746","color":"rgb(115, 135, 15)","cursor":"pointer","text-align":"center"});
-                    }
-                    $(".sumItemPreview tr:last td:eq(4)").attr("class","checkedwork");
-                    $(".sumItemPreview tr:last td:eq(4)").attr("id","checkedwork_"+id);
-                    $(".sumItemPreview tr:last td:eq(4)").attr("data-toggle","modal");
-                    $(".sumItemPreview tr:last td:eq(4)").attr("data-target","#applyModal");
+                   /* $(".sumItemPreview tr:last td:eq(4)").text(Info.checkedWorkload);*/
+                   if(Info.checkedItems<10){
+                       $(".sumItemPreview tr:last td:eq(4)").append("<span style='cursor:pointer' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+Info.checkedWorkload+"</span><span style='float: right'>共00"+Info.checkedItems+"项</span>")
 
-                    $(".sumItemPreview tr:last td:eq(5)").text(Info.uncheckedWorkload);
-                    $(".sumItemPreview tr:last td:eq(5)").attr("class","uncheckedWork");
+                   }
+                   else if(Info.checkedItems<100){
+                       $(".sumItemPreview tr:last td:eq(4)").append("<span style='cursor:pointer' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+Info.checkedWorkload+"</span><span style='float: right'>共0"+Info.checkedItems+"项</span>")
+
+                   }
+                   else{
+                       $(".sumItemPreview tr:last td:eq(4)").append("<span style='cursor:pointer' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+Info.checkedWorkload+"</span><span style='float: right'>共"+Info.checkedItems+"项</span>")
+
+                   }
+                    $(".sumItemPreview tr:last td:eq(4)").css("text-align","center");
+
+                    /*$(".sumItemPreview tr:last td:eq(4)").attr("class","checkedwork");
+                    $(".sumItemPreview tr:last td:eq(4)").attr("id","checkedwork_"+id);*/
+                    /*$(".sumItemPreview tr:last td:eq(4)").attr("data-toggle","modal");
+                    $(".sumItemPreview tr:last td:eq(4)").attr("data-target","#applyModal");*/
+                    if(Info.uncheckedItems<10){
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span style='cursor:pointer' class='uncheckedWork' id='uncheckedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+ Info.uncheckedWorkload+"</span><span style='float: right'>共00"+Info.uncheckedItems+"项</span>");
+
+                    }
+                    else if(Info.uncheckedItems<100){
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span style='cursor:pointer' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+Info.uncheckedWorkload+"</span><span style='float: right'>共0"+Info.uncheckedItems+"项</span>")
+
+                    }
+                    else{
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span style='cursor:pointer' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+Info.uncheckedWorkload+"</span><span style='float: right'>共"+Info.uncheckedItems+"项</span>")
+
+                    }
+                    /*   $(".sumItemPreview tr:last td:eq(5)").attr("class","uncheckedWork");
                     $(".sumItemPreview tr:last td:eq(5)").attr("id","uncheckedwork_"+id);
                     $(".sumItemPreview tr:last td:eq(5)").attr("data-toggle","modal");
-                    $(".sumItemPreview tr:last td:eq(5)").attr("data-target","#applyModal");
-                    $(".sumItemPreview tr:last td:eq(5)").css({"cursor":"pointer","text-align":"center"});
-                    $(".sumItemPreview tr:last td:eq(6)").text(Info.totalWorkload);
+                    $(".sumItemPreview tr:last td:eq(5)").attr("data-target","#applyModal");*/
+                    $(".sumItemPreview tr:last td:eq(5)").css("text-align","center");
+                    $(".sumItemPreview tr:last td:eq(6)").append("<span>"+Info.totalWorkload+"</span>");
                     $(".sumItemPreview tr:last td:eq(6)").css("text-align","center");
                    /* var act="<a class=\"btn btn-primary btn-xs previewAll\" id=\"previewAll_"+ id+"\" data-toggle='modal' data-target='#applyModal'>查看详情</a>";
                     $(".sumItemPreview tr:last td:eq(5)").append(act);*/
@@ -589,6 +617,8 @@ function itemSummary() {
         },function (data) {
             var impjsonObject=[];
             var chejsonObject=[];
+            $(".sumItemSort").empty();
+            $(".sumuncheckedItemSort").empty();
             if(data.data.itemDtoList){
                 for(var key in data.data.itemDtoList){
                     if(data.data.itemDtoList[key].importRequired==1){
@@ -596,7 +626,7 @@ function itemSummary() {
                     }
                 }
                 JSON.stringify(impjsonObject);
-                $(".sumItemSort").empty();
+
                 appendAllItem(impjsonObject,"sumItemSort");
                 for(var anotherkey in data.data.itemDtoList){
                     if(data.data.itemDtoList[anotherkey].importRequired==0){
@@ -604,7 +634,7 @@ function itemSummary() {
                     }
                 }
                 JSON.stringify(chejsonObject);
-                $(".sumuncheckedItemSort").empty();
+
                 appendAllItem(chejsonObject,"sumuncheckedItemSort");
             }
         });
@@ -625,6 +655,8 @@ function itemSummary() {
         },function (data) {
             var impjsonObject=[];
             var chejsonObject=[];
+            $(".sumItemSort").empty();
+            $(".sumuncheckedItemSort").empty();
             if(data.data.itemDtoList){
                 for(var key in data.data.itemDtoList){
                     if(data.data.itemDtoList[key].importRequired==1){
@@ -632,7 +664,7 @@ function itemSummary() {
                     }
                 }
                 JSON.stringify(impjsonObject);
-                $(".sumItemSort").empty();
+
                 appendAllItem(impjsonObject,"sumItemSort");
                 for(var anotherkey in data.data.itemDtoList){
                     if(data.data.itemDtoList[anotherkey].importRequired==0){
@@ -640,7 +672,7 @@ function itemSummary() {
                     }
                 }
                 JSON.stringify(chejsonObject);
-                $(".sumuncheckedItemSort").empty();
+
                 appendAllItem(chejsonObject,"sumuncheckedItemSort");
             }
         });
@@ -790,6 +822,7 @@ function reviewerResetItem(data) {
                 for(var j=0;j<8;j++)//单元格
                 {
                     $(".ResetItem tr:last").append(cellInfo);
+                    $(".ResetItem tr:last").attr("style","text-align:center");
                 }
                 var id=i;
 
@@ -845,6 +878,7 @@ function reviewerResetItem(data) {
                     }
                 }
                 $(".ResetItem tr:last td:eq(0)").text(id+1);
+
                 $(".ResetItem tr:last td:eq(1)").text(Info.categoryName);
                 var itemImport='';
                 switch (Info.importRequired){
@@ -934,6 +968,15 @@ function resetHistory() {
         showhistory(data);
     });
 }
+/*function appendCategory(item) {
+    for(var i=0;i<item.length;i++){
+        $('#itemRequired').append('<option value=\"'+item[i].categoryId+'\">'+item[i].categoryName+'</option>');
+        if(item[i].children.length>0){
+            appendCategory(item[i].children);
+        }
+    }
+
+}*/
 $(document).ready(function () {
     var Count=0;
    // var newCount=0;

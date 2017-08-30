@@ -30,6 +30,8 @@
 
     var categoryListUrl=contextPath+"/category/info";
 
+    var categoryallListUrl=categoryListUrl+"/parent-brief";
+
     var categoryAllUrl=categoryListUrl+"/all";
 
     var categoryInfoListUrl=categoryListUrl+"/list";

@@ -103,19 +103,9 @@ $(document).ready(function () {
             /* $('#folder').popover('hide');*/
             $(".reviewerApply").popover('hide');
         }
-        if (!target.hasClass('click-1')) {
-            /* $('#folder').popover('hide');*/
-            $(".togglefirst").hide();
-        }
 
     });
-    $(document).on("click",".click-group",function () {
-       switch (this.id){
-           case click1:
-               $(".togglefirst").show();
-               break;
-       }
-    });
+
     /*auditor-import*/
 
     var myFlag='';
@@ -1062,6 +1052,7 @@ function getSideBar(role,roleList) {
             $(".scroll-view").empty();
             $(".scroll-view").append(html);
             $(".userName").text(userNameUrl);
+            $(".userTeacher").text(userNameUrl+"老师！");
         });
         $.get(pageManageUrl+"?"+"regionName=manager/Manager-right-col",{test : 12},function (html) {
             $(".right_hole").empty();
@@ -1101,6 +1092,7 @@ function getSideBar(role,roleList) {
                 $(".scroll-view").empty();
                 $(".scroll-view").append(html);
                 $(".userName").text(userNameUrl);
+                $(".userTeacher").text(userNameUrl+"老师！");
             });
            /* $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",function (html) {
                 $(".right_hole").empty();
@@ -1114,6 +1106,7 @@ function getSideBar(role,roleList) {
                 $(".scroll-view").empty();
                 $(".scroll-view").append(html);
                 $(".userName").text(userNameUrl);
+                $(".userTeacher").text(userNameUrl+"老师！");
             });
            /* $.get(pageManageUrl+"?"+"regionName=auditor/auditorcontent",function (html) {
                 $(".right_hole").empty();
@@ -1130,6 +1123,7 @@ function getSideBar(role,roleList) {
             $(".scroll-view").empty();
             $(".scroll-view").append(html);
             $(".userName").text(userNameUrl);
+            $(".userTeacher").text(userNameUrl+"老师！");
         });
         $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",{test:12},function (html) {
             /*$(".right_hole").empty();
@@ -1147,11 +1141,11 @@ function changeSideBar(role,roleList) {
                 $(".scroll-view").empty();
                 $(".scroll-view").append(html);
                 $(".userName").text(userNameUrl);
+                $(".userTeacher").text(userNameUrl+"老师！");
+                pageshow();
+
             });
-          /*  $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",function (html) {
-                $(".right_hole").empty();
-                $(".right_hole").append(html);
-            });*/
+
             applyworkload();
 
         }
@@ -1162,6 +1156,8 @@ function changeSideBar(role,roleList) {
                         $(".scroll-view").empty();
                         $(".scroll-view").append(html);
                         $(".userName").text(userNameUrl);
+                        $(".userTeacher").text(userNameUrl+"老师！");
+                        pageshow();
                     });
                     /*$.get(pageManageUrl+"?"+"regionName=auditor/auditorcontent",function (html) {
                        $(".right_hole").empty();
@@ -1181,11 +1177,15 @@ function changeToManager() {
         $(".scroll-view").empty();
         $(".scroll-view").append(html);
         $(".userName").text(userNameUrl);
+        $(".userTeacher").text(userNameUrl+"老师！");
+        pageshow();
     });
     $.get(pageManageUrl+"?"+"regionName=manager/Manager-right-col",{test:12},function (html) {
            $(".right_hole").empty();
          $(".right_hole").append(html);
         $(".userName").text(userNameUrl);
+        $(".userTeacher").text(userNameUrl+"老师！");
+        pageshow();
     });
     ztree();
 }
@@ -1284,23 +1284,30 @@ function showPara(item) {
     }
 
 }
-//js 读取文件
-/*function jsReadFiles(files) {
-    if (files.length) {
-        var file = files[0];
-        var reader = new FileReader();//new一个FileReader实例
-    /!*    if (/text+/.test(file.type)) {//判断文件类型，是不是text类型
-            reader.onload = function() {
-                $('body').append('<pre>' + this.result + '</pre>');
-            }
-            reader.readAsText(file);
+function pageshow() {
+    if ($BODY.hasClass('nav-sm'))  {
+        $SIDEBAR_MENU.find('li.active-sm ul').show();
+        $SIDEBAR_MENU.find('li.active-sm').addClass('active').removeClass('active-sm');
+        $(".profile_info").show();
+        $(".child_menu").show();
+       /* $("#clickToggle1").on("click",function () {
+            $(".ck1").toggle("slow");
 
-        } else if(/image+/.test(file.type)) {//判断文件是不是imgage类型
-            reader.onload = function() {
-                $('body').append('<img src="' + this.result + '"/>');
-            }
-            reader.readAsDataURL(file);
-        }*!/
-   return reader.readAsBinaryString(file);
+        });*/
+      //  $(".firstToggleLi").unbind("mouseenter").unbind("mouseleave");
+
+        /*	$(".active").attr("onmouseout");
+         $(".active").attr("onmouseover");
+         $(".active").mouseout(function () {
+         var s = event.toElement || event.relatedTarget;
+         if (!$(".child_menu").contains(s)) { $(".child_menu").hide("slow"); }
+         });
+         $(".active").mouseover(function () {
+         var s = event.fromElement || event.relatedTarget;
+         if (!$(".child_menu").contains(s)) { $(".child_menu").show("slow"); }
+         });*/
+        $BODY.toggleClass('nav-md nav-sm');
     }
-}*/
+
+
+}
