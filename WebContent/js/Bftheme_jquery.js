@@ -166,6 +166,12 @@ function reset() {
         if(option0==0){
             option0=null;
         }
+      /*  if(option0==6){
+            option0=1
+        }
+        if(option0==7){
+            option0=2;
+        }*/
         if(option1==0){
             option1=null;
         }
@@ -410,6 +416,7 @@ function reset() {
             });
         }
     });
+
     $("#teacherName").select2({
         allowClear: true,
         width:"100%"
@@ -439,6 +446,7 @@ function itemSummary() {
                     var Info=analyseList[i];
                     $(".sumItemPreview").append(rowInfo);
                     $(".sumItemPreview tr:last").attr("class","resetNum");
+                    $(".sumItemPreview tr:last").attr("style","text-align:center");
                     for(var j=0;j<7;j++)//单元格
                     {
                         $(".sumItemPreview tr:last").append(cellInfo);
@@ -458,15 +466,15 @@ function itemSummary() {
                     $(".sumItemPreview tr:last td:eq(3)").text(Info.professionalTitle);
                    /* $(".sumItemPreview tr:last td:eq(4)").text(Info.checkedWorkload);*/
                    if(Info.checkedItems<10){
-                       $(".sumItemPreview tr:last td:eq(4)").append("<span style='cursor:pointer' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+Info.checkedWorkload+"</span><span style='float: right'>共00"+Info.checkedItems+"项</span>")
+                       $(".sumItemPreview tr:last td:eq(4)").append("<span>"+Info.checkedWorkload+"</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共00"+Info.checkedItems+"项</span>")
 
                    }
                    else if(Info.checkedItems<100){
-                       $(".sumItemPreview tr:last td:eq(4)").append("<span style='cursor:pointer' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+Info.checkedWorkload+"</span><span style='float: right'>共0"+Info.checkedItems+"项</span>")
+                       $(".sumItemPreview tr:last td:eq(4)").append("<span>"+Info.checkedWorkload+"</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共0"+Info.checkedItems+"项</span>")
 
                    }
                    else{
-                       $(".sumItemPreview tr:last td:eq(4)").append("<span style='cursor:pointer' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+Info.checkedWorkload+"</span><span style='float: right'>共"+Info.checkedItems+"项</span>")
+                       $(".sumItemPreview tr:last td:eq(4)").append("<span>"+Info.checkedWorkload+"</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共"+Info.checkedItems+"项</span>")
 
                    }
                     $(".sumItemPreview tr:last td:eq(4)").css("text-align","center");
@@ -476,15 +484,15 @@ function itemSummary() {
                     /*$(".sumItemPreview tr:last td:eq(4)").attr("data-toggle","modal");
                     $(".sumItemPreview tr:last td:eq(4)").attr("data-target","#applyModal");*/
                     if(Info.uncheckedItems<10){
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span style='cursor:pointer' class='uncheckedWork' id='uncheckedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+ Info.uncheckedWorkload+"</span><span style='float: right'>共00"+Info.uncheckedItems+"项</span>");
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span>"+Info.uncheckedWorkload+"</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共00"+ Info.uncheckedItems+"项</span>");
 
                     }
                     else if(Info.uncheckedItems<100){
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span style='cursor:pointer' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+Info.uncheckedWorkload+"</span><span style='float: right'>共0"+Info.uncheckedItems+"项</span>")
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span >"+Info.uncheckedWorkload+"</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共0"+Info.uncheckedItems+"项</span>")
 
                     }
                     else{
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span style='cursor:pointer' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>"+Info.uncheckedWorkload+"</span><span style='float: right'>共"+Info.uncheckedItems+"项</span>")
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span >"+Info.uncheckedWorkload+"</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共"+Info.uncheckedItems+"项</span>")
 
                     }
                     /*   $(".sumItemPreview tr:last td:eq(5)").attr("class","uncheckedWork");
@@ -608,6 +616,29 @@ function itemSummary() {
             appendAllItem(data,"sumuncheckedItemSort");
         })
     });*/
+    $(document).on("click",".Toexcellall",function () {
+        var form = $("<form>");
+        form.attr("style","display:none");
+        // form.attr("target","");
+        form.attr("method","get");
+        //  var strZipPath='categoryId="'+option1.val()+'"&status="'+option0.val()+'"&ownerId="'+option2.val()+'"&isExport="yes"';
+
+        form.attr("action",itemSummaryUrl);
+
+        var input4 = $("<input>");
+        input4.attr("type","hidden");
+        input4.attr("name","ifExport");
+        input4.attr("value","yes");
+        $("body").append(form);
+
+        form.append(input4);
+        form.submit();
+        form.remove();
+    });
+    $(document).off("click",".Torefresh");
+    $(document).on("click",".Torefresh",function () {
+        itemSummary();
+    });
     $(document).on("click",".checkedwork",function () {
         var idCount=parseInt(this.id.match(/\d+/g));
         var teacherid=$("#teacherId_"+idCount).text();

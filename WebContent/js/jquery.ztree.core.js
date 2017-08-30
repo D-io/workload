@@ -19,7 +19,7 @@
                 LEVEL: "level",
                 ICO_LOADING: "ico_loading",
                 SWITCH: "switch",
-                NAME: 'node_name'
+                NAME: 'node_name',
             },
             event: {
                 NODECREATED: "ztree_nodeCreated",
