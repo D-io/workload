@@ -7,6 +7,8 @@
  */
 package cn.edu.uestc.ostec.workload.controller;
 
+import com.sun.xml.internal.bind.v2.TODO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -145,7 +147,17 @@ public class ReviewInfoListController extends ApplicationController {
 		//获取审核人负责的类目的类目名作为下拉选项
 		List<CategoryBrief> categoryBriefs = new ArrayList<>();
 		for (Category category : categoryList) {
-			categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName()));
+			Integer todoCount = ZERO_INT;
+			List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(),category.getCategoryId());
+			for(Item item : itemList) {
+				if(NON_CHECKED.equals(item.getStatus())) {
+					todoCount++;
+				} else {
+					continue;
+				}
+			}
+			categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName(),
+					todoCount));
 			if (APPLY_SELF.equals(category.getImportRequired())) {
 				applyCategories.add(category);
 			} else if (IMPORT_EXCEL.equals(category.getImportRequired())) {
@@ -258,7 +270,7 @@ public class ReviewInfoListController extends ApplicationController {
 		int userId = user.getUserId();
 
 		List<ItemDto> itemDtoList = itemService
-				.findAll(null,categoryId, null, ownerId, isGroup, getCurrentSemester());
+				.findAll(null, categoryId, null, ownerId, isGroup, getCurrentSemester());
 
 		List<ItemDto> removeItemDtoList = new ArrayList<>();
 
@@ -294,76 +306,76 @@ public class ReviewInfoListController extends ApplicationController {
 
 	}
 
-//	/**
-//	 * 条件查询 & 分页查询
-//	 *
-//	 * @param categoryId 类目编号
-//	 * @param ownerId    教师编号
-//	 * @return RestResponse
-//	 */
-//	@RequestMapping(value = "items-all/paginate", method = GET)
-//	public RestResponse getAllItems(
-//			@RequestParam(required = false)
-//					Integer categoryId,
-//			@RequestParam(required = false)
-//					Integer isGroup,
-//			@RequestParam(required = false)
-//					Integer ownerId,
-//			@RequestParam(required = false)
-//					String isExport,
-//			@RequestParam(required = false)
-//					Integer pageNum,
-//			@RequestParam(required = false)
-//					Integer pageSize) {
-//
-//		// 用户验证
-//		User user = getUser();
-//		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
-//			return invalidOperationResponse("非法请求");
-//		}
-//
-//		Map<String, Object> data = getData();
-//		pageSize = (null == pageSize ? 1000000 : pageSize);
-//		pageNum = (null == pageNum ? 1 : pageNum);
-//
-//		Map<String, Object> info = itemService
-//				.findAll(categoryId, null, ownerId, isGroup, pageNum, pageSize,getCurrentSemester());
-//		List<Item> itemList = (List<Item>) info.get("itemList");
-//		Integer pageCount = (Integer) info.get("pageCount");
-//		Long totalLines = (Long) info.get("totalLines");
-//
-//		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
-//		List<ItemDto> newItemDtoList = new ArrayList<>();
-//		if (null == categoryId) {
-//			for (ItemDto itemDto : itemDtoList) {
-//				if (!itemDto.getReviewerId().equals(user.getUserId())) {
-//					newItemDtoList.add(itemDto);
-//				}
-//			}
-//			itemDtoList.removeAll(newItemDtoList);
-//		}
-//
-//		double workload = ZERO_DOUBLE;
-//		for (ItemDto itemDto : itemDtoList) {
-//			Integer status = itemDto.getStatus();
-//			if (CHECKED.equals(status)) {
-//				workload += itemDto.getWorkload();
-//			}
-//		}
-//
-//		if (null == isExport) {
-//			data.put("itemDtoList", itemDtoList);
-//			data.put("pageCount", pageCount);
-//			data.put("totalLines", totalLines);
-//			data.put("totalWorkload", workload);
-//			return successResponse(data);
-//		} else if ("yes".equals(isExport)) {
-//			return getExportExcel(itemDtoList);
-//		} else {
-//			return parameterNotSupportResponse("参数有误");
-//		}
-//
-//	}
+	//	/**
+	//	 * 条件查询 & 分页查询
+	//	 *
+	//	 * @param categoryId 类目编号
+	//	 * @param ownerId    教师编号
+	//	 * @return RestResponse
+	//	 */
+	//	@RequestMapping(value = "items-all/paginate", method = GET)
+	//	public RestResponse getAllItems(
+	//			@RequestParam(required = false)
+	//					Integer categoryId,
+	//			@RequestParam(required = false)
+	//					Integer isGroup,
+	//			@RequestParam(required = false)
+	//					Integer ownerId,
+	//			@RequestParam(required = false)
+	//					String isExport,
+	//			@RequestParam(required = false)
+	//					Integer pageNum,
+	//			@RequestParam(required = false)
+	//					Integer pageSize) {
+	//
+	//		// 用户验证
+	//		User user = getUser();
+	//		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
+	//			return invalidOperationResponse("非法请求");
+	//		}
+	//
+	//		Map<String, Object> data = getData();
+	//		pageSize = (null == pageSize ? 1000000 : pageSize);
+	//		pageNum = (null == pageNum ? 1 : pageNum);
+	//
+	//		Map<String, Object> info = itemService
+	//				.findAll(categoryId, null, ownerId, isGroup, pageNum, pageSize,getCurrentSemester());
+	//		List<Item> itemList = (List<Item>) info.get("itemList");
+	//		Integer pageCount = (Integer) info.get("pageCount");
+	//		Long totalLines = (Long) info.get("totalLines");
+	//
+	//		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
+	//		List<ItemDto> newItemDtoList = new ArrayList<>();
+	//		if (null == categoryId) {
+	//			for (ItemDto itemDto : itemDtoList) {
+	//				if (!itemDto.getReviewerId().equals(user.getUserId())) {
+	//					newItemDtoList.add(itemDto);
+	//				}
+	//			}
+	//			itemDtoList.removeAll(newItemDtoList);
+	//		}
+	//
+	//		double workload = ZERO_DOUBLE;
+	//		for (ItemDto itemDto : itemDtoList) {
+	//			Integer status = itemDto.getStatus();
+	//			if (CHECKED.equals(status)) {
+	//				workload += itemDto.getWorkload();
+	//			}
+	//		}
+	//
+	//		if (null == isExport) {
+	//			data.put("itemDtoList", itemDtoList);
+	//			data.put("pageCount", pageCount);
+	//			data.put("totalLines", totalLines);
+	//			data.put("totalWorkload", workload);
+	//			return successResponse(data);
+	//		} else if ("yes".equals(isExport)) {
+	//			return getExportExcel(itemDtoList);
+	//		} else {
+	//			return parameterNotSupportResponse("参数有误");
+	//		}
+	//
+	//	}
 
 	/**
 	 * 获取审核人负责的类目下的对应导入方式对应状态的工作量类目信息
@@ -389,7 +401,8 @@ public class ReviewInfoListController extends ApplicationController {
 		//查找对应的导入方式下的为指定状态的Item条目信息
 		for (Category category : categoryList) {
 			if (importRequired.equals(category.getImportRequired())) {
-				items = itemService.findItemsByCategory(category.getCategoryId(), status,getCurrentSemester());
+				items = itemService.findItemsByCategory(category.getCategoryId(), status,
+						getCurrentSemester());
 				itemList.addAll(items);
 			}
 		}
@@ -402,6 +415,8 @@ public class ReviewInfoListController extends ApplicationController {
 		private Integer categoryId;
 
 		private String categoryName;
+
+		private Integer todoCount = ZERO_INT;
 
 		public Integer getCategoryId() {
 			return categoryId;
@@ -419,9 +434,18 @@ public class ReviewInfoListController extends ApplicationController {
 			this.categoryName = categoryName;
 		}
 
-		public CategoryBrief(Integer categoryId, String categoryName) {
+		public Integer getTodoCount() {
+			return todoCount;
+		}
+
+		public void setTodoCount(Integer todoCount) {
+			this.todoCount = todoCount;
+		}
+
+		public CategoryBrief(Integer categoryId, String categoryName, Integer todoCount) {
 			this.categoryId = categoryId;
 			this.categoryName = categoryName;
+			this.todoCount = todoCount;
 		}
 	}
 }
