@@ -8,8 +8,16 @@ $(document).ready(function () {
          autoclose: true,
          todayBtn: true,
          pickerPosition: "bottom-left",
-         format: "yyyy-mm-dd hh:ii:ss"//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
-         });
+         format: "yyyy-mm-dd hh:ii:ss",//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
+            weekStart: 1,
+
+            pickerPosition: "top-left",
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showSecond:1,
+            minuteStep:1,
+        });
 
        /* data-plugin-datepicker*/
     });
@@ -521,8 +529,9 @@ $(document).ready(function () {
     $(document).off("click",".submitTo");
     $(document).on("click",".submitTo",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
+        confirm("确认成功？");
         $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
-            confirm("确认成功？");
+
           //  $("#statusChange_"+submitId).text("已提交");
             $(".status_"+thisId).text("已提交");
             $("#deleteAll_"+thisId).remove();
@@ -605,8 +614,9 @@ $(document).ready(function () {
             }
 
         }
+        confirm("确认提交？");
         $.post(itemManaPublicUrl+"?"+itemStr,function () {
-            confirm("确认成功？");
+
             //  $("#statusChange_"+submitId).text("已提交");
 
             for(var i=0;i<chooseitem.length;i++){
@@ -625,7 +635,7 @@ $(document).ready(function () {
     $(document).on("click",".submitall",function () {
         var chooseitem=$(".submitmyself");
         for(var i=0;i<chooseitem.length;i++){
-            console.log($(this).is(":checked"));
+          //  console.log($(this).is(":checked"));
             if($(this).is(":checked")){
                 chooseitem.eq(i).prop("checked","checked");
             }
@@ -999,8 +1009,9 @@ $(document).ready(function () {
     $(document).off("click",".editSubmit");
     $(document).on("click",".editSubmit",function () {
         var submitId=parseInt(this.id.match(/\d+/g));
+        confirm("确认提交？");
         $.post(itemManaPublicUrl+"?itemId="+submitId,function () {
-            confirm("确认提交？");
+
             $("#statusChange_"+submitId).text("有待审核");
             $(".delemyself_"+submitId).remove();
            // $("#downLoadAdd_"+submitId).hide();
@@ -1010,8 +1021,9 @@ $(document).ready(function () {
     });
     $(document).on("click",".newsubmit",function () {
         var thisId=parseInt(this.id.match(/\d+/g));
+        confirm("确认提交？");
         $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
-            confirm("确认提交？");
+
             $("#statusChange_"+thisId).text("有待审核");
             $(".delemyself_"+submitId).remove();
           //  $("#downLoadAdd_"+submitId).hide();
@@ -1069,6 +1081,7 @@ function getSideBar(role,roleList) {
                      */       }
             });
             $("#teacherName").select2({
+                placeholder:"",
                 allowClear: true,
                 width:"100%",
             });
@@ -1180,14 +1193,7 @@ function changeToManager() {
         $(".userTeacher").text(userNameUrl+"老师！");
         pageshow();
     });
-    $.get(pageManageUrl+"?"+"regionName=manager/Manager-right-col",{test:12},function (html) {
-           $(".right_hole").empty();
-         $(".right_hole").append(html);
-        $(".userName").text(userNameUrl);
-        $(".userTeacher").text(userNameUrl+"老师！");
-        pageshow();
-    });
-    ztree();
+    jumpToAdd();
 }
 function showImportPreview(data,itemCount) {
     var rowInfo="<tr></tr>";
