@@ -37,7 +37,7 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/panel-content.css" />
 
-    <link rel="stylesheet" type="text/css" href="${contextPath}/css/datatables.css" />
+    <%--<link rel="stylesheet" type="text/css" href="${contextPath}/css/datatables.css" />--%>
 
    <%-- <link rel="stylesheet" type="text/css" href="${contextPath}/css/normalize.css" />--%>
 
@@ -59,6 +59,11 @@
         .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
         .ztree li span.button.icon02_ico_docu{margin-right:2px; background: url(${contextPath}/css/images/newChecked.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
         .ztree li span.button.icon06_ico_docu{margin-right:2px; background: url(${contextPath}/css/images/newImport.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
+        table.table thead .teacher_Sort { background: url(${contextPath}/css/images/sort_both.png) no-repeat center right; }
+        table.table thead .sorting_asc { background: url(${contextPath}/css/images/sort_asc.png) no-repeat center right; }
+        table.table thead .sorting_desc { background: url(${contextPath}/css/images/sort_desc.png) no-repeat center right; }
+        table.table thead .sorting_asc_disabled { background: url(${contextPath}/css/images/sort_asc_disabled.png) no-repeat center right; }
+        table.table thead .sorting_desc_disabled { background: url(${contextPath}/css/images/sort_desc_disabled.png) no-repeat center right;}
         .bs-example-modal-lg .modal-dialog {
             position: absolute;
             top: 0;
