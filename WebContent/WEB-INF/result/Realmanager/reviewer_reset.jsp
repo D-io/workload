@@ -87,9 +87,10 @@
                         </div>
                     </div>
 
-                    <table  class="table table-striped table-bordered dataTable no-footer">
+                    <table  class="table table-striped table-bordered dataTable no-footer" id="datatable-details">
                         <thead>
                         <tr role="row">
+
                             <th  class="sorting">序号</th>
                             <th class="sorting">规则名称</th>
                             <th class="sorting">类别</th>
@@ -135,7 +136,7 @@
                                         <tr role="row">
 
                                              <th class="sorting">计算公式</th>
-                                             <th  class="sorting">公式描述</th>
+                                             <th  class="sorting">计算参数</th>
                                              <th class="sorting">附加属性</th>
 
                                         </tr>
