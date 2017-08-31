@@ -307,6 +307,7 @@ function ztree() {
                         $(".select2").show();
                         $(".applyDeadLabel").text("复核截止时间");
                         $(".revDeadLabel").text("导入截止时间");
+                        $("#importManager").text("负责人");
                     }
                     else if ($(this).val() == 0) {
                         $(".fomulaPara").show();
@@ -314,6 +315,7 @@ function ztree() {
                         $(".select2").show();
                         $(".applyDeadLabel").text("申报截止时间");
                         $(".revDeadLabel").text("审核截止时间");
+                        $("#importManager").text("审核人");
                     }
                     else {
                         $(".requiredtime").hide();
@@ -983,12 +985,14 @@ function ztree() {
             if(options.val()==1){
                 $(".applyDeadLabel").text("复核截止时间");
                 $(".revDeadLabel").text("导入截止时间");
+                $("#importManager").text("负责人");
                 $(".requiredtime").show();
                 $(".select2").show();
             }
             else if(options.val()==0){
                 $(".applyDeadLabel").text("申报截止时间");
                 $(".revDeadLabel").text("审核截止时间");
+                $("#importManager").text("审核人");
                 $(".requiredtime").show();
                 $(".select2").show();
             }

@@ -277,7 +277,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label requiredtime">审核人员</label>
+                                            <label class="col-sm-3 control-label requiredtime" id="importManager">审核人员</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control select2" id="teacherName">
                                                     <option value=""></option>
