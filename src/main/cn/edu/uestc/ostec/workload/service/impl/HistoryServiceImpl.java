@@ -60,8 +60,8 @@ public class HistoryServiceImpl extends BaseServiceImpl implements HistoryServic
 
 	@Override
 	public boolean saveHistory(History history) {
-		//TODO 对于操作历史不应该提供修改接口 只能添加和查询
-		//TODO 全部转换为添加操作，即如果history带id属性，将其置为空
+
+		history.setHistoryId(null);
 		if (!hasObjectId(history.getHistoryId())) {
 			history.setHistoryId(getNextKey(history.TABLE_NAME));
 			return historyDao.insert(history);

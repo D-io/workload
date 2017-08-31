@@ -86,8 +86,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 					Integer... teacherIdList) {
 
 		List<TeacherWorkload> teacherWorkloadList = new ArrayList<>();
-		Map<String,Object> data = getData();
-		Map<String,Object> errorData = getData();
+		Map<String, Object> data = getData();
+		Map<String, Object> errorData = getData();
 		for (Integer teacherId : teacherIdList) {
 
 			TeacherWorkload teacherWorkload = teacherWorkloadService
@@ -109,13 +109,13 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			teacherWorkload.setTotalWorkload(
 					teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
 			boolean saveSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
-			if(!saveSuccess) {
-				errorData.put(teacherWorkload.getTeacherName(),"更新失败");
-			} else{
+			if (!saveSuccess) {
+				errorData.put(teacherWorkload.getTeacherName(), "更新失败");
+			} else {
 				teacherWorkloadList.add(teacherWorkload);
 			}
 		}
-		data.put("teacherWorkloadList",teacherWorkloadList);
+		data.put("teacherWorkloadList", teacherWorkloadList);
 		return successResponse(data);
 	}
 
@@ -473,22 +473,24 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		List<ItemDto> itemList = findItems(null, statusList, teacherId, getCurrentSemester());
 
-		//TODO 待建立相应的数据库表之后，从数据库中读取
-		TotalWorkloadAndCount checkedWorkload = itemService
-				.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester());
-		TotalWorkloadAndCount nonCheckedWorkload = itemService
-				.selectTotalWorkload(teacherId, null, getCurrentSemester());
+		//		TotalWorkloadAndCount checkedWorkload = itemService
+		//				.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester());
+		//		TotalWorkloadAndCount nonCheckedWorkload = itemService
+		//				.selectTotalWorkload(teacherId, null, getCurrentSemester());
+		//
+		//		checkedWorkload = (null == checkedWorkload ? EMPTY_WORKLOAD : checkedWorkload);
+		//		nonCheckedWorkload = (null == nonCheckedWorkload ? EMPTY_WORKLOAD : nonCheckedWorkload);
+		//		TeacherWorkload teacherWorkload = new TeacherWorkload();
+		//		teacherWorkload.setCheckedWorkload(checkedWorkload.getWorkload());
+		//		teacherWorkload.setCheckedItems(checkedWorkload.getCount());
+		//
+		//		teacherWorkload.setUncheckedItems(nonCheckedWorkload.getCount());
+		//		teacherWorkload.setUncheckedWorkload(nonCheckedWorkload.getWorkload());
+		//		teacherWorkload.setTotalWorkload(
+		//				teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
 
-		checkedWorkload = (null == checkedWorkload ? EMPTY_WORKLOAD : checkedWorkload);
-		nonCheckedWorkload = (null == nonCheckedWorkload ? EMPTY_WORKLOAD : nonCheckedWorkload);
-		TeacherWorkload teacherWorkload = new TeacherWorkload();
-		teacherWorkload.setCheckedWorkload(checkedWorkload.getWorkload());
-		teacherWorkload.setCheckedItems(checkedWorkload.getCount());
-
-		teacherWorkload.setUncheckedItems(nonCheckedWorkload.getCount());
-		teacherWorkload.setUncheckedWorkload(nonCheckedWorkload.getWorkload());
-		teacherWorkload.setTotalWorkload(
-				teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
+		TeacherWorkload teacherWorkload = teacherWorkloadService
+				.getTeacherWorkload(teacherId, getCurrentSemester());
 
 		if (isEmptyList(itemList)) {
 			return successResponse();

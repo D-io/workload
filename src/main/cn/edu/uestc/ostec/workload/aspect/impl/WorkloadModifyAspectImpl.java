@@ -142,7 +142,6 @@ public class WorkloadModifyAspectImpl implements IAspect {
 		history.setVersion(getCurrentSemester());
 		history.setOperation("提前工作量计算规则：" + category.getName() + "的审核截止时间为" + newDate + "。");
 		history.setType(APPLY_SELF.equals(category.getImportRequired()) ? "apply" : "import");
-		//TODO 目标用户编号设置为所有人
 		history.setAimUserId(0000000);
 
 		boolean saveSuccess = historyService.saveHistory(history);
