@@ -37,6 +37,8 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/panel-content.css" />
 
+    <link rel="stylesheet" type="text/css" href="${contextPath}/css/datatables.css" />
+
    <%-- <link rel="stylesheet" type="text/css" href="${contextPath}/css/normalize.css" />--%>
 
 
@@ -257,6 +259,7 @@
 
 <script language='javascript' src="${contextPath}/vendor/bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
 <script language='javascript' src="${contextPath}/vendor/js/select2.min.js"></script>
+<script language='javascript' src="${contextPath}/vendor/js/jquery-datatables/jquery.dataTables.min.js"></script>
 <script language='javascript'src="${contextPath}/js/jquery.ztree.core.js"></script>
 <script language='javascript' src="${contextPath}/js/jquery.ztree.excheck.js"></script>
 <script language='javascript' src="${contextPath}/js/jquery.ztree.exedit.js"></script>
