@@ -51,7 +51,7 @@ public class TotalWorkloadAspectImpl implements IAspect {
 		teacherWorkload.setTotalWorkload(
 				teacherWorkload.getUncheckedWorkload() + teacherWorkload.getCheckedWorkload());
 
-		boolean saveSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
+		boolean saveSuccess = teacherWorkloadService.updateTeacherWorkload(teacherWorkload);
 		if (!saveSuccess) {
 			LOGGER.info(CALCULATE_TOTAL_WORKLOAD_LOG_PATTERN,teacherWorkload.getTeacherName(),"成功");
 		} else {

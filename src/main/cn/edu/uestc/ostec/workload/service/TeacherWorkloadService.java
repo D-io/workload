@@ -27,4 +27,6 @@ public interface TeacherWorkloadService extends BaseService {
 	List<TeacherWorkload> getAllWorkload(String version);
 
 	Boolean saveTeacherWorkload(TeacherWorkload workload);
+
+	Boolean updateTeacherWorkload(TeacherWorkload workload);
 }

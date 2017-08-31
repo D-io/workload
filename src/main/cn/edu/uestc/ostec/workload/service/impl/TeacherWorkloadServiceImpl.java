@@ -38,9 +38,27 @@ public class TeacherWorkloadServiceImpl extends BaseServiceImpl implements Teach
 		return listResult(teacherWorkloadDao.select(null, version, null));
 	}
 
+	/**
+	 * 该方法用于做 AOP 切面，执行之后便于统计总和
+	 * @param workload 要修改的工作量
+	 * @return Boolean
+	 */
 	@Override
 	public Boolean saveTeacherWorkload(TeacherWorkload workload) {
 
+		if(null == workload.getVersion() || "".equals(workload.getVersion())) {
+			workload.setVersion(DateHelper.getCurrentTerm());
+		}
+		return teacherWorkloadDao.update(workload);
+	}
+
+	/**
+	 * 用于切面中更新工作量，避免陷入死循环
+	 * @param workload 工作量
+	 * @return Boolean
+	 */
+	@Override
+	public Boolean updateTeacherWorkload(TeacherWorkload workload) {
 		if(null == workload.getVersion() || "".equals(workload.getVersion())) {
 			workload.setVersion(DateHelper.getCurrentTerm());
 		}
