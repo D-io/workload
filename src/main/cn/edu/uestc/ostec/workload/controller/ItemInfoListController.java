@@ -472,6 +472,16 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		List<ItemDto> itemList = findItems(null, statusList, teacherId, getCurrentSemester());
+		List<ItemDto> applyItemList = new ArrayList<>();
+		List<ItemDto> importItemList = new ArrayList<>();
+
+		for (ItemDto itemDto : itemList) {
+			if (APPLY_SELF.equals(itemList)) {
+				applyItemList.add(itemDto);
+			} else {
+				importItemList.add(itemDto);
+			}
+		}
 
 		//		TotalWorkloadAndCount checkedWorkload = itemService
 		//				.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester());
@@ -496,9 +506,14 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return successResponse();
 		}
 
-		data.put("itemDtoList", itemList);
+		data.put("importItemList", importItemList);
+		data.put("applyItemList", applyItemList);
+		data.put("importCount", importItemList.size());
+		data.put("applyCount", applyItemList.size());
 		data.put("recordCount", itemList.size());
 		data.put("teacherWorkload", teacherWorkload);
+
+		data.put("itemDtoList",itemList);
 
 		return successResponse(data);
 	}

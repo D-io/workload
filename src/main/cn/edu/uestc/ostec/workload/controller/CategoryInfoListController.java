@@ -160,7 +160,9 @@ public class CategoryInfoListController extends ApplicationController
 
 		List<CategoryBrief> categoryBriefs = new ArrayList<>();
 		for (Category category : categoryList) {
-			categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName()));
+			if (isEmptyString(category.getFormula())) {
+				categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName()));
+			}
 		}
 
 		Map<String, Object> data = getData();
