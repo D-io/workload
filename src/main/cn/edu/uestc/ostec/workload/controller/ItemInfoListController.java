@@ -259,6 +259,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		pageNum = (null == pageNum || pageNum.equals(ZERO_INT) ? 1 : pageNum);
+		pageSize = ("yes".equals(ifExport) ? 10000 : pageSize);
 
 		Map<String, Object> selectData = itemService
 				.findAll(categoryId, status, ownerId, pageNum, pageSize, getCurrentSemester(),
