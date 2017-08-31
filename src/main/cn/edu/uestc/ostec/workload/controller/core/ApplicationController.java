@@ -78,7 +78,7 @@ public class ApplicationController extends ResultController
 		}
 		byte[] file = ExcelExportHelper.exportItemInfo(itemDtoList);
 		try {
-			return streamResponse(file, user.getUserId() + ".xlsx");
+			return streamResponse(file, user.getName() + "(" + getCurrentSemester() + ")" + ".xls");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return systemErrResponse();
@@ -92,7 +92,7 @@ public class ApplicationController extends ResultController
 		}
 		byte[] file = ExcelExportHelper.exportTotalWorkload(workloadList);
 		try {
-			return streamResponse(file, "工作量汇总.xlsx");
+			return streamResponse(file, getCurrentSemester() + "工作量汇总.xls");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return systemErrResponse();

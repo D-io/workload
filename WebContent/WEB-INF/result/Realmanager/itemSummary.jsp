@@ -64,16 +64,16 @@
             <button class="btn btn-primary pull-right Torefresh"><i class="fa fa-refresh"></i> 刷新</button>
             <button class="btn btn-success pull-right Toexcellall"><i class="fa fa-download"></i> 导出</button>
 
-            <table  class="table table-striped table-bordered dataTable no-footer" style=" background-color: #eee;">
+            <table  class="table table-striped table-bordered dataTable no-footer activesort" >
                 <thead>
                 <tr role="row">
-                    <th  class="sorting">序号</th>
-                    <th class="sorting">教师工号</th>
-                    <th  class="sorting">教师姓名</th>
-                    <th  class="sorting">专业职称</th>
-                    <th class="sorting">通过审核(复核)工作当量</th>
-                    <th class="sorting" >有待审核(复核)工作当量</th>
-                    <th class="sorting" >预期总工作当量</th>
+                    <th  class="teacher_Sort">序号</th>
+                    <th class=" teacher_Sort">教师工号</th>
+                    <th  class=" teacher_Sort">教师姓名</th>
+                    <th  class="teacher_Sort ">专业职称</th>
+                    <th class=" teacher_Sort">通过审核(复核)工作当量</th>
+                    <th class=" teacher_Sort" >有待审核(复核)工作当量</th>
+                    <th class=" teacher_Sort" >预期总工作当量</th>
 
                 </tr>
                 </thead>

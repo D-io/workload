@@ -95,19 +95,126 @@ function jumpToSum() {
     });
 }
 function jumpToAdd() {
-
+    $.ajaxSetup({
+        async : false
+    });
     var resetStr='regionName=manager/Manager-right-col';
-    $.get(pageManageUrl+"?"+resetStr,function (data) {
+    $.get(pageManageUrl+"?"+resetStr,{test:12},function (data) {
         $('.right_hole').empty();
         $('.right_hole').append(data);
 
+    });
+    var teacherInfo='';
+    $.get(TeacherInfoUrl,{test : 12},function (data) {
+        teacherInfo=data.data.teacherList;
+        var selectdata=new Array();
+        for(var i=0;i<teacherInfo.length;i++){
+            $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
+            /* $('#firstteacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
+
+             */       }
+    });
+    $("#teacherName").select2({
+        placeholder:"",
+        allowClear: true,
+        width:"100%"
     });
   ztree();
 }
 function reset() {
     $.ajaxSetup({
         async : false
-    });
+ });
+ /*
+     function format( info ) {
+
+        var paramArray=info.descAndValues;
+        var str='';
+        for(var paramCount=0;paramCount<paramArray.length;paramCount++){
+            if(paramCount!=paramArray.length-1){
+                str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p><hr/>';
+
+            }
+            else
+                str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p>';
+        }
+        var otherparamArray = info.otherJsonParameters;
+        var otherstr = '';
+        if(otherparamArray&&otherparamArray.length>0){
+            for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
+                if(otherparamCount!=otherparamArray.length-1){
+                    otherstr +='<p style="width: max-content;"><span  class="otherstr_'+info+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+info+'" id="otherParaval_'+info+'">'+ otherparamArray[otherparamCount].value+'</span></p><hr/>';
+
+                }
+                else
+                    otherstr +='<p style="width: max-content;"><span  class="otherstr_'+info+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+info+'" id="otherParaval_'+info+'">'+ otherparamArray[otherparamCount].value+'</span></p>';
+
+            }
+        }
+        var paramDesc = info.paramDesc;
+        var paramDescstr = '';
+        if(paramDesc&&paramDesc.length>0){
+            for (var paramDescCount = 0; paramDescCount < paramDesc.length; paramDescCount++) {
+                paramDescstr +='<p>'+ paramDesc[paramDescCount].symbol +'<p>'+ ':' +'<p>'+ paramDesc[paramDescCount].desc+'<p><hr/>';
+            }
+        }
+        return [
+            '<table class="table mb-none">',
+            '<tr class="b-top-none">',
+            '<td><label class="mb-none">公式参数:</label></td>',
+            '<td>' + info.formula+ '</td>',
+            '</tr>',
+            '<tr>',
+            '<td><label class="mb-none">参数描述:</label></td>',
+            '<td>'+str+'</td>',
+            '</tr>',
+            '<tr>',
+            '<td><label class="mb-none">附加属性</label></td>',
+            '<td>'+otherstr+'</td>',
+            '</tr>',
+            '</div>'
+        ].join('');};
+
+    $(document).ready(function() {
+        var table = $('#datatable-details').DataTable( {
+            "ajax": pageManageUrl,
+            "columns": [
+                {
+                    "className":      'details-control',
+                    "orderable":      false,
+                    "data":           null,
+                    "defaultContent": ''
+                },
+                { "data": "序号" },
+                { "data": "规则名称" },
+                { "data": "类别" },
+                { "data": "项目名称" },
+                { "data": "工作当量" },
+                { "data": "教师姓名" },
+                { "data": "项目状态" },
+                { "data": "操作" }
+            ],
+            "order": [[1, 'asc']]
+        } );
+
+        // Add event listener for opening and closing details
+        $('#datatable-details tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row( tr );
+
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child( format(row.data()) ).show();
+                tr.addClass('shown');
+            }
+        } );
+    } );*/
+
     var resetStr = 'regionName=Realmanager/reviewer_reset';
     $.get(pageManageUrl+"?"+resetStr, {test : 12}, function (data) {
         $('.right_hole').empty();
@@ -143,7 +250,7 @@ function reset() {
         teachersInfo=data.data.teacherList;
     });
     for(var i=0;i<teachersInfo.length;i++){
-        $('#teacherName').append('<option value=\"'+teachersInfo[i].teacherId+'\">'+teachersInfo[i].name+teachersInfo[i].teacherId+'</option>');
+        $('#teacherName').append('<option value=\"'+teachersInfo[i].teacherId+'\">'+teachersInfo[i].teacherId+teachersInfo[i].name+'</option>');
     }
     var itemAuditorInfo='';
     $.get(categoryallListUrl, {test : 12},function (data) {
@@ -418,10 +525,12 @@ function reset() {
     });
 
     $("#teacherName").select2({
+        placeholder:"",
         allowClear: true,
         width:"100%"
     });
     $("#itemRequired").select2({
+        placeholder:"",
         allowClear: true,
         width:"100%"
     });
@@ -433,82 +542,107 @@ function itemSummary() {
     $('.right_hole').empty();
     $.get(pageManageUrl+"?"+'regionName=Realmanager/itemSummary', {test : 12},function (result) {
         $('.right_hole').append(result);
-        $.get(itemSummaryUrl,{test : 12},function (data) {
-           /* appendAllItem(data);*/
-            var rowInfo="<tr></tr>";
-            var cellInfo="<td></td>";
+        $.get(itemSummaryUrl, {test: 12}, function (data) {
+            /* appendAllItem(data);*/
+            var rowInfo = "<tr></tr>";
+            var cellInfo = "<td></td>";
             /*sumItemPreview*/
-            if(data.data.info&&data.data.info.length>0){
-                var analyseList= data.data.info;
-                var listLength= data.data.info.length;
-                for(var i=0;i<listLength;i++)
-                {
-                    var Info=analyseList[i];
+            if (data.data.info && data.data.info.length > 0) {
+                var analyseList = data.data.info;
+                var listLength = data.data.info.length;
+                for (var i = 0; i < listLength; i++) {
+                    var Info = analyseList[i];
                     $(".sumItemPreview").append(rowInfo);
-                    $(".sumItemPreview tr:last").attr("class","resetNum");
-                    $(".sumItemPreview tr:last").attr("style","text-align:center");
-                    for(var j=0;j<7;j++)//单元格
+                    $(".sumItemPreview tr:last").attr("class", "resetNum");
+                    $(".sumItemPreview tr:last").attr("style", "text-align:center");
+                    for (var j = 0; j < 7; j++)//单元格
                     {
                         $(".sumItemPreview tr:last").append(cellInfo);
                     }
-                    var id=i+1;
-                    if(Info.checkedWorkload>100){
-                        $(".sumItemPreview tr:last").css({"background-color":"#6fcd54","color":"#fff"});
+                    var id = i + 1;
+                    if (Info.checkedWorkload > 100) {
+                        $(".sumItemPreview tr:last").css({"background-color": "#6fcd54", "color": "#fff"});
                     }
                     else {
-                        $(".sumItemPreview tr:last").css({"background-color":"#ffe746","color":"rgb(115, 135, 15)"});
+                        $(".sumItemPreview tr:last").css({"background-color": "#ffe746", "color": "rgb(115, 135, 15)"});
                     }
                     $(".sumItemPreview tr:last td:eq(0)").text(id);
                     $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherId);
 
-                    $(".sumItemPreview tr:last td:eq(1)").attr("id","teacherId_"+id);
+                    $(".sumItemPreview tr:last td:eq(1)").attr("id", "teacherId_" + id);
                     $(".sumItemPreview tr:last td:eq(2)").text(Info.teacherName);
                     $(".sumItemPreview tr:last td:eq(3)").text(Info.professionalTitle);
-                   /* $(".sumItemPreview tr:last td:eq(4)").text(Info.checkedWorkload);*/
-                   if(Info.checkedItems<10){
-                       $(".sumItemPreview tr:last td:eq(4)").append("<span>"+Info.checkedWorkload+"</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共00"+Info.checkedItems+"项</span>")
+                    /* $(".sumItemPreview tr:last td:eq(4)").text(Info.checkedWorkload);*/
+                    if (Info.checkedItems < 10) {
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.checkedItems + "项</span>")
 
-                   }
-                   else if(Info.checkedItems<100){
-                       $(".sumItemPreview tr:last td:eq(4)").append("<span>"+Info.checkedWorkload+"</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共0"+Info.checkedItems+"项</span>")
+                    }
+                    else if (Info.checkedItems < 100) {
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.checkedItems + "项</span>")
 
-                   }
-                   else{
-                       $(".sumItemPreview tr:last td:eq(4)").append("<span>"+Info.checkedWorkload+"</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共"+Info.checkedItems+"项</span>")
+                    }
+                    else {
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.checkedItems + "项</span>")
 
-                   }
-                    $(".sumItemPreview tr:last td:eq(4)").css("text-align","center");
+                    }
+                    $(".sumItemPreview tr:last td:eq(4)").css("text-align", "center");
 
                     /*$(".sumItemPreview tr:last td:eq(4)").attr("class","checkedwork");
-                    $(".sumItemPreview tr:last td:eq(4)").attr("id","checkedwork_"+id);*/
+                     $(".sumItemPreview tr:last td:eq(4)").attr("id","checkedwork_"+id);*/
                     /*$(".sumItemPreview tr:last td:eq(4)").attr("data-toggle","modal");
-                    $(".sumItemPreview tr:last td:eq(4)").attr("data-target","#applyModal");*/
-                    if(Info.uncheckedItems<10){
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span>"+Info.uncheckedWorkload+"</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共00"+ Info.uncheckedItems+"项</span>");
+                     $(".sumItemPreview tr:last td:eq(4)").attr("data-target","#applyModal");*/
+                    if (Info.uncheckedItems < 10) {
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.uncheckedItems + "项</span>");
 
                     }
-                    else if(Info.uncheckedItems<100){
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span >"+Info.uncheckedWorkload+"</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共0"+Info.uncheckedItems+"项</span>")
+                    else if (Info.uncheckedItems < 100) {
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span >" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.uncheckedItems + "项</span>")
 
                     }
-                    else{
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span >"+Info.uncheckedWorkload+"</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_"+id+"' data-toggle='modal' data-target='#applyModal'>共"+Info.uncheckedItems+"项</span>")
+                    else {
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span >" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.uncheckedItems + "项</span>")
 
                     }
                     /*   $(".sumItemPreview tr:last td:eq(5)").attr("class","uncheckedWork");
-                    $(".sumItemPreview tr:last td:eq(5)").attr("id","uncheckedwork_"+id);
-                    $(".sumItemPreview tr:last td:eq(5)").attr("data-toggle","modal");
-                    $(".sumItemPreview tr:last td:eq(5)").attr("data-target","#applyModal");*/
-                    $(".sumItemPreview tr:last td:eq(5)").css("text-align","center");
-                    $(".sumItemPreview tr:last td:eq(6)").append("<span>"+Info.totalWorkload+"</span>");
-                    $(".sumItemPreview tr:last td:eq(6)").css("text-align","center");
-                   /* var act="<a class=\"btn btn-primary btn-xs previewAll\" id=\"previewAll_"+ id+"\" data-toggle='modal' data-target='#applyModal'>查看详情</a>";
-                    $(".sumItemPreview tr:last td:eq(5)").append(act);*/
+                     $(".sumItemPreview tr:last td:eq(5)").attr("id","uncheckedwork_"+id);
+                     $(".sumItemPreview tr:last td:eq(5)").attr("data-toggle","modal");
+                     $(".sumItemPreview tr:last td:eq(5)").attr("data-target","#applyModal");*/
+                    $(".sumItemPreview tr:last td:eq(5)").css("text-align", "center");
+                    $(".sumItemPreview tr:last td:eq(6)").append("<span>" + Info.totalWorkload + "</span>");
+                    $(".sumItemPreview tr:last td:eq(6)").css("text-align", "center");
+                    /* var act="<a class=\"btn btn-primary btn-xs previewAll\" id=\"previewAll_"+ id+"\" data-toggle='modal' data-target='#applyModal'>查看详情</a>";
+                     $(".sumItemPreview tr:last td:eq(5)").append(act);*/
                 }
+                $(".activesort").dataTable({
+                    "iDisplayLength": 160,
+                  /*  "aLengthMenu": [20, 40, 60],
+                    "oLanguage": { //国际化配置
+                        "sProcessing": "正在获取数据，请稍后...",
+                        "sLengthMenu": "显示 _MENU_ 条",
+                        "sZeroRecords": "没有您要搜索的内容",
+                        "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+                        "sInfoEmpty": "记录数为0",
+                        "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索",
+                        "sUrl": "",
+                        "oPaginate": {
+                            "sFirst": "第一页",
+                            "sPrevious": "上一页",
+                            "sNext": "下一页",
+                            "sLast": "最后一页"
+                        }
+                    }*/
+                })
+                $("#DataTables_Table_0_length").remove();
+                $("#DataTables_Table_0_filter").remove();
+                $("#DataTables_Table_0_info").remove();
+                $("#DataTables_Table_0_paginate").remove();
             }
-        });
+            ;
 
-    });
+        });
+    })
     /*var teachersInfo='';
         $.get(TeacherInfoUrl, {test : 12},function (data) {
             teachersInfo=data.data.teacherList;
@@ -834,6 +968,7 @@ function appendAllItem(data,mystr) {
 
 
         }
+
     }
 }
 function reviewerResetItem(data) {
@@ -948,23 +1083,18 @@ function reviewerResetItem(data) {
                     var paramArray=analyseList[thisId].descAndValues;
                     var str='';
                     for(var paramCount=0;paramCount<paramArray.length;paramCount++){
-                        if(paramCount!=paramArray.length-1){
-                            str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p><hr/>';
 
-                        }
-                        else
-                            str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p>';
+                            str+='<p style="width: max-content;">'+paramArray[paramCount].desc+'：'+paramArray[paramCount].value+'</p>';
+
+
                     }
                     var otherparamArray = analyseList[thisId].otherJsonParameters;
                     var otherstr = '';
                     if(otherparamArray&&otherparamArray.length>0){
                         for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
-                            if(otherparamCount!=otherparamArray.length-1){
-                                otherstr +='<p style="width: max-content;"><span  class="otherstr_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+analyseList[thisId].itemId+'" id="otherParaval_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p><hr/>';
 
-                            }
-                            else
-                                otherstr +='<p style="width: max-content;"><span  class="otherstr_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+analyseList[thisId].itemId+'" id="otherParaval_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p>';
+                                otherstr +='<p style="width: max-content;"><span  class="otherstr_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].key + '</span>'+'：'+'<span class="otherParaval otherParaval_'+analyseList[thisId].itemId+'" id="otherParaval_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p>';
+
 
                         }
                     }

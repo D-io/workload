@@ -73,23 +73,32 @@ public class ExcelExportHelper {
 		// 在excel表格中添加标题
 		ExcelHelper.createCell(row, textStyle, 0, "教师编号");
 		ExcelHelper.createCell(row, textStyle, 1, "教师姓名");
-		ExcelHelper.createCell(row, textStyle, 2, "已通过工作量");
-		ExcelHelper.createCell(row, textStyle, 3, "待审核/复核工作量");
+		ExcelHelper.createCell(row, textStyle, 2, "专业职称");
+		ExcelHelper.createCell(row, textStyle, 3, "已通过工作量");
+		ExcelHelper.createCell(row, textStyle, 4, "已通过工作量项目数（个）");
+		ExcelHelper.createCell(row, textStyle, 5, "待审核/复核工作量");
+		ExcelHelper.createCell(row, textStyle, 6, "待审核/复核工作量项目数（个）");
 
 		for (int rowNum = 1; rowNum <= workloadList.size(); rowNum++) {
 			int index = rowNum - 1;
 			String teacherId = workloadList.get(index).getTeacherId().toString();
 			String teacherNameName = workloadList.get(index).getTeacherName();
+			String professionalTitle = workloadList.get(index).getProfessionalTitle();
 			String checkedWorkload = workloadList.get(index).getCheckedWorkload().toString();
+			String checkedItems = workloadList.get(index).getCheckedItems().toString();
 			String uncheckedWorkload = workloadList.get(index).getUncheckedWorkload().toString();
+			String uncheckedItems = workloadList.get(index).getUncheckedItems().toString();
 			row = sheet.createRow(rowNum);
 			ExcelHelper.createCell(row, textStyle, 0, teacherId);
 			ExcelHelper.createCell(row, textStyle, 1, teacherNameName);
-			ExcelHelper.createCell(row, textStyle, 2, checkedWorkload);
-			ExcelHelper.createCell(row, textStyle, 3, uncheckedWorkload);
+			ExcelHelper.createCell(row, textStyle, 2, professionalTitle);
+			ExcelHelper.createCell(row, textStyle, 3, checkedWorkload);
+			ExcelHelper.createCell(row, textStyle, 4, checkedItems);
+			ExcelHelper.createCell(row, textStyle, 5, uncheckedWorkload);
+			ExcelHelper.createCell(row, textStyle, 6, uncheckedItems);
 		}
 
-		ExcelHelper.setAutoStyle(sheet, 6);
+		ExcelHelper.setAutoStyle(sheet, 9);
 		ByteArrayOutputStream os = null;
 		os = new ByteArrayOutputStream();
 		try {

@@ -159,7 +159,7 @@ public class HistoryInfoController extends ApplicationController {
 
 		int userId = user.getUserId();
 
-		//获取用户相关的历史记录，同时对应类型type
+		//获取用户相关的历史记录，同时对应类型type  操作者或者目标用户为当前登录用户的所有历史记录
 		List<History> historyList = historyService
 				.getHistoriesByUserRelated(userId, type, getCurrentSemester());
 
@@ -171,30 +171,29 @@ public class HistoryInfoController extends ApplicationController {
 		List<ItemDto> itemDtoList = itemService
 				.findAll(null, null, null, user.getUserId(), null, getCurrentSemester());
 
-		//若条目中存在自己又是申报人（导入人），又是审核人（复核人）的情况
-		List<ItemDto> expectItemDtoList = new ArrayList<>();
-		for(ItemDto itemDto:itemDtoList) {
-			if(itemDto.getReviewerId().equals(itemDto.getOwnerId())) {
-				expectItemDtoList.add(itemDto);
+		List<ItemDto> commonItemDto = new ArrayList<>();
+		for (ItemDto itemDto : itemDtoList) {
+			if (itemDto.getOwnerId().equals(itemDto.getReviewerId())) {
+				commonItemDto.add(itemDto);
 			}
 		}
 
-		List<History> expectHistories = getHistoriesByItems(itemDtoList,type);
-		List<History> histories = null;
-		if(isEmptyList(expectItemDtoList)) {
-			histories = getHistoriesByItems(itemDtoList, type);
-		} else {
-			itemDtoList.removeAll(expectItemDtoList);
-			histories = getHistoriesByItems(itemDtoList,type);
-		}
+		List<History> commonHistories = getHistoriesByItems(commonItemDto, type);
+
+		//用户自己的条目对应的全部历史记录
+		List<History> histories = getHistoriesByItems(itemDtoList, type);
 
 		Map<String, Object> data = getData();
+
+		//审核人查看的是自己负责的审核的条目对应的历史记录
 		if (ROLE_REVIEWER.equals(role)) {
 			historyList.removeAll(histories);
-			data.put("historyList", historyConverter.poListToDtoList(historyList));
+			historyList.addAll(commonHistories);
+
+			data.put("historyList", historyConverter.poListToDtoList(sortHistories(historyList)));
 		} else {
 			//教师个人页面，则仅仅展示自己条目信息对应的相关历史记录
-			data.put("historyList", historyConverter.poListToDtoList(expectHistories));
+			data.put("historyList", historyConverter.poListToDtoList(histories));
 		}
 
 		return successResponse(data);
@@ -257,7 +256,7 @@ public class HistoryInfoController extends ApplicationController {
 		List<History> histories = new ArrayList<>();
 		List<ItemDto> itemDtoList = new ArrayList<>();
 
-		if(isEmptyList(itemList)) {
+		if (isEmptyList(itemList)) {
 			return null;
 		}
 
@@ -278,14 +277,19 @@ public class HistoryInfoController extends ApplicationController {
 					.getHistoriesByItem(buildHistoryItemId(item.getItemId()), getCurrentSemester());
 			histories.addAll(historyList);
 		}
+
+		return sortHistories(histories);
+	}
+
+	private List<History> sortHistories(List<History> histories) {
 		Collections.sort(histories, (o1, o2) -> {
 			int time1 = DateHelper.getDefaultTimeStamp(o1.getCreateTime());
 			int time2 = DateHelper.getDefaultTimeStamp(o2.getCreateTime());
-			if(time1 > time2) {
+			if (time1 > time2) {
 				return -1;
 			}
 
-			if(time1 == time2) {
+			if (time1 == time2) {
 				return 0;
 			}
 

@@ -169,4 +169,18 @@ public class History {
 		result = 31 * result + (aimUserId != null ? aimUserId.hashCode() : 0);
 		return result;
 	}
+
+	@Override
+	public Object clone() {
+
+		History history = null;
+		try {
+			history = (History) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+
+		return history;
+	}
+
 }

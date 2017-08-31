@@ -108,8 +108,13 @@ public class ReviewerManageAspectImpl implements IAspect {
 		TeacherWorkload teacherWorkload = teacherWorkloadService.getTeacherWorkload(item.getOwnerId(),getCurrentSemester());
 		if(CHECKED.equals(checkStatus.getStatus())) {
 			teacherWorkload.setCheckedWorkload(teacherWorkload.getCheckedWorkload() + item.getWorkload());
+			teacherWorkload.setCheckedItems(teacherWorkload.getCheckedItems() + 1);
 		}
 		teacherWorkload.setUncheckedWorkload(teacherWorkload.getUncheckedWorkload() - item.getWorkload());
+		teacherWorkload.setTotalWorkload(
+				teacherWorkload.getCheckedWorkload() + teacherWorkload
+						.getUncheckedWorkload());
+		teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() - 1);
 		boolean recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 
 		boolean saveSuccess = historyService.saveHistory(history);
