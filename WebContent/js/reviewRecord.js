@@ -24,7 +24,8 @@ function workRevie(){
                     showimportall(menu_list[menu].children, $(li).children().eq(0));
                 }
                 else if(menu_list[menu].importRequired==1){
-                    $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: auto; '> <thead> <tr role='row'> <th class='sorting' style='width: 210px;'>复核截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span></th> <th class='sorting' style='widows:th:210px;'>导入截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span></th> <th class='sorting' style='width:40px; '><button  id='reviewer_" + menu_list[menu].categoryId + "' class='btn btn-primary reviewer' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击复核</button></th></tr> </table><div style='clear: both;'></div>").appendTo(parent);
+                    $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+
+                        "<p class='deadline'> 复核截止时间: <span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; 导入截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp;<button  id='reviewer_" + menu_list[menu].categoryId + "' class='btn btn-primary reviewer' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right; margin-top: -3px;'>点击复核</button><div style='clear: both;'></div>").appendTo(parent);
 
                 }
 
@@ -247,6 +248,7 @@ function applyworkload() {
             }
         });
         $(".teacherName").select2({
+            placeholer:"",
             allowClear: true,
             width: "100%",
         });
@@ -270,7 +272,8 @@ function applyworkload() {
                     showapplyall(menu_list[menu].children, $(li).children().eq(0));
                 }
                 else if (menu_list[menu].importRequired == 0) {
-                    $("<li class='item_" + menu_list[menu].categoryId + "'></li>").append(menu_list[menu].name + ":" + menu_list[menu].desc + "<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: auto; '> <thead> <tr role='row'> <th class='sorting' style='width: 210px;'>申报截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span></th> <th class='sorting' style='widows:th:210px;'>审核截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span></th> <th class='sorting' style='width:40px; '><button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击申报</button></th> </table><div style='clear: both;'></div>").appendTo(parent);
+                    $("<li class='item_" + menu_list[menu].categoryId + "'></li>").append(menu_list[menu].name + ":" + menu_list[menu].desc +
+                        "<p class='deadline'> 申报截止时间: <span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; 审核截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; <button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right; margin-top: -2px;'>点击申报</button> </p> <div style='clear: both;'></div>").appendTo(parent);
                 }
 
             }
@@ -438,6 +441,7 @@ function applyworkload() {
 
                     });
                     $(".teacherName").select2({
+                        placeholder:"",
                         allowClear: true,
                         width: "100%",
                     });
@@ -490,6 +494,7 @@ function applyworkload() {
 
                 });
                 $(".teacherName").select2({
+                    placeholder:"",
                     allowClear: true,
                     width: "100%",
                 });
@@ -1568,6 +1573,7 @@ function applyworkload() {
         $(".showagain").text("");
         $("input[name='revfile']").css({"color":"","width":""});
     });
+    $(document).on("click",".delemyself");
     $(document).on("click",".delemyself",function () {
         var thisId=parseInt(this.id.match(/\d+/g));
         var itemid=window.Temp[thisId-1].itemId;

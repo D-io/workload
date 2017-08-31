@@ -930,6 +930,7 @@ $(document).ready(function () {
 
         });
         $(".groupMemberName").select2({
+            placeholder:"",
             allowClear: true,
             width: "100%",
         });
@@ -945,8 +946,10 @@ $(document).ready(function () {
 
         });
         $(".showgroupMemberName").select2({
+            placeholder:"",
             allowClear: true,
             width: "100%",
+
         });
     });
 
@@ -1069,6 +1072,7 @@ function getSideBar(role,roleList) {
                      */       }
             });
             $("#teacherName").select2({
+                placeholder:"",
                 allowClear: true,
                 width:"100%",
             });

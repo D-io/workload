@@ -82,7 +82,6 @@
         <div class="modal fade bs-example-modal-lg" id="applyModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                         </button>
@@ -215,7 +214,7 @@
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                    <%-- <a class="downloadFile" style="margin-left: 20px;float: right;margin-top: 4px;display: none">下载</a> <a class="revieFile" style="float: right;margin-top: 4px;;display: none">重传</a>
                                  --%>
-                                    <span class='filestyle'><input type="file" name='testfile' id='testfile' style="float: left"><span class="showhidden"></span></span>
+                                    <span class='filestyle'><input type="file" name='testfile' id='testfile' style="float: left; outline: none;"><span class="showhidden"></span></span>
 
                                 </div>
                             </div>
@@ -383,7 +382,12 @@
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">附件信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <span class='filestyle'><input type="file" name="revfile" id='revfile' style="float: left"><span class="showagain"></span></span>
+                                    <span class='filestyle'>
+                                        <input type="file" name="revfile" id='revfile' style="float: left; outline: none;">
+                                        <span class="showagain">
+
+                                        </span>
+                                    </span>
 
                                 </div>
 
@@ -407,7 +411,7 @@
 
                             <div class="form-group showitem_group" style="display: none;">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组成员</label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                <div class="col-md-9 col-sm-9 col-xs-12 team-member">
 
                                     <a class="btn btn-primary" role="button" data-toggle="collapse" href="#showgroupMessage" aria-expanded="false" aria-controls="collapseExample">
                                         <i class="fa fa-plus"></i>
@@ -420,7 +424,7 @@
 
                                                     <th>成员姓名</th>
                                                     <th>成员职责描述</th>
-                                                    <th>成员所占权重<span style="float: right;"><a class="btn btn-success" id="showaddGroupMessage"><i class="fa fa-plus"></i></a></span></th>
+                                                    <th>成员所占权重</th>
                                                 </tr>
 
                                                 </thead>
@@ -434,6 +438,7 @@
                                                 </tr>
                                                 </tbody>
                                             </table>
+                                            <span style="float: right;"><button class="btn btn-success" id="showaddGroupMessage"><i class="fa fa-plus"></i></button></span>
                                         </div>
                                     </div>
                                 </div>

@@ -2280,7 +2280,6 @@ th {
   border-top: 1px solid #ddd;
 }
 .table > thead > tr > th {
-  vertical-align: bottom;
   border-bottom: 2px solid #ddd;
 }
 .table > caption + thead > tr:first-child > th,
@@ -2597,9 +2596,11 @@ fieldset[disabled] .form-control {
 .form-control[disabled],
 fieldset[disabled] .form-control {
   cursor: not-allowed;
+  resize: none;
 }
 textarea.form-control {
   height: auto;
+  resize: none;
 }
 input[type="search"] {
   -webkit-appearance: none;
@@ -2970,7 +2971,7 @@ select[multiple].input-lg {
 .form-horizontal .checkbox,
 .form-horizontal .radio-inline,
 .form-horizontal .checkbox-inline {
-  padding-top: 7px;
+  padding-left: 14px;
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -6772,3 +6773,5 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+

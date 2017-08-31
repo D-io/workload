@@ -1090,7 +1090,8 @@ h2 {
     -moz-column-break-inside: avoid;
     column-break-inside: avoid;
     opacity: 1;
-    transition: all .2s ease
+    transition: all .2s ease;
+    min-height: 610px;
 }
 .x_title {
     border-bottom: 2px solid #E6E9ED;
@@ -3283,9 +3284,9 @@ ul.project_files li a i {
 .form-group.has-feedback span {
     display: block !important;
 }
-.form-group .btn {
-    margin-bottom: -6px;
-}
+/*.form-group .btn {*/
+    /*margin-bottom: -6px;*/
+/*}*/
 
 .input-group-btn .btn { margin-bottom:0; }
 
@@ -4316,3 +4317,20 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 .dataTables_wrapper > .row{
   overflow:auto !important; !*prevent datatables overflowing its container*!
 }*/
+
+/*  Author:cxl  */
+.form-horizontal .form-group .team-member{
+    top:10px;
+}
+.form-group .team-member .table{
+    font-size: 13px;
+}
+p.deadline{
+    float: right;
+    color: #bd2d29;
+    font-weight: 700;
+    margin: 10px;
+}
+p.deadline span {
+    color: #2A3F54;
+}

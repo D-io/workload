@@ -126,7 +126,7 @@
     <!-- 信任库配置 -->
     <init-param>
       <param-name>sslConfigFile</param-name>
-      <param-value>E:\ssl\sslconf.properties</param-value>
+      <param-value>C:\Users\yin\Desktop\sslconf.properties</param-value>
     </init-param>
     <!-- 编码配置 -->
     <init-param>

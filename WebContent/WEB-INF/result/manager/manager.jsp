@@ -74,9 +74,9 @@
         }
 
        .bs-example-modal-lg .modal-body {
-            overflow-y: scroll;
+            overflow-y: auto;
             position: absolute;
-            top: 55px;
+            top: 80px;
             bottom: 65px;
             width: 100%;
         }
