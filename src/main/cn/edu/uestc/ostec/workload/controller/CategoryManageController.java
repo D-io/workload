@@ -18,6 +18,7 @@ import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.event.CategoryEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -29,6 +30,7 @@ import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.MANAGE_PATH;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_TYPE;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
@@ -123,6 +125,10 @@ public class CategoryManageController extends ApplicationController {
 
 		//设置默认参数
 		setDefaultParams(categoryDto);
+
+		if(IS_LEAF.equals(categoryDto.getIsLeaf()) && isEmptyString(categoryDto.getFormula())) {
+			return parameterNotSupportResponse("公式不能为空！");
+		}
 
 		//将dto对象转为pojo（转换时间）
 		Category category = categoryConverter.dtoToPo(categoryDto);
@@ -395,7 +401,7 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		//根据有无公式判断是否为叶子节点
-		categoryDto.setIsLeaf(isEmptyString(categoryDto.getFormula()) ? NOT_LEAF : IS_LEAF);
+		categoryDto.setIsLeaf(NON_TYPE.equals(categoryDto.getImportRequired()) ? NOT_LEAF : IS_LEAF);
 
 		//设置默认学期
 		categoryDto.setVersion(getCurrentSemester());

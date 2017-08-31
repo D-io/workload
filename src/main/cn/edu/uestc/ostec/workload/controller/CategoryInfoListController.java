@@ -34,6 +34,7 @@ import cn.edu.uestc.ostec.workload.service.ItemService;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.CATEGORY_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_TYPE;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.ROOT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
@@ -160,7 +161,7 @@ public class CategoryInfoListController extends ApplicationController
 
 		List<CategoryBrief> categoryBriefs = new ArrayList<>();
 		for (Category category : categoryList) {
-			if (isEmptyString(category.getFormula())) {
+			if (NON_TYPE.equals(category.getImportRequired())) {
 				categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName()));
 			}
 		}
