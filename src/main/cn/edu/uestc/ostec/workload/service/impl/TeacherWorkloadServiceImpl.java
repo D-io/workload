@@ -17,6 +17,7 @@ import java.util.List;
 import cn.edu.uestc.ostec.workload.dao.TeacherWorkloadDao;
 import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 /**
  * Version:v1.0 (description:  )
@@ -40,6 +41,9 @@ public class TeacherWorkloadServiceImpl extends BaseServiceImpl implements Teach
 	@Override
 	public Boolean saveTeacherWorkload(TeacherWorkload workload) {
 
+		if(null == workload.getVersion() || "".equals(workload.getVersion())) {
+			workload.setVersion(DateHelper.getCurrentTerm());
+		}
 		return teacherWorkloadDao.update(workload);
 	}
 }
