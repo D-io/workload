@@ -250,7 +250,7 @@ function reset() {
         teachersInfo=data.data.teacherList;
     });
     for(var i=0;i<teachersInfo.length;i++){
-        $('#teacherName').append('<option value=\"'+teachersInfo[i].teacherId+'\">'+teachersInfo[i].name+teachersInfo[i].teacherId+'</option>');
+        $('#teacherName').append('<option value=\"'+teachersInfo[i].teacherId+'\">'+teachersInfo[i].teacherId+teachersInfo[i].name+'</option>');
     }
     var itemAuditorInfo='';
     $.get(categoryallListUrl, {test : 12},function (data) {
