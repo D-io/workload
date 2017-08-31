@@ -42,6 +42,7 @@ import static cn.edu.uestc.ostec.workload.WorkloadObjects.GROUP;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ROLE_PROPOSER;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ROLE_REVIEWER;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.SINGLE;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
@@ -143,20 +144,22 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 		if (OK.value() != restResponse.getStatus()) {
 			return;
 		}
+		List<ItemDto> itemDtoList = (List<ItemDto>) restResponse.getData().get("itemList");
 		Object[] args = getParameters(joinPoint);
 		Integer[] itemIdList = (Integer[]) args[0];
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
 
+		boolean saveSuccess = true;
 		for (Integer itemId : itemIdList) {
 			Item item = itemService.findItem(itemId, getCurrentSemester());
 			ItemDto itemDto = itemConverter.poToDto(item);
 			Integer importedRequired = itemDto.getImportRequired();
 
+
 			History history = new History();
 			history.setVersion(getCurrentSemester());
-			history.setItemId(buildHistoryItemId(itemId));
 			history.setUserId(userId);
 			history.setCreateTime(DateHelper.getDateTime());
 			history.setOperation("提交工作量项目：" + item.getItemName() + "。");
@@ -170,6 +173,7 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 					.equals(itemDto.getImportRequired())) {
 				List<ChildWeight> childWeightList = itemDto.getChildWeightList();
 				Double groupWorkload = itemDto.getWorkload();
+
 				for (ChildWeight childWeight : childWeightList) {
 					TeacherWorkload teacherWorkload = teacherWorkloadService
 							.getTeacherWorkload(childWeight.getUserId(), getCurrentSemester());
@@ -182,6 +186,13 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 									.getUncheckedWorkload());
 					recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 				}
+
+				for(ItemDto itemDto1 : itemDtoList) {
+					history.setHistoryId(null);
+					history.setItemId(buildHistoryItemId(itemDto1.getItemId()));
+					saveSuccess = historyService.saveHistory(history);
+				}
+
 			} else {
 				TeacherWorkload teacherWorkload = teacherWorkloadService
 						.getTeacherWorkload(itemDto.getOwnerId(), getCurrentSemester());
@@ -192,9 +203,12 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 								.getUncheckedWorkload());
 				teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() + 1);
 				recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
+
+				history.setItemId(buildHistoryItemId(itemId));
+				saveSuccess = historyService.saveHistory(history);
 			}
 
-			boolean saveSuccess = historyService.saveHistory(history);
+
 			if (!saveSuccess || !recordSuccess) {
 				LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
 			} else {
