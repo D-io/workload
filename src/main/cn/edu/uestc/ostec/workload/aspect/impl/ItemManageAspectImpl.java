@@ -176,6 +176,7 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 					teacherWorkload.setUncheckedWorkload(
 							teacherWorkload.getUncheckedWorkload() + groupWorkload * childWeight
 									.getWeight());
+					teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() + 1);
 					teacherWorkload.setTotalWorkload(
 							teacherWorkload.getCheckedWorkload() + teacherWorkload
 									.getUncheckedWorkload());
@@ -189,6 +190,7 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 				teacherWorkload.setTotalWorkload(
 						teacherWorkload.getCheckedWorkload() + teacherWorkload
 								.getUncheckedWorkload());
+				teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() + 1);
 				recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 			}
 
@@ -243,8 +245,10 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 			teacherWorkload.setUncheckedWorkload(
 					teacherWorkload.getUncheckedWorkload() - item.getWorkload());
 			teacherWorkload.setTotalWorkload(
-					teacherWorkload.getCheckedWorkload() + teacherWorkload
-							.getUncheckedWorkload());
+					teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
+			teacherWorkload.setCheckedItems(teacherWorkload.getCheckedItems() + 1);
+			teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() - 1);
+
 			teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 		} else if (DOUBTED.equals(status)) {
 			operation = "存疑工作量项目：" + item.getItemName() + "。";
@@ -296,9 +300,9 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 				.getTeacherWorkload(itemDto.getOwnerId(), getCurrentSemester());
 		teacherWorkload.setUncheckedWorkload(
 				teacherWorkload.getUncheckedWorkload() + itemDto.getWorkload());
+		teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() + 1);
 		teacherWorkload.setTotalWorkload(
-				teacherWorkload.getCheckedWorkload() + teacherWorkload
-						.getUncheckedWorkload());
+				teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
 		boolean recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 
 		boolean saveSuccess = historyService.saveHistory(history);
@@ -338,7 +342,6 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 
 		Item item = itemService.findItem(itemId, getCurrentSemester());
 		ItemDto itemDto = itemConverter.poToDto(item);
-		Integer importRequired = itemDto.getImportRequired();
 
 		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
 		Integer userId = user.getUserId();
@@ -365,26 +368,34 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 		// 3->0, 1->0, 4->0 预期工作量 -
 		if (getUncheckedStatus().contains(oldStatus) && UNCOMMITTED.equals(newStatus)) {
 			teacherWorkload.setUncheckedWorkload(uncheckedWorkload - itemDto.getWorkload());
+			teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() - 1);
 		}
 
 		// 2->0, 2->1 通过的工作量 -
 		if (CHECKED.equals(oldStatus) && (UNCOMMITTED.equals(newStatus) || NON_CHECKED
 				.equals(newStatus))) {
 			teacherWorkload.setCheckedWorkload(checkedWorkload - itemDto.getWorkload());
+			teacherWorkload.setCheckedItems(teacherWorkload.getCheckedItems() - 1);
+			if(NON_CHECKED.equals(newStatus)) {
+				teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() + 1);
+			}
 		}
 
 		// 2->1, 5->1 预期的工作量 +
 		if ((CHECKED.equals(oldStatus) || DENIED.equals(oldStatus)) && NON_CHECKED
 				.equals(newStatus)) {
 			teacherWorkload.setUncheckedWorkload(uncheckedWorkload + itemDto.getWorkload());
+			teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() + 1);
+			if(CHECKED.equals(oldStatus)) {
+				teacherWorkload.setCheckedItems(teacherWorkload.getCheckedItems() - 1);
+			}
 		}
 
 		//剩余情况保持不变
 
 		boolean recordSuccess = true;
 		teacherWorkload.setTotalWorkload(
-				teacherWorkload.getCheckedWorkload() + teacherWorkload
-						.getUncheckedWorkload());
+				teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
 
 		recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 
