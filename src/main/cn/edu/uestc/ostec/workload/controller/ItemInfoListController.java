@@ -47,6 +47,7 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.I
 import static cn.edu.uestc.ostec.workload.service.ItemService.EMPTY_WORKLOAD;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Version:v1.0 (description: 工作量信息展示控制器 )
@@ -78,6 +79,45 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 	@Autowired
 	private TeacherWorkloadService teacherWorkloadService;
+
+	@RequestMapping(value = "refresh", method = POST)
+	public RestResponse refreshTeacherWorkload(
+			@RequestParam("teacherId")
+					Integer... teacherIdList) {
+
+		List<TeacherWorkload> teacherWorkloadList = new ArrayList<>();
+		Map<String,Object> data = getData();
+		Map<String,Object> errorData = getData();
+		for (Integer teacherId : teacherIdList) {
+
+			TeacherWorkload teacherWorkload = teacherWorkloadService
+					.getTeacherWorkload(teacherId, getCurrentSemester());
+
+			TotalWorkloadAndCount checkedWorkload = itemService
+					.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester());
+			TotalWorkloadAndCount nonCheckedWorkload = itemService
+					.selectTotalWorkload(teacherId, null, getCurrentSemester());
+
+			checkedWorkload = (null == checkedWorkload ? EMPTY_WORKLOAD : checkedWorkload);
+			nonCheckedWorkload = (null == nonCheckedWorkload ? EMPTY_WORKLOAD : nonCheckedWorkload);
+
+			teacherWorkload.setCheckedWorkload(checkedWorkload.getWorkload());
+			teacherWorkload.setCheckedItems(checkedWorkload.getCount());
+
+			teacherWorkload.setUncheckedItems(nonCheckedWorkload.getCount());
+			teacherWorkload.setUncheckedWorkload(nonCheckedWorkload.getWorkload());
+			teacherWorkload.setTotalWorkload(
+					teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
+			boolean saveSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
+			if(!saveSuccess) {
+				errorData.put(teacherWorkload.getTeacherName(),"更新失败");
+			} else{
+				teacherWorkloadList.add(teacherWorkload);
+			}
+		}
+		data.put("teacherWorkloadList",teacherWorkloadList);
+		return successResponse(data);
+	}
 
 	/**
 	 * 统计所有教师的工作量情况
