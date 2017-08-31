@@ -121,8 +121,8 @@ public interface OperatingStatusType {
 	 */
 	default List<Integer> getAbnormalStatusList() {
 		List<Integer> statusList = new ArrayList<>();
-		statusList.add(DOUBTED);
-		statusList.add(DOUBTED_CHECKED);
+		statusList.add(DOUBTED);//3
+		statusList.add(DOUBTED_CHECKED);//4
 
 		return statusList;
 	}
@@ -135,10 +135,12 @@ public interface OperatingStatusType {
 		return statusList;
 	}
 
+
+	//1,3,4
 	default List<Integer> getUncheckedStatus() {
 		List<Integer> statusList = new ArrayList<>();
 		statusList.addAll(getAbnormalStatusList());
-		statusList.add(NON_CHECKED);
+		statusList.add(NON_CHECKED);//1
 
 		return statusList;
 	}

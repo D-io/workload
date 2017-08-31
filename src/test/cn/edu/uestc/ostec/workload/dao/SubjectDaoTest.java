@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import cn.edu.uestc.ostec.workload.BaseTest;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
+import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
+import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 /**
@@ -16,8 +18,11 @@ public class SubjectDaoTest extends BaseTest {
 
 	private Subject subject;
 
+	private TeacherWorkloadService teacherWorkloadService;
+
 	{
 		subjectDao = getBean(SubjectDao.class);
+		teacherWorkloadService = getBean(TeacherWorkloadService.class);
 		subject = new Subject();
 
 		subject.setItemId(2);
@@ -35,7 +40,10 @@ public class SubjectDaoTest extends BaseTest {
 
 	@Test
 	public void insert() throws Exception {
-		System.out.println(subjectDao.insert(subject));
+		//System.out.println(subjectDao.insert(subject));
+		TeacherWorkload teacherWorkload = teacherWorkloadService.getTeacherWorkload(3210343,"2017-2018-1");
+		teacherWorkload.setCheckedWorkload(1.0);
+		System.out.println(teacherWorkloadService.saveTeacherWorkload(teacherWorkload));
 	}
 
 }

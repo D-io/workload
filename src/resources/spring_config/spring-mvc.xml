@@ -18,7 +18,7 @@
    	
     <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器，用了@service进行业务逻辑处理 -->  
     <context:component-scan base-package="cn.edu.uestc.ostec.workload.controller" />
-    
+
     <!-- 配置映射器与适配器，开启注解 -->  
    	<mvc:annotation-driven/>
 

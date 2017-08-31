@@ -59,8 +59,6 @@ public class WorkloadModifyAspectImpl implements IAspect {
 
 	private static final String DATE_MODIFY_INFO_LOG_PATTERN = "review deadline modify operation {}, result {}";
 
-	private static final String CALCULATE_TOTAL_WORKLOAD_LOG_PATTERN = "calculate total workload operation {},result {}";
-
 	@Autowired
 	private ItemService itemService;
 
@@ -73,38 +71,12 @@ public class WorkloadModifyAspectImpl implements IAspect {
 	@Autowired
 	private CategoryService categoryService;
 
-	@Autowired
-	private TeacherWorkloadService teacherWorkloadService;
-
 	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ReviewManageController.modifyWorkload(..))")
 	private void pointCut() {
 	}
 
 	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ReviewManageController.modifyReviewTime(..))")
 	private void dateModifyPointCut() {
-	}
-
-	@Pointcut("execution(* cn.edu.uestc.ostec.workload.service.impl.TeacherWorkloadServiceImpl.saveTeacherWorkload(..))")
-	private void calculateTotalWorkload() {
-	}
-
-	@AfterReturning(returning = "rvt", pointcut = "calculateTotalWorkload()")
-	public void recordTotalWorkload(JoinPoint joinPoint, Object rvt) {
-		Boolean success = (Boolean) rvt;
-		if (!success) {
-			return;
-		}
-		Object[] params = getParameters(joinPoint);
-		TeacherWorkload teacherWorkload = (TeacherWorkload) params[0];
-		teacherWorkload.setTotalWorkload(
-				teacherWorkload.getUncheckedWorkload() + teacherWorkload.getCheckedWorkload());
-
-		boolean saveSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
-		if (!saveSuccess) {
-			LOGGER.info(CALCULATE_TOTAL_WORKLOAD_LOG_PATTERN,teacherWorkload.getTeacherName(),"成功");
-		} else {
-			LOGGER.info(CALCULATE_TOTAL_WORKLOAD_LOG_PATTERN,teacherWorkload.getTeacherName(),"失败");
-		}
 	}
 
 	@AfterReturning(returning = "rvt", pointcut = "pointCut()")

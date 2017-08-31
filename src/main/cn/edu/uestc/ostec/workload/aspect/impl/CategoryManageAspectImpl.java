@@ -51,6 +51,10 @@ public class CategoryManageAspectImpl implements IAspect {
 	@Autowired
 	private ItemService itemService;
 
+
+	//TODO 所有涉及到截止时间的问题,需要加相应的限制
+	//TODO 前端同时根据当前时间来决定是否要关闭接口（按钮变灰）
+
 	/**
 	 * 日志对象
 	 */
