@@ -132,7 +132,10 @@ $(document).ready(function () {
         var flag = this.id;
         flag = parseInt(flag.match(/\d+/g));
         window.cateId=flag;
-        console.log(window.cateId);
+    //    console.log(window.cateId);
+        var file = $("#file")
+        file.after(file.clone().val(""));
+        file.remove();
         allItem=[];
         itemCount=0;
         $(".importNewFile").attr("id","importNewFile_"+flag);
@@ -490,7 +493,7 @@ $(document).ready(function () {
         var thisId=this.id.match(/\d+/g);
         var data=new FormData;
         data.append("file",$("#file")[0].files[0]);
-        if(!$('#file').is(":empty")){
+        if($('#file').val()){
             $.ajax({
                 url:importFileUrl+"?categoryId="+thisId,
                 type:"POST",
