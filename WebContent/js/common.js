@@ -532,15 +532,17 @@ $(document).ready(function () {
     $(document).off("click",".submitTo");
     $(document).on("click",".submitTo",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
-        confirm("确认成功？");
-        $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
+        if(confirm("确认提交？")){
+            $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
 
-          //  $("#statusChange_"+submitId).text("已提交");
-            $(".status_"+thisId).text("已提交");
-            $("#deleteAll_"+thisId).remove();
-            $("#addContent").modal("hide");
+                //  $("#statusChange_"+submitId).text("已提交");
+                $(".status_"+thisId).text("已提交");
+                $("#deleteAll_"+thisId).remove();
+                $("#addContent").modal("hide");
 
-        })
+            })
+        };
+
     });
     $(document).off("click",".deleteAll");
     $(document).on("click",".deleteAll",function () {
@@ -617,12 +619,12 @@ $(document).ready(function () {
             }
 
         }
-        confirm("确认提交？");
-        $.post(itemManaPublicUrl+"?"+itemStr,function () {
+        if(confirm("确认提交？")){
+            $.post(itemManaPublicUrl+"?"+itemStr,function () {
 
-            //  $("#statusChange_"+submitId).text("已提交");
+                //  $("#statusChange_"+submitId).text("已提交");
 
-            for(var i=0;i<chooseitem.length;i++){
+                for(var i=0;i<chooseitem.length;i++){
                     if(chooseitem.eq(i).is(':checked')){
                         $(".status_"+chooseitem.eq(i).attr("id")).text("已提交");
                         $("#deleteAll_"+chooseitem.eq(i).attr("id")).remove();
@@ -630,9 +632,11 @@ $(document).ready(function () {
                         $(".submitItem").removeAttr('checked');
                     }
 
-            }
+                }
 
-        })
+            })
+        };
+
 
     });
     $(document).on("click",".submitall",function () {
@@ -1015,27 +1019,31 @@ $(document).ready(function () {
     $(document).off("click",".editSubmit");
     $(document).on("click",".editSubmit",function () {
         var submitId=parseInt(this.id.match(/\d+/g));
-        confirm("确认提交？");
-        $.post(itemManaPublicUrl+"?itemId="+submitId,function () {
+       if(confirm("确认提交？")){
+           $.post(itemManaPublicUrl+"?itemId="+submitId,function () {
 
-            $("#statusChange_"+submitId).text("有待审核");
-            $(".delemyself_"+submitId).remove();
-           // $("#downLoadAdd_"+submitId).hide();
-            $("#showContent").modal("hide");
+               $("#statusChange_"+submitId).text("有待审核");
+               $(".delemyself_"+submitId).remove();
+               // $("#downLoadAdd_"+submitId).hide();
+               $("#showContent").modal("hide");
 
-        })
+           })
+       };
+
     });
     $(document).on("click",".newsubmit",function () {
         var thisId=parseInt(this.id.match(/\d+/g));
-        confirm("确认提交？");
-        $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
+        if(confirm("确认提交？")){
+            $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
 
-            $("#statusChange_"+thisId).text("有待审核");
-            $(".delemyself_"+submitId).remove();
-          //  $("#downLoadAdd_"+submitId).hide();
-            $("#addContent").modal("hide");
+                $("#statusChange_"+thisId).text("有待审核");
+                $(".delemyself_"+submitId).remove();
+                //  $("#downLoadAdd_"+submitId).hide();
+                $("#addContent").modal("hide");
 
-        })
+            })
+        };
+
     });
 
    /* $(document).off("click",".editDelete");

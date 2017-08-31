@@ -1005,21 +1005,23 @@ function ztree() {
         $(document).off("click",".submitEdit");
         $(document).on("click",".submitEdit",function () {
             var thisId=this.id.match(/\d+/g);
-             confirm("确认提交？");
-            $.post(categorySubmitUrl+"?categoryId="+thisId,function (data){
-                if(data.status==200){
-                  //  window.location.reload();
-                    ztree();
-                     alert("提交规则成功！");
-                    /*for(var m=0;m<nodes.length;nodes++){
-                     $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");
-                     }*/
+             if(confirm("确认提交？")){
+                 $.post(categorySubmitUrl+"?categoryId="+thisId,function (data){
+                     if(data.status==200){
+                         //  window.location.reload();
+                         ztree();
+                         alert("提交规则成功！");
+                         /*for(var m=0;m<nodes.length;nodes++){
+                          $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");
+                          }*/
 
-                }
-                else
-                    alert("提交规则失败！");
-                $("#addModal").modal("hide");
-            } )
+                     }
+                     else
+                         alert("提交规则失败！");
+                     $("#addModal").modal("hide");
+                 } )
+             };
+
 
         });
         $.fn.modal.Constructor.prototype.enforceFocus = function () {};
@@ -1062,22 +1064,24 @@ function ztree() {
             $.ajaxSetup({
                 async : false
             });
-             confirm("确认提交？");
-            $.post(categorySubmitUrl+"?"+str,{test:12},function (data){
-                if(data.status==200){
-                   // window.location.reload();
-                    ztree();
-                     alert("提交规则成功！");
+             if(confirm("确认提交？")){
+                 $.post(categorySubmitUrl+"?"+str,{test:12},function (data){
+                     if(data.status==200){
+                         // window.location.reload();
+                         ztree();
+                         alert("提交规则成功！");
 
-                    /*for(var m=0;m<nodes.length;nodes++){
-                     $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");
-                     }*/
+                         /*for(var m=0;m<nodes.length;nodes++){
+                          $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");
+                          }*/
 
-                }
-                else
-                    alert("提交规则失败！");
-                $("#addModal").hide();
-            } )
+                     }
+                     else
+                         alert("提交规则失败！");
+                     $("#addModal").hide();
+                 } )
+             };
+
 
         });
 

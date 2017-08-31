@@ -415,15 +415,17 @@ function reset() {
         var flag = this.id;
         var item_id = flag.match(/\d+/g);
         var someparamster = "itemId=" + item_id + "&role=reviewer";
-        confirm("确定退回该项目？");
-        $.post(itemResetUrl+"?" + someparamster,function (data) {
-            if (data.status == 200) {
-                alert('重置成功！');
+        if(confirm("确定退回该项目？")){
+            $.post(itemResetUrl+"?" + someparamster,function (data) {
+                if (data.status == 200) {
+                    alert('重置成功！');
 
-            }
-            else alert('重置失败！');
-            reset();
-        });
+                }
+                else alert('重置失败！');
+                reset();
+            });
+        };
+
 
     });
     $(document).off("click",".reset_applicant");
@@ -431,15 +433,17 @@ function reset() {
         var appflag = this.id;
         var myitemid = appflag.match(/\d+/g);
         var someparamster = "itemId=" + myitemid + "&role=proposer";
-        confirm("确定退回该项目？");
-        $.post(itemResetUrl+"?" + someparamster,function (data) {
-            if (data.status == 200) {
-                alert('重置成功！');
+        if(confirm("确定退回该项目？")){
+            $.post(itemResetUrl+"?" + someparamster,function (data) {
+                if (data.status == 200) {
+                    alert('重置成功！');
 
-            }
-            else alert('重置失败！');
-            reset();
-        });
+                }
+                else alert('重置失败！');
+                reset();
+            });
+        };
+
     });
     $(document).on("click",".activePage",function () {
         var thispagesize=$(this).attr("data-dt-idx");

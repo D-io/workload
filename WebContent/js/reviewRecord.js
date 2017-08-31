@@ -1577,23 +1577,25 @@ function applyworkload() {
     $(document).on("click",".delemyself",function () {
         var thisId=parseInt(this.id.match(/\d+/g));
         var itemid=window.Temp[thisId-1].itemId;
-        confirm("确认删除该条目吗？");
-        $.ajax({
-            url:itemManageUrl+"?itemId="+itemid,
-            type:"DELETE",
-            data:{
-                itemId:itemid
-            },
-            success:function () {
-                $(".tbodyTr_"+thisId).remove();
-                for(;thisId<=$(".itemCount").length;thisId++){
-                    $(".itemCount").eq(thisId-1).text(thisId);
+        if(confirm("确认删除该条目吗？")){
+            $.ajax({
+                url:itemManageUrl+"?itemId="+itemid,
+                type:"DELETE",
+                data:{
+                    itemId:itemid
+                },
+                success:function () {
+                    $(".tbodyTr_"+thisId).remove();
+                    for(;thisId<=$(".itemCount").length;thisId++){
+                        $(".itemCount").eq(thisId-1).text(thisId);
+
+                    }
 
                 }
 
-            }
+            });
+        };
 
-        });
     });
     /*$(document).on("click",".revieFile",function () {
         $("#testfile").show();
