@@ -234,9 +234,10 @@ totalRecords | int | 总记录数
 - 接口地址：`/item/info/collection`
 - 支持格式：`json`
 - 请求方式：`GET`
-- 请求示例：`localhost:8080/item/info/collection` 教师获取个人已经通过的工作量信息列表
-- http://127.0.0.1:8080/item/info/collection?teacherId=3210343&option=unchecked 管理员获取已经通过的工作量条目列表
-- http://127.0.0.1:8080/item/info/collection?teacherId=3210343&option=checked 管理员获取还未通过的工作量条目信息列表
+- 请求示例：`localhost:8080/item/info/collection?option=checked` 教师获取个人已经通过的工作量信息列表
+- `localhost:8080/item/info/collection?option=unchecked` 教师个人获取预期要通过的工作量
+- `http://127.0.0.1:8080/item/info/collection?teacherId=3210343&option=unchecked` 管理员获取已经通过的工作量条目列表
+- `http://127.0.0.1:8080/item/info/collection?teacherId=3210343&option=checked` 管理员获取还未通过的工作量条目信息列表
 - 返回参数具体说明：
 
 参数名 |类型 | 说明
@@ -342,6 +343,17 @@ normalItemList | json | 正常条目
             {}
         ],
         "recordCount": 3
+		"teacherWorkload": {
+			"teacherName": "张翔",
+			"teacherId": 3210343,
+			"professionalTitle": null,
+			"checkedWorkload": 11.2,
+			"checkedItems": 1,
+			"uncheckedWorkload": 259,
+			"uncheckedItems": 3,
+			"totalWorkload": 270.2,
+			"version": "2017-2018-1"
+		},
     }
 }
 
