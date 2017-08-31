@@ -232,12 +232,13 @@ public class ItemManageAspectImpl implements IAspect {
 			//通过之后，通过的工作量加，预期的工作量减
 			teacherWorkload
 					.setCheckedWorkload(teacherWorkload.getCheckedWorkload() + item.getWorkload());
-			teacherWorkload.setUncheckedWorkload(
-					teacherWorkload.getUncheckedWorkload() - item.getWorkload());
-			teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
+
 		} else if (DENIED.equals(status)) {
 			operation = "存疑工作量项目：" + item.getItemName() + "。";
 		}
+		teacherWorkload.setUncheckedWorkload(
+				teacherWorkload.getUncheckedWorkload() - item.getWorkload());
+		teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 
 		history.setOperation(operation);
 		history.setAimUserId(itemDto.getReviewerId());

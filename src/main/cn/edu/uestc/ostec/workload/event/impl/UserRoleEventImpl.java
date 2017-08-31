@@ -39,7 +39,7 @@ public class UserRoleEventImpl implements UserRoleEvent {
 
 		User user = userRoleService.getUserRoleDto(userId);
 		user.setUserId(userId);
-		user.setDeadline(DateHelper.getCnDate());
+		user.setDeadline(DateHelper.getDateTime());
 		//获取当前用户已有角色
 		List<RoleInfo> roleInfoList = user.getRoleInfoList();
 		if (roleInfoList == null || roleInfoList.size() == 0) {
