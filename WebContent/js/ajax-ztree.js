@@ -433,6 +433,7 @@ function ztree() {
             });
             $(document).off("click",'#save');
             $(document).on("click",'#save', function () {
+
                 var parametername = $('.parameterName');
                 var newArray=new Array();
                 for(var i=0;i<parametername.length;i++){
@@ -685,7 +686,7 @@ function ztree() {
                 btn.bind("click", function () {
                     /*$(document).off("click","#addBtn_"+treeNode.tId);*/
                     /* $(document).on("click","#addBtn_"+treeNode.tId,function () {*/
-                    $(".form-control").removeAttr("disabled", "disabled");
+                    $(".form-control").removeAttr("disabled");
                     $('#itemName').val(null);
                     $('#desc').val(null);
                     $('#teacherName').val(null);
