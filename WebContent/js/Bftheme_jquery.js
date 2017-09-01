@@ -538,6 +538,8 @@ function reset() {
         allowClear: true,
         width:"100%"
     });
+    $(".select2-selection").attr("class","form-control");
+    $(".select2-selection__clear").css("float","right");
 }
 function itemSummary() {
     $.ajaxSetup({
@@ -559,7 +561,7 @@ function itemSummary() {
                     $(".sumItemPreview").append(rowInfo);
                     $(".sumItemPreview tr:last").attr("class", "resetNum");
                     $(".sumItemPreview tr:last").attr("style", "text-align:center");
-                    for (var j = 0; j < 7; j++)//单元格
+                    for (var j = 0; j < 6; j++)//单元格
                     {
                         $(".sumItemPreview tr:last").append(cellInfo);
                     }
@@ -567,64 +569,65 @@ function itemSummary() {
                     if (Info.checkedWorkload > 100) {
                         $(".sumItemPreview tr:last").css({"background-color": "#6fcd54", "color": "#fff"});
                     }
-                    else {
+                    /*else {
                         $(".sumItemPreview tr:last").css({"background-color": "#ffe746", "color": "rgb(115, 135, 15)"});
-                    }
-                    $(".sumItemPreview tr:last td:eq(0)").text(id);
-                    $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherId);
+                    }*/
+                   /* $(".sumItemPreview tr:last td:eq(0)").text(id);*/
+                    $(".sumItemPreview tr:last td:eq(0)").text(Info.teacherId);
 
-                    $(".sumItemPreview tr:last td:eq(1)").attr("id", "teacherId_" + id);
-                    $(".sumItemPreview tr:last td:eq(2)").text(Info.teacherName);
-                    $(".sumItemPreview tr:last td:eq(3)").text(Info.professionalTitle);
+                    $(".sumItemPreview tr:last td:eq(0)").attr("id", "teacherId_" + id);
+                    $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherName);
+                    $(".sumItemPreview tr:last td:eq(2)").text(Info.professionalTitle);
                     /* $(".sumItemPreview tr:last td:eq(4)").text(Info.checkedWorkload);*/
                     if (Info.checkedItems < 10) {
-                        $(".sumItemPreview tr:last td:eq(4)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.checkedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(3)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.checkedItems + "项</span>")
 
                     }
                     else if (Info.checkedItems < 100) {
-                        $(".sumItemPreview tr:last td:eq(4)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.checkedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(3)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.checkedItems + "项</span>")
 
                     }
                     else {
-                        $(".sumItemPreview tr:last td:eq(4)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.checkedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(3)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.checkedItems + "项</span>")
 
                     }
-                    $(".sumItemPreview tr:last td:eq(4)").css("text-align", "center");
+                    $(".sumItemPreview tr:last td:eq(3)").css("text-align", "center");
 
                     /*$(".sumItemPreview tr:last td:eq(4)").attr("class","checkedwork");
                      $(".sumItemPreview tr:last td:eq(4)").attr("id","checkedwork_"+id);*/
                     /*$(".sumItemPreview tr:last td:eq(4)").attr("data-toggle","modal");
                      $(".sumItemPreview tr:last td:eq(4)").attr("data-target","#applyModal");*/
                     if (Info.uncheckedItems < 10) {
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.uncheckedItems + "项</span>");
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.uncheckedItems + "项</span>");
 
                     }
                     else if (Info.uncheckedItems < 100) {
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span >" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.uncheckedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span >" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.uncheckedItems + "项</span>")
 
                     }
                     else {
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span >" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.uncheckedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span >" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.uncheckedItems + "项</span>")
 
                     }
                     /*   $(".sumItemPreview tr:last td:eq(5)").attr("class","uncheckedWork");
                      $(".sumItemPreview tr:last td:eq(5)").attr("id","uncheckedwork_"+id);
                      $(".sumItemPreview tr:last td:eq(5)").attr("data-toggle","modal");
                      $(".sumItemPreview tr:last td:eq(5)").attr("data-target","#applyModal");*/
+                    $(".sumItemPreview tr:last td:eq(4)").css("text-align", "center");
+                    $(".sumItemPreview tr:last td:eq(5)").append("<span>" + Info.totalWorkload + "</span>");
                     $(".sumItemPreview tr:last td:eq(5)").css("text-align", "center");
-                    $(".sumItemPreview tr:last td:eq(6)").append("<span>" + Info.totalWorkload + "</span>");
-                    $(".sumItemPreview tr:last td:eq(6)").css("text-align", "center");
                     /* var act="<a class=\"btn btn-primary btn-xs previewAll\" id=\"previewAll_"+ id+"\" data-toggle='modal' data-target='#applyModal'>查看详情</a>";
                      $(".sumItemPreview tr:last td:eq(5)").append(act);*/
                 }
                 $(".activesort").dataTable({
                     "iDisplayLength": 160,
-                  /*  "aLengthMenu": [20, 40, 60],
+                    "aLengthMenu": [20, 40, 60,120],
                     "oLanguage": { //国际化配置
                         "sProcessing": "正在获取数据，请稍后...",
-                        "sLengthMenu": "显示 _MENU_ 条",
+                        "sLengthMenu": "每页 _MENU_ 条",
                         "sZeroRecords": "没有您要搜索的内容",
-                        "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+                        "sInfo": "共 _TOTAL_ 条数据",
+                        /*从 _START_ 到  _END_ 条记录 */
                         "sInfoEmpty": "记录数为0",
                         "sInfoFiltered": "(全部记录数 _MAX_ 条)",
                         "sInfoPostFix": "",
@@ -636,12 +639,9 @@ function itemSummary() {
                             "sNext": "下一页",
                             "sLast": "最后一页"
                         }
-                    }*/
+                    }
                 })
-                $("#DataTables_Table_0_length").remove();
-                $("#DataTables_Table_0_filter").remove();
-                $("#DataTables_Table_0_info").remove();
-                $("#DataTables_Table_0_paginate").remove();
+
             }
             ;
 
