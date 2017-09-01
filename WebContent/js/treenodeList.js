@@ -296,6 +296,7 @@ function ownerApply(domId) {
 
                                     });
                                     $(".teacherName").select2({
+                                        placeholder:"",
                                         allowClear: true,
                                         width:"100%",
                                     });
@@ -607,6 +608,7 @@ function ownerApply(domId) {
 
                                     });
                                     $(".teacherName").select2({
+                                        placeholder:"",
                                         allowClear: true,
                                         width:"100%",
                                     });
