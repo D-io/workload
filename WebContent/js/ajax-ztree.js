@@ -56,29 +56,6 @@ function ztree() {
                 var appDeadline=x;
                 var rewDeadline=y;
 
-                if(item.children.length>0) {
-                    var nodes = {
-                        'name': item.name,
-                        'realName':item.name,
-                        'font':{'color':'#2A3F54'},
-                        'id': item.categoryId,
-                        'parentId': item.parentId,
-                        'desc': item.desc,
-                        'title':'【规则描述】'+item.desc,
-                        'reviewDeadline': rewDeadline,
-                        'applyDeadline': appDeadline,
-                        'formula': item.formula,
-                        'reviewerId':item.reviewerId,
-                        'formulaParameterList':item.formulaParameterList,
-                        'otherJsonParameters':item.otherJsonParameters,
-                        'isLeaf':item.isLeaf,
-                        'status':item.status,
-                        'importRequired':item.importRequired,
-                        //  'status':item.status,
-                        'open':true
-                    };
-                }
-                else{
                     if(item.status==1){
                         if(item.importRequired==1){
                             var nodes = {
@@ -148,6 +125,7 @@ function ztree() {
                                 'isLeaf':item.isLeaf,
                                 'status':item.status,
                                 'importRequired':item.importRequired,
+                                'font':{'background-color':'#6fcd54','color':'#fff'},
                                 'open':true
                             };
                         }
@@ -211,6 +189,7 @@ function ztree() {
                                 'name': item.name,
                                 'realName':item.name,
                                 'title':'【规则描述】'+item.desc,
+                                'font':{'background-color':'#ffe746','color':'#2A3F54'},
                            //     'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
@@ -229,7 +208,7 @@ function ztree() {
                         }
 
                     }
-                }
+
                 var zTree=$.fn.zTree.getZTreeObj("treeDemo");
 
                zNodes.push(nodes);
@@ -419,6 +398,8 @@ function ztree() {
                         $(".parameterName").removeAttr("disabled");
                         $(".parameterSymbol").removeAttr("disabled");
                         $(".otherParameterName").removeAttr("disabled");
+                        $("#addParameter").removeAttr("disabled");
+                        $("#addOtherParameter").removeAttr("disabled");
                         $(".editOtherRow").removeAttr("disabled");
                         $(".editParaRow").removeAttr("disabled");
                        // $('#' + treeNode.tId + '_a').css({'background-color': '#ffe746', "color": "#2A3F54"});
@@ -694,7 +675,10 @@ function ztree() {
                     $('#parentId').val(treeNode.name);
                     $("#parentId").attr("disabled", "disabled");
                     $(".requiredtime").hide();
+                    $("#importRequired").find("option[value='1']").removeAttr("selected");
+                    $("#importRequired").find("option[value='0']").removeAttr("selected");
                     $("#importRequired").find("option[value='2']").attr("selected","selected");
+
                     $(".AddPramter").empty();
                     $(".addOtherPramter").empty();
                     $("#addParameter").removeAttr("disabled", "disabled");

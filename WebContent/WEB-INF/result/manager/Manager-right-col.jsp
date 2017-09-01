@@ -207,7 +207,7 @@
 <div class="x_panel" style="width: 100%;padding: 10px 17px;">
     <div class="x_title">
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-bars"></i>管理</a></li>
+            <li><a href="#"><i class="fa fa-bar-chart"></i>教务管理</a></li>
             <li class="active curentPage" id="CategoryManage">计算规则管理</li>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
