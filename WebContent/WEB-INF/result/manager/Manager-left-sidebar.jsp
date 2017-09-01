@@ -18,8 +18,8 @@
                 </span>
        </div>
        <div class="profile_info" style="padding-top: 17px;">
-           <span style="font-size: 15px;">欢迎,</span>
-           <span class="userTeacher" style="font-size: 15px;"></span>
+           <span style="font-size: 14px;">欢迎,</span>
+           <span class="userTeacher" style="font-size: 14px;"></span>
        </div>
     <%--  <span style="font-size: 16px;">信息与软件工程学院
           <span style="font-size: 5px;">School of Information and Software Engineering</span></span></a>--%>

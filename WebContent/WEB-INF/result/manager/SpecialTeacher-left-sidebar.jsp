@@ -14,8 +14,8 @@
                 </span>
             </div>
             <div class="profile_info" style="padding-top: 17px;">
-                <span style="font-size: 15px;">欢迎,</span>
-                <span class="userTeacher" style="font-size: 15px;"></span>
+                <span style="font-size: 14px;">欢迎,</span>
+                <span class="userTeacher" style="font-size: 14px;"></span>
             </div>   </div>
 
         <%--<div class="clearfix"></div>--%>
