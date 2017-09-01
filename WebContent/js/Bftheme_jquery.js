@@ -242,6 +242,17 @@ function reset() {
                 $(".pagination").empty();
                 $(".pagination").append(str);
             }
+            else{
+                str="共<span>"+pageCountNum+"页</span>"
+                for(var pageNum=0;pageNum<10;pageNum++){
+                    var pagestore=pageNum+1;
+
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
+
+
+                }
+                str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+            }
         });
 
     });
@@ -313,6 +324,17 @@ function reset() {
                 }
                 $(".pagination").append(str);
             }
+            else{
+                str="共<span>"+pageCountNum+"页</span>"
+                for(var pageNum=0;pageNum<10;pageNum++){
+                    var pagestore=pageNum+1;
+
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
+
+
+                }
+                str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+            }
 
 
         });
@@ -359,6 +381,17 @@ function reset() {
                     }
                     $(".pagination").empty();
                     $(".pagination").append(str);
+                }
+                else{
+                    str="共<span>"+pageCountNum+"页</span>"
+                    for(var pageNum=0;pageNum<10;pageNum++){
+                        var pagestore=pageNum+1;
+
+                        str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
+
+
+                    }
+                    str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
                 }
             });
 
@@ -487,6 +520,17 @@ function reset() {
                 $(".pagination").empty();
                 $(".pagination").append(str);
             }
+            else{
+                str="共<span>"+pageCountNum+"页</span>"
+                for(var pageNum=0;pageNum<10;pageNum++){
+                    var pagestore=pageNum+1;
+
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
+
+
+                }
+                str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+            }
         });
     });
     /*$(document).on("click",".itemName",*/
@@ -527,7 +571,64 @@ function reset() {
             });
         }
     });
+    $(document).on("click","#next",function(){
+        var pageNum=this.attr("data-dt-idx");
+        pageNum++;
+        var option0=$("#ispassed option:selected").val();
+        var option1=$("#itemRequired option:selected").val();
+        var option2=$("#teacherName option:selected").val();
+        //  var option3=$("#datatable_length option:selected").val();
+        if(option0==0){
+            option0=null;
+        }
+        if(option1==0){
+            option1=null;
+        }
+        if(option2==0){
+            option2=null;
+        }
+        $.get(itemWithPageUrl,{
+            pageNum:pageNum,
+            pageSize:$(".input-sm option:selected").val(),
+            categoryId:option1,
+            status:option0,
+            ownerId:option2
+        }, function (data) {
+            if(data.data==null){
+                $(".totalItem").text("0");
+            }
+            else {
+                $(".totalItem").text(data.data.totalLines);
+            }
+            $(".ResetItem").empty();
+            reviewerResetItem(data);
+            var str='';
+            var totalPage=data.data.totalLines;
+            var $pageSize=$(".input-sm option:selected").val();
+            var pageCountNum=Math.ceil(totalPage/$pageSize);
+            if(pageCountNum<10){
+                for(var pageNum=0;pageNum<pageCountNum;pageNum++){
+                    var pagestore=pageNum+1;
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pagestore+'" tabindex="0">'+pagestore+'</a> </li>';
+                }
+                $(".pagination").empty();
+                $(".pagination").append(str);
+            }
+            else{
+                str="共<span>"+pageCountNum+"页</span>"
+                for(var pageNum=0;pageNum<10;pageNum++){
+                    var pagestore=pageNum+1;
 
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
+
+
+                }
+                str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+            }
+        });
+        this.attr("data-dt-idx",pageNum);
+
+    })
     $("#teacherName").select2({
         placeholder:"",
         allowClear: true,
@@ -777,6 +878,7 @@ function itemSummary() {
     $(document).on("click",".Torefresh",function () {
         itemSummary();
     });
+    $(document).off("click",".checkedwork");
     $(document).on("click",".checkedwork",function () {
         var idCount=parseInt(this.id.match(/\d+/g));
         var teacherid=$("#teacherId_"+idCount).text();
@@ -788,8 +890,18 @@ function itemSummary() {
             var chejsonObject=[];
             $(".sumItemSort").empty();
             $(".sumuncheckedItemSort").empty();
-            $(".import_Item_Count").text(data.data.importCount);
-            $(".checked_Item_Count").text(data.data.applyCount);
+            if(data.data.importCount){
+                $(".import_Item_Count").text(data.data.importCount);
+            }
+            else {
+                $(".import_Item_Count").text("0");
+            }
+            if(data.data.applyCount){
+                $(".checked_Item_Count").text(data.data.applyCount);
+            }
+            else {
+                $(".checked_Item_Count").text("0");
+            }
             appendAllItem(data.data.importItemList,"sumItemSort");
             appendAllItem(data.data.applyItemList,"sumuncheckedItemSort");
            /* if(data.data.itemDtoList){
@@ -821,6 +933,7 @@ function itemSummary() {
             appendAllItem(data,"sumuncheckedItemSort");
         })*/
     });
+    $(document).off("click",".uncheckedWork");
     $(document).on("click",".uncheckedWork",function () {
         var idCount=parseInt(this.id.match(/\d+/g));
         var teacherid=$("#teacherId_"+idCount).text();
@@ -833,8 +946,18 @@ function itemSummary() {
             var chejsonObject=[];
             $(".sumItemSort").empty();
             $(".sumuncheckedItemSort").empty();
-            $(".import_Item_Count").text(data.data.importCount);
-            $(".checked_Item_Count").text(data.data.applyCount);
+            if(data.data.importCount){
+                $(".import_Item_Count").text(data.data.importCount);
+            }
+            else {
+                $(".import_Item_Count").text("0");
+            }
+            if(data.data.applyCount){
+                $(".checked_Item_Count").text(data.data.applyCount);
+            }
+            else {
+                $(".checked_Item_Count").text("0");
+            }
             appendAllItem(data.data.importItemList,"sumItemSort");
             appendAllItem(data.data.applyItemList,"sumuncheckedItemSort");
 
