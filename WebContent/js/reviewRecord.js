@@ -362,6 +362,7 @@ function applyworkload() {
             $("#showparameterTable").empty();
             $("#showotherparameterTable").empty();
             comparePara(data.data.categoryTree, reg);
+
         });
 
     });
@@ -449,6 +450,9 @@ function applyworkload() {
                     $(".showgroupMemberName").eq(pramterCount).select2().val(window.Temp[newReg - 1].jobDescList[pramterCount].userId).trigger("change");
                     $(".showgroupMemberSymbol").eq(pramterCount).val(window.Temp[newReg - 1].jobDescList[pramterCount].jobDesc);
                     $(".showgroupMemberWeight").eq(pramterCount).val(window.Temp[newReg - 1].childWeightList[pramterCount].weight);
+
+                    $(".showgroupMemberSymbol").css("width","120px");
+                    $(".showgroupMemberWeight").css("width","120px");
                 }
 
 
@@ -515,7 +519,7 @@ function applyworkload() {
         }
         $("#revfile").attr("disabled","disabled");
         $("input[name='revfile']").css({"color":"transparent","width":"80px"});
-        $(".showagain").text(window.Temp[newReg-1].fileName);
+        $(".showagain").text(window.Temp[newReg-1].fileName).css("line-height","26px");
         $("#showitemName").val(window.Temp[newReg - 1].itemName);
         $("#showitemName").attr("disabled", "true");
         $("#showapplyDesc").val(window.Temp[newReg - 1].applyDesc);
@@ -1573,7 +1577,7 @@ function applyworkload() {
         $(".showagain").text("");
         $("input[name='revfile']").css({"color":"","width":""});
     });
-    $(document).on("click",".delemyself");
+    $(document).off("click",".delemyself");
     $(document).on("click",".delemyself",function () {
         var thisId=parseInt(this.id.match(/\d+/g));
         var itemid=window.Temp[thisId-1].itemId;

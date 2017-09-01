@@ -85,7 +85,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
 
-                    <div class="modal-header">
+                    <div class="modal-header" style="position: relative">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                         </button>
                         <h4 class="modal-title" id="myModalLabel"></h4>
@@ -122,7 +122,7 @@
         <div class="modal fade" id="refuModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header" style="position: relative">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             &times;
                         </button>

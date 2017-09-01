@@ -14,7 +14,11 @@ function importWorkload(){
         function  showimportall(item) {
         for(var i=0;i<item.length;i++){
 
-            $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+"<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: 40%; '> <thead> <tr role='row'> <th class='sorting' style='padding: 5px;'>上传截止时间:<span class='time_"+item[i].categoryId+"'>"+item[i].reviewDeadline+"</span></th> <th class='sorting' style='padding: 5px;'><div class='dropdown' style='display: inline'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=group'>小组类模板</a></li><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div><a class='btn importList btn-info' id='import_"+item[i].categoryId+"' data-toggle='modal' data-target='#importNewModal'>点击导入</a></th> </table><div style='clear: both;'></div></li>");
+            $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+
+                "<div style='float: right; margin-top: 6px;'><a class='btn importList btn-info' id='import_\"+item[i].categoryId+\"' data-toggle='modal' data-target='#importNewModal' style='float: right; margin-top: 6px;'>点击导入</a>" +
+                "<div class='dropdown' style='float: right; margin-top: 6px;'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='\"+downloadInfoUrl+\"?categoryId=\"+item[i].categoryId+\"&type=group'>小组类模板</a></li><li><a href='\"+downloadInfoUrl+\"?categoryId=\"+item[i].categoryId+\"&type=single'>个人类模板</a></li></ul></div>" +
+                "<p class='deadline'> 上传截止时间: <span class='time_"+item[i].categoryId+"'>"+item[i].reviewDeadline +
+                 "</span></p></div><div style='clear: both;'></div></li>");
 
             if(item[i].formulaParameterList.length>0){
             //    var obj = eval ("(" + item[i].jsonParameters + ")");
@@ -478,7 +482,7 @@ function showall(menu_list, parent) {
             showall(menu_list[menu].children, $(li).children().eq(0));
         }
         else if(menu_list[menu].importRequired==0){
-            $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<table class='table table-striped table-bordered dataTable no-footer' style='float: right;width: auto; '> <thead> <tr role='row'> <th class='sorting' style='widows:th:210px;'>审核截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span></th> <th class='sorting' style='width:40px;'><button  id='auditor_" + menu_list[menu].categoryId + "' class='btn btn-primary auditor' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击审核</button></th> </table><div style='clear: both;'></div>").appendTo(parent);
+            $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+ "<p class='deadline'> 审核截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span>&nbsp;&nbsp;&nbsp;&nbsp;<button  id='auditor_" + menu_list[menu].categoryId + "' class='btn btn-primary auditor' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击审核</button></p><div style='clear: both;'></div>").appendTo(parent);
       /* $(".hiddendistrict").append("<span class='checkDeadT_"+menu_list[menu].categoryId+"' style='display: none;'>"+getLocalTime(menu_list[menu].reviewDeadline)+"</span>");
   */      }
 

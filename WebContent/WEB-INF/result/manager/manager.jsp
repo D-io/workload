@@ -73,22 +73,18 @@
         }
 
        .bs-example-modal-lg .modal-content {
-            /*overflow-y: scroll; */
-            position: absolute;
-            top: 0;
-            bottom: 0;
+            /*overflow-y: auto;*/
+           height: 626px;
             width: 100%;
         }
 
        .bs-example-modal-lg .modal-body {
             overflow-y: auto;
-            position: absolute;
-            top: 80px;
-            bottom: 65px;
+           height: 498px;
             width: 100%;
         }
        .bs-example-modal-lg .modal-header{
-           position: absolute;
+
 
        }
         .bs-example-modal-lg .modal-footer {

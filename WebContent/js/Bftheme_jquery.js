@@ -1157,7 +1157,7 @@ $(document).ready(function () {
     });*/
 $(document).on("click","#addOtherParameter",function () {
     Count++;
-    var addStr="<tr class='otherCount_"+Count+"'><td><input type='text' class='form-control otherParameterName' name='parameterName'><a class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='float:right;'><i class='fa fa-trash'></i></a></td></tr>";
+    var addStr="<tr class='otherCount_"+Count+"'><td style='position:relative'><input type='text' class='form-control otherParameterName' name='parameterName'><a class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='position: absolute; top: 10px; right: -24px;'><i class='fa fa-trash'></i></a></td></tr>";
     $('.addOtherPramter').append(addStr);
 });
 /*    $(document).on("click","#firstaddOtherParameter",function () {

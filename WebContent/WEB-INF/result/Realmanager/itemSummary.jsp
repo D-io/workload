@@ -84,7 +84,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
 
-                        <div class="modal-header">
+                        <div class="modal-header" style="position: relative">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                             </button>
                             <h4 class="modal-title" id="myModalLabel"></h4>

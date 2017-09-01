@@ -117,10 +117,10 @@
                                 <table class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
 
 
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label ">拒绝原因</label>
-                                        <div class="col-sm-9">
-                                            <textarea class="form-control" id="refusedesc" rows="3" name="desc"></textarea>
+                                    <div class="form-group" style="width: 100%;">
+                                        <label class="col-sm-2 control-label ">拒绝原因</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" id="refusedesc" rows="3" name="desc" style="width: 430px;"></textarea>
                                         </div>
                                     </div>
 

@@ -775,7 +775,7 @@ $(document).ready(function () {
         $(".showThead").show();
         var flag=this.id;
         var reg=parseInt(flag.match(/\d+/g));
-        $(".modal-header").text($(".item_"+reg).text());
+        $("#myModalLabel").text($(".item_"+reg).text());
         $.get(auditorManageItemUrl+"?"+'importRequired=0',function (data) {
             $(".showDesc").empty();
             var dataArray=new Array;
@@ -817,7 +817,7 @@ $(document).ready(function () {
     $(document).on("click",".reviewer",function () {
         var flag=this.id;
         var reg=parseInt(flag.match(/\d+/g));
-        $(".modal-header").text($(".item_"+reg).text());
+        $("#myModalLabel").text($(".item_"+reg).text());
 
         $.get(itemGroupUrl+"?" + 'categoryId=' + reg, function (data) {
 
@@ -962,7 +962,7 @@ $(document).ready(function () {
     });
     $(document).off("click","#addGroupMessage");
     $(document).on("click","#addGroupMessage",function () {
-        var addMessage="<tr><td><select class='groupMemberName teacherName' style='width: 30%;'><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol'></td><td><input type='text' class='groupMemberWeight'></td></tr>";
+        var addMessage="<tr><td style='width: 120px;'><select class='groupMemberName teacherName' ><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol' style='width:120px; height: 38px; padding-left: 8px;'></td><td style='position: relative;'><input type='text' class='groupMemberWeight' style='width:120px; height: 38px; padding-left: 8px;'><a class='btn btn-danger removeOtherRow removeRow' style='position: absolute; top: 12px; right: -22px;'><i class='fa fa-trash'></i></a></td></tr>";
         $('#AddgroupPramter').append(addMessage);
         $.get(TeacherInfoUrl, {test: 12}, function (data) {
             for (var i = 0; i < data.data.teacherList.length; i++) {
@@ -975,10 +975,14 @@ $(document).ready(function () {
             allowClear: true,
             width: "100%",
         });
+
+        $(document).on("click",".removeRow",function () {
+            this.closest("tr").remove();
+        });
     });
     $(document).off("click","#showaddGroupMessage");
     $(document).on("click","#showaddGroupMessage",function () {
-        var addMessage="<tr><td><select class='showgroupMemberName teacherName'><option value=''></option> </select></td><td><input type='text' class='showgroupMemberSymbol'></td><td><input type='text' class='showgroupMemberWeight'></td></tr>";
+        var addMessage="<tr><td><select class='showgroupMemberName teacherName'><option value=''></option> </select></td><td><input type='text' class='showgroupMemberSymbol' style='width: 100px;'></td><td><input type='text' class='showgroupMemberWeight' style='width: 100px'></td></tr>";
         $('#showAddgroupPramter').append(addMessage);
         $.get(TeacherInfoUrl, {test: 12}, function (data) {
             for (var i = 0; i < data.data.teacherList.length; i++) {
