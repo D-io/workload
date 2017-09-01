@@ -9,7 +9,7 @@
 <div class="x_panel">
     <div class="x_title">
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-bars"></i>管理</a></li>
+            <li><a href="#"><i class="fa fa-bar-chart"></i>教务管理</a></li>
             <li class="active curentPage" id="ItemSummary">工作当量统计</li>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -87,7 +87,7 @@
                         <div class="modal-header" style="position: relative">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                             </button>
-                            <h4 class="modal-title" id="myModalLabel"></h4>
+                            <h4 class="modal-title" id="myModalLabel"><span style="font-size: 18px;">教务管理</span>/<span style="font-size: 13px;">工作当量统计</span></h4>
                         </div>
                         <div class="modal-body" >
                             <div class="" role="tabpanel" data-example-id="togglable-tabs">
@@ -106,7 +106,7 @@
                                                 <th  class="sorting">序号</th>
                                                 <th  class="sorting">规则名称</th>
                                                 <th  class="sorting">规则类别</th>
-                                                <th class="sorting">规则名称</th>
+                                                <th class="sorting">项目名称</th>
                                                 <th  class="sorting">计算公式</th>
                                                 <th class="sorting" >计算参数</th>
                                                 <th class="sorting" >项目属性</th>

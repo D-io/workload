@@ -221,7 +221,7 @@ function reset() {
         $('.right_hole').append(data);
         $.get(itemWithPageUrl,{
             pageNum:1,
-            pageSize:10
+            pageSize:20
         }, function (data) {
             if(data.data==null){
                 $(".totalItem").text("0");
@@ -252,6 +252,8 @@ function reset() {
 
                 }
                 str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+                $(".pagination").empty();
+                $(".pagination").append(str);
             }
         });
 
@@ -334,6 +336,8 @@ function reset() {
 
                 }
                 str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+                $(".pagination").empty();
+                $(".pagination").append(str);
             }
 
 
@@ -451,10 +455,10 @@ function reset() {
         if(confirm("确定退回该项目？")){
             $.post(itemResetUrl+"?" + someparamster,function (data) {
                 if (data.status == 200) {
-                    alert('重置成功！');
+                    alert('退回成功！');
 
                 }
-                else alert('重置失败！');
+                else alert('退回失败！');
                 reset();
             });
         };
@@ -469,10 +473,10 @@ function reset() {
         if(confirm("确定退回该项目？")){
             $.post(itemResetUrl+"?" + someparamster,function (data) {
                 if (data.status == 200) {
-                    alert('重置成功！');
+                    alert('退回成功！');
 
                 }
-                else alert('重置失败！');
+                else alert('退回失败！');
                 reset();
             });
         };
@@ -530,6 +534,8 @@ function reset() {
 
                 }
                 str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+                $(".pagination").empty();
+                $(".pagination").append(str);
             }
         });
     });
@@ -624,6 +630,8 @@ function reset() {
 
                 }
                 str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+                $(".pagination").empty();
+                $(".pagination").append(str);
             }
         });
         this.attr("data-dt-idx",pageNum);
@@ -721,8 +729,8 @@ function itemSummary() {
                      $(".sumItemPreview tr:last td:eq(5)").append(act);*/
                 }
                 $(".activesort").dataTable({
-                    "iDisplayLength": 160,
-                    "aLengthMenu": [20, 40, 60,120],
+                    "iDisplayLength": 20,
+                    "aLengthMenu": [20, 40, 60,"全部"],
                     "oLanguage": { //国际化配置
                         "sProcessing": "正在获取数据，请稍后...",
                         "sLengthMenu": "每页 _MENU_ 条",
@@ -732,7 +740,7 @@ function itemSummary() {
                         "sInfoEmpty": "记录数为0",
                         "sInfoFiltered": "(全部记录数 _MAX_ 条)",
                         "sInfoPostFix": "",
-                        "sSearch": "搜索",
+                        "sSearch": "搜索：",
                         "sUrl": "",
                         "oPaginate": {
                             "sFirst": "第一页",
@@ -1156,7 +1164,7 @@ function reviewerResetItem(data) {
                 $(".ResetItem tr:last td:eq(4)").text(Info.workload);
                 $(".ResetItem tr:last td:eq(5)").text(Info.teacherName);
 
-                var checkAct="<button type='button' class=\"btn btn-info reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style=''>退回审核</button> <button type='button' class=\"btn btn-success reset_applicant\" id=\"applyReset_"+ Info.itemId+"\" '> 退回申请</button><button class='btn btn-primary viewdetail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</button>";
+                var checkAct="<button type='button' class=\"btn btn-success reset_applicant\" id=\"applyReset_"+ Info.itemId+"\" '> 退回申请</button><button type='button' class=\"btn btn-info reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style=''>退回审核</button> <button class='btn btn-primary viewdetail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</button> ";
                 var importAct="<button type='button' class=\"btn btn-default reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style='background-color:rgba(231,76,60,.88);color: #fff'>退回导入</button> <button class=\"btn btn-default reset_applicant\" id=\"applyReset_"+ Info.itemId+"\" style='background-color:rgba(243,156,18,.88);color: #fff' '>退回复核</button><button class='btn btn-primary viewdetail' id='viewdetail_"+i+"'  data-toggle='modal' data-target='#showdetail'>查看详情</button>";
                /*background-color:rgb(155, 89, 182);color: #fff*/
                 if(Info.importRequired==0){

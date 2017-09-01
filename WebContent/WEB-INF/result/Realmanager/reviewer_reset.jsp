@@ -9,7 +9,7 @@
 <div class="x_panel">
     <div class="x_title">
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-bars"></i>管理</a></li>
+            <li><a href="#"><i class="fa fa-bar-chart"></i>教务管理</a></li>
             <li class="active curentPage" id="Managerreset">教师项目管理</li>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -76,14 +76,13 @@
         </span>
                     </div>
                     <div class="col-sm-6">
-                        <div class="dataTables_length" id="datatable-checkbox_length"  style="display: flex;">
-                            <span style="margin: 5px 5px;">每页</span>
-                                <select name="datatable-checkbox_length" aria-controls="datatable-checkbox" class="form-control input-sm" style="width: 45px;height:19px;margin-left: 5px;">
-                                    <option value="10">10</option>
+                        <div class="dataTables_length" id="datatable-checkbox_length"  style="display: flex;font-weight: bold;">
+                            <span style="margin-bottom: 5px;">每页</span>
+                                <select name="DataTables_Table_1_length" aria-controls="DataTables_Table_1" style="width: 46px;height: 19px;margin-left: 5px;">
                                     <option value="20">20</option>
-
                                     <option value="40">40</option>
-                                </select> <span style="margin-top: 10px;margin-left: 5px;">条</span>
+                                    <option value="60">60</option>
+                                </select> <span style="margin-bottom: 5px;margin-left: 5px;">条</span>
                         </div>
                     </div>
 
