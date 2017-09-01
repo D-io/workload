@@ -1470,9 +1470,7 @@ td.details {
 .table.mb-none{
     font-size: 13px;
 }
-.parameterSymbol{
-    margin-top: 20px;
-}
+
 .calendar-bar{
     position: absolute;
    width: max-content;

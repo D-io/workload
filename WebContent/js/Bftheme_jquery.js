@@ -1293,7 +1293,7 @@ $(document).ready(function () {
    // var newCount=0;
     $(document).on("click","#addParameter",function () {
         Count++;
-    var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><button type='button' class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='float: right;'><i class='fa fa-trash'></i></button></td></tr>";
+    var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td style='position:relative'><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><button type='button' class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='position: absolute;top:10px;right: -24px;'><i class='fa fa-trash'></i></button></td></tr>";
     $('.AddPramter').append(addStr);
 });
   /*  $(document).on("click","#firstaddParameter",function () {
@@ -1303,7 +1303,7 @@ $(document).ready(function () {
     });*/
 $(document).on("click","#addOtherParameter",function () {
     Count++;
-    var addStr="<tr class='otherCount_"+Count+"'><td><input type='text' class='form-control otherParameterName' name='parameterName'><button type='button' class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='float:right;'><i class='fa fa-trash'></i></button></td></tr>";
+    var addStr="<tr class='otherCount_"+Count+"'><td style='position:relative'><input type='text' class='form-control otherParameterName' name='parameterName'><button type='button' class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='position: absolute;top:10px;right: -24px;'><i class='fa fa-trash'></i></button></td></tr>";
     $('.addOtherPramter').append(addStr);
 });
 /*    $(document).on("click","#firstaddOtherParameter",function () {

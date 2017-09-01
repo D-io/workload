@@ -358,7 +358,7 @@ function ztree() {
 
             for (var pramterCount = 0; pramterCount < otherjsonstrArray.length; pramterCount++) {
                 editCount++;
-                addOtherStr += "<tr class='editOtherCount_" + editCount + "'><td><input type='text' class='form-control otherParameterName' name='otherParameterName'><button type='button' class='btn btn-danger editOtherRow' id='editOtherRow_" + editCount + "' style='float:right;'><i class='fa fa-trash'></i></button></td></tr>";
+                addOtherStr += "<tr class='editOtherCount_" + editCount + "'><td style='position:relative'><input type='text' class='form-control otherParameterName' name='otherParameterName'><button type='button' class='btn btn-danger editOtherRow' id='editOtherRow_" + editCount + "' style='position: absolute;top:10px;right: -24px;' ><i class='fa fa-trash'></i></button></td></tr>";
 
             }
             $('.addOtherPramter').append(addOtherStr);
@@ -374,7 +374,7 @@ function ztree() {
             var addStr = '';
             for (var pramterCount = 0; pramterCount < jsonstrArray.length; pramterCount++) {
                 editCount++;
-                addStr += "<tr class='editParaCount_" + editCount + "'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><button type='button' class='btn btn-danger editParaRow' id='editParaRow_" + editCount + "' style='float: right;'><i class='fa fa-trash'></i></button></td></tr>";
+                addStr += "<tr class='editParaCount_" + editCount + "'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td style='position:relative'><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><button type='button' class='btn btn-danger editParaRow' id='editParaRow_" + editCount + "' style='position: absolute;top:10px;right: -24px;'><i class='fa fa-trash'></i></button></td></tr>";
 
             }
             $('.AddPramter').append(addStr);
