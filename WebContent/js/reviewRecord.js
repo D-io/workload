@@ -451,8 +451,7 @@ function applyworkload() {
                     $(".showgroupMemberSymbol").eq(pramterCount).val(window.Temp[newReg - 1].jobDescList[pramterCount].jobDesc);
                     $(".showgroupMemberWeight").eq(pramterCount).val(window.Temp[newReg - 1].childWeightList[pramterCount].weight);
 
-                    $(".showgroupMemberSymbol").css("width","120px");
-                    $(".showgroupMemberWeight").css("width","120px");
+
                 }
 
 

@@ -55,12 +55,14 @@ function importWorkload(){
         }
     });
         $("#itemMember").select2({
-        allowClear: true,
-        width:"100%",
+            placeholder:"",
+            allowClear: true,
+            width:"100%",
     });
         $("#itemmanager").select2({
-        allowClear: true,
-        width:"100%",
+            placeholder:"",
+            allowClear: true,
+            width:"100%",
     });
 
 
