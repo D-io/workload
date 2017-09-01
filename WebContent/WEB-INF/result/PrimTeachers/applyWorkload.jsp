@@ -248,9 +248,9 @@
                                                 <thead>
                                                 <tr style="font-size: 13px;">
 
-                                                    <th>成员姓名</th>
-                                                    <th>成员职责描述</th>
-                                                    <th>成员所占权重<span style="float: right;"><a class="btn btn-success" id="addGroupMessage"><i class="fa fa-plus"></i></a></span></th>
+                                                    <th style="width: 115px">成员姓名</th>
+                                                    <th style="width: 120px">成员职责描述</th>
+                                                    <th style="width: 120px">成员所占权重<span style="float: right;"><a class="btn btn-success" id="addGroupMessage"><i class="fa fa-plus"></i></a></span></th>
                                                 </tr>
 
                                                 </thead>
