@@ -276,8 +276,8 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label requiredtime" id="importManager">审核人员</label>
+                                        <div class="form-group requiredtime">
+                                            <label class="col-sm-3 control-label " id="importManager">审核人员</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control select2" id="teacherName">
                                                     <option value=""></option>
@@ -336,7 +336,7 @@
                                                             <tr>
 
                                                                 <th style="font-size: 13px;">参数名称</th>
-                                                                <th style="font-size: 13px;">参数符号<span style="float: right;"><a class="btn btn-success" id="addParameter"><i class="fa fa-plus"></i></a></span></th>
+                                                                <th style="font-size: 13px;">参数符号<span style="float: right;"><button type="button" class="btn btn-success" id="addParameter"><i class="fa fa-plus"></i></button></span></th>
 
 
                                                             </tr>
@@ -373,7 +373,7 @@
                                                         <table class="table" id="otherParameterTable">
                                                             <thead>
                                                             <tr>
-                                                                <th style="font-size: 13px;">参数名称<span style="float: right;"><a class="btn btn-success" id="addOtherParameter"><i class="fa fa-plus"></i></a></span></th>
+                                                                <th style="font-size: 13px;">参数名称<span style="float: right;"><button type="button" class="btn btn-success" id="addOtherParameter"><i class="fa fa-plus"></i></button></span></th>
                                                             </tr>
 
                                                             </thead>

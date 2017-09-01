@@ -15,8 +15,8 @@
                 </span>
             </div>
             <div class="profile_info">
-                <span>欢迎,</span>
-                <span class="userName"></span>
+                <span style="font-size: 15px;">欢迎,</span>
+                <span class="userName" style="font-size: 15px;"></span>
             </div>        </div>
 
         <div class="clearfix"></div>
@@ -68,7 +68,7 @@
         <!-- /sidebar menu -->
 <div class="sidebar-footer hidden-small">
      <span>
-                    <img src="<%=request.getContextPath()%>/css/images/workloadlogo.png" alt="..." class="left_span"style="width: 210px;height: 50px"">
+                    <img src="<%=request.getContextPath()%>/css/images/workloadlogo.png" alt="..." class="left_span bottomImg">
                 </span>
 </div>
         <!-- /menu footer buttons -->

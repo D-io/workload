@@ -18,8 +18,8 @@
                 </span>
        </div>
        <div class="profile_info" style="padding-top: 17px;">
-           <span>欢迎,</span>
-           <span class="userTeacher"></span>
+           <span style="font-size: 15px;">欢迎,</span>
+           <span class="userTeacher" style="font-size: 15px;"></span>
        </div>
     <%--  <span style="font-size: 16px;">信息与软件工程学院
           <span style="font-size: 5px;">School of Information and Software Engineering</span></span></a>--%>
@@ -62,7 +62,7 @@
         <!-- /sidebar menu -->
 <div class="sidebar-footer hidden-small">
      <span>
-                    <img src="<%=request.getContextPath()%>/css/images/workloadlogo.png" alt="..." class="left_span"style="width: 210px;height: 50px">
+                    <img src="<%=request.getContextPath()%>/css/images/workloadlogo.png" alt="..." class="left_span bottomImg">
                 </span>
 </div>
 
