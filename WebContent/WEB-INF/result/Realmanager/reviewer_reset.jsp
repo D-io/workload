@@ -78,12 +78,12 @@
                     <div class="col-sm-6">
                         <div class="dataTables_length" id="datatable-checkbox_length"  style="display: flex;">
                             <span style="margin: 5px 5px;">每页</span>
-                                <select name="datatable-checkbox_length" aria-controls="datatable-checkbox" class="form-control input-sm" style="width: auto;margin-bottom: 10px;">
+                                <select name="datatable-checkbox_length" aria-controls="datatable-checkbox" class="form-control input-sm" style="width: 45px;height:19px;margin-left: 5px;">
                                     <option value="10">10</option>
                                     <option value="5">5</option>
 
                                     <option value="25">25</option>
-                                </select> <span style="margin-top: 5px;margin-left: 5px;">条</span>
+                                </select> <span style="margin-top: 10px;margin-left: 5px;">条</span>
                         </div>
                     </div>
 
@@ -111,7 +111,7 @@
                     <div class="row">
                         <div class="col-sm-5">
                             <div class="dataTables_info" id="datatable-checkbox_info" role="status" aria-live="polite">
-                                共<span class="totalItem"></span>条工作量条目
+                                共<span class="totalItem"></span>条工作当量条目
                             </div>
                         </div>
                         <div class="col-sm-7">
@@ -137,7 +137,7 @@
 
                                              <th class="sorting">计算公式</th>
                                              <th  class="sorting">计算参数</th>
-                                             <th class="sorting">附加属性</th>
+                                             <th class="sorting">项目属性</th>
 
                                         </tr>
                                         </thead>

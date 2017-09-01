@@ -67,7 +67,7 @@
             <table  class="table table-striped table-bordered dataTable no-footer activesort" >
                 <thead>
                 <tr role="row">
-                    <th  class="teacher_Sort">序号</th>
+                   <%-- <th  class="teacher_Sort">序号</th>--%>
                     <th class=" teacher_Sort">教师工号</th>
                     <th  class=" teacher_Sort">教师姓名</th>
                     <th  class="teacher_Sort ">专业职称</th>

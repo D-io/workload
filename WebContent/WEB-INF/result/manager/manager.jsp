@@ -37,7 +37,7 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/panel-content.css" />
 
-    <%--<link rel="stylesheet" type="text/css" href="${contextPath}/css/datatables.css" />--%>
+   <%-- <link rel="stylesheet" type="text/css" href="${contextPath}/css/datatables.css" />--%>
 
    <%-- <link rel="stylesheet" type="text/css" href="${contextPath}/css/normalize.css" />--%>
 
