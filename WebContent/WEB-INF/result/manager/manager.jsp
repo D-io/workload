@@ -168,10 +168,15 @@
                                 <option value="2">2</option>
                             </select>
                         </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12" style="float:right;width:160px;padding-top: 10px;">
-                            <select class="select2_multiple form-control" multiple="multiple" id="year">
+                        <div class="col-md-4 col-sm-4 col-xs-12 showcalendar" style="float:right;width:160px;padding-top: 10px;">
+                            <input class="form-control" id="year" readonly="true" style="background-color: #fff">
+                            <div class="calendar-bar" style="display: none">
+                                <table>
+                                    <tbody class="calendar-tbody" style="width: 295px;">
 
-                            </select>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="dropdown" id="changerole"  style="float:right;padding-top: 13px;">
                             <button type="button" class="btn dropdown-toggle btn-primary" id="dropdownMenu1"

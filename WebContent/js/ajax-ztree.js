@@ -271,6 +271,10 @@ function ztree() {
             $("#cancel").hide();
             $("#save").hide();
             $(".form-control").attr("disabled", "disabled");
+            $("#addParameter").attr("disabled", "disabled");
+            $("#addOtherParameter").attr("disabled", "disabled");
+            $(".editOtherRow").attr("disabled","disabled");
+            $(".editParaRow").attr("disabled","disabled");
             $("#year").removeAttr("disabled");
             $("#term").removeAttr("disabled");
             var parNodeId=0;
@@ -322,6 +326,9 @@ function ztree() {
                         $(".select2").hide();
                     }
                 }
+                else {
+                    $(this).removeAttr("selected");
+                }
             });
             /*$("#teacherName option").each(function() {
              if($(this).val() == treeNode.reviewerId){
@@ -351,7 +358,7 @@ function ztree() {
 
             for (var pramterCount = 0; pramterCount < otherjsonstrArray.length; pramterCount++) {
                 editCount++;
-                addOtherStr += "<tr class='editOtherCount_" + editCount + "'><td><input type='text' class='form-control otherParameterName' name='otherParameterName'><a class='btn btn-danger editOtherRow' id='editOtherRow_" + editCount + "' style='float:right;'><i class='fa fa-trash'></i></a></td></tr>";
+                addOtherStr += "<tr class='editOtherCount_" + editCount + "'><td><input type='text' class='form-control otherParameterName' name='otherParameterName'><button type='button' class='btn btn-danger editOtherRow' id='editOtherRow_" + editCount + "' style='float:right;'><i class='fa fa-trash'></i></button></td></tr>";
 
             }
             $('.addOtherPramter').append(addOtherStr);
@@ -367,7 +374,7 @@ function ztree() {
             var addStr = '';
             for (var pramterCount = 0; pramterCount < jsonstrArray.length; pramterCount++) {
                 editCount++;
-                addStr += "<tr class='editParaCount_" + editCount + "'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><a class='btn btn-danger editParaRow' id='editParaRow_" + editCount + "' style='float: right;'><i class='fa fa-trash'></i></a></td></tr>";
+                addStr += "<tr class='editParaCount_" + editCount + "'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><button type='button' class='btn btn-danger editParaRow' id='editParaRow_" + editCount + "' style='float: right;'><i class='fa fa-trash'></i></button></td></tr>";
 
             }
             $('.AddPramter').append(addStr);
@@ -383,6 +390,7 @@ function ztree() {
             $(".parameterName").attr("disabled", "disabled");
             $(".parameterSymbol").attr("disabled", "disabled");
             $(".otherParameterName").attr("disabled", "disabled");
+
             $('#itemName').val(treeNode.realName);
             $('#desc').val(treeNode.desc);
             $('#applyDeadline').val(treeNode.applyDeadline);
@@ -407,9 +415,12 @@ function ztree() {
                         $(".manageEdit").hide();
                         $(".submitEdit").hide();
                         $(".form-control").removeAttr("disabled");
+                        $("#parentId").attr("disabled","disabled");
                         $(".parameterName").removeAttr("disabled");
                         $(".parameterSymbol").removeAttr("disabled");
                         $(".otherParameterName").removeAttr("disabled");
+                        $(".editOtherRow").removeAttr("disabled");
+                        $(".editParaRow").removeAttr("disabled");
                        // $('#' + treeNode.tId + '_a').css({'background-color': '#ffe746', "color": "#2A3F54"});
                         //   return confirm("解锁节点成功！");
                         ztree();
@@ -680,6 +691,12 @@ function ztree() {
                     $('#teacherName').val(null);
                     $('#parentId').val(treeNode.name);
                     $("#parentId").attr("disabled", "disabled");
+                    $(".requiredtime").hide();
+                    $("#importRequired").find("option[value='2']").attr("selected","selected");
+                    $(".AddPramter").empty();
+                    $(".addOtherPramter").empty();
+                    $("#addParameter").removeAttr("disabled", "disabled");
+                    $("#addOtherParameter").removeAttr("disabled", "disabled");
                     $('#applyDeadline').val(format());
                     $('#reviewDeadline').val(importFormat());
                     //   $("#select2-teacherName-container").select2("val","");
@@ -836,15 +853,21 @@ function ztree() {
         $(document).off("click","#addToTable");
         $(document).on('click','#addToTable',function() {
             //  $('.AddPramter').empty();
-            $(".form-control").removeAttr("disabled","disabled");
+            $(".form-control").removeAttr("disabled");
             $('#itemName').val(null);
           //  $("#select2-teacherName-container").select2("val","");
             $('#desc').val(null);
             $('#teacherName').val(null);
             $("#parentId").attr("disabled","disabled");
             $('#parentId').val(null);
+            $(".requiredtime").hide();
+            $("#importRequired").find("option[value='2']").attr("selected","selected");
             $('#applyDeadline').val(format());
             $('#reviewDeadline').val(importFormat());
+            $(".AddPramter").empty();
+            $(".addOtherPramter").empty();
+            $("#addParameter").removeAttr("disabled", "disabled");
+            $("#addOtherParameter").removeAttr("disabled", "disabled");
             $('#formula').val(null);
             $('.parameterSymbol').val(null);
             $('.parameterName').val(null);
