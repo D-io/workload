@@ -259,7 +259,7 @@ html , body{
     float: left
 }
 .img-circle.profile_img {
-    width: 40px;
+    width: 35px;
     background: #fff;
     margin-left: 45%;
     z-index: 1000;
@@ -1470,7 +1470,38 @@ td.details {
 .table.mb-none{
     font-size: 13px;
 }
-
+.parameterSymbol{
+    margin-top: 20px;
+}
+.calendar-bar{
+    position: absolute;
+   width: max-content;
+    z-index: 200;
+    border-radius: 4px;
+    border: 1px solid #AAA;
+    text-align: center;
+    margin-top: -1px;
+    background: #FFF;
+}
+.calendar-bar table {
+    text-align: center;
+    background: #FFF;
+    float: left;
+}
+.calendar-bar table tr td {
+    width: 89px;
+    padding: 15px 5px;
+    font-size: 13px;
+    border-radius: 4px;
+}
+.calendar-bar-tdHover{
+    width:89px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #bcd8ff;
+    boder:1px solid #1364fc;
+    color: #04438a;
+}
 /*paging-numbers-full*/
 
 /*.paging_full_numbers {
@@ -2270,6 +2301,13 @@ legend {
 }
 .form-group {
     margin-bottom: 10px
+}
+.bottomImg{
+    max-width: 80%;
+    opacity: 0.6;
+    margin-left: 12px;
+    margin-bottom: 20px;
+    max-height: 80%;
 }
 /*
 .validate {

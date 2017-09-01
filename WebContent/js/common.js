@@ -23,21 +23,45 @@ $(document).ready(function () {
     });
 
     getSideBar(currentRole,roleList);
+    $("#year").val(currentYearUrl);
     $.get(commonYearsUrl,function (data) {
         var arry=new Array;
         arry=data.data.info;
-        for(var yearLength=0;yearLength<arry.length;yearLength++){
+        var trLength=Math.ceil(arry.length/3)
+        for(var yearLength=0;yearLength<trLength;yearLength++){
 
-            if(arry[yearLength]==currentYearUrl){
+           /* if(arry[yearLength]==currentYearUrl){
                 $("#year").append("<option selected='true' style='font-size: 15px;'>"+arry[yearLength]+"</option>");
             }
             else
-                $("#year").append("<option style='font-size: 15px;'>"+arry[yearLength]+"</option>");
+                $("#year").append("<option style='font-size: 15px;'>"+arry[yearLength]+"</option>");*/
+           var countOne=yearLength*3;
+            var countTwo=yearLength*3+1;
+            var countThree=yearLength*3+2;
+            if(!arry[countTwo]){
+                 arry[countTwo]='';
+            }
+            if(!arry[countThree]){
+                 arry[countThree]='';
+            }
+           $(".calendar-tbody").append("<tr><td class='calendar-bar-td' id='calendar-bar-td_"+countOne+"'>"+arry[countOne]+"</td><td class='calendar-bar-td' id='calendar-bar-td_"+countTwo+"'>"+arry[countTwo]+"</td><td class='calendar-bar-td' id='calendar-bar-td_"+countThree+"'>"+arry[countThree]+"</td></tr>")
         }
 
         $("#term").find("option[text=currentScheme]").attr("selected",true);
 
    });
+    $(".calendar-bar-td").hover(function () {
+        var thisId=this.id.match(/\d+/g);
+        $("#calendar-bar-td_"+thisId).removeClass("calendar-bar-td").addClass("calendar-bar-tdHover");
+    },function () {
+        var thisId=this.id.match(/\d+/g);
+        $("#calendar-bar-td_"+thisId).removeClass("calendar-bar-tdHover").addClass("calendar-bar-td");
+    });
+    $(document).on("click",".calendar-bar-tdHover",function () {
+        var thisId=this.id.match(/\d+/g);
+        $("#year").val($("#calendar-bar-td_"+thisId).text());
+        }
+    )
     $(document).on("click",".swift-role",function () {
         var str=this.id;
         switch (str){
@@ -51,7 +75,7 @@ $(document).ready(function () {
         }
     });
     $(document).on("click","#itemChange",function () {
-        $.post(thisTermUrl+"?year="+$("#year").find("option:selected").text()+"&scheme="+parseInt($("#term").val()),function (data) {
+        $.post(thisTermUrl+"?year="+$("#year").text()+"&scheme="+parseInt($("#term").val()),function (data) {
          //   window.location.reload();
             var $currentContent=$(".curentPage").attr("id");
             switch ($currentContent){
