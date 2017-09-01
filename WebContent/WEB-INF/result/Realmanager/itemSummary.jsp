@@ -89,12 +89,12 @@
                             </button>
                             <h4 class="modal-title" id="myModalLabel"></h4>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body" >
                             <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">导入复核类</a>
+                                    <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">导入复核类(<span class="import_Item_Count"></span>)</a>
                                     </li>
-                                    <li role="presentation"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">申报审核类</a>
+                                    <li role="presentation"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">申报审核类(<span class="checked_Item_Count"></span>)</a>
                                     </li>
 
                                 </ul>
@@ -106,10 +106,10 @@
                                                 <th  class="sorting">序号</th>
                                                 <th  class="sorting">规则名称</th>
                                                 <th  class="sorting">规则类别</th>
-                                                <th class="sorting">条目名称</th>
+                                                <th class="sorting">规则名称</th>
                                                 <th  class="sorting">计算公式</th>
-                                                <th class="sorting" >公式描述</th>
-                                                <th class="sorting" >其他参数</th>
+                                                <th class="sorting" >计算参数</th>
+                                                <th class="sorting" >项目属性</th>
                                                 <th class="sorting">工作量</th>
                                                 <th  class="sorting">教师姓名</th>
                                                 <th class="sorting">状态</th>
@@ -126,10 +126,10 @@
                                                 <th  class="sorting">序号</th>
                                                 <th  class="sorting">规则名称</th>
                                                 <th  class="sorting">规则类别</th>
-                                                <th class="sorting">条目名称</th>
+                                                <th class="sorting">项目名称</th>
                                                 <th  class="sorting">计算公式</th>
-                                                <th class="sorting" >公式描述</th>
-                                                <th class="sorting" >其他参数</th>
+                                                <th class="sorting" >计算参数</th>
+                                                <th class="sorting" >项目属性</th>
                                                 <th class="sorting">工作量</th>
                                                 <th  class="sorting">教师姓名</th>
                                                 <th class="sorting">状态</th>

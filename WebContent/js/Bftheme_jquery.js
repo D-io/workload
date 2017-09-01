@@ -788,12 +788,17 @@ function itemSummary() {
             var chejsonObject=[];
             $(".sumItemSort").empty();
             $(".sumuncheckedItemSort").empty();
-            if(data.data.itemDtoList){
+            $(".import_Item_Count").text(data.data.importCount);
+            $(".checked_Item_Count").text(data.data.applyCount);
+            appendAllItem(data.data.importItemList,"sumItemSort");
+            appendAllItem(data.data.applyItemList,"sumuncheckedItemSort");
+           /* if(data.data.itemDtoList){
                 for(var key in data.data.itemDtoList){
                     if(data.data.itemDtoList[key].importRequired==1){
                         impjsonObject.push(data.data.itemDtoList[key]);
                     }
                 }
+                $(".import_Item_Count").text(impjsonObject.length);
                 JSON.stringify(impjsonObject);
 
                 appendAllItem(impjsonObject,"sumItemSort");
@@ -802,10 +807,12 @@ function itemSummary() {
                         chejsonObject.push(data.data.itemDtoList[anotherkey]);
                     }
                 }
+                $(".checked_Item_Count").text(impjsonObject.length);
                 JSON.stringify(chejsonObject);
 
                 appendAllItem(chejsonObject,"sumuncheckedItemSort");
-            }
+            }*/
+
         });
        /* $.get(itemCollection,{
             teacherId:teacherid,
@@ -826,24 +833,31 @@ function itemSummary() {
             var chejsonObject=[];
             $(".sumItemSort").empty();
             $(".sumuncheckedItemSort").empty();
-            if(data.data.itemDtoList){
+            $(".import_Item_Count").text(data.data.importCount);
+            $(".checked_Item_Count").text(data.data.applyCount);
+            appendAllItem(data.data.importItemList,"sumItemSort");
+            appendAllItem(data.data.applyItemList,"sumuncheckedItemSort");
+
+           /* if(data.data.itemDtoList){
                 for(var key in data.data.itemDtoList){
                     if(data.data.itemDtoList[key].importRequired==1){
                         impjsonObject.push(data.data.itemDtoList[key]);
                     }
                 }
+                $(".import_Item_Count").text(impjsonObject.length);
                 JSON.stringify(impjsonObject);
 
                 appendAllItem(impjsonObject,"sumItemSort");
                 for(var anotherkey in data.data.itemDtoList){
                     if(data.data.itemDtoList[anotherkey].importRequired==0){
-                        chejsonObject.push(data.data.itemDtoList[anotherkey]);
+                        chejsonObject.push(chejsonObject.length);
                     }
                 }
+                $(".checked_Item_Count").text(data.data.applyCount);
                 JSON.stringify(chejsonObject);
 
                 appendAllItem(chejsonObject,"sumuncheckedItemSort");
-            }
+            }*/
         });
         });
 
@@ -996,6 +1010,37 @@ function reviewerResetItem(data) {
                 }
                 var id=i;
 
+
+                $(".ResetItem tr:last td:eq(0)").text(id+1);
+
+                $(".ResetItem tr:last td:eq(1)").text(Info.categoryName);
+                var itemImport='';
+                switch (Info.importRequired){
+                    case 2:itemImport='无特殊类别';
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='"+imaginUrl+"/css/images/img.png'></span>");
+                    break;
+                    case 0:itemImport='申报审核类';
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='"+imaginUrl+"/css/images/newChecked.png'></span>");
+                    break;
+                    case 1:itemImport='导入复核类';
+                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='"+imaginUrl+"/css/images/newImport.png'></span>");
+                    break;
+                }
+
+                $(".ResetItem tr:last td:eq(3)").text(Info.itemName);
+                $(".ResetItem tr:last td:eq(3)").attr("class","itemName");
+                $(".ResetItem tr:last td:eq(3)").attr("id","itemName_"+Info.itemId);
+                $(".ResetItem tr:last td:eq(4)").text(Info.workload);
+                $(".ResetItem tr:last td:eq(5)").text(Info.teacherName);
+
+                var checkAct="<button type='button' class=\"btn btn-info reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style=''>退回审核</button> <button type='button' class=\"btn btn-success reset_applicant\" id=\"applyReset_"+ Info.itemId+"\" '> 退回申请</button><button class='btn btn-primary viewdetail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</button>";
+                var importAct="<button type='button' class=\"btn btn-default reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style='background-color:rgba(231,76,60,.88);color: #fff'>退回导入</button> <button class=\"btn btn-default reset_applicant\" id=\"applyReset_"+ Info.itemId+"\" style='background-color:rgba(243,156,18,.88);color: #fff' '>退回复核</button><button class='btn btn-primary viewdetail' id='viewdetail_"+i+"'  data-toggle='modal' data-target='#showdetail'>查看详情</button>";
+               /*background-color:rgb(155, 89, 182);color: #fff*/
+                if(Info.importRequired==0){
+                    $(".ResetItem tr:last td:eq(7)").append(checkAct);
+                }
+                else
+                    $(".ResetItem tr:last td:eq(7)").append(importAct);
                 var statusName;
                 if(Info.importRequired==0) {
                     switch (Info.status) {
@@ -1004,9 +1049,11 @@ function reviewerResetItem(data) {
                             break;
                         case 0:
                             statusName = '未提交';
+                            $("#reviReset_"+Info.itemId).attr("disabled","disabled");
                             break;
                         case 1:
                             statusName = '待审核';
+                            $("#reviReset_"+Info.itemId).attr("disabled","disabled");
                             break;
                         case 2:
                             statusName = '已通过';
@@ -1029,9 +1076,11 @@ function reviewerResetItem(data) {
                             break;
                         case 0:
                             statusName = '未提交';
+                            $("#applyReset_"+Info.itemId).attr("disabled","disabled");
                             break;
                         case 1:
                             statusName = '待复核';
+                            $("#applyReset_"+Info.itemId).attr("disabled","disabled");
                             break;
                         case 2:
                             statusName = '已通过';
@@ -1047,36 +1096,10 @@ function reviewerResetItem(data) {
                             break;
                     }
                 }
-                $(".ResetItem tr:last td:eq(0)").text(id+1);
-
-                $(".ResetItem tr:last td:eq(1)").text(Info.categoryName);
-                var itemImport='';
-                switch (Info.importRequired){
-                    case 2:itemImport='无特殊类别';
-                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='"+imaginUrl+"/css/images/img.png'></span>");
-                    break;
-                    case 0:itemImport='申报审核类';
-                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='"+imaginUrl+"/css/images/newChecked.png'></span>");
-                    break;
-                    case 1:itemImport='导入复核类';
-                        $(".ResetItem tr:last td:eq(2)").append("<span><img src='"+imaginUrl+"/css/images/newImport.png'></span>");
-                    break;
-                }
-
-                $(".ResetItem tr:last td:eq(3)").text(Info.itemName);
-                $(".ResetItem tr:last td:eq(3)").attr("class","itemName");
-                $(".ResetItem tr:last td:eq(3)").attr("id","itemName_"+Info.itemId);
-                $(".ResetItem tr:last td:eq(4)").text(Info.workload);
-                $(".ResetItem tr:last td:eq(5)").text(Info.teacherName);
                 $(".ResetItem tr:last td:eq(6)").text(statusName);
-                var checkAct="<a class=\"btn btn-info reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style=''>退回审核</a> <a class=\"btn btn-success reset_applicant\" id=\"applyReset_"+ Info.itemId+"\" '> 退回申请</a><a class='btn btn-primary viewdetail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</a>";
-                var importAct="<a class=\"btn btn-default reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style='background-color:rgba(231,76,60,.88);color: #fff'>退回导入</a> <a class=\"btn btn-default reset_applicant\" id=\"applyReset_"+ Info.itemId+"\" style='background-color:rgba(243,156,18,.88);color: #fff' '>退回复核</a><a class='btn btn-primary viewdetail' id='viewdetail_"+i+"'  data-toggle='modal' data-target='#showdetail'>查看详情</a>";
-               /*background-color:rgb(155, 89, 182);color: #fff*/
-                if(Info.importRequired==0){
-                    $(".ResetItem tr:last td:eq(7)").append(checkAct);
-                }
-                else
-                    $(".ResetItem tr:last td:eq(7)").append(importAct);
+               /* if(statusName==0){
+                    $("#reviReset_"+Info.itemId).attr("disabled","disabled");
+                }*/
 
                 $(document).on("click",".viewdetail",function () {
                     var thisId=parseInt(this.id.match(/\d+/g));
@@ -1088,7 +1111,7 @@ function reviewerResetItem(data) {
                     var str='';
                     for(var paramCount=0;paramCount<paramArray.length;paramCount++){
 
-                            str+='<p style="width: max-content;">'+paramArray[paramCount].desc+'：'+paramArray[paramCount].value+'</p>';
+                            str+='<p style="width: max-content;"><span>'+paramArray[paramCount].desc+'</span>：<span>'+paramArray[paramCount].value+'</span></p>';
 
 
                     }
@@ -1147,7 +1170,7 @@ $(document).ready(function () {
    // var newCount=0;
     $(document).on("click","#addParameter",function () {
         Count++;
-    var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><a class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='float: right;'><i class='fa fa-trash'></i></a></td></tr>";
+    var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><button type='button' class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='float: right;'><i class='fa fa-trash'></i></button></td></tr>";
     $('.AddPramter').append(addStr);
 });
   /*  $(document).on("click","#firstaddParameter",function () {
@@ -1157,7 +1180,7 @@ $(document).ready(function () {
     });*/
 $(document).on("click","#addOtherParameter",function () {
     Count++;
-    var addStr="<tr class='otherCount_"+Count+"'><td style='position:relative'><input type='text' class='form-control otherParameterName' name='parameterName'><a class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='position: absolute; top: 10px; right: -24px;'><i class='fa fa-trash'></i></a></td></tr>";
+    var addStr="<tr class='otherCount_"+Count+"'><td><input type='text' class='form-control otherParameterName' name='parameterName'><button type='button' class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='float:right;'><i class='fa fa-trash'></i></button></td></tr>";
     $('.addOtherPramter').append(addStr);
 });
 /*    $(document).on("click","#firstaddOtherParameter",function () {
@@ -1191,5 +1214,10 @@ $(document).on("click",".removeParaRow",function () {
         var trId=this.id.match(/\d+/g);
         $(".editParaCount_"+trId).remove();
     });
+    $(".showcalendar").hover(function () {
+      $(".calendar-bar").css("display","block");
+    },function () {
+        $(".calendar-bar").css("display","none");
+    })
 
 });

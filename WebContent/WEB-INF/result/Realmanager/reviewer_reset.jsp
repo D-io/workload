@@ -68,8 +68,8 @@
                         </select>
                     </div>
                     <div class="col-sm-3">
-        <span  id="sumItemSearch" style="height: 34px;">
-            <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+        <span  id="sumItemSearch" >
+            <button class="btn btn-primary" style="margin-top: 8px;"><i class="fa fa-search"></i></button>
         </span>
                         <span>
             <button class="btn btn-success pull-right Toexcell"><i class="fa fa-download"></i> 导出</button>
@@ -80,9 +80,9 @@
                             <span style="margin: 5px 5px;">每页</span>
                                 <select name="datatable-checkbox_length" aria-controls="datatable-checkbox" class="form-control input-sm" style="width: 45px;height:19px;margin-left: 5px;">
                                     <option value="10">10</option>
-                                    <option value="5">5</option>
+                                    <option value="20">20</option>
 
-                                    <option value="25">25</option>
+                                    <option value="40">40</option>
                                 </select> <span style="margin-top: 10px;margin-left: 5px;">条</span>
                         </div>
                     </div>
