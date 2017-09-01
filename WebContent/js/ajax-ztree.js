@@ -689,6 +689,7 @@ function ztree() {
                     $('#itemName').val(null);
                     $('#desc').val(null);
                     $('#teacherName').val(null);
+                    $('#teacherName').select2('data',null);
                     $('#parentId').val(treeNode.name);
                     $("#parentId").attr("disabled", "disabled");
                     $(".requiredtime").hide();
@@ -857,7 +858,7 @@ function ztree() {
             $('#itemName').val(null);
           //  $("#select2-teacherName-container").select2("val","");
             $('#desc').val(null);
-            $('#teacherName').val(null);
+            $('#teacherName').select2('data',null);
             $("#parentId").attr("disabled","disabled");
             $('#parentId').val(null);
             $(".requiredtime").hide();
