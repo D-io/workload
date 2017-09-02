@@ -105,10 +105,10 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	}
 
 	@Override
-	public List<Category> getCategoriesByReviewer(Integer reviewerId, String version) {
+	public List<Category> getCategoriesByReviewer(Integer reviewerId, String version,Integer importedRequired) {
 
 		//return listResult(categoryDao.selectByReviewer(reviewerId));
-		return listResult(categoryDao.select(null, reviewerId, null, null, null, version));
+		return listResult(categoryDao.select(null, reviewerId, null, importedRequired, null, version));
 	}
 
 	@Override

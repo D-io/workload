@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
+import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
@@ -28,6 +31,8 @@ import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
+import cn.edu.uestc.ostec.workload.support.utils.TreeGenerateHelper;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REVIEWER_PATH;
@@ -37,6 +42,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static cn.edu.uestc.ostec.workload.type.UserType.REVIEWER;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -136,7 +142,7 @@ public class ReviewInfoListController extends ApplicationController {
 		}
 
 		List<Category> categoryList = categoryService
-				.getCategoriesByReviewer(user.getUserId(), getCurrentSemester());
+				.getCategoriesByReviewer(user.getUserId(), getCurrentSemester(), null);
 		if (categoryList.isEmpty()) {
 			return invalidOperationResponse();
 		}
@@ -148,9 +154,10 @@ public class ReviewInfoListController extends ApplicationController {
 		List<CategoryBrief> categoryBriefs = new ArrayList<>();
 		for (Category category : categoryList) {
 			Integer todoCount = ZERO_INT;
-			List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(),category.getCategoryId());
-			for(Item item : itemList) {
-				if(NON_CHECKED.equals(item.getStatus())) {
+			List<Item> itemList = itemService
+					.findItemByCategory(getCurrentSemester(), category.getCategoryId());
+			for (Item item : itemList) {
+				if (NON_CHECKED.equals(item.getStatus())) {
 					todoCount++;
 				} else {
 					continue;
@@ -169,78 +176,48 @@ public class ReviewInfoListController extends ApplicationController {
 
 		Map<String, Object> data = getData();
 		data.put("categoryList", categoryBriefs);
-		data.put("importCategories", categoryConverter.poListToDtoList(importCategories));
-		data.put("applyCategories", categoryConverter.poListToDtoList(applyCategories));
+		data.put("importCategories", buildTree(importCategories));
+		data.put("applyCategories", buildTree(applyCategories));
 
 		return successResponse(data);
 	}
 
-	//	/**
-	//	 * 条件查询
-	//	 *
-	//	 * @param option 条件(category,all,teacher)
-	//	 * @param value  对应条件的标识符，categoryName or teacherName
-	//	 * @return RestResponse
-	//	 */
-	//	@RequestMapping(value = "all-items", method = GET)
-	//	public RestResponse getAllItems(
-	//			@RequestParam("option")
-	//					String option,
-	//			@RequestParam(required = false)
-	//					String value) {
-	//
-	//		User user = getUser();
-	//		if (null == user) {
-	//			return invalidOperationResponse("非法请求");
-	//		}
-	//		int reviewerId = user.getUserId();
-	//
-	//		List<Item> itemList = new ArrayList<>();
-	//		List<Category> categoryList = categoryService.getCategoriesByReviewer(reviewerId);
-	//		for (Category category : categoryList) {
-	//			itemList.addAll(itemService.findItemByCategory(category.getCategoryId()));
-	//		}
-	//
-	//		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
-	//		List<ItemDto> itemDtoGroup = new ArrayList<>();
-	//		double workload = ZERO_DOUBLE;
-	//
-	//		Map<String, Object> data = getData();
-	//
-	//		if ("all".equals(option)) {
-	//			data.put("itemList", itemDtoList);
-	//		} else if ("teacher".equals(option)) {
-	//
-	//			for (ItemDto itemDto : itemDtoList) {
-	//				if (value.equals(itemDto.getTeacherName())) {
-	//					itemDtoGroup.add(itemDto);
-	//					data.put("itemList", itemDtoGroup);
-	//				}
-	//			}
-	//
-	//		} else if ("category".equals(option)) {
-	//
-	//			for (ItemDto itemDto : itemDtoList) {
-	//				if (value.equals(itemDto.getCategoryName())) {
-	//					itemDtoGroup.add(itemDto);
-	//					data.put("itemList", itemDtoGroup);
-	//				}
-	//			}
-	//
-	//		} else {
-	//			return parameterNotSupportResponse();
-	//		}
-	//
-	//		for (ItemDto itemDto : itemDtoGroup) {
-	//			Integer status = itemDto.getStatus();
-	//			if (CHECKED.equals(status) || DOUBTED_CHECKED.equals(status)) {
-	//				workload += itemDto.getWorkload();
-	//			}
-	//		}
-	//		data.put("totalWorkload", workload);
-	//
-	//		return successResponse(data);
-	//	}
+	/**
+	 * 审核人获取需要审核的工作量对应的规则
+	 *
+	 * @return categories
+	 */
+	@RequestMapping(value = "apply-categories", method = GET)
+	public RestResponse getApplyCategory() {
+		// 用户验证
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		List<Category> categoryList = categoryService
+				.getCategoriesByReviewer(user.getUserId(), getCurrentSemester(), APPLY_SELF);
+		if (categoryList.isEmpty()) {
+			return invalidOperationResponse();
+		}
+
+		List<Category> categories = new ArrayList<>();
+		for (Category category : categoryList) {
+			List<Item> itemList = itemService
+					.findItemByCategory(getCurrentSemester(), category.getCategoryId());
+			if (!isEmptyList(itemList)) {
+				categories.add(category);
+			}
+		}
+
+		Map<String, Object> data = getData();
+		if (isEmptyList(categories)) {
+			data.put("applyCategories", null);
+		} else {
+			data.put("applyCategories", buildTree(categories));
+		}
+		return successResponse(data);
+	}
 
 	/**
 	 * 不使用分页查询进行相关条件查询
@@ -306,77 +283,6 @@ public class ReviewInfoListController extends ApplicationController {
 
 	}
 
-	//	/**
-	//	 * 条件查询 & 分页查询
-	//	 *
-	//	 * @param categoryId 类目编号
-	//	 * @param ownerId    教师编号
-	//	 * @return RestResponse
-	//	 */
-	//	@RequestMapping(value = "items-all/paginate", method = GET)
-	//	public RestResponse getAllItems(
-	//			@RequestParam(required = false)
-	//					Integer categoryId,
-	//			@RequestParam(required = false)
-	//					Integer isGroup,
-	//			@RequestParam(required = false)
-	//					Integer ownerId,
-	//			@RequestParam(required = false)
-	//					String isExport,
-	//			@RequestParam(required = false)
-	//					Integer pageNum,
-	//			@RequestParam(required = false)
-	//					Integer pageSize) {
-	//
-	//		// 用户验证
-	//		User user = getUser();
-	//		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
-	//			return invalidOperationResponse("非法请求");
-	//		}
-	//
-	//		Map<String, Object> data = getData();
-	//		pageSize = (null == pageSize ? 1000000 : pageSize);
-	//		pageNum = (null == pageNum ? 1 : pageNum);
-	//
-	//		Map<String, Object> info = itemService
-	//				.findAll(categoryId, null, ownerId, isGroup, pageNum, pageSize,getCurrentSemester());
-	//		List<Item> itemList = (List<Item>) info.get("itemList");
-	//		Integer pageCount = (Integer) info.get("pageCount");
-	//		Long totalLines = (Long) info.get("totalLines");
-	//
-	//		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
-	//		List<ItemDto> newItemDtoList = new ArrayList<>();
-	//		if (null == categoryId) {
-	//			for (ItemDto itemDto : itemDtoList) {
-	//				if (!itemDto.getReviewerId().equals(user.getUserId())) {
-	//					newItemDtoList.add(itemDto);
-	//				}
-	//			}
-	//			itemDtoList.removeAll(newItemDtoList);
-	//		}
-	//
-	//		double workload = ZERO_DOUBLE;
-	//		for (ItemDto itemDto : itemDtoList) {
-	//			Integer status = itemDto.getStatus();
-	//			if (CHECKED.equals(status)) {
-	//				workload += itemDto.getWorkload();
-	//			}
-	//		}
-	//
-	//		if (null == isExport) {
-	//			data.put("itemDtoList", itemDtoList);
-	//			data.put("pageCount", pageCount);
-	//			data.put("totalLines", totalLines);
-	//			data.put("totalWorkload", workload);
-	//			return successResponse(data);
-	//		} else if ("yes".equals(isExport)) {
-	//			return getExportExcel(itemDtoList);
-	//		} else {
-	//			return parameterNotSupportResponse("参数有误");
-	//		}
-	//
-	//	}
-
 	/**
 	 * 获取审核人负责的类目下的对应导入方式对应状态的工作量类目信息
 	 *
@@ -390,7 +296,7 @@ public class ReviewInfoListController extends ApplicationController {
 
 		//获取审核人负责的Category类目信息
 		List<Category> categoryList = categoryService
-				.getCategoriesByReviewer(reviewerId, getCurrentSemester());
+				.getCategoriesByReviewer(reviewerId, getCurrentSemester(), importRequired);
 		if (categoryList.isEmpty()) {
 			return null;
 		}
@@ -400,11 +306,9 @@ public class ReviewInfoListController extends ApplicationController {
 
 		//查找对应的导入方式下的为指定状态的Item条目信息
 		for (Category category : categoryList) {
-			if (importRequired.equals(category.getImportRequired())) {
-				items = itemService.findItemsByCategory(category.getCategoryId(), status,
-						getCurrentSemester());
-				itemList.addAll(items);
-			}
+			items = itemService
+					.findItemsByCategory(category.getCategoryId(), status, getCurrentSemester());
+			itemList.addAll(items);
 		}
 
 		return itemConverter.poListToDtoList(itemList);
@@ -448,4 +352,25 @@ public class ReviewInfoListController extends ApplicationController {
 			this.todoCount = todoCount;
 		}
 	}
+
+	private List<CategoryDto> buildTree(List<Category> categoryList) {
+		//获取所有的根节点规则
+		List<Category> categories = categoryService.getRootCategories(getCurrentSemester());
+		//根节点规则和教师对应有条目的规则构成需要生成树的规则列表
+		categoryList.addAll(categories);
+
+		List<CategoryDto> categoryDtoList = categoryConverter.poListToDtoList(categoryList);
+
+		//初始化树的构造器
+		TreeGenerateHelper treeGenerateHelper = new TreeGenerateHelper(categoryDtoList);
+
+		List<CategoryDto> parentList = categoryConverter.poListToDtoList(
+				categoryService.getCategoryChildren(SUBMITTED, ZERO_INT, getCurrentSemester()));
+		List<CategoryDto> tree = new ArrayList<>();
+		for (CategoryDto categoryDto : parentList) {
+			tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
+		}
+		return tree;
+	}
+
 }
