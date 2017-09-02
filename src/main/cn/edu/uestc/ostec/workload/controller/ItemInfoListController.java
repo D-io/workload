@@ -326,8 +326,12 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return invalidOperationResponse("非法请求");
 		}
 		int teacherId = user.getUserId();
+
+		//获取当前教师对应的导入类的条目
 		List<ItemDto> itemDtoList = findItems(IMPORT_EXCEL, getImportStatus(), teacherId,
 				getCurrentSemester());
+
+		//获取当前教师对应的导入类的条目对应的规则列表
 		List<Category> categoryList = new ArrayList<>();
 		for (ItemDto itemDto : itemDtoList) {
 			Category category = categoryService
@@ -337,21 +341,12 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			}
 		}
 
-		List<Category> categories = categoryService.getRootCategories(getCurrentSemester());
-		categoryList.addAll(categories);
-
-		List<CategoryDto> categoryDtoList = categoryConverter.poListToDtoList(categoryList);
-
-		TreeGenerateHelper treeGenerateHelper = new TreeGenerateHelper(categoryDtoList);
 		Map<String, Object> data = getData();
-
-		List<CategoryDto> parentList = categoryConverter.poListToDtoList(
-				categoryService.getCategoryChildren(SUBMITTED, ZERO_INT, getCurrentSemester()));
-		List<CategoryDto> tree = new ArrayList<>();
-		for (CategoryDto categoryDto : parentList) {
-			tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
+		if (isEmptyList(categoryList)) {
+			data.put("categoryTree", null);
+		} else {
+			data.put("categoryTree", buildTree(categoryList));
 		}
-		data.put("categoryTree", tree);
 
 		//data.put("categoryList",treeGenerateHelper.generateTree(ROOT));
 		return successResponse(data);
@@ -513,7 +508,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		data.put("recordCount", itemList.size());
 		data.put("teacherWorkload", teacherWorkload);
 
-		data.put("itemDtoList",itemList);
+		data.put("itemDtoList", itemList);
 
 		return successResponse(data);
 	}
@@ -585,6 +580,26 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		return itemDtoList;
+	}
+
+	private List<CategoryDto> buildTree(List<Category> categoryList) {
+		//获取所有的根节点规则
+		List<Category> categories = categoryService.getRootCategories(getCurrentSemester());
+		//根节点规则和教师对应有条目的规则构成需要生成树的规则列表
+		categoryList.addAll(categories);
+
+		List<CategoryDto> categoryDtoList = categoryConverter.poListToDtoList(categoryList);
+
+		//初始化树的构造器
+		TreeGenerateHelper treeGenerateHelper = new TreeGenerateHelper(categoryDtoList);
+
+		List<CategoryDto> parentList = categoryConverter.poListToDtoList(
+				categoryService.getCategoryChildren(SUBMITTED, ZERO_INT, getCurrentSemester()));
+		List<CategoryDto> tree = new ArrayList<>();
+		for (CategoryDto categoryDto : parentList) {
+			tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
+		}
+		return tree;
 	}
 
 }

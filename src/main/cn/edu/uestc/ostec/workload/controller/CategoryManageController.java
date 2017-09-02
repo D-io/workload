@@ -110,23 +110,15 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		//参数检验
-		if (null == categoryDto) {
-			return parameterNotSupportResponse("参数不能为空");
-		}
-
-		//校验条目名称
-		if (isEmptyString(categoryDto.getName())) {
-			return parameterNotSupportResponse("项目名称不能为空");
-		}
-
-		if (!isValidImportedRequired(categoryDto.getImportRequired())) {
-			return parameterNotSupportResponse("导入类型参数有误");
+		if (null == categoryDto || isEmptyString(categoryDto.getName()) || !isValidImportedRequired(
+				categoryDto.getImportRequired())) {
+			return parameterNotSupportResponse("参数有误或为空");
 		}
 
 		//设置默认参数
 		setDefaultParams(categoryDto);
 
-		if(IS_LEAF.equals(categoryDto.getIsLeaf()) && isEmptyString(categoryDto.getFormula())) {
+		if (IS_LEAF.equals(categoryDto.getIsLeaf()) && isEmptyString(categoryDto.getFormula())) {
 			return parameterNotSupportResponse("公式不能为空！");
 		}
 
@@ -146,8 +138,7 @@ public class CategoryManageController extends ApplicationController {
 		//展示保存的dto的完整信息
 		Map<String, Object> data = getData();
 		CategoryDto categoryDto1 = categoryConverter.poToDto(category);
-		categoryDto1.setOtherJson(null);
-		categoryDto1.setJsonParameters(null);
+
 		data.put("category", categoryDto1);
 
 		return successResponse(data);
@@ -170,26 +161,22 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		Map<String, Object> data = getData();
-		Map<String, Object> errorData = getData();
 		List<CategoryDto> categoryList = new ArrayList<>();
 		for (Integer categoryId : categoryIdList) {
 
 			Category category = categoryService.getCategory(categoryId, getCurrentSemester());
 			if (null == category) {
-				errorData.put(categoryId.toString(), "参数有误");
-				continue;
+				return parameterNotSupportResponse("参数有误！");
 			}
 
 			if (SUBMITTED.equals(category.getStatus())) {
-				errorData.put(category.getName(), "非解锁工作量不可删除！");
-				continue;
+				return invalidOperationResponse("存在未解锁规则，无法删除");
 			}
 
 			boolean removeSuccess = categoryService
 					.removeCategory(categoryId, getCurrentSemester());
 			if (!removeSuccess) {
-				errorData.put(category.getName(), "删除失败！");
-				continue;
+				return systemErrResponse("删除失败");
 			}
 
 			Category oldCategory = categoryService.getCategory(categoryId, getCurrentSemester());
@@ -200,7 +187,6 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		data.put("categoryList", categoryList);
-		data.put("errorData", errorData);
 		//展示删除的categoryDto信息
 		return successResponse(data);
 	}
@@ -221,22 +207,21 @@ public class CategoryManageController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
+		List<Category> categoryList = new ArrayList<>();
 		Map<String, Object> data = getData();
-		Map<String, Object> errorData = getData();
 		for (Integer categoryId : categoryIdList) {
 			Category category = categoryService.getCategory(categoryId, getCurrentSemester());
 			if (null == category) {
-				errorData.put(categoryId.toString(), "参数有误");
+				return parameterNotSupportResponse("参数有误");
 			}
 			category.setStatus(UNCOMMITTED);
 			boolean saveSuccess = categoryService.saveCategory(category);
 			if (!saveSuccess) {
-				errorData.put(category.getName(), "解锁失败");
-			} else {
-				data.put(category.getName(), "解锁成功");
+				return systemErrResponse("删除失败");
 			}
+			categoryList.add(category);
 		}
-		data.put("errorData", errorData);
+		data.put("categoryList", categoryConverter.poListToDtoList(categoryList));
 		return successResponse(data);
 	}
 
@@ -401,7 +386,8 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		//根据有无公式判断是否为叶子节点
-		categoryDto.setIsLeaf(NON_TYPE.equals(categoryDto.getImportRequired()) ? NOT_LEAF : IS_LEAF);
+		categoryDto
+				.setIsLeaf(NON_TYPE.equals(categoryDto.getImportRequired()) ? NOT_LEAF : IS_LEAF);
 
 		//设置默认学期
 		categoryDto.setVersion(getCurrentSemester());

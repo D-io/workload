@@ -76,7 +76,7 @@ public interface CategoryService extends MultiLevelService<CategoryDto> {
 	 * @param reviewerId 审核人编号
 	 * @return List<Category>
 	 */
-	List<Category> getCategoriesByReviewer(Integer reviewerId,String version);
+	List<Category> getCategoriesByReviewer(Integer reviewerId,String version,Integer importedRequired);
 
 	/**
 	 * 查询所有有效的类目信息
