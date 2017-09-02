@@ -713,74 +713,77 @@ function ztree() {
                                 newArray=null;
                             }
                             var reviewerid = $('#teacherName option:selected');
+                            if($('#formula').val()!=null){
+                                $.post(categoryManageUrl, {
+                                    name: $('#itemName').val(),
+                                    desc: $('#desc').val(),
+                                    parentId: treeNode.id,
+                                    reviewDeadline: reviewTimetodate,
+                                    applyDeadline: applyTimetodate,
+                                    reviewerId: reviewerid.val(),
+                                    formula: $('#formula').val(),
+                                    importRequired: radio.val(),
+                                    jsonParameters: newArray,
+                                    otherJson: otherArray
 
-                            $.post(categoryManageUrl, {
-                                name: $('#itemName').val(),
-                                desc: $('#desc').val(),
-                                parentId: treeNode.id,
-                                reviewDeadline: reviewTimetodate,
-                                applyDeadline: applyTimetodate,
-                                reviewerId: reviewerid.val(),
-                                formula: $('#formula').val(),
-                                importRequired: radio.val(),
-                                jsonParameters: newArray,
-                                otherJson: otherArray
-                            }, function (data) {
-                                if (data.status == 200&&data.data.category) {
-                                    alert("添加规则成功！");
-                                    var rewDeadline = data.data.category.reviewDeadline;
-                                    var appDeadline = data.data.category.applyDeadline;
+                                }, function (data) {
+                                    if (data.status == 200&&data.data.category) {
+                                        alert("添加规则成功！");
+                                        var rewDeadline = data.data.category.reviewDeadline;
+                                        var appDeadline = data.data.category.applyDeadline;
 
-                                    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                                    if (data.data.category.importRequired == 1) {
-                                        var newNode = {
-                                            'name': data.data.category.name,
-                                            'realName': data.data.category.name,
-                                            'id': data.data.category.categoryId,
-                                            'parentId': data.data.category.parentId,
-                                            'status': data.data.category.status,
-                                            'desc': data.data.category.desc,
-                                            'title': '【规则描述】' + data.data.category.desc + '&#10【导入截止】' + appDeadline + '&#10【复核截止】' + rewDeadline,
-                                            'reviewDeadline': rewDeadline,
-                                            'applyDeadline': appDeadline,
-                                            'formula': data.data.category.formula,
-                                            'reviewerId': data.data.category.reviewerId,
-                                            'formulaParameterList': data.data.category.formulaParameterList,
-                                            'otherJsonParameters': data.data.category.otherJsonParameters,
-                                            'isLeaf': data.data.category.isLeaf,
-                                            'importRequired': data.data.category.importRequired,
-                                            'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
-                                            'iconSkin': "icon06"
-                                        };
+                                        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                                        if (data.data.category.importRequired == 1) {
+                                            var newNode = {
+                                                'name': data.data.category.name,
+                                                'realName': data.data.category.name,
+                                                'id': data.data.category.categoryId,
+                                                'parentId': data.data.category.parentId,
+                                                'status': data.data.category.status,
+                                                'desc': data.data.category.desc,
+                                                'title': '【规则描述】' + data.data.category.desc + '&#10【导入截止】' + appDeadline + '&#10【复核截止】' + rewDeadline,
+                                                'reviewDeadline': rewDeadline,
+                                                'applyDeadline': appDeadline,
+                                                'formula': data.data.category.formula,
+                                                'reviewerId': data.data.category.reviewerId,
+                                                'formulaParameterList': data.data.category.formulaParameterList,
+                                                'otherJsonParameters': data.data.category.otherJsonParameters,
+                                                'isLeaf': data.data.category.isLeaf,
+                                                'importRequired': data.data.category.importRequired,
+                                                'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
+                                                'iconSkin': "icon06"
+                                            };
+                                        }
+                                        else if (data.data.category.importRequired == 0) {
+                                            var newNode = {
+                                                'name': data.data.category.name,
+                                                'realName': data.data.category.name,
+                                                'id': data.data.category.categoryId,
+                                                'parentId': data.data.category.parentId,
+                                                'desc': data.data.category.desc,
+                                                'title': '【规则描述】' + data.data.category.desc + '&#10【申报截止】' + appDeadline + '&#10【审核截止】' + rewDeadline,
+                                                'status': data.data.category.status,
+                                                'reviewDeadline': rewDeadline,
+                                                'applyDeadline': appDeadline,
+                                                'formula': data.data.category.formula,
+                                                'reviewerId': data.data.category.reviewerId,
+                                                'formulaParameterList': data.data.category.formulaParameterList,
+                                                'otherJsonParameters': data.data.category.otherJsonParameters,
+                                                'isLeaf': data.data.category.isLeaf,
+                                                'importRequired': data.data.category.importRequired,
+                                                'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
+                                                'iconSkin': "icon02"
+                                            };
+                                        }
+
+                                        newNode = zTree.addNodes(treeNode, newNode);
+
+                                        zNodes.push(newNode);
+                                        beforeEditName("treeDemo", zNodes[zNodes.length - 1][0]);
                                     }
-                                    else if (data.data.category.importRequired == 0) {
-                                        var newNode = {
-                                            'name': data.data.category.name,
-                                            'realName': data.data.category.name,
-                                            'id': data.data.category.categoryId,
-                                            'parentId': data.data.category.parentId,
-                                            'desc': data.data.category.desc,
-                                            'title': '【规则描述】' + data.data.category.desc + '&#10【申报截止】' + appDeadline + '&#10【审核截止】' + rewDeadline,
-                                            'status': data.data.category.status,
-                                            'reviewDeadline': rewDeadline,
-                                            'applyDeadline': appDeadline,
-                                            'formula': data.data.category.formula,
-                                            'reviewerId': data.data.category.reviewerId,
-                                            'formulaParameterList': data.data.category.formulaParameterList,
-                                            'otherJsonParameters': data.data.category.otherJsonParameters,
-                                            'isLeaf': data.data.category.isLeaf,
-                                            'importRequired': data.data.category.importRequired,
-                                            'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
-                                            'iconSkin': "icon02"
-                                        };
-                                    }
+                                })
+                            }
 
-                                    newNode = zTree.addNodes(treeNode, newNode);
-
-                                    zNodes.push(newNode);
-                                    beforeEditName("treeDemo", zNodes[zNodes.length - 1][0]);
-                                }
-                        })
                         }
                          else{
                             $.post(categoryManageUrl, {
@@ -879,7 +882,7 @@ function ztree() {
                 }
                 //   var ischild=$("input:radio[name='hasChildNode']:checked").val();
                 var reviewerid=$('#teacherName option:selected');
-                if(newArray!=null&&$('#formula').val()!=null){
+                if($('#formula').val()!=null){
                     $.post(categoryManageUrl, {
                         name: $('#itemName').val(),
                         desc: $('#desc').val(),
