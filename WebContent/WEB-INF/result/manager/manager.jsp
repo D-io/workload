@@ -59,6 +59,9 @@
         .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
         .ztree li span.button.icon02_ico_docu{margin-right:2px; background: url(${contextPath}/css/images/newChecked.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
         .ztree li span.button.icon06_ico_docu{margin-right:2px; background: url(${contextPath}/css/images/newImport.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
+        .ztree li span.button.icon04_ico_docu{margin-right:2px; background: url(${contextPath}/css/images/childNode.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
+        .ztree li span.button.icon04_ico_open{margin-right:2px; background: url(${contextPath}/css/images/childNode.png) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
+
         table.table thead .teacher_Sort { background: url(${contextPath}/css/images/sort_both.png) no-repeat center right; }
         table.table thead .sorting_asc { background: url(${contextPath}/css/images/sort_asc.png) no-repeat center right; }
         table.table thead .sorting_desc { background: url(${contextPath}/css/images/sort_desc.png) no-repeat center right; }
@@ -172,7 +175,7 @@
                             <input class="form-control" id="year" readonly="true" style="background-color: #fff">
                             <div class="calendar-bar" style="display: none">
                                 <table>
-                                    <tbody class="calendar-tbody" style="width: 295px;">
+                                    <tbody class="calendar-tbody">
 
                                     </tbody>
                                 </table>
@@ -265,6 +268,7 @@
 
 <script language='javascript' src="${contextPath}/vendor/bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
 <script language='javascript' src="${contextPath}/vendor/js/select2.min.js"></script>
+<script language='javascript' src="${contextPath}/vendor/js/validate/jquery.validate.min.js"></script>
 <script language='javascript' src="${contextPath}/vendor/js/jquery-datatables/jquery.dataTables.min.js"></script>
 <script language='javascript'src="${contextPath}/js/jquery.ztree.core.js"></script>
 <script language='javascript' src="${contextPath}/js/jquery.ztree.excheck.js"></script>

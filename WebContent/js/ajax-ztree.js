@@ -35,8 +35,9 @@ function ztree() {
             beforeRemove:beforeRemove,
             //  beforeRename: beforeRename,
             onCheck: zTreeOnClick,
+            beforeDrag: zTreeBeforeDrag,
            onRemove: onRemove,
-            onDblClick: onClick,
+          //  onDblClick: onClick,
           //  onNodeCreated: zTreeOnNodeCreated
         }
 
@@ -126,6 +127,7 @@ function ztree() {
                                 'status':item.status,
                                 'importRequired':item.importRequired,
                                 'font':{'background-color':'#6fcd54','color':'#fff'},
+                                'iconSkin':"icon04",
                                 'open':true
                             };
                         }
@@ -203,6 +205,7 @@ function ztree() {
                                 'otherJsonParameters':item.otherJsonParameters,
                                 'isLeaf':item.isLeaf,
                                 'importRequired':item.importRequired,
+                                'iconSkin':"icon04",
                                 'open':true
                             };
                         }
@@ -519,7 +522,7 @@ function ztree() {
                                                 var newnode={
                                                     'name':item.name,
                                                     'realName':item.name,
-                                                 //   'font':{'background-color':'#6fcd54','color':'#fff'},
+                                                     'font':{'background-color':'#6fcd54','color':'#fff'},
                                                     'id': item.categoryId,
                                                     'parentId': item.parentId,
                                                     'desc': item.desc,
@@ -534,6 +537,7 @@ function ztree() {
                                                     'importRequired':item.importRequired,
                                                   //  'iconSkin':"icon06",
                                                     'status':item.status,
+                                                    'iconSkin':"icon04",
                                                     //  'status':item.status,
                                                     'open':true}
                                             }
@@ -624,6 +628,11 @@ function ztree() {
      function onRename(e, treeId, treeNode, isCancel) {
      showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
      }*/
+//禁止节点的拖拽函数
+
+    function zTreeBeforeDrag(treeId, treeNodes) {
+        return false;
+    };
 //是否显示移除按钮
     function showRemoveBtn(treeId, treeNode) {
         return treeNode;
@@ -633,11 +642,11 @@ function ztree() {
         return treeNode;
     }
 //选中时
-    function onClick(event, treeId, treeNode){
+    /*function onClick(event, treeId, treeNode){
         beforeEditName(treeId, treeNode) ;
         $(".manageEdit").hide();
         $(".submitEdit").hide();
-    }
+    }*/
     function showLog(str) {
         if (!log) log = $("#log");
         log.append("<li class='"+className+"'>"+str+"</li>");
@@ -665,165 +674,161 @@ function ztree() {
             var btn = $("#addBtn_" + treeNode.tId);
             if (btn)
                 btn.bind("click", function () {
-                    /*$(document).off("click","#addBtn_"+treeNode.tId);*/
-                    /* $(document).on("click","#addBtn_"+treeNode.tId,function () {*/
-                    $(".form-control").removeAttr("disabled");
-                    $('#itemName').val(null);
-                    $('#desc').val(null);
-                    $('#teacherName').val(null);
-                    $('#teacherName').select2('data',null);
                     $('#parentId').val(treeNode.name);
-                    $("#parentId").attr("disabled", "disabled");
-                    $(".requiredtime").hide();
-                    $("#importRequired").find("option[value='1']").removeAttr("selected");
-                    $("#importRequired").find("option[value='0']").removeAttr("selected");
-                    $("#importRequired").find("option[value='2']").attr("selected","selected");
-
-                    $(".AddPramter").empty();
-                    $(".addOtherPramter").empty();
-                    $("#addParameter").removeAttr("disabled", "disabled");
-                    $("#addOtherParameter").removeAttr("disabled", "disabled");
-                    $('#applyDeadline').val(format());
-                    $('#reviewDeadline').val(importFormat());
-                    //   $("#select2-teacherName-container").select2("val","");
-                    $('#formula').val(null);
-                    /* $('.parameterSymbol').val(null);
-                     $('.parameterName').val(null);*/
-                    $(".addOtherPramter").empty();
-                    $(".addOtherPramter").empty();
-                    $("#save").show();
-                    $("#cancel").show();
-                    $(".manageEdit").hide();
-                    $(".submitEdit").hide();
-                    /*     $(".parameterName").removeAttr("disabled","disabled");
-                     $(".parameterSymbol").removeAttr("disabled","disabled");
-                     $(".otherParameterName").removeAttr("disabled","disabled");*/
-                    //   $('.AddPramter').empty();
+                    initRemoveAttr();
+                    initModal();
                     $(document).off('click', '#save');
                     $(document).on('click', '#save', function () {
-                        var parametername = $('.parameterName');
-                        var newArray = new Array();
-                        for (var i = 0; i < parametername.length; i++) {
-
-                            newArray.push({
-                                desc: $(".parameterName").eq(i).val(),
-                                symbol: $(".parameterSymbol").eq(i).val()
-                            });
-
+                        var radio=$("#importRequired option:selected");
+                        if(!$("#itemName").val()){
+                            $("#myname").addClass("has-error");
+                            $("#experient_name").show();
                         }
-                        var otherParamterName = $(".otherParameterName");
-                        var otherArray = new Array();
-                        for (var m = 0; m < otherParamterName.length; m++) {
-                            otherArray.push({key: $(".otherParameterName").eq(m).val(), value: ""});
-                        }
-                        newArray = JSON.stringify(newArray);
-                        otherArray = JSON.stringify(otherArray);
                         var reviewTimetodate = $('#reviewDeadline').val();
                         var applyTimetodate = $('#applyDeadline').val();
-                        var radio = $("#importRequired option:selected");
-                        var ischild = $("input:radio[name='hasChildNode']:checked").val();
-                        var reviewerid = $('#teacherName option:selected');
+                        if(radio.val()!=2) {
+                            initChecked();
 
-                        $.post(categoryManageUrl, {
-                            name: $('#itemName').val(),
-                            desc: $('#desc').val(),
-                            parentId: treeNode.id,
-                            isLeaf: ischild,
-                            reviewDeadline: reviewTimetodate,
-                            applyDeadline: applyTimetodate,
-                            reviewerId: reviewerid.val(),
-                            formula: $('#formula').val(),
-                            importRequired: radio.val(),
-                            version: $('#version').val(),
-                            jsonParameters: newArray,
-                            otherJson: otherArray
-                        }, function (data) {
-                            if (data.status == 200) {
-                                alert("添加规则成功！");
+                            var parametername = $('.parameterName');
+                            var newArray = new Array();
+                            for (var i = 0; i < parametername.length; i++) {
+
+                                newArray.push({
+                                    desc: $(".parameterName").eq(i).val(),
+                                    symbol: $(".parameterSymbol").eq(i).val()
+                                });
+
                             }
-                            if (data.data.category) {
-                                var rewDeadline = data.data.category.reviewDeadline;
-                                var appDeadline = data.data.category.applyDeadline;
-                                /*  var a=x.match(/\d+/g);
-                                 var b=y.match(/\d+/g);*/
-                                /* var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
-                                 var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];*/
-                                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                                if (data.data.category.importRequired == 1) {
-                                    var newNode = {
-                                        'name': data.data.category.name,
-                                        'realName': data.data.category.name,
-                                        'id': data.data.category.categoryId,
-                                        'parentId': data.data.category.parentId,
-                                        'status': data.data.category.status,
-                                        'desc': data.data.category.desc,
-                                        'title': '【规则描述】' + data.data.category.desc + '&#10【导入截止】' + appDeadline + '&#10【复核截止】' + rewDeadline,
-                                        'reviewDeadline': rewDeadline,
-                                        'applyDeadline': appDeadline,
-                                        'formula': data.data.category.formula,
-                                        'reviewerId': data.data.category.reviewerId,
-                                        'formulaParameterList': data.data.category.formulaParameterList,
-                                        'otherJsonParameters': data.data.category.otherJsonParameters,
-                                        'isLeaf': data.data.category.isLeaf,
-                                        'importRequired': data.data.category.importRequired,
-                                        'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
-                                        'iconSkin': "icon06"
-                                    };
-                                }
-                                else if (data.data.category.importRequired == 0) {
-                                    var newNode = {
-                                        'name': data.data.category.name,
-                                        'realName': data.data.category.name,
-                                        'id': data.data.category.categoryId,
-                                        'parentId': data.data.category.parentId,
-                                        'desc': data.data.category.desc,
-                                        'title': '【规则描述】' + data.data.category.desc + '&#10【申报截止】' + appDeadline + '&#10【审核截止】' + rewDeadline,
-                                        'status': data.data.category.status,
-                                        'reviewDeadline': rewDeadline,
-                                        'applyDeadline': appDeadline,
-                                        'formula': data.data.category.formula,
-                                        'reviewerId': data.data.category.reviewerId,
-                                        'formulaParameterList': data.data.category.formulaParameterList,
-                                        'otherJsonParameters': data.data.category.otherJsonParameters,
-                                        'isLeaf': data.data.category.isLeaf,
-                                        'importRequired': data.data.category.importRequired,
-                                        'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
-                                        'iconSkin': "icon02"
-                                    };
-                                }
-                                else {
-                                    var newNode = {
-                                        'name': data.data.category.name,
-                                        'realName': data.data.category.name,
-                                        'id': data.data.category.categoryId,
-                                        'parentId': data.data.category.parentId,
-                                        'title': '【规则描述】' + data.data.category.desc,
-                                        'desc': data.data.category.desc,
-                                        'status': data.data.category.status,
-                                        'reviewDeadline': rewDeadline,
-                                        'applyDeadline': appDeadline,
-                                        'formula': data.data.category.formula,
-                                        'reviewerId': data.data.category.reviewerId,
-                                        'formulaParameterList': data.data.category.formulaParameterList,
-                                        'otherJsonParameters': data.data.category.otherJsonParameters,
-                                        'isLeaf': data.data.category.isLeaf,
-                                        'importRequired': data.data.category.importRequired,
-                                        'font': {'background-color': '#ffe746', 'color': '#2A3F54'}
-                                    };
-                                }
-
-                                newNode = zTree.addNodes(treeNode, newNode);
-
-                                zNodes.push(newNode);
-                                beforeEditName("treeDemo", zNodes[zNodes.length - 1][0]);
+                            var otherParamterName = $(".otherParameterName");
+                            var otherArray = new Array();
+                            for (var m = 0; m < otherParamterName.length; m++) {
+                                otherArray.push({key: $(".otherParameterName").eq(m).val(), value: ""});
                             }
+                            newArray = JSON.stringify(newArray);
+                            if(newArray=='[]'){
+                                newArray=null;
+                            }
+                            otherArray = JSON.stringify(otherArray);
+                            if(otherArray=='[]'){
+                                newArray=null;
+                            }
+                            var reviewerid = $('#teacherName option:selected');
 
+                            $.post(categoryManageUrl, {
+                                name: $('#itemName').val(),
+                                desc: $('#desc').val(),
+                                parentId: treeNode.id,
+                                reviewDeadline: reviewTimetodate,
+                                applyDeadline: applyTimetodate,
+                                reviewerId: reviewerid.val(),
+                                formula: $('#formula').val(),
+                                importRequired: radio.val(),
+                                jsonParameters: newArray,
+                                otherJson: otherArray
+                            }, function (data) {
+                                if (data.status == 200&&data.data.category) {
+                                    alert("添加规则成功！");
+                                    var rewDeadline = data.data.category.reviewDeadline;
+                                    var appDeadline = data.data.category.applyDeadline;
 
-                        });
-                        //   $('#addModal').modal('hide');
+                                    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                                    if (data.data.category.importRequired == 1) {
+                                        var newNode = {
+                                            'name': data.data.category.name,
+                                            'realName': data.data.category.name,
+                                            'id': data.data.category.categoryId,
+                                            'parentId': data.data.category.parentId,
+                                            'status': data.data.category.status,
+                                            'desc': data.data.category.desc,
+                                            'title': '【规则描述】' + data.data.category.desc + '&#10【导入截止】' + appDeadline + '&#10【复核截止】' + rewDeadline,
+                                            'reviewDeadline': rewDeadline,
+                                            'applyDeadline': appDeadline,
+                                            'formula': data.data.category.formula,
+                                            'reviewerId': data.data.category.reviewerId,
+                                            'formulaParameterList': data.data.category.formulaParameterList,
+                                            'otherJsonParameters': data.data.category.otherJsonParameters,
+                                            'isLeaf': data.data.category.isLeaf,
+                                            'importRequired': data.data.category.importRequired,
+                                            'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
+                                            'iconSkin': "icon06"
+                                        };
+                                    }
+                                    else if (data.data.category.importRequired == 0) {
+                                        var newNode = {
+                                            'name': data.data.category.name,
+                                            'realName': data.data.category.name,
+                                            'id': data.data.category.categoryId,
+                                            'parentId': data.data.category.parentId,
+                                            'desc': data.data.category.desc,
+                                            'title': '【规则描述】' + data.data.category.desc + '&#10【申报截止】' + appDeadline + '&#10【审核截止】' + rewDeadline,
+                                            'status': data.data.category.status,
+                                            'reviewDeadline': rewDeadline,
+                                            'applyDeadline': appDeadline,
+                                            'formula': data.data.category.formula,
+                                            'reviewerId': data.data.category.reviewerId,
+                                            'formulaParameterList': data.data.category.formulaParameterList,
+                                            'otherJsonParameters': data.data.category.otherJsonParameters,
+                                            'isLeaf': data.data.category.isLeaf,
+                                            'importRequired': data.data.category.importRequired,
+                                            'font': {'background-color': '#ffe746', 'color': '#2A3F54'},
+                                            'iconSkin': "icon02"
+                                        };
+                                    }
+
+                                    newNode = zTree.addNodes(treeNode, newNode);
+
+                                    zNodes.push(newNode);
+                                    beforeEditName("treeDemo", zNodes[zNodes.length - 1][0]);
+                                }
+                        })
+                        }
+                         else{
+                            $.post(categoryManageUrl, {
+                                name: $('#itemName').val(),
+                                desc: $('#desc').val(),
+                                parentId: treeNode.id,
+                                reviewDeadline: reviewTimetodate,
+                                applyDeadline: applyTimetodate,
+                                reviewerId: null,
+                                formula: null,
+                                importRequired:2,
+                                jsonParameters: null,
+                                otherJson: null
+                            }, function (data) {
+                                if (data.status == 200&&data.data.category) {
+                                    alert("添加规则成功！");
+                                    var rewDeadline = data.data.category.reviewDeadline;
+                                    var appDeadline = data.data.category.applyDeadline;
+                                    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                                        var newNode = {
+                                            'name': data.data.category.name,
+                                            'realName': data.data.category.name,
+                                            'id': data.data.category.categoryId,
+                                            'parentId': data.data.category.parentId,
+                                            'title': '【规则描述】' + data.data.category.desc,
+                                            'desc': data.data.category.desc,
+                                            'status': data.data.category.status,
+                                            'reviewDeadline': rewDeadline,
+                                            'applyDeadline': appDeadline,
+                                            'formula': data.data.category.formula,
+                                            'reviewerId': data.data.category.reviewerId,
+                                            'formulaParameterList': data.data.category.formulaParameterList,
+                                            'otherJsonParameters': data.data.category.otherJsonParameters,
+                                            'isLeaf': data.data.category.isLeaf,
+                                            'importRequired': data.data.category.importRequired,
+                                            'iconSkin':"icon04",
+                                            'font': {'background-color': '#ffe746', 'color': '#2A3F54'}
+                                        };
+
+                                    newNode = zTree.addNodes(treeNode, newNode);
+
+                                    zNodes.push(newNode);
+                                    beforeEditName("treeDemo", zNodes[zNodes.length - 1][0]);
+                                }
+
+                            });
+                        }
                     });
-
-
                 });
         }
 
@@ -838,33 +843,20 @@ function ztree() {
     $(document).ready(function(){
         $(document).off("click","#addToTable");
         $(document).on('click','#addToTable',function() {
-            //  $('.AddPramter').empty();
-            $(".form-control").removeAttr("disabled");
-            $('#itemName').val(null);
-          //  $("#select2-teacherName-container").select2("val","");
-            $('#desc').val(null);
-            $('#teacherName').select2('data',null);
-            $("#parentId").attr("disabled","disabled");
+            initRemoveAttr();
             $('#parentId').val(null);
-            $(".requiredtime").hide();
-            $("#importRequired").find("option[value='2']").attr("selected","selected");
-            $('#applyDeadline').val(format());
-            $('#reviewDeadline').val(importFormat());
-            $(".AddPramter").empty();
-            $(".addOtherPramter").empty();
-            $("#addParameter").removeAttr("disabled", "disabled");
-            $("#addOtherParameter").removeAttr("disabled", "disabled");
-            $('#formula').val(null);
-            $('.parameterSymbol').val(null);
-            $('.parameterName').val(null);
-            $("#save").show();
-            $("#cancel").show();
-            $(".manageEdit").hide();
-            $(".submitEdit").hide();
-            //  $('#addModal').modal('show');
-
+           initModal();
             $(document).off('click','#save');
             $(document).on('click','#save',function () {
+                var radio=$("#importRequired option:selected");
+                if(!$("#itemName").val()){
+                    $("#myname").addClass("has-error");
+                    $("#experient_name").show();
+                }
+                var reviewTimetodate = $('#reviewDeadline').val();
+                var applyTimetodate = $('#applyDeadline').val();
+            if(radio.val()!=2){
+                initChecked();
                 var parametername =$(".parameterName") ;
                 var newArray=new Array();
                 for(var i=0;i<parametername.length;i++){
@@ -878,31 +870,31 @@ function ztree() {
                     otherArray.push({key:$(".otherParameterName").eq(m).val(),value:""});
                 }
                 newArray=JSON.stringify(newArray);
+                if(newArray=='[]'){
+                    newArray=null;
+                }
                 otherArray=JSON.stringify(otherArray);
-                var reviewTimetodate = $('#reviewDeadline').val();
-                var applyTimetodate = $('#applyDeadline').val();
-                var radio=$("#importRequired option:selected");
-                var ischild=$("input:radio[name='hasChildNode']:checked").val();
+                if(otherArray=='[]'){
+                    otherArray=null;
+                }
+                //   var ischild=$("input:radio[name='hasChildNode']:checked").val();
                 var reviewerid=$('#teacherName option:selected');
+                if(newArray!=null&&$('#formula').val()!=null){
+                    $.post(categoryManageUrl, {
+                        name: $('#itemName').val(),
+                        desc: $('#desc').val(),
+                        parentId: 0,
+                        reviewDeadline: reviewTimetodate,
+                        applyDeadline: applyTimetodate,
+                        reviewerId:reviewerid.val() ,
+                        formula: $('#formula').val(),
+                        importRequired: radio.val(),
+                        jsonParameters: newArray,
+                        otherJson:otherArray
+                    }, function (data) {
+                        if(data.status==200&&data.data.category){
+                            alert("添加规则成功！");
 
-                $.post(categoryManageUrl, {
-                    name: $('#itemName').val(),
-                    desc: $('#desc').val(),
-                    parentId: 0,
-                    isLeaf: ischild,
-                    reviewDeadline: reviewTimetodate,
-                    applyDeadline: applyTimetodate,
-                    reviewerId:reviewerid.val() ,
-                    formula: $('#formula').val(),
-                    importRequired: radio.val(),
-                    version: $('#version').val(),
-                    jsonParameters: newArray,
-                    otherJson:otherArray
-                }, function (data) {
-                    if(data.status==200){
-                        alert("添加规则成功！");
-                    }
-                        if(data.data.category){
                             var x=data.data.category.reviewDeadline;
                             var y=data.data.category.applyDeadline;
                             /* var a=x.match(/\d+/g);
@@ -950,43 +942,69 @@ function ztree() {
                                     'iconSkin':'icon02'
                                 };
                             }
-                            else {
-                                var newNode= {
-                                    'name': data.data.category.name,
-                                    'realName':data.data.category.name,
-                                    'id': data.data.category.categoryId,
-                                    'parentId': data.data.category.parentId,
-                                    'desc':data.data.category.desc,
-                                    'title':'【规则描述】'+data.data.category.desc,
-                                    'status':data.data.category.status,
-                                    'reviewDeadline':x,
-                                    'applyDeadline':y,
-                                    'formula':data.data.category.formula,
-                                    'reviewerId':data.data.category.reviewerId,
-                                    'formulaParameterList':data.data.category.formulaParameterList,
-                                    'otherJsonParameters':data.data.category.otherJsonParameters,
-                                    'isLeaf':data.data.category.isLeaf,
-                                    'importRequired':data.data.category.importRequired,
-                                    'font':{'background-color':'#ffe746','color':'#2A3F54'}
-                                };
-                            }
 
                             newNode = zTree.addNodes(null, newNode);
                             zNodes.push(newNode);
+                            beforeEditName("treeDemo",zNodes[zNodes.length-1][0]);
+                        }
+
+                 }, "json");
+                }
+            }
+            else{
+                $.post(categoryManageUrl, {
+                    name: $('#itemName').val(),
+                    desc: $('#desc').val(),
+                    parentId: 0,
+                    //   isLeaf: ischild,
+                    reviewDeadline: reviewTimetodate,
+                    applyDeadline: applyTimetodate,
+                    reviewerId:null,
+                    formula:null,
+                    importRequired:2,
+                 //   version: $('#version').val(),
+                    jsonParameters: null,
+                    otherJson:null
+                }, function (data) {
+                    if(data.status==200&&data.data.category){
+                        alert("添加规则成功！");
+                        var x=data.data.category.reviewDeadline;
+                        var y=data.data.category.applyDeadline;
+                        /* var a=x.match(/\d+/g);
+                         var b=y.match(/\d+/g);*/
+                        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+
+                            var newNode= {
+                                'name': data.data.category.name,
+                                'realName':data.data.category.name,
+                                'id': data.data.category.categoryId,
+                                'parentId': data.data.category.parentId,
+                                'desc':data.data.category.desc,
+                                'title':'【规则描述】'+data.data.category.desc,
+                                'status':data.data.category.status,
+                                'reviewDeadline':x,
+                                'applyDeadline':y,
+                                'formula':data.data.category.formula,
+                                'reviewerId':data.data.category.reviewerId,
+                                'formulaParameterList':data.data.category.formulaParameterList,
+                                'otherJsonParameters':data.data.category.otherJsonParameters,
+                                'isLeaf':data.data.category.isLeaf,
+                                'importRequired':data.data.category.importRequired,
+                                'iconSkin':"icon04",
+                                'font':{'background-color':'#ffe746','color':'#2A3F54'}
+                            };
 
 
-                           beforeEditName("treeDemo",zNodes[zNodes.length-1][0]);
+                        newNode = zTree.addNodes(null, newNode);
+                        zNodes.push(newNode);
 
+
+                        beforeEditName("treeDemo",zNodes[zNodes.length-1][0]);
                     }
 
-
                 }, "json");
-
-               // $('#addModal').modal('hide');
-
-
+            }
             });
-
 
         });
         $(".icon02_ico_docu").bind("hover",function () {
@@ -1039,6 +1057,54 @@ function ztree() {
 
 
         });
+       /* $("#novaiForm").validate({
+
+         /!*  { highlight: function( label ) {
+         $(label).closest('.experient').removeClass('has-success').addClass('has-error');
+         },
+         success: function( label ) {
+         $(label).closest('.experient').removeClass('has-error');
+         label.remove();
+         },
+         errorPlacement: function( error, element ) {
+         var placement = element.closest('.experient');
+         if (!placement.get(0)) {
+         placement = element;
+         }
+         if (error.text() !== '') {
+         placement.after(error);
+         }
+         }
+         rules:
+         itemName: {
+         required: true,
+         /!*maxlength: 16,
+         minlength: 3*!/
+         },
+         desc:{
+         required:"true",
+         maxlength:48
+         },
+         formula:{
+         required:"true"
+         },
+         applyDeadline:{
+         required:"true"
+         },
+         reviewDeadline:{
+         required:"true"
+         },
+         teacherName:{
+         required:"true"
+         }
+         },
+         message:{
+         itemName:{
+         required:"项目名称不能为空！",
+         remote:"项目名称不能为空！"
+         }
+         }*!/
+         });*/
         $.fn.modal.Constructor.prototype.enforceFocus = function () {};
 
     });
@@ -1051,6 +1117,62 @@ function ztree() {
         var d = time.getDate();*/
 
         return y+'-12-31 00:00:00';
+    }
+    function initRemoveAttr() {
+        $("#myname").removeClass("has-error");
+        $("#myformula").removeClass("has-error");
+        $("#mypara").removeClass("has-error");
+        $("#myrevie").removeClass("has-error");
+        $("#myapply").removeClass("has-error");
+        $("#mymanager").removeClass("has-error");
+        $(".experient").hide();
+    }
+    function initChecked() {
+        if(!$("#formula").val()){
+            $("#myformula").addClass("has-error");
+            $("#experient_formula").show();
+        }
+        if(!$("#teacherName").val()){
+            $("#mymanager").addClass("has-error");
+            $("#experient_manager").show();
+        }
+        if(!$("#applyDeadline").val()){
+            $("#myapply").addClass("has-error");
+            $("#experient_apply").show();
+        }
+        if(!$("#reviewDeadline").val()){
+            $("#myrevie").addClass("has-error");
+            $("#experient_revie").show();
+        }
+        if(!$(".parameterName").val()){
+            $("#mypara").addClass("has-error");
+            $("#experient_para").show();
+        }
+    }
+    function initModal() {
+        $(".form-control").removeAttr("disabled");
+        $('#itemName').val(null);
+        $('#desc').val(null);
+        $('#teacherName').select2('data',null);
+        $("#parentId").attr("disabled", "disabled");
+        $(".requiredtime").hide();
+        $("#importRequired").find("option[value='1']").removeAttr("selected");
+        $("#importRequired").find("option[value='0']").removeAttr("selected");
+        $("#importRequired").find("option[value='2']").attr("selected","selected");
+
+        $(".AddPramter").empty();
+        $(".addOtherPramter").empty();
+        $("#addParameter").removeAttr("disabled");
+        $("#addOtherParameter").removeAttr("disabled");
+        $('#applyDeadline').val(format());
+        $('#reviewDeadline').val(importFormat());
+        $('#formula').val(null);
+        $(".addOtherPramter").empty();
+        $(".addOtherPramter").empty();
+        $("#save").show();
+        $("#cancel").show();
+        $(".manageEdit").hide();
+        $(".submitEdit").hide();
     }
     function importFormat() {
         var time = new Date();
@@ -1104,4 +1226,15 @@ function ztree() {
     $.fn.zTree.init($("#treeDemo"), setting, zNodes);
     // $("#selectAll").bind("click", selectAll);
 }
+function reminder(obj) {
+    var objValue=obj.value;
+    if(!objValue){
+        $("#experient_"+obj.name).show();
+       $(obj).parent().parent(".form-group").addClass("has-error");
 
+    }
+    else{
+        $("#experient_"+obj.name).hide();
+        $(obj).parent().parent(".form-group").removeClass("has-error");
+    }
+}
