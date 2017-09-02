@@ -92,7 +92,7 @@ public class ApplicationController extends ResultController
 		}
 		byte[] file = ExcelExportHelper.exportTotalWorkload(workloadList);
 		try {
-			return streamResponse(file, getCurrentSemester() + "工作量汇总.xls");
+			return streamResponse(file, "【" + getCurrentSemester() + "】教学工作当量统计表.xls");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return systemErrResponse();

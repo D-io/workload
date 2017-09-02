@@ -34,30 +34,31 @@ public class CategoryEventImpl implements CategoryEvent {
 	private UserRoleEvent userRoleEvent;
 
 	@Override
-	public Map<String,Object> submitCategories(Integer ...categoryIdList) {
+	public Map<String, Object> submitCategories(Integer... categoryIdList) {
 
-		Map<String,Object> data = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
 		List<Category> categoryList = new ArrayList<>();
 		for (int categoryId : categoryIdList) {
-			Category category = categoryService.getCategory(categoryId,getCurrentSemester());
-			if(null == category) {
+			Category category = categoryService.getCategory(categoryId, getCurrentSemester());
+			if (null == category) {
 				continue;
 			}
 			int reviewerId = category.getReviewerId();
 			if (UNCOMMITTED.equals(category.getStatus())) {
 				boolean appendSuccess = userRoleEvent.appendRoleInfo(reviewerId, REVIEWER_ROLE);
-				boolean saveSuccess = categoryService.saveCategory(SUBMITTED, categoryId,getCurrentSemester());
+				boolean saveSuccess = categoryService
+						.saveCategory(SUBMITTED, categoryId, getCurrentSemester());
 				if (!saveSuccess) {
-					data.put(category.getName(),"保存失败");
+					data.put(category.getName(), "保存失败");
 				}
-				if(!appendSuccess) {
-					data.put(category.getName(),"更新该类目负责人角色信息失败或已存在");
+				if (!appendSuccess) {
+					data.put(category.getName(), "更新该类目负责人角色信息失败或已存在");
 				}
 				category.setStatus(SUBMITTED);
 			}
 			categoryList.add(category);
 		}
-		data.put("categoryList",categoryConverter.poListToDtoList(categoryList));
+		data.put("categoryList", categoryConverter.poListToDtoList(categoryList));
 		return data;
 	}
 
