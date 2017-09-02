@@ -40,24 +40,56 @@
                     <table class="table table-striped table-bordered dataTable no-footer reviewerRec border-aero" style="display: none;">
                         <thead>
                         <tr role="row">
-                            <th class="sorting">序号</th>
-                            <th class="sorting">条目名称</th>
-                            <th class="sorting">工作量</th>
-                            <th class="sorting">计算公式</th>
-                            <th class="sorting">形式</th>
-                            <th class="sorting">主要参数</th>
-                            <th class="sorting">参数描述</th>
-                            <th class="sorting">其他参数</th>
-                            <th class="sorting">版本</th>
-                            <th class="sorting">审核截止时间 </th>
-                            <th class="sorting">审核状态 </th>
-                            <th class="sorting">操作</th>
+                            <th class="sorting" style="width="5%">序号</th>
+                            <th class="sorting" style="width="30%">条目名称</th>
+                            <th class="sorting" style="width="10%">工作量</th>
+                            <%--<th class="sorting">计算公式</th>--%>
+                            <th class="sorting" style="width="9%">形式</th>
+                            <%--<th class="sorting">主要参数</th>--%>
+                            <%--<th class="sorting">参数描述</th>--%>
+                            <%--<th class="sorting">其他参数</th>--%>
+                            <%--<th class="sorting">版本</th>--%>
+                            <th class="sorting" style="width="20%">审核截止时间 </th>
+                            <th class="sorting" style="width="10%">审核状态 </th>
+                            <th class="sorting" style="width: 16%">操作</th>
                         </tr>
                         </thead>
                         <tbody class="reviewerRecTbody">
                         </tbody>
                     </table>
                 </div>
+
+                <div class="modal fade" id="viewdetail_apply" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog" role="document" style="min-width: 700px">
+                        <div class="modal-content">
+                            <div class="modal-header" style="position: relative">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                </button>
+                                <div class="header">
+                                    <p class="project"></p>
+                                    <p class="message"></p>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <table  class="table table-striped table-bordered dataTable no-footer">
+                                    <thead>
+                                    <tr role="row">
+                                        <th class="sorting">计算公式</th>
+                                        <th class="sorting">计算参数</th>
+                                        <th class="sorting">项目属性</th>
+                                        <th class="sorting">版本</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="viewDetailTbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
                 <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="history-tab">
                     <table class="table table-striped table-bordered dataTable no-footer reviewerRec">
                         <thead>
@@ -85,7 +117,7 @@
                     <div class="modal-header" style="position: relative">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                         </button>
-                        <span class="modal-title" id="myModalLabel"></span>
+                        <div class="modal-title" id="myModalLabel"></div>
                     </div>
                     <div class="modal-body">
                         <button class="add btn btn-primary" data-toggle="modal" data-target="#addContent">添加申报</button>

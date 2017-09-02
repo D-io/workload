@@ -25,7 +25,7 @@ function workRevie(){
                 }
                 else if(menu_list[menu].importRequired==1){
                     $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+
-                        "<p class='deadline'> 复核截止时间: <span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; 导入截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp;<button  id='reviewer_" + menu_list[menu].categoryId + "' class='btn btn-primary reviewer' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right; margin-top: -3px;'>点击复核</button><div style='clear: both;'></div>").appendTo(parent);
+                        "<p class='deadline'> 复核截止时间: <span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; 导入截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp;<button  id='reviewer_" + menu_list[menu].categoryId + "' class='btn btn-primary reviewer' data-toggle='modal' data-target='#applyModal' style='float: right; margin-top: -3px;'>点击复核</button><div style='clear: both;'></div>").appendTo(parent);
 
                 }
 
@@ -266,14 +266,14 @@ function applyworkload() {
                     var isShow = traverseNode(menu_list[menu], 0);
                     if (isShow == 0) {
                         var li = $("<li></li>");
-                        $(li).append(menu_list[menu].name).append("<ul></ul>").appendTo(parent);
+                        $(li).append( menu_list[menu].name ).append("<ul></ul>").appendTo(parent);
 
                     }
                     showapplyall(menu_list[menu].children, $(li).children().eq(0));
                 }
                 else if (menu_list[menu].importRequired == 0) {
-                    $("<li class='item_" + menu_list[menu].categoryId + "'></li>").append(menu_list[menu].name + ":" + menu_list[menu].desc +
-                        "<p class='deadline'> 申报截止时间: <span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; 审核截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; <button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right; margin-top: -2px;'>点击申报</button> </p> <div style='clear: both;'></div>").appendTo(parent);
+                    $("<li class='item_" + menu_list[menu].categoryId + "'></li>").append( "<p class='itemMessage'>【<span class='itemName'>" + menu_list[menu].name + "</span>】&nbsp;&nbsp;<span class='itemDesc'>" + menu_list[menu].desc + "</span></p>" +
+                        "<p class='deadline'> 申报截止时间: <span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; 审核截止时间:<span class='revieDeadline_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; <button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='#applyModal' style='float: right; margin-top: -2px;'>点击申报</button> </p> <div style='clear: both;'></div>").appendTo(parent);
                 }
 
             }
@@ -311,11 +311,11 @@ function applyworkload() {
                         }
                         var id = t + 1;
                         $(".tbody tr:last").attr("class","tbodyTr_"+id);
-                        $(".tbody tr:last td:eq(0)").text(id);
+                        $(".tbody tr:last td:eq(0)").text(id).css("text-align","center");
                         $(".tbody tr:last td:eq(0)").attr("class", "itemCount");
-                        $(".tbody tr:last td:eq(1)").text(Info.itemName);
+                        $(".tbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
                         $(".tbody tr:last td:eq(1)").attr("id", "itemname_" + Info.itemId);
-                        $(".tbody tr:last td:eq(2)").text(Info.workload);
+                        $(".tbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
                         $(".tbody tr:last td:eq(2)").attr("id", "workload_" + Info.itemId);
                         var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id + "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + id + "\">删除操作</a> ";
                         var newAct="<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id + "\">查看详情</a>";
@@ -346,8 +346,10 @@ function applyworkload() {
                                 $(".tbody tr:last td:eq(4)").append(newAct);
                                 break;
                         }
-                        $(".tbody tr:last td:eq(3)").text(statusName);
+                        $(".tbody tr:last td:eq(3)").text(statusName).css("text-align","center");
                         $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
+
+                        $(".tbody tr:last td:eq(4)").css("text-align","center");
                     }
                 }
                 window.Temp=[];
@@ -355,7 +357,10 @@ function applyworkload() {
 
             });
             $("#myModalLabel").empty();
-            $("#myModalLabel").append($(".item_" + reg).text());
+            $("#myModalLabel").append("<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+                "<p class='message'>" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
+                "<p class='message'>申报截止时间：" + $(this).prev().prev().text() +  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核截止时间：" + $(this).prev().text() + "</p>"
+            );
          //   ownerApply(reg);
             $("#parameterTable").empty();
             $("#otherparameterTable").empty();
@@ -1619,6 +1624,8 @@ function applyRec() {
     $(".reviewerRec").show();
     $(".reviewerRecTbody").empty();
     var Num=0;
+
+    /* 待审核 */
     $.get(itemTeacherInfo+"?importedRequired=0&status=1",function (data) {
         var rowInfo="<tr></tr>";
         var cellInfo="<td></td>";
@@ -1631,51 +1638,31 @@ function applyRec() {
                 var Info=analyseList[i];
                 $(".reviewerRecTbody").append(rowInfo);
                 //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-                for(var j=0;j<12;j++)//单元格
+                for(var j=0;j<8;j++)//单元格
                 {
                     $(".reviewerRecTbody tr:last").append(cellInfo);
                 }
                // var id=i;
-                $(".reviewerRecTbody tr:last td:eq(0)").text(Num);
+                $(".reviewerRecTbody tr:last td:eq(0)").text(Num).css("text-align","center");
                 $(".reviewerRecTbody tr:last td:eq(0)").attr("class","applyNum");
-                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
-                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-                $(".reviewerRecTbody tr:last td:eq(3)").text(Info.formula);
+                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
+                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
+
                 var showtype='';
                 switch (Info.isGroup){
 
-                    case 1:showtype="小组形式";
+                    case 1:showtype="小组申报";
                         break;
-                    case 0:showtype="个人形式";
+                    case 0:showtype="个人申报";
                         break;
 
                 }
-                $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+                $(".reviewerRecTbody tr:last td:eq(3)").text(showtype).css("text-align","center");
 
-                var praValues='';
-                for(var m=0;m<Info.parameterValues.length;m++){
-                    praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
-                }
-                var otherpraValue='';
-                if(Info.otherJsonParameters&&Info.otherJsonParameters.length) {
-                    for (var n = 0; n < Info.otherJsonParameters.length; n++) {
-                        otherpraValue += Info.otherJsonParameters[n].key + ":" + Info.otherJsonParameters[n].value;
-                    }
-                }
-                $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
-                var itemDesc='';
-                for(var item=0;item<Info.paramDesc.length;item++){
-                    itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
-                }
-                $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
-                $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
-
-
-                $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
-                $(".reviewerRecTbody tr:last td:eq(9)").attr("class","revieDead_"+Info.categoryId);
+                $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId).css("text-align","center");
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
-                $(".reviewerRecTbody tr:last td:eq(10)").text("待审核");
-                $(".reviewerRecTbody tr:last td:eq(10)").css({"background-color":"#70c8e2","color":"#ffffff"});
+                $(".reviewerRecTbody tr:last td:eq(5)").text("待审核").css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(5)").css({"color":"#2e6da4","font-weight":"700"});
                 /*  var statusName='';
                  switch (Info.status){
                  case 1:statusName="已提交";
@@ -1683,13 +1670,17 @@ function applyRec() {
                  case 0:statusName="未提交";
                  }*/
 
-                $(".reviewerRecTbody tr:last td:eq(11)").text();
-                //   var act="<a class='btn btn-primary itemToImport' id='itemToImport_"+Info.itemId+"'>提交</a> ";
-                //   $(".reviewerRecTbody tr:last td:eq(11)").text();
+                var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_apply' id='btn-viewdetail'>查看详情</a> ";
+                $(".reviewerRecTbody tr:last td:eq(6)").append(act);
+
+                $(".reviewerRecTbody tr:last td:eq(7)").text(JSON.stringify(Info));
+                $(".reviewerRecTbody tr:last td:eq(7)").css("display","none");
             }
         }
 
     });
+
+    /* 已通过 */
     $.get(itemTeacherInfo+"?importedRequired=0&status=2",function (data) {
         var rowInfo="<tr></tr>";
         var cellInfo="<td></td>";
@@ -1702,51 +1693,29 @@ function applyRec() {
                 var Info=analyseList[i];
                 $(".reviewerRecTbody").append(rowInfo);
                 //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-                for(var j=0;j<12;j++)//单元格
+                for(var j=0;j<8;j++)//单元格
                 {
                     $(".reviewerRecTbody tr:last").append(cellInfo);
                 }
                // var id=i;
-                $(".reviewerRecTbody tr:last td:eq(0)").text(Num);
-                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
-                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-                $(".reviewerRecTbody tr:last td:eq(3)").text();
+                $(".reviewerRecTbody tr:last td:eq(0)").text(Num).css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
+                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
                 var showtype='';
                 switch (Info.isGroup){
 
-                    case 1:showtype="小组形式";
+                    case 1:showtype="小组申报";
                         break;
-                    case 0:showtype="个人形式";
+                    case 0:showtype="个人申报";
                         break;
 
                 }
-                $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+                $(".reviewerRecTbody tr:last td:eq(3)").text(showtype).css("text-align","center");
 
-                var praValues='';
-                for(var m=0;m<Info.parameterValues.length;m++){
-                    praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
-                }
-                var otherpraValue='';
-                if(Info.otherJsonParameters&&Info.otherJsonParameters.length>0){
-                    for(var n=0;n<Info.otherJsonParameters.length;n++){
-                        otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
-                    }
-                }
-
-                $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
-                var itemDesc='';
-                for(var item=0;item<Info.paramDesc.length;item++){
-                    itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
-                }
-                $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
-                $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
-
-
-                $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
-                $(".reviewerRecTbody tr:last td:eq(9)").attr("class","revieDead_"+Info.categoryId);
+                $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId).css("text-align","center");
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
-                $(".reviewerRecTbody tr:last td:eq(10)").text("已通过");
-                $(".reviewerRecTbody tr:last td:eq(10)").css({"background-color":"#1ABB9C","color":"#ffffff"});
+                $(".reviewerRecTbody tr:last td:eq(5)").text("已通过").css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(5)").css({"color":"#f5871f","font-weight":"700"});
                 /*  var statusName='';
                  switch (Info.status){
                  case 1:statusName="已提交";
@@ -1754,13 +1723,18 @@ function applyRec() {
                  case 0:statusName="未提交";
                  }*/
 
-                //   var act="<a class='btn btn-primary reviewerRec' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
-                //   $(".reviewerRecTbody tr:last td:eq(10)").text(act);
-                $(".reviewerRecTbody tr:last td:eq(10)").text();
+                // id='reviewerRec_"+Info.itemId+"
+                var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_apply' id='btn-viewdetail'>查看详情</a> ";
+                $(".reviewerRecTbody tr:last td:eq(6)").append(act);
+
+                $(".reviewerRecTbody tr:last td:eq(7)").text(JSON.stringify(Info));
+                $(".reviewerRecTbody tr:last td:eq(7)").css("display","none");
             }
         }
 
     });
+
+    /* 已拒绝 */
     $.get(itemTeacherInfo+"?importedRequired=0&status=5",function (data) {
         var rowInfo="<tr></tr>";
         var cellInfo="<td></td>";
@@ -1773,51 +1747,30 @@ function applyRec() {
                 var Info=analyseList[i];
                 $(".reviewerRecTbody").append(rowInfo);
                 //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-                for(var j=0;j<12;j++)//单元格
+                for(var j=0;j<8;j++)//单元格
                 {
                     $(".reviewerRecTbody tr:last").append(cellInfo);
                 }
                // var id=i;
-                $(".reviewerRecTbody tr:last td:eq(0)").text(Num);
-                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
-                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-                $(".reviewerRecTbody tr:last td:eq(3)").text(Info.formula);
+                $(".reviewerRecTbody tr:last td:eq(0)").text(Num).css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
+                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
+
                 var showtype='';
                 switch (Info.isGroup){
 
-                    case 1:showtype="小组形式";
+                    case 1:showtype="小组申报";
                         break;
-                    case 0:showtype="个人形式";
+                    case 0:showtype="个人申报";
                         break;
 
                 }
-                $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+                $(".reviewerRecTbody tr:last td:eq(3)").text(showtype).css("text-align","center");
 
-                var praValues='';
-                for(var m=0;m<Info.parameterValues.length;m++){
-                    praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
-                }
-                var otherpraValue='';
-                if(Info.otherJsonParameters&&Info.otherJsonParameters.length){
-                    for(var n=0;n<Info.otherJsonParameters.length;n++){
-                        otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
-                    }
-                }
-
-                $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
-                var itemDesc='';
-                for(var item=0;item<Info.paramDesc.length;item++){
-                    itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
-                }
-                $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
-                $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
-
-
-                $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
-                $(".reviewerRecTbody tr:last td:eq(9)").attr("class","revieDead_"+Info.categoryId);
+                $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId).css("text-align","center");
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
-                $(".reviewerRecTbody tr:last td:eq(10)").text("已拒绝");
-                $(".reviewerRecTbody tr:last td:eq(10)").css({"background-color":"#f0ad4e","color":"#ffffff"});
+                $(".reviewerRecTbody tr:last td:eq(5)").text("已拒绝").css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(5)").css({"color":"#d64742","font-weight":"700"});
                 /*  var statusName='';
                  switch (Info.status){
                  case 1:statusName="已提交";
@@ -1825,9 +1778,8 @@ function applyRec() {
                  case 0:statusName="未提交";
                  }*/
 
-                var act="<button class='btn btn-primary reviewerApply source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info apply' data-toggle='modal' data-target='#applyModal' id='applyAgain_"+Info.categoryId+"'><i class='fa fa-pencil'></i>重新申请</a> ";
-                $(".reviewerRecTbody tr:last td:eq(11)").append(act);
-                $(".reviewerRecTbody tr:last td:eq(11)").attr("width","150px");
+                var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_apply' id='btn-viewdetail'>查看详情</a><button class='btn btn-primary reviewerApply source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info apply' data-toggle='modal' data-target='#applyModal' id='applyAgain_"+Info.categoryId+"'><i class='fa fa-pencil'></i>重新申请</a> ";
+                $(".reviewerRecTbody tr:last td:eq(6)").append(act);
 
                     $("[data-toggle='popover']").popover();
 
@@ -1839,12 +1791,63 @@ function applyRec() {
                             content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
 
                         });
+
+                $(".reviewerRecTbody tr:last td:eq(7)").text(JSON.stringify(Info));
+                $(".reviewerRecTbody tr:last td:eq(7)").css("display","none");
             }
         }
 
     });
 
+    $(document).on("click","#btn-viewdetail",function (){
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+        $("#viewdetail_apply .project").empty();
+        $("#viewdetail_apply .message").empty();
+        $("#viewdetail_apply tbody").empty();
+        var Info = $(this).parent().next().text();
+        var jsonInfo = JSON.parse(Info);
+        var deadline = $(this).parent().prev().prev().text();
+        var auditStatus = $(this).parent().prev().text();
+        var form = $(this).parent().prev().prev().prev().text();
+
+        $("#viewdetail_apply .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_apply .message").append(
+            "工作量：" + jsonInfo.workload +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核状态：" + auditStatus +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核截止时间：" + deadline );
+
+        $(".viewDetailTbody").append(rowInfo);
+        for( var i=0; i<4; i++){
+            $(".viewDetailTbody tr:last").append(cellInfo);
+        }
+        /* 计算公式 */
+        $(".viewDetailTbody tr:last td:eq(0)").text(jsonInfo.formula).css("text-align","center");
+
+        /* 计算参数 */
+        var praValues='';
+        for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
+            praValues = jsonInfo.paramDesc[m].desc + ":" + jsonInfo.parameterValues[m].value;
+            $(".viewDetailTbody tr:last td:eq(1)").append( praValues + "<br>");
+        }
+
+        /* 项目属性 */
+        var projectProperties='';
+        if( jsonInfo.otherJsonParameters && jsonInfo.otherJsonParameters.length ){
+            for( var n = 0; n < jsonInfo.otherJsonParameters.length; n++ ){
+                projectProperties = jsonInfo.otherJsonParameters[n].key + ":" + jsonInfo.otherJsonParameters[n].value;
+                $(".viewDetailTbody tr:last td:eq(2)").append( projectProperties + "<br>");
+            }
+        }
+
+        $(".viewDetailTbody tr:last td:eq(1)").css({"padding-left":"20px","line-height":"28px"});
+        $(".viewDetailTbody tr:last td:eq(2)").css({"padding-left":"20px","line-height":"28px"});
+
+        $(".viewDetailTbody tr:last td:eq(3)").text(jsonInfo.version).css("text-align","center");      //版本
+    });
 }
+
 function traverseNode(rootNode,targetType) {
     var resultType=2; //using as the flag of partent node's type
     //开始遍历
