@@ -105,14 +105,15 @@
                                             <tr role="row">
                                                 <th  class="sorting">序号</th>
                                                 <th  class="sorting">规则名称</th>
-                                                <th  class="sorting">规则类别</th>
+                                                <th  class="sorting">类别</th>
                                                 <th class="sorting">项目名称</th>
-                                                <th  class="sorting">计算公式</th>
+                                               <%-- <th  class="sorting">计算公式</th>
                                                 <th class="sorting" >计算参数</th>
-                                                <th class="sorting" >项目属性</th>
-                                                <th class="sorting">工作量</th>
+                                                <th class="sorting" >项目属性</th>--%>
+                                                <th class="sorting">工作当量</th>
                                                 <th  class="sorting">教师姓名</th>
-                                                <th class="sorting">状态</th>
+                                                <th class="sorting">项目状态</th>
+                                                <th class="sorting">操作</th>
                                             </tr>
                                             </thead>
                                             <tbody class="sumItemSort">
@@ -125,14 +126,15 @@
                                             <tr role="row">
                                                 <th  class="sorting">序号</th>
                                                 <th  class="sorting">规则名称</th>
-                                                <th  class="sorting">规则类别</th>
+                                                <th  class="sorting">类别</th>
                                                 <th class="sorting">项目名称</th>
-                                                <th  class="sorting">计算公式</th>
-                                                <th class="sorting" >计算参数</th>
-                                                <th class="sorting" >项目属性</th>
-                                                <th class="sorting">工作量</th>
+                                                <%-- <th  class="sorting">计算公式</th>
+                                                 <th class="sorting" >计算参数</th>
+                                                 <th class="sorting" >项目属性</th>--%>
+                                                <th class="sorting">工作当量</th>
                                                 <th  class="sorting">教师姓名</th>
-                                                <th class="sorting">状态</th>
+                                                <th class="sorting">项目状态</th>
+                                                <th class="sorting">操作</th>
                                             </tr>
                                             </thead>
                                             <tbody class="sumuncheckedItemSort">
@@ -148,7 +150,39 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table  class="table table-striped table-bordered dataTable no-footer">
+                                <thead>
+                                <tr role="row">
 
+                                    <th class="sorting">计算公式</th>
+                                    <th  class="sorting">计算参数</th>
+                                    <th class="sorting">项目属性</th>
+
+                                </tr>
+                                </thead>
+                                <tbody class="revDetail">
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                        <%--   <div class="modal-footer">
+                               <button type="button" class="btn btn-primary " data-dismiss="modal" id="cancel">取消</button>
+                               <button type="button" class="btn btn-primary" id="save">保存</button>
+                               <button class="btn btn-primary manageEdit" style="display: none;">编辑</button>
+                               <button class="btn btn-primary submitEdit" style="display: none;">提交</button>
+                           </div>--%>
+                    </div>
+                </div>
+            </div>
 
     </div>
 </div>
