@@ -1,5 +1,46 @@
 ## 工作量条目Item接口
 
+### 管理员刷新教师统计页面某位教师的工作量统计情况
+- 接口地址:`/item/info/refresh`
+- 支持格式：`json`
+- 请求方式：`POST`
+- 请求示例：`http://127.0.0.1:8080/item/info/refresh?teacherId=3210343`
+
+- 请求参数具体说明：
+参数名 |类型 | 说明
+---|---|---
+teacherId | int | 教师编号
+
+- 返回参数具体说明：
+
+参数名 |类型 | 说明
+---|---|---
+status | int |状态值
+statusName | String | 状态名
+data | String | 结果集
+- Json返回成功示例如下
+```json
+{
+    "status": 200,
+    "statusName": "OK",
+    "data": {
+        "teacherWorkloadList": [
+            {
+                "teacherName": "张翔",
+                "teacherId": 3210343,
+                "professionalTitle": "高级工程师",
+                "checkedWorkload": 0,
+                "checkedItems": 0,
+                "uncheckedWorkload": 0,
+                "uncheckedItems": 0,
+                "totalWorkload": 0,
+                "version": "2017-2018-1"
+            }
+        ]
+    }
+}
+```
+
 
 ### 管理员获取全部教师统计情况
 - 接口地址：`/item/info/total-workload`

@@ -42,6 +42,7 @@ import static cn.edu.uestc.ostec.workload.WorkloadObjects.GROUP;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ROLE_PROPOSER;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ROLE_REVIEWER;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.SINGLE;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
@@ -157,7 +158,6 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 			ItemDto itemDto = itemConverter.poToDto(item);
 			Integer importedRequired = itemDto.getImportRequired();
 
-
 			History history = new History();
 			history.setVersion(getCurrentSemester());
 			history.setUserId(userId);
@@ -187,7 +187,7 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 					recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 				}
 
-				for(ItemDto itemDto1 : itemDtoList) {
+				for (ItemDto itemDto1 : itemDtoList) {
 					history.setHistoryId(null);
 					history.setItemId(buildHistoryItemId(itemDto1.getItemId()));
 					saveSuccess = historyService.saveHistory(history);
@@ -207,7 +207,6 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 				history.setItemId(buildHistoryItemId(itemId));
 				saveSuccess = historyService.saveHistory(history);
 			}
-
 
 			if (!saveSuccess || !recordSuccess) {
 				LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "失败");
@@ -256,12 +255,16 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 			//通过之后，通过的工作量加，预期的工作量减
 			teacherWorkload
 					.setCheckedWorkload(teacherWorkload.getCheckedWorkload() + item.getWorkload());
+
+			Double uncheckedWorkload = teacherWorkload.getUncheckedWorkload() - item.getWorkload();
 			teacherWorkload.setUncheckedWorkload(
-					teacherWorkload.getUncheckedWorkload() - item.getWorkload());
+					uncheckedWorkload <= 0.0 ? ZERO_DOUBLE : uncheckedWorkload);
 			teacherWorkload.setTotalWorkload(
 					teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
 			teacherWorkload.setCheckedItems(teacherWorkload.getCheckedItems() + 1);
-			teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() - 1);
+
+			Integer uncheckedItems = teacherWorkload.getUncheckedItems() - 1;
+			teacherWorkload.setUncheckedItems(uncheckedItems <= 0 ? ZERO_INT : uncheckedItems);
 
 			teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 		} else if (DOUBTED.equals(status)) {
@@ -381,16 +384,25 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 
 		// 3->0, 1->0, 4->0 预期工作量 -
 		if (getUncheckedStatus().contains(oldStatus) && UNCOMMITTED.equals(newStatus)) {
-			teacherWorkload.setUncheckedWorkload(uncheckedWorkload - itemDto.getWorkload());
-			teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() - 1);
+
+			teacherWorkload.setUncheckedWorkload(uncheckedWorkload <= itemDto.getWorkload() ?
+					ZERO_DOUBLE :
+					uncheckedWorkload - itemDto.getWorkload());
+			teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() <= 1 ?
+					ZERO_INT :
+					teacherWorkload.getUncheckedItems() - 1);
 		}
 
 		// 2->0, 2->1 通过的工作量 -
 		if (CHECKED.equals(oldStatus) && (UNCOMMITTED.equals(newStatus) || NON_CHECKED
 				.equals(newStatus))) {
-			teacherWorkload.setCheckedWorkload(checkedWorkload - itemDto.getWorkload());
-			teacherWorkload.setCheckedItems(teacherWorkload.getCheckedItems() - 1);
-			if(NON_CHECKED.equals(newStatus)) {
+			teacherWorkload.setCheckedWorkload(checkedWorkload <= itemDto.getWorkload() ?
+					ZERO_DOUBLE :
+					checkedWorkload - itemDto.getWorkload());
+			teacherWorkload.setCheckedItems(teacherWorkload.getCheckedItems() <= 1 ?
+					ZERO_INT :
+					teacherWorkload.getCheckedItems() - 1);
+			if (NON_CHECKED.equals(newStatus)) {
 				teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() + 1);
 			}
 		}
@@ -400,8 +412,10 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 				.equals(newStatus)) {
 			teacherWorkload.setUncheckedWorkload(uncheckedWorkload + itemDto.getWorkload());
 			teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() + 1);
-			if(CHECKED.equals(oldStatus)) {
-				teacherWorkload.setCheckedItems(teacherWorkload.getCheckedItems() - 1);
+			if (CHECKED.equals(oldStatus)) {
+				teacherWorkload.setCheckedItems(teacherWorkload.getCheckedItems() <= 1 ?
+						ZERO_INT :
+						teacherWorkload.getCheckedItems() - 1);
 			}
 		}
 

@@ -36,6 +36,8 @@ import cn.edu.uestc.ostec.workload.type.ItemStatus;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.OBJECT_MAPPER;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -105,16 +107,22 @@ public class ReviewerManageAspectImpl implements IAspect {
 		history.setAimUserId(item.getOwnerId());
 
 		//修改教师对应的工作量
-		TeacherWorkload teacherWorkload = teacherWorkloadService.getTeacherWorkload(item.getOwnerId(),getCurrentSemester());
-		if(CHECKED.equals(checkStatus.getStatus())) {
-			teacherWorkload.setCheckedWorkload(teacherWorkload.getCheckedWorkload() + item.getWorkload());
+		TeacherWorkload teacherWorkload = teacherWorkloadService
+				.getTeacherWorkload(item.getOwnerId(), getCurrentSemester());
+		if (CHECKED.equals(checkStatus.getStatus())) {
+			teacherWorkload
+					.setCheckedWorkload(teacherWorkload.getCheckedWorkload() + item.getWorkload());
 			teacherWorkload.setCheckedItems(teacherWorkload.getCheckedItems() + 1);
 		}
-		teacherWorkload.setUncheckedWorkload(teacherWorkload.getUncheckedWorkload() - item.getWorkload());
+		teacherWorkload.setUncheckedWorkload(
+				teacherWorkload.getUncheckedWorkload() <= item.getWorkload() ?
+						ZERO_DOUBLE :
+						teacherWorkload.getUncheckedWorkload() - item.getWorkload());
 		teacherWorkload.setTotalWorkload(
-				teacherWorkload.getCheckedWorkload() + teacherWorkload
-						.getUncheckedWorkload());
-		teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedItems() - 1);
+				teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
+		teacherWorkload.setUncheckedItems(teacherWorkload.getUncheckedWorkload() <= 1 ?
+				ZERO_INT :
+				teacherWorkload.getUncheckedItems() - 1);
 		boolean recordSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 
 		boolean saveSuccess = historyService.saveHistory(history);
