@@ -16,7 +16,7 @@ function importWorkload(){
                 for(var i=0;i<item.length;i++){
 
                     //如果有子节点，则遍历该子节点
-                    if (item[i].children.length > 0) {
+                    if (item[i].children!=null&&item[i].children.length >0) {
                         var isShow = traverseNode(item[i], 1);
                         if (isShow == 1) {
                             var li = $("<li></li>");
@@ -32,7 +32,7 @@ function importWorkload(){
                             "<div class='dropdown' style='float: right; margin-top: 2px;'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='" + downloadInfoUrl+ "?categoryId=" + item[i].categoryId+"&type=group'>小组类模板</a></li><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div>" +
                             "<p class='deadline'> 上传截止时间: <span class='time_"+item[i].categoryId+"'>"+item[i].reviewDeadline +
                             "</span></p></div><div style='clear: both;'></div></li>").appendTo(parent);
-                        if(item[i].formulaParameterList.length>0){
+                        if(item[i].formulaParameterList.length&&item[i].formulaParameterList.length>0){
                             //    var obj = eval ("(" + item[i].jsonParameters + ")");
                             var obj=item[i].formulaParameterList;
                             for(var paraCount=0;paraCount<obj.length;paraCount++){
