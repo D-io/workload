@@ -35,8 +35,9 @@ function ztree() {
             beforeRemove:beforeRemove,
             //  beforeRename: beforeRename,
             onCheck: zTreeOnClick,
+            beforeClick: zTreeBeforeClick,
             beforeDrag: zTreeBeforeDrag,
-           onRemove: onRemove,
+           onRemove: onRemove
           //  onDblClick: onClick,
           //  onNodeCreated: zTreeOnNodeCreated
         }
@@ -228,7 +229,10 @@ function ztree() {
     );
 
     var log, className = "dark";
-
+//禁止节点的单机事件
+    function zTreeBeforeClick(treeId, treeNode, clickFlag) {
+        return false;
+    };
 //捕获节点编辑按钮回调函数
     function beforeEditName(treeId, treeNode) {
 
@@ -436,7 +440,7 @@ function ztree() {
                             $(".editParaRow").show();
                             // $('#' + treeNode.tId + '_a').css({'background-color': '#ffe746', "color": "#2A3F54"});
                             //   return confirm("解锁节点成功！");
-                          //  ztree();
+                          //   ztree();
 
                 }
             });
@@ -1187,6 +1191,7 @@ function ztree() {
         $(".icon06_ico_docu").bind("hover",function () {
             $(this).attr("title","导入复核类");
         });
+      //  $(".node_name").wrap("<div></div>")
         $(document).on("click","#importRequired",function () {
             var options=$("#importRequired option:selected");
             if(options.val()==1){

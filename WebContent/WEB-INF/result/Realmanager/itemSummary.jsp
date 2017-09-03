@@ -61,7 +61,7 @@
             </div>
         </div>
         -->
-            <button class="btn btn-primary pull-right Torefresh"><i class="fa fa-refresh"></i> 刷新</button>
+           <%-- <button class="btn btn-primary pull-right Torefresh"><i class="fa fa-refresh"></i> 刷新</button>--%>
             <button class="btn btn-success pull-right Toexcellall"><i class="fa fa-download"></i> 导出</button>
 
             <table  class="table table-striped table-bordered dataTable no-footer activesort" cellspacing="0" width="100%">

@@ -897,19 +897,19 @@ function itemSummary() {
             $(".checkedCount_"+countId).text(msg.data.teacherWorkloadList[0].checkedWorkload);
             $(".uncheckedCount_"+countId).text(msg.data.teacherWorkloadList[0].uncheckedWorkload);
             $(".totalCount_"+countId).text(msg.data.teacherWorkloadList.totalWorkload);
-            if(msg.data.teacherWorkloadList.checkedItems<10){
+            if(msg.data.teacherWorkloadList[0].checkedItems<10){
                 $("#checkedwork_"+countId).text("共00"+msg.data.teacherWorkloadList[0].checkedItems+"项");
             }
-            else if(msg.data.teacherWorkloadList.checkedItems<100){
+            else if(msg.data.teacherWorkloadList[0].checkedItems<100){
                 $("#checkedwork_"+countId).text("共0"+msg.data.teacherWorkloadList[0].checkedItems+"项");
             }
             else{
                 $("#checkedwork_"+countId).text("共"+msg.data.teacherWorkloadList[0].checkedItems+"项");
             }
-            if(msg.data.teacherWorkloadList.uncheckedItems<10){
+            if(msg.data.teacherWorkloadList[0].uncheckedItems<10){
                 $("#uncheckedwork_"+countId).text("共00"+msg.data.teacherWorkloadList[0].uncheckedItems+"项");
             }
-            else if(msg.data.teacherWorkloadList.uncheckedItems<100){
+            else if(msg.data.teacherWorkloadList[0].uncheckedItems<100){
                 $("#uncheckedwork_"+countId).text("共0"+msg.data.teacherWorkloadList[0].uncheckedItems+"项");
             }
             else {
