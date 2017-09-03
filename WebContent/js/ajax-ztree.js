@@ -740,7 +740,6 @@ function ztree() {
     }
     function onRemove(e, treeId, treeNode) {
         var str='categoryId'+'='+treeNode.id;
-        if(confirm("确认删除节点？")){
             $.ajax({
                 type:"POST",
                 url:categoryDeleteUrl+"?"+ str,
@@ -770,7 +769,7 @@ function ztree() {
                     return false;
                 }
             });
-        }
+
 
     }
 //更新节点名称之前的回调函数
@@ -1297,72 +1296,6 @@ function ztree() {
 
         return y+'-12-31 00:00:00';
     }
-    function initRemoveAttr() {
-        $("#myname").removeClass("has-error");
-        $("#myformula").removeClass("has-error");
-        $("#mypara").removeClass("has-error");
-        $("#myrevie").removeClass("has-error");
-        $("#myapply").removeClass("has-error");
-        $("#mymanager").removeClass("has-error");
-        $(".experient").hide();
-    }
-    function initChecked() {
-        if(!$("#formula").val()){
-            $("#myformula").addClass("has-error");
-            $("#experient_formula").show();
-        }
-        if(!$("#teacherName").val()){
-            $("#mymanager").addClass("has-error");
-            $("#experient_manager").show();
-        }
-        if(!$("#applyDeadline").val()){
-            $("#myapply").addClass("has-error");
-            $("#experient_apply").show();
-        }
-        if(!$("#reviewDeadline").val()){
-            $("#myrevie").addClass("has-error");
-            $("#experient_revie").show();
-        }
-        if(!$(".parameterName").val()){
-            $("#mypara").addClass("has-error");
-            $("#experient_para").show();
-        }
-    }
-    function initModal() {
-        $(".form-control").removeAttr("disabled");
-        $('#itemName').val(null);
-        $('#desc').val(null);
-        $('#teacherName').select2('data',null);
-        $("#parentId").attr("disabled", "disabled");
-        $(".requiredtime").hide();
-        $("#importRequired option").each(function () {
-            console.log($(this).val());
-            if ($(this).val() == 2) {
-                $(this).attr("selected", true);
-            }
-            else {
-                $(this).removeAttr("selected");
-            }
-            });
-        $("#importRequired").val("2");
-      /*          $("#importRequired").find("option[value='1']").removeAttr("selected");
-        $("#importRequired").find("option[value='0']").removeAttr("selected");
-        $("#importRequired").find("option[value='2']").attr("selected","selected");*/
-
-        $(".AddPramter").empty();
-        $(".addOtherPramter").empty();
-        $("#addParameter").show();
-        $("#addOtherParameter").show();
-        $('#applyDeadline').val(format());
-        $('#reviewDeadline').val(importFormat());
-        $('#formula').val(null);
-    /*    $(".addOtherPramter").empty();
-        $(".addOtherPramter").empty();*/
-        $("#save").show();
-        $("#cancel").show();
-        $(".manageEdit").hide();
-        $(".submitEdit").hide();
-    }
     function importFormat() {
         var time = new Date();
         var y = time.getFullYear();
@@ -1415,6 +1348,72 @@ function ztree() {
     $.fn.zTree.init($("#treeDemo"), setting, zNodes);
 
     // $("#selectAll").bind("click", selectAll);
+}
+function initRemoveAttr() {
+    $("#myname").removeClass("has-error");
+    $("#myformula").removeClass("has-error");
+    $("#mypara").removeClass("has-error");
+    $("#myrevie").removeClass("has-error");
+    $("#myapply").removeClass("has-error");
+    $("#mymanager").removeClass("has-error");
+    $(".experient").hide();
+}
+function initChecked() {
+    if(!$("#formula").val()){
+        $("#myformula").addClass("has-error");
+        $("#experient_formula").show();
+    }
+    if(!$("#teacherName").val()){
+        $("#mymanager").addClass("has-error");
+        $("#experient_manager").show();
+    }
+    if(!$("#applyDeadline").val()){
+        $("#myapply").addClass("has-error");
+        $("#experient_apply").show();
+    }
+    if(!$("#reviewDeadline").val()){
+        $("#myrevie").addClass("has-error");
+        $("#experient_revie").show();
+    }
+    if(!$(".parameterName").val()){
+        $("#mypara").addClass("has-error");
+        $("#experient_para").show();
+    }
+}
+function initModal() {
+    $(".form-control").removeAttr("disabled");
+    $('#itemName').val(null);
+    $('#desc').val(null);
+    $('#teacherName').select2('data',null);
+    $("#parentId").attr("disabled", "disabled");
+    $(".requiredtime").hide();
+    $("#importRequired option").each(function () {
+        console.log($(this).val());
+        if ($(this).val() == 2) {
+            $(this).attr("selected", true);
+        }
+        else {
+            $(this).removeAttr("selected");
+        }
+    });
+    $("#importRequired").val("2");
+    /*          $("#importRequired").find("option[value='1']").removeAttr("selected");
+     $("#importRequired").find("option[value='0']").removeAttr("selected");
+     $("#importRequired").find("option[value='2']").attr("selected","selected");*/
+
+    $(".AddPramter").empty();
+    $(".addOtherPramter").empty();
+    $("#addParameter").show();
+    $("#addOtherParameter").show();
+    $('#applyDeadline').val(format());
+    $('#reviewDeadline').val(importFormat());
+    $('#formula').val(null);
+    /*    $(".addOtherPramter").empty();
+     $(".addOtherPramter").empty();*/
+    $("#save").show();
+    $("#cancel").show();
+    $(".manageEdit").hide();
+    $(".submitEdit").hide();
 }
 function reminder(obj) {
     var objValue=obj.value;

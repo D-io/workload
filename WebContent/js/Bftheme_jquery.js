@@ -519,7 +519,7 @@ function reset() {
             if(pageCountNum<10){
                 for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                     var pagestore=pageNum+1;
-                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pagestore+'" tabindex="0">'+pagestore+'</a> </li>';
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
                 }
                 $(".pagination").empty();
                 $(".pagination").append(str);
@@ -683,56 +683,57 @@ function itemSummary() {
                         $(".sumItemPreview tr:last").css({"background-color": "#ffe746", "color": "rgb(115, 135, 15)"});
                     }*/
                    /* $(".sumItemPreview tr:last td:eq(0)").text(id);*/
-                   $(".sumItemPreview tr:last td:eq(0)").append('<span class="refresh" id="refresh_'+id+'"><i class="fa fa-refresh"></i></span>')
-                    $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherId);
+                     $(".sumItemPreview tr:last td:eq(0)").text(Info.teacherId);
 
-                    $(".sumItemPreview tr:last td:eq(1)").attr("id", "teacherId_" + id);
-                    $(".sumItemPreview tr:last td:eq(2)").text(Info.teacherName);
-                    $(".sumItemPreview tr:last td:eq(3)").text(Info.professionalTitle);
+                    $(".sumItemPreview tr:last td:eq(0)").attr("id", "teacherId_" + id);
+                    $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherName);
+                    $(".sumItemPreview tr:last td:eq(2)").text(Info.professionalTitle);
                     /* $(".sumItemPreview tr:last td:eq(4)").text(Info.checkedWorkload);*/
                     if (Info.checkedItems < 10) {
-                        $(".sumItemPreview tr:last td:eq(4)").append("<span class='checkedCount_"+id+"'>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.checkedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(3)").append("<span class='checkedCount_"+id+"'>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.checkedItems + "项</span>")
 
                     }
                     else if (Info.checkedItems < 100) {
-                        $(".sumItemPreview tr:last td:eq(4)").append("<span class='checkedCount_"+id+"'>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.checkedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(3)").append("<span class='checkedCount_"+id+"'>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.checkedItems + "项</span>")
 
                     }
                     else {
-                        $(".sumItemPreview tr:last td:eq(4)").append("<span class='checkedCount_"+id+"'>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.checkedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(3)").append("<span class='checkedCount_"+id+"'>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.checkedItems + "项</span>")
 
                     }
-                    $(".sumItemPreview tr:last td:eq(4)").css("text-align", "center");
+                    $(".sumItemPreview tr:last td:eq(3)").css("text-align", "center");
 
                     /*$(".sumItemPreview tr:last td:eq(4)").attr("class","checkedwork");
                      $(".sumItemPreview tr:last td:eq(4)").attr("id","checkedwork_"+id);*/
                     /*$(".sumItemPreview tr:last td:eq(4)").attr("data-toggle","modal");
                      $(".sumItemPreview tr:last td:eq(4)").attr("data-target","#applyModal");*/
                     if (Info.uncheckedItems < 10) {
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span class='uncheckedCount_"+id+"'>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.uncheckedItems + "项</span>");
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span class='uncheckedCount_"+id+"'>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.uncheckedItems + "项</span>");
 
                     }
                     else if (Info.uncheckedItems < 100) {
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span class='uncheckedCount_"+id+"'>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.uncheckedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span class='uncheckedCount_"+id+"'>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.uncheckedItems + "项</span>")
 
                     }
                     else {
-                        $(".sumItemPreview tr:last td:eq(5)").append("<span class='uncheckedCount_"+id+"'>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.uncheckedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span class='uncheckedCount_"+id+"'>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.uncheckedItems + "项</span>")
 
                     }
                     /*   $(".sumItemPreview tr:last td:eq(5)").attr("class","uncheckedWork");
                      $(".sumItemPreview tr:last td:eq(5)").attr("id","uncheckedwork_"+id);
                      $(".sumItemPreview tr:last td:eq(5)").attr("data-toggle","modal");
                      $(".sumItemPreview tr:last td:eq(5)").attr("data-target","#applyModal");*/
+                    $(".sumItemPreview tr:last td:eq(4)").css("text-align", "center");
+                    $(".sumItemPreview tr:last td:eq(5)").append("<span class='totalCount_"+id+"'>" + Info.totalWorkload + "</span>");
                     $(".sumItemPreview tr:last td:eq(5)").css("text-align", "center");
-                    $(".sumItemPreview tr:last td:eq(6)").append("<span class='totalCount_"+id+"'>" + Info.totalWorkload + "</span>");
-                    $(".sumItemPreview tr:last td:eq(6)").css("text-align", "center");
                     /* var act="<a class=\"btn btn-primary btn-xs previewAll\" id=\"previewAll_"+ id+"\" data-toggle='modal' data-target='#applyModal'>查看详情</a>";
                      $(".sumItemPreview tr:last td:eq(5)").append(act);*/
+                    $(".sumItemPreview tr:last td:eq(6)").append('<span class="refresh" id="refresh_'+id+'" style="cursor: pointer"><i class="fa fa-refresh"></i></span>');
+
                 }
                 $(".activesort").dataTable({
                     "iDisplayLength": 20,
-                    "aLengthMenu": [[2, 4, 6, -1], [20, 40, 60, "全部"]],
+                    "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "全部"]],
                     "oLanguage": { //国际化配置
                         "sProcessing": "正在获取数据，请稍后...",
                         "sLengthMenu": "每页 _MENU_ 条",
@@ -749,16 +750,31 @@ function itemSummary() {
                             "sPrevious": "上一页",
                             "sNext": "下一页",
                             "sLast": "最后一页"
-                        }
-                    }
+                        },
 
-                })
+                       /* "columns": [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            { "orderable": false }
+                        ]*/
 
-            }
-            ;
+                    },
+                    "columnDefs": [
+                        { "orderable": false, "targets": 6 }
+                    ]
 
+                });
+               /* $(".paginate_button ").hover(function () {
+                    $(".paginate_button ").css("cursor","pointer");
+                    /!*"cursor","pointer"*!/
+                });*/
+            };
         });
     })
+
     /*var teachersInfo='';
         $.get(TeacherInfoUrl, {test : 12},function (data) {
             teachersInfo=data.data.teacherList;
@@ -866,7 +882,7 @@ function itemSummary() {
             appendAllItem(data,"sumuncheckedItemSort");
         })
     });*/
-    $(".paginate_button ").css("cursor","pointer");
+
 
     $(document).on("click",".Toexcellall",function () {
         var form = $("<form>");
@@ -1241,9 +1257,11 @@ function reviewerResetItem(data) {
                 $(".ResetItem tr:last td:eq(4)").text(Info.workload);
                 $(".ResetItem tr:last td:eq(5)").text(Info.teacherName);
 
-                var checkAct="<button type='button' class=\"btn btn-info reset_applicant\" id=\"applyReset_"+ Info.itemId+"\" '> 退回申请</button><button type='button' class=\"btn btn-success reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style=''>退回审核</button> <button class='btn btn-primary viewdetail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</button> ";
-                var importAct="<button type='button' class=\"btn btn-default reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style='background-color:rgba(231,76,60,.88);color: #fff'>退回导入</button> <button class=\"btn btn-default reset_applicant\" id=\"applyReset_"+ Info.itemId+"\" style='background-color:rgba(243,156,18,.88);color: #fff' '>退回复核</button><button class='btn btn-primary viewdetail' id='viewdetail_"+i+"'  data-toggle='modal' data-target='#showdetail'>查看详情</button>";
+                var checkAct="<button type='button' class=\"btn btn-new reset_applicant\" id=\"applyReset_"+ Info.itemId+"\">退回申请</button><button type='button' class=\"btn btn-success reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style=''>退回审核</button><button class='btn btn-default viewdetail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</button> ";
+                var importAct="<button type='button' class=\"btn btn-danger reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\">退回导入</button><button type='button' class=\"btn btn-warning reset_applicant\" id=\"applyReset_"+ Info.itemId+"\">退回复核</button><button class='btn btn-default viewdetail' id='viewdetail_"+i+"'  data-toggle='modal' data-target='#showdetail'>查看详情</button>";
                /*background-color:rgb(155, 89, 182);color: #fff*/
+               /*style='background-color:rgba(243,156,18,.88);color: #fff'*/
+               /* style='background-color:rgba(231,76,60,.88);color: #fff'*/
                 if(Info.importRequired==0){
                     $(".ResetItem tr:last td:eq(7)").append(checkAct);
                 }
