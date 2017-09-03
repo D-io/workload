@@ -77,7 +77,7 @@ function auditworkload() {
    $.get(pageManageUrl+"?"+'regionName=auditor/auditworkload',{test : 12},function (result) {
       $('.right_hole').append(result);
    });
-       $.get(itemAuditorUrl,{test : 12},function (data) {
+       $.get(workloadAuditUrl,{test : 12},function (data) {
            var showimport=  $("<ul></ul>");
             showall(data.data.applyCategories, showimport);
             $("#tab_content1").append(showimport);

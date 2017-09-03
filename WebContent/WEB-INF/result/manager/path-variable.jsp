@@ -58,6 +58,8 @@
 
     var itemAuditorUrl=contextPath+"/reviewer/info/categories";
 
+    var workloadAuditUrl=contextPath+"/reviewer/info/apply-categories";
+
     var auditorManageItemUrl=auditorManageUrl+"/items";
 
     var reviewerCheckUrl=reviewerManagerUrl+"/check";
