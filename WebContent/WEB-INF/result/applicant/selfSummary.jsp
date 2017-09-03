@@ -27,8 +27,8 @@
 
             <div>
                 <h4 style="float: left">总工作当量：<span  class="totalWorkload"></span></h4>
-                <h4 style="float: left">已通过工作当量：<span  class="totalWorkload"></span></h4>
-                <h4 style="float: left">待通过工作当量：<span  class="totalWorkload"></span></h4>
+                <h4 style="float: left">已通过工作当量：<span  class="checkedWorkload"></span></h4>
+                <h4 style="float: left">待通过工作当量：<span  class="uncheckedWorkload"></span></h4>
             </div>
             <div class="clearfix"></div>
             <div class="" role="tabpanel" data-example-id="togglable-tabs">
@@ -37,11 +37,11 @@
                     </li>
                     <%-- <li role="presentation" onclick="jumpToSum()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">计算规则预览</a>
                      </li>--%>
-                    <li role="presentation" ><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">复核通过</a>
+                    <li role="presentation" ><a href="#tab_content2" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">复核通过</a>
                 </li>
                     <li role="presentation"><a href="#tab_content3" role="tab" id="import-tab" data-toggle="tab" aria-expanded="false">待审核通过</a>
                     </li>
-                    <li role="presentation"><a href="#tab_content3" role="tab" id="apply-tab" data-toggle="tab" aria-expanded="false">待复核通过</a>
+                    <li role="presentation"><a href="#tab_content4" role="tab" id="apply-tab" data-toggle="tab" aria-expanded="false">待复核通过</a>
                     </li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
@@ -141,6 +141,7 @@
 
                 </div>
             </div>
+
            <%-- <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top:40px ">
                 <div class="panel">
                     <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -374,6 +375,39 @@
                 </tbody>
             </table>--%>
 
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >详细信息</h4>
+            </div>
+            <div class="modal-body">
+                <table  class="table table-striped table-bordered dataTable no-footer">
+                    <thead>
+                    <tr role="row">
+
+                        <th class="sorting">计算公式</th>
+                        <th  class="sorting">计算参数</th>
+                        <th class="sorting">项目属性</th>
+
+                    </tr>
+                    </thead>
+                    <tbody class="revDetail">
+                    </tbody>
+                </table>
+
+
+            </div>
+            <%--   <div class="modal-footer">
+                   <button type="button" class="btn btn-primary " data-dismiss="modal" id="cancel">取消</button>
+                   <button type="button" class="btn btn-primary" id="save">保存</button>
+                   <button class="btn btn-primary manageEdit" style="display: none;">编辑</button>
+                   <button class="btn btn-primary submitEdit" style="display: none;">提交</button>
+               </div>--%>
         </div>
     </div>
 </div>
