@@ -1025,6 +1025,10 @@ function ztree() {
                     $("#myname").addClass("has-error");
                     $("#experient_name").show();
                 }
+                if(!$("#desc").val()){
+                    $("#mydesc").addClass("has-error");
+                    $("#experient_desc").show();
+                }
                 var reviewTimetodate = $('#reviewDeadline').val();
                 var applyTimetodate = $('#applyDeadline').val();
 
@@ -1287,23 +1291,6 @@ function ztree() {
 
     });
    /* function add0(m){return m<10?'0'+m:m }*/
-    function format()
-    {
-        var time = new Date();
-        var y = time.getFullYear();
-       /* var m = time.getMonth()+1;
-        var d = time.getDate();*/
-
-        return y+'-12-31 00:00:00';
-    }
-    function importFormat() {
-        var time = new Date();
-        var y = time.getFullYear();
-        /* var m = time.getMonth()+1;
-         var d = time.getDate();*/
-
-        return y+'-12-28 00:00:00';
-    }
     function zTreeOnClick(event, treeId, treeNode) {
         var zTree= $.fn.zTree.getZTreeObj("treeDemo");
         var nodes = zTree.getCheckedNodes(true);
@@ -1351,12 +1338,30 @@ function ztree() {
 }
 function initRemoveAttr() {
     $("#myname").removeClass("has-error");
+    $("#mydesc").removeClass("has-error");
     $("#myformula").removeClass("has-error");
     $("#mypara").removeClass("has-error");
     $("#myrevie").removeClass("has-error");
     $("#myapply").removeClass("has-error");
     $("#mymanager").removeClass("has-error");
     $(".experient").hide();
+}
+function format()
+{
+    var time = new Date();
+    var y = time.getFullYear();
+    /* var m = time.getMonth()+1;
+     var d = time.getDate();*/
+
+    return y+'-12-31 00:00:00';
+}
+function importFormat() {
+    var time = new Date();
+    var y = time.getFullYear();
+    /* var m = time.getMonth()+1;
+     var d = time.getDate();*/
+
+    return y+'-12-28 00:00:00';
 }
 function initChecked() {
     if(!$("#formula").val()){

@@ -473,25 +473,23 @@
                     <div class="form-group" id="myname">
                         <label class="col-sm-3 control-label">规则名称<span class="needed">*</span></label>
                         <div class="col-sm-9">
-                            <%--<div class="form-control">--%>
+
                             <input type="text" class="form-control required"  id="itemName" name ="name" onblur="reminder(this)">
 
-                            <%-- <label for="itemName" class="error">此项必填</label>--%>
-                            <%--</div>--%>
 
                         </div>
                     </div>
                     <span class="experient" id="experient_name" >规则名称不可为空！</span>
                     <div class="form-group" id="mydesc">
-                        <label class="col-sm-3 control-label ">规则简介</label>
+                        <label class="col-sm-3 control-label ">规则简介<span class="needed">*</span></label>
                         <div class="col-sm-9">
 
-                            <textarea class="form-control required" id="desc" rows="3" name="desc"></textarea>
+                            <textarea class="form-control required" id="desc" rows="3" name="desc" onblur="reminder(this)"></textarea>
                             <%--<label for="desc" class="error">此项必填</label>--%>
 
                         </div>
                     </div>
-
+                    <span class="experient" id="experient_desc" >规则简介不可为空！</span>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">规则类别<span class="needed">*</span></label>
                         <div class="col-sm-9">
@@ -504,7 +502,7 @@
                         </div>
                     </div>
                     <div class="form-group requiredtime" id="mymanager">
-                        <label class="col-sm-3 control-label " id="importManager">审核人员<span class="needed">*</span></label>
+                        <label class="col-sm-3 control-label" ><span id="importManager">审核人员</span><span class="needed">*</span></label>
                         <div class="col-sm-9">
 
                             <select class="form-control select2" id="teacherName" name="manager" onchange="reminder(this)">
