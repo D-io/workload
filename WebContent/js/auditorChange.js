@@ -8,43 +8,66 @@ function importWorkload(){
         $(".hiddendistrict").empty();
     });
         $.get(itemAuditorUrl,{test : 12},function (data) {
-          showimportall(data.data.importCategories);
+          var parent = $("<ul></ul>");
+          showimportall(data.data.importCategories,parent);
+          $("#tab_content1").append(parent);
 
+          function  showimportall(item,parent) {
+                for(var i=0;i<item.length;i++){
+
+                    //如果有子节点，则遍历该子节点
+                    if (item[i].children.length > 0) {
+                        var isShow = traverseNode(item[i], 1);
+                        if (isShow == 1) {
+                            var li = $("<li></li>");
+                            $(li).append( item[i].name ).append("<ul></ul>").appendTo(parent);
+
+                        }
+                        showimportall(item[i].children, $(li).children().eq(0));
+                    }
+
+                    else if(item[i].importRequired==1){
+                        $("<li class='catInfo_"+item[i].categoryId+"'></li>").append( "<div class='itemMessage'>【<span class='itemName'>" + item[i].name + "</span>】&nbsp;&nbsp;<span class='itemDesc'>" + item[i].desc + "</span></div>" +
+                            "<div style='float: right;'><a class='btn importList btn-info' id='import_"+ item[i].categoryId + "' data-toggle='modal' data-target='#importNewModal' style='float: right; margin-top: 2px;'>点击导入</a>" +
+                            "<div class='dropdown' style='float: right; margin-top: 2px;'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='" + downloadInfoUrl+ "?categoryId=" + item[i].categoryId+"&type=group'>小组类模板</a></li><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div>" +
+                            "<p class='deadline'> 上传截止时间: <span class='time_"+item[i].categoryId+"'>"+item[i].reviewDeadline +
+                            "</span></p></div><div style='clear: both;'></div></li>").appendTo(parent);
+                        if(item[i].formulaParameterList.length>0){
+                            //    var obj = eval ("(" + item[i].jsonParameters + ")");
+                            var obj=item[i].formulaParameterList;
+                            for(var paraCount=0;paraCount<obj.length;paraCount++){
+                                $(".hiddendistrict").append("<div class='importParaDesc paraDesc_"+item[i].categoryId+"' id='"+item[i].categoryId+"_"+obj[paraCount].symbol+"'>"+obj[paraCount].desc+"</div>");
+
+                            }
+                        }
+                        if(item[i].otherJsonParameters.length>0){
+                            //  var otherobj = eval ("(" + item[i].jsonParameters + ")");
+
+                            var otherobj=item[i].otherJsonParameters;
+
+                            for(var otherCount=0;otherCount<otherobj.length;otherCount++){
+                                $(".hiddendistrict").append("<div class='importParaDesc otherparaDesc_"+item[i].categoryId+"'>"+otherobj[otherCount].key+"</div>");
+
+                            }
+                        }
+                    }
+
+
+                    // $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+
+                    //     "<div style='float: right; margin-top: 6px;'><a class='btn importList btn-info' id='import_"+ item[i].categoryId + "' data-toggle='modal' data-target='#importNewModal' style='float: right; margin-top: 6px;'>点击导入</a>" +
+                    //     "<div class='dropdown' style='float: right; margin-top: 6px;'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='" + downloadInfoUrl+ "?categoryId=" + item[i].categoryId+"&type=group'>小组类模板</a></li><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div>" +
+                    //     "<p class='deadline'> 上传截止时间: <span class='time_"+item[i].categoryId+"'>"+item[i].reviewDeadline +
+                    //     "</span></p></div><div style='clear: both;'></div></li>");
+
+
+                    /*     var tablestr='<table class="showImportThead table dataTable no-footer table-bordered" id="showImportThead_'+item[i].categoryId+'" style="display: none;"> <thead> <tr role="row"> <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th> </tr> </thead> <tbody class="showImportDesc_'+item[i].categoryId+'"></tbody> </table>';
+                         $('#catInfo_' + item[i].categoryId).append(tablestr);*/
+                    if(item[i].children){
+                        showimportall(item[i].children);
+                    }
+                }
+            }
         });
-        function  showimportall(item) {
-        for(var i=0;i<item.length;i++){
-
-            $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+
-                "<div style='float: right; margin-top: 6px;'><a class='btn importList btn-info' id='import_"+ item[i].categoryId + "' data-toggle='modal' data-target='#importNewModal' style='float: right; margin-top: 6px;'>点击导入</a>" +
-                "<div class='dropdown' style='float: right; margin-top: 6px;'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='" + downloadInfoUrl+ "?categoryId=" + item[i].categoryId+"&type=group'>小组类模板</a></li><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div>" +
-                "<p class='deadline'> 上传截止时间: <span class='time_"+item[i].categoryId+"'>"+item[i].reviewDeadline +
-                 "</span></p></div><div style='clear: both;'></div></li>");
-
-            if(item[i].formulaParameterList.length>0){
-            //    var obj = eval ("(" + item[i].jsonParameters + ")");
-             var obj=item[i].formulaParameterList;
-                for(var paraCount=0;paraCount<obj.length;paraCount++){
-                    $(".hiddendistrict").append("<div class='importParaDesc paraDesc_"+item[i].categoryId+"' id='"+item[i].categoryId+"_"+obj[paraCount].symbol+"'>"+obj[paraCount].desc+"</div>");
-
-                }
-            }
-            if(item[i].otherJsonParameters.length>0){
-              //  var otherobj = eval ("(" + item[i].jsonParameters + ")");
-
-                var otherobj=item[i].otherJsonParameters;
-
-                for(var otherCount=0;otherCount<otherobj.length;otherCount++){
-                    $(".hiddendistrict").append("<div class='importParaDesc otherparaDesc_"+item[i].categoryId+"'>"+otherobj[otherCount].key+"</div>");
-
-                }
-            }
-       /*     var tablestr='<table class="showImportThead table dataTable no-footer table-bordered" id="showImportThead_'+item[i].categoryId+'" style="display: none;"> <thead> <tr role="row"> <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th> </tr> </thead> <tbody class="showImportDesc_'+item[i].categoryId+'"></tbody> </table>';
-            $('#catInfo_' + item[i].categoryId).append(tablestr);*/
-            if(item[i].children){
-                showimportall(item[i].children);
-            }
-        }
-    }
         $.get(TeacherInfoUrl,{test : 12},function (data) {
         teacherInfo=data.data.teacherList;
         var selectdata=new Array();
