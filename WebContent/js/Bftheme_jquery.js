@@ -545,36 +545,50 @@ function reset() {
         if(!$(this).is('.input')){
             $(this).addClass('input').html('<input type="text" value="'+ $(this).text() +'" />').find('input').focus().blur(function(){
                 $(this).parent().removeClass('input').html($(this).val() || 0);
-              //  alert("确定保存修改？");
                 $.post(itemeditNameUrl,{
                     itemId:thisId,
                     itemName:$("#itemName_"+thisId).text()
                 },function () {
-                   /* alert("修改成功!");*/
+
                 });
-            });
+            }).keydown(function(e){if(e.keyCode==13){
+                $(this).parent().removeClass('input').html($(this).val() || 0);
+                $.post(itemeditNameUrl,{
+                    itemId:thisId,
+                    itemName:$("#itemName_"+thisId).text()
+                },function () {
+
+                });
+            }})
         }
     });
     $(document).on("click",".otherParaval",function () {
         var thisId=parseInt(this.id.match(/\d+/g));
 
         if(!$(this).is('.input')){
+            var $otherstr=$(".otherstr_"+thisId);
+            var strArr=new Array();
+            for(var t=0;t<$otherstr.length;t++){
+                strArr.push({key:$otherstr.eq(t).text(),value:$(".otherParaval_"+thisId).eq(t).text()});
+            }
+            strArr=JSON.stringify(strArr);
             $(this).addClass('input').html('<input type="text" value="'+ $(this).text() +'" />').find('input').focus().blur(function(){
                 $(this).parent().removeClass('input').html($(this).val() || 0);
-                var $otherstr=$(".otherstr_"+thisId);
-                var strArr=new Array();
-                for(var t=0;t<$otherstr.length;t++){
-                    strArr.push({key:$otherstr.eq(t).text(),value:$(".otherParaval_"+thisId).eq(t).text()});
-                }
-                strArr=JSON.stringify(strArr);
-             //   alert("确定保存修改？");
                 $.post(itemeditNameUrl,{
                     itemId:thisId,
                     otherParams:strArr
                 },function () {
-                  /*  alert("修改成功!");*/
+
+                })
+            }).keydown(function(e){if(e.keyCode==13){
+                $(this).parent().removeClass('input').html($(this).val() || 0);
+                $.post(itemeditNameUrl,{
+                    itemId:thisId,
+                    otherParams:strArr
+                },function () {
+
                 });
-            });
+            }});;
         }
     });
     $(document).on("click","#next",function(){
