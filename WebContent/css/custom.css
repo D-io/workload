@@ -4397,7 +4397,7 @@ p.deadline{
     float: right;
     color: #bd2d29;
     font-weight: 700;
-    margin: 10px;
+    margin: 5px;
 }
 p.deadline span {
     color: #2A3F54;
@@ -4408,4 +4408,33 @@ p.deadline span {
 }
 .showgroupMemberName .select2{
     width: 120px!important;
+}
+#viewdetail_apply .header{
+    font-weight: 700;
+    line-height: 1em;
+    font-size: 14px;
+}
+#viewdetail_apply .project{
+    padding: 10px 10px 15px;
+}
+#viewdetail_apply .itemName{
+    font-size: 20px;
+    margin-right: 40px;
+}
+#viewdetail_apply .message{
+    padding-left: 10px;
+    padding-top:4px;
+}
+#myModalLabel .project{
+    padding: 10px 10px 0;
+}
+#myModalLabel .itemName{
+    font-size: 20px;
+    font-weight: 700;
+}
+#myModalLabel .message{
+    padding-left: 10px;
+    padding-top: 5px;
+    font-weight: 700;
+    font-size: 14px;
 }

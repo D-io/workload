@@ -134,6 +134,7 @@ input[type="submit"] {
 button[disabled],
 html input[disabled] {
   cursor: default;
+  font-size: 13px;
 }
 button::-moz-focus-inner,
 input::-moz-focus-inner {
@@ -3118,6 +3119,7 @@ fieldset[disabled] .btn-default.focus {
   color: #fff;
   background-color: #333;
 }
+
 .btn-primary {
   color: #fff;
   background-color: #337ab7;
@@ -3232,28 +3234,148 @@ fieldset[disabled] .btn-success.focus {
   color: #5cb85c;
   background-color: #fff;
 }
+
+/* 查看回复 */
+.reviewerApply{
+  color: #fff;
+  background-color: #f59e00;
+  border-color: #f59e00;
+}
+.reviewerApply:focus,
+.reviewerApply.focus {
+  color: #fff;
+  background-color: #f5871f;
+  border-color: #f5871f;
+}
+.reviewerApply:hover {
+  color: #fff;
+  background-color: #f5871f;
+  border-color: #f5871f;
+}
+.reviewerApply:active,
+.reviewerApply.active,
+.open > .dropdown-toggle.reviewerApply {
+  color: #fff;
+  background-color: #f5871f;
+  border-color: #f5871f;
+}
+.reviewerApply:active:hover,
+.reviewerApply.active:hover,
+.open > .dropdown-toggle.reviewerApply:hover,
+.reviewerApply:active:focus,
+.reviewerApply.active:focus,
+.open > .dropdown-toggle.reviewerApply:focus,
+.reviewerApply:active.focus,
+.reviewerApply.active.focus,
+.open > .dropdown-toggle.reviewerApply.focus {
+  color: #fff;
+  background-color: #f5871f;
+  border-color: #f5871f;
+}
+.reviewerApply:active,
+.reviewerApply.active,
+.open > .dropdown-toggle.reviewerApply {
+  background-image: none;
+}
+.reviewerApply.disabled:hover,
+.reviewerApply[disabled]:hover,
+fieldset[disabled] .reviewerApply:hover,
+.reviewerApply.disabled:focus,
+.reviewerApply[disabled]:focus,
+fieldset[disabled] .reviewerApply:focus,
+.reviewerApply.disabled.focus,
+.reviewerApply[disabled].focus,
+fieldset[disabled] .reviewerApply.focus {
+  background-color: #f5871f;
+  border-color: #f5871f;
+}
+.reviewerApply .badge {
+  color: #f5871f;
+  background-color: #fff;
+}
+
+/* 查看详情 */
+.viewDetail{
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.viewDetail:focus,
+.viewDetail.focus {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #122b40;
+}
+.viewDetail:hover {
+  color: #fff;
+  background-color: #204d74;
+  border-color: #122b40;
+}
+.viewDetail:active,
+.viewDetail.active,
+.open > .dropdown-toggle.viewDetail {
+  color: #fff;
+  background-color: #204d74;
+  border-color: #122b40;
+}
+.viewDetail:active:hover,
+.viewDetail.active:hover,
+.open > .dropdown-toggle.viewDetail:hover,
+.viewDetail:active:focus,
+.viewDetail.active:focus,
+.open > .dropdown-toggle.viewDetail:focus,
+.viewDetail:active.focus,
+.viewDetail.active.focus,
+.open > .dropdown-toggle.viewDetail.focus {
+  color: #fff;
+  background-color: #204d74;
+  border-color: #122b40;
+}
+.viewDetail:active,
+.viewDetail.active,
+.open > .dropdown-toggle.viewDetail {
+  background-image: none;
+}
+.viewDetail.disabled:hover,
+.viewDetail[disabled]:hover,
+fieldset[disabled] .viewDetail:hover,
+.viewDetail.disabled:focus,
+.viewDetail[disabled]:focus,
+fieldset[disabled] .viewDetail:focus,
+.viewDetail.disabled.focus,
+.viewDetail[disabled].focus,
+fieldset[disabled] .viewDetail.focus {
+  background-color: #204d74;
+  border-color: #122b40;
+}
+.viewDetail .badge {
+  color: #204d74;
+  background-color: #fff;
+}
+
+/* 重新申请 */
 .btn-info {
   color: #fff;
-  background-color: #5bc0de;
-  border-color: #46b8da;
+  background-color: #bd2d29;
+  border-color: #bd2d29;
 }
 .btn-info:focus,
 .btn-info.focus {
   color: #fff;
-  background-color: #31b0d5;
-  border-color: #1b6d85;
+  background-color: #ac2925;
+  border-color: #ac2925;
 }
 .btn-info:hover {
   color: #fff;
-  background-color: #31b0d5;
-  border-color: #269abc;
+  background-color: #ac2925;
+  border-color: #ac2925;
 }
 .btn-info:active,
 .btn-info.active,
 .open > .dropdown-toggle.btn-info {
   color: #fff;
-  background-color: #31b0d5;
-  border-color: #269abc;
+  background-color: #ac2925;
+  border-color: #ac2925;
 }
 .btn-info:active:hover,
 .btn-info.active:hover,
@@ -3265,8 +3387,8 @@ fieldset[disabled] .btn-success.focus {
 .btn-info.active.focus,
 .open > .dropdown-toggle.btn-info.focus {
   color: #fff;
-  background-color: #269abc;
-  border-color: #1b6d85;
+  background-color: #ac2925;
+  border-color: #ac2925;
 }
 .btn-info:active,
 .btn-info.active,
@@ -3282,13 +3404,14 @@ fieldset[disabled] .btn-info:focus,
 .btn-info.disabled.focus,
 .btn-info[disabled].focus,
 fieldset[disabled] .btn-info.focus {
-  background-color: #5bc0de;
-  border-color: #46b8da;
+  background-color: #ac2925;
+  border-color: #ac2925;
 }
 .btn-info .badge {
-  color: #5bc0de;
+  color: #ac2925;
   background-color: #fff;
 }
+
 .btn-warning {
   color: #fff;
   background-color: #f0ad4e;

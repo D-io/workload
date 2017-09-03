@@ -9,7 +9,7 @@
 <div class="x_panel" style="width: 100%;padding: 10px 17px;">
     <div class="x_title">
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-bars"></i>工作当量管理</a></li>
+            <li><a href="#"><i class="fa fa-bar-chart"></i>工作当量管理</a></li>
             <li class="active curentPage" id="WorkloadAuditor">工作当量审核</li>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>

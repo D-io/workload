@@ -27,12 +27,14 @@ public class FormulaCalculate {
 	public static double calculate(String formula, List<ParameterValue> values) {
 
 		//循环遍历替换公式中的变量值
-		for (ParameterValue parameterValue : values) {
-			if (null != parameterValue) {
-				formula = formula.replaceAll(parameterValue.getSymbol(),
-						String.valueOf(parameterValue.getValue()));
-			} else {
-				continue;
+		if(null != values) {
+			for (ParameterValue parameterValue : values) {
+				if (null != parameterValue) {
+					formula = formula.replaceAll(parameterValue.getSymbol(),
+							String.valueOf(parameterValue.getValue()));
+				} else {
+					continue;
+				}
 			}
 		}
 

@@ -775,7 +775,10 @@ $(document).ready(function () {
         $(".showThead").show();
         var flag=this.id;
         var reg=parseInt(flag.match(/\d+/g));
-        $("#myModalLabel").text($(".item_"+reg).text());
+        $("#myModalLabel").empty();
+        $("#myModalLabel").append("<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+            "<p class='message'>" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
+            "<p class='message'>审核截止时间：" + $(this).prev().text() + "</p>");
         $.get(auditorManageItemUrl+"?"+'importRequired=0',function (data) {
             $(".showDesc").empty();
             var dataArray=new Array;
