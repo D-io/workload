@@ -245,14 +245,16 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 					List<ParameterValue> parameterValues = new ArrayList<>();
 					int index = T_JOB_DESC_INDEX + 1;
-					for (FormulaParameter formulaParameter : categoryDto
-							.getFormulaParameterList()) {
-						Cell cell = row.getCell(index);
-						double value = cell.getNumericCellValue();
-						ParameterValue parameterValue = new ParameterValue(
-								formulaParameter.getSymbol(), value);
-						parameterValues.add(parameterValue);
-						index++;
+					if (null != categoryDto.getFormulaParameterList()) {
+						for (FormulaParameter formulaParameter : categoryDto
+								.getFormulaParameterList()) {
+							Cell cell = row.getCell(index);
+							double value = cell.getNumericCellValue();
+							ParameterValue parameterValue = new ParameterValue(
+									formulaParameter.getSymbol(), value);
+							parameterValues.add(parameterValue);
+							index++;
+						}
 					}
 
 					List<OtherJsonParameter> otherJsonParameterList = new ArrayList<>();

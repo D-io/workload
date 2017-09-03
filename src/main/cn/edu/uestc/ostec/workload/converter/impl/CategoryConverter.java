@@ -97,4 +97,15 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 
 		return category;
 	}
+
+	public static void main(String[] args){
+		CategoryConverter categoryConverter = new CategoryConverter();
+	    Category category = new Category();
+	    category.setJsonParameters("[]");
+	    CategoryDto categoryDto = categoryConverter.poToDto(category);
+	    System.out.println(categoryDto);
+		category.setJsonParameters(null);
+		CategoryDto categoryDto1 = categoryConverter.poToDto(category);
+		System.out.println(categoryDto1);
+	}
 }

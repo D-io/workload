@@ -252,4 +252,17 @@ public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 	public void setFormulaParameterList(List<FormulaParameter> formulaParameterList) {
 		this.formulaParameterList = formulaParameterList;
 	}
+
+	@Override
+	public String toString() {
+		return "CategoryDto{" + "categoryId=" + categoryId + ", name='" + name + '\'' + ", desc='"
+				+ desc + '\'' + ", parentId=" + parentId + ", isLeaf='" + isLeaf + '\''
+				+ ", importRequired=" + importRequired + ", jsonParameters='" + jsonParameters
+				+ '\'' + ", formulaParameterList=" + formulaParameterList + ", formula='" + formula
+				+ '\'' + ", version='" + version + '\'' + ", status=" + status
+				+ ", reviewDeadline='" + reviewDeadline + '\'' + ", applyDeadline='" + applyDeadline
+				+ '\'' + ", reviewerId=" + reviewerId + ", reviewerName='" + reviewerName + '\''
+				+ ", children=" + children + ", otherJson='" + otherJson + '\''
+				+ ", otherJsonParameters=" + otherJsonParameters + '}';
+	}
 }
