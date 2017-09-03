@@ -88,7 +88,7 @@
                     <div class="modal-header" style="position: relative">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel"></h4>
+                        <div class="modal-title" id="myModalLabel"></div>
                     </div>
                     <div class="modal-body">
                         <%--<button class="add btn btn-primary" data-toggle="modal" data-target="#myModal">上传文件</button>

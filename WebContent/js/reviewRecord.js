@@ -24,8 +24,8 @@ function workRevie(){
                     showimportall(menu_list[menu].children, $(li).children().eq(0));
                 }
                 else if(menu_list[menu].importRequired==1){
-                    $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append(menu_list[menu].name+":"+menu_list[menu].desc+
-                        "<p class='deadline'> 复核截止时间: <span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; 导入截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp;<button  id='reviewer_" + menu_list[menu].categoryId + "' class='btn btn-primary reviewer' data-toggle='modal' data-target='#applyModal' style='float: right; margin-top: -3px;'>点击复核</button><div style='clear: both;'></div>").appendTo(parent);
+                    $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append( "<p class='itemMessage'>【<span class='itemName'>" + menu_list[menu].name + "</span>】&nbsp;&nbsp;<span class='itemDesc'>" + menu_list[menu].desc + "</span></p>" +
+                        "<p class='deadline'> 复核截止时间: <span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; 导入截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp;<button  id='reviewer_" + menu_list[menu].categoryId + "' class='btn btn-primary reviewer' data-toggle='modal' data-target='#importModal' style='float: right; margin-top: -3px;'>点击复核</button><div style='clear: both;'></div>").appendTo(parent);
 
                 }
 
