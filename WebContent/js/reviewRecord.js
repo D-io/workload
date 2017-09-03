@@ -292,7 +292,7 @@ function applyworkload() {
             $.get(itemGroupUrl + "?" + 'categoryId=' + reg, function (data) {
                 if (data.data.itemList && data.data.itemList.length > 0) {
                     var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer newTable"><thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
-                        '<th class="sorting">工作量</th><th class="sorting">审核状态</th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
+                        '<th class="sorting">工作当量</th><th class="sorting">审核状态</th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
 
                     // $(".applymodalbody").empty();
                     $(".applymodalbody").append(tablestr);
@@ -1273,8 +1273,8 @@ function applyworkload() {
                             var $itemCt=$(".itemCount");
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount);
                             $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
-                            $(".tbody tr:last td:eq(0)").attr("class","itemCount");
-                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
+                            $(".tbody tr:last td:eq(0)").attr("class","itemCount").css("text-align","center");
+                            $(".tbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
                             $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
                             /*   var count="";
                              var CountId="";
@@ -1289,20 +1289,20 @@ function applyworkload() {
                              }
                              }
                              */
-                            $(".tbody tr:last td:eq(2)").text(Info.workload);
+                            $(".tbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
-                            $(".tbody tr:last td:eq(3)").text("暂未提交");
+                            $(".tbody tr:last td:eq(3)").text("暂未提交").css("text-align","center");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
                             var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary  delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
 
-                            $(".tbody tr:last td:eq(4)").append(act);
+                            $(".tbody tr:last td:eq(4)").append(act).css("text-align","center");
 
                         }
                         else {
 
                             var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer newTable" style="font-size: 14px;"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
-                                '<th class="sorting">工作量</th><th class="sorting">提交状态</th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
+                                '<th class="sorting">工作当量</th><th class="sorting">提交状态</th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
 
                             // $(".applymodalbody").empty();
                             $(".applymodalbody").append(tablestr);
@@ -1318,7 +1318,7 @@ function applyworkload() {
                              var CategId="";*/
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount);
                             $(".tbody tr:last td:eq(0)").text(parseInt("1"));
-                            $(".tbody tr:last td:eq(0)").attr("class","itemCount");
+                            $(".tbody tr:last td:eq(0)").attr("class","itemCount").css("text-align","center");
                             /* $(".tbody tr:last td:eq(1)").text(Info.itemName);
                              for (var i = 0; i < listLength; i++) {
                              if (Info[i].teacherName == userNameUrl)
@@ -1333,18 +1333,18 @@ function applyworkload() {
                              storage.setItem("item_"+CountId,sumArray);
                              */
                             // }
-                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
-                            $(".tbody tr:last td:eq(2)").text(Info.workload);
+                            $(".tbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
+                            $(".tbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
                             $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
                             //  $(".tbody tr:last td:eq(3)").text();
 
-                            $(".tbody tr:last td:eq(3)").text("暂未提交");
+                            $(".tbody tr:last td:eq(3)").text("暂未提交").css("text-align","center");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
                           /*  var newcount=$(".showContent").length;
                             newcount++;*/
                             var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount + "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act);
+                            $(".tbody tr:last td:eq(4)").append(act).css("text-align","center");
                         }
                         if($("#testfile").val()){
                             var formdata = new FormData;
@@ -1435,24 +1435,24 @@ function applyworkload() {
                             var $itemCt=$(".itemCount");
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount);
                             $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
-                            $(".tbody tr:last td:eq(0)").attr("class","itemCount");
-                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
+                            $(".tbody tr:last td:eq(0)").attr("class","itemCount").css("text-align","center");
+                            $(".tbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
                             $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
-                            $(".tbody tr:last td:eq(2)").text(Info.workload);
+                            $(".tbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
 
-                            $(".tbody tr:last td:eq(3)").text("暂未提交");
+                            $(".tbody tr:last td:eq(3)").text("暂未提交").css("text-align","center");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
                             var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act);
+                            $(".tbody tr:last td:eq(4)").append(act).css("text-align","center");
 
 
                         }
                         else {
 
                             var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer newTable" style="font-size: 14px;"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
-                                '<th class="sorting">工作量</th><th class="sorting">提交状态</th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
+                                '<th class="sorting">工作当量</th><th class="sorting">提交状态</th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
 
                             // $(".applymodalbody").empty();
                             $(".applymodalbody").append(tablestr);
@@ -1464,17 +1464,17 @@ function applyworkload() {
                                 $(".tbody tr:last").append(cellInfo);
                             }
 
-                            $(".tbody tr:last td:eq(0)").text(parseInt("1"));
-                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
+                            $(".tbody tr:last td:eq(0)").text(parseInt("1")).css("text-align","center");
+                            $(".tbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
                             $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
 
-                            $(".tbody tr:last td:eq(2)").text(Info.workload);
+                            $(".tbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
                             $(".tbody tr:last td:eq(1)").attr("id","workload_"+Info.itemId);
-                            $(".tbody tr:last td:eq(3)").text("暂未提交");
+                            $(".tbody tr:last td:eq(3)").text("暂未提交").css("text-align","center");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
                             var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary  delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act);
+                            $(".tbody tr:last td:eq(4)").append(act).css("text-align","center");
 
                         }
                         if($("#testfile").val()){
@@ -1813,7 +1813,7 @@ function applyRec() {
 
         $("#viewdetail_apply .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>" );
         $("#viewdetail_apply .message").append(
-            "工作量：" + jsonInfo.workload +
+            "工作当量：" + jsonInfo.workload +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核状态：" + auditStatus +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核截止时间：" + deadline );

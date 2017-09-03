@@ -9,7 +9,7 @@
 <div class="x_panel" style="width: 100%;padding: 10px 17px;">
     <div class="x_title">
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-bars"></i>我的工作当量</a></li>
+            <li><a href="#"><i class="fa fa-bar-chart"></i>我的工作当量</a></li>
             <li class="active curentPage" id="WorkloadApply">工作当量复申报</li>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -42,7 +42,7 @@
                         <tr role="row">
                             <th class="sorting" style="width="5%">序号</th>
                             <th class="sorting" style="width="30%">条目名称</th>
-                            <th class="sorting" style="width="10%">工作量</th>
+                            <th class="sorting" style="width="10%">工作当量</th>
                             <%--<th class="sorting">计算公式</th>--%>
                             <th class="sorting" style="width="9%">形式</th>
                             <%--<th class="sorting">主要参数</th>--%>
