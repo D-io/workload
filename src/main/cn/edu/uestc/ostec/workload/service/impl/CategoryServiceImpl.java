@@ -12,6 +12,7 @@ import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 
 @Service(CategoryService.NAME)
 public class CategoryServiceImpl extends BaseServiceImpl implements CategoryService {
@@ -108,7 +109,7 @@ public class CategoryServiceImpl extends BaseServiceImpl implements CategoryServ
 	public List<Category> getCategoriesByReviewer(Integer reviewerId, String version,Integer importedRequired) {
 
 		//return listResult(categoryDao.selectByReviewer(reviewerId));
-		return listResult(categoryDao.select(null, reviewerId, null, importedRequired, null, version));
+		return listResult(categoryDao.select(null, reviewerId, null, importedRequired, SUBMITTED, version));
 	}
 
 	@Override
