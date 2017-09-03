@@ -229,17 +229,17 @@ function reset() {
             else {
                 $(".totalItem").text(data.data.totalLines);
             }
-
+            $(".pagination").empty();
             reviewerResetItem(data);
             var str='';
             var totalPage=data.data.totalLines;
-            var pageCountNum=Math.ceil(totalPage/10);
+            var pageCountNum=Math.ceil(totalPage/20);
             if(pageCountNum<10){
                 for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                     var pagestore=pageNum+1;
                     str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
                 }
-                $(".pagination").empty();
+              //  $(".pagination").empty();
                 $(".pagination").append(str);
             }
             else{
@@ -313,7 +313,7 @@ function reset() {
                 $(".totalItem").text(data.data.totalLines);
             }
             $(".pagination").empty();
-            $(".ResetItem").empty();
+
             reviewerResetItem(data);
             var str='';
             var totalPage=data.data.totalLines;
@@ -322,7 +322,7 @@ function reset() {
             if(pageCountNum<10){
                 for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                     var pagestore=pageNum+1;
-                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pagestore+'" tabindex="0">'+pagestore+'</a> </li>';
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
                 }
                 $(".pagination").append(str);
             }
@@ -381,7 +381,7 @@ function reset() {
                 if(pageCountNum<10){
                     for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                         var pagestore=pageNum+1;
-                        str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pagestore+'"tabindex="0">'+pagestore+'</a> </li>';
+                        str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'"tabindex="0">'+pagestore+'</a> </li>';
                     }
                     $(".pagination").empty();
                     $(".pagination").append(str);
@@ -483,7 +483,7 @@ function reset() {
 
     });
     $(document).on("click",".activePage",function () {
-        var thispagesize=$(this).attr("data-dt-idx");
+        var thispagesize=parseInt($(this).attr("data-dt-idx"))+1;
         var option0=$("#ispassed option:selected").val();
         var option1=$("#itemRequired option:selected").val();
         var option2=$("#teacherName option:selected").val();
@@ -578,7 +578,7 @@ function reset() {
         }
     });
     $(document).on("click","#next",function(){
-        var pageNum=this.attr("data-dt-idx");
+        var pageNum=parseInt($(this).attr("data-dt-idx"))+1;
         pageNum++;
         var option0=$("#ispassed option:selected").val();
         var option1=$("#itemRequired option:selected").val();
@@ -615,7 +615,7 @@ function reset() {
             if(pageCountNum<10){
                 for(var pageNum=0;pageNum<pageCountNum;pageNum++){
                     var pagestore=pageNum+1;
-                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pagestore+'" tabindex="0">'+pagestore+'</a> </li>';
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
                 }
                 $(".pagination").empty();
                 $(".pagination").append(str);
@@ -649,6 +649,7 @@ function reset() {
     });
     $(".select2-selection").attr("class","form-control");
     $(".select2-selection__clear").css("float","right");
+    $(".activePage").css("cursor","pointer");
 }
 function itemSummary() {
     $.ajaxSetup({
@@ -670,7 +671,7 @@ function itemSummary() {
                     $(".sumItemPreview").append(rowInfo);
                     $(".sumItemPreview tr:last").attr("class", "resetNum");
                     $(".sumItemPreview tr:last").attr("style", "text-align:center");
-                    for (var j = 0; j < 6; j++)//单元格
+                    for (var j = 0; j < 7; j++)//单元格
                     {
                         $(".sumItemPreview tr:last").append(cellInfo);
                     }
@@ -682,55 +683,56 @@ function itemSummary() {
                         $(".sumItemPreview tr:last").css({"background-color": "#ffe746", "color": "rgb(115, 135, 15)"});
                     }*/
                    /* $(".sumItemPreview tr:last td:eq(0)").text(id);*/
-                    $(".sumItemPreview tr:last td:eq(0)").text(Info.teacherId);
+                   $(".sumItemPreview tr:last td:eq(0)").append('<span class="refresh" id="refresh_'+id+'"><i class="fa fa-refresh"></i></span>')
+                    $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherId);
 
-                    $(".sumItemPreview tr:last td:eq(0)").attr("id", "teacherId_" + id);
-                    $(".sumItemPreview tr:last td:eq(1)").text(Info.teacherName);
-                    $(".sumItemPreview tr:last td:eq(2)").text(Info.professionalTitle);
+                    $(".sumItemPreview tr:last td:eq(1)").attr("id", "teacherId_" + id);
+                    $(".sumItemPreview tr:last td:eq(2)").text(Info.teacherName);
+                    $(".sumItemPreview tr:last td:eq(3)").text(Info.professionalTitle);
                     /* $(".sumItemPreview tr:last td:eq(4)").text(Info.checkedWorkload);*/
                     if (Info.checkedItems < 10) {
-                        $(".sumItemPreview tr:last td:eq(3)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.checkedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span class='checkedCount_"+id+"'>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.checkedItems + "项</span>")
 
                     }
                     else if (Info.checkedItems < 100) {
-                        $(".sumItemPreview tr:last td:eq(3)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.checkedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span class='checkedCount_"+id+"'>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.checkedItems + "项</span>")
 
                     }
                     else {
-                        $(".sumItemPreview tr:last td:eq(3)").append("<span>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.checkedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(4)").append("<span class='checkedCount_"+id+"'>" + Info.checkedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.checkedItems + "项</span>")
 
                     }
-                    $(".sumItemPreview tr:last td:eq(3)").css("text-align", "center");
+                    $(".sumItemPreview tr:last td:eq(4)").css("text-align", "center");
 
                     /*$(".sumItemPreview tr:last td:eq(4)").attr("class","checkedwork");
                      $(".sumItemPreview tr:last td:eq(4)").attr("id","checkedwork_"+id);*/
                     /*$(".sumItemPreview tr:last td:eq(4)").attr("data-toggle","modal");
                      $(".sumItemPreview tr:last td:eq(4)").attr("data-target","#applyModal");*/
                     if (Info.uncheckedItems < 10) {
-                        $(".sumItemPreview tr:last td:eq(4)").append("<span>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.uncheckedItems + "项</span>");
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span class='uncheckedCount_"+id+"'>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共00" + Info.uncheckedItems + "项</span>");
 
                     }
                     else if (Info.uncheckedItems < 100) {
-                        $(".sumItemPreview tr:last td:eq(4)").append("<span >" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.uncheckedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span class='uncheckedCount_"+id+"'>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共0" + Info.uncheckedItems + "项</span>")
 
                     }
                     else {
-                        $(".sumItemPreview tr:last td:eq(4)").append("<span >" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='checkedwork' id='checkedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.uncheckedItems + "项</span>")
+                        $(".sumItemPreview tr:last td:eq(5)").append("<span class='uncheckedCount_"+id+"'>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.uncheckedItems + "项</span>")
 
                     }
                     /*   $(".sumItemPreview tr:last td:eq(5)").attr("class","uncheckedWork");
                      $(".sumItemPreview tr:last td:eq(5)").attr("id","uncheckedwork_"+id);
                      $(".sumItemPreview tr:last td:eq(5)").attr("data-toggle","modal");
                      $(".sumItemPreview tr:last td:eq(5)").attr("data-target","#applyModal");*/
-                    $(".sumItemPreview tr:last td:eq(4)").css("text-align", "center");
-                    $(".sumItemPreview tr:last td:eq(5)").append("<span>" + Info.totalWorkload + "</span>");
                     $(".sumItemPreview tr:last td:eq(5)").css("text-align", "center");
+                    $(".sumItemPreview tr:last td:eq(6)").append("<span class='totalCount_"+id+"'>" + Info.totalWorkload + "</span>");
+                    $(".sumItemPreview tr:last td:eq(6)").css("text-align", "center");
                     /* var act="<a class=\"btn btn-primary btn-xs previewAll\" id=\"previewAll_"+ id+"\" data-toggle='modal' data-target='#applyModal'>查看详情</a>";
                      $(".sumItemPreview tr:last td:eq(5)").append(act);*/
                 }
                 $(".activesort").dataTable({
                     "iDisplayLength": 20,
-                    "aLengthMenu": [20, 40, 60,"全部"],
+                    "aLengthMenu": [[2, 4, 6, -1], [20, 40, 60, "全部"]],
                     "oLanguage": { //国际化配置
                         "sProcessing": "正在获取数据，请稍后...",
                         "sLengthMenu": "每页 _MENU_ 条",
@@ -749,6 +751,7 @@ function itemSummary() {
                             "sLast": "最后一页"
                         }
                     }
+
                 })
 
             }
@@ -884,9 +887,36 @@ function itemSummary() {
         form.submit();
         form.remove();
     });
-    $(document).off("click",".Torefresh");
-    $(document).on("click",".Torefresh",function () {
-        itemSummary();
+    $(document).off("click",".refresh");
+    $(document).on("click",".refresh",function () {
+
+        var countId=parseInt(this.id.match(/\d+/g));
+
+        $.post(refreshInfoUrl+"?teacherId="+$("#teacherId_"+countId).text(),function (msg) {
+           // parenttr.children('td').eq(3).text(msg.data.teacherWorkloadList[0].professionalTitle);
+            $(".checkedCount_"+countId).text(msg.data.teacherWorkloadList[0].checkedWorkload);
+            $(".uncheckedCount_"+countId).text(msg.data.teacherWorkloadList[0].uncheckedWorkload);
+            $(".totalCount_"+countId).text(msg.data.teacherWorkloadList.totalWorkload);
+            if(msg.data.teacherWorkloadList.checkedItems<10){
+                $("#checkedwork_"+countId).text("共00"+msg.data.teacherWorkloadList[0].checkedItems+"项");
+            }
+            else if(msg.data.teacherWorkloadList.checkedItems<100){
+                $("#checkedwork_"+countId).text("共0"+msg.data.teacherWorkloadList[0].checkedItems+"项");
+            }
+            else{
+                $("#checkedwork_"+countId).text("共"+msg.data.teacherWorkloadList[0].checkedItems+"项");
+            }
+            if(msg.data.teacherWorkloadList.uncheckedItems<10){
+                $("#uncheckedwork_"+countId).text("共00"+msg.data.teacherWorkloadList[0].uncheckedItems+"项");
+            }
+            else if(msg.data.teacherWorkloadList.uncheckedItems<100){
+                $("#uncheckedwork_"+countId).text("共0"+msg.data.teacherWorkloadList[0].uncheckedItems+"项");
+            }
+            else {
+                $("#uncheckedwork_"+countId).text("共"+msg.data.teacherWorkloadList[0].uncheckedItems+"项");
+            }
+        });
+
     });
     $(document).off("click",".checkedwork");
     $(document).on("click",".checkedwork",function () {
@@ -1339,7 +1369,7 @@ $(document).ready(function () {
    // var newCount=0;
     $(document).on("click","#addParameter",function () {
         Count++;
-    var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='parameterName'></td><td style='position:relative'><input type='text' class='form-control parameterSymbol' name='parameterSymbol'><button type='button' class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='position: absolute;top:10px;right: -24px;'><i class='fa fa-trash'></i></button></td></tr>";
+    var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='para'  onblur='reminder(this)'></td><td style='position:relative'><input type='text' class='form-control para' name='parameterSymbol' onblur='reminder(this)'><button type='button' class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='position: absolute;top:10px;right: -24px;'><i class='fa fa-trash'></i></button></td></tr>";
     $('.AddPramter').append(addStr);
 });
   /*  $(document).on("click","#firstaddParameter",function () {
@@ -1349,7 +1379,7 @@ $(document).ready(function () {
     });*/
 $(document).on("click","#addOtherParameter",function () {
     Count++;
-    var addStr="<tr class='otherCount_"+Count+"'><td style='position:relative'><input type='text' class='form-control otherParameterName' name='parameterName'><button type='button' class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='position: absolute;top:10px;right: -24px;'><i class='fa fa-trash'></i></button></td></tr>";
+    var addStr="<tr class='otherCount_"+Count+"'><td style='position:relative'><input type='text' class='form-control otherParameterName' name='parameterName' ><button type='button' class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='position: absolute;top:10px;right: -24px;'><i class='fa fa-trash'></i></button></td></tr>";
     $('.addOtherPramter').append(addStr);
 });
 /*    $(document).on("click","#firstaddOtherParameter",function () {

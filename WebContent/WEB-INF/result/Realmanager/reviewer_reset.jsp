@@ -78,7 +78,7 @@
                     <div class="col-sm-6">
                         <div class="dataTables_length" id="datatable-checkbox_length"  style="display: flex;font-weight: bold;">
                             <span style="margin-bottom: 5px;">每页</span>
-                                <select name="DataTables_Table_1_length" aria-controls="DataTables_Table_1" style="width: 46px;height: 19px;margin-left: 5px;">
+                                <select name="DataTables_Table_1_length" class="input-sm" aria-controls="DataTables_Table_1" style="width: 46px;height: 19px;margin-left: 5px;">
                                     <option value="20">20</option>
                                     <option value="40">40</option>
                                     <option value="60">60</option>

@@ -64,10 +64,11 @@
             <button class="btn btn-primary pull-right Torefresh"><i class="fa fa-refresh"></i> 刷新</button>
             <button class="btn btn-success pull-right Toexcellall"><i class="fa fa-download"></i> 导出</button>
 
-            <table  class="table table-striped table-bordered dataTable no-footer activesort" >
+            <table  class="table table-striped table-bordered dataTable no-footer activesort" cellspacing="0" width="100%">
                 <thead>
                 <tr role="row">
                    <%-- <th  class="teacher_Sort">序号</th>--%>
+                    <th class="teacher_Sort"></th>
                     <th class=" teacher_Sort">教师工号</th>
                     <th  class=" teacher_Sort">教师姓名</th>
                     <th  class="teacher_Sort ">专业职称</th>
@@ -155,7 +156,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+                            <h4 class="modal-title" >详细信息</h4>
                         </div>
                         <div class="modal-body">
                             <table  class="table table-striped table-bordered dataTable no-footer">
