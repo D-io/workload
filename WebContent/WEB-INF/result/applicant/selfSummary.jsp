@@ -30,9 +30,9 @@
                 <h4 style="float: left">已通过工作当量：<span  class="checkedWorkload"></span></h4>
                 <h4 style="float: left">待通过工作当量：<span  class="uncheckedWorkload"></span></h4>
             </div>
-            <div class="switch switch-success">
+           <%-- <div class="switch switch-success">
                 <div class="ios-switch on"><div class="on-background background-fill"></div><div class="state-background background-fill"></div><div class="handle"></div></div><input type="checkbox" name="switch" data-plugin-ios-switch="" checked="checked" style="display: none;">
-            </div>
+            </div>--%>
             <div class="clearfix"></div>
             <div class="" role="tabpanel" data-example-id="togglable-tabs">
                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
