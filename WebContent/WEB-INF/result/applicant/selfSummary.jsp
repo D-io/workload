@@ -30,11 +30,118 @@
                 <h4 style="float: left">已通过工作当量：<span  class="totalWorkload"></span></h4>
                 <h4 style="float: left">待通过工作当量：<span  class="totalWorkload"></span></h4>
             </div>
-            <span style="float: right;">
-           <%-- <button class="btn btn-success pull-right Toexcellowner"><i class="fa fa-download"></i> 导出</button>
-        --%>
-            </span>
-            <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top:40px ">
+            <div class="clearfix"></div>
+            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">审核通过</a>
+                    </li>
+                    <%-- <li role="presentation" onclick="jumpToSum()"><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">计算规则预览</a>
+                     </li>--%>
+                    <li role="presentation" ><a href="#tab_content3" role="tab" id="history-tab" data-toggle="tab" aria-expanded="false">复核通过</a>
+                </li>
+                    <li role="presentation"><a href="#tab_content3" role="tab" id="import-tab" data-toggle="tab" aria-expanded="false">待审核通过</a>
+                    </li>
+                    <li role="presentation"><a href="#tab_content3" role="tab" id="apply-tab" data-toggle="tab" aria-expanded="false">待复核通过</a>
+                    </li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                        <table  class="table table-striped table-bordered dataTable no-footer" >
+                            <thead>
+                            <tr role="row">
+                                <th  class="sorting" >序号</th>
+                                <th class="sorting" >规则名称</th>
+                                <th class="sorting" >规则类别</th>
+                                <th class="sorting" >项目名称</th>
+
+                             <%--   <th class="sorting">计算公式</th>
+                                <th class="sorting">公式描述</th>
+                                <th  class="sorting">其他参数</th>--%>
+                                <th class="sorting">工作当量</th>
+                                <th class="sorting" >项目状态</th>
+                                <th class="sorting">操作</th>
+
+                            </tr>
+                            </thead>
+                            <tbody class="sumCheckedItem">
+                            </tbody>
+                        </table>
+                    </div>
+                    <%--<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+
+                    </div>--%>
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="history-tab">
+                        <table  class="table table-striped table-bordered dataTable no-footer" >
+                            <thead>
+                            <tr role="row">
+                                <th  class="sorting" >序号</th>
+                                <th class="sorting" >规则名称</th>
+                                <th class="sorting" >规则类别</th>
+                                <th class="sorting" >项目名称</th>
+
+                                <%--   <th class="sorting">计算公式</th>
+                                   <th class="sorting">公式描述</th>
+                                   <th  class="sorting">其他参数</th>--%>
+                                <th class="sorting">工作当量</th>
+                                <th class="sorting" >项目状态</th>
+                                <th class="sorting">操作</th>
+
+                            </tr>
+                            </thead>
+                            <tbody class="sumrevieItem">
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade " id="tab_content3" aria-labelledby="import-tab">
+                        <table  class="table table-striped table-bordered dataTable no-footer" >
+                            <thead>
+                            <tr role="row">
+                                <th  class="sorting" >序号</th>
+                                <th class="sorting" >规则名称</th>
+                                <th class="sorting" >规则类别</th>
+                                <th class="sorting" >项目名称</th>
+
+                                <%--   <th class="sorting">计算公式</th>
+                                   <th class="sorting">公式描述</th>
+                                   <th  class="sorting">其他参数</th>--%>
+                                <th class="sorting">工作当量</th>
+                                <th class="sorting" >项目状态</th>
+                                <th class="sorting">操作</th>
+
+
+                            </tr>
+                            </thead>
+                            <tbody class="sumnorevieItem">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade " id="tab_content4" aria-labelledby="apply-tab">
+                        <table  class="table table-striped table-bordered dataTable no-footer" >
+                            <thead>
+                            <tr role="row">
+                                <th  class="sorting" >序号</th>
+                                <th class="sorting" >规则名称</th>
+                                <th class="sorting" >规则类别</th>
+                                <th class="sorting" >项目名称</th>
+
+                                <%--   <th class="sorting">计算公式</th>
+                                   <th class="sorting">公式描述</th>
+                                   <th  class="sorting">其他参数</th>--%>
+                                <th class="sorting">工作当量</th>
+                                <th class="sorting" >项目状态</th>
+                                <th class="sorting">操作</th>
+
+                            </tr>
+                            </thead>
+                            <tbody class="sumnoItemSort">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+           <%-- <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top:40px ">
                 <div class="panel">
                     <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                         <h4 class="panel-title">总工作当量汇总</h4>
@@ -248,7 +355,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>--%>
            <%-- <table  class="table table-striped table-bordered dataTable no-footer" style="font-size: 14px;">
                 <thead>
                 <tr role="row">
