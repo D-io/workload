@@ -471,7 +471,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		List<ItemDto> importItemList = new ArrayList<>();
 
 		for (ItemDto itemDto : itemList) {
-			if (APPLY_SELF.equals(itemList)) {
+			if (APPLY_SELF.equals(itemDto.getImportRequired())) {
 				applyItemList.add(itemDto);
 			} else {
 				importItemList.add(itemDto);
