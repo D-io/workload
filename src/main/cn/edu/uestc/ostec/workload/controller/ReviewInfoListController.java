@@ -165,9 +165,9 @@ public class ReviewInfoListController extends ApplicationController {
 			}
 			categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName(),
 					todoCount));
-			if (APPLY_SELF.equals(category.getImportRequired())) {
+			if (APPLY_SELF.equals(category.getImportRequired()) && !applyCategories.contains(category)) {
 				applyCategories.add(category);
-			} else if (IMPORT_EXCEL.equals(category.getImportRequired())) {
+			} else if (IMPORT_EXCEL.equals(category.getImportRequired()) && !importCategories.contains(category)) {
 				importCategories.add(category);
 			} else {
 				continue;

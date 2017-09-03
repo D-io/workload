@@ -110,7 +110,8 @@ public class CategoryManageController extends ApplicationController {
 		}
 
 		//参数检验
-		if (null == categoryDto || isEmptyString(categoryDto.getName()) || !isValidImportedRequired(
+		if (null == categoryDto || isEmptyString(categoryDto.getName()) || isEmptyString(
+				categoryDto.getDesc()) || !isValidImportedRequired(
 				categoryDto.getImportRequired())) {
 			return parameterNotSupportResponse("参数有误或为空");
 		}

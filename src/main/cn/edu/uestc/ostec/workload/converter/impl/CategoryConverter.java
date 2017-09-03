@@ -83,6 +83,7 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 		category.setFormula(dto.getFormula());
 		category.setImportRequired(dto.getImportRequired());
 		category.setParentId(dto.getParentId());
+		category.setIsLeaf(dto.getIsLeaf());
 
 		category.setApplyDeadline(isNull(dto.getApplyDeadline()) ?
 				null :
