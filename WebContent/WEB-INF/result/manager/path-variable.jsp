@@ -30,6 +30,8 @@
 
     var categoryListUrl=contextPath+"/category/info";
 
+    var affectUrl=categoryListUrl+"/affected-items";
+
     var categoryallListUrl=categoryListUrl+"/parent-brief";
 
     var categoryAllUrl=categoryListUrl+"/all";
@@ -83,6 +85,8 @@
     var itemStatusUrl=itemManageUrl+"/status-update";
 
     var itemInfoUrl=contextPath+"/item/info";
+
+    var refreshInfoUrl=itemInfoUrl+"/refresh";
 
     var itemInfoSubUrl=itemInfoUrl+"/subjectList";
 

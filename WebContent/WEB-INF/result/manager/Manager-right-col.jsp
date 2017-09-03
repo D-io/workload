@@ -243,187 +243,7 @@
                      </header>--%>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">规则信息</h4>
-                                </div>
-                                <div class="modal-body">
 
-                                    <form class="form-horizontal" id="novaiForm" novalidate="novalidate">
-                                        <div class="form-group" id="myname">
-                                            <label class="col-sm-3 control-label">规则名称<span class="needed">*</span></label>
-                                            <div class="col-sm-9">
-                                                <%--<div class="form-control">--%>
-                                                 <input type="text" class="form-control required"  id="itemName" name ="name" onblur="reminder(this)">
-
-                                                   <%-- <label for="itemName" class="error">此项必填</label>--%>
-                                                <%--</div>--%>
-
-                                            </div>
-                                        </div>
-                                        <span class="experient" id="experient_name" >规则名称不可为空！</span>
-                                        <div class="form-group" id="mydesc">
-                                            <label class="col-sm-3 control-label ">规则简介</label>
-                                            <div class="col-sm-9">
-
-                                                    <textarea class="form-control required" id="desc" rows="3" name="desc"></textarea>
-                                                    <%--<label for="desc" class="error">此项必填</label>--%>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">规则类别<span class="needed">*</span></label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control " id="importRequired" name="sorting">
-                                                    <option value="1">导入复核类</option>
-                                                    <option value="0">申报审核类</option>
-                                                    <option value="2">无特殊类别</option>
-
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group requiredtime" id="mymanager">
-                                            <label class="col-sm-3 control-label " id="importManager">审核人员<span class="needed">*</span></label>
-                                            <div class="col-sm-9">
-
-                                                    <select class="form-control select2" id="teacherName" name="teacherName">
-                                                        <option value=""></option>
-
-                                                    </select>
-                                                   <%-- <label for="teacherName" class="error">此项必填</label>--%>
-
-
-                                            </div>
-                                            <div id="prompt" style="width: 400px;padding-top: 40px;padding-left:100px;text-align: center"></div>
-                                        </div>
-                                        <span class="experient" id="experient_manager">负责人不可为空！</span>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">父级规则</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="parentId" name="parentId">
-                                            </div>
-                                        </div>
-                                        <%--<div class="form-group">
-                                            <label class="col-sm-3 control-label">是否为叶子节点</label>
-                                            <div class="col-sm-9">
-                                                <input type="radio" class="isLeaf" name="hasChildNode" value="Y">是
-                                                <input type="radio" class="isLeaf" name="hasChildNode"  value="N">否
-                                            </div>
-                                        </div>--%>
-                                        <div class="form-group requiredtime" id="myapply">
-                                            <label class="col-sm-3 control-label">复核截止时间<span class="needed">*</span></label>
-                                            <div class="col-sm-9">
-
-                                                <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </span>
-                                                    <input type="text" class="form-control datetimepicker required" id="applyDeadline" name="applyDeadline" onblur="reminder(this)">
-                                                    <%--<label for="applyDeadline" class="error">此项必填</label>--%>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span class="experient" id="experient_apply">截止时间不可为空！</span>
-                                        <div class="form-group requiredtime" id="myrevie">
-                                            <label class="col-sm-3 control-label">导入截止时间<span class="needed">*</span></label>
-                                            <div class="col-sm-9">
-                                                <div class="input-group">
-                                             <span class="input-group-addon">
-                                                 <i class="fa fa-calendar"></i>
-                                             </span>
-                                                    <input type="text"  class="form-control datetimepicker required" id="reviewDeadline" name="reviewDeadline" onblur="reminder(this)">
-
-                                                </div>
-                                                </div>
-                                            </div>
-                                        <span class="experient" id="experient_revie" >截止时间不可为空！</span>
-                                        <div class="form-group requiredtime" id="mypara">
-                                            <label class="col-sm-3 control-label">公式参数<span class="needed">*</span></label>
-                                            <div class="col-sm-9 ">
-
-
-                                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#parameter" aria-expanded="false" aria-controls="collapseExample">
-                                                    <i class="fa fa-plus"></i>
-                                                </a>
-                                                <div class="collapse" id="parameter">
-                                                    <div class="well">
-                                                        <table class="table" id="parameterTable">
-                                                            <thead>
-                                                            <tr>
-
-                                                                <th style="font-size: 13px;">参数名称</th>
-                                                                <th style="font-size: 13px;">参数符号<span style="float: right;"><button type="button" class="btn btn-success" id="addParameter"><i class="fa fa-plus"></i></button></span></th>
-
-
-                                                            </tr>
-
-                                                            </thead>
-                                                            <tbody class="AddPramter">
-                                                            <tr>
-
-                                                                <%-- <td><input type="text" class="parameterName" name="parameterName"></td>
-                                                                 <td><input type="text" class="parameterSymbol" name="parameterSymbol"></td>--%>
-
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span class="experient" id="experient_para">公式参数不可为空！</span>
-                                        <div class="form-group requiredtime" id="myformula">
-                                            <label class="col-sm-3 control-label">计算公式<span class="needed">*</span></label>
-                                            <div class="col-sm-9">
-
-
-                                                    <input type="text" class="form-control required" id="formula" name="formula" onblur="reminder(this)">
-
-
-
-                                            </div>
-                                        </div>
-                                        <span class="experient" id="experient_formula">计算公式不可为空！</span>
-                                        <div class="form-group requiredtime">
-                                            <label class="col-sm-3 control-label">项目属性</label>
-                                            <div class="col-sm-9">
-
-                                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#otherParameter" aria-expanded="false" aria-controls="collapseExample">
-                                                    <i class="fa fa-plus"></i>
-                                                </a>
-                                                <div class="collapse" id="otherParameter">
-                                                    <div class="well">
-                                                        <table class="table" id="otherParameterTable">
-                                                            <thead>
-                                                            <tr>
-                                                                <th style="font-size: 13px;">参数名称<span style="float: right;"><button type="button" class="btn btn-success" id="addOtherParameter"><i class="fa fa-plus"></i></button></span></th>
-                                                            </tr>
-
-                                                            </thead>
-                                                            <tbody class="addOtherPramter">
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary " data-dismiss="modal" id="cancel">取消</button>
-                                    <button type="button" class="btn btn-primary" id="save">保存</button>
-                                    <button class="btn btn-primary manageEdit" style="display: none;">解锁编辑</button>
-                                    <button class="btn btn-primary submitEdit" style="display: none;">提交</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                    <%-- <div class="modal fade" id="firstaddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -638,5 +458,186 @@
         </div>
 
 
+    </div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="myModalLabel">规则信息</h5>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal" id="novaiForm" novalidate="novalidate">
+                    <div class="form-group" id="myname">
+                        <label class="col-sm-3 control-label">规则名称<span class="needed">*</span></label>
+                        <div class="col-sm-9">
+                            <%--<div class="form-control">--%>
+                            <input type="text" class="form-control required"  id="itemName" name ="name" onblur="reminder(this)">
+
+                            <%-- <label for="itemName" class="error">此项必填</label>--%>
+                            <%--</div>--%>
+
+                        </div>
+                    </div>
+                    <span class="experient" id="experient_name" >规则名称不可为空！</span>
+                    <div class="form-group" id="mydesc">
+                        <label class="col-sm-3 control-label ">规则简介</label>
+                        <div class="col-sm-9">
+
+                            <textarea class="form-control required" id="desc" rows="3" name="desc"></textarea>
+                            <%--<label for="desc" class="error">此项必填</label>--%>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">规则类别<span class="needed">*</span></label>
+                        <div class="col-sm-9">
+                            <select class="form-control " id="importRequired" name="sorting">
+                                <option value="1">导入复核类</option>
+                                <option value="0">申报审核类</option>
+                                <option value="2">无特殊类别</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group requiredtime" id="mymanager">
+                        <label class="col-sm-3 control-label " id="importManager">审核人员<span class="needed">*</span></label>
+                        <div class="col-sm-9">
+
+                            <select class="form-control select2" id="teacherName" name="manager" onchange="reminder(this)">
+                                <option value=""></option>
+
+                            </select>
+                            <%-- <label for="teacherName" class="error">此项必填</label>--%>
+
+
+                        </div>
+                        <div id="prompt" style="width: 400px;padding-top: 40px;padding-left:100px;text-align: center"></div>
+                    </div>
+                    <span class="experient" id="experient_manager">负责人不可为空！</span>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">父级规则</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="parentId" name="parentId">
+                        </div>
+                    </div>
+                    <%--<div class="form-group">
+                        <label class="col-sm-3 control-label">是否为叶子节点</label>
+                        <div class="col-sm-9">
+                            <input type="radio" class="isLeaf" name="hasChildNode" value="Y">是
+                            <input type="radio" class="isLeaf" name="hasChildNode"  value="N">否
+                        </div>
+                    </div>--%>
+                    <div class="form-group requiredtime" id="myapply">
+                        <label class="col-sm-3 control-label">复核截止时间<span class="needed">*</span></label>
+                        <div class="col-sm-9">
+
+                            <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                <input type="text" class="form-control datetimepicker required" id="applyDeadline" name="applyDeadline" onblur="reminder(this)">
+                                <%--<label for="applyDeadline" class="error">此项必填</label>--%>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="experient" id="experient_apply">截止时间不可为空！</span>
+                    <div class="form-group requiredtime" id="myrevie">
+                        <label class="col-sm-3 control-label">导入截止时间<span class="needed">*</span></label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                             <span class="input-group-addon">
+                                                 <i class="fa fa-calendar"></i>
+                                             </span>
+                                <input type="text"  class="form-control datetimepicker required" id="reviewDeadline" name="reviewDeadline" onblur="reminder(this)">
+
+                            </div>
+                        </div>
+                    </div>
+                    <span class="experient" id="experient_revie" >截止时间不可为空！</span>
+                    <div class="form-group requiredtime" id="mypara">
+                        <label class="col-sm-3 control-label">公式参数<span class="needed">*</span></label>
+                        <div class="col-sm-9 ">
+
+
+                            <a class="btn btn-primary" role="button" data-toggle="collapse" href="#parameter" aria-expanded="false" aria-controls="collapseExample">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                            <div class="collapse" id="parameter">
+                                <div class="well">
+                                    <table class="table" id="parameterTable">
+                                        <thead>
+                                        <tr>
+
+                                            <th style="font-size: 13px;">参数名称</th>
+                                            <th style="font-size: 13px;">参数符号<span style="float: right;"><button type="button" class="btn btn-success" id="addParameter"><i class="fa fa-plus"></i></button></span></th>
+
+
+                                        </tr>
+
+                                        </thead>
+                                        <tbody class="AddPramter">
+                                        <tr>
+
+                                            <%-- <td><input type="text" class="parameterName" name="parameterName"></td>
+                                             <td><input type="text" class="parameterSymbol" name="parameterSymbol"></td>--%>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="experient" id="experient_para">公式参数不可为空！</span>
+                    <div class="form-group requiredtime" id="myformula">
+                        <label class="col-sm-3 control-label">计算公式<span class="needed">*</span></label>
+                        <div class="col-sm-9">
+
+
+                            <input type="text" class="form-control required" id="formula" name="formula" onblur="reminder(this)">
+
+
+
+                        </div>
+                    </div>
+                    <span class="experient" id="experient_formula">计算公式不可为空！</span>
+                    <div class="form-group requiredtime">
+                        <label class="col-sm-3 control-label">项目属性</label>
+                        <div class="col-sm-9">
+
+                            <a class="btn btn-primary" role="button" data-toggle="collapse" href="#otherParameter" aria-expanded="false" aria-controls="collapseExample">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                            <div class="collapse" id="otherParameter">
+                                <div class="well">
+                                    <table class="table" id="otherParameterTable">
+                                        <thead>
+                                        <tr>
+                                            <th style="font-size: 13px;">参数名称<span style="float: right;"><button type="button" class="btn btn-success" id="addOtherParameter"><i class="fa fa-plus"></i></button></span></th>
+                                        </tr>
+
+                                        </thead>
+                                        <tbody class="addOtherPramter">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary " data-dismiss="modal" id="cancel">取消</button>
+                <button type="button" class="btn btn-primary" id="save">保存</button>
+                <button class="btn btn-primary manageEdit" style="display: none;">解锁编辑</button>
+                <button class="btn btn-primary submitEdit" style="display: none;">提交</button>
+            </div>
+        </div>
     </div>
 </div>
