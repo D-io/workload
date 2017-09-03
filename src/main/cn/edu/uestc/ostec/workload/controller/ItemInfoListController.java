@@ -556,9 +556,10 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			if (!isEmptyNumber(importRequired) && importRequired.equals(itemDto.getImportRequired())
 					&& version.equals(itemDto.getVersion())) {
 				itemDtoGroup.add(itemDto);
-			} else if (isEmptyNumber(importRequired) && version.equals(itemDto.getVersion())) {
-				itemDtoGroup.add(itemDto);
 			}
+//			else if (isEmptyNumber(importRequired) && version.equals(itemDto.getVersion())) {
+//				itemDtoGroup.add(itemDto);
+//			}
 		}
 		return itemDtoGroup;
 	}
