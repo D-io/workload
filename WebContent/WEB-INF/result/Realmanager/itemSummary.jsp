@@ -68,13 +68,14 @@
                 <thead>
                 <tr role="row">
                    <%-- <th  class="teacher_Sort">序号</th>--%>
-                    <th class="teacher_Sort"></th>
+
                     <th class=" teacher_Sort">教师工号</th>
                     <th  class=" teacher_Sort">教师姓名</th>
                     <th  class="teacher_Sort ">专业职称</th>
                     <th class=" teacher_Sort">通过审核(复核)工作当量</th>
                     <th class=" teacher_Sort" >有待审核(复核)工作当量</th>
                     <th class=" teacher_Sort" >预期总工作当量</th>
+                    <th class="sorting">刷新</th>
 
                 </tr>
                 </thead>
