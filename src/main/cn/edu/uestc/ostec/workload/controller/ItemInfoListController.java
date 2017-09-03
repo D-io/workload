@@ -553,13 +553,12 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		List<ItemDto> itemDtoGroup = new ArrayList<>();
 
 		for (ItemDto itemDto : itemDtoList) {
-			if (!isEmptyNumber(importRequired) && importRequired.equals(itemDto.getImportRequired())
+			if (null != importRequired && importRequired.equals(itemDto.getImportRequired())
 					&& version.equals(itemDto.getVersion())) {
 				itemDtoGroup.add(itemDto);
+			} else if (null == importRequired && version.equals(itemDto.getVersion())) {
+				itemDtoGroup.add(itemDto);
 			}
-//			else if (isEmptyNumber(importRequired) && version.equals(itemDto.getVersion())) {
-//				itemDtoGroup.add(itemDto);
-//			}
 		}
 		return itemDtoGroup;
 	}
