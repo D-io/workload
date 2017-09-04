@@ -602,7 +602,7 @@
 
                         </div>
                     </div>
-                    <span class="experient" id="experient_formula">计算公式不可为空！</span>
+                    <span class="experient" id="experient_formula">计算公式应输入数字或字符！</span>
                     <div class="form-group requiredtime">
                         <label class="col-sm-3 control-label">项目属性</label>
                         <div class="col-sm-9">

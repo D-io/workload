@@ -127,7 +127,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+                                    <h4 class="modal-title" id="myModalLabel"><i class="fa fa-bar-chart"></i>教务管理&nbsp/教师项目管理</h4>
                                 </div>
                                 <div class="modal-body">
                                     <table  class="table table-striped table-bordered dataTable no-footer">

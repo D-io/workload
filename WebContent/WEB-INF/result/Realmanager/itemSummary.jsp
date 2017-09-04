@@ -89,7 +89,7 @@
                         <div class="modal-header" style="position: relative">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                             </button>
-                            <h4 class="modal-title" id="myModalLabel"><span style="font-size: 18px;">教务管理</span>/<span style="font-size: 13px;">工作当量统计</span></h4>
+                            <h4 class="modal-title" id="myModalLabel"><%--<span style="font-size: 18px;">--%><i class="fa fa-bar-chart"></i>教务管理<%--</span>/<span style="font-size: 13px;">--%>/工作当量统计<%--</span>--%></h4>
                         </div>
                         <div class="modal-body" >
                             <div class="" role="tabpanel" data-example-id="togglable-tabs">

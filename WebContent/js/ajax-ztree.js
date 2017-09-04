@@ -833,10 +833,12 @@ function ztree() {
                         if(!$("#itemName").val()){
                             $("#myname").addClass("has-error");
                             $("#experient_name").show();
+                            return false;
                         }
                         if(!$("#desc").val()){
                             $("#mydesc").addClass("has-error");
                             $("#experient_desc").show();
+                            return false;
                         }
                         var reviewTimetodate = $('#reviewDeadline').val();
                         var applyTimetodate = $('#applyDeadline').val();
@@ -1013,10 +1015,12 @@ function ztree() {
                 if(!$("#itemName").val()){
                     $("#myname").addClass("has-error");
                     $("#experient_name").show();
+                    return false;
                 }
                 if(!$("#desc").val()){
                     $("#mydesc").addClass("has-error");
                     $("#experient_desc").show();
+                    return false;
                 }
                 var reviewTimetodate = $('#reviewDeadline').val();
                 var applyTimetodate = $('#applyDeadline').val();
@@ -1027,7 +1031,9 @@ function ztree() {
                      var newArray=new Array();
                      for(var i=0;i<parametername.length;i++){
 
-                         newArray.push({desc:$(".parameterName").eq(i).val(),symbol:$(".parameterSymbol").eq(i).val()});
+                         newArray.push({
+                             desc:$(".parameterName").eq(i).val(),
+                             symbol:$(".parameterSymbol").eq(i).val()});
 
                      }
                      var otherParamterName=$(".otherParameterName");
@@ -1045,7 +1051,7 @@ function ztree() {
                      }
                      //   var ischild=$("input:radio[name='hasChildNode']:checked").val();
                      var reviewerid=$('#teacherName option:selected');
-                     if($('#formula').val()!=null&&$("#itemName").val()!=null&&$("#desc").val()!=null){
+
                          $.post(categoryManageUrl, {
                              name: $('#itemName').val(),
                              desc: $('#desc').val(),
@@ -1059,7 +1065,7 @@ function ztree() {
                              otherJson:otherArray
                          }, function (data) {
                              if(data.status==200&&data.data.category){
-                               
+
                                  alert("添加规则成功！");
 
                                  var x=data.data.category.reviewDeadline;
@@ -1116,7 +1122,7 @@ function ztree() {
                              }
 
                          }, "json");
-                     }
+
                  }
                  else{
                      $.post(categoryManageUrl, {
@@ -1305,25 +1311,32 @@ function importFormat() {
     return y+'-12-28 00:00:00';
 }
 function initChecked() {
-    if(!$("#formula").val()){
+
+    /*var reg=new RegExp(/^\d+(\.*\d{0,3})([+*!/-]\d+\(\.*\d{0,3}\))+$/);*/
+    if(!($("#formula").val())){
         $("#myformula").addClass("has-error");
         $("#experient_formula").show();
+        return false;
     }
     if(!$("#teacherName").val()){
         $("#mymanager").addClass("has-error");
         $("#experient_manager").show();
+        return false;
     }
     if(!$("#applyDeadline").val()){
         $("#myapply").addClass("has-error");
         $("#experient_apply").show();
+        return false;
     }
     if(!$("#reviewDeadline").val()){
         $("#myrevie").addClass("has-error");
         $("#experient_revie").show();
+        return false;
     }
     if(!$(".parameterName").val()){
         $("#mypara").addClass("has-error");
         $("#experient_para").show();
+        return false;
     }
 }
 function initModal() {
@@ -1367,7 +1380,18 @@ function initModal() {
 }
 function reminder(obj) {
     var objValue=obj.value;
-    if(!objValue){
+   /* if(obj.name=='formula'){
+       /!* var reg=new RegExp(/^\d+(\.*\d{0,3})([+*!/-]\d+\(\.*\d{0,3}\))+$/);*!/
+        if(!reg.test(objValue)){
+            $("#myformula").addClass("has-error");
+            $("#experient_formula").show();
+        }
+        else{
+            $("#myformula").removeClass("has-error");
+            $("#experient_formula").hide();
+        }
+    }*/
+     if(!objValue){
         $("#experient_"+obj.name).show();
        $(obj).parent().parent(".form-group").addClass("has-error");
 

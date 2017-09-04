@@ -1401,7 +1401,7 @@ $(document).ready(function () {
    // var newCount=0;
     $(document).on("click","#addParameter",function () {
         Count++;
-    var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='para'  onblur='reminder(this)'></td><td style='position:relative'><input type='text' class='form-control para' name='parameterSymbol' onblur='reminder(this)'><button type='button' class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='position: absolute;top:10px;right: -24px;'><i class='fa fa-trash'></i></button></td></tr>";
+    var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='para'  onblur='reminder(this)'></td><td style='position:relative'><input type='text' class='form-control parameterSymbol' name='para' onblur='reminder(this)'><button type='button' class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='position: absolute;top:10px;right: -24px;'><i class='fa fa-trash'></i></button></td></tr>";
     $('.AddPramter').append(addStr);
 });
   /*  $(document).on("click","#firstaddParameter",function () {
