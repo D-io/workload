@@ -26,9 +26,9 @@
         <div class="x_content" id="showsumitem" style="display: block;">
 
             <div>
-                <h4 style="float: left">总工作当量：<span  class="totalWorkload"></span></h4>
-                <h4 style="float: left">已通过工作当量：<span  class="checkedWorkload"></span></h4>
-                <h4 style="float: left">待通过工作当量：<span  class="uncheckedWorkload"></span></h4>
+                <h4 style="float: left; margin-right: 20px;">已通过工作当量：<span  class="checkedWorkload passed"></span></h4>
+                <h4 style="float: left; margin-right: 20px;">待审核（复核）工作当量：<span  class="uncheckedWorkload pending-audit"></span></h4>
+                <h4 style="float: left">预期总工作当量：<span  class="totalWorkload expected"></span></h4>
             </div>
            <%-- <div class="switch switch-success">
                 <div class="ios-switch on"><div class="on-background background-fill"></div><div class="state-background background-fill"></div><div class="handle"></div></div><input type="checkbox" name="switch" data-plugin-ios-switch="" checked="checked" style="display: none;">

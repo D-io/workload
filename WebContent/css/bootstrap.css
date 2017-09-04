@@ -2598,6 +2598,7 @@ fieldset[disabled] .form-control {
 fieldset[disabled] .form-control {
   cursor: not-allowed;
   resize: none;
+  font-size: 13px;
 }
 textarea.form-control {
   height: auto;
@@ -6142,6 +6143,7 @@ button.close {
 }
 .modal-header .close {
   margin-top: -2px;
+  z-index: 100;
 }
 .modal-title {
   margin: 0;

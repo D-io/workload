@@ -2275,7 +2275,8 @@ span.section {
 }
 .form-control {
     border-radius: 3;
-    width: 100%
+    width: 100%;
+    font-size: 13px;
 }
 .form-horizontal .control-label {
     padding-top: 8px
@@ -4419,32 +4420,37 @@ p.deadline span {
 .showgroupMemberName .select2{
     width: 120px!important;
 }
-#viewdetail_apply .header{
-    font-weight: 700;
+
+#viewdetail_apply .page-nav,#importModal .page-nav,#viewdetail_audit .page-nav,#myModalLabel .page-nav{
+    font-weight: 600;
+    padding: 0 10px 10px;
+    font-size: 16px;
+    border-bottom: 2px solid #E6E9ED;
     line-height: 1em;
+}
+#viewdetail_apply .page-nav .current-page,#importModal .page-nav .current-page,#viewdetail_audit .page-nav .current-page,#myModalLabel .page-nav .current-page{
+    font-weight: 500;
     font-size: 14px;
 }
-#viewdetail_apply .project{
-    padding: 10px 10px 15px;
-}
-#viewdetail_apply .itemName{
-    font-size: 20px;
-    margin-right: 40px;
-}
-#viewdetail_apply .message{
-    padding-left: 10px;
-    padding-top:4px;
-}
-#myModalLabel .project{
+#viewdetail_apply .project,#myModalLabel .project{
     padding: 10px 10px 0;
 }
-#myModalLabel .itemName{
+#viewdetail_apply .itemName,#myModalLabel .itemName{
     font-size: 20px;
     font-weight: 700;
 }
-#myModalLabel .message{
+#viewdetail_apply .message,#myModalLabel .message{
     padding-left: 10px;
     padding-top: 5px;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 14px;
+}
+#showsumitem .passed{
+    background: #c1e2b3;
+}
+#showsumitem .pending-audit{
+    background: #fbed50;
+}
+#showsumitem .expected{
+    background: #e4b9b9;
 }

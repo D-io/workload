@@ -10,7 +10,7 @@
     <div class="x_title">
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-bar-chart"></i>我的工作当量</a></li>
-            <li class="active curentPage" id="WorkloadApply">工作当量复申报</li>
+            <li class="active curentPage" id="WorkloadApply">工作当量申报</li>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -66,6 +66,7 @@
                                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                                 </button>
                                 <div class="header">
+                                    <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class="current-page">工作当量申报</span></p>
                                     <p class="project"></p>
                                     <p class="message"></p>
                                 </div>

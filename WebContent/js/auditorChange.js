@@ -27,10 +27,10 @@ function importWorkload(){
                     }
 
                     else if(item[i].importRequired==1){
-                        $("<li class='catInfo_"+item[i].categoryId+"'></li>").append( "<div class='itemMessage'>【<span class='itemName'>" + item[i].name + "</span>】&nbsp;&nbsp;<span class='itemDesc'>" + item[i].desc + "</span></div>" +
+                        $("<li class='catInfo_"+item[i].categoryId+"'></li>").append( "<div class='itemMessage'><span class='itemName'>" + item[i].name + "</span>&nbsp;-&nbsp;<span class='itemDesc'>" + item[i].desc + "</span></div>" +
                             "<div style='float: right;'><a class='btn importList btn-info' id='import_"+ item[i].categoryId + "' data-toggle='modal' data-target='#importNewModal' style='float: right; margin-top: 2px;'>点击导入</a>" +
-                            "<div class='dropdown' style='float: right; margin-top: 2px;'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='" + downloadInfoUrl+ "?categoryId=" + item[i].categoryId+"&type=group'>小组类模板</a></li><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div>" +
-                            "<p class='deadline'> 上传截止时间: <span class='time_"+item[i].categoryId+"'>"+item[i].reviewDeadline +
+                            "<div class='dropdown' style='float: right; margin-top: 2px; margin-right: 10px;'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='" + downloadInfoUrl+ "?categoryId=" + item[i].categoryId+"&type=group'>小组类模板</a></li><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div>" +
+                            "<p class='deadline' style='margin-right: 20px'> 上传截止时间: <span class='time_"+item[i].categoryId+"'>"+item[i].reviewDeadline +
                             "</span></p></div><div style='clear: both;'></div></li>").appendTo(parent);
                         if(item[i].formulaParameterList!=null&&item[i].formulaParameterList.length>0){
                             //    var obj = eval ("(" + item[i].jsonParameters + ")");
@@ -421,16 +421,20 @@ function showapplydata(item) {
         var Info = item[t];
         $(".showDesc").append(rowInfo);
 
-        for (var j = 0; j < 13; j++)//单元格
+        for (var j = 0; j < 9; j++)//单元格
         {
             $(".showDesc tr:last").append(cellInfo);
         }
         var id = t;
+        $(".showDesc tr:last").css("text-align","center");
         $(".showDesc tr:last td:eq(0)").text(id + 1);
         $(".showDesc tr:last td:eq(1)").text(Info.teacherName);
         $(".showDesc tr:last td:eq(2)").text(Info.itemName);
         $(".showDesc tr:last td:eq(3)").text(Info.jsonChildWeight);
-        $(".showDesc tr:last td:eq(4)").text(Info.applyDesc);
+
+        /* 申报描述 */
+        // $(".showDesc tr:last td:eq(4)").text(Info.applyDesc);
+
         var applyType='';
         switch (Info.isGroup){
             case 1:applyType="小组形式";
@@ -438,26 +442,36 @@ function showapplydata(item) {
             case 0:applyType="个人申报";
             break;
         }
-        $(".showDesc tr:last td:eq(5)").text(applyType);
-        $(".showDesc tr:last td:eq(6)").text(Info.workload);
-        $(".showDesc tr:last td:eq(7)").text(Info.formula);
-        var paramArray = Info.parameterValues;
-        var str = '';
-        for (var paramCount = 0; paramCount < paramArray.length; paramCount++) {
+        $(".showDesc tr:last td:eq(4)").text(applyType);    //申报形式
 
-            str += paramArray[paramCount].symbol + ':' + paramArray[paramCount].value;
-        }
-        $(".showDesc tr:last td:eq(8)").text(str);
-        var otherparamArray = Info.otherJsonParameters;
-        var otherstr = '';
-        if(otherparamArray!=null){
-            for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
-                otherstr += otherparamArray[otherparamCount].key + ':' + otherparamArray[otherparamCount].value;
-            }
-        }
+        $(".showDesc tr:last td:eq(5)").text(Info.workload);    //工作当量
 
-        $(".showDesc tr:last td:eq(9)").text(otherstr);
-        $(".showDesc tr:last td:eq(10)").text(Info.version);
+        /* 计算公式*/
+        //$(".showDesc tr:last td:eq(7)").text(Info.formula);
+
+        /* 主要参数 */
+        // var paramArray = Info.parameterValues;
+        // var str = '';
+        // for (var paramCount = 0; paramCount < paramArray.length; paramCount++) {
+        //
+        //     str += paramArray[paramCount].symbol + ':' + paramArray[paramCount].value;
+        // }
+        // $(".showDesc tr:last td:eq(8)").text(str);
+
+
+        /* 其他参数 */
+        // var otherparamArray = Info.otherJsonParameters;
+        // var otherstr = '';
+        // if(otherparamArray!=null){
+        //     for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
+        //         otherstr += otherparamArray[otherparamCount].key + ':' + otherparamArray[otherparamCount].value;
+        //     }
+        // }
+        //$(".showDesc tr:last td:eq(9)").text(otherstr);
+
+        /* 版本 */
+        //$(".showDesc tr:last td:eq(10)").text(Info.version);
+
        /* $(".showDesc tr:last td:eq(11)").text($(".checkDeadT_"+Info.categoryId).text());*/
         var statusName;
         switch (Info.status) {
@@ -483,13 +497,70 @@ function showapplydata(item) {
                 statusName = '审核拒绝';
                 break;
         }
-        $(".showDesc tr:last td:eq(11)").text(statusName);
-        $(".showDesc tr:last td:eq(11)").attr("id","reviewe_"+Info.itemId);
+        $(".showDesc tr:last td:eq(6)").text(statusName);
+        $(".showDesc tr:last td:eq(6)").attr("id","reviewe_"+Info.itemId);
 
-        var act = "<a class=\"btn btn-success pass\" id=\"pass_" + Info.itemId + "\">审核通过</a><a class=\"btn btn-danger refuse\" data-toggle=\"modal\" data-target=\"#refuseModal\" id=\"refuse_" + Info.itemId + "\">审核拒绝</a> ";
-        $(".showDesc tr:last td:eq(12)").append(act);
+        var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#viewdetail_audit' id='btn-viewdetail'>查看详情</a><a class='btn btn-success pass' id='pass_" + Info.itemId + "'>审核通过</a><a class='btn btn-danger refuse' data-toggle='modal' data-target='#refuseModal' id='refuse_" + Info.itemId + "'>审核拒绝</a> ";
+        $(".showDesc tr:last td:eq(7)").append(act);
+
+        $(".showDesc tr:last td:eq(8)").text(JSON.stringify(Info));
+        $(".showDesc tr:last td:eq(8)").css("display","none");
+        // console.log($(".showDesc tr:last td:eq(8)").text());
+
     }
 
+    $(document).on("click","#btn-viewdetail",function (){
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+        $("#viewdetail_audit .project").empty();
+        $("#viewdetail_audit .message").empty();
+        $("#viewdetail_audit tbody").empty();
+
+        var Info = $(this).parent().next().text();
+        var jsonInfo = JSON.parse(Info);
+
+        var auditStatus = $(this).parent().prev().text();
+        var applicant = $(this).parent().parent().find("tr:eq(1)").text();
+        var weight = $(this).parent().parent().find("tr:eq(3)").text();
+        var form = $(this).parent().prev().prev().prev().text();
+
+        $("#viewdetail_audit .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_audit .message").append(
+            "工作当量：" + jsonInfo.workload +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报人：" + applicant +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所占权重：" + weight +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核状态：" + auditStatus);
+
+        $(".viewDetailTbody").append(rowInfo);
+        for( var i=0; i<4; i++){
+            $(".viewDetailTbody tr:last").append(cellInfo);
+        }
+        $(".viewDetailTbody tr:last").css("text-align","center");
+        /* 计算公式 */
+        $(".viewDetailTbody tr:last td:eq(0)").text(jsonInfo.formula);
+
+        /* 计算参数 */
+        var praValues='';
+        for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
+            praValues = jsonInfo.paramDesc[m].desc + "：" + jsonInfo.parameterValues[m].value;
+            $(".viewDetailTbody tr:last td:eq(1)").append( praValues + "<br>");
+        }
+
+        /* 项目属性 */
+        var projectProperties='';
+        if( jsonInfo.otherJsonParameters && jsonInfo.otherJsonParameters.length ){
+            for( var n = 0; n < jsonInfo.otherJsonParameters.length; n++ ){
+                projectProperties = jsonInfo.otherJsonParameters[n].key + ":" + jsonInfo.otherJsonParameters[n].value;
+                $(".viewDetailTbody tr:last td:eq(2)").append( projectProperties + "<br>");
+            }
+        }
+
+        $(".viewDetailTbody tr:last td:eq(1)").css("line-height","28px");
+        $(".viewDetailTbody tr:last td:eq(2)").css("line-height","28px");
+
+        $(".viewDetailTbody tr:last td:eq(3)").text(jsonInfo.version);      //版本
+    });
 }
 function getLocalTime(nS) {
     return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
@@ -507,7 +578,7 @@ function showall(menu_list, parent) {
             showall(menu_list[menu].children, $(li).children().eq(0));
         }
         else if(menu_list[menu].importRequired==0){
-            $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append( "<p class='itemMessage'>【<span class='itemName'>" + menu_list[menu].name + "</span>】&nbsp;&nbsp;<span class='itemDesc'>" + menu_list[menu].desc + "</span></p>" +
+            $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append( "<p class='itemMessage'><span class='itemName'>" + menu_list[menu].name + "</span>&nbsp;-&nbsp;<span class='itemDesc'>" + menu_list[menu].desc + "</span></p>" +
                 "<p class='deadline'> 审核截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span>&nbsp;&nbsp;&nbsp;&nbsp;<button  id='auditor_" + menu_list[menu].categoryId + "' class='btn btn-primary auditor' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击审核</button></p><div style='clear: both;'></div>").appendTo(parent);
       /* $(".hiddendistrict").append("<span class='checkDeadT_"+menu_list[menu].categoryId+"' style='display: none;'>"+getLocalTime(menu_list[menu].reviewDeadline)+"</span>");
   */      }

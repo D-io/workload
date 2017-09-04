@@ -776,13 +776,14 @@ $(document).ready(function () {
         var flag=this.id;
         var reg=parseInt(flag.match(/\d+/g));
         $("#myModalLabel").empty();
-        $("#myModalLabel").append("<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
-            "<p class='message'>" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
+        $("#myModalLabel").append("<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量审核</span></p>" +
+            "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+            "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
             "<p class='message'>审核截止时间：" + $(this).prev().text() + "</p>");
         $.get(auditorManageItemUrl+"?"+'importRequired=0',function (data) {
             $(".showDesc").empty();
             var dataArray=new Array;
-            for(var applyItemCount=0;applyItemCount<data.data.nonCheckedItem.length;applyItemCount++){
+            for( var applyItemCount = 0; applyItemCount < data.data.nonCheckedItem.length; applyItemCount++){
 
                 if(data.data.nonCheckedItem[applyItemCount].categoryId==reg){
                     dataArray.push(data.data.nonCheckedItem[applyItemCount]);
@@ -821,8 +822,9 @@ $(document).ready(function () {
         var flag=this.id;
         var reg=parseInt(flag.match(/\d+/g));
         $("#myModalLabel").empty();
-        $("#myModalLabel").append( "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
-            "<p class='message'>" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
+        $("#myModalLabel").append( "<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量复核</span></p>" +
+            "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+            "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
             "<p class='message'>审核截止时间：" + $(this).prev().prev().text() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 导入截止时间：" + $(this).prev().text() +"</p>");
 
 

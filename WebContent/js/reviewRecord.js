@@ -24,8 +24,8 @@ function workRevie(){
                     showimportall(menu_list[menu].children, $(li).children().eq(0));
                 }
                 else if(menu_list[menu].importRequired==1){
-                    $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append( "<p class='itemMessage'>【<span class='itemName'>" + menu_list[menu].name + "</span>】&nbsp;&nbsp;<span class='itemDesc'>" + menu_list[menu].desc + "</span></p>" +
-                        "<p class='deadline'> 复核截止时间: <span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; 导入截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp;<button  id='reviewer_" + menu_list[menu].categoryId + "' class='btn btn-primary reviewer' data-toggle='modal' data-target='#importModal' style='float: right; margin-top: -3px;'>点击复核</button><div style='clear: both;'></div>").appendTo(parent);
+                    $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append( "<p class='itemMessage'><span class='itemName'>" + menu_list[menu].name + "</span>&nbsp;-&nbsp;<span class='itemDesc'>" + menu_list[menu].desc + "</span></p>" +
+                        "<p class='deadline'> 复核截止时间： <span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; <button  id='reviewer_" + menu_list[menu].categoryId + "' class='btn btn-primary reviewer' data-toggle='modal' data-target='#importModal' style='float: right; margin-top: -3px;'>点击复核</button><div style='clear: both;'></div>").appendTo(parent);
 
                 }
 
@@ -272,8 +272,8 @@ function applyworkload() {
                     showapplyall(menu_list[menu].children, $(li).children().eq(0));
                 }
                 else if (menu_list[menu].importRequired == 0) {
-                    $("<li class='item_" + menu_list[menu].categoryId + "'></li>").append( "<p class='itemMessage'>【<span class='itemName'>" + menu_list[menu].name + "</span>】&nbsp;&nbsp;<span class='itemDesc'>" + menu_list[menu].desc + "</span></p>" +
-                        "<p class='deadline'> 申报截止时间: <span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; 审核截止时间:<span class='revieDeadline_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; <button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='#applyModal' style='float: right; margin-top: -2px;'>点击申报</button> </p> <div style='clear: both;'></div>").appendTo(parent);
+                    $("<li class='item_" + menu_list[menu].categoryId + "'></li>").append( "<p class='itemMessage'><span class='itemName'>" + menu_list[menu].name + "</span>&nbsp;-&nbsp;<span class='itemDesc'>" + menu_list[menu].desc + "</span></p>" +
+                        "<p class='deadline'> 申报截止时间：<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> <span style='display: none;' class='revieDeadline_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; <button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='#applyModal' style='float: right; margin-top: -2px;'>点击申报</button> </p> <div style='clear: both;'></div>").appendTo(parent);
                 }
 
             }
@@ -310,15 +310,15 @@ function applyworkload() {
                             $(".tbody tr:last").append(cellInfo);
                         }
                         var id = t + 1;
-                        $(".tbody tr:last").attr("class","tbodyTr_"+id);
-                        $(".tbody tr:last td:eq(0)").text(id).css("text-align","center");
+                        $(".tbody tr:last").attr("class","tbodyTr_"+id).css("text-align","center");
+                        $(".tbody tr:last td:eq(0)").text(id);
                         $(".tbody tr:last td:eq(0)").attr("class", "itemCount");
-                        $(".tbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
+                        $(".tbody tr:last td:eq(1)").text(Info.itemName);
                         $(".tbody tr:last td:eq(1)").attr("id", "itemname_" + Info.itemId);
-                        $(".tbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
+                        $(".tbody tr:last td:eq(2)").text(Info.workload);
                         $(".tbody tr:last td:eq(2)").attr("id", "workload_" + Info.itemId);
-                        var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id + "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + id + "\">删除操作</a> ";
-                        var newAct="<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + id + "\">查看详情</a>";
+                        var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target=''#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + id + "'>删除操作</a> ";
+                        var newAct="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a>";
                         var statusName;
                         switch (Info.status) {
                             case 0:
@@ -346,10 +346,9 @@ function applyworkload() {
                                 $(".tbody tr:last td:eq(4)").append(newAct);
                                 break;
                         }
-                        $(".tbody tr:last td:eq(3)").text(statusName).css("text-align","center");
+                        $(".tbody tr:last td:eq(3)").text(statusName);
                         $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
-                        $(".tbody tr:last td:eq(4)").css("text-align","center");
                     }
                 }
                 window.Temp=[];
@@ -357,8 +356,9 @@ function applyworkload() {
 
             });
             $("#myModalLabel").empty();
-            $("#myModalLabel").append("<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
-                "<p class='message'>" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
+            $("#myModalLabel").append( "<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量申报</span></p>" +
+                "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+                "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
                 "<p class='message'>申报截止时间：" + $(this).prev().prev().text() +  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核截止时间：" + $(this).prev().text() + "</p>"
             );
          //   ownerApply(reg);
@@ -810,7 +810,7 @@ function applyworkload() {
         $('#applyDesc').val(null);
         $('#workload').val(null);
         $("#AddgroupPramter").empty();
-        $("#itemmanager").val(null);
+        $("#itemmanager").select2().val(null).trigger("change");
         $('.parameterName').val(null);
         $('.otherparameterName').val(null);
         $(".radioChange").eq(0).attr("checked","true");
@@ -1271,10 +1271,10 @@ function applyworkload() {
                                 $(".tbody tr:last").append(cellInfo);
                             }
                             var $itemCt=$(".itemCount");
-                            $(".tbody tr:last").attr("class","tbodyTr_"+newcount);
+                            $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
-                            $(".tbody tr:last td:eq(0)").attr("class","itemCount").css("text-align","center");
-                            $(".tbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
+                            $(".tbody tr:last td:eq(0)").attr("class","itemCount");
+                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
                             $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
                             /*   var count="";
                              var CountId="";
@@ -1289,14 +1289,14 @@ function applyworkload() {
                              }
                              }
                              */
-                            $(".tbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
+                            $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
-                            $(".tbody tr:last td:eq(3)").text("暂未提交").css("text-align","center");
+                            $(".tbody tr:last td:eq(3)").text("暂未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
                             var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary  delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
 
-                            $(".tbody tr:last td:eq(4)").append(act).css("text-align","center");
+                            $(".tbody tr:last td:eq(4)").append(act);
 
                         }
                         else {
@@ -1316,9 +1316,9 @@ function applyworkload() {
                             /* var count="";
                              var CountId="";
                              var CategId="";*/
-                            $(".tbody tr:last").attr("class","tbodyTr_"+newcount);
+                            $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt("1"));
-                            $(".tbody tr:last td:eq(0)").attr("class","itemCount").css("text-align","center");
+                            $(".tbody tr:last td:eq(0)").attr("class","itemCount");
                             /* $(".tbody tr:last td:eq(1)").text(Info.itemName);
                              for (var i = 0; i < listLength; i++) {
                              if (Info[i].teacherName == userNameUrl)
@@ -1333,18 +1333,18 @@ function applyworkload() {
                              storage.setItem("item_"+CountId,sumArray);
                              */
                             // }
-                            $(".tbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
-                            $(".tbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
+                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
+                            $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
                             //  $(".tbody tr:last td:eq(3)").text();
 
-                            $(".tbody tr:last td:eq(3)").text("暂未提交").css("text-align","center");
+                            $(".tbody tr:last td:eq(3)").text("暂未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
                           /*  var newcount=$(".showContent").length;
                             newcount++;*/
                             var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount + "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act).css("text-align","center");
+                            $(".tbody tr:last td:eq(4)").append(act);
                         }
                         if($("#testfile").val()){
                             var formdata = new FormData;
@@ -1433,19 +1433,19 @@ function applyworkload() {
                                 $(".tbody tr:last").append(cellInfo);
                             }
                             var $itemCt=$(".itemCount");
-                            $(".tbody tr:last").attr("class","tbodyTr_"+newcount);
+                            $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
-                            $(".tbody tr:last td:eq(0)").attr("class","itemCount").css("text-align","center");
-                            $(".tbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
+                            $(".tbody tr:last td:eq(0)").attr("class","itemCount");
+                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
                             $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
-                            $(".tbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
+                            $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
 
-                            $(".tbody tr:last td:eq(3)").text("暂未提交").css("text-align","center");
+                            $(".tbody tr:last td:eq(3)").text("暂未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
                             var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act).css("text-align","center");
+                            $(".tbody tr:last td:eq(4)").append(act);
 
 
                         }
@@ -1463,18 +1463,18 @@ function applyworkload() {
                             {
                                 $(".tbody tr:last").append(cellInfo);
                             }
-
-                            $(".tbody tr:last td:eq(0)").text(parseInt("1")).css("text-align","center");
-                            $(".tbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
+                            $(".tbody tr:last").css("text-align","center");
+                            $(".tbody tr:last td:eq(0)").text(parseInt("1"));
+                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
                             $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
 
-                            $(".tbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
+                            $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(1)").attr("id","workload_"+Info.itemId);
-                            $(".tbody tr:last td:eq(3)").text("暂未提交").css("text-align","center");
+                            $(".tbody tr:last td:eq(3)").text("暂未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
                             var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary  delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act).css("text-align","center");
+                            $(".tbody tr:last td:eq(4)").append(act);
 
                         }
                         if($("#testfile").val()){
@@ -1643,10 +1643,11 @@ function applyRec() {
                     $(".reviewerRecTbody tr:last").append(cellInfo);
                 }
                // var id=i;
-                $(".reviewerRecTbody tr:last td:eq(0)").text(Num).css("text-align","center");
+                $(".reviewerRecTbody tr:last").css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(0)").text(Num);
                 $(".reviewerRecTbody tr:last td:eq(0)").attr("class","applyNum");
-                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
-                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
+                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
 
                 var showtype='';
                 switch (Info.isGroup){
@@ -1657,11 +1658,11 @@ function applyRec() {
                         break;
 
                 }
-                $(".reviewerRecTbody tr:last td:eq(3)").text(showtype).css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(3)").text(showtype);
 
-                $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId).css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId);
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
-                $(".reviewerRecTbody tr:last td:eq(5)").text("待审核").css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(5)").text("待审核");
                 $(".reviewerRecTbody tr:last td:eq(5)").css({"color":"#2e6da4","font-weight":"700"});
                 /*  var statusName='';
                  switch (Info.status){
@@ -1698,9 +1699,10 @@ function applyRec() {
                     $(".reviewerRecTbody tr:last").append(cellInfo);
                 }
                // var id=i;
-                $(".reviewerRecTbody tr:last td:eq(0)").text(Num).css("text-align","center");
-                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
-                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
+                $(".reviewerRecTbody tr:last").css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(0)").text(Num);
+                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
+                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
                 var showtype='';
                 switch (Info.isGroup){
 
@@ -1710,11 +1712,11 @@ function applyRec() {
                         break;
 
                 }
-                $(".reviewerRecTbody tr:last td:eq(3)").text(showtype).css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(3)").text(showtype);
 
-                $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId).css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId);
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
-                $(".reviewerRecTbody tr:last td:eq(5)").text("已通过").css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(5)").text("已通过");
                 $(".reviewerRecTbody tr:last td:eq(5)").css({"color":"#f5871f","font-weight":"700"});
                 /*  var statusName='';
                  switch (Info.status){
@@ -1752,9 +1754,10 @@ function applyRec() {
                     $(".reviewerRecTbody tr:last").append(cellInfo);
                 }
                // var id=i;
-                $(".reviewerRecTbody tr:last td:eq(0)").text(Num).css("text-align","center");
-                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName).css("padding-left","20px");
-                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload).css("text-align","center");
+                $(".reviewerRecTbody tr:last").css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(0)").text(Num);
+                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
+                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
 
                 var showtype='';
                 switch (Info.isGroup){
@@ -1765,11 +1768,11 @@ function applyRec() {
                         break;
 
                 }
-                $(".reviewerRecTbody tr:last td:eq(3)").text(showtype).css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(3)").text(showtype);
 
-                $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId).css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId);
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
-                $(".reviewerRecTbody tr:last td:eq(5)").text("已拒绝").css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(5)").text("已拒绝");
                 $(".reviewerRecTbody tr:last td:eq(5)").css({"color":"#d64742","font-weight":"700"});
                 /*  var statusName='';
                  switch (Info.status){
@@ -1822,13 +1825,14 @@ function applyRec() {
         for( var i=0; i<4; i++){
             $(".viewDetailTbody tr:last").append(cellInfo);
         }
+        $(".viewDetailTbody tr:last").css("text-align","center");
         /* 计算公式 */
-        $(".viewDetailTbody tr:last td:eq(0)").text(jsonInfo.formula).css("text-align","center");
+        $(".viewDetailTbody tr:last td:eq(0)").text(jsonInfo.formula);
 
         /* 计算参数 */
         var praValues='';
         for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
-            praValues = jsonInfo.paramDesc[m].desc + ":" + jsonInfo.parameterValues[m].value;
+            praValues = jsonInfo.paramDesc[m].desc + "：" + jsonInfo.parameterValues[m].value;
             $(".viewDetailTbody tr:last td:eq(1)").append( praValues + "<br>");
         }
 
@@ -1841,10 +1845,10 @@ function applyRec() {
             }
         }
 
-        $(".viewDetailTbody tr:last td:eq(1)").css({"padding-left":"20px","line-height":"28px"});
-        $(".viewDetailTbody tr:last td:eq(2)").css({"padding-left":"20px","line-height":"28px"});
+        $(".viewDetailTbody tr:last td:eq(1)").css("line-height","28px");
+        $(".viewDetailTbody tr:last td:eq(2)").css("line-height","28px");
 
-        $(".viewDetailTbody tr:last td:eq(3)").text(jsonInfo.version).css("text-align","center");      //版本
+        $(".viewDetailTbody tr:last td:eq(3)").text(jsonInfo.version);      //版本
     });
 }
 
@@ -1889,9 +1893,7 @@ function showhistory(data) {
             $(".historyRecTbody tr:last td:eq(1)").text(Info.createTime);
             $(".historyRecTbody tr:last td:eq(2)").text(Info.userName);
             $(".historyRecTbody tr:last td:eq(3)").text(Info.operation);
-            $(".historyRecTbody tr:last td:eq(0)").css("text-align","center");
-            $(".historyRecTbody tr:last td:eq(1)").css("text-align","center");
-            $(".historyRecTbody tr:last td:eq(2)").css("text-align","center");
+
           /*  var type="审核人操作";
             switch (Info.type){
                 case "admin":type="管理员操作";
