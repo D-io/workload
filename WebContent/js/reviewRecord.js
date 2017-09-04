@@ -322,7 +322,7 @@ function applyworkload() {
                         var statusName;
                         switch (Info.status) {
                             case 0:
-                                statusName = '暂未提交';
+                                statusName = '未提交';
                                 $(".tbody tr:last td:eq(4)").append(act);
                                 break;
                             case 1:
@@ -409,7 +409,7 @@ function applyworkload() {
         console.log(window.contentCount);
         $(".savemyApplyAgain").hide();
         $(".dismissagain").hide();
-        if ($("#statusChange_" + window.Temp[newReg-1].itemId).text() == "暂未提交") {
+        if ($("#statusChange_" + window.Temp[newReg-1].itemId).text() == "未提交") {
             $(".editApply").show();
             $(".editApply").attr("id", "editApply_" + window.Temp[newReg - 1].itemId);
             $(".editSubmit").show();
@@ -1291,7 +1291,7 @@ function applyworkload() {
                              */
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
-                            $(".tbody tr:last td:eq(3)").text("暂未提交");
+                            $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
                             var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary  delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
@@ -1339,7 +1339,7 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
                             //  $(".tbody tr:last td:eq(3)").text();
 
-                            $(".tbody tr:last td:eq(3)").text("暂未提交");
+                            $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
                           /*  var newcount=$(".showContent").length;
                             newcount++;*/
@@ -1441,7 +1441,7 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
 
-                            $(".tbody tr:last td:eq(3)").text("暂未提交");
+                            $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
                             var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
@@ -1470,7 +1470,7 @@ function applyworkload() {
 
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(1)").attr("id","workload_"+Info.itemId);
-                            $(".tbody tr:last td:eq(3)").text("暂未提交");
+                            $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
                             var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary  delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";

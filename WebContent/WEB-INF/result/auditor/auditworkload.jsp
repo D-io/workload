@@ -113,37 +113,6 @@
                         <table  class="table table-striped table-bordered dataTable no-footer">
                             <thead>
                             <tr role="row">
-                                <th class="sorting">计算公式</th>
-                                <th class="sorting">计算参数</th>
-                                <th class="sorting">项目属性</th>
-                                <th class="sorting">版本</th>
-                            </tr>
-                            </thead>
-                            <tbody class="viewDetailTbody">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="modal fade" id="viewdetail_apply" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog" role="document" style="min-width: 700px">
-                <div class="modal-content">
-                    <div class="modal-header" style="position: relative">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                        </button>
-                        <div class="header">
-                            <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class="current-page">工作当量申报</span></p>
-                            <p class="project"></p>
-                            <p class="message"></p>
-                        </div>
-                    </div>
-                    <div class="modal-body">
-                        <table  class="table table-striped table-bordered dataTable no-footer">
-                            <thead>
-                            <tr role="row">
                                 <th class="sorting">申报描述</th>
                                 <th class="sorting">计算公式</th>
                                 <th class="sorting">计算参数</th>
@@ -159,6 +128,7 @@
 
             </div>
         </div>
+
 
 
     </div>

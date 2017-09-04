@@ -432,8 +432,6 @@ function showapplydata(item) {
         $(".showDesc tr:last td:eq(2)").text(Info.itemName);
         $(".showDesc tr:last td:eq(3)").text(Info.jsonChildWeight);
 
-        /* 申报描述 */
-        // $(".showDesc tr:last td:eq(4)").text(Info.applyDesc);
 
         var applyType='';
         switch (Info.isGroup){
@@ -500,7 +498,7 @@ function showapplydata(item) {
         $(".showDesc tr:last td:eq(6)").text(statusName);
         $(".showDesc tr:last td:eq(6)").attr("id","reviewe_"+Info.itemId);
 
-        var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#viewdetail_audit' id='btn-viewdetail'>查看详情</a><a class='btn btn-success pass' id='pass_" + Info.itemId + "'>审核通过</a><a class='btn btn-danger refuse' data-toggle='modal' data-target='#refuseModal' id='refuse_" + Info.itemId + "'>审核拒绝</a> ";
+        var act = "<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_audit' id='btn-viewdetail'>查看详情</a><a class='btn btn-success pass' id='pass_" + Info.itemId + "'>审核通过</a><a class='btn btn-danger refuse' data-toggle='modal' data-target='#refuseModal' id='refuse_" + Info.itemId + "'>审核拒绝</a> ";
         $(".showDesc tr:last td:eq(7)").append(act);
 
         $(".showDesc tr:last td:eq(8)").text(JSON.stringify(Info));
@@ -520,8 +518,8 @@ function showapplydata(item) {
         var jsonInfo = JSON.parse(Info);
 
         var auditStatus = $(this).parent().prev().text();
-        var applicant = $(this).parent().parent().find("tr:eq(1)").text();
-        var weight = $(this).parent().parent().find("tr:eq(3)").text();
+        var applicant = $(this).parent().parent().find("td:eq(1)").text();
+        var weight = $(this).parent().parent().find("td:eq(3)").text();
         var form = $(this).parent().prev().prev().prev().text();
 
         $("#viewdetail_audit .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>" );
@@ -533,18 +531,22 @@ function showapplydata(item) {
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核状态：" + auditStatus);
 
         $(".viewDetailTbody").append(rowInfo);
-        for( var i=0; i<4; i++){
+        for( var i=0; i<5; i++){
             $(".viewDetailTbody tr:last").append(cellInfo);
         }
         $(".viewDetailTbody tr:last").css("text-align","center");
+
+        /* 申报描述 */
+        $(".viewDetailTbody tr:last td:eq(0)").text(jsonInfo.applyDesc);
+
         /* 计算公式 */
-        $(".viewDetailTbody tr:last td:eq(0)").text(jsonInfo.formula);
+        $(".viewDetailTbody tr:last td:eq(1)").text(jsonInfo.formula);
 
         /* 计算参数 */
         var praValues='';
         for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
             praValues = jsonInfo.paramDesc[m].desc + "：" + jsonInfo.parameterValues[m].value;
-            $(".viewDetailTbody tr:last td:eq(1)").append( praValues + "<br>");
+            $(".viewDetailTbody tr:last td:eq(2)").append( praValues + "<br>");
         }
 
         /* 项目属性 */
@@ -552,14 +554,14 @@ function showapplydata(item) {
         if( jsonInfo.otherJsonParameters && jsonInfo.otherJsonParameters.length ){
             for( var n = 0; n < jsonInfo.otherJsonParameters.length; n++ ){
                 projectProperties = jsonInfo.otherJsonParameters[n].key + ":" + jsonInfo.otherJsonParameters[n].value;
-                $(".viewDetailTbody tr:last td:eq(2)").append( projectProperties + "<br>");
+                $(".viewDetailTbody tr:last td:eq(3)").append( projectProperties + "<br>");
             }
         }
 
-        $(".viewDetailTbody tr:last td:eq(1)").css("line-height","28px");
         $(".viewDetailTbody tr:last td:eq(2)").css("line-height","28px");
+        $(".viewDetailTbody tr:last td:eq(3)").css("line-height","28px");
 
-        $(".viewDetailTbody tr:last td:eq(3)").text(jsonInfo.version);      //版本
+        $(".viewDetailTbody tr:last td:eq(4)").text(jsonInfo.version);      //版本
     });
 }
 function getLocalTime(nS) {
@@ -579,7 +581,7 @@ function showall(menu_list, parent) {
         }
         else if(menu_list[menu].importRequired==0){
             $("<li class='item_"+menu_list[menu].categoryId+"'></li>").append( "<p class='itemMessage'><span class='itemName'>" + menu_list[menu].name + "</span>&nbsp;-&nbsp;<span class='itemDesc'>" + menu_list[menu].desc + "</span></p>" +
-                "<p class='deadline'> 审核截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span>&nbsp;&nbsp;&nbsp;&nbsp;<button  id='auditor_" + menu_list[menu].categoryId + "' class='btn btn-primary auditor' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right;'>点击审核</button></p><div style='clear: both;'></div>").appendTo(parent);
+                "<p class='deadline'> 审核截止时间:<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span>&nbsp;&nbsp;&nbsp;&nbsp;<button  id='auditor_" + menu_list[menu].categoryId + "' class='btn btn-primary auditor' data-toggle='modal' data-target='.bs-example-modal-lg' style='float: right; margin-top: -3px;'>点击审核</button></p><div style='clear: both;'></div>").appendTo(parent);
       /* $(".hiddendistrict").append("<span class='checkDeadT_"+menu_list[menu].categoryId+"' style='display: none;'>"+getLocalTime(menu_list[menu].reviewDeadline)+"</span>");
   */      }
 

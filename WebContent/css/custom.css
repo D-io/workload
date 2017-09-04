@@ -4432,14 +4432,14 @@ p.deadline span {
     font-weight: 500;
     font-size: 14px;
 }
-#viewdetail_apply .project,#myModalLabel .project{
+#viewdetail_apply .project,#viewdetail_audit .project,#myModalLabel .project{
     padding: 10px 10px 0;
 }
-#viewdetail_apply .itemName,#myModalLabel .itemName{
+#viewdetail_apply .itemName,#viewdetail_audit .itemName,#myModalLabel .itemName{
     font-size: 20px;
     font-weight: 700;
 }
-#viewdetail_apply .message,#myModalLabel .message{
+#viewdetail_apply .message,#myModalLabel .message,#viewdetail_audit .message{
     padding-left: 10px;
     padding-top: 5px;
     font-weight: 600;
