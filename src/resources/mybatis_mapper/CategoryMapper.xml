@@ -95,7 +95,7 @@
   </select>
 
   <select id="selectRoot" resultMap="categoryResultMap">
-    SELECT * FROM category WHERE is_leaf = 'N' and version = #{version}
+    SELECT * FROM category WHERE is_leaf = 'N' and version = #{version} and status = 1
   </select>
 
   <select id="selectChildren" resultMap="categoryResultMap">

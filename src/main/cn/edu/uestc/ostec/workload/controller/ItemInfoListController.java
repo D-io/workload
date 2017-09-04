@@ -336,7 +336,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		for (ItemDto itemDto : itemDtoList) {
 			Category category = categoryService
 					.getCategory(itemDto.getCategoryId(), getCurrentSemester());
-			if (!categoryList.contains(category)) {
+			if (!categoryList.contains(category) && SUBMITTED.equals(category.getStatus())) {
 				categoryList.add(category);
 			}
 		}
