@@ -237,7 +237,7 @@ function ztree() {
     function beforeEditName(treeId, treeNode) {
 
         className = (className === "dark" ? "" : "dark");
-        showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.desc);
+       /* showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.desc);*/
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         zTree.selectNode(treeNode);
 
@@ -323,7 +323,7 @@ function ztree() {
              }
              });*/
             //   $("#teacherName option[value='"+treeNode.reviewerId+"']").attr("selected","selected");
-            $("#teacherName").val(treeNode.reviewerId);
+           // $("#teacherName").val(treeNode.reviewerId);
 
            /* $("input:radio[name='hasChildNode']").each(function () {
                 if ($(this).val() == treeNode.isLeaf) {
@@ -334,6 +334,10 @@ function ztree() {
             $('.addOtherPramter').empty();
             $("#teacherName").select2().val(treeNode.reviewerId).trigger("change");
             $(".select2-container").css("width","405px");
+            if(treeNode.reviewerId==null){
+                $("#experient_manager").hide();
+                $("#mymanager").removeClass("has-error");
+            }
             var otherjsonstrArray = '';
             if (treeNode.otherJsonParameters != null) {
                 otherjsonstrArray = treeNode.otherJsonParameters;
@@ -718,8 +722,6 @@ function ztree() {
                     }
                 }
 
-
-             //   $('#addModal').modal('hide');
             });
         },0);
         return false;
@@ -772,24 +774,7 @@ function ztree() {
 
 
     }
-//更新节点名称之前的回调函数
-    /*    function beforeRename(treeId, treeNode, newName, isCancel) {
-     className = (className === "dark" ? "":"dark");
-     showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
-     if (newName.length == 0) {
-     setTimeout(function() {
-     var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-     zTree.cancelEditName();
-     alert("节点名称不能为空.");
-     }, 0);
-     return false;
-     }
-     return true;
-     }
-     //节点名称编辑只有的回调函数
-     function onRename(e, treeId, treeNode, isCancel) {
-     showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
-     }*/
+
 //禁止节点的拖拽函数
 
     function zTreeBeforeDrag(treeId, treeNodes) {
@@ -812,21 +797,21 @@ function ztree() {
         $(".manageEdit").hide();
         $(".submitEdit").hide();
     }*/
-    function showLog(str) {
+    /*function showLog(str) {
         if (!log) log = $("#log");
         log.append("<li class='"+className+"'>"+str+"</li>");
         if(log.children("li").length > 8) {
             log.get(0).removeChild(log.children("li")[0]);
         }
-    }
-    function getTime() {
+    }*/
+    /*function getTime() {
         var now= new Date(),
             h=now.getHours(),
             m=now.getMinutes(),
             s=now.getSeconds(),
             ms=now.getMilliseconds();
         return (h+":"+m+":"+s+ " " +ms);
-    }
+    }*/
     function addHoverDom(treeId, treeNode){
         var sObj = $("#" + treeNode.tId + "_span");
         if(treeNode.importRequired==2 ) {
@@ -848,6 +833,10 @@ function ztree() {
                         if(!$("#itemName").val()){
                             $("#myname").addClass("has-error");
                             $("#experient_name").show();
+                        }
+                        if(!$("#desc").val()){
+                            $("#mydesc").addClass("has-error");
+                            $("#experient_desc").show();
                         }
                         var reviewTimetodate = $('#reviewDeadline').val();
                         var applyTimetodate = $('#applyDeadline').val();
@@ -1056,7 +1045,7 @@ function ztree() {
                      }
                      //   var ischild=$("input:radio[name='hasChildNode']:checked").val();
                      var reviewerid=$('#teacherName option:selected');
-                     if($('#formula').val()!=null){
+                     if($('#formula').val()!=null&&$("#itemName").val()!=null&&$("#desc").val()!=null){
                          $.post(categoryManageUrl, {
                              name: $('#itemName').val(),
                              desc: $('#desc').val(),
@@ -1070,7 +1059,7 @@ function ztree() {
                              otherJson:otherArray
                          }, function (data) {
                              if(data.status==200&&data.data.category){
-                                 //todo:submit to alert
+                               
                                  alert("添加规则成功！");
 
                                  var x=data.data.category.reviewDeadline;
@@ -1182,9 +1171,6 @@ function ztree() {
 
                      }, "json");
                  }
-
-
-
             });
 
         });
@@ -1239,54 +1225,6 @@ function ztree() {
 
 
         });
-       /* $("#novaiForm").validate({
-
-         /!*  { highlight: function( label ) {
-         $(label).closest('.experient').removeClass('has-success').addClass('has-error');
-         },
-         success: function( label ) {
-         $(label).closest('.experient').removeClass('has-error');
-         label.remove();
-         },
-         errorPlacement: function( error, element ) {
-         var placement = element.closest('.experient');
-         if (!placement.get(0)) {
-         placement = element;
-         }
-         if (error.text() !== '') {
-         placement.after(error);
-         }
-         }
-         rules:
-         itemName: {
-         required: true,
-         /!*maxlength: 16,
-         minlength: 3*!/
-         },
-         desc:{
-         required:"true",
-         maxlength:48
-         },
-         formula:{
-         required:"true"
-         },
-         applyDeadline:{
-         required:"true"
-         },
-         reviewDeadline:{
-         required:"true"
-         },
-         teacherName:{
-         required:"true"
-         }
-         },
-         message:{
-         itemName:{
-         required:"项目名称不能为空！",
-         remote:"项目名称不能为空！"
-         }
-         }*!/
-         });*/
         $.fn.modal.Constructor.prototype.enforceFocus = function () {};
 
     });
@@ -1345,9 +1283,12 @@ function initRemoveAttr() {
     $("#myapply").removeClass("has-error");
     $("#mymanager").removeClass("has-error");
     $(".experient").hide();
+    console.log($(".experient").css("display"));
+    if($(".experient").css("display")!="none"){
+        $(".experient").css("display","none");
+    }
 }
-function format()
-{
+function format() {
     var time = new Date();
     var y = time.getFullYear();
     /* var m = time.getMonth()+1;
@@ -1389,7 +1330,11 @@ function initModal() {
     $(".form-control").removeAttr("disabled");
     $('#itemName').val(null);
     $('#desc').val(null);
-    $('#teacherName').select2('data',null);
+  /*  $('#teacherName').select2('data',null);*/
+    $("#teacherName").select2().val(null).trigger("change");
+    $("#experient_manager").hide();
+    $("#mymanager").removeClass("has-error");
+    $(".select2-container").css("width","405px");
     $("#parentId").attr("disabled", "disabled");
     $(".requiredtime").hide();
     $("#importRequired option").each(function () {
