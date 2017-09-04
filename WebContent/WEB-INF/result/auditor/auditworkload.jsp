@@ -104,7 +104,7 @@
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                         </button>
                         <div class="header">
-                            <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class="current-page">工作当量审核</span></p>
+                            <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class="current-page">工作当量审核</span></p>
                             <p class="project"></p>
                             <p class="message"></p>
                         </div>

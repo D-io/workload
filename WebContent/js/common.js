@@ -153,6 +153,13 @@ $(document).ready(function () {
     });*/
     $(document).off("click",".importList");
     $(document).on("click",".importList",function () {
+
+        $("#myModalLabel").empty();
+        $("#myModalLabel").append("<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class='current-page'>工作当量审核</span></p>" +
+            "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+            "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
+            "<p class='message'>" + $(this).next().next().text() + "</p>");
+
         var flag = this.id;
         flag = parseInt(flag.match(/\d+/g));
         window.cateId=flag;
@@ -776,7 +783,7 @@ $(document).ready(function () {
         var flag=this.id;
         var reg=parseInt(flag.match(/\d+/g));
         $("#myModalLabel").empty();
-        $("#myModalLabel").append("<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量审核</span></p>" +
+        $("#myModalLabel").append("<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class='current-page'>工作当量审核</span></p>" +
             "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
             "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
             "<p class='message'>审核截止时间：" + $(this).prev().text() + "</p>");

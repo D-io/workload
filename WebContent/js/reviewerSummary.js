@@ -120,6 +120,7 @@ function appendReviewerItem(data,mystr) {
                         break;
                 }
             }
+            $("."+mystr+" tr:last").css("text-align","center");
             $("."+mystr+" tr:last td:eq(0)").text(id+1);
             $("."+mystr+" tr:last td:eq(1)").text(Info.categoryName);
             var itemImport='';
