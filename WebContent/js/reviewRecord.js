@@ -219,6 +219,7 @@ function  reviewerRec() {
                     $(".reviewerRecTbody tr:last").append(cellInfo);
                 }
              //   var id=i;
+                $(".reviewerRecTbody tr:last").css("text-align","center");
                 $(".reviewerRecTbody tr:last td:eq(0)").text(RevNum);
                 $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
                 $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
@@ -257,7 +258,7 @@ function  reviewerRec() {
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieRec_"+Info.categoryId);
                 $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("已解惑");
-                $(".reviewerRecTbody tr:last td:eq(5)").css({"background-color":"#f0ad4e","color":"#ffffff"});
+                $(".reviewerRecTbody tr:last td:eq(5)").css({"font-weight":"600","color":"#4cae4c"});
 
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_review' id='btn-viewdetail'>查看详情</a><a class='btn btn-primary reviewerApply' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
                 $(".reviewerRecTbody tr:last td:eq(6)").append(act).css("width","200px");

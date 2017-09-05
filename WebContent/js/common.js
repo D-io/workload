@@ -155,7 +155,7 @@ $(document).ready(function () {
     $(document).on("click",".importList",function () {
 
         $("#myModalLabel").empty();
-        $("#myModalLabel").append("<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class='current-page'>工作当量审核</span></p>" +
+        $("#myModalLabel").append("<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class='current-page'>工作当量导入</span></p>" +
             "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
             "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
             "<p class='message'>" + $(this).next().next().text() + "</p>");
@@ -910,14 +910,14 @@ $(document).ready(function () {
                             break;
                         case 4:
                             statusName = '已解惑';
-                            $(".tbody tr:last td:eq(3)").css("color","rgb(46, 109, 164)");
+                            $(".tbody tr:last td:eq(3)");
                             break;
                         case 5:
                             statusName = '已拒绝';
                             $(".tbody tr:last td:eq(3)").css("color","rgb(214, 71, 66)");
                             break;
                     }
-                    $(".tbody tr:last td:eq(3)").text(statusName).css("fon-weight","600");
+                    $(".tbody tr:last td:eq(3)").text(statusName).css("font-weight","600");
                     $(".tbody tr:last td:eq(3)").attr("id","reviewe_"+Info.itemId);
 
 

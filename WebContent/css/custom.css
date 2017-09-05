@@ -4436,25 +4436,25 @@ p.deadline span {
     width: 120px!important;
 }
 
-#viewdetail_apply .page-nav,#viewdetail_review .page-nav,#viewdetail_reviewer .page-nav,#importModal .page-nav,#viewdetail_audit .page-nav,#myModalLabel .page-nav{
+#viewdetail_apply .page-nav,#viewdetail_import .page-nav,#viewdetail_review .page-nav,#viewdetail_reviewer .page-nav,#importModal .page-nav,#viewdetail_audit .page-nav,#myModalLabel .page-nav{
     font-weight: 600;
     padding: 0 10px 10px;
     font-size: 16px;
     border-bottom: 2px solid #E6E9ED;
     line-height: 1em;
 }
-#viewdetail_apply .page-nav .current-page,#viewdetail_review .page-nav .current-page,#viewdetail_reviewer .page-nav .current-page,#importModal .page-nav .current-page,#viewdetail_audit .page-nav .current-page,#myModalLabel .page-nav .current-page{
+#viewdetail_apply .page-nav .current-page,#viewdetail_import .page-nav .current-page,#viewdetail_review .page-nav .current-page,#viewdetail_reviewer .page-nav .current-page,#importModal .page-nav .current-page,#viewdetail_audit .page-nav .current-page,#myModalLabel .page-nav .current-page{
     font-weight: 500;
     font-size: 14px;
 }
-#viewdetail_apply .project,#viewdetail_audit .project,#myModalLabel .project,#viewdetail_review .project,#viewdetail_reviewer .project{
+#viewdetail_apply .project,#viewdetail_audit .project,#viewdetail_import .project,#myModalLabel .project,#viewdetail_review .project,#viewdetail_reviewer .project{
     padding: 10px 10px 0;
 }
-#viewdetail_apply .itemName,#viewdetail_audit .itemName,#myModalLabel .itemName,#viewdetail_review .itemName,#viewdetail_reviewer .itemName{
+#viewdetail_apply .itemName,#viewdetail_import .itemName,#viewdetail_audit .itemName,#myModalLabel .itemName,#viewdetail_review .itemName,#viewdetail_reviewer .itemName{
     font-size: 20px;
     font-weight: 700;
 }
-#viewdetail_apply .message,#myModalLabel .message,#viewdetail_audit .message,#viewdetail_review .message,#viewdetail_reviewer .message{
+#viewdetail_apply .message,#viewdetail_import .message,#myModalLabel .message,#viewdetail_audit .message,#viewdetail_review .message,#viewdetail_reviewer .message{
     padding-left: 10px;
     padding-top: 5px;
     font-weight: 600;
@@ -4462,6 +4462,7 @@ p.deadline span {
 }
 #showsumitem .passed{
     background: #c1e2b3;
+    color: #;
 }
 #showsumitem .pending-audit{
     background: #fbed50;
