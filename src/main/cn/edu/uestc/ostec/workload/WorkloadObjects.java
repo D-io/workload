@@ -94,6 +94,20 @@ public interface WorkloadObjects {
 	 */
 	String DEFAULT_APPLY_DATE_TIME = "-12-28 12:00:00";
 
+	String TYPE_ONE_PREFIX = "0-1-5";
+
+	String TYPE_TWO_PREFIX = "0-1-6";
+
+	String TYPE_THREE_PREFIX = "0-1-7";
+
+	String TYPE_FOUR_PREFIX = "0-1-37";
+
+	String TYPE_FIVE_PREFIX = "0-2";
+
+	String TYPE_SIX_PREFIX = "0-3";
+
+	String TYPE_SEVEN_PREFIX = "0-4";
+
 	/**
 	 * 获取空的Map&lt;K, V&gt;
 	 *

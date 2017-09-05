@@ -151,4 +151,6 @@ public interface CategoryDao extends BaseDao<Category> {
 					String version);
 
 	List<String> selectYears();
+
+	String findCategoryNameByCategoryCode(String code);
 }

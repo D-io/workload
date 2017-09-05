@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
+import cn.edu.uestc.ostec.workload.dto.Workload;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 
 /**
@@ -105,8 +106,12 @@ public interface ItemService extends BaseService {
 	 * @return List<Item>
 	 */
 	Map<String, Object> findAll(Integer categoryId, Integer status, Integer ownerId, int pageNum,
-			int pageSize, String version,Integer importedRequired);
+			int pageSize, String version, Integer importedRequired);
 
 	List<ItemDto> findAll(String itemName, Integer categoryId, Integer status, Integer ownerId,
 			Integer isGroup, String version);
+
+	Workload workloadAnalyze(Integer teacherId, String type, String version);
+
+	List<Item> findAnalyzeItems(Integer teacherId, Integer status, String version, String type);
 }

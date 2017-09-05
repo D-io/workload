@@ -24,6 +24,8 @@ import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.SubjectDto;
+import cn.edu.uestc.ostec.workload.dto.TeacherWorkloadAnalyze;
+import cn.edu.uestc.ostec.workload.dto.Workload;
 import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
 import cn.edu.uestc.ostec.workload.pojo.Category;
@@ -48,6 +50,7 @@ import static cn.edu.uestc.ostec.workload.service.ItemService.EMPTY_WORKLOAD;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
  * Version:v1.0 (description: 工作量信息展示控制器 )
@@ -79,6 +82,52 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 	@Autowired
 	private TeacherWorkloadService teacherWorkloadService;
+
+	@RequestMapping(value = "teacher-analyze", method = GET)
+	public RestResponse analyzeWorkload(
+			@RequestParam("teacherId")
+					Integer teacherId, String option, String categoryCode) {
+
+		Workload workloadTypeOne = itemService
+				.workloadAnalyze(teacherId, TYPE_ONE_PREFIX, getCurrentSemester());
+		Workload workloadTypeTwo = itemService
+				.workloadAnalyze(teacherId, TYPE_TWO_PREFIX, getCurrentSemester());
+		Workload workloadTypeThree = itemService
+				.workloadAnalyze(teacherId, TYPE_THREE_PREFIX, getCurrentSemester());
+		Workload workloadTypeFour = itemService
+				.workloadAnalyze(teacherId, TYPE_FOUR_PREFIX, getCurrentSemester());
+		Workload workloadTypeFive = itemService
+				.workloadAnalyze(teacherId, TYPE_FIVE_PREFIX, getCurrentSemester());
+		Workload workloadTypeSix = itemService
+				.workloadAnalyze(teacherId, TYPE_SIX_PREFIX, getCurrentSemester());
+		Workload workloadTypeSeven = itemService
+				.workloadAnalyze(teacherId, TYPE_SEVEN_PREFIX, getCurrentSemester());
+		TeacherWorkloadAnalyze teacherWorkloadAnalyze = new TeacherWorkloadAnalyze();
+		teacherWorkloadAnalyze.setTeacherId(teacherId);
+		teacherWorkloadAnalyze.setTypeFive(workloadTypeFive);
+		teacherWorkloadAnalyze.setTypeFour(workloadTypeFour);
+		teacherWorkloadAnalyze.setTypeThree(workloadTypeThree);
+		teacherWorkloadAnalyze.setTypeTwo(workloadTypeTwo);
+		teacherWorkloadAnalyze.setTypeOne(workloadTypeOne);
+		teacherWorkloadAnalyze.setTypeSix(workloadTypeSix);
+		teacherWorkloadAnalyze.setTypeSeven(workloadTypeSeven);
+		teacherWorkloadAnalyze.setTeacherName(teacherService.findTeacherNameById(teacherId));
+		teacherWorkloadAnalyze.setTotalWorkload(
+				teacherWorkloadService.getTeacherWorkload(teacherId, getCurrentSemester())
+						.getTotalWorkload());
+
+		Map<String, Object> data = getData();
+		if ("details".equals(option)) {
+			data.put("checkedItemList", itemService
+					.findAnalyzeItems(teacherId, CHECKED, getCurrentSemester(), categoryCode));
+			data.put("uncheckedItemList", itemService
+					.findAnalyzeItems(teacherId, null, getCurrentSemester(), categoryCode));
+			return successResponse(data);
+		}
+
+		data.put("workload", teacherWorkloadAnalyze);
+		return successResponse(data);
+	}
 
 	@RequestMapping(value = "refresh", method = POST)
 	public RestResponse refreshTeacherWorkload(

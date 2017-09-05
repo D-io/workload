@@ -139,4 +139,8 @@
     SELECT DISTINCT(version) FROM category WHERE status != -1
   </select>
 
+  <select id="findCategoryNameByCategoryCode" resultType="String">
+    SELECT name FROM category WHERE category_code = #{code}
+  </select>
+
 </mapper>

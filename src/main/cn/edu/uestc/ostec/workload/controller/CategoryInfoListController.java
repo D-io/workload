@@ -24,6 +24,8 @@ import cn.edu.uestc.ostec.workload.adaptor.MultiLevelObjectAdaptor;
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
+import cn.edu.uestc.ostec.workload.dto.TeacherWorkloadAnalyze;
+import cn.edu.uestc.ostec.workload.dto.Workload;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;

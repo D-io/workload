@@ -12,13 +12,18 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
+import cn.edu.uestc.ostec.workload.dao.CategoryDao;
 import cn.edu.uestc.ostec.workload.dao.ItemDao;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
+import cn.edu.uestc.ostec.workload.dto.Workload;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 
 /**
  * Version:v1.0 (description:  )
@@ -31,6 +36,9 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 
 	@Autowired
 	private ItemConverter itemConverter;
+
+	@Autowired
+	private CategoryDao categoryDao;
 
 	@Override
 	public Boolean saveItem(Item item) {
@@ -67,10 +75,30 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	}
 
 	@Override
+	public List<Item> findAnalyzeItems(Integer teacherId, Integer status, String version,
+			String type) {
+		return itemDao.selectItemsByAnalyzeType(teacherId, status, version, type);
+	}
+
+	@Override
+	public Workload workloadAnalyze(Integer teacherId, String type, String version) {
+		Workload workload = new Workload();
+		Double checkedWorkload = itemDao
+				.selectWorkloadForAnalyze(teacherId, CHECKED, version, type);
+		Double uncheckedWorkload = itemDao.selectWorkloadForAnalyze(teacherId, null, version, type);
+		workload.setCheckedWorkload(null == checkedWorkload ? ZERO_DOUBLE : checkedWorkload);
+		workload.setUncheckedWorkload(null == uncheckedWorkload ? ZERO_DOUBLE : uncheckedWorkload);
+		workload.setTotalWorkload(workload.getCheckedWorkload() + workload.getUncheckedWorkload());
+		workload.setWorkloadCode(type);
+		workload.setWorkloadDesc(categoryDao.findCategoryNameByCategoryCode(type));
+		return workload;
+	}
+
+	@Override
 	public List<ItemDto> findAll(String itemName, Integer categoryId, Integer status,
 			Integer ownerId, Integer isGroup, String version) {
 		List<Item> itemList = itemDao
-				.selectAll(version, itemName, categoryId, status, ownerId, isGroup,null);
+				.selectAll(version, itemName, categoryId, status, ownerId, isGroup, null);
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
 
 		return itemDtoList;
@@ -78,11 +106,11 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 
 	@Override
 	public Map<String, Object> findAll(Integer categoryId, Integer status, Integer ownerId,
-			int pageNum, int pageSize, String version,Integer importedRequired) {
+			int pageNum, int pageSize, String version, Integer importedRequired) {
 
 		PageHelper.startPage(pageNum, pageSize);
 		List<Item> items = itemDao
-				.selectAll(version, null, categoryId, status, ownerId, null,importedRequired);
+				.selectAll(version, null, categoryId, status, ownerId, null, importedRequired);
 		List<Item> itemList = new ArrayList<>();
 		for (Item item : items) {
 			itemList.add(item);

@@ -5,7 +5,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
+
 import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
+import cn.edu.uestc.ostec.workload.dto.Workload;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 
 @Component
@@ -132,4 +135,25 @@ public interface ItemDao extends BaseDao<Item> {
 					Integer status,
 			@Param("version")
 					String version);
+
+	Double selectWorkloadForAnalyze(
+			@Param("teacherId")
+					Integer teacherId,
+			@Param("status")
+					Integer status,
+			@Param("version")
+					String version,
+			@Param("type")
+					String type);
+
+	List<Item> selectItemsByAnalyzeType(
+			@Param("teacherId")
+					Integer teacherId,
+			@Param("status")
+					Integer status,
+			@Param("version")
+					String version,
+			@Param("type")
+					String type);
+
 }
