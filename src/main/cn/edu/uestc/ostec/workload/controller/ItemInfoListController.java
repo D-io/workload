@@ -118,10 +118,10 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		Map<String, Object> data = getData();
 		if ("details".equals(option)) {
-			data.put("checkedItemList", itemService
-					.findAnalyzeItems(teacherId, CHECKED, getCurrentSemester(), categoryCode));
-			data.put("uncheckedItemList", itemService
-					.findAnalyzeItems(teacherId, null, getCurrentSemester(), categoryCode));
+			data.put("checkedItemList", itemConverter.poListToDtoList(itemService
+					.findAnalyzeItems(teacherId, CHECKED, getCurrentSemester(), categoryCode)));
+			data.put("uncheckedItemList", itemConverter.poListToDtoList(itemService
+					.findAnalyzeItems(teacherId, null, getCurrentSemester(), categoryCode)));
 			return successResponse(data);
 		}
 
