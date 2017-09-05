@@ -23,7 +23,7 @@
 
     <sql id="Base_Column_List">
     item_id, item_name, category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc,
-    job_desc, status, json_child_weight,proof,is_group,other_json,version,categoryCode
+    job_desc, status, json_child_weight,proof,is_group,other_json,version,category_code
   </sql>
 
     <select id="select" resultMap="itemResultMap">
@@ -64,7 +64,7 @@
       proof = #{proof,jdbcType=INTEGER},
       is_group = #{isGroup,jdbcType=INTEGER},
       other_json = #{otherJson,jdbcType=VARCHAR},
-      categoryCode = #{categoryCode}
+      category_code = #{categoryCode}
     where item_id = #{itemId,jdbcType=INTEGER} and version = #{version}
   </update>
 
