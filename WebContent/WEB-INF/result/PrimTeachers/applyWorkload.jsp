@@ -41,7 +41,7 @@
                         <thead>
                         <tr role="row">
                             <th class="sorting">序号</th>
-                            <th class="sorting">条目名称</th>
+                            <th class="sorting">项目名称</th>
                             <th class="sorting">工作当量</th>
                             <%--<th class="sorting">计算公式</th>--%>
                             <th class="sorting">形式</th>

@@ -42,14 +42,14 @@
                         <thead>
                         <tr role="row">
                             <th class="sorting">序号</th>
-                            <th class="sorting">条目名称</th>
+                            <th class="sorting">项目名称</th>
                             <th class="sorting">工作量</th>
-                            <th class="sorting">计算公式</th>
-                            <th class="sorting">形式</th>
-                            <th class="sorting">主要参数</th>
-                            <th class="sorting">参数描述</th>
-                            <th class="sorting">其他参数</th>
-                            <th class="sorting">版本</th>
+                            <%--<th class="sorting">计算公式</th>--%>
+                            <th class="sorting">申报形式</th>
+                            <%--<th class="sorting">主要参数</th>--%>
+                            <%--<th class="sorting">参数描述</th>--%>
+                            <%--<th class="sorting">其他参数</th>--%>
+                            <%--<th class="sorting">版本</th>--%>
                             <th class="sorting">复核截止时间 </th>
                             <th class="sorting">复核状态 </th>
                             <th class="sorting">操作</th>
@@ -81,6 +81,38 @@
 
             </div>
         </div>
+
+        <div class="modal fade" id="viewdetail_review" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog" role="document" style="min-width: 700px">
+                <div class="modal-content">
+                    <div class="modal-header" style="position: relative">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                        </button>
+                        <div class="header">
+                            <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class="current-page">工作当量复核</span></p>
+                            <p class="project"></p>
+                            <p class="message"></p>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <table  class="table table-striped table-bordered dataTable no-footer">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting">计算公式</th>
+                                <th class="sorting">计算参数</th>
+                                <th class="sorting">项目属性</th>
+                                <th class="sorting">版本</th>
+                            </tr>
+                            </thead>
+                            <tbody class="viewDetailTbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <div class="modal fade bs-example-modal-lg" id="importModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -102,17 +134,55 @@
                                 <tbody class="showImportDesc"></tbody>
                             </table>&ndash;%&gt;--%>
                         <div class="applymodalbody">
-                            <%--<table class="showImportTable table dataTable no-footer table-bordered" style="display: none;">
-                                <thead style="font-size: 14px;">
-                                <tr role="row">
-                                    <th>序号</th><th>条目名称</th><th>所属人</th><th>主要参数</th><th>其他参数</th><th>条目类别</th><th>成员职责描述（小组）</th><th>所占权重</th><th>工作量</th><th>提交状态</th><th>操作</th>;
-                                </tr>
+                            <table  class="table table-striped table-bordered dataTable no-footer">
+                                <thead>
+                                    <tr role="row">
+                                        <th  class="sorting" >序号</th>
+                                        <th  class="sorting">项目名称</th>
+                                        <th class="sorting">工作当量</th>
+                                        <th class="sorting">复核状态 </th>
+                                        <th class="sorting">操作</th>
+                                    </tr>
                                 </thead>
-                                <tbody class="showImportbodyList"></tbody>
-                            </table>--%>
+
+                                <tbody class="tbody">
+
+                                </tbody>
+                            </table>
                         </div>
 
 
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal fade" id="viewdetail_reviewer" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog" role="document" style="min-width: 700px">
+                <div class="modal-content">
+                    <div class="modal-header" style="position: relative">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                        </button>
+                        <div class="header">
+                            <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class="current-page">工作当量复核</span></p>
+                            <p class="project"></p>
+                            <p class="message"></p>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <table  class="table table-striped table-bordered dataTable no-footer">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting">计算公式</th>
+                                <th class="sorting">计算参数</th>
+                                <th class="sorting">项目属性</th>
+                                <th class="sorting">版本</th>
+                            </tr>
+                            </thead>
+                            <tbody class="viewDetailbody">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 

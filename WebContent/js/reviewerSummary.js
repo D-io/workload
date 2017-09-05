@@ -150,7 +150,7 @@ function appendReviewerItem(data,mystr) {
             $("."+mystr+" tr:last td:eq(5)").text(statusName);
             var checkAct=" <button class='btn btn-primary viewdetail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</button> ";
 
-            $("."+mystr+" tr:last td:eq(6)").append(checkAct);
+            $("."+mystr+" tr:last td:eq(6)").append(checkAct).css("width","200px");
             $(document).on("click",".viewdetail",function () {
                 var thisId=parseInt(this.id.match(/\d+/g));
 

@@ -832,15 +832,12 @@ $(document).ready(function () {
         $("#myModalLabel").append( "<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量复核</span></p>" +
             "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
             "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
-            "<p class='message'>审核截止时间：" + $(this).prev().prev().text() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 导入截止时间：" + $(this).prev().text() +"</p>");
+            "<p class='message'>复核截止时间：" + $(this).prev().text() +"</p>");
 
 
         $.get(itemGroupUrl+"?" + 'categoryId=' + reg, function (data) {
 
-            var tablestr = '<table  class="table table-striped table-bordered dataTable no-footer"> <thead> <tr role="row"> <th  class="sorting" >序号</th> <th  class="sorting">条目名称</th> ' +
-                '<th class="sorting">工作量</th> <th class="sorting">计算公式</th><th class="sorting">主要参数</th><th>其他参数</th><th>版本</th><th class="sorting">复核状态 </th> <th class="sorting">操作</th> </tr> </thead> <tbody class="tbody"></tbody></table>';
-            $(".applymodalbody").empty();
-            $(".applymodalbody").append(tablestr);
+            $(".tbody").empty();
 
             var rowInfo = "<tr></tr>";
             var cellInfo = "<td></td>";
@@ -851,66 +848,137 @@ $(document).ready(function () {
                     var Info = analyseList[t];
                     $(".tbody").append(rowInfo);
 
-                    for (var j = 0; j < 9; j++)//单元格
+                    for (var j = 0; j < 6; j++)//单元格
                     {
                         $(".tbody tr:last").append(cellInfo);
                     }
                     var id = t;
+                    $(".tbody tr:last").css("text-align","center");
                     $(".tbody tr:last td:eq(0)").text(id + 1);
                     $(".tbody tr:last td:eq(1)").text(Info.itemName);
                     $(".tbody tr:last td:eq(2)").text(Info.workload);
-                    $(".tbody tr:last td:eq(3)").text(Info.formula);
-                    var paramArray = Info.parameterValues;
-                    var str = '';
-                    for (var paramCount = 0; paramCount < paramArray.length; paramCount++) {
 
-                        str += paramArray[paramCount].symbol + ':' + paramArray[paramCount].value;
-                    }
-                    $(".tbody tr:last td:eq(4)").text(str);
-                    var otherparamArray = Info.otherJsonParameters;
-                    var otherstr = '';
-                    for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
-                        otherstr += otherparamArray[otherparamCount].key + ':' + otherparamArray[otherparamCount].value;
-                    }
-                    $(".tbody tr:last td:eq(5)").text(otherstr);
-                    $(".tbody tr:last td:eq(6)").text(Info.version);
+                    /* 计算公式 */
+                    // $(".tbody tr:last td:eq(3)").text(Info.formula);
+
+                    /* 主要参数 */
+                    // var paramArray = Info.parameterValues;
+                    // var str = '';
+                    // for (var paramCount = 0; paramCount < paramArray.length; paramCount++) {
+                    //
+                    //     str += paramArray[paramCount].symbol + ':' + paramArray[paramCount].value;
+                    // }
+                    // $(".tbody tr:last td:eq(4)").text(str);
+
+                    /* 其他参数 */
+                    // var otherparamArray = Info.otherJsonParameters;
+                    // var otherstr = '';
+                    // for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
+                    //     otherstr += otherparamArray[otherparamCount].key + ':' + otherparamArray[otherparamCount].value;
+                    // }
+                    // $(".tbody tr:last td:eq(5)").text(otherstr);
+
+                    /* 版本 */
+                    // $(".tbody tr:last td:eq(6)").text(Info.version);
 
                     var statusName='';
-                    var act = "<a class=\"btn btn-success sure\" id=\"pass_" + Info.itemId + "\">确认通过</a><a class=\"btn btn-danger LeaveQues\" data-toggle=\"modal\" data-target=\"#refuModal\" id=\"refuse_" + Info.itemId + "\">存疑提交</a> ";
+
+                    var act = " <a class='btn btn-success sure' id='pass_" + Info.itemId + "'>确认通过</a><a class='btn btn-danger LeaveQues' data-toggle='modal' data-target='#refuModal' id='refuse_" + Info.itemId + "'>存疑提交</a> ";
+                    var newAct = "<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_reviewer' id='btn-viewdetail-reviewer'>查看详情</a>" ;
+                    $(".tbody tr:last td:eq(4)").append(newAct).css("width","200px");
 
                     switch (Info.status) {
                         case -1:
-                            statusName = '删除状态';
+                            statusName = '已删除';
                             break;
                         case 0:
-                            statusName = '未提交状态';
+                            statusName = '未提交';
+                            $(".tbody tr:last td:eq(3)").css("color","#cccccc");
                             break;
                         case 1:
-                            statusName = '首次复核';
-                            $(".tbody tr:last td:eq(8)").append(act);
+                            statusName = '待复核/待审核';
+                            $(".tbody tr:last td:eq(4)").append(act);
+                            $(".tbody tr:last td:eq(3)").css("color","rgb(46, 109, 164)");
                             break;
                         case 2:
-                            statusName = '确认通过';
+                            statusName = '已通过';
+                            $(".tbody tr:last td:eq(3)").css("color","#169F85");
                             break;
                         case 3:
-                            statusName = '存疑提交';
+                            statusName = '尚存疑';
+                            $(".tbody tr:last td:eq(3)").css("color","#eea236");
                             break;
                         case 4:
-                            statusName = '存疑已解决';
+                            statusName = '已解惑';
+                            $(".tbody tr:last td:eq(3)").css("color","rgb(46, 109, 164)");
                             break;
                         case 5:
-                            statusName = '审核拒绝';
+                            statusName = '已拒绝';
+                            $(".tbody tr:last td:eq(3)").css("color","rgb(214, 71, 66)");
                             break;
                     }
-                    $(".tbody tr:last td:eq(7)").text(statusName);
-                    $(".tbody tr:last td:eq(7)").attr("id","reviewe_"+Info.itemId);
+                    $(".tbody tr:last td:eq(3)").text(statusName).css("fon-weight","600");
+                    $(".tbody tr:last td:eq(3)").attr("id","reviewe_"+Info.itemId);
 
+
+                    $(".tbody tr:last td:eq(5)").text(JSON.stringify(Info));
+                    $(".tbody tr:last td:eq(5)").css("display","none");
                 }
             }
 
         });
 
     });
+
+    $(document).on("click","#btn-viewdetail-reviewer",function (){
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+        $("#viewdetail_reviewer .project").empty();
+        $("#viewdetail_reviewer .message").empty();
+        $("#viewdetail_reviewer tbody").empty();
+        var Info = $(this).parent().next().text();
+        var jsonInfo = JSON.parse(Info);
+        var deadline = $("#myModalLabel .message:last").text();
+        var auditStatus = $(this).parent().prev().text();
+        // var form = $(this).parent().prev().prev().prev().text();
+
+        $("#viewdetail_reviewer .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_reviewer .message").append(
+            "工作当量：" + jsonInfo.workload +
+            // "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核状态：" + auditStatus + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + deadline );
+
+        $(".viewDetailbody").append(rowInfo);
+        for( var i=0; i<4; i++){
+            $(".viewDetailbody tr:last").append(cellInfo);
+        }
+        $(".viewDetailbody tr:last").css("text-align","center");
+
+        /* 计算公式 */
+        $(".viewDetailbody tr:last td:eq(0)").text(jsonInfo.formula);
+
+        /* 计算参数 */
+        var praValues='';
+        for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
+            praValues = jsonInfo.paramDesc[m].desc + "：" + jsonInfo.parameterValues[m].value;
+            $(".viewDetailbody tr:last td:eq(1)").append( praValues + "<br>");
+        }
+
+        /* 项目属性 */
+        var projectProperties='';
+        if( jsonInfo.otherJsonParameters && jsonInfo.otherJsonParameters.length ){
+            for( var n = 0; n < jsonInfo.otherJsonParameters.length; n++ ){
+                projectProperties = jsonInfo.otherJsonParameters[n].key + "：" + jsonInfo.otherJsonParameters[n].value;
+                $(".viewDetailbody tr:last td:eq(2)").append( projectProperties + "<br>");
+            }
+        }
+
+        $(".viewDetailbody tr:last td:eq(1)").css("line-height","28px");
+        $(".viewDetailbody tr:last td:eq(2)").css("line-height","28px");
+
+        $(".viewDetailbody tr:last td:eq(3)").text(jsonInfo.version);      //版本
+    });
+
     $(document).on("click",".sure",function () {
         var flag=this.id;
         var passItemId=parseInt(flag.match(/\d+/g));
@@ -1292,8 +1360,8 @@ function showImportPreview(data,itemCount) {
             $(".importItemTbody tr:last td:eq(2)").attr("id","workload_"+itemCount);
             $(".importItemTbody tr:last td:eq(3)").text(Info.teacherName);
             $(".importItemTbody tr:last td:eq(3)").attr("id","teacherName_"+itemCount);
-            var str="<a class=\"btn btn-primary showImportAll\" id=\"showImportAll_"+ itemCount+"\" data-toggle='modal' data-target='#addContent'>查看详情</a><a class=\"btn btn-primary deleteAll delet_"+itemCount+"\" id=\"deleteAll_"+ Info.itemId+"\">删除操作</a>";
-            var anotherstr="<a class=\"btn btn-primary showImportAll\" id=\"showImportAll_"+ itemCount+"\" data-toggle='modal' data-target='#addContent'>查看详情</a>";
+            var str="<a class='btn btn-primary showImportAll' id='showImportAll_"+ itemCount+"' data-toggle='modal' data-target='#addContent'>查看详情</a><a class='btn btn-primary deleteAll delet_"+itemCount+"' id='deleteAll_"+ Info.itemId+"'>删除操作</a>";
+            var anotherstr="<a class='btn btn-primary showImportAll' id='showImportAll_"+ itemCount+"' data-toggle='modal' data-target='#addContent'>查看详情</a>";
 
             var statusName='';
                 switch (Info.status){
@@ -1331,6 +1399,8 @@ function showImportPreview(data,itemCount) {
 
             $(".importItemTbody tr:last td:eq(4)").text(statusName);
             $(".importItemTbody tr:last td:eq(4)").attr("class","status_"+Info.itemId);
+
+            $(".importItemTbody tr:last td:eq(5)").css("width","200px");
 
             itemCount++;
 
