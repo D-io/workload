@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
+import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.History;
@@ -33,6 +34,7 @@ import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 
 /**
@@ -46,11 +48,13 @@ public class CategoryManageAspectImpl implements IAspect {
 	private CategoryService categoryService;
 
 	@Autowired
+	private CategoryConverter categoryConverter;
+
+	@Autowired
 	private HistoryService historyService;
 
 	@Autowired
 	private ItemService itemService;
-
 
 	//TODO 所有涉及到截止时间的问题,需要加相应的限制
 	//TODO 前端同时根据当前时间来决定是否要关闭接口（按钮变灰）
@@ -148,6 +152,17 @@ public class CategoryManageAspectImpl implements IAspect {
 			LOGGER.info(CATEGORY_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
 		}
 
+		String categoryCode = null;
+		if (categoryDto.getParentId().equals(ZERO_INT)) {
+			categoryCode = categoryDto.getParentId().toString() + "-" + categoryDto.getCategoryId().toString();
+		} else {
+			categoryCode = categoryService
+					.getCategory(categoryDto.getParentId(), DateHelper.getCurrentTerm())
+					.getCategoryCode() + "-" + categoryDto.getCategoryId();
+		}
+		categoryDto.setCategoryCode(categoryCode);
+		categoryService.saveCategory(categoryConverter.dtoToPo(categoryDto));
+
 	}
 
 	@AfterReturning(returning = "rvt", pointcut = "categorySubmitPointcut()")
@@ -213,13 +228,13 @@ public class CategoryManageAspectImpl implements IAspect {
 			LOGGER.info(CATEGORY_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
 		}
 
-//		if (differences.contains("jsonParameters")) {
-//			List<Item> itemList = itemService
-//					.findItemByCategory(getCurrentSemester(), oldCategoryDto.getCategoryId());
-//			for (Item item : itemList) {
-//				itemService.removeItem(item.getItemId(), getCurrentSemester());
-//			}
-//		}
+		//		if (differences.contains("jsonParameters")) {
+		//			List<Item> itemList = itemService
+		//					.findItemByCategory(getCurrentSemester(), oldCategoryDto.getCategoryId());
+		//			for (Item item : itemList) {
+		//				itemService.removeItem(item.getItemId(), getCurrentSemester());
+		//			}
+		//		}
 
 	}
 

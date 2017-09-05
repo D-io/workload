@@ -101,6 +101,16 @@ public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 
 	private List<OtherJsonParameter> otherJsonParameters = null;
 
+	private String categoryCode = null;
+
+	public String getCategoryCode() {
+		return categoryCode;
+	}
+
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
+	}
+
 	public List<OtherJsonParameter> getOtherJsonParameters() {
 		return otherJsonParameters;
 	}

@@ -17,11 +17,12 @@
     <result column="apply_deadline" property="applyDeadline" jdbcType="INTEGER" />
     <result column="reviewer_id" property="reviewerId" jdbcType="INTEGER"/>
     <result column="other_json" property="otherJson" jdbcType="VARCHAR"/>
+    <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
   </resultMap>
 
   <sql id="Base_Column_List" >
     category_id, name, description, parent_id, is_leaf, import_required, json_parameters, formula, version,
-    status, review_deadline, apply_deadline,reviewer_id,other_json
+    status, review_deadline, apply_deadline,reviewer_id,other_json,category_code
   </sql>
 
   <select id="select" resultMap="categoryResultMap">
@@ -55,11 +56,11 @@
   </delete>
 
   <insert id="insert">
-    insert into category (category_id,name,reviewer_id,description,parent_id,is_leaf,import_required,json_parameters,formula,version,status,review_deadline,apply_deadline,other_json)
+    insert into category (category_id,name,reviewer_id,description,parent_id,is_leaf,import_required,json_parameters,formula,version,status,review_deadline,apply_deadline,other_json,category_code)
     values (#{categoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{reviewerId}, #{desc,jdbcType=VARCHAR},
       #{parentId,jdbcType=INTEGER}, #{isLeaf,jdbcType=VARCHAR}, #{importRequired,jdbcType=INTEGER}, #{jsonParameters,jdbcType=VARCHAR},
       #{formula,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
-      #{reviewDeadline,jdbcType=INTEGER}, #{applyDeadline,jdbcType=INTEGER},#{otherJson,jdbcType=VARCHAR})
+      #{reviewDeadline,jdbcType=INTEGER}, #{applyDeadline,jdbcType=INTEGER},#{otherJson,jdbcType=VARCHAR},#{categoryCode})
   </insert>
 
   <update id="update">
@@ -75,7 +76,8 @@
       status = #{status,jdbcType=INTEGER},
       review_deadline = #{reviewDeadline,jdbcType=INTEGER},
       apply_deadline = #{applyDeadline,jdbcType=INTEGER},
-      other_json = #{otherJson,jdbcType=VARCHAR}
+      other_json = #{otherJson,jdbcType=VARCHAR},
+      category_code = #{categoryCode}
     where category_id = #{categoryId,jdbcType=INTEGER} and version = #{version,jdbcType=VARCHAR}
   </update>
 

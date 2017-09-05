@@ -84,6 +84,16 @@ public class Category {
 	 */
 	private String otherJson = null;
 
+	private String categoryCode = null;
+
+	public String getCategoryCode() {
+		return categoryCode;
+	}
+
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
+	}
+
 	public Integer getReviewerId() {
 		return reviewerId;
 	}

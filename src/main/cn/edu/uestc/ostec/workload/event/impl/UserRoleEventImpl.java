@@ -15,6 +15,8 @@ import cn.edu.uestc.ostec.workload.event.UserRoleEvent;
 import cn.edu.uestc.ostec.workload.service.UserRoleService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
+
 /**
  * Description:
  */
@@ -35,8 +37,11 @@ public class UserRoleEventImpl implements UserRoleEvent {
 	 * @return boolean
 	 */
 	@Override
-	public boolean appendRoleInfo(int userId, RoleInfo roleInfo) {
+	public boolean appendRoleInfo(Integer userId, RoleInfo roleInfo) {
 
+		if(null == userId || userId.equals(ZERO_INT)) {
+			return false;
+		}
 		User user = userRoleService.getUserRoleDto(userId);
 		user.setUserId(userId);
 		user.setDeadline(DateHelper.getDateTime());
@@ -62,7 +67,7 @@ public class UserRoleEventImpl implements UserRoleEvent {
 	 * @return boolean
 	 */
 	@Override
-	public boolean clearRoleInfo(int userId, RoleInfo roleInfo) {
+	public boolean clearRoleInfo(Integer userId, RoleInfo roleInfo) {
 		//修改该组组长的角色信息
 		User user = userRoleService.getUserRoleDto(userId);
 		if (user.getStatus() == 0) {
@@ -95,7 +100,7 @@ public class UserRoleEventImpl implements UserRoleEvent {
 	 * @return boolean
 	 */
 	@Override
-	public boolean transferRoleInfo(int fromUserId, int toUserId, RoleInfo roleInfo) {
+	public boolean transferRoleInfo(Integer fromUserId, Integer toUserId, RoleInfo roleInfo) {
 		return clearRoleInfo(fromUserId, roleInfo) && appendRoleInfo(toUserId, roleInfo);
 	}
 }

@@ -86,6 +86,16 @@ public class Item implements Cloneable {
 	 */
 	private String version = DateHelper.getCurrentTerm();
 
+	private String categoryCode = null;
+
+	public String getCategoryCode() {
+		return categoryCode;
+	}
+
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
+	}
+
 	public String getVersion() {
 		return version;
 	}

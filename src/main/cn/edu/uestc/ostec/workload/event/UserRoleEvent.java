@@ -21,7 +21,7 @@ public interface UserRoleEvent extends IEvent {
 	 * @param roleInfo 指定需要增加的角色
 	 */
 	@Transactional
-	boolean appendRoleInfo(int userId, RoleInfo roleInfo);
+	boolean appendRoleInfo(Integer userId, RoleInfo roleInfo);
 
 	/**
 	 * 清理用户角色
@@ -30,7 +30,7 @@ public interface UserRoleEvent extends IEvent {
 	 * @param roleInfo 指定需要清理的角色
 	 */
 	@Transactional
-	boolean clearRoleInfo(int userId, RoleInfo roleInfo);
+	boolean clearRoleInfo(Integer userId, RoleInfo roleInfo);
 
 	/**
 	 * 转移角色信息至目标用户
@@ -40,6 +40,6 @@ public interface UserRoleEvent extends IEvent {
 	 * @param roleInfo   角色信息
 	 */
 	@Transactional
-	boolean transferRoleInfo(int fromUserId, int toUserId, RoleInfo roleInfo);
+	boolean transferRoleInfo(Integer fromUserId, Integer toUserId, RoleInfo roleInfo);
 
 }

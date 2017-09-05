@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.uestc.ostec.workload.converter.Converter;
+import cn.edu.uestc.ostec.workload.dao.CategoryDao;
 import cn.edu.uestc.ostec.workload.dao.TeacherDao;
 import cn.edu.uestc.ostec.workload.dto.FormulaParameter;
 import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
@@ -19,6 +20,7 @@ import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
 
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.OBJECT_MAPPER;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 
 /**
  * Version:v1.0 (description: 工作量类目PO与DTO转换器  )
@@ -28,6 +30,9 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 
 	@Autowired
 	private TeacherDao teacherDao;
+
+	@Autowired
+	private CategoryDao categoryDao;
 
 	@Override
 	public CategoryDto poToDto(Category po) {
@@ -65,6 +70,8 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 		categoryDto.setOtherJsonParameters(
 				readValueFromJson(categoryDto.getOtherJson(), OtherJsonParameter.class));
 
+		categoryDto.setCategoryCode(po.getCategoryCode());
+
 		return categoryDto;
 	}
 
@@ -96,17 +103,19 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 		category.setReviewerId(dto.getReviewerId());
 		category.setOtherJson((dto.getOtherJson()));
 
+		category.setCategoryCode(dto.getCategoryCode());
+
 		return category;
 	}
 
-	public static void main(String[] args){
-		CategoryConverter categoryConverter = new CategoryConverter();
-	    Category category = new Category();
-	    category.setJsonParameters("[]");
-	    CategoryDto categoryDto = categoryConverter.poToDto(category);
-	    System.out.println(categoryDto);
-		category.setJsonParameters(null);
-		CategoryDto categoryDto1 = categoryConverter.poToDto(category);
-		System.out.println(categoryDto1);
+	public static void main(String[] args) {
+//		CategoryConverter categoryConverter = new CategoryConverter();
+//		Category category = new Category();
+//		category.setJsonParameters("[]");
+//		CategoryDto categoryDto = categoryConverter.poToDto(category);
+//		System.out.println(categoryDto);
+//		category.setJsonParameters(null);
+//		CategoryDto categoryDto1 = categoryConverter.poToDto(category);
+//		System.out.println(categoryDto1);
 	}
 }

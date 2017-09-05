@@ -152,6 +152,16 @@ public class ItemDto implements CompareObjectDifferences<ItemDto> {
 
    	private List<DescAndValue> descAndValues = null;
 
+	private String categoryCode = null;
+
+	public String getCategoryCode() {
+		return categoryCode;
+	}
+
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
+	}
+
 	public String getFileName() {
 		return fileName;
 	}

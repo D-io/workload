@@ -20,6 +20,7 @@ import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.Item;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FileHelper;
 import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
 
@@ -73,7 +74,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		itemDto.setCategoryName(isNull(category) ? null : category.getName());
 		itemDto.setImportRequired(isNull(category) ? null : category.getImportRequired());
 
-		Integer reviewerId = isNull(category) ?  null : category.getReviewerId();
+		Integer reviewerId = isNull(category) ? null : category.getReviewerId();
 		itemDto.setReviewerId(reviewerId);
 		itemDto.setReviewerName(isNull(reviewerId) ? null : teacherDao.findNameById(reviewerId));
 
@@ -126,6 +127,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		//		double workload = FormulaCalculate
 		//				.calculate(category.getFormula(), itemDto.getParameterValues());
 		//		itemDto.setWorkload(workload);
+		itemDto.setCategoryCode(po.getCategoryCode());
 
 		return itemDto;
 	}
@@ -154,6 +156,11 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		item.setIsGroup(dto.getIsGroup());
 		item.setOtherJson(dto.getOtherJson());
 		item.setVersion(dto.getVersion());
+
+		Category category = categoryDao
+				.select(item.getCategoryId(), null, null, null, null, DateHelper.getCurrentTerm())
+				.get(ZERO_INT);
+		item.setCategoryCode(category.getCategoryCode());
 
 		return item;
 	}

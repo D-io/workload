@@ -43,7 +43,7 @@ public class CategoryEventImpl implements CategoryEvent {
 			if (null == category) {
 				continue;
 			}
-			int reviewerId = category.getReviewerId();
+			Integer reviewerId = category.getReviewerId();
 			if (UNCOMMITTED.equals(category.getStatus())) {
 				boolean appendSuccess = userRoleEvent.appendRoleInfo(reviewerId, REVIEWER_ROLE);
 				boolean saveSuccess = categoryService
