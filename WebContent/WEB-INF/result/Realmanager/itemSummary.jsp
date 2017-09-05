@@ -153,12 +153,26 @@
                 </div>
             </div>
             <div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
+                <div class="modal-dialog" role="document" style="min-width: 700px">
+                    <%--<div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" >详细信息</h4>
-                        </div>
+                        </div>--%>
+                        <div class="modal-content">
+                         <div class="modal-header" style="position: relative">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                </button>
+                                <div class="header">
+                                    <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;教务管理&nbsp;/&nbsp;<span class="current-page">工作当量统计</span></p>
+                                    <p class="project">
+                                        <span class="name" style="font-size: 20px;font-weight: 700;"></span>
+                                    </p>
+                                    <p class="message">
+
+                                    </p>
+                                </div>
+                            </div>
                         <div class="modal-body">
                             <table  class="table table-striped table-bordered dataTable no-footer">
                                 <thead>
@@ -167,6 +181,7 @@
                                     <th class="sorting">计算公式</th>
                                     <th  class="sorting">计算参数</th>
                                     <th class="sorting">项目属性</th>
+                                    <th class="sorting">版本</th>
 
                                 </tr>
                                 </thead>
@@ -185,6 +200,6 @@
                     </div>
                 </div>
             </div>
-
+            <%--<div id="echart_pie" style="height:350px;"></div>--%>
     </div>
 </div>

@@ -780,6 +780,7 @@ function itemSummary() {
                         { "orderable": false, "targets": 6 }
                     ]
 
+
                 });
                /* $(".paginate_button ").hover(function () {
                     $(".paginate_button ").css("cursor","pointer");
@@ -789,6 +790,133 @@ function itemSummary() {
         });
     })
 
+    // 使用
+   /* if ($('#echart_pie').length ){
+
+        var echartPie = echarts.init(document.getElementById('echart_pie'));
+        var arry=[122,123,124,125,126,127];
+        echartPie.setOption({
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                x: 'center',
+                y: 'bottom',
+                /!*data: ['本科和研究生(含留学生、非全日制研究生)培养方案规定课程的工作当量', '培养方案规定的实践教学工作当量', '年度人才培养服务工作当量', '教研教改等教学当量', '其他工作当量']
+        *!/   data: ['本科和研究生', '培养方案实践教学', '年度人才培养服务', '教研教改', '其他工作当量']
+
+            },
+
+            toolbox: {
+                show: true,
+                feature: {
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore: {
+                        show: true,
+                        title: "刷新"
+                    },
+                    saveAsImage: {
+                        show: true,
+                        title: "下载"
+                    }
+                }
+            },
+            calculable: true,
+            series: [{
+                name: '访问来源',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '48%'],
+                data: [{
+                    value: arry[0],
+                    name: '本科和研究生(含留学生、非全日制研究生)-培养方案规定课程的工作当量-（预计总量:已通过:仍待核:）',
+                    itemStyle:{
+                        normal:{color:'green'}
+                    }
+                }, {
+                    value: arry[1],
+                    name: '培养方案规定课程的实践教学工作当量-（预计总量：已通过:仍待核:）',
+                    itemStyle:{
+                        normal:{color:'blue'}
+                    }
+                }, {
+                    value: arry[2],
+                    name: '其他工作当量-（预计总量：已通过:仍待核:）',
+                    itemStyle:{
+                        normal:{color:'pink'}
+                    }
+                }, {
+                    value: arry[3],
+                    name: '年度人才培养服务工作当量-（预计总量：已通过:仍待核）',
+                    itemStyle:{
+                        normal:{color:'red'}
+                    }
+                }, {
+                    value: arry[4],
+                    name: '教研教改等教学当量-（预计总量：已通过:仍待核:）',
+                    itemStyle:{
+                        normal:{color:'lightblue'}
+                    }
+                },{
+                    value: arry[5],
+                    name: '培养方案相关人才培养其他教学工作当量-（预计总量：已通过:仍待核:）'
+                }],
+                itemStyle: {
+                    normal:{
+                        label:{
+                            show:true,
+                            formatter:function(val){   //让series 中的文字进行换行
+                                return val.name.split("-").join("\n");}
+                        },
+                        labelLine:{
+                            show:true
+                        }
+                    }
+            }}]
+
+
+        });
+
+      /!*  var dataStyle = {
+            normal: {
+                label: {
+                    show: true,
+                    formatter:function(val){    return val.split("-").join("\n");},
+                },
+                labelLine: {
+                    show: false
+                }
+            }
+        };*!/
+
+        var placeHolderStyle = {
+            normal: {
+                color: 'rgba(0,0,0,0)',
+                label: {
+                    show: true
+                },
+                labelLine: {
+                    show: true
+                }
+            },
+            emphasis: {
+                color: 'rgba(0,0,0,0)'
+            }
+        };
+
+    }*/
     /*var teachersInfo='';
         $.get(TeacherInfoUrl, {test : 12},function (data) {
             teachersInfo=data.data.teacherList;
@@ -1184,7 +1312,44 @@ function appendAllItem(data,mystr) {
             $("."+mystr+" tr:last td:eq(7)").append(checkAct);
             $(document).on("click",".viewdetail",function () {
                 var thisId=parseInt(this.id.match(/\d+/g));
+                var applyStyle='';
+                if(analyseList[thisId].isGroup==1){
+                    applyStyle="小组形式";
+                }
+                else {
+                    applyStyle="个人形式";
+                }
+                var applystatus='';
+                if(analyseList[thisId].importRequired==0){
+                    switch(analyseList[thisId].status){
+                        case 0:applystatus="审核状态：未提交";
+                        break;
+                        case 1:applystatus="审核状态：待审核";
+                        break;
+                        case 2:applystatus="审核状态：已通过";
+                        break;
+                        case 5:applystatus="审核状态：已拒绝";
+                        break;
+                    }
+                }
+                else {
+                    switch(analyseList[thisId].status){
+                        case 0:applystatus="复核状态：未提交";
+                            break;
+                        case 1:applystatus="复核状态：待复核";
+                            break;
+                        case 2:applystatus="复核状态：已通过";
+                            break;
+                        case 3:applystatus="复核状态：尚存疑";
+                            break;
+                        case 4:applystatus="复核状态：已解决";
+                            break;
+                    }
+                }
 
+                $(".name").text(analyseList[thisId].itemName);
+                $(".message").empty();
+                $(".message").append("工作当量："+analyseList[thisId].workload+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;形式："+applyStyle+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+applystatus);
                 $(".revDetail").empty();
                 $(".revDetail").append(rowInfo);
 
@@ -1213,7 +1378,7 @@ function appendAllItem(data,mystr) {
                         paramDescstr +='<p>'+ paramDesc[paramDescCount].symbol +'<p>'+ ':' +'<p>'+ paramDesc[paramDescCount].desc+'<p><hr/>';
                     }
                 }
-                for(var t=0;t<3;t++)//单元格
+                for(var t=0;t<4;t++)//单元格
                 {
                     $(".revDetail tr:last").append(cellInfo);
                 }
@@ -1222,6 +1387,7 @@ function appendAllItem(data,mystr) {
                 $(".revDetail tr:last td:eq(1)").append(str);
                 /*  $(".ResetItem tr:last td:eq(5)").text(paramDescstr);*/
                 $(".revDetail tr:last td:eq(2)").append(otherstr);
+                $(".revDetail tr:last td:eq(3)").append(analyseList[thisId].version);
             })
         }
 
@@ -1343,6 +1509,44 @@ function reviewerResetItem(data) {
 
                 $(document).on("click",".viewdetail",function () {
                     var thisId=parseInt(this.id.match(/\d+/g));
+                    var applyStyle='';
+                    if(analyseList[thisId].isGroup==1){
+                        applyStyle="小组形式";
+                    }
+                    else {
+                        applyStyle="个人形式";
+                    }
+                    var applystatus='';
+                    if(analyseList[thisId].importRequired==0){
+                        switch(analyseList[thisId].status){
+                            case 0:applystatus="审核状态：未提交";
+                                break;
+                            case 1:applystatus="审核状态：待审核";
+                                break;
+                            case 2:applystatus="审核状态：已通过";
+                                break;
+                            case 5:applystatus="审核状态：已拒绝";
+                                break;
+                        }
+                    }
+                    else {
+                        switch(analyseList[thisId].status){
+                            case 0:applystatus="复核状态：未提交";
+                                break;
+                            case 1:applystatus="复核状态：待复核";
+                                break;
+                            case 2:applystatus="复核状态：已通过";
+                                break;
+                            case 3:applystatus="复核状态：尚存疑";
+                                break;
+                            case 4:applystatus="复核状态：已解决";
+                                break;
+                        }
+                    }
+
+                    $(".name").text(analyseList[thisId].itemName);
+                    $(".message").empty();
+                    $(".message").append("工作当量："+analyseList[thisId].workload+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;形式："+applyStyle+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+applystatus);
 
                     $(".revDetail").empty();
                     $(".revDetail").append(rowInfo);
@@ -1372,7 +1576,7 @@ function reviewerResetItem(data) {
                             paramDescstr +='<p>'+ paramDesc[paramDescCount].symbol +'<p>'+ ':' +'<p>'+ paramDesc[paramDescCount].desc+'<p><hr/>';
                         }
                     }
-                    for(var t=0;t<3;t++)//单元格
+                    for(var t=0;t<4;t++)//单元格
                     {
                         $(".revDetail tr:last").append(cellInfo);
                     }
@@ -1381,6 +1585,7 @@ function reviewerResetItem(data) {
                     $(".revDetail tr:last td:eq(1)").append(str);
                     /*  $(".ResetItem tr:last td:eq(5)").text(paramDescstr);*/
                     $(".revDetail tr:last td:eq(2)").append(otherstr);
+                    $(".revDetail tr:last td:eq(3)").append(analyseList[thisId].version);
                 })
             }
         }

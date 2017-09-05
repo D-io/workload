@@ -125,10 +125,23 @@
                     <div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                               <%-- <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title" id="myModalLabel"><i class="fa fa-bar-chart"></i>教务管理&nbsp/教师项目管理</h4>
-                                </div>
+                                </div>--%>
+                                   <div class="modal-header" style="position: relative">
+                                       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                       </button>
+                                       <div class="header">
+                                           <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;教务管理&nbsp;/&nbsp;<span class="current-page" style="font-size: 14px;">教师项目管理</span></p>
+                                           <p class="project">
+                                               <span class="name" style="font-size: 20px;font-weight: 700;"></span>
+                                           </p>
+                                           <p class="message">
+
+                                           </p>
+                                       </div>
+                                   </div>
                                 <div class="modal-body">
                                     <table  class="table table-striped table-bordered dataTable no-footer">
                                         <thead>
@@ -137,7 +150,7 @@
                                              <th class="sorting">计算公式</th>
                                              <th  class="sorting">计算参数</th>
                                              <th class="sorting">项目属性</th>
-
+                                            <th class="sorting">版本</th>
                                         </tr>
                                         </thead>
                                         <tbody class="revDetail">

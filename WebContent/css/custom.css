@@ -1524,7 +1524,13 @@ td.details {
 .spanTitle{
     margin-left: 10%;
 }
-
+#showdetail .page-nav{
+    font-weight: 600;
+    padding: 0 10px 10px;
+    font-size: 16px;
+    border-bottom: 2px solid #E6E9ED;
+    line-height: 1em;
+}
 /*paging-numbers-full*/
 
 /*.paging_full_numbers {
