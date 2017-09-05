@@ -102,7 +102,7 @@ function  reviewerRec() {
 
               /* 复核截止时间 */
               $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieRec_"+Info.categoryId);
-              $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
+              $(".revieRec_"+Info.categoryId).text($(".time_"+Info.categoryId).text());
               $(".reviewerRecTbody tr:last td:eq(5)").text("已通过");
               $(".reviewerRecTbody tr:last td:eq(5)").css({"font-weight":"600","color":"#1ABB9C"});
 
@@ -182,7 +182,6 @@ function  reviewerRec() {
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieRec_"+Info.categoryId);
                 $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("尚存疑");
-                $(".reviewerRecTbody tr:last td:eq(5)").css({"font-weight":"600","color":"#eea236"});
                 /*  var statusName='';
                  switch (Info.status){
                  case 1:statusName="已提交";
@@ -258,7 +257,7 @@ function  reviewerRec() {
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieRec_"+Info.categoryId);
                 $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("已解惑");
-                $(".reviewerRecTbody tr:last td:eq(5)").css({"font-weight":"600","color":"#4cae4c"});
+
 
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_review' id='btn-viewdetail'>查看详情</a><a class='btn btn-primary reviewerApply' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
                 $(".reviewerRecTbody tr:last td:eq(6)").append(act).css("width","200px");
@@ -1812,7 +1811,7 @@ function applyRec() {
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId);
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("已通过");
-                $(".reviewerRecTbody tr:last td:eq(5)").css({"color":"#f5871f","font-weight":"700"});
+                $(".reviewerRecTbody tr:last td:eq(5)").css({"color":"#4cae4c","font-weight":"700"});
                 /*  var statusName='';
                  switch (Info.status){
                  case 1:statusName="已提交";

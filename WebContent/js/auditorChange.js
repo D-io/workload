@@ -270,7 +270,7 @@ function showimportRec() {
 
                 /* 复核截止时间 */
                 $(".reviewerRecTbody tr:last td:eq(5)").text($(".time_"+Info.categoryId).text());
-                $(".reviewerRecTbody tr:last td:eq(6)").text("提交存疑").css({"font-weight":"600","color":"rgb(46, 109, 164)"});
+                $(".reviewerRecTbody tr:last td:eq(6)").text("提交存疑");
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_import' id='btn-viewdetail'>查看详情</a><a class='btn btn-primary reviewerApply' id='showImportRec_"+Info.itemId+"'>存疑原因</a><a class='btn btn-info editInfo "+Info.itemId+"' id='editInfo_"+Info.categoryId+"' data-target='#editModal' data-toggle='modal'><i class='fa fa-pencil'></i>修改存疑</a> ";
                 $(".reviewerRecTbody tr:last td:eq(7)").append(act).css("width","200px");
                 $("[data-toggle='popover']").popover();
@@ -335,7 +335,7 @@ function showimportRec() {
                 // $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
                 // $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
                 $(".reviewerRecTbody tr:last td:eq(5)").text($(".time_"+Info.categoryId).text());
-                $(".reviewerRecTbody tr:last td:eq(6)").text("存疑解决").css({"color":"#4cae4c","font-weight":"600"});
+                $(".reviewerRecTbody tr:last td:eq(6)").text("存疑解决");
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_import' id='btn-viewdetail'>查看详情</a>";
                 $(".reviewerRecTbody tr:last td:eq(7)").append(act).css("width","200px");
 
@@ -539,22 +539,22 @@ function showapplydata(item) {
                 statusName = '删除状态';
                 break;
             case 0:
-                statusName = '未提交状态';
+                statusName = '未提交';
                 break;
             case 1:
-                statusName = '未审核';
+                statusName = '待复核/待审核';
                 break;
             case 2:
-                statusName = '确认通过';
+                statusName = '已通过';
                 break;
             case 3:
-                statusName = '存疑提交';
+                statusName = '尚存疑';
                 break;
             case 4:
-                statusName = '存疑已解决';
+                statusName = '已解惑';
                 break;
             case 5:
-                statusName = '审核拒绝';
+                statusName = '已拒绝';
                 break;
         }
         $(".showDesc tr:last td:eq(6)").text(statusName);
