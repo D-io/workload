@@ -1165,11 +1165,11 @@ function getSideBar(role,roleList) {
                 $(".userName").text(userNameUrl);
                 $(".userTeacher").text(userNameUrl+"老师！");
             });
-           /* $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",function (html) {
+            $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
                 $(".right_hole").empty();
                 $(".right_hole").append(html);
-            });*/
-            applyworkload();
+            });
+          //  applyworkload();
 
         }
         else {
@@ -1179,11 +1179,11 @@ function getSideBar(role,roleList) {
                 $(".userName").text(userNameUrl);
                 $(".userTeacher").text(userNameUrl+"老师！");
             });
-           /* $.get(pageManageUrl+"?"+"regionName=auditor/auditorcontent",function (html) {
+            $.get(pageManageUrl+"?"+"regionName=PrimTeachers/checkedRevie",function (html) {
                 $(".right_hole").empty();
                 $(".right_hole").append(html);
-            });*/
-            importWorkload();
+            });
+          //  importWorkload();
 
         }
 
@@ -1196,11 +1196,15 @@ function getSideBar(role,roleList) {
             $(".userName").text(userNameUrl);
             $(".userTeacher").text(userNameUrl+"老师！");
         });
-        $.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",{test:12},function (html) {
-            /*$(".right_hole").empty();
-            $(".right_hole").append(html);*/
+        /*$.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",{test:12},function (html) {
+            /!*$(".right_hole").empty();
+            $(".right_hole").append(html);*!/
         });
-        applyworkload();
+        applyworkload();*/
+        $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
+            $(".right_hole").empty();
+            $(".right_hole").append(html);
+        });
     }
 }
 function changeSideBar(role,roleList) {
@@ -1217,7 +1221,11 @@ function changeSideBar(role,roleList) {
 
             });
 
-            applyworkload();
+           /* applyworkload();*/
+            $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
+                $(".right_hole").empty();
+                $(".right_hole").append(html);
+            });
 
         }
         else {
@@ -1230,11 +1238,11 @@ function changeSideBar(role,roleList) {
                         $(".userTeacher").text(userNameUrl+"老师！");
                         pageshow();
                     });
-                    /*$.get(pageManageUrl+"?"+"regionName=auditor/auditorcontent",function (html) {
+                    $.get(pageManageUrl+"?"+"regionName=PrimTeachers/checkedRevie",function (html) {
                        $(".right_hole").empty();
                         $(".right_hole").append(html);
-                    });*/
-                    importWorkload();
+                    });
+                 //   importWorkload();
                     return;
                 }
             }
@@ -1374,4 +1382,16 @@ function pageshow() {
     }
 
 
+}
+function revieMyWorkload() {
+    $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
+        $(".right_hole").empty();
+        $(".right_hole").append(html);
+    });
+}
+function checkedRevie() {
+    $.get(pageManageUrl+"?"+"regionName=PrimTeachers/checkedRevie",function (html) {
+    $(".right_hole").empty();
+    $(".right_hole").append(html);
+});
 }
