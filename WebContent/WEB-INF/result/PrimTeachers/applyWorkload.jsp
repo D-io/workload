@@ -40,18 +40,18 @@
                     <table class="table table-striped table-bordered dataTable no-footer reviewerRec border-aero" style="display: none;">
                         <thead>
                         <tr role="row">
-                            <th class="sorting" style="width="5%">序号</th>
-                            <th class="sorting" style="width="30%">条目名称</th>
-                            <th class="sorting" style="width="10%">工作当量</th>
+                            <th class="sorting">序号</th>
+                            <th class="sorting">条目名称</th>
+                            <th class="sorting">工作当量</th>
                             <%--<th class="sorting">计算公式</th>--%>
-                            <th class="sorting" style="width="9%">形式</th>
+                            <th class="sorting">形式</th>
                             <%--<th class="sorting">主要参数</th>--%>
                             <%--<th class="sorting">参数描述</th>--%>
                             <%--<th class="sorting">其他参数</th>--%>
                             <%--<th class="sorting">版本</th>--%>
-                            <th class="sorting" style="width="20%">审核截止时间 </th>
-                            <th class="sorting" style="width="10%">审核状态 </th>
-                            <th class="sorting" style="width: 16%">操作</th>
+                            <th class="sorting">审核截止时间 </th>
+                            <th class="sorting">审核状态 </th>
+                            <th class="sorting">操作</th>
                         </tr>
                         </thead>
                         <tbody class="reviewerRecTbody">
