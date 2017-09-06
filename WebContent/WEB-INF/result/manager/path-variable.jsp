@@ -88,6 +88,8 @@
 
     var itemInfoUrl=contextPath+"/item/info";
 
+    var teacherAnalyzeUrl=itemInfoUrl+"/teacher-analyze";
+
     var refreshInfoUrl=itemInfoUrl+"/refresh";
 
     var itemInfoSubUrl=itemInfoUrl+"/subjectList";

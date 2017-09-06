@@ -1076,114 +1076,393 @@ function itemSummary() {
         });
 
     });
-    $(document).off("click",".checkedwork");
-    $(document).on("click",".checkedwork",function () {
-        var idCount=parseInt(this.id.match(/\d+/g));
-        var teacherid=$("#teacherId_"+idCount).text();
-        $.get(itemCollection,{
-            teacherId:teacherid,
-            option:"checked"
-        },function (data) {
-            var impjsonObject=[];
-            var chejsonObject=[];
-            $(".sumItemSort").empty();
-            $(".sumuncheckedItemSort").empty();
-            if(data.data.importCount){
-                $(".import_Item_Count").text(data.data.importCount);
-            }
-            else {
-                $(".import_Item_Count").text("0");
-            }
-            if(data.data.applyCount){
-                $(".checked_Item_Count").text(data.data.applyCount);
-            }
-            else {
-                $(".checked_Item_Count").text("0");
-            }
-            appendAllItem(data.data.importItemList,"sumItemSort");
-            appendAllItem(data.data.applyItemList,"sumuncheckedItemSort");
-           /* if(data.data.itemDtoList){
-                for(var key in data.data.itemDtoList){
-                    if(data.data.itemDtoList[key].importRequired==1){
-                        impjsonObject.push(data.data.itemDtoList[key]);
+
+        $(document).off("click",".checkedwork");
+        $(document).on("click",".checkedwork",function () {
+            var idCount=parseInt(this.id.match(/\d+/g));
+            var teacherid=$("#teacherId_"+idCount).text();
+            var arry='';
+            $.get(teacherAnalyzeUrl+"?teacherId="+teacherid,function (msg) {
+                arry=msg.data.workload;
+            });
+          //  $("#echart_pie").empty();
+            $('#echart_unchecked_pie').hide();
+            $('#echart_pie').show();
+
+            if ($('#echart_pie').length ){
+                var echartPie = echarts.init(document.getElementById('echart_pie'));
+                echartPie.setOption({
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        x: 'center',
+                        y: 'bottom',
+                        /*data: ['本科和研究生(含留学生、非全日制研究生)培养方案规定课程的工作当量', '培养方案规定的实践教学工作当量', '年度人才培养服务工作当量', '教研教改等教学当量', '其他工作当量']
+                         */   data: ['本科和研究生', '培养方案实践教学', '年度人才培养服务', '教研教改', '其他工作当量']
+
+                    },
+
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            magicType: {
+                                show: true,
+                                type: ['pie', 'funnel'],
+                                option: {
+                                    funnel: {
+                                        x: '25%',
+                                        width: '50%',
+                                        funnelAlign: 'left',
+                                        max: 1548
+                                    }
+                                }
+                            },
+                            restore: {
+                                show: true,
+                                title: "刷新"
+                            },
+                            saveAsImage: {
+                                show: true,
+                                title: "下载"
+                            }
+                        }
+                    },
+                    calculable: true,
+                    series: [{
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '48%'],
+                        data: [{
+                            value: arry.typeOne.checkedWorkload,
+                            name: '本科和研究生(含留学生、非全日制研究生)-培养方案规定课程的工作当量-（预计总量:'+arry.typeOne.totalWorkload+'已通过:'+arry.typeOne.checkedWorkload+'仍待核:'+arry.typeOne.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#00ffff'}
+                            }
+                        }, {
+                            value: arry.typeTwo.checkedWorkload,
+                            name: '培养方案规定课程的实践教学工作当量-（预计总量：'+arry.typeTwo.totalWorkload+'已通过:'+arry.typeTwo.checkedWorkload+'仍待核:'+arry.typeTwo.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#CC00FF'}
+                            }
+                        }, {
+                            value: arry.typeFour.checkedWorkload,
+                            name: '其他工作当量-（预计总量：'+arry.typeFour.totalWorkload+'已通过:'+arry.typeFour.checkedWorkload+'仍待核:'+arry.typeFour.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#e91e63'}
+                            }
+                        }, {
+                            value: arry.typeSix.checkedWorkload,
+                            name: '年度人才培养服务工作当量-（预计总量：'+arry.typeSix.totalWorkload+'已通过:'+arry.typeSix.checkedWorkload+'仍待核:'+arry.typeSix.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#00FF99'}
+                            }
+                        }, {
+                            value: arry.typeThree.checkedWorkload,
+                            name: '教研教改等教学当量-（预计总量：'+arry.typeThree.totalWorkload+'已通过:'+arry.typeThree.checkedWorkload+'仍待核:'+arry.typeThree.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#FFCC33'}
+                            }
+                        },{
+                            value: arry.typeFive.checkedWorkload,
+                            name: '学生工程科研能力培养辅助教学工作当量-（预计总量：'+arry.typeFive.totalWorkload+'已通过:'+arry.typeFive.checkedWorkload+'仍待核:'+arry.typeFive.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#FFFF33'}
+                            }
+                        }],
+                        itemStyle: {
+                            normal:{
+                                label:{
+                                    show:true,
+                                    formatter:function(val){   //让series 中的文字进行换行
+                                        return val.name.split("-").join("\n");}
+                                },
+                                labelLine:{
+                                    show:true
+                                }
+                            }
+                        }}]
+
+
+                });
+                echartPie.on('click', function (param) {
+                    // var index = param.dataIndex;
+                    // alert(index);
+                    console.log(param);
+                });
+                var placeHolderStyle = {
+                    normal: {
+                        color: 'rgba(0,0,0,0)',
+                        label: {
+                            show: true
+                        },
+                        labelLine: {
+                            show: true
+                        }
+                    },
+                    emphasis: {
+                        color: 'rgba(0,0,0,0)'
                     }
+                };
+            }
+            $('#applyModal').on('shown.bs.modal',function(){
+                echartPie.resize()
+            })
+
+            $.get(itemCollection,{
+                teacherId:teacherid,
+                option:"checked"
+            },function (data) {
+                var impjsonObject=[];
+                var chejsonObject=[];
+                $(".sumItemSort").empty();
+                $(".sumuncheckedItemSort").empty();
+                if(data.data.importCount){
+                    $(".import_Item_Count").text(data.data.importCount);
                 }
-                $(".import_Item_Count").text(impjsonObject.length);
-                JSON.stringify(impjsonObject);
-
-                appendAllItem(impjsonObject,"sumItemSort");
-                for(var anotherkey in data.data.itemDtoList){
-                    if(data.data.itemDtoList[anotherkey].importRequired==0){
-                        chejsonObject.push(data.data.itemDtoList[anotherkey]);
-                    }
+                else {
+                    $(".import_Item_Count").text("0");
                 }
-                $(".checked_Item_Count").text(impjsonObject.length);
-                JSON.stringify(chejsonObject);
+                if(data.data.applyCount){
+                    $(".checked_Item_Count").text(data.data.applyCount);
+                }
+                else {
+                    $(".checked_Item_Count").text("0");
+                }
+                appendAllItem(data.data.importItemList,"sumItemSort");
+                appendAllItem(data.data.applyItemList,"sumuncheckedItemSort");
+                /* if(data.data.itemDtoList){
+                 for(var key in data.data.itemDtoList){
+                 if(data.data.itemDtoList[key].importRequired==1){
+                 impjsonObject.push(data.data.itemDtoList[key]);
+                 }
+                 }
+                 $(".import_Item_Count").text(impjsonObject.length);
+                 JSON.stringify(impjsonObject);
 
-                appendAllItem(chejsonObject,"sumuncheckedItemSort");
-            }*/
+                 appendAllItem(impjsonObject,"sumItemSort");
+                 for(var anotherkey in data.data.itemDtoList){
+                 if(data.data.itemDtoList[anotherkey].importRequired==0){
+                 chejsonObject.push(data.data.itemDtoList[anotherkey]);
+                 }
+                 }
+                 $(".checked_Item_Count").text(impjsonObject.length);
+                 JSON.stringify(chejsonObject);
 
+                 appendAllItem(chejsonObject,"sumuncheckedItemSort");
+                 }*/
+
+            });
+            /* $.get(itemCollection,{
+             teacherId:teacherid,
+             option:"unchecked"
+             },function (data) {
+             appendAllItem(data,"sumuncheckedItemSort");
+             })*/
         });
-       /* $.get(itemCollection,{
-            teacherId:teacherid,
-            option:"unchecked"
-        },function (data) {
-            appendAllItem(data,"sumuncheckedItemSort");
-        })*/
-    });
-    $(document).off("click",".uncheckedWork");
-    $(document).on("click",".uncheckedWork",function () {
-        var idCount=parseInt(this.id.match(/\d+/g));
-        var teacherid=$("#teacherId_"+idCount).text();
+        $(document).off("click",".uncheckedWork");
+        $(document).on("click",".uncheckedWork",function () {
+            var idCount=parseInt(this.id.match(/\d+/g));
+            var teacherid=$("#teacherId_"+idCount).text();
+            var unarry='';
+            $.get(teacherAnalyzeUrl+"?teacherId="+teacherid,function (msg) {
+                unarry=msg.data.workload;
+            });
+           // $("#echart_unchecked_pie").empty();
 
-        $.get(itemCollection,{
-            teacherId:teacherid,
-            option:"unchecked"
-        },function (data) {
-            var impjsonObject=[];
-            var chejsonObject=[];
-            $(".sumItemSort").empty();
-            $(".sumuncheckedItemSort").empty();
-            if(data.data.importCount){
-                $(".import_Item_Count").text(data.data.importCount);
-            }
-            else {
-                $(".import_Item_Count").text("0");
-            }
-            if(data.data.applyCount){
-                $(".checked_Item_Count").text(data.data.applyCount);
-            }
-            else {
-                $(".checked_Item_Count").text("0");
-            }
-            appendAllItem(data.data.importItemList,"sumItemSort");
-            appendAllItem(data.data.applyItemList,"sumuncheckedItemSort");
-
-           /* if(data.data.itemDtoList){
-                for(var key in data.data.itemDtoList){
-                    if(data.data.itemDtoList[key].importRequired==1){
-                        impjsonObject.push(data.data.itemDtoList[key]);
-                    }
+            $.get(itemCollection,{
+                teacherId:teacherid,
+                option:"unchecked"
+            },function (data) {
+                var impjsonObject=[];
+                var chejsonObject=[];
+                $(".sumItemSort").empty();
+                $(".sumuncheckedItemSort").empty();
+                if(data.data.importCount){
+                    $(".import_Item_Count").text(data.data.importCount);
                 }
-                $(".import_Item_Count").text(impjsonObject.length);
-                JSON.stringify(impjsonObject);
-
-                appendAllItem(impjsonObject,"sumItemSort");
-                for(var anotherkey in data.data.itemDtoList){
-                    if(data.data.itemDtoList[anotherkey].importRequired==0){
-                        chejsonObject.push(chejsonObject.length);
-                    }
+                else {
+                    $(".import_Item_Count").text("0");
                 }
-                $(".checked_Item_Count").text(data.data.applyCount);
-                JSON.stringify(chejsonObject);
+                if(data.data.applyCount){
+                    $(".checked_Item_Count").text(data.data.applyCount);
+                }
+                else {
+                    $(".checked_Item_Count").text("0");
+                }
+                appendAllItem(data.data.importItemList,"sumItemSort");
+                appendAllItem(data.data.applyItemList,"sumuncheckedItemSort");
 
-                appendAllItem(chejsonObject,"sumuncheckedItemSort");
-            }*/
+                /* if(data.data.itemDtoList){
+                 for(var key in data.data.itemDtoList){
+                 if(data.data.itemDtoList[key].importRequired==1){
+                 impjsonObject.push(data.data.itemDtoList[key]);
+                 }
+                 }
+                 $(".import_Item_Count").text(impjsonObject.length);
+                 JSON.stringify(impjsonObject);
+
+                 appendAllItem(impjsonObject,"sumItemSort");
+                 for(var anotherkey in data.data.itemDtoList){
+                 if(data.data.itemDtoList[anotherkey].importRequired==0){
+                 chejsonObject.push(chejsonObject.length);
+                 }
+                 }
+                 $(".checked_Item_Count").text(data.data.applyCount);
+                 JSON.stringify(chejsonObject);
+
+                 appendAllItem(chejsonObject,"sumuncheckedItemSort");
+                 }*/
+            });
+            $('#echart_unchecked_pie').show();
+            $('#echart_pie').hide();
+            if ($('#echart_unchecked_pie').length ){
+                var echartPie = echarts.init(document.getElementById('echart_unchecked_pie'));
+                echartPie.setOption({
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        x: 'center',
+                        y: 'bottom',
+                        /*data: ['本科和研究生(含留学生、非全日制研究生)培养方案规定课程的工作当量', '培养方案规定的实践教学工作当量', '年度人才培养服务工作当量', '教研教改等教学当量', '其他工作当量']
+                         */   data: ['本科和研究生', '培养方案实践教学', '年度人才培养服务', '教研教改', '其他工作当量']
+
+                    },
+
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            magicType: {
+                                show: true,
+                                type: ['pie', 'funnel'],
+                                option: {
+                                    funnel: {
+                                        x: '25%',
+                                        width: '50%',
+                                        funnelAlign: 'left',
+                                        max: 1548
+                                    }
+                                }
+                            },
+                            restore: {
+                                show: true,
+                                title: "刷新"
+                            },
+                            saveAsImage: {
+                                show: true,
+                                title: "下载"
+                            }
+                        }
+                    },
+                    calculable: true,
+                    series: [{
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '48%'],
+                        data: [{
+                            value: unarry.typeOne.uncheckedWorkload,
+                            name: '本科和研究生(含留学生、非全日制研究生)-培养方案规定课程的工作当量-（预计总量:'+unarry.typeOne.totalWorkload+'已通过:'+unarry.typeOne.checkedWorkload+'仍待核:'+unarry.typeOne.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#00ffff'}
+                            }
+                        }, {
+                            value: unarry.typeTwo.uncheckedWorkload,
+                            name: '培养方案规定课程的实践教学工作当量-（预计总量：'+unarry.typeTwo.totalWorkload+'已通过:'+unarry.typeTwo.checkedWorkload+'仍待核:'+unarry.typeTwo.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#CC00FF'}
+                            }
+                        }, {
+                            value: unarry.typeSeven.uncheckedWorkload,
+                            name: '其他工作当量-（预计总量：'+unarry.typeSeven.totalWorkload+'已通过:'+unarry.typeSeven.checkedWorkload+'仍待核:'+unarry.typeSeven.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#e91e63'}
+                            }
+                        }, {
+                            value: unarry.typeSix.uncheckedWorkload,
+                            name: '年度人才培养服务工作当量-（预计总量：'+unarry.typeSix.totalWorkload+'已通过:'+unarry.typeSix.checkedWorkload+'仍待核:'+unarry.typeSix.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#00FF99'}
+                            }
+                        }, {
+                            value: unarry.typeFive.uncheckedWorkload,
+                            name: '教研教改等教学当量-（预计总量：'+unarry.typeFive.totalWorkload+'已通过:'+unarry.typeFive.checkedWorkload+'仍待核:'+unarry.typeFive.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#FFCC33'}
+                            }
+                        },{
+                            value: unarry.typeThree.uncheckedWorkload,
+                            name: '学生工程科研能力培养辅助教学工作当量-（预计总量：'+unarry.typeThree.totalWorkload+'已通过:'+unarry.typeThree.checkedWorkload+'仍待核:'+unarry.typeThree.uncheckedWorkload+'）',
+                            itemStyle:{
+                                normal:{color:'#FFFF33'}
+                            }
+                        }],
+                        itemStyle: {
+                            normal: {
+                                label: {
+                                    show: true,
+                                    formatter: function (val) {   //让series 中的文字进行换行
+                                        return val.name.split("-").join("\n");
+                                    },
+                                    textStyle: {
+                                        fontWeight: 'normal',
+                                        fontSize: 14,
+                                       /* color:'rgb(0, 0, 0)',
+                                        letterspacing:'2px'*/
+                                    }
+                                },
+                                labelLine: {
+                                    show: true
+                                }
+
+                            }
+                        }}]
+
+
+                });
+               /* echartPie.on('click', function (param) {
+                    // var index = param.dataIndex;
+                    // alert(index);
+                    console.log(param);
+                });*/
+                var placeHolderStyle = {
+                    normal: {
+                        color: 'rgba(0,0,0,0)',
+                        label: {
+                            show: true
+                        },
+                        labelLine: {
+                            show: true
+                        }
+                    },
+                    emphasis: {
+                        color: 'rgba(0,0,0,0)'
+                    }
+                };
+            }
+            $('#applyModal').on('shown.bs.modal',function(){
+                echartPie.resize()
+            })
         });
-        });
+        /*  var dataStyle = {
+         normal: {
+         label: {
+         show: true,
+         formatter:function(val){    return val.split("-").join("\n");},
+         },
+         labelLine: {
+         show: false
+         }
+         }
+         };*/
 
 }
 function appendAllItem(data,mystr) {
+
     var rowInfo="<tr></tr>";
     var cellInfo="<td></td>";
     if(data&&data.length){
@@ -1194,7 +1473,7 @@ function appendAllItem(data,mystr) {
             var Info=analyseList[i];
             $("."+mystr).append(rowInfo);
             $("."+mystr+" tr:last").attr("class","resetNum");
-            for(var j=0;j<8;j++)//单元格
+            for(var j=0;j<7;j++)//单元格
             {
                 $("."+mystr+" tr:last").append(cellInfo);
             }
@@ -1305,11 +1584,11 @@ function appendAllItem(data,mystr) {
          //   $("."+mystr+" tr:last td:eq(6)").append(otherstr);
 
             $("."+mystr+" tr:last td:eq(4)").text(Info.workload);
-            $("."+mystr+" tr:last td:eq(5)").text(Info.teacherName);
-            $("."+mystr+" tr:last td:eq(6)").text(statusName);
+            /*$("."+mystr+" tr:last td:eq(5)").text(Info.teacherName);*/
+            $("."+mystr+" tr:last td:eq(5)").text(statusName);
             var checkAct=" <button class='btn btn-primary viewdetail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</button> ";
 
-            $("."+mystr+" tr:last td:eq(7)").append(checkAct);
+            $("."+mystr+" tr:last td:eq(6)").append(checkAct);
             $(document).on("click",".viewdetail",function () {
                 var thisId=parseInt(this.id.match(/\d+/g));
                 var applyStyle='';
@@ -1506,7 +1785,7 @@ function reviewerResetItem(data) {
                /* if(statusName==0){
                     $("#reviReset_"+Info.itemId).attr("disabled","disabled");
                 }*/
-
+                $(document).off("click",".viewdetail");
                 $(document).on("click",".viewdetail",function () {
                     var thisId=parseInt(this.id.match(/\d+/g));
                     var applyStyle='';

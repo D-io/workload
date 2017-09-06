@@ -258,9 +258,7 @@
 
 <script language='javascript' src="${contextPath}/vendor/bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
 <script language='javascript' src="${contextPath}/vendor/js/select2.min.js"></script>
-<%--
 <script language='javascript' src="${contextPath}/vendor/js/echart/echarts.min.js"></script>
---%>
 
 <script language='javascript' src="${contextPath}/vendor/js/jquery-datatables/jquery.dataTables.min.js"></script>
 <script language='javascript'src="${contextPath}/js/jquery.ztree.core.js"></script>

@@ -82,16 +82,20 @@
                 <tbody class="sumItemPreview">
                 </tbody>
             </table>
+
             <div class="modal fade bs-example-modal-lg" id="applyModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
+                    <div class="modal-content" style="height: 780px;">
 
                         <div class="modal-header" style="position: relative">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                             </button>
                             <h4 class="modal-title" id="myModalLabel"><%--<span style="font-size: 18px;">--%><i class="fa fa-bar-chart"></i>教务管理<%--</span>/<span style="font-size: 13px;">--%>/工作当量统计<%--</span>--%></h4>
                         </div>
-                        <div class="modal-body" >
+                        <div class="modal-body" style="max-height: 700px;" >
+                            <%--<div id="echart_pie" style="height:350px;"></div>--%>
+                                <div id="echart_pie" style="height:350px;"></div>
+                            <div id="echart_unchecked_pie" style="height:350px;"></div>
                             <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">导入复核类(<span class="import_Item_Count"></span>)</a>
@@ -113,7 +117,7 @@
                                                 <th class="sorting" >计算参数</th>
                                                 <th class="sorting" >项目属性</th>--%>
                                                 <th class="sorting">工作当量</th>
-                                                <th  class="sorting">教师姓名</th>
+                                                <%--<th  class="sorting">教师姓名</th>--%>
                                                 <th class="sorting">项目状态</th>
                                                 <th class="sorting">操作</th>
                                             </tr>
@@ -134,7 +138,7 @@
                                                  <th class="sorting" >计算参数</th>
                                                  <th class="sorting" >项目属性</th>--%>
                                                 <th class="sorting">工作当量</th>
-                                                <th  class="sorting">教师姓名</th>
+                                               <%-- <th  class="sorting">教师姓名</th>--%>
                                                 <th class="sorting">项目状态</th>
                                                 <th class="sorting">操作</th>
                                             </tr>
@@ -200,6 +204,6 @@
                     </div>
                 </div>
             </div>
-            <%--<div id="echart_pie" style="height:350px;"></div>--%>
+
     </div>
 </div>
