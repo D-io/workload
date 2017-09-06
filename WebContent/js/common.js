@@ -893,20 +893,20 @@ $(document).ready(function () {
                             break;
                         case 0:
                             statusName = '未提交';
-                            $(".tbody tr:last td:eq(3)").css("color","#cccccc");
+                            $(".tbody tr:last td:eq(3)");
                             break;
                         case 1:
                             statusName = '待复核/待审核';
                             $(".tbody tr:last td:eq(4)").append(act);
-                            $(".tbody tr:last td:eq(3)").css("color","rgb(46, 109, 164)");
+                            $(".tbody tr:last td:eq(3)");
                             break;
                         case 2:
                             statusName = '已通过';
-                            $(".tbody tr:last td:eq(3)").css("color","#169F85");
+                            $(".tbody tr:last td:eq(3)");
                             break;
                         case 3:
                             statusName = '尚存疑';
-                            $(".tbody tr:last td:eq(3)").css("color","#eea236");
+                            $(".tbody tr:last td:eq(3)");
                             break;
                         case 4:
                             statusName = '已解惑';
@@ -914,10 +914,10 @@ $(document).ready(function () {
                             break;
                         case 5:
                             statusName = '已拒绝';
-                            $(".tbody tr:last td:eq(3)").css("color","rgb(214, 71, 66)");
+                            $(".tbody tr:last td:eq(3)");
                             break;
                     }
-                    $(".tbody tr:last td:eq(3)").text(statusName).css("font-weight","600");
+                    $(".tbody tr:last td:eq(3)").text(statusName);
                     $(".tbody tr:last td:eq(3)").attr("id","reviewe_"+Info.itemId);
 
 
@@ -1370,30 +1370,30 @@ function showImportPreview(data,itemCount) {
                         $(".importItemTbody tr:last td:eq(5)").append(str);
 
                     break;
-                    case 1:statusName="有待复核";
+                    case 1:statusName="待复核/待审核";
                         $(".importItemTbody tr:last td:eq(0)").append(anotherboxStr);
                         $(".anothersubmit:last").attr("disabled","disabled");
                         $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
                     break;
-                    case 2:statusName="确认通过";
+                    case 2:statusName="已通过";
                         $(".importItemTbody tr:last td:eq(0)").append(anotherboxStr);
                         $(".anothersubmit:last").attr("disabled","disabled");
                         $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
 
                     break;
-                    case 3:statusName="存疑提交";
+                    case 3:statusName="尚存疑";
                         $(".importItemTbody tr:last td:eq(0)").append(anotherboxStr);
                         $(".anothersubmit:last").attr("disabled","disabled");
                         $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
 
                         break;
-                    case 4:statusName="存疑解决";
+                    case 4:statusName="已解惑";
                         $(".importItemTbody tr:last td:eq(0)").append(anotherboxStr);
                         $(".anothersubmit:last").attr("disabled","disabled");
                         $(".importItemTbody tr:last td:eq(5)").append(anotherstr);
 
                         break;
-                    case 5:statusName="审核拒绝";
+                    case 5:statusName="已拒绝";
                         break;
                 }
 

@@ -386,7 +386,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" >详细信息</h4>
+                <div class="header">
+                    <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class="current-page">工作当量汇总</span></p>
+                    <p class="project"></p>
+                    <p class="message"></p>
+                </div>
             </div>
             <div class="modal-body">
                 <table  class="table table-striped table-bordered dataTable no-footer">

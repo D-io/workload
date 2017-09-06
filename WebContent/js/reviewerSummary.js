@@ -161,7 +161,7 @@ function appendReviewerItem(data,mystr) {
                 var str='';
                 for(var paramCount=0;paramCount<paramArray.length;paramCount++){
 
-                    str+='<p style="width: max-content;"><span>'+paramArray[paramCount].desc+'</span>：<span>'+paramArray[paramCount].value+'</span></p>';
+                    str+='<p><span>'+paramArray[paramCount].desc+'</span>：<span>'+paramArray[paramCount].value+'</span></p>';
 
 
                 }
@@ -170,7 +170,7 @@ function appendReviewerItem(data,mystr) {
                 if(otherparamArray&&otherparamArray.length>0){
                     for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
 
-                        otherstr +='<p style="width: max-content;"><span  class="otherstr_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].key + '</span>'+'：'+'<span class="otherParaval otherParaval_'+analyseList[thisId].itemId+'" id="otherParaval_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p>';
+                        otherstr +='<p><span  class="otherstr_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].key + '</span>'+'：'+'<span class="otherParaval otherParaval_'+analyseList[thisId].itemId+'" id="otherParaval_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p>';
 
 
                     }
@@ -186,6 +186,7 @@ function appendReviewerItem(data,mystr) {
                 {
                     $(".revDetail tr:last").append(cellInfo);
                 }
+                $(".revDetail tr:last").css("text-align","center");
                 $(".revDetail tr:last td:eq(0)").text(analyseList[thisId].formula);
 
                 $(".revDetail tr:last td:eq(1)").append(str);
