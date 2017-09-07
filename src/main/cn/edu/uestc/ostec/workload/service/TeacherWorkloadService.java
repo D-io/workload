@@ -29,4 +29,6 @@ public interface TeacherWorkloadService extends BaseService {
 	Boolean saveTeacherWorkload(TeacherWorkload workload);
 
 	Boolean updateTeacherWorkload(TeacherWorkload workload);
+
+	Boolean addTeacherWorkload(TeacherWorkload workload);
 }

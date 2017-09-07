@@ -23,9 +23,11 @@ import cn.edu.uestc.ostec.workload.event.CategoryEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
+import cn.edu.uestc.ostec.workload.pojo.TeacherWorkload;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
+import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.CATEGORY_PATH;
@@ -53,6 +55,9 @@ public class CategoryManageController extends ApplicationController {
 	@Autowired
 	private CategoryEvent categoryEvent;
 
+	@Autowired
+	private TeacherWorkloadService teacherWorkloadService;
+
 	/**
 	 * 导入以往学期的类目信息
 	 *
@@ -74,21 +79,37 @@ public class CategoryManageController extends ApplicationController {
 			return successResponse();
 		}
 
+		List<TeacherWorkload> teacherWorkloadList = teacherWorkloadService.getAllWorkload(version);
+		if (isEmptyList(teacherWorkloadList)) {
+			return successResponse();
+		}
+
+		List<TeacherWorkload> workloadList = new ArrayList<>();
+
 		List<Category> categoryList1 = new ArrayList<>();
 		Map<String, Object> data = getData();
 		Map<String, Object> errorData = getData();
 		for (Category category : categoryList) {
 			category.setVersion(getCurrentSemester());
-			category.setReviewDeadline(DateHelper
-					.getDefaultTimeStamp(DateHelper.getCurrentYear() + DEFAULT_REVIEW_DATE_TIME));
-			category.setApplyDeadline(DateHelper
-					.getDefaultTimeStamp(DateHelper.getCurrentYear() + DEFAULT_APPLY_DATE_TIME));
+			category.setReviewDeadline(
+					DateHelper.getDefaultTimeStamp(getCurrentYear() + DEFAULT_REVIEW_DATE_TIME));
+			category.setApplyDeadline(
+					DateHelper.getDefaultTimeStamp(getCurrentYear() + DEFAULT_APPLY_DATE_TIME));
 			if (!categoryService.addCategory(category)) {
 				errorData.put(category.getName(), "导入失败");
 			}
 			categoryList1.add(category);
 		}
 
+		for (TeacherWorkload teacherWorkload : teacherWorkloadList) {
+			teacherWorkload.setVersion(getCurrentSemester());
+			teacherWorkload.setDefaultParams();
+			if (teacherWorkloadService.addTeacherWorkload(teacherWorkload)) {
+				workloadList.add(teacherWorkload);
+			}
+		}
+
+		data.put("teacherWorkloadList", teacherWorkloadList);
 		data.put("categoryList", categoryList);
 		return successResponse(data);
 
