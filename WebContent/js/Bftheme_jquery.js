@@ -1204,7 +1204,7 @@ function itemSummary() {
                 echartPie.setOption({
                     tooltip: {
                         trigger: 'item',
-                        position:['26%','60%'],
+                        position:['26%','80%'],
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
                     legend: {
@@ -1246,6 +1246,7 @@ function itemSummary() {
                         type: 'pie',
                         /*radius: '60%',*/
                         radius: [55, 70],
+                        center:["45%","50%"],
                         data: [{
                             value: unarry.typeOne.checkedWorkload,
                             name: '本科和研究生(含留学生、非全日制研究生)-培养方案规定课程的工作当量-（预计总量:'+unarry.typeOne.totalWorkload+'已通过:'+unarry.typeOne.checkedWorkload+'仍待核:'+unarry.typeOne.uncheckedWorkload+'）',
