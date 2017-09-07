@@ -73,11 +73,7 @@ function reviewerSumItem() {
     if ($('#echart_pie').length ){
         var echartPie = echarts.init(document.getElementById('echart_pie'));
         echartPie.setOption({
-            tooltip: {
-                trigger: 'item',
-                position:['50%','48%'],
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
+
             legend: {
                 x: 'left',
                 y: 'top',
@@ -116,6 +112,7 @@ function reviewerSumItem() {
                 type: 'pie',
                 /*radius: '60%',*/
                 radius: [55, 70],
+                center:["40%","50%"],
                 data: [{
                     value: unarry.typeOne.checkedWorkload,
                     name: '本科和研究生(含留学生、非全日制研究生)-培养方案规定课程的工作当量-（预计总量:'+unarry.typeOne.totalWorkload+'已通过:'+unarry.typeOne.checkedWorkload+'仍待核:'+unarry.typeOne.uncheckedWorkload+'）',
@@ -190,7 +187,14 @@ function reviewerSumItem() {
                         }
 
                     }
-                }}]
+                }}],
+            tooltip: {
+                trigger: 'item',
+                position:['38%','40%'],
+                formatter: function (val) {   //让series 中的文字进行换行
+                    return val.name.split("-").join("\n");
+                }
+            }
 
 
         });

@@ -1204,7 +1204,7 @@ function itemSummary() {
                 echartPie.setOption({
                     tooltip: {
                         trigger: 'item',
-                        position:['50%','48%'],
+                        position:['26%','60%'],
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
                     legend: {
