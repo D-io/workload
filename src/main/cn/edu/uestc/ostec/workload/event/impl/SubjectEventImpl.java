@@ -42,6 +42,7 @@ public class SubjectEventImpl implements SubjectEvent {
 		subject.setSendTime(DateHelper.getCurrentTimestamp());
 		subject.setMsgContent(message);
 		subject.setSendFromId(userId);
+		subject.setVersion(getCurrentSemester());
 
 		boolean saveSubject = subjectService.addSubject(subject);
 		return saveItem && saveSubject;

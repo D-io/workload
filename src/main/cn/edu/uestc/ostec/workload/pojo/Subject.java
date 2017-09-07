@@ -1,5 +1,9 @@
 package cn.edu.uestc.ostec.workload.pojo;
 
+import sun.misc.Version;
+
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
+
 public class Subject {
 
 	/**
@@ -31,6 +35,19 @@ public class Subject {
 	 * 发送时间
 	 */
 	private Integer sendTime;
+
+	/**
+	 * 学期号
+	 */
+	private String version = DateHelper.getCurrentTerm();
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
 	public Integer getItemId() {
 		return itemId;

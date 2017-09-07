@@ -18,7 +18,7 @@ public interface SubjectService extends BaseService {
 	 * @param itemId item编号
 	 * @return List<Subject>
 	 */
-	List<Subject> getSubjectsByItem(Integer itemId);
+	List<Subject> getSubjectsByItem(Integer itemId,String version);
 
 	/**
 	 * 查询单个Subject信息
