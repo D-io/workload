@@ -1517,13 +1517,23 @@ td.details {
     cursor: pointer;
 }
 .revContent{
-    height: 80%;
+    width:238px;
+    height: 50%;
+    box-shadow: 0 0 13px #eee;
+    margin-left: 4%;
+    margin-right: 20px;
     border-radius: 3px;
     margin-top: 20px;
 }
 .spanTitle{
-    margin-left: 10%;
+    margin-left: 20%;
+    margin-top: 10px;
+    font-weight: 700;
 }
+.showrevieContent{
+    display: none;
+}
+
 #showdetail .page-nav{
     font-weight: normal;
     padding: 0 10px 10px;
