@@ -72,8 +72,8 @@
                     <th class=" teacher_Sort">教师工号</th>
                     <th  class=" teacher_Sort">教师姓名</th>
                     <th  class="teacher_Sort ">专业职称</th>
-                    <th class=" teacher_Sort">通过审核(复核)工作当量</th>
-                    <th class=" teacher_Sort" >有待审核(复核)工作当量</th>
+                    <th class=" teacher_Sort">已通过工作当量</th>
+                    <th class=" teacher_Sort" >待核定工作当量</th>
                     <th class=" teacher_Sort" >预期总工作当量</th>
                     <th class="sorting">刷新</th>
 
@@ -90,7 +90,7 @@
                         <div class="modal-header" style="position: relative">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                             </button>
-                            <h4 class="modal-title" id="myModalLabel"><%--<span style="font-size: 18px;">--%><i class="fa fa-bar-chart"></i>教务管理<%--</span>/<span style="font-size: 13px;">--%>/工作当量统计<%--</span>--%></h4>
+                            <h4 class="modal-title" id="myModalLabel"><%--<span style="font-size: 18px;">--%><i class="fa fa-bar-chart"></i>教务管理/工作当量统计/【<span class="teach_id"></span>】<span class="teach_name"></span>/<span class="title_name"></span></h4>
                         </div>
                         <div class="modal-body" style="max-height: 700px;" >
                             <%--<div id="echart_pie" style="height:350px;"></div>--%>
@@ -163,12 +163,12 @@
                         <div class="modal-header" style="position: relative">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                             </button>
-                            <h4 class="modal-title"><%--<span style="font-size: 18px;">--%><i class="fa fa-bar-chart"></i>教务管理/工作当量统计/【<span class="teachers_name"></span>】<span class="teachers_id"></span></h4>
+                            <h4 class="modal-title"><%--<span style="font-size: 18px;">--%><i class="fa fa-bar-chart"></i>教务管理/工作当量统计/【<span class="teachers_id"></span>】<span class="teachers_name"></span></h4>
                         </div>
                         <div class="modal-body" style="max-height: 500px;overflow-y: hidden;overflow-x: hidden;" >
                             <%--<div id="echart_pie" style="height:350px;"></div>--%>
                           <%--  <div id="echart_pie" style="height:350px;"></div>--%>
-                                <%--<div class="all_Count" style="float: left">--%><div style="background-color: #5ab1ef;float: left;margin-right: 25px;">预计总工作当量：<span class="totlaAll" style="color: #fff"></span></div><div style="background-color: #2ec7c9;float: left;margin-right: 25px;">已通过总工作当量：<span class="passAll" style="color: #fff"></span></div><div style="background-color: #ffb980;float: left;">待核定总工作当量：<span class="unpassAll" style="color: #fff"></span></div><%--</div>--%>
+                                <%--<div class="all_Count" style="float: left">--%><div style="color: #fff;font-size:16px;background-color: #5ab1ef;float: left;margin-right: 25px;">预计总工作当量：<span class="totlaAll" style="color: #fff"></span></div><div style="color: #fff;font-size:16px;background-color: #2ec7c9;float: left;margin-right: 25px;">已通过总工作当量：<span class="passAll" style="color: #fff"></span></div><div style="color: #fff;font-size:16px;background-color: #ffb980;float: left;">待核定总工作当量：<span class="unpassAll" style="color: #fff"></span></div><%--</div>--%>
 
                                 <div id="echart_unchecked_pie" style="height:350px;"></div>
                            <%-- <div class="clearfix"></div>--%>

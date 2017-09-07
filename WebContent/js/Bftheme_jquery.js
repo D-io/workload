@@ -837,6 +837,9 @@ function itemSummary() {
         $(document).off("click",".checkedwork");
         $(document).on("click",".checkedwork",function () {
             var idCount=parseInt(this.id.match(/\d+/g));
+            $(".teach_id").text($("#teacherId_"+idCount).text());
+            $(".teach_name").text($("#teachersname_"+idCount).text());
+            $(".title_name").text("已通过工作当量");
             var teacherid=$("#teacherId_"+idCount).text();
             var arry='';
           //  $("#echart_pie").empty();
@@ -1041,6 +1044,9 @@ function itemSummary() {
         $(document).off("click",".uncheckedWork");
         $(document).on("click",".uncheckedWork",function () {
             var idCount=parseInt(this.id.match(/\d+/g));
+            $(".teach_id").text($("#teacherId_"+idCount).text());
+            $(".teach_name").text($("#teachersname_"+idCount).text());
+            $(".title_name").text("待核定工作当量");
             var teacherid=$("#teacherId_"+idCount).text();
             var unarry='';
             $.get(itemCollection,{
@@ -1249,44 +1255,44 @@ function itemSummary() {
                         center:["45%","50%"],
                         data: [{
                             value: unarry.typeOne.checkedWorkload,
-                            name: '本科和研究生(含留学生、非全日制研究生)-培养方案规定课程的工作当量-（预计总量:'+unarry.typeOne.totalWorkload+'已通过:'+unarry.typeOne.checkedWorkload+'仍待核:'+unarry.typeOne.uncheckedWorkload+'）',
+                            name: '本科和研究生(含留学生、非全日制研究生)-培养方案规定课程的工作当量-（预计总量：'+unarry.typeOne.totalWorkload+'已通过：'+unarry.typeOne.checkedWorkload+'仍待核：'+unarry.typeOne.uncheckedWorkload+'）',
                             itemStyle:{
                                 normal:{color:'#b6a2de'}
                             }
                         }, {
                             value: unarry.typeTwo.checkedWorkload,
-                            name: '培养方案规定课程的实践教学工作当量-（预计总量：'+unarry.typeTwo.totalWorkload+'已通过:'+unarry.typeTwo.checkedWorkload+'仍待核:'+unarry.typeTwo.uncheckedWorkload+'）',
+                            name: '培养方案规定课程的实践教学工作当量-（预计总量：'+unarry.typeTwo.totalWorkload+'已通过：'+unarry.typeTwo.checkedWorkload+'仍待核：'+unarry.typeTwo.uncheckedWorkload+'）',
                             itemStyle:{
                                 normal:{color:'#5ab1ef'},
                             }
                         }, {
                             value: unarry.typeSeven.checkedWorkload,
-                            name: '其他-（预计总量：'+unarry.typeSeven.totalWorkload+'已通过:'+unarry.typeSeven.checkedWorkload+'仍待核:'+unarry.typeSeven.uncheckedWorkload+'）',
+                            name: '其他-（预计总量：'+unarry.typeSeven.totalWorkload+'已通过：'+unarry.typeSeven.checkedWorkload+'仍待核：'+unarry.typeSeven.uncheckedWorkload+'）',
                             itemStyle:{
                                 normal:{color:'#CCFF99'}
                             }
                         },
                             {
                                 value: unarry.typeFour.checkedWorkload,
-                                name: '其他教学工作当量-（预计总量：'+unarry.typeFour.totalWorkload+'已通过:'+unarry.typeFour.checkedWorkload+'仍待核:'+unarry.typeFour.uncheckedWorkload+'）',
+                                name: '其他教学工作当量-（预计总量：'+unarry.typeFour.totalWorkload+'已通过：'+unarry.typeFour.checkedWorkload+'仍待核：'+unarry.typeFour.uncheckedWorkload+'）',
                                 itemStyle:{
                                     normal:{color:'#d87a80'}
                                 }
                             },{
                                 value: unarry.typeSix.checkedWorkload,
-                                name: '年度人才培养服务工作当量-（预计总量：'+unarry.typeSix.totalWorkload+'已通过:'+unarry.typeSix.checkedWorkload+'仍待核:'+unarry.typeSix.uncheckedWorkload+'）',
+                                name: '年度人才培养服务工作当量-（预计总量：'+unarry.typeSix.totalWorkload+'已通过：'+unarry.typeSix.checkedWorkload+'仍待核：'+unarry.typeSix.uncheckedWorkload+'）',
                                 itemStyle:{
                                     normal:{color:'#2ec7c9'}
                                 }
                             }, {
                                 value: unarry.typeFive.checkedWorkload,
-                                name: '教研教改等教学当量-（预计总量：'+unarry.typeFive.totalWorkload+'已通过:'+unarry.typeFive.checkedWorkload+'仍待核:'+unarry.typeFive.uncheckedWorkload+'）',
+                                name: '教研教改等教学当量-（预计总量：'+unarry.typeFive.totalWorkload+'已通过：'+unarry.typeFive.checkedWorkload+'仍待核：'+unarry.typeFive.uncheckedWorkload+'）',
                                 itemStyle:{
                                     normal:{color:'#ffb980'}
                                 }
                             },{
                                 value: unarry.typeThree.checkedWorkload,
-                                name: '学生工程科研能力培养辅助教学工作当量-（预计总量：'+unarry.typeThree.totalWorkload+'已通过:'+unarry.typeThree.checkedWorkload+'仍待核:'+unarry.typeThree.uncheckedWorkload+'）',
+                                name: '学生工程科研能力培养辅助教学工作当量-（预计总量：'+unarry.typeThree.totalWorkload+'已通过:'+unarry.typeThree.checkedWorkload+'仍待核：'+unarry.typeThree.uncheckedWorkload+'）',
                                 itemStyle:{
                                     normal:{color:'#ffab00'}
                                 }
