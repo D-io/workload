@@ -94,8 +94,8 @@
                         </div>
                         <div class="modal-body" style="max-height: 700px;" >
                             <%--<div id="echart_pie" style="height:350px;"></div>--%>
-                                <div id="echart_pie" style="height:350px;"></div>
-                            <div id="echart_unchecked_pie" style="height:350px;"></div>
+                             <%--   <div id="echart_pie" style="height:350px;"></div>
+                            <div id="echart_unchecked_pie" style="height:350px;"></div>--%>
                             <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">导入复核类(<span class="import_Item_Count"></span>)</a>
@@ -156,6 +156,27 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade bs-example-modal-lg" id="showPieModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content" style="height: 500px;">
+
+                        <div class="modal-header" style="position: relative">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title"><%--<span style="font-size: 18px;">--%><i class="fa fa-bar-chart"></i>教务管理/工作当量统计/【<span class="teachers_name"></span>】<span class="teachers_id"></span></h4>
+                        </div>
+                        <div class="modal-body" style="max-height: 500px;overflow-y: hidden;overflow-x: hidden;" >
+                            <%--<div id="echart_pie" style="height:350px;"></div>--%>
+                          <%--  <div id="echart_pie" style="height:350px;"></div>--%>
+                                <div class="all_Count" style="float: left"><div style="background-color: #5ab1ef">预计总工作当量：<span class="totlaAll" style="color: #fff"></span></div><div style="background-color: #2ec7c9">已通过总工作当量：<span class="passAll" style="color: #fff"></span></div><div style="background-color: #ffb980">待核定总工作当量：<span class="unpassAll" style="color: #fff"></span></div></div>
+                            <div id="echart_unchecked_pie" style="height:350px;"></div>
+                           <%-- <div class="clearfix"></div>--%>
+b
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
                 <div class="modal-dialog" role="document" style="min-width: 700px">
                     <%--<div class="modal-content">
@@ -167,8 +188,8 @@
                          <div class="modal-header" style="position: relative">
                                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                                 </button>
-                                <div class="header">
-                                    <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;教务管理&nbsp;/&nbsp;<span class="current-page">工作当量统计</span></p>
+                                <div class="header" style="width:96%;float: left;">
+                                    <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;教务管理&nbsp;/&nbsp;<span class="current-page">工作当量统计&nbsp;/&nbsp;查看详情</span></p>
                                     <p class="project">
                                         <span class="name" style="font-size: 20px;font-weight: 700;"></span>
                                     </p>
@@ -185,7 +206,6 @@
                                     <th class="sorting">计算公式</th>
                                     <th  class="sorting">计算参数</th>
                                     <th class="sorting">项目属性</th>
-                                    <th class="sorting">版本</th>
 
                                 </tr>
                                 </thead>

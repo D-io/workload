@@ -22,7 +22,8 @@
     <!-- Web Fonts  -->
   <%--  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
  --%>   <title>教学工作当量计算系统 | </title>
-
+    <%--title-image--%>
+    <link href="${contextPath}/css/images/workloadltitleogo.png" rel="Shortcut Icon" type="text/css">
     <!-- Bootstrap -->
     <link href="${contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
     <!-- Font Awesome -->

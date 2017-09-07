@@ -132,8 +132,8 @@
                                    <div class="modal-header" style="position: relative">
                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                                        </button>
-                                       <div class="header">
-                                           <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;教务管理&nbsp;/&nbsp;<span class="current-page" style="font-size: 14px;">教师项目管理</span></p>
+                                       <div class="header" style="width:96%;float: left;">
+                                           <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;教务管理&nbsp;/&nbsp;<span class="current-page" style="font-size: 14px;">教师项目管理&nbsp;/&nbsp;查看详情</span></p>
                                            <p class="project">
                                                <span class="name" style="font-size: 20px;font-weight: 700;"></span>
                                            </p>
@@ -150,7 +150,6 @@
                                              <th class="sorting">计算公式</th>
                                              <th  class="sorting">计算参数</th>
                                              <th class="sorting">项目属性</th>
-                                            <th class="sorting">版本</th>
                                         </tr>
                                         </thead>
                                         <tbody class="revDetail">
