@@ -15,7 +15,7 @@ function reviewerSumItem() {
             }
             $("#check_passed").text(data.data.applyCount);
             $("#rev_passed").text(data.data.importCount);
-            if(data.data.importlist!=null){
+            if(data.data.importItemList!=null){
                 appendReviewerItem(data.data.importItemList,"sumrevieItem",sumtocount);
                 for(var t=0;t<data.data.importItemList.length;t++){
                     sumtocount++;
@@ -41,7 +41,7 @@ function reviewerSumItem() {
             }
             $("#check_no_passed").text(data.data.applyCount);
             $("#rev_no_passed").text(data.data.importCount);
-            if(data.data.importlist!=null){
+            if(data.data.importItemList!=null){
                 appendReviewerItem(data.data.importItemList,"sumnoItemSort",sumtocount);
                 for(var m=0;m<data.data.importItemList.length;m++){
                     sumtocount++;
@@ -58,11 +58,11 @@ function reviewerSumItem() {
 
         });
         $.get(itemCollection+"?teacherId="+userId,function (data) {
-            if(data.data.itemDtolist!=null){
-                appendReviewerItem(data.data.itemDtolist,"sumall",sumtocount);
-                for(var k=0;k<data.data.applyItemList.length;k++){
+            if(data.data.itemDtoList!=null){
+                appendReviewerItem(data.data.itemDtoList,"sumall",sumtocount);
+                for(var k=0;k<data.data.itemDtoList.length;k++){
                     sumtocount++;
-                    newArray.push(data.data.applyItemList[k]);
+                    newArray.push(data.data.itemDtoList[k]);
                 }
             }
         });
