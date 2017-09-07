@@ -27,7 +27,7 @@
 
             <div style="float: left">
                 <h4 style="font-size: 13px;">已通过工作当量：<span  class="checkedWorkload passed"></span></h4>
-                <h4 style="font-size: 13px;">待审核（复核）工作当量：<span  class="uncheckedWorkload pending-audit"></span></h4>
+                <h4 style="font-size: 13px;">待核定工作当量：<span  class="uncheckedWorkload pending-audit"></span></h4>
                 <h4 style="font-size: 13px;">预期总工作当量：<span  class="totalWorkload expected"></span></h4>
             </div>
             <div style="float: right">

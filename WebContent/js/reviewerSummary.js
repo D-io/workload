@@ -166,7 +166,7 @@ function reviewerSumItem() {
                             },
                             textStyle: {
                                 fontWeight: 'normal',
-                                fontSize: '14',
+                                fontSize: '13',
                                 color:"rgb(115, 135, 156)"
                                 /* color:'rgb(0, 0, 0)',
                                  letterspacing:'2px'*/
