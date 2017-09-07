@@ -511,6 +511,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			statusList.add(CHECKED);
 		} else if ("unchecked".equals(option)) {
 			statusList.addAll(getUncheckedStatus());
+		} else if (isEmptyString(option)){
+			statusList.add(CHECKED);
+			statusList.addAll(getUncheckedStatus());
 		} else {
 			return parameterNotSupportResponse("参数有误");
 		}

@@ -119,4 +119,12 @@ public class TeacherWorkload {
 
 	public TeacherWorkload() {
 	}
+
+	public void setDefaultParams() {
+		this.setCheckedItems(ZERO_INT);
+		this.setUncheckedItems(ZERO_INT);
+		this.setUncheckedWorkload(ZERO_DOUBLE);
+		this.setCheckedWorkload(ZERO_DOUBLE);
+		this.setTotalWorkload(ZERO_DOUBLE);
+	}
 }

@@ -38,6 +38,10 @@ public class TeacherWorkloadServiceImpl extends BaseServiceImpl implements Teach
 		return listResult(teacherWorkloadDao.select(null, version, null));
 	}
 
+	public Boolean addTeacherWorkload(TeacherWorkload workload) {
+		return teacherWorkloadDao.insert(workload);
+	}
+
 	/**
 	 * 该方法用于做 AOP 切面，执行之后便于统计总和
 	 * @param workload 要修改的工作量
