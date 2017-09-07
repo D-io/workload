@@ -25,9 +25,9 @@ public class SubjectServiceImpl extends BaseServiceImpl implements SubjectServic
 	}
 
 	@Override
-	public List<Subject> getSubjectsByItem(Integer itemId) {
+	public List<Subject> getSubjectsByItem(Integer itemId,String version) {
 
-		return listResult(subjectDao.selectByItem(itemId));
+		return listResult(subjectDao.selectByItem(itemId,version));
 	}
 
 	@Override

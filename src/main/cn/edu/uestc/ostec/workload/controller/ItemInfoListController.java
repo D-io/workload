@@ -467,7 +467,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				int itemId = itemDto.getItemId();
 				Map<Integer, Object> subjectMap = new HashMap<>();
 				List<SubjectDto> subjectDtoList = subjectConverter
-						.poListToDtoList(subjectService.getSubjectsByItem(itemId));
+						.poListToDtoList(subjectService.getSubjectsByItem(itemId,getCurrentSemester()));
 				subjectMap.put(itemDto.getItemId(), subjectDtoList);
 				data.put("subjectMap", subjectMap);
 			}
@@ -576,7 +576,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			@RequestParam("itemId")
 					Integer itemId) {
 
-		List<Subject> subjectList = subjectService.getSubjectsByItem(itemId);
+		List<Subject> subjectList = subjectService.getSubjectsByItem(itemId,getCurrentSemester());
 
 		if (null == subjectList) {
 			return parameterNotSupportResponse("参数有误");

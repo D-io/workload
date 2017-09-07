@@ -7,17 +7,18 @@
     <result column="msg_content" property="msgContent" jdbcType="VARCHAR" />
     <result column="send_from_id" property="sendFromId" jdbcType="INTEGER" />
     <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
   </resultMap>
 
   <insert id="insert">
     insert into subject (subject_id,item_id, msg_content, send_from_id,
-      send_time)
+      send_time,version)
     values (#{subjectId,jdbcType=INTEGER},#{itemId,jdbcType=INTEGER}, #{msgContent,jdbcType=VARCHAR}, #{sendFromId,jdbcType=INTEGER},
-      #{sendTime,jdbcType=TIMESTAMP})
+      #{sendTime,jdbcType=TIMESTAMP},#{version,jdbcType=VARCHAR})
   </insert>
 
   <select id="selectByItem" resultMap="subjectResultMap">
-    select * from subject where item_id = #{itemId,jdbcType=INTEGER} order by send_time desc
+    select * from subject where item_id = #{itemId,jdbcType=INTEGER} and version = #{version} order by send_time desc
   </select>
 
   <select id="select" resultMap="subjectResultMap">

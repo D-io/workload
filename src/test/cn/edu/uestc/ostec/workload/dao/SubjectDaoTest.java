@@ -47,7 +47,7 @@ public class SubjectDaoTest extends BaseTest {
 	@Test
 	public void select() throws Exception {
 		System.out.println(subjectDao.select(1));
-		System.out.println(subjectDao.selectByItem(2));
+		//System.out.println(subjectDao.selectByItem(2));
 	}
 
 	@Test
