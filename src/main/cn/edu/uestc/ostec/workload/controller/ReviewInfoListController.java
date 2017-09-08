@@ -247,7 +247,7 @@ public class ReviewInfoListController extends ApplicationController {
 		int userId = user.getUserId();
 
 		List<ItemDto> itemDtoList = itemService
-				.findAll(null, categoryId, null, ownerId, isGroup, getCurrentSemester());
+				.findAll(null, categoryId, null, ownerId, isGroup, getCurrentSemester(),null,null);
 
 		List<ItemDto> removeItemDtoList = new ArrayList<>();
 
