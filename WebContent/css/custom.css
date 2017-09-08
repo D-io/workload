@@ -346,7 +346,7 @@ html , body{
     background-image: none;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 80%;
+    width: 100%;
 }
 .sorting{
     text-align: center;
@@ -4452,6 +4452,7 @@ p.deadline span {
     font-size: 16px;
     border-bottom: 2px solid #E6E9ED;
     line-height: 1em;
+    margin-right: 20px;
 }
 #viewdetail_apply .page-nav .current-page,#viewdetail_import .page-nav .current-page,#viewdetail_review .page-nav .current-page,#viewdetail_reviewer .page-nav .current-page,#importModal .page-nav .current-page,#viewdetail_audit .page-nav .current-page,#myModalLabel .page-nav .current-page{
     font-weight: 500;
@@ -4472,11 +4473,20 @@ p.deadline span {
 }
 #showsumitem .passed{
     background: #c1e2b3;
-    color: #;
 }
 #showsumitem .pending-audit{
     background: #fbed50;
 }
 #showsumitem .expected{
     background: #e4b9b9;
+}
+.operation-btn-two{
+    width: 200px;
+    text-align: left!important;
+    padding-left: 41px!important;
+}
+.operation-btn-three{
+    width: 200px;
+    text-align: left!important;
+    padding-left: 10px!important;
 }

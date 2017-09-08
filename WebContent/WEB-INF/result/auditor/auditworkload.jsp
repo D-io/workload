@@ -70,7 +70,7 @@
                                 <tr role="row">
                                 <th class="sorting">序号</th>
                                 <th class="sorting">申报人</th>
-                                <th class="sorting">条目名称</th>
+                                <th class="sorting">项目名称</th>
                                  <th class="sorting">所占权重</th>
                                 <%--<th class="sorting">申报描述</th>--%>
                                 <th class="sorting">申报形式</th>
@@ -117,7 +117,6 @@
                                 <th class="sorting">计算公式</th>
                                 <th class="sorting">计算参数</th>
                                 <th class="sorting">项目属性</th>
-                                <th class="sorting">版本</th>
                             </tr>
                             </thead>
                             <tbody class="viewDetailTbody">
@@ -165,7 +164,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" id="refucommit">提交</button>
+                    <button type="button" class="btn btn-primary" id="refucommit">确定</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->

@@ -66,7 +66,7 @@
                                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                                 </button>
                                 <div class="header">
-                                    <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class="current-page">工作当量申报</span></p>
+                                    <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class="current-page">工作当量申报&nbsp;/&nbsp;查看详情</span></p>
                                     <p class="project"></p>
                                     <p class="message"></p>
                                 </div>
@@ -78,7 +78,6 @@
                                         <th class="sorting">计算公式</th>
                                         <th class="sorting">计算参数</th>
                                         <th class="sorting">项目属性</th>
-                                        <th class="sorting">版本</th>
                                     </tr>
                                     </thead>
                                     <tbody class="viewDetailTbody">

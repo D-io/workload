@@ -104,10 +104,9 @@ function  reviewerRec() {
               $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieRec_"+Info.categoryId);
               $(".revieRec_"+Info.categoryId).text($(".time_"+Info.categoryId).text());
               $(".reviewerRecTbody tr:last td:eq(5)").text("已通过");
-              $(".reviewerRecTbody tr:last td:eq(5)").css({"font-weight":"600","color":"#1ABB9C"});
 
               var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_review' id='btn-viewdetail'>查看详情</a> ";
-              $(".reviewerRecTbody tr:last td:eq(6)").append(act).css("width","200px");
+              $(".reviewerRecTbody tr:last td:eq(6)").append(act).attr("class","operation-btn-two");
 
               $(".reviewerRecTbody tr:last td:eq(7)").text(JSON.stringify(Info));
               $(".reviewerRecTbody tr:last td:eq(7)").css("display","none");
@@ -180,7 +179,7 @@ function  reviewerRec() {
                 $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
 
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieRec_"+Info.categoryId);
-                $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
+                $(".revieRec_"+Info.categoryId).text($(".time_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("尚存疑");
                 /*  var statusName='';
                  switch (Info.status){
@@ -193,7 +192,7 @@ function  reviewerRec() {
                 //   $(".reviewerRecTbody tr:last td:eq(10)").text(act);
 
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_review' id='btn-viewdetail'>查看详情</a> ";
-                $(".reviewerRecTbody tr:last td:eq(6)").append(act).css("width","200px");
+                $(".reviewerRecTbody tr:last td:eq(6)").append(act).attr("class","operation-btn-two");
 
                 $(".reviewerRecTbody tr:last td:eq(7)").text(JSON.stringify(Info));
                 $(".reviewerRecTbody tr:last td:eq(7)").css("display","none");
@@ -255,16 +254,16 @@ function  reviewerRec() {
                 // $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
 
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieRec_"+Info.categoryId);
-                $(".revieRec_"+Info.categoryId).text($(".applyD_"+Info.categoryId).text());
+                $(".revieRec_"+Info.categoryId).text($(".time_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("已解惑");
 
 
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_review' id='btn-viewdetail'>查看详情</a><a class='btn btn-primary reviewerApply' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
-                $(".reviewerRecTbody tr:last td:eq(6)").append(act).css("width","200px");
+                $(".reviewerRecTbody tr:last td:eq(6)").append(act).attr("class","operation-btn-two");
                 $("[data-toggle='popover']").popover();
                 $(".reviewerApply").popover({
                     placement: "top",
-                    trigger: "click",
+                    trigger: "hover",
                     html: true,
                     title: "回复信息",
                     content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
@@ -277,6 +276,29 @@ function  reviewerRec() {
             }
         }
     });
+    /* 查看回复修复 */
+    $(".reviewerApply").off("hover");
+    $(".reviewerApply").hover(function () {
+        var element = this.id
+
+        ;
+        thisId=element.match(/\d+/g);
+        $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
+            if(data.data!=null&&data.data.subjectList!=null&&data.data.subjectList.length){
+                $(".sendFromName").text(data.data.subjectList[0].sendFromName);
+                $(".msgContent").text(data.data.subjectList[0].msgContent);
+                $(".sendTime").text(data.data.subjectList[0].sendTime);
+
+            }
+            else {
+                $(".sendFromName").text("暂无");
+                $(".msgContent").text("暂无");
+                $(".sendTime").text("暂无");
+            }
+        });
+
+    });
+
 
     $(document).on("click","#btn-viewdetail",function (){
         var rowInfo="<tr></tr>";
@@ -298,7 +320,7 @@ function  reviewerRec() {
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复核截止时间：" + deadline );
 
         $(".viewDetailTbody").append(rowInfo);
-        for( var i=0; i<4; i++){
+        for( var i=0; i<3; i++){
             $(".viewDetailTbody tr:last").append(cellInfo);
         }
         $(".viewDetailTbody tr:last").css("text-align","center");
@@ -324,7 +346,6 @@ function  reviewerRec() {
         $(".viewDetailTbody tr:last td:eq(1)").css("line-height","28px");
         $(".viewDetailTbody tr:last td:eq(2)").css("line-height","28px");
 
-        $(".viewDetailTbody tr:last td:eq(3)").text(jsonInfo.version);      //版本
 
     });
 
@@ -411,7 +432,7 @@ function applyworkload() {
                         $(".tbody tr:last td:eq(1)").attr("id", "itemname_" + Info.itemId);
                         $(".tbody tr:last td:eq(2)").text(Info.workload);
                         $(".tbody tr:last td:eq(2)").attr("id", "workload_" + Info.itemId);
-                        var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target=''#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + id + "'>删除操作</a> ";
+                        var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + id + "'>删除操作</a> ";
                         var newAct="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a>";
                         var statusName;
                         switch (Info.status) {
@@ -442,7 +463,7 @@ function applyworkload() {
                         }
                         $(".tbody tr:last td:eq(3)").text(statusName);
                         $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
-                        $(".tbody tr:last td:eq(4)").css("width","200px");
+                        $(".tbody tr:last td:eq(4)").attr("class","operation-btn-two");
                     }
                 }
                 window.Temp=[];
@@ -904,7 +925,7 @@ function applyworkload() {
         $('#applyDesc').val(null);
         $('#workload').val(null);
         $("#AddgroupPramter").empty();
-        $("#itemmanager").select2().val(null).trigger("change");
+        $("#itemmanager").select2().val(null).trigger("change").css("width","100%");
         $('.parameterName').val(null);
         $('.otherparameterName').val(null);
         $(".radioChange").eq(0).attr("checked","true");
@@ -1437,8 +1458,8 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
                           /*  var newcount=$(".showContent").length;
                             newcount++;*/
-                            var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount + "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act).css("width","200px");
+                            var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_"+Info.itemId+"' id='delemyself_" + newcount+ "'>删除操作</a>";
+                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-two");
                         }
                         if($("#testfile").val()){
                             var formdata = new FormData;
@@ -1538,8 +1559,8 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
-                            var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act).css("width","200px");
+                            var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount+ "'>查看详情</a><a class='btn btn-primary delemyself delemyself_"+Info.itemId+"' id='delemyself_" + newcount+ "'>删除操作</a>";
+                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-two");
 
 
                         }
@@ -1567,8 +1588,8 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
-                            var act = "<a class=\"btn btn-primary showaddContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary  delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act).css("width","200px");
+                            var act = "<a class='btn btn-primary showaddContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount+ "'>查看详情</a><a class='btn btn-primary  delemyself_"+Info.itemId+"' id='delemyself_" + newcount+ "'>删除操作</a>";
+                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-two");
 
                         }
                         if($("#testfile").val()){
@@ -1756,8 +1777,7 @@ function applyRec() {
 
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId);
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
-                $(".reviewerRecTbody tr:last td:eq(5)").text("待审核");
-                $(".reviewerRecTbody tr:last td:eq(5)").css({"color":"#2e6da4","font-weight":"700"});
+                $(".reviewerRecTbody tr:last td:eq(5)").text("待审核")
                 /*  var statusName='';
                  switch (Info.status){
                  case 1:statusName="已提交";
@@ -1766,7 +1786,7 @@ function applyRec() {
                  }*/
 
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_apply' id='btn-viewdetail'>查看详情</a> ";
-                $(".reviewerRecTbody tr:last td:eq(6)").append(act).css("width","200px");
+                $(".reviewerRecTbody tr:last td:eq(6)").append(act).attr("class","operation-btn-three");
 
                 $(".reviewerRecTbody tr:last td:eq(7)").text(JSON.stringify(Info));
                 $(".reviewerRecTbody tr:last td:eq(7)").css("display","none");
@@ -1811,7 +1831,6 @@ function applyRec() {
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId);
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("已通过");
-                $(".reviewerRecTbody tr:last td:eq(5)").css({"color":"#4cae4c","font-weight":"700"});
                 /*  var statusName='';
                  switch (Info.status){
                  case 1:statusName="已提交";
@@ -1821,7 +1840,7 @@ function applyRec() {
 
                 // id='reviewerRec_"+Info.itemId+"
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_apply' id='btn-viewdetail'>查看详情</a> ";
-                $(".reviewerRecTbody tr:last td:eq(6)").append(act);
+                $(".reviewerRecTbody tr:last td:eq(6)").append(act).attr("class","operation-btn-three");
 
                 $(".reviewerRecTbody tr:last td:eq(7)").text(JSON.stringify(Info));
                 $(".reviewerRecTbody tr:last td:eq(7)").css("display","none");
@@ -1867,7 +1886,6 @@ function applyRec() {
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId);
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("已拒绝");
-                $(".reviewerRecTbody tr:last td:eq(5)").css({"color":"#d64742","font-weight":"700"});
                 /*  var statusName='';
                  switch (Info.status){
                  case 1:statusName="已提交";
@@ -1876,13 +1894,13 @@ function applyRec() {
                  }*/
 
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_apply' id='btn-viewdetail'>查看详情</a><button class='btn btn-primary reviewerApply source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info apply' data-toggle='modal' data-target='#applyModal' id='applyAgain_"+Info.categoryId+"'><i class='fa fa-pencil'></i>重新申请</a> ";
-                $(".reviewerRecTbody tr:last td:eq(6)").append(act);
+                $(".reviewerRecTbody tr:last td:eq(6)").append(act).attr("class","operation-btn-three");
 
                     $("[data-toggle='popover']").popover();
 
                         $(".reviewerApply").popover({
                             placement: "top",
-                            trigger: "click",
+                            trigger: "hover",
                             html: true,
                             title: "回复信息",
                             content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
@@ -1895,6 +1913,31 @@ function applyRec() {
         }
 
     });
+
+
+    /* 查看回复修复 */
+    $(".reviewerApply").off("hover");
+    $(".reviewerApply").hover(function () {
+        var element = this.id
+
+        ;
+        thisId=element.match(/\d+/g);
+        $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
+            if(data.data!=null&&data.data.subjectList!=null&&data.data.subjectList.length){
+                $(".sendFromName").text(data.data.subjectList[0].sendFromName);
+                $(".msgContent").text(data.data.subjectList[0].msgContent);
+                $(".sendTime").text(data.data.subjectList[0].sendTime);
+
+            }
+            else {
+                $(".sendFromName").text("暂无");
+                $(".msgContent").text("暂无");
+                $(".sendTime").text("暂无");
+            }
+        });
+
+    });
+
 
     $(document).on("click","#btn-viewdetail",function (){
         var rowInfo="<tr></tr>";
@@ -1916,7 +1959,7 @@ function applyRec() {
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核截止时间：" + deadline );
 
         $(".viewDetailTbody").append(rowInfo);
-        for( var i=0; i<4; i++){
+        for( var i=0; i<3; i++){
             $(".viewDetailTbody tr:last").append(cellInfo);
         }
         $(".viewDetailTbody tr:last").css("text-align","center");
@@ -1942,7 +1985,6 @@ function applyRec() {
         $(".viewDetailTbody tr:last td:eq(1)").css("line-height","28px");
         $(".viewDetailTbody tr:last td:eq(2)").css("line-height","28px");
 
-        $(".viewDetailTbody tr:last td:eq(3)").text(jsonInfo.version);      //版本
     });
 }
 

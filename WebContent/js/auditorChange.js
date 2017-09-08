@@ -28,7 +28,7 @@ function importWorkload(){
 
                     else if(item[i].importRequired==1){
                         $("<li class='catInfo_"+item[i].categoryId+"'></li>").append( "<div class='itemMessage'><span class='itemName'>" + item[i].name + "</span>&nbsp;-&nbsp;<span class='itemDesc'>" + item[i].desc + "</span></div>" +
-                            "<div style='float: right;'><a class='btn importList btn-info' id='import_"+ item[i].categoryId + "' data-toggle='modal' data-target='#importNewModal' style='float: right; margin-top: 2px;'>点击导入</a>" +
+                            "<div style='float: right;'><a class='btn importList btn-danger' id='import_"+ item[i].categoryId + "' data-toggle='modal' data-target='#importNewModal' style='float: right; margin-top: 2px;'>点击导入</a>" +
                             "<div class='dropdown' style='float: right; margin-top: 2px; margin-right: 10px;'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='" + downloadInfoUrl+ "?categoryId=" + item[i].categoryId+"&type=group'>小组类模板</a></li><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div>" +
                             "<p class='deadline' style='margin-right: 20px'> 上传截止时间: <span class='time_"+item[i].categoryId+"'>"+item[i].reviewDeadline +
                             "</span></p></div><div style='clear: both;'></div></li>").appendTo(parent);
@@ -108,12 +108,14 @@ function auditworkload() {
             $(document).on("click",".pass",function () {
                 var flag=this.id;
                 var passItemId=flag.match(/\d+/g);
-                $.post(reviewerCheckUrl+"?"+"itemId="+passItemId+"&status=2",function () {
-                    alert('操作成功！');
-                    $("#reviewe_"+passItemId).text("审核通过");
-                    $("#pass_"+passItemId).attr("disabled","disabled");
-                    $("#refuse_"+passItemId).attr("disabled","disabled");
-                })
+                if(confirm("确认通过？")) {
+                    $.post(reviewerCheckUrl + "?" + "itemId=" + passItemId + "&status=2", function () {
+                        alert('操作成功！');
+                        $("#reviewe_" + passItemId).text("审核通过");
+                        $("#pass_" + passItemId).attr("disabled", "disabled");
+                        $("#refuse_" + passItemId).attr("disabled", "disabled");
+                    })
+                }
             });
             $(document).off("click",".refuse");
            $(document).on("click",".refuse",function () {
@@ -271,12 +273,12 @@ function showimportRec() {
                 /* 复核截止时间 */
                 $(".reviewerRecTbody tr:last td:eq(5)").text($(".time_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(6)").text("提交存疑");
-                var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_import' id='btn-viewdetail'>查看详情</a><a class='btn btn-primary reviewerApply' id='showImportRec_"+Info.itemId+"'>存疑原因</a><a class='btn btn-info editInfo "+Info.itemId+"' id='editInfo_"+Info.categoryId+"' data-target='#editModal' data-toggle='modal'><i class='fa fa-pencil'></i>修改存疑</a> ";
-                $(".reviewerRecTbody tr:last td:eq(7)").append(act).css("width","200px");
+                var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_import' id='btn-viewdetail'>查看详情</a><a class='btn btn-primary reviewerApply' id='showImportRec_"+Info.itemId+"'>存疑原因</a>";
+                $(".reviewerRecTbody tr:last td:eq(7)").append(act).attr("class","operation-btn-two");
                 $("[data-toggle='popover']").popover();
                 $(".reviewerApply").popover({
                     placement: "top",
-                    trigger: "click",
+                    trigger: "hover",
                     html: true,
                     title: "回复信息",
                     content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
@@ -337,12 +339,36 @@ function showimportRec() {
                 $(".reviewerRecTbody tr:last td:eq(5)").text($(".time_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(6)").text("存疑解决");
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_import' id='btn-viewdetail'>查看详情</a>";
-                $(".reviewerRecTbody tr:last td:eq(7)").append(act).css("width","200px");
+                $(".reviewerRecTbody tr:last td:eq(7)").append(act).attr("class","operation-btn-two");
 
                 $(".reviewerRecTbody tr:last td:eq(8)").text(JSON.stringify(Info));
                 $(".reviewerRecTbody tr:last td:eq(8)").css("display","none");
             }
         }
+
+        /* 查看回复修复 */
+        $(".reviewerApply").off("hover");
+        $(".reviewerApply").hover(function () {
+            var element = this.id
+
+            ;
+            thisId=element.match(/\d+/g);
+            $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
+                if(data.data!=null&&data.data.subjectList!=null&&data.data.subjectList.length){
+                    $(".sendFromName").text(data.data.subjectList[0].sendFromName);
+                    $(".msgContent").text(data.data.subjectList[0].msgContent);
+                    $(".sendTime").text(data.data.subjectList[0].sendTime);
+
+                }
+                else {
+                    $(".sendFromName").text("暂无");
+                    $(".msgContent").text("暂无");
+                    $(".sendTime").text("暂无");
+                }
+            });
+
+        });
+
 
         $(document).on("click","#btn-viewdetail",function (){
             var rowInfo="<tr></tr>";
@@ -364,7 +390,7 @@ function showimportRec() {
                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复核截止时间：" + deadline );
 
             $(".viewDetailbody").append(rowInfo);
-            for( var i=0; i<4; i++){
+            for( var i=0; i<3; i++){
                 $(".viewDetailbody tr:last").append(cellInfo);
             }
             $(".viewDetailbody tr:last").css("text-align","center");
@@ -391,7 +417,6 @@ function showimportRec() {
             $(".viewDetailbody tr:last td:eq(1)").css("line-height","28px");
             $(".viewDetailbody tr:last td:eq(2)").css("line-height","28px");
 
-            $(".viewDetailbody tr:last td:eq(3)").text(jsonInfo.version);      //版本
         });
     });
 
@@ -542,7 +567,7 @@ function showapplydata(item) {
                 statusName = '未提交';
                 break;
             case 1:
-                statusName = '待复核/待审核';
+                statusName = '待审核';
                 break;
             case 2:
                 statusName = '已通过';
@@ -560,8 +585,8 @@ function showapplydata(item) {
         $(".showDesc tr:last td:eq(6)").text(statusName);
         $(".showDesc tr:last td:eq(6)").attr("id","reviewe_"+Info.itemId);
 
-        var act = "<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_audit' id='btn-viewdetail'>查看详情</a><a class='btn btn-success pass' id='pass_" + Info.itemId + "'>审核通过</a><a class='btn btn-danger refuse' data-toggle='modal' data-target='#refuseModal' id='refuse_" + Info.itemId + "'>审核拒绝</a> ";
-        $(".showDesc tr:last td:eq(7)").append(act);
+        var act = "<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_audit' id='btn-viewdetail'>查看详情</a><button class='btn btn-success pass' id='pass_" + Info.itemId + "'>审核通过</button><button class='btn btn-danger refuse' data-toggle='modal' data-target='#refuseModal' id='refuse_" + Info.itemId + "'>审核拒绝</button> ";
+        $(".showDesc tr:last td:eq(7)").append(act).attr("class","operation-btn-three");
 
         $(".showDesc tr:last td:eq(8)").text(JSON.stringify(Info));
         $(".showDesc tr:last td:eq(8)").css("display","none");
@@ -593,7 +618,7 @@ function showapplydata(item) {
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核状态：" + auditStatus);
 
         $(".viewDetailTbody").append(rowInfo);
-        for( var i=0; i<5; i++){
+        for( var i=0; i<4; i++){
             $(".viewDetailTbody tr:last").append(cellInfo);
         }
         $(".viewDetailTbody tr:last").css("text-align","center");
@@ -623,7 +648,6 @@ function showapplydata(item) {
         $(".viewDetailTbody tr:last td:eq(2)").css("line-height","28px");
         $(".viewDetailTbody tr:last td:eq(3)").css("line-height","28px");
 
-        $(".viewDetailTbody tr:last td:eq(4)").text(jsonInfo.version);      //版本
     });
 }
 function getLocalTime(nS) {

@@ -110,33 +110,33 @@ $(document).ready(function () {
             }
         });
     });
-    $(document).on("click",".reviewerApply",function (data) {
-        var element = this.id;
-        thisId=element.match(/\d+/g);
-        $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
-            if(data.data.subjectList.length){
-                $(".sendFromName").text(data.data.subjectList[0].sendFromName);
-                $(".msgContent").text(data.data.subjectList[0].msgContent);
-                $(".sendTime").text(data.data.subjectList[0].sendTime);
-
-            }
-
-        });
-    });
-    $(document).on("click","body",function (event) {
-        var target = $(event.target); // One jQuery object instead of 3
-
-        // Compare length with an integer rather than with
-        if (!target.hasClass('popover')
-            && !target.hasClass('reviewerApply')
-            && !target.hasClass('popover-content')
-            && !target.hasClass('popover-title')
-            && !target.hasClass('arrow')) {
-            /* $('#folder').popover('hide');*/
-            $(".reviewerApply").popover('hide');
-        }
-
-    });
+    // $(document).on("click",".reviewerApply",function (data) {
+    //     var element = this.id;
+    //     thisId=element.match(/\d+/g);
+    //     $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
+    //         if(data.data.subjectList.length){
+    //             $(".sendFromName").text(data.data.subjectList[0].sendFromName);
+    //             $(".msgContent").text(data.data.subjectList[0].msgContent);
+    //             $(".sendTime").text(data.data.subjectList[0].sendTime);
+    //
+    //         }
+    //
+    //     });
+    // });
+    // $(document).on("click","body",function (event) {
+    //     var target = $(event.target); // One jQuery object instead of 3
+    //
+    //     // Compare length with an integer rather than with
+    //     if (!target.hasClass('popover')
+    //         && !target.hasClass('reviewerApply')
+    //         && !target.hasClass('popover-content')
+    //         && !target.hasClass('popover-title')
+    //         && !target.hasClass('arrow')) {
+    //         /* $('#folder').popover('hide');*/
+    //         $(".reviewerApply").popover('hide');
+    //     }
+    //
+    // });
 
     /*auditor-import*/
 
@@ -883,9 +883,9 @@ $(document).ready(function () {
 
                     var statusName='';
 
-                    var act = " <a class='btn btn-success sure' id='pass_" + Info.itemId + "'>确认通过</a><a class='btn btn-danger LeaveQues' data-toggle='modal' data-target='#refuModal' id='refuse_" + Info.itemId + "'>存疑提交</a> ";
+                    var act = " <button class='btn btn-success sure' id='pass_" + Info.itemId + "'>确认通过</button><button class='btn btn-danger LeaveQues' data-toggle='modal' data-target='#refuModal' id='refuse_" + Info.itemId + "'>存疑提交</button> ";
                     var newAct = "<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_reviewer' id='btn-viewdetail-reviewer'>查看详情</a>" ;
-                    $(".tbody tr:last td:eq(4)").append(newAct).css("width","200px");
+                    $(".tbody tr:last td:eq(4)").append(newAct).attr("class","operation-btn-three");
 
                     switch (Info.status) {
                         case -1:
@@ -896,8 +896,8 @@ $(document).ready(function () {
                             $(".tbody tr:last td:eq(3)");
                             break;
                         case 1:
-                            statusName = '待复核/待审核';
-                            $(".tbody tr:last td:eq(4)").append(act);
+                            statusName = '待复核';
+                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-three");
                             $(".tbody tr:last td:eq(3)");
                             break;
                         case 2:
@@ -949,7 +949,7 @@ $(document).ready(function () {
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核状态：" + auditStatus + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + deadline );
 
         $(".viewDetailbody").append(rowInfo);
-        for( var i=0; i<4; i++){
+        for( var i=0; i<3; i++){
             $(".viewDetailbody tr:last").append(cellInfo);
         }
         $(".viewDetailbody tr:last").css("text-align","center");
@@ -976,7 +976,6 @@ $(document).ready(function () {
         $(".viewDetailbody tr:last td:eq(1)").css("line-height","28px");
         $(".viewDetailbody tr:last td:eq(2)").css("line-height","28px");
 
-        $(".viewDetailbody tr:last td:eq(3)").text(jsonInfo.version);      //版本
     });
 
     $(document).on("click",".sure",function () {
@@ -1400,7 +1399,7 @@ function showImportPreview(data,itemCount) {
             $(".importItemTbody tr:last td:eq(4)").text(statusName);
             $(".importItemTbody tr:last td:eq(4)").attr("class","status_"+Info.itemId);
 
-            $(".importItemTbody tr:last td:eq(5)").css("width","200px");
+            $(".importItemTbody tr:last td:eq(5)").attr("class","operation-btn-two");
 
             itemCount++;
 
