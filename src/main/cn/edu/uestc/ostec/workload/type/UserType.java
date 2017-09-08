@@ -5,8 +5,8 @@ package cn.edu.uestc.ostec.workload.type;
  */
 public enum UserType {
 
-	ADMINISTRATOR("ADMIN", 1, "工作量计算规则配置管理员"), REVIEWER("RE", 2, "工作量审核人"), TEACHER("TE", 3,
-			"复核人(普通教师)");
+	ADMINISTRATOR("ADMIN", 1, "工作量计算规则配置管理员"), REVIEWER("RE", 3, "工作量审核人"), TEACHER("TE", 4,
+			"复核人(普通教师)"),LEADER("LEADER",2,"全院统计与查看");
 
 	private String code;
 

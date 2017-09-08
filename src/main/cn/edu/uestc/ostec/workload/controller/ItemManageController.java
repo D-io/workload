@@ -158,7 +158,7 @@ public class ItemManageController extends ApplicationController {
 			return parameterNotSupportResponse("参数有误");
 		}
 		Map<String, Object> data = getData();
-		data.put("oldItem",itemDto);
+		data.put("oldItem", itemDto);
 		Integer importRequired = itemDto.getImportRequired();
 
 		if ((ROLE_REVIEWER.equals(role) && APPLY_SELF.equals(importRequired)) || (
@@ -304,11 +304,11 @@ public class ItemManageController extends ApplicationController {
 				return invalidOperationResponse("已提交的工作量，无法修改");
 			}
 
-//			//验证当前用户是否具有修改工作量条目的权限
-//			if (!(userId.equals(itemDto.getGroupManagerId()) || userId
-//					.equals(itemDto.getReviewerId()))) {
-//				return invalidOperationResponse("非法操作");
-//			}
+			//			//验证当前用户是否具有修改工作量条目的权限
+			//			if (!(userId.equals(itemDto.getGroupManagerId()) || userId
+			//					.equals(itemDto.getReviewerId()))) {
+			//				return invalidOperationResponse("非法操作");
+			//			}
 
 			//若为 修改，则设置当前相应的条目 拥有者 为原条目拥有者
 
@@ -330,7 +330,7 @@ public class ItemManageController extends ApplicationController {
 		// 申报类：上传相关的文件附件（文件不为空的前提下） 导入类：设置proof属性为null
 		if (APPLY_SELF.equals(importRequired)) {
 			itemDto.setOwnerId(user.getUserId());
-			if((null != file && !file.isEmpty())) {
+			if ((null != file && !file.isEmpty())) {
 				FileInfo fileInfo = new FileInfo(ATTACHMENT_FILE_ID, getUserId(), "");
 				boolean uploadSuccess = fileEvent.uploadFile(file, fileInfo);
 				if (!uploadSuccess) {
@@ -361,21 +361,24 @@ public class ItemManageController extends ApplicationController {
 			newItemDto.setJsonChildWeight(String.valueOf(DEFAULT_CHILD_WEIGHT));
 			newItemDto.setGroupManagerId(newItemDto.getOwnerId());
 
-			if(!(userId.equals(newItemDto.getGroupManagerId()) || userId.equals(itemDto.getReviewerId()))) {
+			if (!(userId.equals(newItemDto.getGroupManagerId()) || userId
+					.equals(itemDto.getReviewerId()))) {
 				flag = false;
 			}
 		} else if (GROUP.equals(newItemDto.getIsGroup()) && IMPORT_EXCEL
 				.equals(newItemDto.getImportRequired())) {
-			workload = workload * Double.valueOf(newItemDto.getJsonChildWeight());
+			Double jsonChildWeight = Double.valueOf(newItemDto.getJsonChildWeight());
+			jsonChildWeight = jsonChildWeight > 1 ? 1.0 : jsonChildWeight;
+			workload = workload * jsonChildWeight;
 
-			if(!userId.equals(newItemDto.getReviewerId())) {
+			if (!userId.equals(newItemDto.getReviewerId())) {
 				flag = false;
 			}
 		} else if (newItemDto.getChildWeightList().size() <= 1) {
 			return parameterNotSupportResponse("小组成员数需大于等于2");
 		}
 
-		if(!flag) {
+		if (!flag) {
 			return invalidOperationResponse("非法操作");
 		}
 

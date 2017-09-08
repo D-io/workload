@@ -48,6 +48,7 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.I
 
 import static cn.edu.uestc.ostec.workload.service.ItemService.EMPTY_WORKLOAD;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
+import static cn.edu.uestc.ostec.workload.type.UserType.LEADER;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -202,7 +203,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 					String ifExport) {
 
 		User user = getUser();
-		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+		List<String> roleCodeList = getUserRoleCodeList();
+		if (null == user || (!roleCodeList.contains(ADMINISTRATOR.getCode()) && !roleCodeList
+				.contains(LEADER.getCode()))) {
 			return invalidOperationResponse("非法请求");
 		}
 
