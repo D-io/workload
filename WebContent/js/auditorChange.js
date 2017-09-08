@@ -36,7 +36,10 @@ function importWorkload(){
                             //    var obj = eval ("(" + item[i].jsonParameters + ")");
                             var obj=item[i].formulaParameterList;
                             for(var paraCount=0;paraCount<obj.length;paraCount++){
-                                $(".hiddendistrict").append("<div class='importParaDesc paraDesc_"+item[i].categoryId+"' id='"+item[i].categoryId+"_"+obj[paraCount].symbol+"'>"+obj[paraCount].desc+"</div>");
+                                if($("#"+item[i].categoryId+"_"+obj[paraCount].symbol).length<0||$("#"+item[i].categoryId+"_"+obj[paraCount].symbol).length==0){
+                                    $(".hiddendistrict").append("<div class='importParaDesc paraDesc_"+item[i].categoryId+"' id='"+item[i].categoryId+"_"+obj[paraCount].symbol+"'>"+obj[paraCount].desc+"</div>");
+
+                                }
 
                             }
                         }
@@ -46,7 +49,10 @@ function importWorkload(){
                             var otherobj=item[i].otherJsonParameters;
 
                             for(var otherCount=0;otherCount<otherobj.length;otherCount++){
-                                $(".hiddendistrict").append("<div class='importParaDesc otherparaDesc_"+item[i].categoryId+"'>"+otherobj[otherCount].key+"</div>");
+                                if($("#other_"+item[i].categoryId).length<0||$("#other_"+item[i].categoryId).length==0){
+                                    $(".hiddendistrict").append("<div class='importParaDesc otherparaDesc_"+item[i].categoryId+"' id='other_"+item[i].categoryId+"'>"+otherobj[otherCount].key+"</div>");
+
+                                }
 
                             }
                         }
@@ -62,7 +68,7 @@ function importWorkload(){
 
                     /*     var tablestr='<table class="showImportThead table dataTable no-footer table-bordered" id="showImportThead_'+item[i].categoryId+'" style="display: none;"> <thead> <tr role="row"> <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th> </tr> </thead> <tbody class="showImportDesc_'+item[i].categoryId+'"></tbody> </table>';
                          $('#catInfo_' + item[i].categoryId).append(tablestr);*/
-                    if(item[i].children){
+                    if(item[i].children.length>0){
                         showimportall(item[i].children);
                     }
                 }
