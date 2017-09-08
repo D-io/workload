@@ -109,7 +109,7 @@ public interface ItemService extends BaseService {
 			int pageSize, String version, Integer importedRequired);
 
 	List<ItemDto> findAll(String itemName, Integer categoryId, Integer status, Integer ownerId,
-			Integer isGroup, String version);
+			Integer isGroup, String version, Integer importedRequired, Integer groupManagerId);
 
 	Workload workloadAnalyze(Integer teacherId, String type, String version);
 

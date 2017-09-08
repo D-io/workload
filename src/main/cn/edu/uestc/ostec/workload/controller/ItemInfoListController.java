@@ -83,6 +83,26 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	@Autowired
 	private TeacherWorkloadService teacherWorkloadService;
 
+	@RequestMapping(value = "items/group", method = GET)
+	public RestResponse getOwnItemsGroup(
+			@RequestParam("categoryId")
+					Integer categoryId) {
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		int teacherId = user.getUserId();
+
+		List<ItemDto> itemDtoList = itemService
+				.findAll(null, categoryId, null, null, GROUP, getCurrentSemester(), APPLY_SELF,
+						teacherId);
+
+		Map<String, Object> data = getData();
+		data.put("itemDtoList", itemDtoList);
+		return successResponse(data);
+	}
+
 	@RequestMapping(value = "teacher-analyze", method = GET)
 	public RestResponse analyzeWorkload(
 			@RequestParam("teacherId")
@@ -261,7 +281,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		List<ItemDto> itemDtoList = itemService
-				.findAll(null, categoryId, status, ownerId, null, getCurrentSemester());
+				.findAll(null, categoryId, status, ownerId, null, getCurrentSemester(), null, null);
 		if (isEmptyList(itemDtoList)) {
 			return successResponse();
 		}
@@ -466,8 +486,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			for (ItemDto itemDto : itemList) {
 				int itemId = itemDto.getItemId();
 				Map<Integer, Object> subjectMap = new HashMap<>();
-				List<SubjectDto> subjectDtoList = subjectConverter
-						.poListToDtoList(subjectService.getSubjectsByItem(itemId,getCurrentSemester()));
+				List<SubjectDto> subjectDtoList = subjectConverter.poListToDtoList(
+						subjectService.getSubjectsByItem(itemId, getCurrentSemester()));
 				subjectMap.put(itemDto.getItemId(), subjectDtoList);
 				data.put("subjectMap", subjectMap);
 			}
@@ -511,7 +531,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			statusList.add(CHECKED);
 		} else if ("unchecked".equals(option)) {
 			statusList.addAll(getUncheckedStatus());
-		} else if (isEmptyString(option)){
+		} else if (isEmptyString(option)) {
 			statusList.add(CHECKED);
 			statusList.addAll(getUncheckedStatus());
 		} else {
@@ -576,7 +596,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			@RequestParam("itemId")
 					Integer itemId) {
 
-		List<Subject> subjectList = subjectService.getSubjectsByItem(itemId,getCurrentSemester());
+		List<Subject> subjectList = subjectService.getSubjectsByItem(itemId, getCurrentSemester());
 
 		if (null == subjectList) {
 			return parameterNotSupportResponse("参数有误");

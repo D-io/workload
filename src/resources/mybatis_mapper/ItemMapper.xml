@@ -109,11 +109,17 @@
             <if test="null != status">
                 AND item.status = #{status}
             </if>
+            <if test="null == status">
+                AND (item.status = 1 OR item.status = 2 OR item.status = 5)
+            </if>
             <if test="null != ownerId">
                 AND owner_id = #{ownerId}
             </if>
             <if test="null != isGroup">
                 AND is_group = #{isGroup}
+            </if>
+            <if test="null != groupManagerId">
+                AND item.group_manager_id = #{groupManagerId}
             </if>
             <if test="null != itemName">
                 AND item_name LIKE CONCAT(CONCAT('%', #{itemName}), '%')

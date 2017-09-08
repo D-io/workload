@@ -169,7 +169,8 @@ public class HistoryInfoController extends ApplicationController {
 
 		//查找用户自己拥有的全部工作量条目信息
 		List<ItemDto> itemDtoList = itemService
-				.findAll(null, null, null, user.getUserId(), null, getCurrentSemester());
+				.findAll(null, null, null, user.getUserId(), null, getCurrentSemester(), null,
+						null);
 
 		List<ItemDto> commonItemDto = new ArrayList<>();
 		for (ItemDto itemDto : itemDtoList) {
@@ -227,14 +228,15 @@ public class HistoryInfoController extends ApplicationController {
 
 		if (ROLE_REVIEWER.equals(role)) {
 			List<Category> categoryList = categoryService
-					.getCategoriesByReviewer(user.getUserId(), getCurrentSemester(),null);
+					.getCategoriesByReviewer(user.getUserId(), getCurrentSemester(), null);
 			for (Category category : categoryList) {
 				itemList.addAll(itemConverter.poListToDtoList(itemService
 						.findItemByCategory(getCurrentSemester(), category.getCategoryId())));
 			}
 		} else {
 			itemList = itemService
-					.findAll(null, null, null, user.getUserId(), null, getCurrentSemester());
+					.findAll(null, null, null, user.getUserId(), null, getCurrentSemester(), null,
+							null);
 		}
 
 		for (History history : historyList) {
