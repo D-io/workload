@@ -843,7 +843,31 @@ function ztree() {
                         var reviewTimetodate = $('#reviewDeadline').val();
                         var applyTimetodate = $('#applyDeadline').val();
                         if(radio.val()!=2) {
-                            initChecked();
+                            if(!($("#formula").val())){
+                                $("#myformula").addClass("has-error");
+                                $("#experient_formula").show();
+                                return false;
+                            }
+                            if(!$("#teacherName").val()){
+                                $("#mymanager").addClass("has-error");
+                                $("#experient_manager").show();
+                                return false;
+                            }
+                            if(!$("#applyDeadline").val()){
+                                $("#myapply").addClass("has-error");
+                                $("#experient_apply").show();
+                                return false;
+                            }
+                            if(!$("#reviewDeadline").val()){
+                                $("#myrevie").addClass("has-error");
+                                $("#experient_revie").show();
+                                return false;
+                            }
+                            if(!$(".parameterName").val()){
+                                $("#mypara").addClass("has-error");
+                                $("#experient_para").show();
+                                return false;
+                            }
 
                             var parametername = $('.parameterName');
                             var newArray = new Array();
@@ -1026,7 +1050,31 @@ function ztree() {
                 var applyTimetodate = $('#applyDeadline').val();
 
                  if(radio.val()!=2){
-                     initChecked();
+                     if(!($("#formula").val())){
+                         $("#myformula").addClass("has-error");
+                         $("#experient_formula").show();
+                         return false;
+                     }
+                     if(!$("#teacherName").val()){
+                         $("#mymanager").addClass("has-error");
+                         $("#experient_manager").show();
+                         return false;
+                     }
+                     if(!$("#applyDeadline").val()){
+                         $("#myapply").addClass("has-error");
+                         $("#experient_apply").show();
+                         return false;
+                     }
+                     if(!$("#reviewDeadline").val()){
+                         $("#myrevie").addClass("has-error");
+                         $("#experient_revie").show();
+                         return false;
+                     }
+                     if(!$(".parameterName").val()){
+                         $("#mypara").addClass("has-error");
+                         $("#experient_para").show();
+                         return false;
+                     }
                      var parametername =$(".parameterName") ;
                      var newArray=new Array();
                      for(var i=0;i<parametername.length;i++){
@@ -1310,35 +1358,7 @@ function importFormat() {
 
     return y+'-12-28 00:00:00';
 }
-function initChecked() {
 
-    /*var reg=new RegExp(/^\d+(\.*\d{0,3})([+*!/-]\d+\(\.*\d{0,3}\))+$/);*/
-    if(!($("#formula").val())){
-        $("#myformula").addClass("has-error");
-        $("#experient_formula").show();
-        return false;
-    }
-    if(!$("#teacherName").val()){
-        $("#mymanager").addClass("has-error");
-        $("#experient_manager").show();
-        return false;
-    }
-    if(!$("#applyDeadline").val()){
-        $("#myapply").addClass("has-error");
-        $("#experient_apply").show();
-        return false;
-    }
-    if(!$("#reviewDeadline").val()){
-        $("#myrevie").addClass("has-error");
-        $("#experient_revie").show();
-        return false;
-    }
-    if(!$(".parameterName").val()){
-        $("#mypara").addClass("has-error");
-        $("#experient_para").show();
-        return false;
-    }
-}
 function initModal() {
     $(".form-control").removeAttr("disabled");
     $('#itemName').val(null);
@@ -1407,3 +1427,29 @@ function reminder(obj) {
 
     }
 }
+function removeApplyAttr(){
+
+    $('#itemName').parent().parent(".form-group").removeClass("has-error");
+    $('#applyDesc').parent().parent(".form-group").removeClass("has-error");
+    $('.parameterName').parent().parent(".form-group").removeClass("has-error");
+    $('.otherparameterName').parent().parent(".form-group").removeClass("has-error");
+    $('.groupMemberSymbol').parent().parent(".form-group").removeClass("has-error");
+    $(".experient").hide();
+   /* console.log($(".experient").css("display"));*/
+    if($(".experient").css("display")!="none"){
+        $(".experient").css("display","none");
+    }
+}
+function removeShowapply() {
+    $('#showitemName').parent().parent(".form-group").removeClass("has-error");
+    $('#showapplyDesc').parent().parent(".form-group").removeClass("has-error");
+    $('.showparameterName').parent().parent(".form-group").removeClass("has-error");
+    $('.showotherparameterName').parent().parent(".form-group").removeClass("has-error");
+    $('.showgroupMemberSymbol').parent().parent(".form-group").removeClass("has-error");
+    $(".experient").hide();
+ /*   console.log($(".experient").css("display"));*/
+    if($(".experient").css("display")!="none"){
+        $(".experient").css("display","none");
+    }
+}
+

@@ -153,29 +153,20 @@
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容简介</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" class="form-control" id="itemName">
+                                    <input type="text" class="form-control" id="itemName" name="name" onblur="reminder(this)">
                                 </div>
                             </div>
+                            <span class="experient" id="experient_name" >项目名称不可为空！</span>
 
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容描述
                                 </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <textarea class="form-control" id="applyDesc"></textarea>
+                                    <textarea class="form-control" id="applyDesc" name="desc" onblur="reminder(this)"></textarea>
                                 </div>
                             </div>
+                            <span class="experient" id="experient_desc" >项目简介不可为空！</span>
 
-
-                            <%--<div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">申报类别</label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <select class="form-control" id="isGroup">
-                                        <option value="1">小组申报</option>
-                                        <option value="0">个人申报</option>
-
-                                    </select>
-                                </div>
-                            </div>--%>
                             <div class="radio">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                 </label>
@@ -211,6 +202,7 @@
 
                                 </div>
                             </div>
+                            <span class="experient" id="experient_para" >主要参数不可为空！</span>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
@@ -233,6 +225,7 @@
 
                                 </div>
                             </div>
+                            <span class="experient" id="experient_otherpara" >附加属性不可为空！</span>
                        <%--     <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">申报人</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
@@ -300,7 +293,8 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <span class="experient" id="experient_group" >项目成员信息不可为空！</span>
+                            <span class="experient" id="experient_weight" >项目成员权重请填写小数且相加应为1！</span>
                         </form>
 
                     </div>
@@ -335,18 +329,18 @@
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容简介</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" class="form-control changeDis" id="showitemName">
+                                    <input type="text" class="form-control changeDis" id="showitemName" name="showname" onblur="reminder(this)">
                                 </div>
                             </div>
-
+                            <span class="experient" id="experient_showname" >项目名称不可为空！</span>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容描述
                                 </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <textarea class="form-control changeDis" id="showapplyDesc"></textarea>
+                                    <textarea class="form-control changeDis" id="showapplyDesc" name="showdesc" onblur="reminder(this)"></textarea>
                                 </div>
                             </div>
-
+                            <span class="experient" id="experient_showndesc" >项目简介不可为空！</span>
                             <div class="radio">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                 </label>
@@ -381,6 +375,7 @@
 
                                 </div>
                             </div>
+                            <span class="experient" id="experient_showpara" >主要参数不可为空！</span>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
@@ -403,14 +398,8 @@
 
                                 </div>
                             </div>
-                            <%--     <div class="form-group">
-                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">申报人</label>
-                                     <div class="col-md-9 col-sm-9 col-xs-12">
-                                         <select class="form-control teacherName" id="applicant">
+                            <span class="experient" id="experient_showotherpara" >附加属性不可为空！</span>
 
-                                         </select>
-                                     </div>
-                                 </div>--%>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">附件信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
@@ -432,14 +421,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <!--
-                                 <div class="form-group">
-                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">工作量</label>
-                                     <div class="col-md-9 col-sm-9 col-xs-12">
-                                         <input type="text" class="form-control" id="workload">
-                                     </div>
-                                 </div>
-                                 -->
 
                             <div class="form-group showitem_group" style="display: none;">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组成员</label>
@@ -475,6 +456,8 @@
                                     </div>
                                 </div>
                             </div>
+                            <span class="experient" id="experient_showgroup" >项目成员信息不可为空！</span>
+                            <span class="experient" id="experient_showweight" >项目成员权重请填写小数且相加应为1！</span>
 
                         </form>
                     </div>
@@ -489,45 +472,6 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-      <%--  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h4 class="modal-title" style="text-align: center" >
-                            上传附件
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        &lt;%&ndash;<div class="explain" style="margin-bottom: 5px;" >
-                            特别提示：上传文件时，请传入合法格式的文件，“上传”与“提交”是两个不同操作，“上传”文件后，须检查无误后再行“提交”。一旦提交，不可更改；
-                            没有“提交”之前，可以更新文件（须确保文件有修改，否则无法更新）。“上传”、“提交”之后，均可下载查阅。
-                        </div>&ndash;%&gt;
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label " >上传文件</label>
-
-                            <div class="col-sm-9">
-                                <input type="file" class="form-control" name="file" id="fileName"><hr/>
-                                <input type="button" class="btn btn-primary commit" value="上传" style="float: right;">
-                            </div>
-
-
-                            <p>请上传小于20M的文件</p>
-
-                        </div>
-
-                    </div>
-                    <!--
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-
-                                        </div>
-                    -->
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>--%>
 
     </div>
 </div>

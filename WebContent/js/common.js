@@ -1045,7 +1045,7 @@ $(document).ready(function () {
     });
     $(document).off("click","#addGroupMessage");
     $(document).on("click","#addGroupMessage",function () {
-        var addMessage="<tr><td style='width: 120px;'><select class='groupMemberName teacherName' ><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol' style='width:120px; height: 38px; padding-left: 8px;'></td><td style='position: relative;'><input type='text' class='groupMemberWeight' style='width:120px; height: 38px; padding-left: 8px;'><a class='btn btn-danger removeOtherRow removeRow' style='position: absolute; top: 12px; right: -22px;'><i class='fa fa-trash'></i></a></td></tr>";
+        var addMessage="<tr><td style='width: 120px;'><select class='groupMemberName teacherName' ><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol' name='group' onblur='reminder(this)' style='width:120px; height: 38px; padding-left: 8px;'></td><td style='position: relative;'><input type='text' class='groupMemberWeight' name='weight' onblur='reminder(this)'  style='width:120px; height: 38px; padding-left: 8px;'><a class='btn btn-danger removeOtherRow removeRow' style='position: absolute; top: 12px; right: -22px;'><i class='fa fa-trash'></i></a></td></tr>";
         $('#AddgroupPramter').append(addMessage);
         $.get(TeacherInfoUrl, {test: 12}, function (data) {
             for (var i = 0; i < data.data.teacherList.length; i++) {
