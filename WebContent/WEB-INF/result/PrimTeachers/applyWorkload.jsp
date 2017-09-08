@@ -151,7 +151,7 @@
                         <form class="form-horizontal form-label-left">
 
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容简介</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目名称</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <input type="text" class="form-control" id="itemName" name="name" onblur="reminder(this)">
                                 </div>
@@ -159,7 +159,7 @@
                             <span class="experient" id="experient_name" >项目名称不可为空！</span>
 
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容描述
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目描述
                                 </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <textarea class="form-control" id="applyDesc" name="desc" onblur="reminder(this)"></textarea>
@@ -178,7 +178,7 @@
                                 </label>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">主要考核参数</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">主要参数</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
 
@@ -204,7 +204,7 @@
                             </div>
                             <span class="experient" id="experient_para" >主要参数不可为空！</span>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">附加属性</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
                                         <div class="well">

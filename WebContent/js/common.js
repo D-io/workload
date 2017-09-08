@@ -252,7 +252,7 @@ $(document).ready(function () {
         }
       //  $("#groupMember").val(allItem[thisId].ownerId);
       //  $("#groupMember").attr("disabled","disabled");
-        $("#itemMember").select2().val(allItem[thisId].groupManagerId).trigger("change");
+        $("#itemMember").select2().val(allItem[thisId].groupManagerId).trigger("change").css("width","100%");
         $("#itemMember").attr("disabled","disabled");
        $(".otherimportpara").attr("disabled","disabled");
         if(allItem[thisId].isGroup==1){
@@ -268,7 +268,7 @@ $(document).ready(function () {
             $("#jobDesc").attr("disabled","disabled");
             $("#childWeight").val(allItem[thisId].jsonChildWeight);
             $("#childWeight").attr("disabled","disabled");
-            $("#itemmanager").select2().val(allItem[thisId].groupManagerId).trigger("change");
+            $("#itemmanager").select2().val(allItem[thisId].groupManagerId).trigger("change").css("width","100%");
             $("#itemmanager").attr("disabled","disabled");
         }
         else {
@@ -626,7 +626,7 @@ $(document).ready(function () {
 
         $("#isGroup").removeAttr("disabled");
         $("#isSingle").removeAttr("disabled");
-        $("#itemMember").select2().val(null).trigger("change");
+        $("#itemMember").select2().val(null).trigger("change").css("width","100%");
         $("#groupMember").val(null);
         $(".importpara").val(null);
         $(".otherimportpara").val(null);
@@ -1348,6 +1348,7 @@ function showImportPreview(data,itemCount) {
                 $(".importItemTbody tr:last").attr("class","trDele_"+Info.itemId);
             }
 
+            $(".importItemTbody tr:last").css("text-align","center");
            /* var checkboxStr='<div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>'
       */   var checkboxStr='<input type="checkbox" name="checkbox1" value="checkbox" class="submitmyself" id="'+Info.itemId+'">' ;
             var anotherboxStr='<input type="checkbox" name="checkbox1" value="checkbox" class="anothersubmit" id="'+Info.itemId+'">' ;
@@ -1369,7 +1370,7 @@ function showImportPreview(data,itemCount) {
                         $(".importItemTbody tr:last td:eq(5)").append(str);
 
                     break;
-                    case 1:statusName="待复核/待审核";
+                    case 1:statusName="待复核";
                         $(".importItemTbody tr:last td:eq(0)").append(anotherboxStr);
                         $(".anothersubmit:last").attr("disabled","disabled");
                         $(".importItemTbody tr:last td:eq(5)").append(anotherstr);

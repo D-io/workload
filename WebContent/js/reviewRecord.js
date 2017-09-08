@@ -441,7 +441,7 @@ function applyworkload() {
                                 $(".tbody tr:last td:eq(4)").append(act);
                                 break;
                             case 1:
-                                statusName = '待复核/待审核';
+                                statusName = '待审核';
                                 $(".tbody tr:last td:eq(4)").append(newAct);
                                 break;
                             case 2:

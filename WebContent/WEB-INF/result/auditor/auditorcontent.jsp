@@ -256,7 +256,7 @@
                             <div class="control-label col-md-3 col-sm-3 col-xs-12">
                                 <button class="btn btn-primary importNewFile " style="position: relative; top: 7px; font-size: 14px;"><i class="fa fa-file"></i></button>
                                 <button class="btn btn-primary addNewItem" data-toggle="modal" data-target="#addContent" style="position: relative; top: 7px; font-size: 14px;"><i class="fa fa-plus"></i></button>
-                                 <button class="btn btn-success submitItem" style="display: none"><i class="fa fa-check-square-o"></i></button>
+                                 <button class="btn btn-success submitItem" style="display: none; position: relative; top: 7px; font-size: 14px;"><i class="fa fa-check-square-o"></i></button>
 
                             </div>
 
