@@ -168,7 +168,7 @@
                         <div class="modal-body" style="max-height: 500px;overflow-y: hidden;overflow-x: hidden;" >
                             <%--<div id="echart_pie" style="height:350px;"></div>--%>
                           <%--  <div id="echart_pie" style="height:350px;"></div>--%>
-                                <%--<div class="all_Count" style="float: left">--%><div style="color: #fff;font-size:16px;background-color: #5ab1ef;float: left;margin-right: 25px;">预计总工作当量：<span class="totlaAll" style="color: #fff"></span></div><div style="color: #fff;font-size:16px;background-color: #2ec7c9;float: left;margin-right: 25px;">已通过总工作当量：<span class="passAll" style="color: #fff"></span></div><div style="color: #fff;font-size:16px;background-color: #ffb980;float: left;">待核定总工作当量：<span class="unpassAll" style="color: #fff"></span></div><%--</div>--%>
+                                <%--<div class="all_Count" style="float: left">--%><div style="color: #fff;font-size:16px;background-color: #5ab1ef;float: left;margin-left:18%;margin-right: 25px;">预计总工作当量：<span class="totlaAll" style="color: #fff"></span></div><div style="color: #fff;font-size:16px;background-color: #2ec7c9;float: left;margin-right: 25px;">已通过总工作当量：<span class="passAll" style="color: #fff"></span></div><div style="color: #fff;font-size:16px;background-color: #ffb980;float: left;">待核定总工作当量：<span class="unpassAll" style="color: #fff"></span></div><%--</div>--%>
 
                                 <div id="echart_unchecked_pie" style="height:350px;"></div>
                            <%-- <div class="clearfix"></div>--%>
