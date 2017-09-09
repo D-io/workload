@@ -84,25 +84,25 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	@Autowired
 	private TeacherWorkloadService teacherWorkloadService;
 
-	@RequestMapping(value = "items/group", method = GET)
-	public RestResponse getOwnItemsGroup(
-			@RequestParam("categoryId")
-					Integer categoryId) {
-		User user = getUser();
-		if (null == user) {
-			return invalidOperationResponse("非法请求");
-		}
-
-		int teacherId = user.getUserId();
-
-		List<ItemDto> itemDtoList = itemService
-				.findAll(null, categoryId, null, null, GROUP, getCurrentSemester(), APPLY_SELF,
-						teacherId);
-
-		Map<String, Object> data = getData();
-		data.put("itemDtoList", itemDtoList);
-		return successResponse(data);
-	}
+	//	@RequestMapping(value = "items/group", method = GET)
+	//	public RestResponse getOwnItemsGroup(
+	//			@RequestParam("categoryId")
+	//					Integer categoryId) {
+	//		User user = getUser();
+	//		if (null == user) {
+	//			return invalidOperationResponse("非法请求");
+	//		}
+	//
+	//		int teacherId = user.getUserId();
+	//
+	//		List<ItemDto> itemDtoList = itemService
+	//				.findAll(null, categoryId, null, null, GROUP, getCurrentSemester(), APPLY_SELF,
+	//						teacherId);
+	//
+	//		Map<String, Object> data = getData();
+	//		data.put("itemDtoList", itemDtoList);
+	//		return successResponse(data);
+	//	}
 
 	@RequestMapping(value = "teacher-analyze", method = GET)
 	public RestResponse analyzeWorkload(
@@ -222,34 +222,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 					.getTeacherWorkload(teacherId, getCurrentSemester()));
 		}
 
-		//		List<TeacherWorkload> teacherWorkloadList = new ArrayList<>();
-		//		for (Teacher teacher : teacherList) {
-		//			int id = teacher.getTeacherId();
-		//
-		//			TeacherWorkload teacherWorkload = new TeacherWorkload();
-		//			teacherWorkload.setTeacherId(teacher.getTeacherId());
-		//			teacherWorkload.setTeacherName(teacher.getName());
-		//			teacherWorkload.setProfessionalTitle(teacher.getProfessionalTitle());
-		//
-		//			TotalWorkloadAndCount checkedWorkload = itemService
-		//					.selectTotalWorkload(id, CHECKED, getCurrentSemester());
-		//			TotalWorkloadAndCount nonCheckedWorkload = itemService
-		//					.selectTotalWorkload(id, null, getCurrentSemester());
-		//
-		//			checkedWorkload = (null == checkedWorkload ? EMPTY_WORKLOAD : checkedWorkload);
-		//			nonCheckedWorkload = (null == nonCheckedWorkload ? EMPTY_WORKLOAD : nonCheckedWorkload);
-		//
-		//			teacherWorkload.setCheckedWorkload(checkedWorkload.getWorkload());
-		//			teacherWorkload.setCheckedItems(checkedWorkload.getCount());
-		//
-		//			teacherWorkload.setUncheckedItems(nonCheckedWorkload.getCount());
-		//			teacherWorkload.setUncheckedWorkload(nonCheckedWorkload.getWorkload());
-		//			teacherWorkload.setTotalWorkload(
-		//					teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
-		//
-		//			teacherWorkloadList.add(teacherWorkload);
-		//		}
-
 		if (("yes".equals(ifExport))) {
 			return getExportWorkloadExcel(teacherWorkloadList);
 		} else {
@@ -366,17 +338,25 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 		int teacherId = user.getUserId();
 
-		List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(), categoryId);
-
-		//		if (null == itemList || itemList.isEmpty()) {
-		//			return parameterNotSupportResponse("参数有误");
-		//		}
+		List<Item> itemList = itemService
+				.findItemByCategory(getCurrentSemester(), categoryId, ZERO_INT);
 
 		List<Item> teacherItems = new ArrayList<>();
 		for (Item item : itemList) {
-			//遍历该类下所有的条目，若和当前老师相对应，筛选
 			if (item.getOwnerId().equals(teacherId)) {
-				teacherItems.add(item);
+				//遍历该类下所有的条目，若和当前老师相对应，筛选
+				if (SINGLE.equals(item.getIsGroup())) {
+					teacherItems.add(item);
+				}
+
+				if (GROUP.equals(item.getIsGroup()) && item.getOwnerId()
+						.equals(item.getGroupManagerId())) {
+					Integer parentId = item.getItemId();
+					teacherItems
+							.add(itemConverter.generateGroupItem(parentId, getCurrentSemester()));
+				} else {
+					continue;
+				}
 			}
 		}
 

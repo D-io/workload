@@ -99,7 +99,9 @@ public interface ItemDao extends BaseDao<Item> {
 			@Param("categoryId")
 					Integer categoryId,
 			@Param("version")
-					String version);
+					String version,
+			@Param("parentId")
+					Integer parentId);
 
 	/**
 	 * 条件查询所有条目信息
@@ -157,5 +159,11 @@ public interface ItemDao extends BaseDao<Item> {
 					String version,
 			@Param("type")
 					String type);
+
+	List<Item> selectChild(
+			@Param("parentId")
+					Integer parentId,
+			@Param("version")
+					String version);
 
 }

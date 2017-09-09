@@ -19,11 +19,12 @@
         <result column="other_json" property="otherJson" jdbcType="VARCHAR"/>
         <result column="version" property="version" jdbcType="VARCHAR"/>
         <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     </resultMap>
 
     <sql id="Base_Column_List">
     item_id, item_name, category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc,
-    job_desc, status, json_child_weight,proof,is_group,other_json,version,category_code
+    job_desc, status, json_child_weight,proof,is_group,other_json,version,category_code,parent_id
   </sql>
 
     <select id="select" resultMap="itemResultMap">
@@ -40,13 +41,23 @@
 
     <insert id="insert">
         insert into item (<include refid="Base_Column_List"/>)
-        values (#{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR},
-        #{categoryId,jdbcType=INTEGER}, #{ownerId,jdbcType=INTEGER},
-        #{jsonParameter,jdbcType=VARCHAR}, #{workload,jdbcType=DOUBLE},
+        values (#{itemId,jdbcType=INTEGER},
+        #{itemName,jdbcType=VARCHAR},
+        #{categoryId,jdbcType=INTEGER},
+        #{ownerId,jdbcType=INTEGER},
+        #{jsonParameter,jdbcType=VARCHAR},
+        #{workload,jdbcType=DOUBLE},
         #{groupManagerId,jdbcType=INTEGER},
-        #{applyDesc,jdbcType=VARCHAR}, #{jobDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+        #{applyDesc,jdbcType=VARCHAR},
+        #{jobDesc,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER},
         #{jsonChildWeight,jdbcType=VARCHAR},
-        #{proof,jdbcType=INTEGER},#{isGroup,jdbcType=INTEGER},#{otherJson,jdbcType=VARCHAR},#{version},#{categoryCode})
+        #{proof,jdbcType=INTEGER},
+        #{isGroup,jdbcType=INTEGER},
+        #{otherJson,jdbcType=VARCHAR},
+        #{version},
+        #{categoryCode},
+        #{parentId})
     </insert>
 
     <update id="update">
@@ -64,7 +75,8 @@
       proof = #{proof,jdbcType=INTEGER},
       is_group = #{isGroup,jdbcType=INTEGER},
       other_json = #{otherJson,jdbcType=VARCHAR},
-      category_code = #{categoryCode}
+      category_code = #{categoryCode},
+      parent_id = #{parentId}
     where item_id = #{itemId,jdbcType=INTEGER} and version = #{version}
   </update>
 
@@ -93,7 +105,12 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM item
-        WHERE category_id = #{categoryId} AND status != -1 and version = #{version}
+        <where>
+          category_id = #{categoryId} AND status != -1 and version = #{version}
+          <if test="null != parentId">
+              AND parent_id = #{parentId}
+          </if>
+        </where>
     </select>
 
     <select id="selectAll" resultMap="itemResultMap">
@@ -108,9 +125,6 @@
             </if>
             <if test="null != status">
                 AND item.status = #{status}
-            </if>
-            <if test="null == status">
-                AND (item.status = 1 OR item.status = 2 OR item.status = 5)
             </if>
             <if test="null != ownerId">
                 AND owner_id = #{ownerId}
@@ -172,6 +186,10 @@
             </if>
             AND category_code LIKE CONCAT(#{type},'%')
         </where>
+    </select>
+
+    <select id="selectChild" resultMap="itemResultMap" >
+        SELECT * FROM item WHERE parent_id = #{parentId} AND version = #{version}
     </select>
 
 </mapper>

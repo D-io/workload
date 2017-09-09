@@ -155,7 +155,7 @@ public class ReviewInfoListController extends ApplicationController {
 		for (Category category : categoryList) {
 			Integer todoCount = ZERO_INT;
 			List<Item> itemList = itemService
-					.findItemByCategory(getCurrentSemester(), category.getCategoryId());
+					.findItemByCategory(getCurrentSemester(), category.getCategoryId(),ZERO_INT);
 			for (Item item : itemList) {
 				if (NON_CHECKED.equals(item.getStatus())) {
 					todoCount++;
@@ -204,7 +204,7 @@ public class ReviewInfoListController extends ApplicationController {
 		List<Category> categories = new ArrayList<>();
 		for (Category category : categoryList) {
 			List<Item> itemList = itemService
-					.findItemByCategory(getCurrentSemester(), category.getCategoryId());
+					.findItemByCategory(getCurrentSemester(), category.getCategoryId(),ZERO_INT);
 			if (!isEmptyList(itemList)) {
 				categories.add(category);
 			}
