@@ -42,6 +42,7 @@ import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
 import cn.edu.uestc.ostec.workload.support.utils.PageHelper;
 import cn.edu.uestc.ostec.workload.support.utils.TreeGenerateHelper;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
+import jdk.net.SocketFlow;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.ITEM_PATH;
@@ -351,9 +352,14 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 				if (GROUP.equals(item.getIsGroup()) && item.getOwnerId()
 						.equals(item.getGroupManagerId())) {
-					Integer parentId = item.getItemId();
-					teacherItems
-							.add(itemConverter.generateGroupItem(parentId, getCurrentSemester()));
+					if(UNCOMMITTED.equals(item.getStatus())) {
+						teacherItems.add(item);
+					} else {
+						Integer parentId = item.getItemId();
+						teacherItems.add(itemConverter
+								.generateGroupItem(parentId, getCurrentSemester()));
+					}
+
 				} else {
 					continue;
 				}

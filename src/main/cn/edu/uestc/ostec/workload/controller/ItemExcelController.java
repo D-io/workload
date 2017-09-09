@@ -62,6 +62,8 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.F
 import static cn.edu.uestc.ostec.workload.support.utils.ObjectHelper.isNull;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
+import static com.sun.corba.se.spi.activation.IIOP_CLEAR_TEXT.value;
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -189,7 +191,10 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 		Item item = null;
 		List<Item> itemList = new ArrayList<>();
-		List<ItemBrief> itemBriefList = new ArrayList<>();
+//		List<ItemBrief> itemBriefList = new ArrayList<>();
+		List<Item> itemGroupList = new ArrayList<>();
+		Integer parentId = ZERO_INT;
+		List<Item> itemMemberList = new ArrayList<>();
 
 		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
 		if (null == category) {
@@ -261,7 +266,13 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					for (OtherJsonParameter otherJsonParameter : categoryDto
 							.getOtherJsonParameters()) {
 						Cell cell = row.getCell(index);
-						String value = cell.getStringCellValue();
+
+						String value = null;
+						if(CELL_TYPE_NUMERIC == cell.getCellType()) {
+							value = Double.valueOf(cell.getNumericCellValue()).toString();
+						} else {
+							value = cell.getStringCellValue();
+						}
 						OtherJsonParameter otherJson = new OtherJsonParameter(
 								otherJsonParameter.getKey(), value);
 						otherJsonParameterList.add(otherJson);
@@ -312,16 +323,34 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					//					item.setJobDesc(OBJECT_MAPPER
 					//							.writeValueAsString(new JobDesc(teacherId, item.getJobDesc())));
 
-					//保存时相应的生成Item的编号
-					boolean saveSuccess = itemService.saveItem(item);
-					if (!saveSuccess) {
-						errorData.put(item.getItemName(), "导入失败");
+					itemGroupList.add(item);
+
+				}
+
+				for(Item itemTemp : itemGroupList) {
+					if(GROUP.equals(itemTemp.getIsGroup())) {
+						if (itemTemp.getOwnerId().equals(itemTemp.getGroupManagerId())) {
+							itemService.saveItem(itemTemp);
+							parentId = itemTemp.getItemId();
+						} else {
+							itemMemberList.add(itemTemp);
+						}
+						continue;
+					} else {
+						itemService.saveItem(itemTemp);
+						itemList.add(itemTemp);
 					}
+				}
 
-					ItemBrief itemBrief = itemToBrief(item);
-					itemBriefList.add(itemBrief);
-
-					itemList.add(item);
+				if(!isEmptyList(itemMemberList)) {
+					for (Item itemTemp : itemMemberList) {
+						itemTemp.setParentId(parentId);
+						boolean saveSuccess = itemService.saveItem(itemTemp);
+						if (!saveSuccess) {
+							errorData.put(itemTemp.getItemName(), "导入失败");
+							continue;
+						}
+					}
 				}
 			}
 
@@ -331,458 +360,258 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			e.printStackTrace();
 		}
 
+		itemList.add(itemConverter.generateGroupItem(parentId,getCurrentSemester()));
 		data.put("itemList", itemConverter.poListToDtoList(itemList));
 		data.put("errorData", errorData);
 
 		return successResponse(data);
 	}
 
-	//	/**
-	//	 * 导入Excel中的信息到数据库 （提交文件） </br>
-	//	 *
-	//	 * 三个步骤： </br>
-	//	 * 1、先根据文件要求上传文件；</br>
-	//	 * 2、提交文件之后进行Excel的信息导入数据库的操作； </br>
-	//	 * 3、导入之后查看导入的工作量列表进行确认；</br>
-	//	 * 4、确认无误后进行提交工作量的操作 </br>
-	//	 *
-	//	 * PS.导入的格式待确定 格式不同对应的计算方式不同
-	//	 *
-	//	 * @param fileInfoId 文件信息编号
-	//	 * @return RestResponse
-	//	 */
-	//	/**
-	//	 * 根据不同类目对应的模板文件进行导入
-	//	 *
-	//	 * @param categoryId 类目编号
-	//	 * @param fileInfoId 上传的文件编号
-	//	 * @return RestResponse
-	//	 */
-	//	@RequestMapping(value = "import-template", method = POST)
-	//	public RestResponse importByTemplate(
-	//			@RequestParam("categoryId")
-	//					int categoryId,
-	//			@RequestParam("fileInfoId")
-	//					int fileInfoId) {
-	//
-	//		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
-	//		if (isNull(fileInfo)) {
-	//			return invalidOperationResponse();
-	//		}
-	//
-	//		if (!SUBMITTED.equals(fileInfo.getStatus())) {
-	//			return invalidOperationResponse("无法提交");
-	//		}
-	//
-	//		//		fileInfo.setStatus(SUBMITTED);
-	//		//		boolean submitSuccess = fileInfoService.saveFileInfo(fileInfo);
-	//		//		if (!submitSuccess) {
-	//		//			return systemErrResponse("文件上传失败");
-	//		//		}
-	//
-	//		Map<String, Object> data = getData();
-	//		data.put("fileInfo", fileInfo);
-	//
-	//		Item item = null;
-	//		List<Item> itemList = new ArrayList<>();
-	//		List<ItemBrief> itemBriefList = new ArrayList<>();
-	//
-	//		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
-	//		if (null == category) {
-	//			return invalidOperationResponse();
-	//		}
-	//		if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
-	//			return invalidOperationResponse("上传已经截止");
-	//		}
-	//
-	//		CategoryDto categoryDto = categoryConverter.poToDto(category);
-	//
-	//		Map<String, Object> errorData = getData();
-	//
-	//		//获取对应FileInfo的文件File（java.io.file）对象
-	//		String path = fileInfo.getPath();
-	//		File excelFile = new File(path);
-	//
-	//		//获取文件流
-	//		FileInputStream fileInputStream;
-	//		try {
-	//			fileInputStream = new FileInputStream(excelFile);
-	//
-	//			//版本不同创建不同的工作簿
-	//			Workbook book = null;
-	//			try {
-	//				book = new XSSFWorkbook(excelFile);
-	//			} catch (Exception ex) {
-	//				book = new HSSFWorkbook(fileInputStream);
-	//			}
-	//
-	//			//得到第一个工作表
-	//			Sheet sheet = null;
-	//			Row row = null;
-	//
-	//			//遍历工作簿中所有的表格
-	//			for (int i = 0; i < book.getNumberOfSheets(); i++) {
-	//				sheet = book.getSheetAt(i);
-	//				if (null == sheet) {
-	//					continue;
-	//				}
-	//
-	//				//遍历每一个表中所有的行
-	//				for (int j = 1; j < sheet.getPhysicalNumberOfRows(); j++) {
-	//					row = sheet.getRow(j);
-	//					if (null == row) {
-	//						continue;
-	//					}
-	//					item = new Item();
-	//
-	//					//顺序由最终决定的模板决定
-	//					Cell itemName = row.getCell(T_ITEM_NAME_INDEX);
-	//					item.setItemName(itemName.getStringCellValue());
-	//
-	//					Cell ownerId = row.getCell(T_TEACHER_ID_INDEX);
-	//					int teacherId = ((Double) ownerId.getNumericCellValue()).intValue();
-	//					item.setOwnerId(teacherId);
-	//
-	//					Cell jobDesc = row.getCell(T_JOB_DESC_INDEX);
-	//					item.setJobDesc(jobDesc.getStringCellValue());
-	//
-	//					List<ParameterValue> parameterValues = new ArrayList<>();
-	//					int index = T_JOB_DESC_INDEX + 1;
-	//					for (FormulaParameter formulaParameter : categoryDto
-	//							.getFormulaParameterList()) {
-	//						Cell cell = row.getCell(index);
-	//						double value = cell.getNumericCellValue();
-	//						ParameterValue parameterValue = new ParameterValue(
-	//								formulaParameter.getSymbol(), value);
-	//						parameterValues.add(parameterValue);
-	//						index++;
-	//					}
-	//
-	//					List<OtherJsonParameter> otherJsonParameterList = new ArrayList<>();
-	//					for (OtherJsonParameter otherJsonParameter : categoryDto
-	//							.getOtherJsonParameters()) {
-	//						Cell cell = row.getCell(index);
-	//						String value = cell.getStringCellValue();
-	//						OtherJsonParameter otherJson = new OtherJsonParameter(
-	//								otherJsonParameter.getKey(), value);
-	//						otherJsonParameterList.add(otherJson);
-	//						index++;
-	//					}
-	//
-	//					Cell groupManagerId = row.getCell(index);
-	//					int managerId = (null == groupManagerId ?
-	//							teacherId :
-	//							((Double) groupManagerId.getNumericCellValue()).intValue());
-	//					item.setGroupManagerId(managerId);
-	//
-	//					Cell weight = row.getCell(index + 2);
-	//					String childWeight = (null == weight ?
-	//							"1" :
-	//							((Double) weight.getNumericCellValue()).toString());
-	//					item.setJsonChildWeight(childWeight);
-	//
-	//					if (null == groupManagerId && null == weight) {
-	//						item.setIsGroup(SINGLE);
-	//					} else {
-	//						item.setIsGroup(GROUP);
-	//					}
-	//
-	//					//文件信息编号对应为该条目的proof
-	//					item.setProof(fileInfoId);
-	//					item.setCategoryId(categoryId);
-	//					item.setStatus(UNCOMMITTED);
-	//
-	//					//计算workload(先获取公式对应的参数)
-	//					double totalWorkload = FormulaCalculate
-	//							.calculate(category.getFormula(), parameterValues);
-	//					double personalWeight = Double.valueOf(item.getJsonChildWeight());
-	//					double workload = totalWorkload * personalWeight;
-	//
-	//					//工作量四舍五入获取两位小数
-	//					BigDecimal b = new BigDecimal(workload);
-	//					double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-	//					item.setWorkload(formatWorkload);
-	//
-	//					item.setJsonParameter(OBJECT_MAPPER.writeValueAsString(parameterValues));
-	//					item.setOtherJson(OBJECT_MAPPER.writeValueAsString(otherJsonParameterList));
-	//
-	//					//					//把权重仍然按照json格式写回数据库，防止转换过程中出现问题
-	//					//					item.setJsonChildWeight(OBJECT_MAPPER
-	//					//							.writeValueAsString(new ChildWeight(teacherId, personalWeight)));
-	//					//					//职责描述同理
-	//					//					item.setJobDesc(OBJECT_MAPPER
-	//					//							.writeValueAsString(new JobDesc(teacherId, item.getJobDesc())));
-	//
-	//					//保存时相应的生成Item的编号
-	//					boolean saveSuccess = itemService.saveItem(item);
-	//					if (!saveSuccess) {
-	//						errorData.put(item.getItemName(), "导入失败");
-	//					}
-	//
-	//					ItemBrief itemBrief = itemToBrief(item);
-	//					itemBriefList.add(itemBrief);
-	//
-	//					itemList.add(item);
-	//				}
-	//			}
-	//
-	//		} catch (FileNotFoundException e) {
-	//			e.printStackTrace();
-	//		} catch (IOException e) {
-	//			e.printStackTrace();
-	//		}
-	//
-	//		data.put("itemList", itemConverter.poListToDtoList(itemList));
-	//		data.put("errorData", errorData);
-	//
-	//		return successResponse(data);
-	//	}
-
-	/**
-	 * 将Item信息做转换
-	 */
-	public ItemBrief itemToBrief(Item item) {
-
-		ItemBrief itemBrief = new ItemBrief();
-		itemBrief.setCategoryId(item.getCategoryId());
-		itemBrief.setGroupManagerId(item.getGroupManagerId());
-		itemBrief.setGroupManagerName(
-				teacherService.findTeacherNameById(itemBrief.getGroupManagerId()));
-		itemBrief.setIsGroup(item.getIsGroup());
-		itemBrief.setOwnerId(item.getOwnerId());
-		itemBrief.setOwnerName(teacherService.findTeacherNameById(itemBrief.getOwnerId()));
-		itemBrief.setItemId(item.getItemId());
-
-		itemBrief.setItemName(item.getItemName());
-		itemBrief.setStatus(item.getStatus());
-		itemBrief.setProof(item.getProof());
-
-		itemBrief.setJobDesc(item.getJobDesc());
-		itemBrief.setWeight(item.getJsonChildWeight());
-
-		itemBrief.setJsonParameter(item.getJsonParameter());
-		itemBrief.setWorkload(item.getWorkload());
-
-		itemBrief.setCategoryName(
-				categoryService.getCategory(itemBrief.getCategoryId(), getCurrentSemester())
-						.getName());
-		itemBrief.setOtherJson(item.getOtherJson());
-
-		return itemBrief;
-
-	}
-
-	public Item briefToItem() {
-		Item item = new Item();
-		return item;
-	}
-
-	class ItemBrief {
-
-		/**
-		 * 工作量编号
-		 */
-		private Integer itemId;
-
-		/**
-		 * 工作量对应的项目名称
-		 */
-		private String itemName;
-
-		/**
-		 * 工作量类目编号，确定工作量所属类目
-		 */
-		private Integer categoryId;
-
-		/**
-		 * 工作量类目名称
-		 */
-		private String categoryName;
-
-		/**
-		 * 所属人编号，与教师表中工号一致
-		 */
-		private Integer ownerId;
-
-		/**
-		 * 工作量条目所属人姓名
-		 */
-		private String ownerName;
-
-		/**
-		 * 参数以json格式存储，与类目表公式中参数一致，如{A：40}
-		 */
-		private String jsonParameter;
-
-		/**
-		 * 根据参数计算出的当前总的工作量
-		 */
-		private Double workload;
-
-		/**
-		 * 组长编号，默认当前申请人为组长。当前登录人编号与此字段一致时，方可进行工作量的修改操作
-		 */
-		private Integer groupManagerId;
-
-		/**
-		 * 组长姓名
-		 */
-		private String groupManagerName;
-
-		/**
-		 * 工作描述
-		 */
-		private String jobDesc = null;
-
-		/**
-		 * 状态
-		 */
-		private Integer status;
-
-		/**
-		 * Json格式存储组员权重，用于计算个人工作量，存储如：{组员1编号：0.4}
-		 */
-		private String weight;
-
-		/**
-		 * 证明
-		 */
-		private Integer proof = null;
-
-		/**
-		 * 是否为小组
-		 */
-		private Integer isGroup = ZERO_INT;
-
-		private String otherJson = null;
-
-		public String getOtherJson() {
-			return otherJson;
-		}
-
-		public void setOtherJson(String otherJson) {
-			this.otherJson = otherJson;
-		}
-
-		public Integer getItemId() {
-			return itemId;
-		}
-
-		public void setItemId(Integer itemId) {
-			this.itemId = itemId;
-		}
-
-		public String getItemName() {
-			return itemName;
-		}
-
-		public void setItemName(String itemName) {
-			this.itemName = itemName;
-		}
-
-		public Integer getCategoryId() {
-			return categoryId;
-		}
-
-		public void setCategoryId(Integer categoryId) {
-			this.categoryId = categoryId;
-		}
-
-		public Integer getOwnerId() {
-			return ownerId;
-		}
-
-		public void setOwnerId(Integer ownerId) {
-			this.ownerId = ownerId;
-		}
-
-		public String getOwnerName() {
-			return ownerName;
-		}
-
-		public void setOwnerName(String ownerName) {
-			this.ownerName = ownerName;
-		}
-
-		public String getJsonParameter() {
-			return jsonParameter;
-		}
-
-		public void setJsonParameter(String jsonParameter) {
-			this.jsonParameter = jsonParameter;
-		}
-
-		public Double getWorkload() {
-			return workload;
-		}
-
-		public void setWorkload(Double workload) {
-			this.workload = workload;
-		}
-
-		public Integer getGroupManagerId() {
-			return groupManagerId;
-		}
-
-		public void setGroupManagerId(Integer groupManagerId) {
-			this.groupManagerId = groupManagerId;
-		}
-
-		public String getGroupManagerName() {
-			return groupManagerName;
-		}
-
-		public void setGroupManagerName(String groupManagerName) {
-			this.groupManagerName = groupManagerName;
-		}
-
-		public String getJobDesc() {
-			return jobDesc;
-		}
-
-		public void setJobDesc(String jobDesc) {
-			this.jobDesc = jobDesc;
-		}
-
-		public Integer getStatus() {
-			return status;
-		}
-
-		public void setStatus(Integer status) {
-			this.status = status;
-		}
-
-		public String getWeight() {
-			return weight;
-		}
-
-		public void setWeight(String weight) {
-			this.weight = weight;
-		}
-
-		public Integer getProof() {
-			return proof;
-		}
-
-		public void setProof(Integer proof) {
-			this.proof = proof;
-		}
-
-		public Integer getIsGroup() {
-			return isGroup;
-		}
-
-		public void setIsGroup(Integer isGroup) {
-			this.isGroup = isGroup;
-		}
-
-		public String getCategoryName() {
-			return categoryName;
-		}
-
-		public void setCategoryName(String categoryName) {
-			this.categoryName = categoryName;
-		}
-	}
+//	/**
+//	 * 将Item信息做转换
+//	 */
+//	public ItemBrief itemToBrief(Item item) {
+//
+//		ItemBrief itemBrief = new ItemBrief();
+//		itemBrief.setCategoryId(item.getCategoryId());
+//		itemBrief.setGroupManagerId(item.getGroupManagerId());
+//		itemBrief.setGroupManagerName(
+//				teacherService.findTeacherNameById(itemBrief.getGroupManagerId()));
+//		itemBrief.setIsGroup(item.getIsGroup());
+//		itemBrief.setOwnerId(item.getOwnerId());
+//		itemBrief.setOwnerName(teacherService.findTeacherNameById(itemBrief.getOwnerId()));
+//		itemBrief.setItemId(item.getItemId());
+//
+//		itemBrief.setItemName(item.getItemName());
+//		itemBrief.setStatus(item.getStatus());
+//		itemBrief.setProof(item.getProof());
+//
+//		itemBrief.setJobDesc(item.getJobDesc());
+//		itemBrief.setWeight(item.getJsonChildWeight());
+//
+//		itemBrief.setJsonParameter(item.getJsonParameter());
+//		itemBrief.setWorkload(item.getWorkload());
+//
+//		itemBrief.setCategoryName(
+//				categoryService.getCategory(itemBrief.getCategoryId(), getCurrentSemester())
+//						.getName());
+//		itemBrief.setOtherJson(item.getOtherJson());
+//
+//		return itemBrief;
+//
+//	}
+//
+//	public Item briefToItem() {
+//		Item item = new Item();
+//		return item;
+//	}
+//
+//	class ItemBrief {
+//
+//		/**
+//		 * 工作量编号
+//		 */
+//		private Integer itemId;
+//
+//		/**
+//		 * 工作量对应的项目名称
+//		 */
+//		private String itemName;
+//
+//		/**
+//		 * 工作量类目编号，确定工作量所属类目
+//		 */
+//		private Integer categoryId;
+//
+//		/**
+//		 * 工作量类目名称
+//		 */
+//		private String categoryName;
+//
+//		/**
+//		 * 所属人编号，与教师表中工号一致
+//		 */
+//		private Integer ownerId;
+//
+//		/**
+//		 * 工作量条目所属人姓名
+//		 */
+//		private String ownerName;
+//
+//		/**
+//		 * 参数以json格式存储，与类目表公式中参数一致，如{A：40}
+//		 */
+//		private String jsonParameter;
+//
+//		/**
+//		 * 根据参数计算出的当前总的工作量
+//		 */
+//		private Double workload;
+//
+//		/**
+//		 * 组长编号，默认当前申请人为组长。当前登录人编号与此字段一致时，方可进行工作量的修改操作
+//		 */
+//		private Integer groupManagerId;
+//
+//		/**
+//		 * 组长姓名
+//		 */
+//		private String groupManagerName;
+//
+//		/**
+//		 * 工作描述
+//		 */
+//		private String jobDesc = null;
+//
+//		/**
+//		 * 状态
+//		 */
+//		private Integer status;
+//
+//		/**
+//		 * Json格式存储组员权重，用于计算个人工作量，存储如：{组员1编号：0.4}
+//		 */
+//		private String weight;
+//
+//		/**
+//		 * 证明
+//		 */
+//		private Integer proof = null;
+//
+//		/**
+//		 * 是否为小组
+//		 */
+//		private Integer isGroup = ZERO_INT;
+//
+//		private String otherJson = null;
+//
+//		public String getOtherJson() {
+//			return otherJson;
+//		}
+//
+//		public void setOtherJson(String otherJson) {
+//			this.otherJson = otherJson;
+//		}
+//
+//		public Integer getItemId() {
+//			return itemId;
+//		}
+//
+//		public void setItemId(Integer itemId) {
+//			this.itemId = itemId;
+//		}
+//
+//		public String getItemName() {
+//			return itemName;
+//		}
+//
+//		public void setItemName(String itemName) {
+//			this.itemName = itemName;
+//		}
+//
+//		public Integer getCategoryId() {
+//			return categoryId;
+//		}
+//
+//		public void setCategoryId(Integer categoryId) {
+//			this.categoryId = categoryId;
+//		}
+//
+//		public Integer getOwnerId() {
+//			return ownerId;
+//		}
+//
+//		public void setOwnerId(Integer ownerId) {
+//			this.ownerId = ownerId;
+//		}
+//
+//		public String getOwnerName() {
+//			return ownerName;
+//		}
+//
+//		public void setOwnerName(String ownerName) {
+//			this.ownerName = ownerName;
+//		}
+//
+//		public String getJsonParameter() {
+//			return jsonParameter;
+//		}
+//
+//		public void setJsonParameter(String jsonParameter) {
+//			this.jsonParameter = jsonParameter;
+//		}
+//
+//		public Double getWorkload() {
+//			return workload;
+//		}
+//
+//		public void setWorkload(Double workload) {
+//			this.workload = workload;
+//		}
+//
+//		public Integer getGroupManagerId() {
+//			return groupManagerId;
+//		}
+//
+//		public void setGroupManagerId(Integer groupManagerId) {
+//			this.groupManagerId = groupManagerId;
+//		}
+//
+//		public String getGroupManagerName() {
+//			return groupManagerName;
+//		}
+//
+//		public void setGroupManagerName(String groupManagerName) {
+//			this.groupManagerName = groupManagerName;
+//		}
+//
+//		public String getJobDesc() {
+//			return jobDesc;
+//		}
+//
+//		public void setJobDesc(String jobDesc) {
+//			this.jobDesc = jobDesc;
+//		}
+//
+//		public Integer getStatus() {
+//			return status;
+//		}
+//
+//		public void setStatus(Integer status) {
+//			this.status = status;
+//		}
+//
+//		public String getWeight() {
+//			return weight;
+//		}
+//
+//		public void setWeight(String weight) {
+//			this.weight = weight;
+//		}
+//
+//		public Integer getProof() {
+//			return proof;
+//		}
+//
+//		public void setProof(Integer proof) {
+//			this.proof = proof;
+//		}
+//
+//		public Integer getIsGroup() {
+//			return isGroup;
+//		}
+//
+//		public void setIsGroup(Integer isGroup) {
+//			this.isGroup = isGroup;
+//		}
+//
+//		public String getCategoryName() {
+//			return categoryName;
+//		}
+//
+//		public void setCategoryName(String categoryName) {
+//			this.categoryName = categoryName;
+//		}
+//	}
 
 }
