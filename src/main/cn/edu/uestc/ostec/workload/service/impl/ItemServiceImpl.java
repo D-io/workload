@@ -20,7 +20,9 @@ import cn.edu.uestc.ostec.workload.dto.Workload;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.GROUP;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
@@ -105,7 +107,7 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 			Integer groupManagerId) {
 		List<Item> itemList = itemDao
 				.selectAll(version, itemName, categoryId, status, ownerId, isGroup, groupManagerId,
-						importedRequired);
+						null, importedRequired);
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(itemList);
 
 		return itemDtoList;
@@ -113,13 +115,18 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 
 	@Override
 	public Map<String, Object> findAll(Integer categoryId, Integer status, Integer ownerId,
-			int pageNum, int pageSize, String version, Integer importedRequired) {
+			Integer parentId, int pageNum, int pageSize, String version, Integer importedRequired) {
 
 		PageHelper.startPage(pageNum, pageSize);
-		List<Item> items = itemDao.selectAll(version, null, categoryId, status, ownerId, null, null,
-				importedRequired);
+		List<Item> items = itemDao
+				.selectAll(version, null, categoryId, status, ownerId, null, null, parentId,
+						importedRequired);
 		List<Item> itemList = new ArrayList<>();
 		for (Item item : items) {
+			if (GROUP.equals(item.getIsGroup())
+					&& item.getOwnerId().equals(item.getGroupManagerId())) {
+				item = itemConverter.generateGroupItem(item.getItemId(),version);
+			}
 			itemList.add(item);
 		}
 		Page<Item> page = (Page<Item>) items;

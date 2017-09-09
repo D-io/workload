@@ -140,6 +140,9 @@
             <if test="null != groupManagerId">
                 AND item.group_manager_id = #{groupManagerId}
             </if>
+            <if test="null != parentId">
+                AND item.parent_id = #{parentId}
+            </if>
             <if test="null != itemName">
                 AND item_name LIKE CONCAT(CONCAT('%', #{itemName}), '%')
             </if>

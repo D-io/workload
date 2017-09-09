@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.event.ItemEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.JobDesc;
 import cn.edu.uestc.ostec.workload.event.FileEvent;
+import cn.edu.uestc.ostec.workload.event.GroupItemEvent;
 import cn.edu.uestc.ostec.workload.event.SubjectEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
@@ -81,11 +83,14 @@ public class ItemManageController extends ApplicationController {
 	@Autowired
 	private FileEvent fileEvent;
 
-	@Autowired
-	private TeacherService teacherService;
+//	@Autowired
+//	private TeacherService teacherService;
+//
+//	@Autowired
+//	private TeacherWorkloadService teacherWorkloadService;
 
 	@Autowired
-	private TeacherWorkloadService teacherWorkloadService;
+	private GroupItemEvent itemEvent;
 
 	/**
 	 * 管理员对条目信息进行部分修改
@@ -472,6 +477,11 @@ public class ItemManageController extends ApplicationController {
 				}
 
 				List<ChildWeight> childWeightList = itemDto.getChildWeightList();
+				if(GROUP.equals(itemDto.getIsGroup()) && IMPORT_EXCEL.equals(itemDto.getImportRequired())) {
+					Integer baseItemId = itemDto.getItemId();
+					itemEvent.updateGroupItemsStatus(baseItemId,getCurrentSemester(),NON_CHECKED);
+				}
+
 				if (GROUP.equals(itemDto.getIsGroup()) && !isEmptyList(childWeightList)) {
 
 					Integer baseItemId = ZERO_INT;

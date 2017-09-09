@@ -42,6 +42,7 @@ import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
 import cn.edu.uestc.ostec.workload.support.utils.PageHelper;
 import cn.edu.uestc.ostec.workload.support.utils.TreeGenerateHelper;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
+import javafx.scene.Parent;
 import jdk.net.SocketFlow;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
@@ -307,8 +308,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		pageSize = ("yes".equals(ifExport) ? 10000 : pageSize);
 
 		Map<String, Object> selectData = itemService
-				.findAll(categoryId, status, ownerId, pageNum, pageSize, getCurrentSemester(),
-						importedRequired);
+				.findAll(categoryId, status, ownerId, ZERO_INT, pageNum, pageSize,
+						getCurrentSemester(), importedRequired);
 
 		List<ItemDto> itemDtoList = (List<ItemDto>) selectData.get("itemList");
 
@@ -352,7 +353,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 				if (GROUP.equals(item.getIsGroup()) && item.getOwnerId()
 						.equals(item.getGroupManagerId())) {
-					if(UNCOMMITTED.equals(item.getStatus())) {
+					if (UNCOMMITTED.equals(item.getStatus())) {
 						teacherItems.add(item);
 					} else {
 						Integer parentId = item.getItemId();
