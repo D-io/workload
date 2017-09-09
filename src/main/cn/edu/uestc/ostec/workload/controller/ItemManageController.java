@@ -13,20 +13,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.event.ItemEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.Multipart;
-
 import cn.edu.uestc.ostec.workload.controller.core.ApplicationController;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
-import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.JobDesc;
+import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.event.GroupItemEvent;
 import cn.edu.uestc.ostec.workload.event.SubjectEvent;
@@ -57,6 +54,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
+import static org.springframework.core.GenericCollectionTypeResolver.getCollectionType;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -91,6 +89,29 @@ public class ItemManageController extends ApplicationController {
 
 	@Autowired
 	private GroupItemEvent itemEvent;
+
+	@RequestMapping(value = "calculate",method = GET)
+	public RestResponse calculate(
+			@RequestParam("categoryId")
+					Integer categoryId,
+			@RequestParam("jsonParameters")
+					String json,
+			@RequestParam("jsonChildWeight")
+					String childWeight) {
+
+		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
+		List<ParameterValue> parameterValues = itemConverter
+				.readValueFromJson(json, ParameterValue.class);
+		List<ChildWeight> childWeightList = itemConverter
+				.readValueFromJson(childWeight, ChildWeight.class);
+		String formula = category.getFormula();
+		childWeightList = FormulaCalculate
+				.calculateChildWorkloaad(formula, parameterValues, childWeightList);
+
+		Map<String,Object> data = getData();
+		data.put("childWeightList",childWeightList);
+		return successResponse(data);
+	}
 
 	/**
 	 * 管理员对条目信息进行部分修改
