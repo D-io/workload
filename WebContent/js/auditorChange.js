@@ -584,7 +584,7 @@ function showapplydata(item) {
             var childWeight='';
             if( jsonInfo.childWeightList!=null && jsonInfo.childWeightList.length ){
                 for( var t = 0; t < jsonInfo.childWeightList.length; t++ ){
-                    childWeight = jsonInfo.childWeightList[t].userId + ":" + jsonInfo.childWeightList[t].weight;
+                    childWeight = jsonInfo.childWeightList[t].userId + "：" + jsonInfo.childWeightList[t].weight;
                     $(".viewDetailTbody tr:last td:eq(4)").append( childWeight + "<br>");
                 }
             }
@@ -592,7 +592,7 @@ function showapplydata(item) {
             var jobdesc='';
             if( jsonInfo.jobDescList!=null && jsonInfo.jobDescList.length ){
                 for( var z = 0; z < jsonInfo.jobDescList.length; z++ ){
-                    childWeight = jsonInfo.jobDescList[z].userId + ":" + jsonInfo.jobDescList[z].jobDesc;
+                    jobdesc = jsonInfo.jobDescList[z].userId + "：" + jsonInfo.jobDescList[z].jobDesc;
                     $(".viewDetailTbody tr:last td:eq(5)").append( jobdesc + "<br>");
                 }
             }
