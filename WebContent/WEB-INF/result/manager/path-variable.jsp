@@ -76,6 +76,8 @@
 
     var itemManageUrl=contextPath+"/item/manage";
 
+    var calculateUrl=itemManageUrl+"/calculate";
+
     var itemeditNameUrl=itemManageUrl+"/correct";
 
     var importProofUrl=itemManageUrl+"/file-proof";

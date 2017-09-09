@@ -76,30 +76,6 @@ function  reviewerRec() {
               }
               $(".reviewerRecTbody tr:last td:eq(3)").text(showtype);
 
-              /* 主要参数  */
-              // var praValues='';
-              // for(var m=0;m<Info.parameterValues.length;m++){
-              //     praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
-              // }
-              // $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
-
-              /* 其他参数 */
-              // var otherpraValue='';
-              // for(var n=0;n<Info.otherJsonParameters.length;n++){
-              //     otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
-              // }
-              // $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
-
-              /* 参数描述 */
-              // var itemDesc='';
-              // for(var item=0;item<Info.paramDesc.length;item++){
-              //     itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
-              // }
-              // $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
-
-              /* 版本 */
-              // $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
-
               /* 复核截止时间 */
               $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieRec_"+Info.categoryId);
               $(".revieRec_"+Info.categoryId).text($(".time_"+Info.categoryId).text());
@@ -153,21 +129,6 @@ function  reviewerRec() {
                 }
                 $(".reviewerRecTbody tr:last td:eq(3)").text(showtype);
 
-                /* 主要参数 */
-                // var praValues='';
-                // for(var m=0;m<Info.parameterValues.length;m++){
-                //     praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
-                // }
-                // $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
-
-                /* 其他参数 */
-                // var otherpraValue='';
-                // for(var n=0;n<Info.otherJsonParameters.length;n++){
-                //     otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
-                // }
-                // $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
-
-
                 /* 参数描述 */
                 // var itemDesc='';
                 // for(var item=0;item<Info.paramDesc.length;item++){
@@ -181,15 +142,6 @@ function  reviewerRec() {
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieRec_"+Info.categoryId);
                 $(".revieRec_"+Info.categoryId).text($(".time_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("尚存疑");
-                /*  var statusName='';
-                 switch (Info.status){
-                 case 1:statusName="已提交";
-                 break;
-                 case 0:statusName="未提交";
-                 }*/
-
-                //   var act="<a class='btn btn-primary reviewerRec' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
-                //   $(".reviewerRecTbody tr:last td:eq(10)").text(act);
 
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_review' id='btn-viewdetail'>查看详情</a> ";
                 $(".reviewerRecTbody tr:last td:eq(6)").append(act).attr("class","operation-btn-two");
@@ -234,25 +186,6 @@ function  reviewerRec() {
                 }
                 $(".reviewerRecTbody tr:last td:eq(3)").text(showtype);
 
-                // var praValues='';
-                // for(var m=0;m<Info.parameterValues.length;m++){
-                //     praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
-                // }
-                // var otherpraValue='';
-                // for(var n=0;n<Info.otherJsonParameters.length;n++){
-                //     otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
-                // }
-                // $(".reviewerRecTbody tr:last td:eq(5)").text(praValues);
-                // var itemDesc='';
-                // for(var item=0;item<Info.paramDesc.length;item++){
-                //     itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
-                // }
-                // $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
-                // $(".reviewerRecTbody tr:last td:eq(7)").text(otherpraValue);
-                //
-                //
-                // $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
-
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieRec_"+Info.categoryId);
                 $(".revieRec_"+Info.categoryId).text($(".time_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("已解惑");
@@ -263,7 +196,7 @@ function  reviewerRec() {
                 $("[data-toggle='popover']").popover();
                 $(".reviewerApply").popover({
                     placement: "top",
-                    trigger: "hover",
+                    trigger: "click",
                     html: true,
                     title: "回复信息",
                     content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
@@ -277,12 +210,10 @@ function  reviewerRec() {
         }
     });
     /* 查看回复修复 */
-    $(".reviewerApply").off("hover");
-    $(".reviewerApply").hover(function () {
-        var element = this.id
-
-        ;
-        thisId=element.match(/\d+/g);
+    $(".reviewerApply").off("click");
+    $(".reviewerApply").on("click",function () {
+        var element = this.id;
+        var thisId=element.match(/\d+/g);
         $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
             if(data.data!=null&&data.data.subjectList!=null&&data.data.subjectList.length){
                 $(".sendFromName").text(data.data.subjectList[0].sendFromName);
@@ -486,27 +417,21 @@ function applyworkload() {
         });
 
     });
+
     function comparePara(item, para) {
         for (var comp = 0; comp < item.length; comp++) {
             if (item[comp].categoryId == para && item[comp].formulaParameterList && item[comp].otherJsonParameters) {
 
                 for (var t = 0; t < item[comp].formulaParameterList.length; t++) {
                     var symbolname = item[comp].formulaParameterList[t].symbol;
-                    /*$('.parameterTh').append("<th class='pramterDesc' id='"+symbolname+"'>"+item[comp].formulaParameterList[t].desc+"</th>");
-                     $('.AddPramter').append("<td><input type='text' class='parameterName'></td>");
-                     $('.showparameterTh').append("<th class='showpramterDesc' id='"+symbolname+"'>"+item[comp].formulaParameterList[t].desc+"</th>");
-                     $('.showAddPramter').append("<td><input type='text' class='showparameterName'></td>");*/
-                    $('#parameterTable').append("<tr><th class='pramterDesc' id='" + symbolname + "' style='font-size: 13px;'>" + item[comp].formulaParameterList[t].desc + "</th><td><input type='text' class='parameterName' name='para' onblur='reminder(this)'></td></tr>");
-                    $("#showparameterTable").append("<tr><th class='showpramterDesc' id='" + symbolname + "' style='font-size: 13px;'>" + item[comp].formulaParameterList[t].desc + "</th><td><input type='text' class='showparameterName' name='showpara' onblur='reminder(this)'></td></tr>")
+
+                    $('#parameterTable').append("<tr><th class='pramterDesc' id='" + symbolname + "' style='font-size: 13px;'>" + item[comp].formulaParameterList[t].desc + "</th><td><input type='text' class='parameterName form-control' name='para' onblur='reminder(this)'></td></tr>");
+                    $("#showparameterTable").append("<tr><th class='showpramterDesc' id='" + symbolname + "' style='font-size: 13px;'>" + item[comp].formulaParameterList[t].desc + "</th><td><input type='text' class='showparameterName form-control' name='showpara' onblur='reminder(this)'></td></tr>")
                 }
                 for (var s = 0; s < item[comp].otherJsonParameters.length; s++) {
 
-                    /*  $('.otherParaTh').append("<th class='otherPramterkey'>"+item[comp].otherJsonParameters[s].key+"</th>");
-                     $('#AddOtherPramter').append( "<td><input type='text' class='otherparameterName'></td>");
-                     $('.showotherParaTh').append("<th class='showotherPramterkey'>"+item[comp].otherJsonParameters[s].key+"</th>");
-                     $('#showAddOtherPramter').append("<td><input type='text' class='showotherparameterName'></td>");*/
-                    $('#otherparameterTable').append("<tr><th class='otherPramterkey' style='font-size: 13px'>" + item[comp].otherJsonParameters[s].key + "</th><td><input type='text' class='otherparameterName' name='otherpara' onblur='reminder(this)'></td></tr>");
-                    $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>" + item[comp].otherJsonParameters[s].key + "</th><td><input type='text' class='showotherparameterName' name='showotherpara' onblur='reminder(this)'></td></tr>");
+                    $('#otherparameterTable').append("<tr><th class='otherPramterkey' style='font-size: 13px'>" + item[comp].otherJsonParameters[s].key + "</th><td><input type='text' class='otherparameterName form-control' name='otherpara' onblur='reminder(this)'></td></tr>");
+                    $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>" + item[comp].otherJsonParameters[s].key + "</th><td><input type='text' class='showotherparameterName form-control' name='showotherpara' onblur='reminder(this)'></td></tr>");
                 }
 
             }
@@ -522,77 +447,20 @@ function applyworkload() {
         var newReg = parseInt(newId.match(/\d+/g));
         removeShowapply();
         window.contentCount=newReg;
-        console.log(window.contentCount);
+
         $(".savemyApplyAgain").hide();
         $(".dismissagain").hide();
+        $(".select2-container").css("width","100%");
+        $(".editApply").hide();
+        $(".editSubmit").hide();
+
         if ($("#statusChange_" + window.Temp[newReg-1].itemId).text() == "未提交") {
             $(".editApply").show();
             $(".editApply").attr("id", "editApply_" + window.Temp[newReg - 1].itemId);
             $(".editSubmit").show();
             $(".editSubmit").attr("id", "editSubmit_" + window.Temp[newReg - 1].itemId);
-            /*  $(".editDelete").show();
-             $(".editDelete").attr("id","editDelete"+window.Temp[newReg-1].itemId);*/
-            if (window.Temp[newReg - 1].isGroup == 0) {
-                $("#single").attr("checked", 'checked');
-                $("#group").attr("disabled", "true");
-                $(".item_manager").hide();
-                $(".item_group").hide();
-                $("#showAddgroupPramter").empty();
-            }
-            else {
-                $("#group").attr("checked", 'checked');
-                $("#single").attr("disabled", "true");
-                $(".showitem_manager").show();
-                $(".showitem_group").show();
-
-                $("#showitemmanager").select2().val(window.Temp[newReg - 1].groupManagerId).trigger("change");
-                $("#showitemmanager").attr("disabled", "true");
-                $('#showAddgroupPramter').empty();
-                var addStr = '';
-                //    var b = localStorage.getItem("item_"+window.Temp[newReg-1].itemId);
-                //    b=JSON.parse(b);
-
-                for (var pramterCount = 0; pramterCount < window.Temp[newReg - 1].jobDescList.length; pramterCount++) {
-
-                    var addStr = "<tr><td><select class='showgroupMemberName teacherName'></select></td><td><input type='text' class='showgroupMemberSymbol' name='showpara' onblur='reminder(this)'></td><td><input type='text' class='showgroupMemberWeight' name='showotherpara' onblur='reminder(this)'></td></tr>";
-                    $('#showAddgroupPramter').append(addStr);
-                    $.get(TeacherInfoUrl, {test: 12}, function (data) {
-                        for (var i = 0; i < data.data.teacherList.length; i++) {
-                            $('.showgroupMemberName:last').append('<option value=\"' + data.data.teacherList[i].teacherId + '\">' + data.data.teacherList[i].name + '</option>');
-                        }
-
-                    });
-                    $(".teacherName").select2({
-                        placeholder:"",
-                        allowClear: true,
-                        width: "100%",
-                    });
-                    //  $(".showgroupMemberName").eq(pramterCount).append("<option value='"+window.Temp[newReg-1].jobDescList[pramterCount].userId+"' selected='selected'></option>");
-                    $(".showgroupMemberName").eq(pramterCount).select2().val(window.Temp[newReg - 1].jobDescList[pramterCount].userId).trigger("change");
-                    $(".showgroupMemberSymbol").eq(pramterCount).val(window.Temp[newReg - 1].jobDescList[pramterCount].jobDesc);
-                    $(".showgroupMemberWeight").eq(pramterCount).val(window.Temp[newReg - 1].childWeightList[pramterCount].weight);
-
-
-                }
-
-
-                //    $('#showAddgroupPramter').append(addStr);
-
-                $(".showgroupMemberName").attr("disabled", "true");
-                $(".showgroupMemberSymbol").attr("disabled", "true");
-                $(".showgroupMemberWeight").attr("disabled", "true");
-
-            }
-
         }
-        else {
-            $(".editApply").hide();
-            //  $(".editApply").attr("id","editApply_"+window.Temp[newReg-1].itemId);
-            $(".editSubmit").hide();
-            //  $(".editSubmit").attr("id","editSubmit_"+window.Temp[newReg-1].itemId);
-            /*  $(".editDelete").hide();*/
-            //  $(".editDelete").attr("id","editDelete"+window.Temp[newReg-1].itemId);
-            if (window.Temp[newReg-1].isGroup == 0) {
+            if (window.Temp[newReg - 1].isGroup == 0) {
                 $("#single").attr("checked", 'checked');
                 $("#group").attr("disabled", "true");
                 $(".showitem_manager").hide();
@@ -606,29 +474,37 @@ function applyworkload() {
                 $(".showitem_group").show();
 
                 $("#showitemmanager").select2().val(window.Temp[newReg - 1].groupManagerId).trigger("change");
+                $(".select2-container").css("width","100%");
                 $("#showitemmanager").attr("disabled", "true");
+                $("#showcalculator").attr("disabled", "true");
                 $('#showAddgroupPramter').empty();
-
-                var addStr = "<tr><td><select class='showgroupMemberName teacherName'></select></td><td><input type='text' class='showgroupMemberSymbol'  name='showpara' onblur='reminder(this)'></td><td><input type='text' class='showgroupMemberWeight'  name='showotherpara' onblur='reminder(this)'></td></tr>";
-                $('#showAddgroupPramter').append(addStr);
+                var teacherList='';
                 $.get(TeacherInfoUrl, {test: 12}, function (data) {
-                    for (var i = 0; i < data.data.teacherList.length; i++) {
-                        $('.showgroupMemberName:last').append('<option value=\"' + data.data.teacherList[i].teacherId + '\">' + data.data.teacherList[i].name + '</option>');
-                    }
-
+                    teacherList=data.data.teacherList;
                 });
-                $(".teacherName").select2({
-                    placeholder:"",
-                    allowClear: true,
-                    width: "100%",
-                });
-                //  $(".showgroupMemberName").eq(pramterCount).append("<option value='"+window.Temp[newReg-1].jobDescList[pramterCount].userId+"' selected='selected'></option>");
-                $(".showgroupMemberName").eq(0).select2().val(window.Temp[newReg-1].ownerId).trigger("change");
-                $(".showgroupMemberSymbol").eq(0).val(window.Temp[newReg-1].jobDesc);
-                $(".showgroupMemberWeight").eq(0).val(window.Temp[newReg-1].jsonChildWeight);
+                var addStr = '';
+
+                for (var pramterCount = 0; pramterCount < window.Temp[newReg - 1].jobDescList.length; pramterCount++) {
+
+                    var addStr = "<tr><td><select class='showgroupMemberName teacherName'></select></td><td><input type='text' class='showgroupMemberSymbol' name='showpara' onblur='reminder(this)'></td><td><input type='text' class='showgroupMemberWeight' name='showotherpara' onblur='reminder(this)'></td></tr>";
+                    $('#showAddgroupPramter').append(addStr);
+
+                        for (var i = 0; i < teacherList.length; i++) {
+                            $('.showgroupMemberName:last').append('<option value=\"' + teacherList[i].teacherId + '\">' + teacherList[i].name + '</option>');
+                        }
+
+                    $(".teacherName").select2({
+                        placeholder:"",
+                        allowClear: true,
+                        width: "100%",
+                    });
+                    //  $(".showgroupMemberName").eq(pramterCount).append("<option value='"+window.Temp[newReg-1].jobDescList[pramterCount].userId+"' selected='selected'></option>");
+                    $(".showgroupMemberName").eq(pramterCount).select2().val(window.Temp[newReg - 1].jobDescList[pramterCount].userId).trigger("change");
+                    $(".showgroupMemberSymbol").eq(pramterCount).val(window.Temp[newReg - 1].jobDescList[pramterCount].jobDesc);
+                    $(".showgroupMemberWeight").eq(pramterCount).val(window.Temp[newReg - 1].childWeightList[pramterCount].weight);
 
 
-                //    $('#showAddgroupPramter').append(addStr);
+                }
 
                 $(".showgroupMemberName").attr("disabled", "true");
                 $(".showgroupMemberSymbol").attr("disabled", "true");
@@ -636,7 +512,6 @@ function applyworkload() {
 
             }
 
-        }
         $("#revfile").attr("disabled","disabled");
         $("input[name='revfile']").css({"color":"transparent","width":"80px"});
         $(".showagain").text(window.Temp[newReg-1].fileName).css("line-height","26px");
@@ -755,12 +630,12 @@ function applyworkload() {
                     weight: parseFloat($(".showgroupMemberWeight").eq(m).val())
                 });
             }
-            childWeight = JSON.stringify((childWeight));
+            childWeight = JSON.stringify(childWeight);
         }
         else {
             var childWeight = new Array();
             childWeight = [{userId: parseInt(userId), weight: 1}];
-            childWeight = JSON.stringify((childWeight));
+            childWeight = JSON.stringify(childWeight);
         }
 
         var radio = $("input:radio[name='showoptionsRadios']:checked");
@@ -788,29 +663,6 @@ function applyworkload() {
 
                 },
                 success: function (data) {
-                    alert("修改成功!");
-                    /*  $("#applyModal").modal('hide');
-                     $('#showContent').modal('hide');*/
-                    $(".editApply").show();
-                    $(".editSubmit").show();
-                    var msg = data.data.item;
-
-                    window.Temp.splice(window.contentCount - 1, 1, msg);
-                    $("#workload_" + msg.itemId).text(msg.workload);
-                    $("#itemname_" + msg.itemId).text(msg.itemName);
-                    $(".form-control").attr("disabled", "disabled");
-                    $(".showparameterName").attr("disabled","disabled");
-                    $(".showotherparameterName").attr("disabled","disabled");
-                    $(".showgroupMemberName ").attr("disabled","disabled");
-                    $(".showgroupMemberSymbol").attr("disabled","disabled");
-                    $(".showgroupMemberWeight").attr("disabled","disabled");
-                    $("#year").removeAttr("disabled", "disabled");
-                    $("#term").removeAttr("disabled", "disabled");
-                    $("#revfile").attr("disabled","disabled");
-                    $(".dismissagain").hide();
-                    $(".savemyApplyAgain").hide();
-                    $(".editApply").show();
-                    $(".editSubmit").show();
                     if($("#revfile").val()){
                         var formdata = new FormData;
                         formdata.append("file", $("#revfile")[0].files[0]);
@@ -823,6 +675,7 @@ function applyworkload() {
                             processData: false,
                             success: function (data) {
                                 if(data.status==200){
+                                    alert("修改成功!");
                                     var file = $("#revfile")
                                     file.after(file.clone().val(""));
                                     file.remove();
@@ -833,44 +686,36 @@ function applyworkload() {
                                 }
 
                                 else{
-                                    alert("文件已存在！请修改文件名火文件内容后重新上传！");
+                                    alert("文件已存在！请修改文件名或文件内容后重新上传！");
+                                    return false;
                                 }
                             }
 
                         });
                     }
-                    /* var analyseList = data.data.itemList;
-                     var listLength = data.data.itemList.length;
-                     var rowInfo = "<tr></tr>";
-                     var cellInfo = "<td></td>";
-                     var Info = analyseList;*/
-                    /*     var formdata = new FormData;
-                     formdata.append("file", $("#formName")[0].files[0]);
-                     $.ajax({
-                     url: importProofUrl + "?itemId=" + analyseList,
-                     type: "POST",
-                     dataType: "JSON",
-                     data: formdata,
-                     contentType: false,
-                     processData: false,
-                     success: function () {
-                     }
+                    else{
+                        alert("修改成功!");
+                    }
+                    $(".editApply").show();
+                    $(".editSubmit").show();
+                    var msg = data.data.item;
 
-                     });*/
-                    //  $('#addContent').modal('hide');
-                    /*    for(var hideCount=0;hideCount<listLength;hideCount++){
-                     if (Info[hideCount].teacherName == userNameUrl) {
-                     /!* var count = Info[i].workload;
-                     var CategId = Info[i].categoryId;*!/
-
-                     var CountId = Info[hideCount].itemId;
-                     }
-                     // $(".hiddendistrict").append("<div class='groupMember_"+CountId+"'>"+Info[hideCount].teacherName+"</div><div class='jobDesc_"+CountId+"'>"+Info[hideCount].jobDesc+"</div><div class='jobWeight_"+CountId+"'>"+Info[hideCount].jsonChildWeight+"</div>")
-
-                     $(".groupMember_"+CountId).text(Info[hideCount].teacherName);
-                     $("jobDesc_"+CountId).text(Info[hideCount].jobDesc);
-                     $("jobWeight_"+CountId).text(Info[hideCount].jsonChildWeight);
-                     }*/
+                    window.Temp.splice(window.contentCount - 1, 1, msg);
+                    $("#workload_" + msg.itemId).text(msg.workload);
+                    $("#itemname_" + msg.itemId).text(msg.itemName);
+                    $(".form-control").attr("disabled", "disabled");
+                    $("#showaddGroupMessage").attr("disabled","disabled");
+                    $("#showcalculator").attr("disabled","disabled");
+                    $(".showgroupMemberName ").attr("disabled","disabled");
+                    $(".showgroupMemberSymbol").attr("disabled","disabled");
+                    $(".showgroupMemberWeight").attr("disabled","disabled");
+                    $("#year").removeAttr("disabled", "disabled");
+                    $("#term").removeAttr("disabled", "disabled");
+                    $("#revfile").attr("disabled","disabled");
+                    $(".dismissagain").hide();
+                    $(".savemyApplyAgain").hide();
+                    $(".editApply").show();
+                    $(".editSubmit").show();
 
                 }
 
@@ -885,38 +730,14 @@ function applyworkload() {
                     itemId: saveReg,
                     itemName: $('#showitemName').val(),
                     applyDesc: $('#showapplyDesc').val(),
-                    //   workload: $('#workload').val(),
-                    //   ownerId: applicant.val(),
-                    //  groupManagerId: ,
                     isGroup: 0,
                     jsonParameter: newArray,
                     otherJson: otherArray,
                     jsonChildWeight: childWeight,
                     option: "modify"
-                    // jobDesc: grouparray,
-                    //  jsonChildWeight: childWeight,
-                    //   file:formdata
 
                 }
                 , success: function (data) {
-                    alert("修改成功!");
-                    var msg = data.data.item;
-                    window.Temp.splice(window.contentCount-1, 1, msg);
-                    $("#workload_" + msg.itemId).text(msg.workload);
-                    $("#itemname_" + msg.itemId).text(msg.itemName);
-                    $(".form-control").attr("disabled", "disabled");
-                    $(".showparameterName").attr("disabled","disabled");
-                    $(".showotherparameterName").attr("disabled","disabled");
-                    $(".showgroupMemberName ").attr("disabled","disabled");
-                    $(".showgroupMemberSymbol").attr("disabled","disabled");
-                    $(".showgroupMemberWeight").attr("disabled","disabled");
-                    $("#revfile").attr("disabled","disabled");
-                    $("#year").removeAttr("disabled");
-                    $("term").removeAttr("disabled");
-                    $(".dismissagain").hide();
-                    $(".savemyApplyAgain").hide();
-                    $(".editApply").show();
-                    $(".editSubmit").show();
                     if($("#revfile").val()){
                         var formdata = new FormData;
                         formdata.append("file", $("#revfile")[0].files[0]);
@@ -929,6 +750,7 @@ function applyworkload() {
                             processData: false,
                             success: function (data) {
                                 if(data.status==200){
+                                    alert("修改成功!");
                                     var file = $("#revfile")
                                     file.after(file.clone().val(""));
                                     file.remove();
@@ -939,12 +761,32 @@ function applyworkload() {
                                 }
 
                                 else{
-                                    alert("文件已存在！请修改文件名火文件内容后重新上传！");
+                                    alert("文件已存在！请修改文件名或文件内容后重新上传！");
+                                    return false;
                                 }
                             }
 
                         });
                     }
+                    else{
+                        alert("修改成功!");
+                    }
+                    var msg = data.data.item;
+                    window.Temp.splice(window.contentCount-1, 1, msg);
+                    $("#workload_" + msg.itemId).text(msg.workload);
+                    $("#itemname_" + msg.itemId).text(msg.itemName);
+                    $(".form-control").attr("disabled", "disabled");
+                    $(".showgroupMemberName ").attr("disabled","disabled");
+                    $(".showgroupMemberSymbol").attr("disabled","disabled");
+                    $(".showgroupMemberWeight").attr("disabled","disabled");
+                    $("#revfile").attr("disabled","disabled");
+                    $("#year").removeAttr("disabled");
+                    $("term").removeAttr("disabled");
+                    $(".dismissagain").hide();
+                    $(".savemyApplyAgain").hide();
+                    $(".editApply").show();
+                    $(".editSubmit").show();
+
                 }
 
             });
@@ -967,6 +809,7 @@ function applyworkload() {
         $('#workload').val(null);
         $("#AddgroupPramter").empty();
         $("#itemmanager").select2().val(null).trigger("change").css("width","100%");
+        $(".select2-container").css("width","100%");
         $('.parameterName').val(null);
         $('.otherparameterName').val(null);
         $(".radioChange").eq(0).attr("checked","true");
@@ -1066,12 +909,12 @@ function applyworkload() {
                     weight: parseFloat($(".groupMemberWeight").eq(m).val())
                 });
             }
-            childWeight = JSON.stringify((childWeight));
+            childWeight = JSON.stringify(childWeight);
         }
         else{
             var childWeight = new Array();
             childWeight=[{userId:parseInt(userId),weight:1}];
-            childWeight = JSON.stringify((childWeight));
+            childWeight = JSON.stringify(childWeight);
         }
 
         var radio = $("input:radio[name='optionsRadios']:checked");
@@ -1102,29 +945,6 @@ function applyworkload() {
 
                     },
                     success: function (data) {
-
-                        var Info = data.data.item;
-                        var newCount=$(".neweditor").attr("id");
-                        newCount=newCount.match(/\d+/g);
-                        window.Temp.splice(newCount-1,1,Info);
-
-                        $(".neweditor").show();
-                      //  $(".neweditor").attr("id","neweditor_"+Info.itemId);
-                        $(".newsubmit").show();
-                        $(".newsubmit").attr("id","newsubmit_"+Info.itemId);
-                        $(".savemyApply").hide();
-                        $(".dismiss").hide();
-                        $(".form-control").attr("disabled","disabled");
-                        $(".parameterName").attr("disabled","disabled");
-                        $(".otherparameterName").attr("disabled","disabled");
-                        $(".groupMemberName").attr("disabled","disabled");
-                        $(".groupMemberSymbol").attr("disabled","disabled");
-                        $(".groupMemberWeight").attr("disabled","disabled");
-                        $("#testfile").attr("disabled","disabled");
-                        $("#year").removeAttr("disabled");
-                        $("#term").removeAttr("disabled");
-                        $("#itemname_"+Info.itemId).text(Info.itemName);
-                        $("#workload_"+Info.itemId).text(Info.workload);
                         if($("#testfile").val()){
                             var formdata = new FormData;
                             formdata.append("file", $("#testfile")[0].files[0]);
@@ -1137,6 +957,7 @@ function applyworkload() {
                                 processData: false,
                                 success: function (data) {
                                     if(data.status==200){
+                                        alert("修改成功！");
                                         var file = $("#testfile")
                                         file.after(file.clone().val(""));
                                         file.remove();
@@ -1146,12 +967,39 @@ function applyworkload() {
                                     }
 
                                     else{
-                                        alert("文件已存在！请修改文件名火文件内容后重新上传！");
+                                        alert("文件已存在！请修改文件名或文件内容后重新上传！");
+                                        return false;
                                     }
                                 }
 
                             });
                         }
+                        else{
+                           alert("修改成功！");
+                        }
+                        var Info = data.data.item;
+                        var newCount=$(".neweditor").attr("id");
+                        newCount=newCount.match(/\d+/g);
+                        window.Temp.splice(newCount-1,1,Info);
+
+                        $(".neweditor").show();
+                      //  $(".neweditor").attr("id","neweditor_"+Info.itemId);
+                        $(".newsubmit").show();
+                        $(".newsubmit").attr("id","newsubmit_"+Info.itemId);
+                        $(".savemyApply").hide();
+                        $(".dismiss").hide();
+                        $(".form-control").attr("disabled","disabled");
+                        $("#addGroupMessage").attr("disabled","disabled");
+                        $("#calculator").attr("disabled","disabled");
+                        $(".groupMemberName").attr("disabled","disabled");
+                        $(".groupMemberSymbol").attr("disabled","disabled");
+                        $(".groupMemberWeight").attr("disabled","disabled");
+                        $("#testfile").attr("disabled","disabled");
+                        $("#year").removeAttr("disabled");
+                        $("#term").removeAttr("disabled");
+                        $("#itemname_"+Info.itemId).text(Info.itemName);
+                        $("#workload_"+Info.itemId).text(Info.workload);
+
                     }
 
                 })
@@ -1179,6 +1027,38 @@ function applyworkload() {
 
                     }
                     , success: function (data) {
+                        if($("#testfile").val()){
+                            var formdata = new FormData;
+                            formdata.append("file", $("#testfile")[0].files[0]);
+                            $.ajax({
+                                url: importProofUrl + "?itemId=" + Info.itemId,
+                                type: "POST",
+                                dataType: "JSON",
+                                data: formdata,
+                                contentType: false,
+                                processData: false,
+                                success: function (data) {
+                                    if(data.status==200){
+                                        alert("修改成功！");
+                                        var file = $("#testfile")
+                                        file.after(file.clone().val(""));
+                                        file.remove();
+                                        $("input[name='testfile']").css({"color":"transparent","width":"80px"})
+                                        $(".showhidden").text(data.data.itemDto.fileName);
+                                        window.Temp.splice(newcount-1,1,data.data.itemDto);
+                                    }
+                                    else{
+                                        alert("文件已存在！请修改文件名或文件内容后重新上传！");
+                                        return false;
+                                    }
+
+                                }
+
+                            });
+                        }
+                        else {
+                            alert("修改成功！");
+                        }
                         var Info = data.data.item;
                         var newCount=$(".neweditor").attr("id");
                         newCount=newCount.match(/\d+/g);
@@ -1203,33 +1083,7 @@ function applyworkload() {
                         $("#term").removeAttr("disabled");
                         $("#itemname_"+Info.itemId).text(Info.itemName);
                         $("#workload_"+Info.itemId).text(Info.workload);
-                        if($("#testfile").val()){
-                            var formdata = new FormData;
-                            formdata.append("file", $("#testfile")[0].files[0]);
-                            $.ajax({
-                                url: importProofUrl + "?itemId=" + Info.itemId,
-                                type: "POST",
-                                dataType: "JSON",
-                                data: formdata,
-                                contentType: false,
-                                processData: false,
-                                success: function (data) {
-                                    if(data.status==200){
-                                        var file = $("#testfile")
-                                        file.after(file.clone().val(""));
-                                        file.remove();
-                                        $("input[name='testfile']").css({"color":"transparent","width":"80px"})
-                                        $(".showhidden").text(data.data.itemDto.fileName);
-                                        window.Temp.splice(newcount-1,1,data.data.itemDto);
-                                    }
-                                    else{
-                                        alert("文件已存在！请修改文件名火文件内容后重新上传！");
-                                    }
 
-                                }
-
-                            });
-                        }
                     }
 
                 });
@@ -1256,6 +1110,38 @@ function applyworkload() {
 
                     },
                     success: function (data) {
+                        if($("#testfile").val()){
+                            var formdata = new FormData;
+                            formdata.append("file", $("#testfile")[0].files[0]);
+                            $.ajax({
+                                url: importProofUrl + "?itemId=" + Info.itemId,
+                                type: "POST",
+                                dataType: "JSON",
+                                data: formdata,
+                                contentType: false,
+                                processData: false,
+                                success: function (data) {
+                                    if(data.status==200){
+                                        alert("添加成功！");
+                                        var file = $("#testfile")
+                                        file.after(file.clone().val(""));
+                                        file.remove();
+                                        $("input[type='file']").css({"color":"transparent","width":"80px"})
+                                        $(".showhidden").text(data.data.itemDto.fileName);
+                                        window.Temp.splice(newcount-1,1,data.data.itemDto);
+                                    }
+                                    else{
+                                        alert("文件已存在！请修改文件名或文件内容后重新上传！");
+                                        return false;
+                                    }
+
+                                }
+
+                            });
+                        }
+                        else{
+                            alert("添加成功！");
+                        }
                         var rowInfo = "<tr></tr>";
                         var cellInfo = "<td></td>";
                         var Info = data.data.item;
@@ -1273,6 +1159,8 @@ function applyworkload() {
                          $(".saveAgain").attr("id","saveAgain_"+Info.itemId);*/
                         $(".form-control").attr("disabled","disabled");
                         $(".parameterName").attr("disabled","disabled");
+                        $("#addGroupMessage").attr("disabled","disabled");
+                        $("#calculator").attr("disabled","disabled");
                         $(".otherparameterName").attr("disabled","disabled");
                         $(".groupMemberName").attr("disabled","disabled");
                         $(".groupMemberSymbol").attr("disabled","disabled");
@@ -1296,19 +1184,7 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
                             $(".tbody tr:last td:eq(1)").text(Info.itemName);
                             $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
-                            /*   var count="";
-                             var CountId="";
-                             var CategId="";
-                             var CateValue="";
-                             for (var i = 0; i < listLength; i++) {
-                             if (Info[i].teacherName == userNameUrl) {
-                             count = Info[i].workload;
-                             CountId = Info[i].itemId;
-                             CategId = Info[i].categoryId;
-                             CateValue=Info[i].ownerId;
-                             }
-                             }
-                             */
+
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
                             $(".tbody tr:last td:eq(3)").text("未提交");
@@ -1317,6 +1193,7 @@ function applyworkload() {
                             var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary  delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
 
                             $(".tbody tr:last td:eq(4)").append(act).css("width","200px");
+                            $(".tbody tr:last td:eq(4)").attr("class","operation-btn-two");
 
                         }
                         else {
@@ -1333,66 +1210,23 @@ function applyworkload() {
                             {
                                 $(".tbody tr:last").append(cellInfo);
                             }
-                            /* var count="";
-                             var CountId="";
-                             var CategId="";*/
+
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt("1"));
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
-                            /* $(".tbody tr:last td:eq(1)").text(Info.itemName);
-                             for (var i = 0; i < listLength; i++) {
-                             if (Info[i].teacherName == userNameUrl)
-                             count = Info[i].workload;
-                             CountId = Info[i].itemId;
-                             CategId=Info[i].categoryId;
-                             }
-                             if(!window.localStorage){
-                             alert("浏览器支持localstorage");
-                             }else{
-                             var storage=window.localStorage;
-                             storage.setItem("item_"+CountId,sumArray);
-                             */
-                            // }
+
                             $(".tbody tr:last td:eq(1)").text(Info.itemName);
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
-                            //  $(".tbody tr:last td:eq(3)").text();
 
                             $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
-                          /*  var newcount=$(".showContent").length;
-                            newcount++;*/
+
                             var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_"+Info.itemId+"' id='delemyself_" + newcount+ "'>删除操作</a>";
                             $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-two");
                         }
-                        if($("#testfile").val()){
-                            var formdata = new FormData;
-                            formdata.append("file", $("#testfile")[0].files[0]);
-                            $.ajax({
-                                url: importProofUrl + "?itemId=" + Info.itemId,
-                                type: "POST",
-                                dataType: "JSON",
-                                data: formdata,
-                                contentType: false,
-                                processData: false,
-                                success: function (data) {
-                                    if(data.status==200){
-                                        var file = $("#testfile")
-                                        file.after(file.clone().val(""));
-                                        file.remove();
-                                        $("input[type='file']").css({"color":"transparent","width":"80px"})
-                                        $(".showhidden").text(data.data.itemDto.fileName);
-                                        window.Temp.splice(newcount-1,1,data.data.itemDto);
-                                    }
-                                    else{
-                                        alert("文件已存在！请修改文件名火文件内容后重新上传！");
-                                    }
 
-                                }
-
-                            });
-                        }
                     }
 
                 })
@@ -1405,19 +1239,44 @@ function applyworkload() {
                         categoryId: window.Categry,
                         itemName: $('#itemName').val(),
                         applyDesc: $('#applyDesc').val(),
-                        //   workload: $('#workload').val(),
-                        //   ownerId: applicant.val(),
-                        //  groupManagerId: ,
                         isGroup: 0,
                         jsonParameter: newArray,
                         otherJson: otherArray,
                         jsonChildWeight:childWeight
-                        // jobDesc: grouparray,
-                        //  jsonChildWeight: childWeight,
-                        //   file:formdata
 
                     }
                     , success: function (data) {
+                        if($("#testfile").val()){
+                            var formdata = new FormData;
+                            formdata.append("file", $("#testfile")[0].files[0]);
+                            $.ajax({
+                                url: importProofUrl + "?itemId=" + Info.itemId,
+                                type: "POST",
+                                dataType: "JSON",
+                                data: formdata,
+                                contentType: false,
+                                processData: false,
+                                success: function (data) {
+                                    if(data.status==200){
+                                        alert("添加成功！");
+                                        var file = $("#testfile")
+                                        file.after(file.clone().val(""));
+                                        file.remove();
+                                        $("input[name='testfile']").css({"color":"transparent","width":"80px"})
+                                        $(".showhidden").text(data.data.itemDto.fileName);
+                                        window.Temp.splice(newcount-1,1,data.data.itemDto);
+                                    }
+                                    else{
+                                        alert("文件已存在！请修改文件名或文件内容后重新上传！");
+                                        return false;
+                                    }
+                                }
+
+                            });
+                        }
+                        else{
+                            alert("添加成功！");
+                        }
                         var Info = data.data.item;
                         var rowInfo = "<tr></tr>";
                         var cellInfo = "<td></td>";
@@ -1430,11 +1289,6 @@ function applyworkload() {
                         $(".newsubmit").attr("id","newsubmit_"+Info.itemId);
                         $(".savemyApply").hide();
                         $(".dismiss").hide();
-                       /* $(".downloadFile").show();
-                        $(".revieFile").show();*/
-
-                        /*$(".saveAgain").hide();
-                         $(".saveAgain").attr("id","saveAgain_"+Info.itemId);*/
                         $(".savemyApply").attr("id","savemyApply_"+Info.itemId);
                         $(".form-control").attr("disabled","disabled");
                         $(".parameterName").attr("disabled","disabled");
@@ -1497,89 +1351,122 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-two");
 
                         }
-                        if($("#testfile").val()){
-                            var formdata = new FormData;
-                            formdata.append("file", $("#testfile")[0].files[0]);
-                            $.ajax({
-                                url: importProofUrl + "?itemId=" + Info.itemId,
-                                type: "POST",
-                                dataType: "JSON",
-                                data: formdata,
-                                contentType: false,
-                                processData: false,
-                                success: function (data) {
-                                    if(data.status==200){
-                                        var file = $("#testfile")
-                                        file.after(file.clone().val(""));
-                                        file.remove();
-                                        $("input[name='testfile']").css({"color":"transparent","width":"80px"})
-                                        $(".showhidden").text(data.data.itemDto.fileName);
-                                        window.Temp.splice(newcount-1,1,data.data.itemDto);
-                                    }
-                                   else{
-                                        alert("文件已存在！请修改文件名火文件内容后重新上传！");
-                                    }
-                                }
 
-                            });
-                        }
-
-                        /*$(document).on("click","#show_"+Info.itemId,function () {
-                            var newId=this.id;
-                            var newReg=parseInt(newId.match(/\d+/g));
-                            $(".savemyApplyAgain").hide();
-                            $(".savemyEdit").hide();
-                            if($("#statusChange_"+newReg).text()=="暂未提交"){
-                                $(".editApply").show();
-                                $(".editApply").attr("id","editApply_"+newReg);
-                                $(".editSubmit").show();
-                                $(".editSubmit").attr("id","editSubmit_"+newReg);
-                            }
-                            else{
-                                $(".editApply").hide();
-                                //  $(".editApply").attr("id","editApply_"+window.Temp[newReg-1].itemId);
-                                $(".editSubmit").hide();
-                            }
-                            $("#showitemName").val(Info.itemName);
-                            $("#showitemName").attr("disabled","true");
-                            $("#showapplyDesc").val(Info.applyDesc);
-                            $("#showapplyDesc").attr("disabled","true");
-                            if(Info.isGroup==0){
-                                $("#single").attr("checked",'checked');
-                                $("#group").attr("disabled","true");
-
-                            }
-                            else{
-                                $("#group").attr("checked",'checked');
-                                $("#single").attr("disabled","true");
-                                $(".showitem_manager").show();
-                                $(".showitem_group").show();
-                            }
-                            var showPram=Info.parameterValues;
-                            for(var i=0;i<showPram.length;i++){
-                                $(".showparameterName").eq(i).val(showPram[i].value);
-                                $(".showparameterName").eq(i).attr("disabled","true");
-
-                            }
-                            var showOtherPara=Info.otherJsonParameters;
-                            for(var n=0;n<showOtherPara.length;n++){
-                                $(".showotherparameterName").eq(n).val(showOtherPara[n].value);
-                                $(".showotherparameterName").eq(n).attr("disabled","true");
-
-                            }
-                            $(".showitem_manager").hide();
-                            $(".showitem_group").hide();
-
-
-                        });*/
                     }
 
                 });
             }
         }
+    });
+    $(document).on("click","#calculator",function () {
+        var newArray = new Array();
+        if($(".parameterName")&&$(".parameterName").length>0){
+            for (var i = 0; i < $(".parameterName").length; i++) {
+                var dom = $(".pramterDesc").eq(i).attr("id");
+                newArray.push({symbol: dom, value: parseInt($(".parameterName").eq(i).val())});
 
+            }
+            newArray=JSON.stringify(newArray);
+        }
+        else {
+            alert("请填写计算参数！");
+            return false;
+        }
+        if($(".groupMemberSymbol").length>0){
+
+            if(!$('.groupMemberWeight').val()){
+                alert("请填写成员权重！");
+                return false;
+            }
+            else{
+                var sumCount=0;
+                for(var t=0;t<$('.groupMemberWeight').length;t++){
+                    console.log($('.groupMemberWeight').eq(t).val());
+                    sumCount+=parseFloat($('.groupMemberWeight').eq(t).val());
+                }
+                if(sumCount!=1){
+                    alert("请保持成员权重相加为1！");
+                    return false;
+                }
+            }
+        }
+        else {
+            alert("请填写成员信息！");
+        }
+        var childWeight = new Array();
+        var groupmessageArray = $('.groupMemberName');
+        for (m = 0; m < groupmessageArray.length; m++) {
+            childWeight.push({
+                userId: parseInt($(".groupMemberName option:selected").eq(m).val()),
+                weight: parseFloat($(".groupMemberWeight").eq(m).val())
+            });
+        }
+        childWeight = JSON.stringify(childWeight);
+        $.post(calculateUrl,{
+            categoryId:window.Categry,
+            jsonParameters:newArray,
+            jsonChildWeight:childWeight
+        },function (msg) {
+            $("#groupWorkload").append("<tr></tr>");
+            $(".groupDiv").show();
+        });
 
     });
+    $(document).on("click","#showcalculator",function () {
+        if($(".showparameterName")&&$(".showparameterName").length>0){
+            var newArray = new Array();
+            for (var i = 0; i < $(".showparameterName").length; i++) {
+                var dom = $(".showpramterDesc").eq(i).attr("id");
+                newArray.push({symbol: dom, value: parseInt($(".showparameterName").eq(i).val())});
+
+            }
+            newArray=JSON.stringify(newArray);
+        }
+        else {
+            alert("请填写计算参数！");
+            return false;
+        }
+        if($(".showgroupMemberSymbol").length>0){
+
+            if(!$('.showgroupMemberWeight').val()){
+               alert("请填写成员权重！");
+                return false;
+            }
+            else{
+                var sumCount=0;
+                for(var t=0;t<$('.showgroupMemberWeight').length;t++){
+                    sumCount+=parseFloat($('.showgroupMemberWeight').eq(t).val());
+                }
+                if(sumCount!=1){
+                    alert("请保持成员权重相加为1！");
+                    return false;
+                }
+
+            }
+        }
+        else {
+            alert("请填写成员信息！");
+        }
+        var childWeight = new Array();
+        var groupmessageArray = $('.showgroupMemberName');
+        for (m = 0; m < groupmessageArray.length; m++) {
+            childWeight.push({
+                userId: parseInt($(".showgroupMemberName option:selected").eq(m).val()),
+                weight: parseFloat($(".showgroupMemberWeight").eq(m).val())
+            });
+        }
+        childWeight = JSON.stringify(childWeight);
+        $.post(calculateUrl,{
+            categoryId:window.Categry,
+            jsonParameters:newArray,
+            jsonChildWeight:childWeight
+        },function (msg) {
+            $("#showgroupWorkload").append("<tr></tr>");
+            $(".showgroupDiv").show();
+        });
+
+
+    })
     $(document).on("click",".neweditor",function () {
         $(".form-control").removeAttr("disabled");
         $(".parameterName").removeAttr("disabled");
@@ -1625,10 +1512,6 @@ function applyworkload() {
         };
 
     });
-    /*$(document).on("click",".revieFile",function () {
-        $("#testfile").show();
-        $(".revieFile").hide();
-    })*/
 }
 function showApplyHistory() {
 $.get(historyUrl+"?type=apply",function (data) {
@@ -1805,7 +1688,7 @@ function applyRec() {
 
                         $(".reviewerApply").popover({
                             placement: "top",
-                            trigger: "hover",
+                            trigger: "click",
                             html: true,
                             title: "回复信息",
                             content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
@@ -1819,14 +1702,11 @@ function applyRec() {
 
     });
 
-
     /* 查看回复修复 */
-    $(".reviewerApply").off("hover");
-    $(".reviewerApply").hover(function () {
-        var element = this.id
-
-        ;
-        thisId=element.match(/\d+/g);
+    $(".reviewerApply").off("click");
+    $(".reviewerApply").on("click",function () {
+        var element = this.id;
+        var thisId=element.match(/\d+/g);
         $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
             if(data.data!=null&&data.data.subjectList!=null&&data.data.subjectList.length){
                 $(".sendFromName").text(data.data.subjectList[0].sendFromName);
@@ -1842,7 +1722,6 @@ function applyRec() {
         });
 
     });
-
 
     $(document).on("click","#btn-viewdetail",function (){
         var rowInfo="<tr></tr>";
@@ -1892,7 +1771,6 @@ function applyRec() {
 
     });
 }
-
 function traverseNode(rootNode,targetType) {
     var resultType=2; //using as the flag of partent node's type
     //开始遍历

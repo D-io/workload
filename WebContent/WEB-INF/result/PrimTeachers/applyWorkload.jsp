@@ -43,12 +43,7 @@
                             <th class="sorting">序号</th>
                             <th class="sorting">项目名称</th>
                             <th class="sorting">工作当量</th>
-                            <%--<th class="sorting">计算公式</th>--%>
                             <th class="sorting">形式</th>
-                            <%--<th class="sorting">主要参数</th>--%>
-                            <%--<th class="sorting">参数描述</th>--%>
-                            <%--<th class="sorting">其他参数</th>--%>
-                            <%--<th class="sorting">版本</th>--%>
                             <th class="sorting">审核截止时间 </th>
                             <th class="sorting">审核状态 </th>
                             <th class="sorting">操作</th>
@@ -151,7 +146,7 @@
                         <form class="form-horizontal form-label-left">
 
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目名称</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目名称<span class="needed">*</span></label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <input type="text" class="form-control" id="itemName" name="name" onblur="reminder(this)">
                                 </div>
@@ -159,8 +154,7 @@
                             <span class="experient" id="experient_name" >项目名称不可为空！</span>
 
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目描述
-                                </label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目描述<span class="needed">*</span></label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <textarea class="form-control" id="applyDesc" name="desc" onblur="reminder(this)"></textarea>
                                 </div>
@@ -178,7 +172,7 @@
                                 </label>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">主要参数</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">主要参数<span class="needed">*</span></label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
 
@@ -187,9 +181,6 @@
                                                 <thead>
                                                 <tr class="parameterTh" style="font-size: 13px;">
 
-<!--
-                                                    <span style="float: right;"><a class="btn btn-success" id="addParameter"><i class="fa fa-plus"></i></a></span>
-                                                    -->
                                                 </tr>
 
                                                 </thead>
@@ -204,7 +195,7 @@
                             </div>
                             <span class="experient" id="experient_para" >主要参数不可为空！</span>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">附加属性</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">附加属性<span class="needed">*</span></label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
                                         <div class="well">
@@ -226,48 +217,31 @@
                                 </div>
                             </div>
                             <span class="experient" id="experient_otherpara" >附加属性不可为空！</span>
-                       <%--     <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">申报人</label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <select class="form-control teacherName" id="applicant">
-
-                                    </select>
-                                </div>
-                            </div>--%>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">附件信息</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                   <%-- <a class="downloadFile" style="margin-left: 20px;float: right;margin-top: 4px;display: none">下载</a> <a class="revieFile" style="float: right;margin-top: 4px;;display: none">重传</a>
-                                 --%>
+
                                     <span class='filestyle'><input type="file" name='testfile' id='testfile' style="float: left; outline: none;"><span class="showhidden"></span></span>
 
                                 </div>
                             </div>
                             <div class="form-group item_manager" style="display: none;">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目负责人</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组长</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <select class="form-control teacherName" id="itemmanager">
                                         <option value=""></option>
                                     </select>
                                 </div>
                             </div>
-                       <!--
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">工作量</label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" class="form-control" id="workload">
-                                </div>
-                            </div>
-                            -->
 
                             <div class="form-group item_group" style="display: none;">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组成员</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目成员<span class="needed">*</span></label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#groupMessage" aria-expanded="false" aria-controls="collapseExample">
+                                  <%--  <a class="btn btn-primary" role="button" data-toggle="collapse" href="#groupMessage" aria-expanded="false" aria-controls="collapseExample">
                                         <i class="fa fa-plus"></i>
-                                    </a>
-                                    <div class="collapse" id="groupMessage">
+                                    </a>--%>
+
                                         <div class="well">
                                             <table class="table" id="groupMessageTable">
                                                 <thead>
@@ -275,7 +249,7 @@
 
                                                     <th style="width: 115px">成员姓名</th>
                                                     <th style="width: 120px">成员职责描述</th>
-                                                    <th style="width: 120px">成员所占权重<span style="float: right;"><a class="btn btn-success" id="addGroupMessage"><i class="fa fa-plus"></i></a></span></th>
+                                                    <th style="width: 140px">成员所占权重<span style="float: right;"><button type="button" class="btn btn-primary" id="calculator" title="计算工作当量"><i class="fa fa-calculator"></i></button><button type="button" class="btn btn-success" id="addGroupMessage" title="添加成员"><i class="fa fa-plus"></i></button></span></th>
                                                 </tr>
 
                                                 </thead>
@@ -290,11 +264,35 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </div>
+
                                 </div>
                             </div>
                             <span class="experient" id="experient_group" >项目成员信息不可为空！</span>
                             <span class="experient" id="experient_weight" >项目成员权重请填写小数且相加应为1！</span>
+                            <div class="form-group groupDiv" style="display: none;">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">成员工作当量</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12 team-member">
+
+                                    <div class="well">
+                                        <table class="table" id="groupWorkloadTable">
+                                            <thead>
+                                            <tr style="font-size: 13px;">
+
+                                                <th>成员姓名</th>
+                                                <th>成员工作当量</th>
+                                                <%--  <th>成员所占权重</th>--%>
+                                            </tr>
+
+                                            </thead>
+                                            <tbody id="groupWorkload">
+
+                                            </tbody>
+                                        </table>
+                                        <%--   <span style="float: right;"><button class="btn btn-success" id="showaddGroupMessage" title="添加成员"><i class="fa fa-plus"></i></button></span>
+                                   --%>    </div>
+
+                                </div>
+                            </div>
                         </form>
 
                     </div>
@@ -327,14 +325,14 @@
                         <form class="form-horizontal form-label-left">
 
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容简介</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目名称<span class="needed">*</span></label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <input type="text" class="form-control changeDis" id="showitemName" name="showname" onblur="reminder(this)">
                                 </div>
                             </div>
                             <span class="experient" id="experient_showname" >项目名称不可为空！</span>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">工作内容描述
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目简介<span class="needed">*</span>
                                 </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <textarea class="form-control changeDis" id="showapplyDesc" name="showdesc" onblur="reminder(this)"></textarea>
@@ -352,7 +350,7 @@
                                 </label>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">主要考核参数</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">主要参数<span class="needed">*</span></label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
                                         <div class="well">
@@ -377,7 +375,7 @@
                             </div>
                             <span class="experient" id="experient_showpara" >主要参数不可为空！</span>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">附加属性<span class="needed">*</span></label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
 
                                         <div class="well">
@@ -414,7 +412,7 @@
 
                             </div>
                             <div class="form-group showitem_manager" style="display: none;">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目负责人</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组长</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <select class="form-control teacherName changeDis select2" id="showitemmanager">
 
@@ -423,21 +421,18 @@
                             </div>
 
                             <div class="form-group showitem_group" style="display: none;">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组成员</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目成员<span class="needed">*</span></label>
                                 <div class="col-md-9 col-sm-9 col-xs-12 team-member">
 
-                                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#showgroupMessage" aria-expanded="false" aria-controls="collapseExample">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                                    <div class="collapse" id="showgroupMessage">
                                         <div class="well">
                                             <table class="table" id="showgroupMessageTable">
                                                 <thead>
                                                 <tr style="font-size: 13px;">
 
-                                                    <th>成员姓名</th>
-                                                    <th>成员职责描述</th>
-                                                    <th>成员所占权重</th>
+                                                    <th style="width: 115px">成员姓名</th>
+                                                    <th style="width: 120px">成员职责描述</th>
+                                                    <th style="width: 140px">成员所占权重 <span style="float: right;"><button type="button" class="btn btn-primary" id="showcalculator" title="计算工作当量"><i class="fa fa-calculator"></i></button><button type="button" class="btn btn-success" id="showaddGroupMessage" title="添加成员"><i class="fa fa-plus"></i></button></span>
+                                                    </th>
                                                 </tr>
 
                                                 </thead>
@@ -451,13 +446,36 @@
                                                 </tr>
                                                 </tbody>
                                             </table>
-                                            <span style="float: right;"><button class="btn btn-success" id="showaddGroupMessage"><i class="fa fa-plus"></i></button></span>
-                                        </div>
-                                    </div>
+                                              </div>
+
                                 </div>
                             </div>
                             <span class="experient" id="experient_showgroup" >项目成员信息不可为空！</span>
                             <span class="experient" id="experient_showweight" >项目成员权重请填写小数且相加应为1！</span>
+                            <div class="form-group showgroupDiv" style="display: none;">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">成员工作当量</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12 team-member">
+
+                                    <div class="well">
+                                        <table class="table" id="showgroupWorkloadTable">
+                                            <thead>
+                                            <tr style="font-size: 13px;">
+
+                                                <th>成员姓名</th>
+                                                <th>成员工作当量</th>
+                                              <%--  <th>成员所占权重</th>--%>
+                                            </tr>
+
+                                            </thead>
+                                            <tbody id="showgroupWorkload">
+
+                                            </tbody>
+                                        </table>
+                                     <%--   <span style="float: right;"><button class="btn btn-success" id="showaddGroupMessage" title="添加成员"><i class="fa fa-plus"></i></button></span>
+                                --%>    </div>
+
+                                </div>
+                            </div>
 
                         </form>
                     </div>
