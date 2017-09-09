@@ -98,7 +98,12 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM item
-        WHERE category_id = #{categoryId} AND status = #{status} and version = #{version}
+        <where>
+            category_id = #{categoryId} AND status = #{status} and version = #{version}
+            <if test="null != parentId">
+                AND parent_id = #{parentId}
+            </if>
+        </where>
     </select>
 
     <select id="selectValidItemByCategory" resultMap="itemResultMap">
