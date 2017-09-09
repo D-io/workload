@@ -58,16 +58,6 @@ function importWorkload(){
                         }
                     }
 
-
-                    // $('#tab_content1').append("<li id='catInfo_"+item[i].categoryId+"'>"+item[i].name+":"+item[i].desc+
-                    //     "<div style='float: right; margin-top: 6px;'><a class='btn importList btn-info' id='import_"+ item[i].categoryId + "' data-toggle='modal' data-target='#importNewModal' style='float: right; margin-top: 6px;'>点击导入</a>" +
-                    //     "<div class='dropdown' style='float: right; margin-top: 6px;'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='" + downloadInfoUrl+ "?categoryId=" + item[i].categoryId+"&type=group'>小组类模板</a></li><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div>" +
-                    //     "<p class='deadline'> 上传截止时间: <span class='time_"+item[i].categoryId+"'>"+item[i].reviewDeadline +
-                    //     "</span></p></div><div style='clear: both;'></div></li>");
-
-
-                    /*     var tablestr='<table class="showImportThead table dataTable no-footer table-bordered" id="showImportThead_'+item[i].categoryId+'" style="display: none;"> <thead> <tr role="row"> <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th> </tr> </thead> <tbody class="showImportDesc_'+item[i].categoryId+'"></tbody> </table>';
-                         $('#catInfo_' + item[i].categoryId).append(tablestr);*/
                     if(item[i].children.length>0){
                         showimportall(item[i].children);
                     }

@@ -110,33 +110,6 @@ $(document).ready(function () {
             }
         });
     });
-    // $(document).on("click",".reviewerApply",function (data) {
-    //     var element = this.id;
-    //     thisId=element.match(/\d+/g);
-    //     $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
-    //         if(data.data.subjectList.length){
-    //             $(".sendFromName").text(data.data.subjectList[0].sendFromName);
-    //             $(".msgContent").text(data.data.subjectList[0].msgContent);
-    //             $(".sendTime").text(data.data.subjectList[0].sendTime);
-    //
-    //         }
-    //
-    //     });
-    // });
-    // $(document).on("click","body",function (event) {
-    //     var target = $(event.target); // One jQuery object instead of 3
-    //
-    //     // Compare length with an integer rather than with
-    //     if (!target.hasClass('popover')
-    //         && !target.hasClass('reviewerApply')
-    //         && !target.hasClass('popover-content')
-    //         && !target.hasClass('popover-title')
-    //         && !target.hasClass('arrow')) {
-    //         /* $('#folder').popover('hide');*/
-    //         $(".reviewerApply").popover('hide');
-    //     }
-    //
-    // });
 
     /*auditor-import*/
 
@@ -145,12 +118,6 @@ $(document).ready(function () {
     var itemCount=0;
     var cateId=0;
     var countToCount=0;
-    /*$(document).off("click",".importList");
-    $(document).on("click",".importList",function () {
-        var flag = this.id;
-        window.myFlag = parseInt(flag.match(/\d+/g));
-        $("#file").empty();
-    });*/
     $(document).off("click",".importList");
     $(document).on("click",".importList",function () {
 
@@ -253,6 +220,7 @@ $(document).ready(function () {
       //  $("#groupMember").val(allItem[thisId].ownerId);
       //  $("#groupMember").attr("disabled","disabled");
         $("#itemMember").select2().val(allItem[thisId].groupManagerId).trigger("change").css("width","100%");
+        $(".select2-container").css("width","100%");
         $("#itemMember").attr("disabled","disabled");
        $(".otherimportpara").attr("disabled","disabled");
         if(allItem[thisId].isGroup==1){
@@ -489,37 +457,6 @@ $(document).ready(function () {
         }
 
     });
-
-   /* $(document).off("click",".commit");
-    $(document).on("click",".commit",function () {
-        var data=new FormData;
-        data.append("file",$("#file")[0].files[0]);
-        $.ajax({
-            url:fileInfoUrl+"?fileId=4",
-            type:"POST",
-            dataType:"JSON",
-            data:data,
-            contentType: false,
-            processData: false,
-            success:function (file) {
-
-                alert("上传成功！");
-                var creatTime=getLocalTime(file.data.fileInfo.createTime);
-                var statusname="";
-                switch(file.data.fileInfo.status){
-                    case 0:statusname="未提交";
-                        break;
-                }
-                $("#showImportThead_"+window.myFlag).show();
-                $(".showImportDesc_"+window.myFlag).append("<tr><td>1</td><td>"+file.data.fileInfo.path+"</td><td>"+creatTime+"</td><td class='submitstatus'>"+statusname+"</td><td><a data-toggle='modal' data-target='#myModal' style='color: #337ab7;margin-left:5px;'>重传</a><a class='submitImport' id='submitImport_"+file.data.fileInfo.fileInfoId+"' style='color: #337ab7;margin-left:5px;'>提交文件</a><a class='submitImportItem' id='submitImportItem_"+file.data.fileInfo.fileInfoId+"' data-toggle='modal' data-target='.bs-example-modal-lg' style='color: #337ab7;margin-left:5px;'>提交条目</a></td></tr>");
-            },
-            error:function () {
-                alert("上传失败！");
-            }
-        });
-        $("#myModal").modal("hide");
-
-    });*/
    $(document).off("click",".importNewFile");
     $(document).on("click",".importNewFile",function () {
         var thisId=this.id.match(/\d+/g);
@@ -579,16 +516,6 @@ $(document).ready(function () {
     $(document).off("click",".deleteAll");
     $(document).on("click",".deleteAll",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
-       /*var deletCount=$(this).attr("class");
-
-        var Reg=/_[\d+]/;
-
-        deletCount=deletCount.match(Reg)[0];
-        if (deletCount.substr(0,1)=='_'){
-            deletCount=deletCount.substr(1);
-        }
-        console.log(deletCount);
-*/
         $.ajax({
             url:itemManageUrl+"?itemId="+thisId,
             type:"DELETE",
@@ -627,6 +554,7 @@ $(document).ready(function () {
         $("#isGroup").removeAttr("disabled");
         $("#isSingle").removeAttr("disabled");
         $("#itemMember").select2().val(null).trigger("change").css("width","100%");
+        $(".select2-container").css("width","100%");
         $("#groupMember").val(null);
         $(".importpara").val(null);
         $(".otherimportpara").val(null);
@@ -684,98 +612,6 @@ $(document).ready(function () {
             }
         }
     });
-
-  /*  $(document).off("click",".submitImportItem");
-    $(document).on("click",".submitImportItem",function () {
-        var importList=this.id;
-        var reg=parseInt(importList.match(/\d+/g));
-        $(".showImportTable").show();
-        $(".showImportbodyList").empty();
-        $.post(fileTempUrl+"?categoryId="+window.myFlag+"&fileInfoId="+reg,function (data) {
-
-            var rowInfo="<tr></tr>";
-            var cellInfo="<td></td>";
-            var analyseList= data.data.itemList;
-            var listLength= data.data.itemList.length;
-            for(var i=0;i<listLength;i++)
-            {
-                var Info=analyseList[i];
-                $(".showImportbodyList").append(rowInfo);
-                //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-                for(var j=0;j<11;j++)//单元格
-                {
-                    $(".showImportbodyList tr:last").append(cellInfo);
-                }
-                var id=i;
-                $(".showImportbodyList tr:last td:eq(0)").text(id+1);
-                $(".showImportbodyList tr:last td:eq(1)").text(Info.itemName);
-                $(".showImportbodyList tr:last td:eq(2)").text(Info.teacherName);
-                var praValues='';
-                for(var m=0;m<Info.parameterValues.length;m++){
-                    praValues+=Info.parameterValues[m].symbol+":"+Info.parameterValues[m].value;
-                }
-                var otherpraValue='';
-                for(var n=0;n<Info.otherJsonParameters.length;n++){
-                    otherpraValue+=Info.otherJsonParameters[n].key+":"+Info.otherJsonParameters[n].value;
-                }
-                $(".showImportbodyList tr:last td:eq(3)").text(praValues);
-
-                $(".showImportbodyList tr:last td:eq(4)").text(otherpraValue);
-                var showtype='';
-                switch (Info.isGroup){
-
-                    case 1:showtype="小组形式";
-                        break;
-                    case 0:showtype="个人形式";
-                        break;
-
-                }
-                $(".showImportbodyList tr:last td:eq(5)").text(showtype);
-
-                $(".showImportbodyList tr:last td:eq(6)").text(Info.jobDesc);
-                $(".showImportbodyList tr:last td:eq(7)").text(Info.jsonChildWeight);
-                $(".showImportbodyList tr:last td:eq(8)").text(Info.workload);
-                var statusName='';
-                switch (Info.status){
-                    case 1:statusName="已提交";
-                        break;
-                    case 0:statusName="未提交";
-                }
-
-                $(".showImportbodyList tr:last td:eq(9)").text(statusName);
-                $(".showImportbodyList tr:last td:eq(9)").attr("class","status_"+Info.itemId);
-                var act="<a class='btn btn-primary itemToImport' id='itemToImport_"+Info.itemId+"'>提交</a> ";
-                $(".showImportbodyList tr:last td:eq(10)").append(act);
-            }
-        })
-
-    });
-    $(document).off("click",".submitImport");
-    $(document).on("click",".submitImport",function () {
-        var importList=this.id;
-        var reg=parseInt(importList.match(/\d+/g));
-        $("#submitImport_"+reg).css("disabled","true");
-        $.post(fileSubmitUrl+"?"+"fileInfoId="+reg,function () {
-            alert("提交文件成功！");
-            $(".submitstatus").text("已提交");
-        });
-    });
-
-    $(document).off("click","itemToImport");
-    $(document).on("click",".itemToImport",function () {
-        var flag=this.id;
-        var flagId=parseInt(flag.match(/\d+/g));
-        $.post(itemSubmitUrl,
-            {
-                itemId: flagId
-            }
-            ,function () {
-                alert("提交成功！");
-                $(".status_"+flagId).text("已提交");
-                $("#itemToImport_"+flagId).css("disabled","true");
-            })
-    });*/
-
     /*auditor-check*/
 
     $(document).on("click",".auditor",function () {
@@ -798,29 +634,7 @@ $(document).ready(function () {
             };
             showapplydata(dataArray);
         });
-       /* $.get(itemGroupUrl + "?" + 'categoryId=' + reg, function (data) {
-            $(".showDesc").empty();
-
-            showapplydata(data.data.itemList);
-        });*/
     });
-   /* $(document).on("click",".uploadAdded",function () {
-        var CountId=this.id.match(/\d+/g);
-        $.ajax({
-            url: importProofUrl + "?itemId=" + CountId,
-            type: "POST",
-            dataType: "JSON",
-            data: formdata,
-            contentType: false,
-            processData: false,
-            success: function () {
-                alert("上传成功！");
-             //   $("#downLoadAdd_"+CountId).attr("id","")
-            }
-
-        });
-    });*/
-
 
     /*reviewer-reviewe*/
 
@@ -857,30 +671,6 @@ $(document).ready(function () {
                     $(".tbody tr:last td:eq(0)").text(id + 1);
                     $(".tbody tr:last td:eq(1)").text(Info.itemName);
                     $(".tbody tr:last td:eq(2)").text(Info.workload);
-
-                    /* 计算公式 */
-                    // $(".tbody tr:last td:eq(3)").text(Info.formula);
-
-                    /* 主要参数 */
-                    // var paramArray = Info.parameterValues;
-                    // var str = '';
-                    // for (var paramCount = 0; paramCount < paramArray.length; paramCount++) {
-                    //
-                    //     str += paramArray[paramCount].symbol + ':' + paramArray[paramCount].value;
-                    // }
-                    // $(".tbody tr:last td:eq(4)").text(str);
-
-                    /* 其他参数 */
-                    // var otherparamArray = Info.otherJsonParameters;
-                    // var otherstr = '';
-                    // for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
-                    //     otherstr += otherparamArray[otherparamCount].key + ':' + otherparamArray[otherparamCount].value;
-                    // }
-                    // $(".tbody tr:last td:eq(5)").text(otherstr);
-
-                    /* 版本 */
-                    // $(".tbody tr:last td:eq(6)").text(Info.version);
-
                     var statusName='';
 
                     var act = " <button class='btn btn-success sure' id='pass_" + Info.itemId + "'>确认通过</button><button class='btn btn-danger LeaveQues' data-toggle='modal' data-target='#refuModal' id='refuse_" + Info.itemId + "'>存疑提交</button> ";
@@ -993,7 +783,7 @@ $(document).ready(function () {
             }
 
         });
-        $('#reviewe_'+passItemId).text('确认通过');
+        $('#reviewe_'+passItemId).text('已通过');
     });
     $(document).on("click",".LeaveQues",function () {
         var reflag=this.id;
@@ -1005,7 +795,7 @@ $(document).ready(function () {
                 type:"POST",
                 success:function (data) {
                     alert("操作成功！");
-                    $('#reviewe_'+refuItemId).text('存疑提交');
+                    $('#reviewe_'+refuItemId).text('尚存疑');
                     $("#pass_"+refuItemId).attr("disabled","disabled");
                     $("#refuse_"+refuItemId).attr("disabled","disabled");
                 }
@@ -1133,7 +923,7 @@ $(document).ready(function () {
        if(confirm("确认提交？")){
            $.post(itemManaPublicUrl+"?itemId="+submitId,function () {
 
-               $("#statusChange_"+submitId).text("有待审核");
+               $("#statusChange_"+submitId).text("待审核");
                $(".delemyself_"+submitId).remove();
                // $("#downLoadAdd_"+submitId).hide();
                $("#showContent").modal("hide");
@@ -1147,8 +937,8 @@ $(document).ready(function () {
         if(confirm("确认提交？")){
             $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
 
-                $("#statusChange_"+thisId).text("有待审核");
-                $(".delemyself_"+submitId).remove();
+                $("#statusChange_"+thisId).text("待审核");
+                $(".delemyself_"+thisId).remove();
                 //  $("#downLoadAdd_"+submitId).hide();
                 $("#addContent").modal("hide");
 
@@ -1156,28 +946,6 @@ $(document).ready(function () {
         };
 
     });
-
-   /* $(document).off("click",".editDelete");
-    $(document).on("click",".editDelete",function () {
-        var deleteId=parseInt(this.id.match(/\d+/g));
-        $.ajax({
-            url:itemManageUrl+"?itemId="+deleteId,
-            type:"DELETE",
-            data:{
-                itemId:deleteId
-            },
-            success:function () {
-                alert("操作成功！");
-                $("#statusChange_"+deleteId).text("已删除");
-                $("#upLAdd_"+deleteId).hide();
-                $("#downLoadAdd_"+deleteId).hide();
-                $("#showContent").modal("hide");
-                var storage=window.localStorage;
-                storage.removeItem("item_"+deleteId);
-            }
-
-        });
-    });*/
 });
 function getSideBar(role,roleList) {
     $.ajaxSetup({
@@ -1210,14 +978,9 @@ function getSideBar(role,roleList) {
                 allowClear: true,
                 width:"100%",
             });
-        /*    $("#firstteacherName").select2({
-                allowClear: true,
-                width:"100%",
-            });*/
 
         });
-       /* $(".scroll-view").append("<jsp:include page='Manager-left-sidebar.jsp'/>");
-        $(".right_hole").append("<jsp:include page='Manager-right-col.jsp'/>");*/
+
         ztree();
         if(roleList.length==1){
             $("#dropdownMenu1").hide();

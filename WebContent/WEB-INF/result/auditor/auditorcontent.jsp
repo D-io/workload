@@ -45,11 +45,7 @@
                             <th class="sorting">教师姓名</th>
                             <th class="sorting">项目名称</th>
                             <th class="sorting">工作量</th>
-                            <%--<th class="sorting">计算公式</th>--%>
                             <th class="sorting">申报形式</th>
-                            <%--<th class="sorting">主要参数</th>--%>
-                            <%--<th class="sorting">其他参数</th>--%>
-                            <%--<th class="sorting">版本</th>--%>
                             <th class="sorting">复核截止时间 </th>
                             <th class="sorting">复核状态 </th>
                             <th class="sorting">操作</th>
@@ -89,9 +85,6 @@
                                                             <thead>
                                                             <tr class="parameterTh" style="font-size: 13px;">
 
-                                                                <!--
-                                                                                                                    <span style="float: right;"><a class="btn btn-success" id="addParameter"><i class="fa fa-plus"></i></a></span>
-                                                                                                                    -->
                                                             </tr>
 
                                                             </thead>
@@ -119,9 +112,7 @@
                                                         <table class="table" id="otherparameterTable">
                                                             <thead>
                                                             <tr class="otherParaTh" style="font-size: 13px;">
-                                                                <!--
-                                                                                                                    <span style="float: right;"><a class="btn btn-success" id="addOtherParameter"><i class="fa fa-plus"></i></a></span>
-                                                                                                                    -->
+
                                                             </tr>
 
                                                             </thead>
@@ -202,44 +193,6 @@
         </div>
     </div>
 
-   <%-- <div class="modal fade bs-example-modal-lg" id="importModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel"></h4>
-                    </div>
-                    <div class="modal-body">
-                        &lt;%&ndash;<button class="add btn btn-primary" data-toggle="modal" data-target="#myModal">上传文件</button>
-                        <div class="applymodalbody" style="height: 60%;">
-                           &lt;%&ndash; <table class="showImportThead table dataTable no-footer table-bordered" style="display: none;">
-                                <thead style="font-size: 14px;">
-                                <tr role="row">
-                                    <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody class="showImportDesc"></tbody>
-                            </table>&ndash;%&gt;&ndash;%&gt;
-                        <div class="applymodalbody">
-                            <table class="showImportTable table dataTable no-footer table-bordered" style="display: none;">
-                            <thead style="font-size: 14px;">
-                            <tr role="row">
-                             <th>序号</th><th>条目名称</th><th>所属人</th><th>主要参数</th><th>其他参数</th><th>条目类别</th><th>成员职责描述（小组）</th><th>所占权重</th><th>工作量</th><th>提交状态</th><th>操作</th>;
-                            </tr>
-                            </thead>
-                            <tbody class="showImportbodyList"></tbody>
-                            </table>
-                        </div>
-
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-     --%>
     <div class="modal fade bs-example-modal-lg" id="importNewModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -254,9 +207,9 @@
                     <span>
                             <input type="file" class=" col-md-9 col-sm-9 col-xs-12" id="file" style="    padding: 6px 12px;line-height: 1.42857143;color: #555;margin-bottom:10px;background-color: #fff;background-image: none;border: 1px solid #ccc;border-radius: 4px; outline: none;">
                             <div class="control-label col-md-3 col-sm-3 col-xs-12">
-                                <button class="btn btn-primary importNewFile " style="position: relative; top: 7px; font-size: 14px;"><i class="fa fa-file"></i></button>
-                                <button class="btn btn-primary addNewItem" data-toggle="modal" data-target="#addContent" style="position: relative; top: 7px; font-size: 14px;"><i class="fa fa-plus"></i></button>
-                                 <button class="btn btn-success submitItem" style="display: none; position: relative; top: 7px; font-size: 14px;"><i class="fa fa-check-square-o"></i></button>
+                                <button class="btn btn-primary importNewFile" title="上传文件" style="position: relative; top: 7px; font-size: 14px;"><i class="fa fa-file"></i></button>
+                                <button class="btn btn-primary addNewItem" title="添加项目"  data-toggle="modal" data-target="#addContent" style="position: relative; top: 7px; font-size: 14px;"><i class="fa fa-plus"></i></button>
+                                 <button class="btn btn-success submitItem" title="提交项目" style="display: none; position: relative; top: 7px; font-size: 14px;"><i class="fa fa-check-square-o"></i></button>
 
                             </div>
 
@@ -266,10 +219,7 @@
                         <table class="table table-striped table-bordered dataTable no-footer importItemShow" style="display: none;">
                             <thead>
                             <tr role="row">
-                                <%--<th><div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></th>
-                              --%>
-                              <%--  <th><input type="submitall" type="checkbox" value=""></th>
-                             --%>       <th><input type="checkbox" name="checkbox1" value="checkbox" class="submitall" ></th>
+                                 <th class="sorting"><input type="checkbox" name="checkbox1" value="checkbox" class="submitall" ></th>
                                 <th class="sorting">项目名称</th>
                                 <th class="sorting">工作当量</th>
                                 <th class="sorting">教师姓名</th>
@@ -317,17 +267,6 @@
                             </div>
                         </div>
 
-
-                        <%--<div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">申报类别</label>
-                            <div class="col-md-9 col-sm-9 col-xs-12">
-                                <select class="form-control" id="isGroup">
-                                    <option value="1">小组申报</option>
-                                    <option value="0">个人申报</option>
-
-                                </select>
-                            </div>
-                        </div>--%>
                         <div class="radio">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             </label>
@@ -350,10 +289,6 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">主要参数</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                <%--<a class="btn btn-primary" role="button" data-toggle="collapse" href="#mainparameter" aria-expanded="false" aria-controls="collapseExample">
-                                    <i class="fa fa-plus"></i>
-                                </a>--%>
-                               <%-- <div class="collapse" id="mainparameter">--%>
                                     <div class="well">
                                         <table class="table" id="mainparameterTable">
                                             <thead class="parameterThead">
@@ -370,11 +305,6 @@
                         <div class="form-group hiddenRequired">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">附加属性</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-
-                                <%--<a class="btn btn-primary" role="button" data-toggle="collapse" href="#addotherparameter" aria-expanded="false" aria-controls="collapseExample">
-                                    <i class="fa fa-plus"></i>
-                                </a>--%>
-                              <%--  <div class="collapse" id="addotherparameter">--%>
                                     <div class="well">
                                         <table class="table" id="addotherparameterTable">
                                             <thead class="otherParaThead">
@@ -411,41 +341,6 @@
                             </div>
                         </div>
 
-
-                       <%-- <div class="form-group item_group" style="display: none;">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组成员</label>
-                            <div class="col-md-9 col-sm-9 col-xs-12">
-
-                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#groupMessage" aria-expanded="false" aria-controls="collapseExample">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <div class="collapse" id="groupMessage">
-                                    <div class="well">
-                                        <table class="table" id="groupMessageTable">
-                                            <thead>
-                                            <tr style="font-size: 13px;">
-
-                                                <th>成员姓名</th>
-                                                <th>成员职责描述</th>
-                                                <th>成员所占权重<span style="float: right;"><a class="btn btn-success" id="addGroupMessage"><i class="fa fa-plus"></i></a></span></th>
-                                            </tr>
-
-                                            </thead>
-                                            <tbody id="AddgroupPramter">
-                                            <tr>
-
-                                                <td><select  class="groupMemberName teacherName"><option value=" "></option> </select></td>
-                                                <td><input type="text"  class="groupMemberSymbol"></td>
-                                                <td><input type="text"  class="groupMemberWeight"></td>
-
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>--%>
-
                     </form>
 
                 </div>
@@ -461,45 +356,5 @@
     </div>
 
 </div>
-        <%--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h4 class="modal-title" style="text-align: center" >
-                            上传工作量统计文件
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="explain" style="margin-bottom: 5px;" >
-                            特别提示：上传文件时，请传入合法格式的文件，“上传”与“提交”是两个不同操作，“上传”文件后，须检查无误后再行“提交”。一旦提交，不可更改；
-                            没有“提交”之前，可以更新文件（须确保文件有修改，否则无法更新）。“上传”、“提交”之后，均可下载查阅。
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label " >上传文件</label>
-
-                            <div class="col-sm-9">
-                                <input type="file" class="form-control" id="file"><hr/>
-                                <input type="button" class="btn btn-primary commit" value="上传" style="float: right;">
-                            </div>
-
-
-                            <p>请上传小于20M的EXECLL文件</p>
-
-                        </div>
-
-                    </div>
-                    <!--
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-
-                                        </div>
-                    -->
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>
-
-  --%>  </div>
+</div>
 </div>
