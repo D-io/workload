@@ -123,10 +123,17 @@ public class ItemManageController extends ApplicationController {
 		itemName = isEmptyString(itemName) ? item.getItemName() : itemName;
 		otherParams = isEmptyString(otherParams) ? item.getOtherJson() : otherParams;
 
-		item.setItemName(itemName);
-		item.setOtherJson(otherParams);
+		boolean saveSuccess = false;
+		if (GROUP.equals(item.getIsGroup()) && item.getOwnerId().equals(item.getGroupManagerId())) {
+			saveSuccess = itemEvent
+					.updateGroupItemsCommonInfo(item.getItemId(), getCurrentSemester(), itemName,
+							otherParams);
+		} else {
+			item.setItemName(itemName);
+			item.setOtherJson(otherParams);
+			saveSuccess = itemService.saveItem(item);
+		}
 
-		boolean saveSuccess = itemService.saveItem(item);
 		if (!saveSuccess) {
 			return systemErrResponse("保存失败");
 		}
@@ -179,7 +186,7 @@ public class ItemManageController extends ApplicationController {
 			if (GROUP.equals(item.getIsGroup()) && item.getOwnerId()
 					.equals(item.getGroupManagerId())) {
 				itemEvent.updateGroupItemsStatus(item.getItemId(), getCurrentSemester(), DELETED);
-				item = itemConverter.generateGroupItem(item.getItemId(),getCurrentSemester());
+				item = itemConverter.generateGroupItem(item.getItemId(), getCurrentSemester());
 				Item newItem = (Item) item.clone();
 				newItem.setItemId(null);
 				newItem.setStatus(UNCOMMITTED);
