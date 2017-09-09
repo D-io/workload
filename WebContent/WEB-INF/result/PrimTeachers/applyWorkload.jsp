@@ -278,8 +278,8 @@
                                             <thead>
                                             <tr style="font-size: 13px;">
 
-                                                <th>成员姓名</th>
-                                                <th>成员工作当量</th>
+                                                <th style="text-align: center">成员姓名</th>
+                                                <th style="text-align: center">成员工作当量</th>
                                                 <%--  <th>成员所占权重</th>--%>
                                             </tr>
 
@@ -461,8 +461,8 @@
                                             <thead>
                                             <tr style="font-size: 13px;">
 
-                                                <th>成员姓名</th>
-                                                <th>成员工作当量</th>
+                                                <th style="text-align: center">成员姓名</th>
+                                                <th style="text-align: center">成员工作当量</th>
                                               <%--  <th>成员所占权重</th>--%>
                                             </tr>
 

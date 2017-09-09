@@ -465,6 +465,7 @@ function applyworkload() {
                 $("#group").attr("disabled", "true");
                 $(".showitem_manager").hide();
                 $(".showitem_group").hide();
+                $(".showgroupDiv").hide();
                 $("#showAddgroupPramter").empty();
             }
             else {
@@ -472,6 +473,8 @@ function applyworkload() {
                 $("#single").attr("disabled", "true");
                 $(".showitem_manager").show();
                 $(".showitem_group").show();
+                $(".showgroupDiv").show();
+                $("#showgroupWorkload").empty();
 
                 $("#showitemmanager").select2().val(window.Temp[newReg - 1].groupManagerId).trigger("change");
                 $(".select2-container").css("width","100%");
@@ -486,7 +489,7 @@ function applyworkload() {
 
                 for (var pramterCount = 0; pramterCount < window.Temp[newReg - 1].jobDescList.length; pramterCount++) {
 
-                    var addStr = "<tr><td><select class='showgroupMemberName teacherName'></select></td><td><input type='text' class='showgroupMemberSymbol' name='showpara' onblur='reminder(this)'></td><td><input type='text' class='showgroupMemberWeight' name='showotherpara' onblur='reminder(this)'></td></tr>";
+                    var addStr = "<tr><td><select class='showgroupMemberName teacherName'></select></td><td><input type='text' class='showgroupMemberSymbol' name='showpara' onblur='reminder(this)'></td><td style='position: absolute'><input type='text' class='showgroupMemberWeight' name='showotherpara' onblur='reminder(this)'><button type='button' class='btn btn-danger removeOtherRow removeRow' style='position: absolute; top: 12px; right: -22px;'><i class='fa fa-trash'></i></button></td></tr>";
                     $('#showAddgroupPramter').append(addStr);
 
                         for (var i = 0; i < teacherList.length; i++) {
@@ -502,10 +505,10 @@ function applyworkload() {
                     $(".showgroupMemberName").eq(pramterCount).select2().val(window.Temp[newReg - 1].jobDescList[pramterCount].userId).trigger("change");
                     $(".showgroupMemberSymbol").eq(pramterCount).val(window.Temp[newReg - 1].jobDescList[pramterCount].jobDesc);
                     $(".showgroupMemberWeight").eq(pramterCount).val(window.Temp[newReg - 1].childWeightList[pramterCount].weight);
-
+                    $("#showgroupWorkload").append("<tr><td style='width: 190px;text-align: center'>"+window.Temp[newReg-1].childWeightList[pramterCount].userId+"</td><td style='width: 190px;text-align: center'>"+window.Temp[newReg-1].childWeightList[pramterCount].workload+"</td></tr>");
 
                 }
-
+                $(".removeRow").attr("disabled","disabled");
                 $(".showgroupMemberName").attr("disabled", "true");
                 $(".showgroupMemberSymbol").attr("disabled", "true");
                 $(".showgroupMemberWeight").attr("disabled", "true");
@@ -704,6 +707,7 @@ function applyworkload() {
                     $("#workload_" + msg.itemId).text(msg.workload);
                     $("#itemname_" + msg.itemId).text(msg.itemName);
                     $(".form-control").attr("disabled", "disabled");
+                    $(".removeRow").attr("disabled","disabled");
                     $("#showaddGroupMessage").attr("disabled","disabled");
                     $("#showcalculator").attr("disabled","disabled");
                     $(".showgroupMemberName ").attr("disabled","disabled");
@@ -815,7 +819,10 @@ function applyworkload() {
         $(".radioChange").eq(0).attr("checked","true");
         $(".radioChange").eq(1).removeAttr("checked");
         $(".item_manager").hide();
+        $("#addGroupMessage").removeAttr("disabled");
+        $("#calculator").removeAttr("disabled");
         $(".item_group").hide();
+        $(".groupDiv").hide();
         $(".dismiss").show();
         $(".saveAgain").hide();
         $(".savemyApply").show();
@@ -989,6 +996,7 @@ function applyworkload() {
                         $(".savemyApply").hide();
                         $(".dismiss").hide();
                         $(".form-control").attr("disabled","disabled");
+                        $(".removeRow").attr("disabled","disabled");
                         $("#addGroupMessage").attr("disabled","disabled");
                         $("#calculator").attr("disabled","disabled");
                         $(".groupMemberName").attr("disabled","disabled");
@@ -1161,6 +1169,7 @@ function applyworkload() {
                         $(".parameterName").attr("disabled","disabled");
                         $("#addGroupMessage").attr("disabled","disabled");
                         $("#calculator").attr("disabled","disabled");
+                        $(".removeRow").attr("disabled","disabled");
                         $(".otherparameterName").attr("disabled","disabled");
                         $(".groupMemberName").attr("disabled","disabled");
                         $(".groupMemberSymbol").attr("disabled","disabled");
@@ -1402,12 +1411,15 @@ function applyworkload() {
             });
         }
         childWeight = JSON.stringify(childWeight);
-        $.post(calculateUrl,{
+        $.get(calculateUrl,{
             categoryId:window.Categry,
             jsonParameters:newArray,
             jsonChildWeight:childWeight
         },function (msg) {
-            $("#groupWorkload").append("<tr></tr>");
+            $("#groupWorkload").empty();
+            for(var t=0;t<msg.data.childWeightList.length;t++){
+                $("#groupWorkload").append("<tr><td style='width: 190px;text-align: center'>"+msg.data.childWeightList[t].userId+"</td><td style='width: 190px;text-align: center'>"+msg.data.childWeightList[t].workload+"</td></tr>");
+            }
             $(".groupDiv").show();
         });
 
@@ -1456,12 +1468,15 @@ function applyworkload() {
             });
         }
         childWeight = JSON.stringify(childWeight);
-        $.post(calculateUrl,{
+        $.get(calculateUrl,{
             categoryId:window.Categry,
             jsonParameters:newArray,
             jsonChildWeight:childWeight
         },function (msg) {
-            $("#showgroupWorkload").append("<tr></tr>");
+            $("#showgroupWorkload").empty();
+            for(var t=0;t<msg.data.childWeightList.length;t++){
+                $("#showgroupWorkload").append("<tr><td style='width: 190px;text-align: center'>"+msg.data.childWeightList[t].userId+"</td><td style='width: 190px;text-align: center'>"+msg.data.childWeightList[t].workload+"</td></tr>");
+            }
             $(".showgroupDiv").show();
         });
 
@@ -1474,6 +1489,7 @@ function applyworkload() {
         $(".groupMemberName").removeAttr("disabled");
         $(".groupMemberSymbol").removeAttr("disabled");
         $(".groupMemberWeight").removeAttr("disabled");
+        $(".removeRow").removeAttr("disabled");
         $(".savemyApply").show();
         $(".dismiss").show();
         $(".neweditor").hide();
