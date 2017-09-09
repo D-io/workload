@@ -9,6 +9,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
 
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
@@ -27,7 +28,7 @@ public class FormulaCalculate {
 	public static double calculate(String formula, List<ParameterValue> values) {
 
 		//循环遍历替换公式中的变量值
-		if(null != values) {
+		if (null != values) {
 			for (ParameterValue parameterValue : values) {
 				if (null != parameterValue) {
 					formula = formula.replaceAll(parameterValue.getSymbol(),
@@ -55,10 +56,17 @@ public class FormulaCalculate {
 
 	}
 
+	public static List<ChildWeight> calculateChildWorkloaad(String formula,
+			List<ParameterValue> parameterValues, List<ChildWeight> childWeights) {
+		Double totalWorkload = calculate(formula,parameterValues);
+		for(ChildWeight childWeight:childWeights) {
+			childWeight.setWorkload(totalWorkload * childWeight.getWeight());
+		}
+		return childWeights;
+	}
+
 	/**
 	 * 查看当前字符串中是否包含字母，并设置默认值
-	 * @param formula
-	 * @return
 	 */
 	private static String judgeContainsLetter(String formula) {
 		String regex = "[a-zA-Z]";

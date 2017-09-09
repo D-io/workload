@@ -1,5 +1,7 @@
 package cn.edu.uestc.ostec.workload.dto;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
+
 /**
  * Version:v1.0 (description: 成员权重，用于Json字段的映射 )
  */
@@ -8,6 +10,16 @@ public class ChildWeight {
 	private Integer userId;
 
 	private double weight;
+
+	private Double workload = ZERO_DOUBLE;
+
+	public Double getWorkload() {
+		return workload;
+	}
+
+	public void setWorkload(Double workload) {
+		this.workload = workload;
+	}
 
 	public Integer getUserId() {
 		return userId;
