@@ -63,23 +63,17 @@
                                         &times;
                                     </button>
                                     <h4 class="modal-title" >
-                                        修改工作量条目
+                                        修改工作当量项目
                                     </h4>
                                 </div>
                                 <div class="modal-body">
-                                    <button class="btn btn-primary btn-info editApplyInfo"><i class="fa fa-pencil"></i>编辑</button>
-                                    <button class="btn btn-primary btn-success editorSubmit"><i class="fa fa-pencil"></i>提交</button>
 
                                     <form class="form-horizontal form-label-left">
 
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">主要考核参数</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">计算参数</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
 
-                                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#parameter" aria-expanded="false" aria-controls="collapseExample">
-                                                    <i class="fa fa-plus"></i>
-                                                </a>
-                                                <div class="collapse" id="parameter">
                                                     <div class="well">
                                                         <table class="table" id="parameterTable">
                                                             <thead>
@@ -89,25 +83,16 @@
 
                                                             </thead>
                                                             <tbody class="AddPramter">
-                                                            <tr class="editorPram">
-
-                                                            </tr>
-
 
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                </div>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">其他附加信息</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目属性</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
-
-                                                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#otherparameter" aria-expanded="false" aria-controls="collapseExample">
-                                                    <i class="fa fa-plus"></i>
-                                                </a>
-                                                <div class="collapse" id="otherparameter">
                                                     <div class="well">
                                                         <table class="table" id="otherparameterTable">
                                                             <thead>
@@ -122,7 +107,7 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                </div>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -133,7 +118,11 @@
                                         </div>
                                     </form>
                                         </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary editApplyInfo">编辑</button>
+                                    <button class="btn btn-primary editorSubmit">提交</button>
 
+                                </div>
                                 </div>
 
 
@@ -267,7 +256,7 @@
                             </div>
                         </div>
 
-                        <div class="radio">
+                        <div class="radio" style="display: none;">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             </label>
                             <label>

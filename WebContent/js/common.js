@@ -192,6 +192,8 @@ $(document).ready(function () {
        window.countToCount=thisId;
         $(".editor").show();
         $(".submitTo").show();
+        $(".dismiss").hide();
+        $(".savemyEdit").hide();
         if($(".status_"+allItem[thisId].itemId).text()!="未提交"){
             $(".editor").hide();
             $(".submitTo").hide();
@@ -320,7 +322,7 @@ $(document).ready(function () {
 
         if($(".savemyEdit").attr("id")){
             var thisId=parseInt(this.id.match(/\d+/g));
-            if(radioGroup==1){
+            /*if(radioGroup==1){
                 $.ajax({
                     type: "POST",
                     url: itemManageUrl,
@@ -355,7 +357,7 @@ $(document).ready(function () {
 
                 })
             }
-            else {
+            else {*/
                 $.post(itemManageUrl,{
                         categoryId: window.cateId,
                         itemId:thisId,
@@ -363,7 +365,7 @@ $(document).ready(function () {
                         applyDesc: $('#applyDesc').val(),
                         //   workload: $('#workload').val(),
                         //   ownerId: applicant.val(),
-                        //   groupManagerId: $("#itemmanager").val(),
+                        //   ownerId: $("#itemmanager").val(),
                         isGroup: 0,
                         jsonParameter: newArray,
                         otherJson: otherArray,
@@ -385,10 +387,10 @@ $(document).ready(function () {
                     }
 
                 )
-            }
+           /* }*/
         }
            else{
-            if(radioGroup==1){
+           /* if(radioGroup==1){
                 $.ajax({
                     type: "POST",
                     url: itemManageUrl,
@@ -415,14 +417,14 @@ $(document).ready(function () {
                         itemCount++;
                         $(".submitTo").attr("id","submitTo_"+data.data.item.itemId);
                         $(".savemyEdit").attr("id","savemyEdit_"+data.data.item.itemId);
-                       /* $(".form-control").attr("disabled","disabled");
+                       /!* $(".form-control").attr("disabled","disabled");
                          $("#year").removeAttr("disabled");
-                         $("#term").removeAttr("disabled");*/
+                         $("#term").removeAttr("disabled");*!/
                     }
 
                 })
             }
-            else {
+            else {*/
                 $.post(itemManageUrl,{
                         categoryId: window.cateId,
                         //   itemId:thisId,
@@ -430,7 +432,7 @@ $(document).ready(function () {
                         applyDesc: $('#applyDesc').val(),
                         //   workload: $('#workload').val(),
                         //   ownerId: applicant.val(),
-                        //   groupManagerId: $("#itemmanager").val(),
+                        //   ownerId: $("#itemmanager").val(),
                         isGroup: 0,
                         jsonParameter: newArray,
                         otherJson: otherArray,
@@ -452,7 +454,7 @@ $(document).ready(function () {
                     }
 
                 )
-            }
+          /*  }*/
 
         }
 
@@ -788,6 +790,7 @@ $(document).ready(function () {
     $(document).on("click",".LeaveQues",function () {
         var reflag=this.id;
         var refuItemId=parseInt(reflag.match(/\d+/g));
+        $("#refusedesc").val(null);
         $(document).on("click",".commit",function () {
             var refudesc=$("#refusedesc").val();
             $.ajax({
@@ -795,6 +798,7 @@ $(document).ready(function () {
                 type:"POST",
                 success:function (data) {
                     alert("操作成功！");
+                    $("#refuModal").modal("hide");
                     $('#reviewe_'+refuItemId).text('尚存疑');
                     $("#pass_"+refuItemId).attr("disabled","disabled");
                     $("#refuse_"+refuItemId).attr("disabled","disabled");
@@ -897,6 +901,7 @@ $(document).ready(function () {
         $("#showitemName").removeAttr("disabled");
         $("#showapplyDesc").removeAttr("disabled");
         $("#showaddGroupMessage").removeAttr("disabled");
+        $("#showcalculator").removeAttr("disabled");
         $(".showparameterName").removeAttr("disabled");
         $("#revfile").removeAttr("disabled");
 
@@ -946,6 +951,7 @@ $(document).ready(function () {
         };
 
     });
+
 });
 function getSideBar(role,roleList) {
     $.ajaxSetup({

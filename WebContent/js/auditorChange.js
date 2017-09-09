@@ -29,9 +29,12 @@ function importWorkload(){
                     else if(item[i].importRequired==1){
                         $("<li class='catInfo_"+item[i].categoryId+"'></li>").append( "<div class='itemMessage'><span class='itemName'>" + item[i].name + "</span>&nbsp;-&nbsp;<span class='itemDesc'>" + item[i].desc + "</span></div>" +
                             "<div style='float: right;'><a class='btn importList btn-danger' id='import_"+ item[i].categoryId + "' data-toggle='modal' data-target='#importNewModal' style='float: right; margin-top: 2px;'>点击导入</a>" +
-                            "<div class='dropdown' style='float: right; margin-top: 2px; margin-right: 10px;'><a class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>下载模板</a><ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='" + downloadInfoUrl+ "?categoryId=" + item[i].categoryId+"&type=group'>小组类模板</a></li><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul></div>" +
+                            "<div class='dropdown' style='float: right; margin-top: 2px; margin-right: 10px;'><a class='btn btn-primary dropdown-toggle' href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>下载模板</a></div>" +
                             "<p class='deadline' style='margin-right: 20px'> 上传截止时间: <span class='time_"+item[i].categoryId+"'>"+item[i].reviewDeadline +
                             "</span></p></div><div style='clear: both;'></div></li>").appendTo(parent);
+                        /*<li><a href='" + downloadInfoUrl+ "?categoryId=" + item[i].categoryId+"&type=group'>小组类模板</a></li>*/
+                        /* data-toggle='dropdown' id='dropdownMenu2'*/
+                        /*<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'><li><a href='"+downloadInfoUrl+"?categoryId="+item[i].categoryId+"&type=single'>个人类模板</a></li></ul>*/
                         if(item[i].formulaParameterList!=null&&item[i].formulaParameterList.length>0){
                             //    var obj = eval ("(" + item[i].jsonParameters + ")");
                             var obj=item[i].formulaParameterList;
@@ -49,8 +52,8 @@ function importWorkload(){
                             var otherobj=item[i].otherJsonParameters;
 
                             for(var otherCount=0;otherCount<otherobj.length;otherCount++){
-                                if($("#other_"+item[i].categoryId).length<0||$("#other_"+item[i].categoryId).length==0){
-                                    $(".hiddendistrict").append("<div class='importParaDesc otherparaDesc_"+item[i].categoryId+"' id='other_"+item[i].categoryId+"'>"+otherobj[otherCount].key+"</div>");
+                                if($("#other_"+item[i].categoryId+"_"+otherCount).length<0||$("#other_"+item[i].categoryId+"_"+otherCount).length==0){
+                                    $(".hiddendistrict").append("<div class='importParaDesc otherparaDesc_"+item[i].categoryId+"' id='other_"+item[i].categoryId+"_"+otherCount+"'>"+otherobj[otherCount].key+"</div>");
 
                                 }
 
@@ -207,65 +210,13 @@ function showimportRec() {
         }
     });*/
     var doubtedItem='';
-    var doubleChecked='';
 
+    var uncommited='';
+    var Count_double=0;
     $.get(auditorManageItemUrl+"?"+"importRequired=1",function (data) {
-        doubtedItem=data.data.doubtedItem;
-        doubleChecked=data.data.doubtedCheckedItem;
+        doubtedItem=data.data.itemList;
         var rowInfo="<tr></tr>";
         var cellInfo="<td></td>";
-        var Count_double=0;
-        if(doubleChecked&&doubleChecked.length){
-            var analyseList= doubleChecked;
-            var listLength= doubleChecked.length;
-            for(var i=0;i<listLength;i++)
-            {
-                Count_double++;
-                var Info=analyseList[i];
-                $(".reviewerRecTbody").append(rowInfo);
-                //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
-                for(var j=0;j<9;j++)//单元格
-                {
-                    $(".reviewerRecTbody tr:last").append(cellInfo);
-                }
-                $(".reviewerRecTbody tr:last").css("text-align","center");
-                $(".reviewerRecTbody tr:last td:eq(0)").text( Count_double);
-                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.teacherName);
-                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.itemName);
-                $(".reviewerRecTbody tr:last td:eq(3)").text(Info.workload);
-                $(".reviewerRecTbody tr:last td:eq(3)").attr("id","workload_"+Info.itemId);
-                // $(".reviewerRecTbody tr:last td:eq(4)").text(Info.formula);
-
-                var showtype='';
-                switch (Info.isGroup){
-
-                    case 1:showtype="小组申报";
-                        break;
-                    case 0:showtype="个人申报";
-                        break;
-
-                }
-                $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
-
-                /* 复核截止时间 */
-                $(".reviewerRecTbody tr:last td:eq(5)").text($(".time_"+Info.categoryId).text());
-                $(".reviewerRecTbody tr:last td:eq(6)").text("尚存疑");
-                var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_import' id='btn-viewdetail'>查看详情</a><a class='btn btn-primary reviewerApply' id='showImportRec_"+Info.itemId+"'>存疑原因</a>";
-                $(".reviewerRecTbody tr:last td:eq(7)").append(act).attr("class","operation-btn-two");
-                $("[data-toggle='popover']").popover();
-                $(".reviewerApply").popover({
-                    placement: "top",
-                    trigger: "hover",
-                    html: true,
-                    title: "回复信息",
-                    content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
-
-                });
-
-                $(".reviewerRecTbody tr:last td:eq(8)").text(JSON.stringify(Info));
-                $(".reviewerRecTbody tr:last td:eq(8)").css("display","none");
-            }
-        }
 
         if(doubtedItem&&doubtedItem.length){
             var analyseList= doubtedItem;
@@ -299,22 +250,46 @@ function showimportRec() {
                 $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
 
                 $(".reviewerRecTbody tr:last td:eq(5)").text($(".time_"+Info.categoryId).text());
-                $(".reviewerRecTbody tr:last td:eq(6)").text("已解决");
-                var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_import' id='btn-viewdetail'>查看详情</a>";
-                $(".reviewerRecTbody tr:last td:eq(7)").append(act).attr("class","operation-btn-two");
+               var statusName='';
+                var editact="<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_import' id='btn-viewimportdetail'>查看详情</a><a class='btn btn-primary reviewerApply' id='showImportRec_"+Info.itemId+"'>存疑原因</a><a class='btn btn-info editInfo "+Info.itemId+"' id='editInfo_"+Info.categoryId+"' data-target='#editModal' data-toggle='modal'>修改存疑</a> ";
+                var act="<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_import' id='btn-viewimportdetail'>查看详情</a>";
 
+                switch(Info.status){
+                    case 1:statusName='待复核';
+                        $(".reviewerRecTbody tr:last td:eq(7)").append(act);
+                    break;
+                    case 2:statusName='已通过';
+                        $(".reviewerRecTbody tr:last td:eq(7)").append(act);
+                        break;
+                    case 3:statusName='尚存疑';
+                        $(".reviewerRecTbody tr:last td:eq(7)").append(editact);
+                        break;
+                    case 4:statusName='已解决';
+                        $(".reviewerRecTbody tr:last td:eq(7)").append(act);
+                        break;
+                }
+                $(".reviewerRecTbody tr:last td:eq(6)").text(statusName);
+
+                $(".reviewerRecTbody tr:last td:eq(7)").attr("class","operation-btn-three");
                 $(".reviewerRecTbody tr:last td:eq(8)").text(JSON.stringify(Info));
                 $(".reviewerRecTbody tr:last td:eq(8)").css("display","none");
             }
+            $("[data-toggle='popover']").popover();
+            $(".reviewerApply").popover({
+                placement: "top",
+                trigger: "click",
+                html: true,
+                title: "回复信息",
+                content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
+
+            });
         }
 
         /* 查看回复修复 */
-        $(".reviewerApply").off("hover");
-        $(".reviewerApply").hover(function () {
-            var element = this.id
-
-            ;
-            thisId=element.match(/\d+/g);
+       // $(".reviewerApply").off("click");
+        $(".reviewerApply").on("click",function () {
+            var element = this.id;
+            var thisId=element.match(/\d+/g);
             $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
                 if(data.data!=null&&data.data.subjectList!=null&&data.data.subjectList.length){
                     $(".sendFromName").text(data.data.subjectList[0].sendFromName);
@@ -330,9 +305,7 @@ function showimportRec() {
             });
 
         });
-
-
-        $(document).on("click","#btn-viewdetail",function (){
+        /*$(document).on("click","#btn-viewdetail",function (){
             var rowInfo="<tr></tr>";
             var cellInfo="<td></td>";
             $("#viewdetail_import .project").empty();
@@ -357,17 +330,17 @@ function showimportRec() {
             }
             $(".viewDetailbody tr:last").css("text-align","center");
 
-            /* 计算公式 */
+            /!* 计算公式 *!/
             $(".viewDetailbody tr:last td:eq(0)").text(jsonInfo.formula);
 
-            /* 计算参数 */
+            /!* 计算参数 *!/
             var praValues='';
             for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
                 praValues = jsonInfo.paramDesc[m].desc + "：" + jsonInfo.parameterValues[m].value;
                 $(".viewDetailbody tr:last td:eq(1)").append( praValues + "<br>");
             }
 
-            /* 项目属性 */
+            /!* 项目属性 *!/
             var projectProperties='';
             if( jsonInfo.otherJsonParameters && jsonInfo.otherJsonParameters.length ){
                 for( var n = 0; n < jsonInfo.otherJsonParameters.length; n++ ){
@@ -379,66 +352,166 @@ function showimportRec() {
             $(".viewDetailbody tr:last td:eq(1)").css("line-height","28px");
             $(".viewDetailbody tr:last td:eq(2)").css("line-height","28px");
 
-        });
+        });*/
     });
+    $.get(auditorManageItemUrl+"?"+"importRequired=1&&option=uncommitted",function (data) {
+        uncommited=data.data.unCommittedItem;
 
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+
+        if(uncommited&&uncommited.length){
+            var analyseList= uncommited;
+            var listLength= uncommited.length;
+            for(var i=0;i<listLength;i++)
+            {
+                Count_double++;
+                var Info=analyseList[i];
+                $(".reviewerRecTbody").append(rowInfo);
+                //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
+                for(var j=0;j<9;j++)//单元格
+                {
+                    $(".reviewerRecTbody tr:last").append(cellInfo);
+                }
+                $(".reviewerRecTbody tr:last").css("text-align","center");
+                $(".reviewerRecTbody tr:last td:eq(0)").text( Count_double);
+                $(".reviewerRecTbody tr:last td:eq(1)").text(Info.teacherName);
+                $(".reviewerRecTbody tr:last td:eq(2)").text(Info.itemName);
+                $(".reviewerRecTbody tr:last td:eq(3)").text(Info.workload);
+                $(".reviewerRecTbody tr:last td:eq(3)").attr("id","workload_"+Info.itemId);
+                // $(".reviewerRecTbody tr:last td:eq(4)").text(Info.formula);
+                var showtype='';
+                switch (Info.isGroup){
+
+                    case 1:showtype="小组申报";
+                        break;
+                    case 0:showtype="个人申报";
+                        break;
+
+                }
+                $(".reviewerRecTbody tr:last td:eq(4)").text(showtype);
+
+                $(".reviewerRecTbody tr:last td:eq(5)").text($(".time_"+Info.categoryId).text());
+                $(".reviewerRecTbody tr:last td:eq(6)").text("未提交");
+                var act="<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_import' id='btn-viewimportdetail'>查看详情</a>";
+                $(".reviewerRecTbody tr:last td:eq(7)").append(act).attr("class","operation-btn-three");
+
+                $(".reviewerRecTbody tr:last td:eq(8)").text(JSON.stringify(Info));
+                $(".reviewerRecTbody tr:last td:eq(8)").css("display","none");
+            }
+        }
+
+
+    });
+    $(document).on("click","#btn-viewimportdetail",function (){
+        var rowInfo="<tr></tr>";
+        var cellInfo="<td></td>";
+        $("#viewdetail_import .project").empty();
+        $("#viewdetail_import .message").empty();
+        $("#viewdetail_import tbody").empty();
+        var Info = $(this).parent().next().text();
+        var jsonInfo = JSON.parse(Info);
+        var deadline = $(this).parent().prev().prev().text();
+        var auditStatus = $(this).parent().prev().text();
+        var form = $(this).parent().prev().prev().prev().text();
+
+        $("#viewdetail_import .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_import .message").append(
+            "工作当量：" + jsonInfo.workload +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复核状态：" + auditStatus +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复核截止时间：" + deadline );
+
+        $(".viewDetailbody").append(rowInfo);
+        for( var i=0; i<3; i++){
+            $(".viewDetailbody tr:last").append(cellInfo);
+        }
+        $(".viewDetailbody tr:last").css("text-align","center");
+
+        /* 计算公式 */
+        $(".viewDetailbody tr:last td:eq(0)").text(jsonInfo.formula);
+
+        /* 计算参数 */
+        var praValues='';
+        for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
+            praValues = jsonInfo.paramDesc[m].desc + "：" + jsonInfo.parameterValues[m].value;
+            $(".viewDetailbody tr:last td:eq(1)").append( praValues + "<br>");
+        }
+
+        /* 项目属性 */
+        var projectProperties='';
+        if( jsonInfo.otherJsonParameters && jsonInfo.otherJsonParameters.length ){
+            for( var n = 0; n < jsonInfo.otherJsonParameters.length; n++ ){
+                projectProperties = jsonInfo.otherJsonParameters[n].key + "：" + jsonInfo.otherJsonParameters[n].value;
+                $(".viewDetailbody tr:last td:eq(2)").append( projectProperties + "<br>");
+            }
+        }
+
+        $(".viewDetailbody tr:last td:eq(1)").css("line-height","28px");
+        $(".viewDetailbody tr:last td:eq(2)").css("line-height","28px");
+
+    });
     $(document).on("click",".editInfo",function () {
         $(".parameterTh").empty();
         $(".editorPram").empty();
         $(".otherParaTh").empty();
         $(".editorotherPara").empty();
-        var realId=$(".editInfo").attr("class");
+        var Info = $(this).parent().next().text();
+        var jsonInfo = JSON.parse(Info);
+       /* var realId=$(".editInfo").attr("class");
         var Realreg=parseInt(realId.match(/\d+/g));
        var flag=this.id;
-        var reg=parseInt(flag.match(/\d+/g));
-        for(var count=0;count<$(".paraDesc_"+reg).length;count++){
-            var symbolId=$(".paraDesc_"+reg).eq(count).attr("id");
-           // var Reg=/_\/([\s\S]*)/;
-            var Reg=/_[a-zA-Z]*/;
-           // /appVersion\/([\d\.]*)/
-           // symbolId=Reg.exec(symbolId);
-            symbolId=symbolId.match(Reg)[0];
-            if (symbolId.substr(0,1)=='_'){
-                symbolId=symbolId.substr(1);
-            }
+        var reg=parseInt(flag.match(/\d+/g));*/
+        for(var count=0;count<jsonInfo.descAndValues.length;count++){
 
-            $(".parameterTh").append("<th class='pramterDesc' id='"+symbolId+"'>"+$(".paraDesc_"+reg).eq(count).text()+"</th>")
-           $(".editorPram").append("<td><input type='text' class='parameterName'></td>");
-          //  console.log($(".paraValues_"+reg).eq(count).text());
-            $(".parameterName").eq(count).val($(".paraValues_"+reg).eq(count).text());
+            $(".parameterTh").append("<tr><th class='pramterDesc' id='"+jsonInfo.parameterValues[count].symbol+"'>"+jsonInfo.descAndValues[count].desc+"</th><td><input type='text' class='parameterName form-control'></td></tr>")
+          // $(".editorPram").append("<td><input type='text' class='parameterName form-control'></td>");
 
+            $(".parameterName").eq(count).val(jsonInfo.descAndValues[count].value);
         }
-        for(var othercount=0;othercount<$(".otherParaKey_"+reg).length;othercount++){
-            $(".otherParaTh").append("<th class='otherPramterkey'>"+$(".otherParaKey_"+reg).eq(othercount).text()+"</th>")
-            $(".editorotherPara").append("<td><input type='text' class='otherparameterName'></td>");
-            $(".otherparameterName").eq(othercount).val($(".otherParaValue_"+reg).eq(othercount).text());
+        for(var othercount=0;othercount<jsonInfo.otherJsonParameters.length;othercount++){
+            $(".otherParaTh").append("<tr><th class='otherPramterkey'>"+jsonInfo.otherJsonParameters[othercount].key+"</th><td><input type='text' class='otherparameterName form-control'></td></tr>")
+        //    $(".editorotherPara").append("<td><input type='text' class='otherparameterName form-control'></td>");
+            $(".otherparameterName").eq(othercount).val(jsonInfo.otherJsonParameters[othercount].value);
 
         }
         $(".parameterName").attr("disabled","true");
         $(".otherparameterName").attr("disabled","true");
-        $(".editorSubmit").attr("id","editorSubmit_"+Realreg);
+        $("#showitemName").attr("disabled","true");
+        $(".editorSubmit").attr("id","editorSubmit_"+jsonInfo.itemId);
     });
     $(document).on("click",".editApplyInfo",function () {
-        $(".parameterName").removeAttr("disabled","true");
-        $(".otherparameterName").removeAttr("disabled","true");
+        $(".parameterName").removeAttr("disabled");
+        $(".otherparameterName").removeAttr("disabled");
+        $("#showitemName").removeAttr("disabled");
     });
     $(document).on("click",".editorSubmit",function () {
         var submitId=parseInt(this.id.match(/\d+/g));
         var newArray = new Array();
-        for (var i = 0; i < $(".pramterDesc").length; i++) {
-            var dom = $(".pramterDesc").eq(i).attr("id");
-            newArray.push({symbol: dom, value:parseInt($(".parameterName").eq(i).val())});
+        if( $(".pramterDesc").length>0){
+            for (var i = 0; i < $(".pramterDesc").length; i++) {
+                var dom = $(".pramterDesc").eq(i).attr("id");
+                newArray.push({symbol: dom, value:parseInt($(".parameterName").eq(i).val())});
 
+            }
+            newArray = JSON.stringify(newArray);
         }
-        newArray = JSON.stringify(newArray);
+       else {
+            newArray=null;
+        }
         var otherArray = new Array();
         var otherPramterkey = $(".otherPramterkey");
-        for (var j = 0; j < otherPramterkey.length; j++) {
-            var otherKey=$(".otherPramterkey").eq(j);
-            otherArray.push({key: otherKey.text(), value: $(".otherparameterName").eq(j).val()});
+        if(otherPramterkey.length>0){
+            for (var j = 0; j < otherPramterkey.length; j++) {
+                var otherKey=$(".otherPramterkey").eq(j);
+                otherArray.push({key: otherKey.text(), value: $(".otherparameterName").eq(j).val()});
 
+            }
+            otherArray = JSON.stringify(otherArray);
         }
-        otherArray = JSON.stringify(otherArray);
+      else {
+            otherArray=null;
+        }
         $.post(reviDoubleCheckUrl, {
             itemId:submitId,
             parameterValues:newArray,

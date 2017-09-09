@@ -4449,9 +4449,9 @@ p.deadline span {
     background: #e4b9b9;
 }
 .operation-btn-two{
-    width: 160px;
-  /*  text-align: left!important;
-    padding-left: 41px!important;*/
+    width: 200px;
+    text-align: left!important;
+    padding-left: 41px!important;
 }
 .operation-btn-three{
     width: 200px;
