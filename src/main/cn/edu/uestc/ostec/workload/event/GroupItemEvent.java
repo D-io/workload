@@ -21,4 +21,7 @@ public interface GroupItemEvent extends IEvent {
 	@Transactional
 	boolean updateGroupItemsStatus(Integer parentId, String version, Integer status);
 
+	@Transactional
+	boolean updateGroupItemsCommonInfo(Integer parentId,String version,String itemName,String otherParams);
+
 }

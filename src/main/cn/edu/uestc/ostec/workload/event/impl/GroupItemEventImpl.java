@@ -44,4 +44,23 @@ public class GroupItemEventImpl implements GroupItemEvent {
 
 		return saveSuccess;
 	}
+
+	@Override
+	public boolean updateGroupItemsCommonInfo(Integer parentId, String version, String itemName,
+			String otherParams) {
+
+		List<Item> itemList = itemService.findChildItemList(parentId, version);
+		Item item = itemService.findItem(parentId, version);
+		itemList.add(item);
+
+		boolean saveSuccess = false;
+
+		for (Item itemTemp : itemList) {
+			itemTemp.setItemName(itemName);
+			itemTemp.setOtherJson(otherParams);
+			saveSuccess = itemService.saveItem(itemTemp);
+		}
+
+		return saveSuccess;
+	}
 }

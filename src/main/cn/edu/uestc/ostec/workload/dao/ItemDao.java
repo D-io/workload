@@ -128,6 +128,8 @@ public interface ItemDao extends BaseDao<Item> {
 					Integer isGroup,
 			@Param("groupManagerId")
 					Integer groupManagerId,
+			@Param("parentId")
+					Integer parentId,
 			@Param("importedRequired")
 					Integer importedRequired);
 

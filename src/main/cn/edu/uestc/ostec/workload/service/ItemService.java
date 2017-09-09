@@ -106,8 +106,8 @@ public interface ItemService extends BaseService {
 	 * @param pageSize   页的大小
 	 * @return List<Item>
 	 */
-	Map<String, Object> findAll(Integer categoryId, Integer status, Integer ownerId, int pageNum,
-			int pageSize, String version, Integer importedRequired);
+	Map<String, Object> findAll(Integer categoryId, Integer status, Integer ownerId,
+			Integer parentId, int pageNum, int pageSize, String version, Integer importedRequired);
 
 	List<ItemDto> findAll(String itemName, Integer categoryId, Integer status, Integer ownerId,
 			Integer isGroup, String version, Integer importedRequired, Integer groupManagerId);
