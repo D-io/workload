@@ -1406,9 +1406,7 @@ function appendAllItem(data,mystr,count) {
 function reviewerResetItem(data) {
         var rowInfo="<tr></tr>";
         var cellInfo="<td></td>";
-    /*if($(".resetNum").length>0){
-        $(".ResetItem tr:last td:eq(0)").text();
-    }*/
+
         if(data.data.itemList&&data.data.itemList.length>0){
             var analyseList= data.data.itemList;
             var listLength= data.data.itemList.length;
@@ -1417,7 +1415,7 @@ function reviewerResetItem(data) {
                 var Info=analyseList[i];
                 $(".ResetItem").append(rowInfo);
                 $(".ResetItem tr:last").attr("class","resetNum");
-                for(var j=0;j<8;j++)//单元格
+                for(var j=0;j<9;j++)//单元格
                 {
                     $(".ResetItem tr:last").append(cellInfo);
                     $(".ResetItem tr:last").attr("style","text-align:center");
@@ -1444,8 +1442,17 @@ function reviewerResetItem(data) {
                 $(".ResetItem tr:last td:eq(3)").text(Info.itemName);
                 $(".ResetItem tr:last td:eq(3)").attr("class","itemName");
                 $(".ResetItem tr:last td:eq(3)").attr("id","itemName_"+Info.itemId);
-                $(".ResetItem tr:last td:eq(4)").text(Info.workload);
-                $(".ResetItem tr:last td:eq(5)").text(Info.teacherName);
+                /*isGroup*/
+                var groupStyle='';
+                switch (Info.isGroup){
+                    case 0:groupStyle="个人申报";
+                    break;
+                    case 1:groupStyle="小组形式";
+                    break;
+                }
+                $(".ResetItem tr:last td:eq(4)").text(groupStyle);
+                $(".ResetItem tr:last td:eq(5)").text(Info.workload);
+                $(".ResetItem tr:last td:eq(6)").text(Info.teacherName);
 
                 var checkAct="<button type='button' class=\"btn btn-new reset_applicant\" id=\"applyReset_"+ Info.itemId+"\">退回申请</button><button type='button' class=\"btn btn-success reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style=''>退回审核</button><button class='btn btn-primary view_detail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</button> ";
                 var importAct="<button type='button' class=\"btn btn-danger reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\">退回导入</button><button type='button' class=\"btn btn-warning reset_applicant\" id=\"applyReset_"+ Info.itemId+"\">退回复核</button><button class='btn btn-primary view_detail' id='viewdetail_"+i+"'  data-toggle='modal' data-target='#showdetail'>查看详情</button>";
@@ -1453,10 +1460,10 @@ function reviewerResetItem(data) {
                /*style='background-color:rgba(243,156,18,.88);color: #fff'*/
                /* style='background-color:rgba(231,76,60,.88);color: #fff'*/
                 if(Info.importRequired==0){
-                    $(".ResetItem tr:last td:eq(7)").append(checkAct);
+                    $(".ResetItem tr:last td:eq(8)").append(checkAct);
                 }
                 else
-                    $(".ResetItem tr:last td:eq(7)").append(importAct);
+                    $(".ResetItem tr:last td:eq(8)").append(importAct);
                 var statusName;
                 if(Info.importRequired==0) {
                     switch (Info.status) {
@@ -1512,21 +1519,91 @@ function reviewerResetItem(data) {
                             break;
                     }
                 }
-                $(".ResetItem tr:last td:eq(6)").text(statusName);
+                $(".ResetItem tr:last td:eq(7)").text(statusName);
                /* if(statusName==0){
                     $("#reviReset_"+Info.itemId).attr("disabled","disabled");
                 }*/
                 $(document).off("click",".view_detail");
                 $(document).on("click",".view_detail",function () {
                     var thisId=parseInt(this.id.match(/\d+/g));
+
+                    $(".revDetail").empty();
+                    $(".revDetail").append(rowInfo);
+
+                    var str='';
+                    if(analyseList[thisId].descAndValues!=null){
+                        var paramArray=analyseList[thisId].descAndValues;
+                        for(var paramCount=0;paramCount<paramArray.length;paramCount++){
+
+                            str+='<p style="width: max-content;margin-left: 30%;"><span>'+paramArray[paramCount].desc+'</span>：<span>'+paramArray[paramCount].value+'</span></p>';
+
+
+                        }
+                    }
+
+                    var otherstr = '';
+                    if(analyseList[thisId].otherJsonParameters!=null){
+                        var otherparamArray = analyseList[thisId].otherJsonParameters;
+                        if(otherparamArray&&otherparamArray.length>0){
+                            for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
+
+                                otherstr +='<p style="width: max-content;margin-left: 30%;"><span  class="otherstr_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].key + '</span>'+'：'+'<span class="otherParaval otherParaval_'+analyseList[thisId].itemId+'" id="otherParaval_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p>';
+
+
+                            }
+                        }
+                    }
+                 /*   var paramDesc = analyseList[thisId].paramDesc;
+                    var paramDescstr = '';
+                    if(paramDesc&&paramDesc.length>0){
+                        for (var paramDescCount = 0; paramDescCount < paramDesc.length; paramDescCount++) {
+                            paramDescstr +='<p>'+ paramDesc[paramDescCount].symbol +'<p>'+ ':' +'<p>'+ paramDesc[paramDescCount].desc+'<p><hr/>';
+                        }
+                    }*/
+                    for(var t=0;t<5;t++)//单元格
+                    {
+                        $(".revDetail tr:last").append(cellInfo);
+                    }
+                    $(".revDetail tr:last").css("text-align","center");
+                    $(".revDetail tr:last td:eq(0)").text(analyseList[thisId].formula);
+
+                    $(".revDetail tr:last td:eq(1)").append(str);
+
+                    $(".revDetail tr:last td:eq(2)").append(otherstr);
                     var applyStyle='';
                     if(analyseList[thisId].isGroup==1){
                         applyStyle="小组形式";
+                        $(".groupChildDesc").show();
+                        $(".groupChildWeight").show();
+                        $('.resetDetail tr').find('td:eq(4)').show();
+                        $('.resetDetail tr').find('td:eq(5)').show();
+                        /*groupMessage*/
+                        var childWeight='';
+                        if( analyseList[thisId].childWeightList!=null && analyseList[thisId].childWeightList.length ){
+                            for( var m = 0; m < analyseList[thisId].childWeightList.length; m++ ){
+                                childWeight = analyseList[thisId].childWeightList[m].userId + "：" + analyseList[thisId].childWeightList[m].weight;
+                                $(".revDetail tr:last td:eq(3)").append( childWeight + "<br>");
+                            }
+                        }
+                        /* 职责描述 */
+                        var jobdesc='';
+                        if( analyseList[thisId].jobDescList!=null && analyseList[thisId].jobDescList.length ){
+                            for( var z = 0; z < analyseList[thisId].jobDescList.length; z++ ){
+                                jobdesc = analyseList[thisId].jobDescList[z].userId + "：" + analyseList[thisId].jobDescList[z].jobDesc;
+                                $(".revDetail tr:last td:eq(4)").append( jobdesc + "<br>");
+                            }
+                        }
+
                     }
                     else {
                         applyStyle="个人形式";
+                        $(".groupChildDesc").hide();
+                        $(".groupChildWeight").hide();
+                        $('.resetDetail tr').find('td:eq(3)').hide();
+                        $('.resetDetail tr').find('td:eq(4)').hide();
                     }
                     var applystatus='';
+
                     if(analyseList[thisId].importRequired==0){
                         switch(analyseList[thisId].status){
                             case 0:applystatus="审核状态：未提交";
@@ -1558,44 +1635,7 @@ function reviewerResetItem(data) {
                     $(".message").empty();
                     $(".message").append("工作当量："+analyseList[thisId].workload+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;形式："+applyStyle+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+applystatus);
 
-                    $(".revDetail").empty();
-                    $(".revDetail").append(rowInfo);
 
-                    var paramArray=analyseList[thisId].descAndValues;
-                    var str='';
-                    for(var paramCount=0;paramCount<paramArray.length;paramCount++){
-
-                            str+='<p style="width: max-content;"><span>'+paramArray[paramCount].desc+'</span>：<span>'+paramArray[paramCount].value+'</span></p>';
-
-
-                    }
-                    var otherparamArray = analyseList[thisId].otherJsonParameters;
-                    var otherstr = '';
-                    if(otherparamArray&&otherparamArray.length>0){
-                        for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
-
-                                otherstr +='<p style="width: max-content;"><span  class="otherstr_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].key + '</span>'+'：'+'<span class="otherParaval otherParaval_'+analyseList[thisId].itemId+'" id="otherParaval_'+analyseList[thisId].itemId+'">'+ otherparamArray[otherparamCount].value+'</span></p>';
-
-
-                        }
-                    }
-                    var paramDesc = analyseList[thisId].paramDesc;
-                    var paramDescstr = '';
-                    if(paramDesc&&paramDesc.length>0){
-                        for (var paramDescCount = 0; paramDescCount < paramDesc.length; paramDescCount++) {
-                            paramDescstr +='<p>'+ paramDesc[paramDescCount].symbol +'<p>'+ ':' +'<p>'+ paramDesc[paramDescCount].desc+'<p><hr/>';
-                        }
-                    }
-                    for(var t=0;t<3;t++)//单元格
-                    {
-                        $(".revDetail tr:last").append(cellInfo);
-                    }
-                    $(".revDetail tr:last td:eq(0)").text(analyseList[thisId].formula);
-
-                    $(".revDetail tr:last td:eq(1)").append(str);
-                    /*  $(".ResetItem tr:last td:eq(5)").text(paramDescstr);*/
-                    $(".revDetail tr:last td:eq(2)").append(otherstr);
-                   /* $(".revDetail tr:last td:eq(3)").append(analyseList[thisId].version);*/
                 })
             }
         }

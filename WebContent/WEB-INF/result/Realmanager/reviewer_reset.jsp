@@ -94,9 +94,7 @@
                             <th class="sorting">规则名称</th>
                             <th class="sorting">类别</th>
                             <th class="sorting">项目名称</th>
-                           <%-- <th class="sorting">计算公式</th>
-                            <th  class="sorting">公式描述</th>
-                            <th class="sorting">附加属性</th>--%>
+                            <th class="sorting">申报形式</th>
                             <th class="sorting">工作当量</th>
                             <th  class="sorting">教师姓名</th>
                             <th class="sorting">项目状态 </th>
@@ -123,7 +121,7 @@
                     </div>
 
                     <div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
-                        <div class="modal-dialog" role="document">
+                        <div class="modal-dialog" role="document" style="min-width: 700px;">
                             <div class="modal-content">
                                <%-- <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -133,23 +131,25 @@
                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                                        </button>
                                        <div class="header" style="width:96%;float: left;">
-                                           <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;教务管理&nbsp;/&nbsp;<span class="current-page" style="font-size: 14px;">教师项目管理&nbsp;/&nbsp;查看详情</span></p>
-                                           <p class="project">
+                                           <p class='page-nav' style="font-weight: 700;"><i class='fa fa-bar-chart'></i>&nbsp;教务管理&nbsp;/&nbsp;<span class="current-page" style="font-size: 14px;">教师项目管理&nbsp;/&nbsp;查看详情</span></p>
+                                           <p class="project" style="margin-top: 10px;">
                                                <span class="name" style="font-size: 20px;font-weight: 700;"></span>
                                            </p>
-                                           <p class="message">
+                                           <p class="message" style="margin-top: 10px;font-weight: 700;">
 
                                            </p>
                                        </div>
                                    </div>
                                 <div class="modal-body">
-                                    <table  class="table table-striped table-bordered dataTable no-footer">
+                                    <table  class="table table-striped table-bordered dataTable no-footer resetDetail">
                                         <thead>
                                         <tr role="row">
 
                                              <th class="sorting">计算公式</th>
                                              <th  class="sorting">计算参数</th>
                                              <th class="sorting">项目属性</th>
+                                            <th class="sorting groupChildWeight">成员权重</th>
+                                            <th class="sorting groupChildDesc">职责描述</th>
                                         </tr>
                                         </thead>
                                         <tbody class="revDetail">
