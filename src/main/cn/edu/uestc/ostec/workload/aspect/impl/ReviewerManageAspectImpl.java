@@ -35,6 +35,7 @@ import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.type.ItemStatus;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.GROUP;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.OBJECT_MAPPER;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;

@@ -9,7 +9,8 @@
 
 package cn.edu.uestc.ostec.workload.event;
 
-import javax.transaction.Transactional;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.Subject;
