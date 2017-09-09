@@ -33,6 +33,7 @@ import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.TreeGenerateHelper;
+import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REVIEWER_PATH;
@@ -52,7 +53,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  */
 @RestController
 @RequestMapping(REVIEWER_PATH + INFO_PATH)
-public class ReviewInfoListController extends ApplicationController {
+public class ReviewInfoListController extends ApplicationController implements OperatingStatusType{
 
 	@Autowired
 	private CategoryService categoryService;
@@ -100,22 +101,22 @@ public class ReviewInfoListController extends ApplicationController {
 
 		} else if (IMPORT_EXCEL.equals(importRequired)) {
 
-			//系统导入-未提交状态
-			List<ItemDto> unCommittedItem = itemService
-					.listResult(getReviewItems(teacherId, importRequired, UNCOMMITTED));
 			if ("uncommitted".equals(option)) {
+				//系统导入-未提交状态
+				List<ItemDto> unCommittedItem = itemService
+						.listResult(getReviewItems(teacherId, importRequired, UNCOMMITTED));
 				data.put("unCommittedItem", unCommittedItem);
 				return successResponse(data);
 			}
 
+			List<ItemDto> itemDtoList = new ArrayList<>();
+			List<Integer> statusList = getImportStatus();
 			//系统导入-存疑状态-疑问解决状态
-			List<ItemDto> doubtedItemList = itemService
-					.listResult(getReviewItems(teacherId, importRequired, DOUBTED));
-			List<ItemDto> doubtedCheckedList = itemService
-					.listResult(getReviewItems(teacherId, importRequired, DOUBTED_CHECKED));
+			for (Integer status : statusList) {
+				itemDtoList.addAll(getReviewItems(teacherId, importRequired, status));
+			}
 
-			data.put("doubtedItem", doubtedItemList);
-			data.put("doubtedCheckedItem", doubtedCheckedList);
+			data.put("itemList", itemDtoList);
 
 			return successResponse(data);
 
