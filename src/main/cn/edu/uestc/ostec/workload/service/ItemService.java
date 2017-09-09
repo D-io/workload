@@ -76,7 +76,8 @@ public interface ItemService extends BaseService {
 	 * @param status     状态
 	 * @return List<Item>
 	 */
-	List<Item> findItemsByCategory(Integer categoryId, Integer status, String version);
+	List<Item> findItemsByCategory(Integer categoryId, Integer status, String version,
+			Integer parentId);
 
 	/**
 	 * 根据类目编号查询所有有效的条目信息
@@ -84,7 +85,7 @@ public interface ItemService extends BaseService {
 	 * @param categoryId 类目编号
 	 * @return List<Item>
 	 */
-	List<Item> findItemByCategory(String version, Integer categoryId,Integer parentId);
+	List<Item> findItemByCategory(String version, Integer categoryId, Integer parentId);
 
 	/**
 	 * 统计某个教师对应的工作量
@@ -115,5 +116,5 @@ public interface ItemService extends BaseService {
 
 	List<Item> findAnalyzeItems(Integer teacherId, Integer status, String version, String type);
 
-	List<Item> findChildItemList(Integer parentId,String version);
+	List<Item> findChildItemList(Integer parentId, String version);
 }

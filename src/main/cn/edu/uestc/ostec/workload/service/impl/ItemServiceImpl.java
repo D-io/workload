@@ -146,8 +146,9 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	}
 
 	@Override
-	public List<Item> findItemsByCategory(Integer categoryId, Integer status, String version) {
+	public List<Item> findItemsByCategory(Integer categoryId, Integer status, String version,
+			Integer parentId) {
 
-		return itemDao.selectItemsByCategory(categoryId, status, version);
+		return itemDao.selectItemsByCategory(categoryId, status, version, parentId);
 	}
 }

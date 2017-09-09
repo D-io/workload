@@ -155,7 +155,7 @@ public class ReviewInfoListController extends ApplicationController {
 		for (Category category : categoryList) {
 			Integer todoCount = ZERO_INT;
 			List<Item> itemList = itemService
-					.findItemByCategory(getCurrentSemester(), category.getCategoryId(),ZERO_INT);
+					.findItemByCategory(getCurrentSemester(), category.getCategoryId(), ZERO_INT);
 			for (Item item : itemList) {
 				if (NON_CHECKED.equals(item.getStatus())) {
 					todoCount++;
@@ -165,9 +165,11 @@ public class ReviewInfoListController extends ApplicationController {
 			}
 			categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName(),
 					todoCount));
-			if (APPLY_SELF.equals(category.getImportRequired()) && !applyCategories.contains(category)) {
+			if (APPLY_SELF.equals(category.getImportRequired()) && !applyCategories
+					.contains(category)) {
 				applyCategories.add(category);
-			} else if (IMPORT_EXCEL.equals(category.getImportRequired()) && !importCategories.contains(category)) {
+			} else if (IMPORT_EXCEL.equals(category.getImportRequired()) && !importCategories
+					.contains(category)) {
 				importCategories.add(category);
 			} else {
 				continue;
@@ -204,7 +206,7 @@ public class ReviewInfoListController extends ApplicationController {
 		List<Category> categories = new ArrayList<>();
 		for (Category category : categoryList) {
 			List<Item> itemList = itemService
-					.findItemByCategory(getCurrentSemester(), category.getCategoryId(),ZERO_INT);
+					.findItemByCategory(getCurrentSemester(), category.getCategoryId(), ZERO_INT);
 			if (!isEmptyList(itemList)) {
 				categories.add(category);
 			}
@@ -247,7 +249,8 @@ public class ReviewInfoListController extends ApplicationController {
 		int userId = user.getUserId();
 
 		List<ItemDto> itemDtoList = itemService
-				.findAll(null, categoryId, null, ownerId, isGroup, getCurrentSemester(),null,null);
+				.findAll(null, categoryId, null, ownerId, isGroup, getCurrentSemester(), null,
+						null);
 
 		List<ItemDto> removeItemDtoList = new ArrayList<>();
 
@@ -307,8 +310,17 @@ public class ReviewInfoListController extends ApplicationController {
 		//查找对应的导入方式下的为指定状态的Item条目信息
 		for (Category category : categoryList) {
 			items = itemService
-					.findItemsByCategory(category.getCategoryId(), status, getCurrentSemester());
-			itemList.addAll(items);
+					.findItemsByCategory(category.getCategoryId(), status, getCurrentSemester(),
+							ZERO_INT);
+			for (Item item : items) {
+				if (GROUP.equals(item.getIsGroup()) && item.getOwnerId()
+						.equals(item.getGroupManagerId())) {
+					item = itemConverter.generateGroupItem(item.getItemId(), getCurrentSemester());
+					itemList.add(item);
+					continue;
+				}
+				itemList.add(item);
+			}
 		}
 
 		return itemConverter.poListToDtoList(itemList);
