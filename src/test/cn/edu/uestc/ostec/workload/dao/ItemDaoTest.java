@@ -120,6 +120,7 @@ public class ItemDaoTest extends BaseTest {
 //		}
 //		System.out.println(itemDao.selectAll("2017-2018-1",null,null,null,3210343,null,0).size());
 //		System.out.println(itemService.findAll(null,null,3210343,1,2,"2017-2018-1"));
+		System.out.println(itemConverter.generateGroupItem(14,"2017-2018-1"));
 	}
 
 }

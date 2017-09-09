@@ -88,6 +88,16 @@ public class Item implements Cloneable {
 
 	private String categoryCode = null;
 
+	private Integer parentId = ZERO_INT;
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
+
 	public String getCategoryCode() {
 		return categoryCode;
 	}

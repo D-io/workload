@@ -9,6 +9,7 @@
 
 package cn.edu.uestc.ostec.workload.converter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 
 import org.apache.poi.ss.formula.functions.T;
@@ -86,7 +87,7 @@ public interface Converter<P, D> {
 	/**
 	 * Json映射到对象
 	 */
-	default <T> List<T> readValueFromJson(String json,Class<T> obj) {
+	default <T> List<T> readValueFromJson(String json, Class<T> obj) {
 
 		try {
 			if (!isNull(json)) {
@@ -98,4 +99,18 @@ public interface Converter<P, D> {
 			return null;
 		}
 	}
+
+	default <T> String writeJsonFromValue(List<T> obj) {
+
+		try {
+			if (!isNull(obj)) {
+				return OBJECT_MAPPER.writeValueAsString(obj);
+			} else {
+				return null;
+			}
+		} catch (JsonProcessingException e) {
+			return null;
+		}
+	}
+
 }

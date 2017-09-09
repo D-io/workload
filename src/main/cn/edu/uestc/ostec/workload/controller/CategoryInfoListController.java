@@ -68,7 +68,8 @@ public class CategoryInfoListController extends ApplicationController
 			@RequestParam("categoryId")
 					Integer categoryId) {
 
-		List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(), categoryId);
+		List<Item> itemList = itemService
+				.findItemByCategory(getCurrentSemester(), categoryId, null);
 		int count = itemList.size();
 
 		Map<String, Object> data = getData();

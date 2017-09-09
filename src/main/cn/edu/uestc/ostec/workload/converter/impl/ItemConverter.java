@@ -1,5 +1,6 @@
 package cn.edu.uestc.ostec.workload.converter.impl;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 import cn.edu.uestc.ostec.workload.converter.Converter;
 import cn.edu.uestc.ostec.workload.dao.CategoryDao;
+import cn.edu.uestc.ostec.workload.dao.ItemDao;
 import cn.edu.uestc.ostec.workload.dao.TeacherDao;
 import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.DescAndValue;
@@ -20,6 +22,7 @@ import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.Item;
+import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FileHelper;
 import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
@@ -40,6 +43,9 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 
 	@Autowired
 	private FileEvent fileEvent;
+
+	@Autowired
+	private ItemDao itemDao;
 
 	@Override
 	public ItemDto poToDto(Item po) {
@@ -64,6 +70,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		itemDto.setWorkload(po.getWorkload());
 		itemDto.setOtherJson(po.getOtherJson());
 		itemDto.setVersion(po.getVersion());
+		itemDto.setParentId(po.getParentId());
 
 		Category category = isNull(itemDto.getCategoryId()) ?
 				null :
@@ -156,11 +163,33 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		item.setIsGroup(dto.getIsGroup());
 		item.setOtherJson(dto.getOtherJson());
 		item.setVersion(dto.getVersion());
+		item.setParentId(dto.getParentId());
 
 		Category category = categoryDao
 				.select(item.getCategoryId(), null, null, null, null, DateHelper.getCurrentTerm())
 				.get(ZERO_INT);
 		item.setCategoryCode(category.getCategoryCode());
+
+		return item;
+	}
+
+	public Item generateGroupItem(Integer parentId, String version) {
+		Item item = itemDao.select(parentId, version);
+		List<Item> children = itemDao.selectChild(parentId, version);
+		children.add(item);
+		List<JobDesc> jobDescList = new ArrayList<>();
+		List<ChildWeight> childWeightList = new ArrayList<>();
+		for (Item item1 : children) {
+			Integer userId = item1.getOwnerId();
+			String jobDescription = item1.getJobDesc();
+			Double weight = Double.valueOf(item1.getJsonChildWeight());
+			JobDesc jobDesc = new JobDesc(userId, jobDescription);
+			ChildWeight childWeight = new ChildWeight(userId, weight);
+			jobDescList.add(jobDesc);
+			childWeightList.add(childWeight);
+		}
+		item.setJsonChildWeight(writeJsonFromValue(childWeightList));
+		item.setJobDesc(writeJsonFromValue(jobDescList));
 
 		return item;
 	}

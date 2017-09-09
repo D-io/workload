@@ -145,6 +145,8 @@ public class ItemDto implements CompareObjectDifferences<ItemDto> {
 	 */
 	private String fileName = null;
 
+	private Integer parentId= ZERO_INT;
+
 	/**
 	 * 对应的参数描述
 	 */
@@ -153,6 +155,14 @@ public class ItemDto implements CompareObjectDifferences<ItemDto> {
    	private List<DescAndValue> descAndValues = null;
 
 	private String categoryCode = null;
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
 
 	public String getCategoryCode() {
 		return categoryCode;

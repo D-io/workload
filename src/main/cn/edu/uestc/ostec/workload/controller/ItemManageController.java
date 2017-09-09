@@ -303,15 +303,6 @@ public class ItemManageController extends ApplicationController {
 			if (NON_CHECKED.equals(itemDto.getStatus())) {
 				return invalidOperationResponse("已提交的工作量，无法修改");
 			}
-
-			//			//验证当前用户是否具有修改工作量条目的权限
-			//			if (!(userId.equals(itemDto.getGroupManagerId()) || userId
-			//					.equals(itemDto.getReviewerId()))) {
-			//				return invalidOperationResponse("非法操作");
-			//			}
-
-			//若为 修改，则设置当前相应的条目 拥有者 为原条目拥有者
-
 		} else {
 
 			//若为 添加，则设置当前相应的条目 拥有者 为登录的用户编号
@@ -384,6 +375,7 @@ public class ItemManageController extends ApplicationController {
 
 		newItemDto.setWorkload(workload);
 		newItemDto.setStatus(UNCOMMITTED);
+		newItemDto.setVersion(getCurrentSemester());
 
 		// 设置小组负责人为他自己
 		Item item = itemConverter.dtoToPo(newItemDto);
@@ -482,12 +474,13 @@ public class ItemManageController extends ApplicationController {
 				List<ChildWeight> childWeightList = itemDto.getChildWeightList();
 				if (GROUP.equals(itemDto.getIsGroup()) && !isEmptyList(childWeightList)) {
 
+					Integer baseItemId = ZERO_INT;
 					double workload = FormulaCalculate
 							.calculate(category.getFormula(), itemDto.getParameterValues());
 
 					// 成员职责列表
 					List<JobDesc> jobDescList = itemDto.getJobDescList();
-
+					List<Item> groupItemList = new ArrayList<>();
 					// 对组员的工作量信息进行保存，分别计算工作量
 					for (int index = 0; index < childWeightList.size(); index++) {
 
@@ -512,18 +505,41 @@ public class ItemManageController extends ApplicationController {
 							// 计算组员各自的工作量
 							itemTemp.setWorkload(workload * weight);
 
-							// 保存成员老师的工作量条目到数据库中
-							boolean saveSuccess = itemService.saveItem(itemTemp);
-							if (!saveSuccess) {
-								errorData.put(teacherService.findTeacherNameById(ownerId) + item
-										.getItemName(), "提交失败");
-							}
-
 							// 保存成功的item集合，用于返回前端的数据展示
-							itemList.add(itemTemp);
+							groupItemList.add(itemTemp);
 						}
 					}
 					itemService.removeItem(itemId, getCurrentSemester());
+
+					List<Item> memberItems = new ArrayList<>();
+					for (Item item1 : groupItemList) {
+						if (item1.getOwnerId().equals(item1.getGroupManagerId())) {
+							boolean saveSuccess = itemService.saveItem(item1);
+							if (!saveSuccess) {
+								return systemErrResponse("保存失败");
+							}
+							baseItemId = item1.getItemId();
+							itemList.add(item1);
+						} else {
+							memberItems.add(item1);
+						}
+					}
+
+					for (Item item2 : memberItems) {
+						item2.setParentId(baseItemId);
+						boolean saveSuccess = itemService.saveItem(item2);
+						if (!saveSuccess) {
+							List<Item> itemList1 = itemService
+									.findItemByCategory(getCurrentSemester(), item.getCategoryId(),
+											baseItemId);
+							for(Item item1 : itemList1) {
+								itemService.removeItem(item1.getItemId(),getCurrentSemester());
+							}
+							break;
+						}
+						itemList.add(item2);
+					}
+
 				} else {
 
 					//修改对应的item状态为提交（待审核）

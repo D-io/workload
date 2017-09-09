@@ -84,7 +84,7 @@ public interface ItemService extends BaseService {
 	 * @param categoryId 类目编号
 	 * @return List<Item>
 	 */
-	List<Item> findItemByCategory(String version, Integer categoryId);
+	List<Item> findItemByCategory(String version, Integer categoryId,Integer parentId);
 
 	/**
 	 * 统计某个教师对应的工作量
@@ -114,4 +114,6 @@ public interface ItemService extends BaseService {
 	Workload workloadAnalyze(Integer teacherId, String type, String version);
 
 	List<Item> findAnalyzeItems(Integer teacherId, Integer status, String version, String type);
+
+	List<Item> findChildItemList(Integer parentId,String version);
 }
