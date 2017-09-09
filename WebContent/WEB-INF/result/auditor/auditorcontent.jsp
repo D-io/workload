@@ -44,7 +44,7 @@
                             <th class="sorting">序号</th>
                             <th class="sorting">教师姓名</th>
                             <th class="sorting">项目名称</th>
-                            <th class="sorting">工作量</th>
+                            <th class="sorting">工作当量</th>
                             <th class="sorting">申报形式</th>
                             <th class="sorting">复核截止时间 </th>
                             <th class="sorting">复核状态 </th>

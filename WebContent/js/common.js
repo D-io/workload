@@ -625,7 +625,7 @@ $(document).ready(function () {
             "<p class='message'>审核截止时间：" + $(this).prev().text() + "</p>");
         $.get(auditorManageItemUrl+"?"+'importRequired=0',function (data) {
             $(".showDesc").empty();
-            var dataArray=new Array;
+            var dataArray=new Array();
             for( var applyItemCount = 0; applyItemCount < data.data.nonCheckedItem.length; applyItemCount++){
 
                 if(data.data.nonCheckedItem[applyItemCount].categoryId==reg){

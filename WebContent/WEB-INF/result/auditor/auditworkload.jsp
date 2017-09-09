@@ -71,14 +71,9 @@
                                 <th class="sorting">序号</th>
                                 <th class="sorting">申报人</th>
                                 <th class="sorting">项目名称</th>
-                                 <th class="sorting">所占权重</th>
-                                <%--<th class="sorting">申报描述</th>--%>
+                             <%--    <th class="sorting">所占权重</th>--%>
                                 <th class="sorting">申报形式</th>
                                 <th class="sorting">工作当量</th>
-                                <%--<th class="sorting">计算公式</th>--%>
-                                <%--<th class="sorting">主要参数</th>--%>
-                                <%--<th class="sorting">其他参数</th>--%>
-                                <%--<th class="sorting">版本</th>--%>
                                 <th class="sorting">审核状态</th>
                                 <th class="sorting">操作</th>
                                 </tr>
@@ -110,13 +105,15 @@
                         </div>
                     </div>
                     <div class="modal-body">
-                        <table  class="table table-striped table-bordered dataTable no-footer">
+                        <table  class="table table-striped table-bordered dataTable no-footer checkedView">
                             <thead>
                             <tr role="row">
                                 <th class="sorting">申报描述</th>
                                 <th class="sorting">计算公式</th>
                                 <th class="sorting">计算参数</th>
                                 <th class="sorting">项目属性</th>
+                                <th class="sorting groupWeight">成员权重</th>
+                                <th class="sorting groupDesc">职责描述</th>
                             </tr>
                             </thead>
                             <tbody class="viewDetailTbody">
