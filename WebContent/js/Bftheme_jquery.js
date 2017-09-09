@@ -125,96 +125,6 @@ function reset() {
     $.ajaxSetup({
         async : false
  });
- /*
-     function format( info ) {
-
-        var paramArray=info.descAndValues;
-        var str='';
-        for(var paramCount=0;paramCount<paramArray.length;paramCount++){
-            if(paramCount!=paramArray.length-1){
-                str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p><hr/>';
-
-            }
-            else
-                str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p>';
-        }
-        var otherparamArray = info.otherJsonParameters;
-        var otherstr = '';
-        if(otherparamArray&&otherparamArray.length>0){
-            for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
-                if(otherparamCount!=otherparamArray.length-1){
-                    otherstr +='<p style="width: max-content;"><span  class="otherstr_'+info+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+info+'" id="otherParaval_'+info+'">'+ otherparamArray[otherparamCount].value+'</span></p><hr/>';
-
-                }
-                else
-                    otherstr +='<p style="width: max-content;"><span  class="otherstr_'+info+'">'+ otherparamArray[otherparamCount].key + '</span>:<span class="otherParaval otherParaval_'+info+'" id="otherParaval_'+info+'">'+ otherparamArray[otherparamCount].value+'</span></p>';
-
-            }
-        }
-        var paramDesc = info.paramDesc;
-        var paramDescstr = '';
-        if(paramDesc&&paramDesc.length>0){
-            for (var paramDescCount = 0; paramDescCount < paramDesc.length; paramDescCount++) {
-                paramDescstr +='<p>'+ paramDesc[paramDescCount].symbol +'<p>'+ ':' +'<p>'+ paramDesc[paramDescCount].desc+'<p><hr/>';
-            }
-        }
-        return [
-            '<table class="table mb-none">',
-            '<tr class="b-top-none">',
-            '<td><label class="mb-none">公式参数:</label></td>',
-            '<td>' + info.formula+ '</td>',
-            '</tr>',
-            '<tr>',
-            '<td><label class="mb-none">参数描述:</label></td>',
-            '<td>'+str+'</td>',
-            '</tr>',
-            '<tr>',
-            '<td><label class="mb-none">附加属性</label></td>',
-            '<td>'+otherstr+'</td>',
-            '</tr>',
-            '</div>'
-        ].join('');};
-
-    $(document).ready(function() {
-        var table = $('#datatable-details').DataTable( {
-            "ajax": pageManageUrl,
-            "columns": [
-                {
-                    "className":      'details-control',
-                    "orderable":      false,
-                    "data":           null,
-                    "defaultContent": ''
-                },
-                { "data": "序号" },
-                { "data": "规则名称" },
-                { "data": "类别" },
-                { "data": "项目名称" },
-                { "data": "工作当量" },
-                { "data": "教师姓名" },
-                { "data": "项目状态" },
-                { "data": "操作" }
-            ],
-            "order": [[1, 'asc']]
-        } );
-
-        // Add event listener for opening and closing details
-        $('#datatable-details tbody').on('click', 'td.details-control', function () {
-            var tr = $(this).closest('tr');
-            var row = table.row( tr );
-
-            if ( row.child.isShown() ) {
-                // This row is already open - close it
-                row.child.hide();
-                tr.removeClass('shown');
-            }
-            else {
-                // Open this row
-                row.child( format(row.data()) ).show();
-                tr.addClass('shown');
-            }
-        } );
-    } );*/
-
     var resetStr = 'regionName=Realmanager/reviewer_reset';
     $.get(pageManageUrl+"?"+resetStr, {test : 12}, function (data) {
         $('.right_hole').empty();
@@ -808,7 +718,7 @@ function itemSummary() {
            // parenttr.children('td').eq(3).text(msg.data.teacherWorkloadList[0].professionalTitle);
             $(".checkedCount_"+countId).text(msg.data.teacherWorkloadList[0].checkedWorkload);
             $(".uncheckedCount_"+countId).text(msg.data.teacherWorkloadList[0].uncheckedWorkload);
-            $(".totalCount_"+countId).text(msg.data.teacherWorkloadList.totalWorkload);
+            $(".totalCount_"+countId).text(msg.data.teacherWorkloadList[0].totalWorkload);
             if(msg.data.teacherWorkloadList[0].checkedItems<10){
                 $("#checkedwork_"+countId).text("共00"+msg.data.teacherWorkloadList[0].checkedItems+"项");
             }
