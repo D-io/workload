@@ -21,6 +21,7 @@ import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
+import cn.edu.uestc.ostec.workload.event.GroupItemEvent;
 import cn.edu.uestc.ostec.workload.event.SubjectEvent;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.Item;
@@ -63,6 +64,8 @@ public class ReviewManageController extends ApplicationController {
 	@Autowired
 	private SubjectEvent subjectEvent;
 
+	@Autowired
+	private GroupItemEvent groupItemEvent;
 	/**
 	 * 审核人审核Item信息
 	 *
@@ -87,26 +90,26 @@ public class ReviewManageController extends ApplicationController {
 		}
 
 		//参数校验
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 
 		if (null == item || !(CHECKED.equals(status) || DENIED.equals(status))) {
 			return parameterNotSupportResponse("无效参数");
 		}
 
-		if(!SUBMITTED.equals(item.getStatus())) {
+		if (!SUBMITTED.equals(item.getStatus())) {
 			return invalidOperationResponse("非法操作");
 		}
 
-		if(DENIED.equals(status) && null == message) {
+		if (DENIED.equals(status) && null == message) {
 			return parameterNotSupportResponse("未填写拒绝理由");
 		}
 
-		Category category = categoryService.getCategory(item.getCategoryId(),getCurrentSemester());
-		if(DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
+		Category category = categoryService.getCategory(item.getCategoryId(), getCurrentSemester());
+		if (DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
 			return invalidOperationResponse("审核已经截止");
 		}
 
-		if(!user.getUserId().equals(category.getReviewerId())) {
+		if (!user.getUserId().equals(category.getReviewerId())) {
 			return invalidOperationResponse("非法请求");
 		}
 
@@ -114,7 +117,12 @@ public class ReviewManageController extends ApplicationController {
 		item.setStatus(status);
 		boolean saveSuccess = false;
 
+
 		Map<String, Object> data = getData();
+
+		if(GROUP.equals(item.getIsGroup()) && item.getOwnerId().equals(item.getGroupManagerId())) {
+			groupItemEvent.updateGroupItemsStatus(item.getItemId(),getCurrentSemester(),status);
+		}
 
 		if (null != message && DENIED.equals(status)) {
 			saveSuccess = subjectEvent.sendMessageAboutItem(item, message, user.getUserId());
@@ -150,7 +158,7 @@ public class ReviewManageController extends ApplicationController {
 		}
 
 		//根据categoryId查询到Category对象，并转换为dto对象
-		Category category = categoryService.getCategory(categoryId,getCurrentSemester());
+		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
 		if (null == category) {
 			return parameterNotSupportResponse("参数有误");
 		}
@@ -195,7 +203,7 @@ public class ReviewManageController extends ApplicationController {
 		}
 
 		//审核人身份校验
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
@@ -238,7 +246,7 @@ public class ReviewManageController extends ApplicationController {
 			return invalidOperationResponse("非法请求");
 		}
 
-		Item item = itemService.findItem(itemId,getCurrentSemester());
+		Item item = itemService.findItem(itemId, getCurrentSemester());
 
 		if (null == item || !DOUBTED.equals(item.getStatus())) {
 			return invalidOperationResponse("非法操作");
