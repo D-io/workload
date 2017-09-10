@@ -70,9 +70,12 @@
                                 <table  class="table table-striped table-bordered dataTable no-footer">
                                     <thead>
                                     <tr role="row">
+                                        <th class="sorting">申报描述</th>
                                         <th class="sorting">计算公式</th>
                                         <th class="sorting">计算参数</th>
                                         <th class="sorting">项目属性</th>
+                                        <th class="sorting groupWeight">成员权重</th>
+                                        <th class="sorting groupDesc">职责描述</th>
                                     </tr>
                                     </thead>
                                     <tbody class="viewDetailTbody">

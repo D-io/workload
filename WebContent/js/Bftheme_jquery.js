@@ -170,7 +170,7 @@ function reset() {
     });
     var teachersInfo='';
     $.get(TeacherInfoUrl, {test : 12},function (data) {
-        teachersInfo=data.data.teacherList;
+        window.teachersInfo=data.data.teacherList;
     });
     for(var i=0;i<teachersInfo.length;i++){
         $('#teacherName').append('<option value=\"'+teachersInfo[i].teacherId+'\">'+teachersInfo[i].teacherId+teachersInfo[i].name+'</option>');
@@ -1359,13 +1359,10 @@ function reviewerResetItem(data) {
                     if(analyseList[thisId].descAndValues!=null){
                         var paramArray=analyseList[thisId].descAndValues;
                         for(var paramCount=0;paramCount<paramArray.length;paramCount++){
-
                             str+='<p style="width: max-content;margin-left: 30%;"><span>'+paramArray[paramCount].desc+'</span>：<span>'+paramArray[paramCount].value+'</span></p>';
-
 
                         }
                     }
-
                     var otherstr = '';
                     if(analyseList[thisId].otherJsonParameters!=null){
                         var otherparamArray = analyseList[thisId].otherJsonParameters;
@@ -1403,10 +1400,20 @@ function reviewerResetItem(data) {
                         $('.resetDetail tr').find('td:eq(4)').show();
                         $('.resetDetail tr').find('td:eq(5)').show();
                         /*groupMessage*/
+                        var countArray=new Array();
+                        if(analyseList[thisId].childWeightList!=null){
+                            for(var p=0;p<analyseList[thisId].childWeightList.length;p++){
+                                for(var q=0;q<window.teachersInfo.length;q++){
+                                    if(analyseList[thisId].childWeightList[p].userId==window.teachersInfo[q].teacherId){
+                                        countArray.push(window.teachersInfo[q].name);
+                                    }
+                                }
+                            }
+                        }
                         var childWeight='';
                         if( analyseList[thisId].childWeightList!=null && analyseList[thisId].childWeightList.length ){
                             for( var m = 0; m < analyseList[thisId].childWeightList.length; m++ ){
-                                childWeight = analyseList[thisId].childWeightList[m].userId + "：" + analyseList[thisId].childWeightList[m].weight;
+                                childWeight = countArray[m]+ "：" + analyseList[thisId].childWeightList[m].weight;
                                 $(".revDetail tr:last td:eq(3)").append( childWeight + "<br>");
                             }
                         }
@@ -1414,7 +1421,7 @@ function reviewerResetItem(data) {
                         var jobdesc='';
                         if( analyseList[thisId].jobDescList!=null && analyseList[thisId].jobDescList.length ){
                             for( var z = 0; z < analyseList[thisId].jobDescList.length; z++ ){
-                                jobdesc = analyseList[thisId].jobDescList[z].userId + "：" + analyseList[thisId].jobDescList[z].jobDesc;
+                                jobdesc = analyseList[thisId].jobDescList[z].jobDesc;
                                 $(".revDetail tr:last td:eq(4)").append( jobdesc + "<br>");
                             }
                         }

@@ -454,6 +454,10 @@ function applyworkload() {
     }
 
     var contentCount = 0;
+    var teacherList='';
+    $.get(TeacherInfoUrl, {test: 12}, function (data) {
+        window.teacherList=data.data.teacherList;
+    });
     $(document).on("click", ".showContent", function () {
         var newId = this.id;
         var newReg = parseInt(newId.match(/\d+/g));
@@ -492,10 +496,16 @@ function applyworkload() {
                 $("#showitemmanager").attr("disabled", "true");
                 $("#showcalculator").attr("disabled", "true");
                 $('#showAddgroupPramter').empty();
-                var teacherList='';
-                $.get(TeacherInfoUrl, {test: 12}, function (data) {
-                    teacherList=data.data.teacherList;
-                });
+                var matchArry=new Array();
+                for(var p=0;p<window.Temp[newReg-1].childWeightList.length;p++){
+                    for(var q=0;q<window.teacherList.length;q++){
+                        if(window.Temp[newReg-1].childWeightList[p].userId==window.teacherList[q].teacherId){
+                            matchArry.push(window.teacherList[q].name);
+                        }
+
+                    }
+
+                }
                 var addStr = '';
 
                 for (var pramterCount = 0; pramterCount < window.Temp[newReg - 1].jobDescList.length; pramterCount++) {
@@ -503,8 +513,8 @@ function applyworkload() {
                     var addStr = "<tr><td><select class='showgroupMemberName teacherName'></select></td><td><input type='text' class='showgroupMemberSymbol' name='showpara' onblur='reminder(this)'></td><td style='position: absolute'><input type='text' class='showgroupMemberWeight' name='showotherpara' onblur='reminder(this)'><button type='button' class='btn btn-danger removeOtherRow removeRow' style='position: absolute; top: 12px; right: -22px;'><i class='fa fa-trash'></i></button></td></tr>";
                     $('#showAddgroupPramter').append(addStr);
 
-                        for (var i = 0; i < teacherList.length; i++) {
-                            $('.showgroupMemberName:last').append('<option value=\"' + teacherList[i].teacherId + '\">' + teacherList[i].name + '</option>');
+                        for (var i = 0; i < window.teacherList.length; i++) {
+                            $('.showgroupMemberName:last').append('<option value=\"' + window.teacherList[i].teacherId + '\">' + window.teacherList[i].name + '</option>');
                         }
 
                     $(".teacherName").select2({
@@ -516,7 +526,7 @@ function applyworkload() {
                     $(".showgroupMemberName").eq(pramterCount).select2().val(window.Temp[newReg - 1].jobDescList[pramterCount].userId).trigger("change");
                     $(".showgroupMemberSymbol").eq(pramterCount).val(window.Temp[newReg - 1].jobDescList[pramterCount].jobDesc);
                     $(".showgroupMemberWeight").eq(pramterCount).val(window.Temp[newReg - 1].childWeightList[pramterCount].weight);
-                    $("#showgroupWorkload").append("<tr><td style='width: 190px;text-align: center'>"+window.Temp[newReg-1].childWeightList[pramterCount].userId+"</td><td style='width: 190px;text-align: center'>"+window.Temp[newReg-1].childWeightList[pramterCount].workload+"</td></tr>");
+                    $("#showgroupWorkload").append("<tr><td style='width: 190px;text-align: center'>"+matchArry[pramterCount]+"</td><td style='width: 190px;text-align: center'>"+window.Temp[newReg-1].childWeightList[pramterCount].workload+"</td></tr>");
 
                 }
                 $(".removeRow").attr("disabled","disabled");
@@ -1429,8 +1439,18 @@ function applyworkload() {
             jsonChildWeight:childWeight
         },function (msg) {
             $("#groupWorkload").empty();
+            var newArry=new Array();
+            for(var p=0;p<msg.data.childWeightList.length;p++){
+                for(var q=0;q<window.teacherList.length;q++){
+                    if(msg.data.childWeightList[p].userId==window.teacherList[q].teacherId){
+                        newArry.push(window.teacherList[q].name);
+                    }
+
+                }
+
+            }
             for(var t=0;t<msg.data.childWeightList.length;t++){
-                $("#groupWorkload").append("<tr><td style='width: 190px;text-align: center'>"+msg.data.childWeightList[t].userId+"</td><td style='width: 190px;text-align: center'>"+msg.data.childWeightList[t].workload+"</td></tr>");
+                $("#groupWorkload").append("<tr><td style='width: 190px;text-align: center'>"+newArry[t]+"</td><td style='width: 190px;text-align: center'>"+msg.data.childWeightList[t].workload+"</td></tr>");
             }
             $(".groupDiv").show();
         });
@@ -1486,8 +1506,18 @@ function applyworkload() {
             jsonChildWeight:childWeight
         },function (msg) {
             $("#showgroupWorkload").empty();
+            var newArry=new Array();
+            for(var p=0;p<msg.data.childWeightList.length;p++){
+                for(var q=0;q<window.teacherList.length;q++){
+                    if(msg.data.childWeightList[p].userId==window.teacherList[q].teacherId){
+                        newArry.push(window.teacherList[q].name);
+                    }
+
+                }
+
+            }
             for(var t=0;t<msg.data.childWeightList.length;t++){
-                $("#showgroupWorkload").append("<tr><td style='width: 190px;text-align: center'>"+msg.data.childWeightList[t].userId+"</td><td style='width: 190px;text-align: center'>"+msg.data.childWeightList[t].workload+"</td></tr>");
+                $("#showgroupWorkload").append("<tr><td style='width: 190px;text-align: center'>"+newArry[t]+"</td><td style='width: 190px;text-align: center'>"+msg.data.childWeightList[t].workload+"</td></tr>");
             }
             $(".showgroupDiv").show();
         });
@@ -1717,6 +1747,11 @@ function applyRec() {
 
     });
 
+    var teacherName=new Array();
+    $.get(TeacherInfoUrl, {test: 12}, function (data) {
+        window.teacherName=data.data.teacherList;
+    });
+
     /* 查看回复修复 */
     $(".reviewerApply").on("click",function () {
         $(this).popover("toggle");
@@ -1771,18 +1806,19 @@ function applyRec() {
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核截止时间：" + deadline );
 
         $(".viewDetailTbody").append(rowInfo);
-        for( var i=0; i<3; i++){
+        for( var i=0; i<6; i++){
             $(".viewDetailTbody tr:last").append(cellInfo);
         }
         $(".viewDetailTbody tr:last").css("text-align","center");
+        $(".viewDetailTbody tr:last td:eq(0)").text(jsonInfo.applyDesc);
         /* 计算公式 */
-        $(".viewDetailTbody tr:last td:eq(0)").text(jsonInfo.formula);
+        $(".viewDetailTbody tr:last td:eq(1)").text(jsonInfo.formula);
 
         /* 计算参数 */
         var praValues='';
         for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
             praValues = jsonInfo.paramDesc[m].desc + "：" + jsonInfo.parameterValues[m].value;
-            $(".viewDetailTbody tr:last td:eq(1)").append( praValues + "<br>");
+            $(".viewDetailTbody tr:last td:eq(2)").append( praValues + "<br>");
         }
 
         /* 项目属性 */
@@ -1790,12 +1826,54 @@ function applyRec() {
         if( jsonInfo.otherJsonParameters && jsonInfo.otherJsonParameters.length ){
             for( var n = 0; n < jsonInfo.otherJsonParameters.length; n++ ){
                 projectProperties = jsonInfo.otherJsonParameters[n].key + "：" + jsonInfo.otherJsonParameters[n].value;
-                $(".viewDetailTbody tr:last td:eq(2)").append( projectProperties + "<br>");
+                $(".viewDetailTbody tr:last td:eq(3)").append( projectProperties + "<br>");
             }
         }
+        if(jsonInfo.isGroup==1){
+            $('.checkedView tr').find('td:eq(4)').show();
+            $('.checkedView tr').find('td:eq(5)').show();
+            $(".groupDesc").show();
+            $(".groupWeight").show();
+            var countArray=new Array();
+            if(jsonInfo.childWeightList!=null){
+                for(var p=0;p<jsonInfo.childWeightList.length;p++){
+                    for(var q=0;q<window.teacherName.length;q++){
+                        if(jsonInfo.childWeightList[p].userId==window.teacherName[q].teacherId){
+                            countArray.push(window.teacherName[q].name);
+                        }
 
-        $(".viewDetailTbody tr:last td:eq(1)").css("line-height","28px");
+                    }
+
+                }
+            }
+
+            /* 成员权重 */
+            var childWeight='';
+            if( jsonInfo.childWeightList!=null && jsonInfo.childWeightList.length ){
+                for( var t = 0; t < jsonInfo.childWeightList.length; t++ ){
+                    childWeight = countArray[t] + "：" + jsonInfo.childWeightList[t].weight;
+                    $(".viewDetailTbody tr:last td:eq(4)").append( childWeight + "<br>");
+                }
+            }
+            /* 职责描述 */
+            var jobdesc='';
+            if( jsonInfo.jobDescList!=null && jsonInfo.jobDescList.length ){
+                for( var z = 0; z < jsonInfo.jobDescList.length; z++ ){
+                    jobdesc = jsonInfo.jobDescList[z].jobDesc;
+                    $(".viewDetailTbody tr:last td:eq(5)").append( jobdesc + "<br>");
+                }
+            }
+            $(".viewDetailTbody tr:last td:eq(4)").css("line-height","28px");
+            $(".viewDetailTbody tr:last td:eq(5)").css("line-height","28px");
+        }
+        else{
+            $('.checkedView tr').find('td:eq(4)').hide();
+            $('.checkedView tr').find('td:eq(5)').hide();
+            $(".groupDesc").hide();
+            $(".groupWeight").hide();
+        }
         $(".viewDetailTbody tr:last td:eq(2)").css("line-height","28px");
+        $(".viewDetailTbody tr:last td:eq(3)").css("line-height","28px");
 
     });
 }

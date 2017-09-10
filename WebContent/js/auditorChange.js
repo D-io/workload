@@ -558,7 +558,7 @@ function showapplydata(item) {
         $(".showDesc tr:last td:eq(5)").text(statusName);
         $(".showDesc tr:last td:eq(5)").attr("id","reviewe_"+Info.itemId);
 
-        var act = "<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_audit' id='btn-viewdetail'>查看详情</a><button class='btn btn-success pass' id='pass_" + Info.itemId + "'>审核通过</button><button class='btn btn-danger refuse' data-toggle='modal' data-target='#refuseModal' id='refuse_" + Info.itemId + "'>审核拒绝</button> ";
+        var act = "<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_audit' id='btn-audit-viewdetail'>查看详情</a><button class='btn btn-success pass' id='pass_" + Info.itemId + "'>审核通过</button><button class='btn btn-danger refuse' data-toggle='modal' data-target='#refuseModal' id='refuse_" + Info.itemId + "'>审核拒绝</button> ";
         $(".showDesc tr:last td:eq(6)").append(act).attr("class","operation-btn-three");
 
         $(".showDesc tr:last td:eq(7)").text(JSON.stringify(Info));
@@ -566,8 +566,11 @@ function showapplydata(item) {
         // console.log($(".showDesc tr:last td:eq(8)").text());
 
     }
-
-    $(document).on("click","#btn-viewdetail",function (){
+    var teacherName=new Array();
+    $.get(TeacherInfoUrl, {test: 12}, function (data) {
+        window.teacherName=data.data.teacherList;
+    });
+    $(document).on("click","#btn-audit-viewdetail",function (){
         var rowInfo="<tr></tr>";
         var cellInfo="<td></td>";
         $("#viewdetail_audit .project").empty();
@@ -620,11 +623,24 @@ function showapplydata(item) {
             $('.checkedView tr').find('td:eq(5)').show();
             $(".groupDesc").show();
             $(".groupWeight").show();
+            var countArray=new Array();
+            if(jsonInfo.childWeightList!=null){
+                for(var p=0;p<jsonInfo.childWeightList.length;p++){
+                    for(var q=0;q<window.teacherName.length;q++){
+                        if(jsonInfo.childWeightList[p].userId==window.teacherName[q].teacherId){
+                            countArray.push(window.teacherName[q].name);
+                        }
+
+                    }
+
+                }
+            }
+
             /* 成员权重 */
             var childWeight='';
             if( jsonInfo.childWeightList!=null && jsonInfo.childWeightList.length ){
                 for( var t = 0; t < jsonInfo.childWeightList.length; t++ ){
-                    childWeight = jsonInfo.childWeightList[t].userId + "：" + jsonInfo.childWeightList[t].weight;
+                    childWeight = countArray[t] + "：" + jsonInfo.childWeightList[t].weight;
                     $(".viewDetailTbody tr:last td:eq(4)").append( childWeight + "<br>");
                 }
             }
@@ -632,7 +648,7 @@ function showapplydata(item) {
             var jobdesc='';
             if( jsonInfo.jobDescList!=null && jsonInfo.jobDescList.length ){
                 for( var z = 0; z < jsonInfo.jobDescList.length; z++ ){
-                    jobdesc = jsonInfo.jobDescList[z].userId + "：" + jsonInfo.jobDescList[z].jobDesc;
+                    jobdesc = jsonInfo.jobDescList[z].jobDesc;
                     $(".viewDetailTbody tr:last td:eq(5)").append( jobdesc + "<br>");
                 }
             }
