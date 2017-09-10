@@ -590,15 +590,17 @@ function applyworkload() {
                 return false;
             }
         }
-        if($(".showgroupMemberSymbol").length>0){
+        if($(".showgroupMemberSymbol").length>1){
             if(!$('.showgroupMemberSymbol').val()){
                 $('.showgroupMemberSymbol').parent().parent(".form-group").addClass("has-error");
                 $("#experient_showgroup").show();
+                $("#experient_showweight").hide();
                 return false;
             }
             if(!$('.showgroupMemberWeight').val()){
                 $('.showgroupMemberWeight').parent().parent(".form-group").addClass("has-error");
                 $("#experient_showgroup").show();
+                $("#experient_showweight").hide();
                 return false;
             }
             else{
@@ -618,7 +620,10 @@ function applyworkload() {
                 }
             }
         }
-
+        else {
+            alert("小组人数应不少于2！");
+            return false;
+        }
         var $parametername = $(".showpramterDesc");
         var newArray = new Array();
         for (var i = 0; i < $(".showparameterName").length; i++) {
@@ -879,15 +884,17 @@ function applyworkload() {
                 return false;
             }
         }
-        if($(".groupMemberSymbol").length>0){
+        if($(".groupMemberSymbol").length>1){
             if(!$('.groupMemberSymbol').val()){
                 $('.groupMemberSymbol').parent().parent(".form-group").addClass("has-error");
                 $("#experient_group").show();
+                $("#experient_weight").hide();
                 return false;
             }
             if(!$('.groupMemberWeight').val()){
                 $('.groupMemberWeight').parent().parent(".form-group").addClass("has-error");
                 $("#experient_group").show();
+                $("#experient_weight").hide();
                 return false;
             }
             else{
@@ -903,6 +910,10 @@ function applyworkload() {
                     return false;
                 }
             }
+        }
+        else {
+            alert("小组人数应不少于2！");
+            return false;
         }
         var $parametername = $(".pramterDesc");
         var newArray = new Array();
@@ -1535,7 +1546,7 @@ function applyworkload() {
         });
 
 
-    })
+    });
     $(document).on("click",".neweditor",function () {
         $(".form-control").removeAttr("disabled");
         $(".parameterName").removeAttr("disabled");
@@ -1738,7 +1749,7 @@ function applyRec() {
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("已拒绝");
 
-                var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_apply' id='btn-viewdetail'>查看详情</a><button class='btn btn-primary reviewerApply source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info apply' data-toggle='modal' data-target='#applyModal' id='applyAgain_"+Info.categoryId+"'><i class='fa fa-pencil'></i>重新申请</a> ";
+                var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_apply' id='btn-viewdetail'>查看详情</a><button class='btn btn-primary reviewerApply source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info applyrefuseApply' data-toggle='modal' data-target='#refuse_To_Apply' id='applyAgain_"+Info.categoryId+"'>重新申请</a> ";
                 $(".reviewerRecTbody tr:last td:eq(6)").append(act).attr("class","operation-btn-three");
                 $(".reviewerRecTbody tr:last td:eq(7)").text(JSON.stringify(Info));
                 $(".reviewerRecTbody tr:last td:eq(7)").css("display","none");
@@ -1778,6 +1789,10 @@ function applyRec() {
             }
         });
 
+    });
+    var teacherName=new Array();
+    $.get(TeacherInfoUrl, {test: 12}, function (data) {
+        window.teacherName=data.data.teacherList;
     });
     $(document).on("click","body",function (event) {
         var target = $(event.target); // One jQuery object instead of 3
@@ -1843,12 +1858,38 @@ function applyRec() {
             $(".groupWeight").show();
 
             /* 成员权重 */
-
-             $(".viewDetailTbody tr:last td:eq(5)").text(jsonInfo.jobDesc);
-
-            /* 职责描述 */
-
-           $(".viewDetailTbody tr:last td:eq(4)").text(jsonInfo.jsonChildWeight );
+            if(userId==jsonInfo.groupManagerId){
+                var countArray=new Array();
+                if(jsonInfo.childWeightList!=null){
+                    for(var p=0;p<jsonInfo.childWeightList.length;p++){
+                        for(var q=0;q<window.teacherName.length;q++){
+                            if(jsonInfo.childWeightList[p].userId==window.teacherName[q].teacherId){
+                                countArray.push(window.teacherName[q].name);
+                            }
+                        }
+                    }
+                }
+                /* 成员权重 */
+                var childWeight='';
+                if( jsonInfo.childWeightList!=null && jsonInfo.childWeightList.length ){
+                    for( var t = 0; t < jsonInfo.childWeightList.length; t++ ){
+                        childWeight = countArray[t] + "：" + jsonInfo.childWeightList[t].weight;
+                        $(".viewDetailTbody tr:last td:eq(4)").append( childWeight + "<br>");
+                    }
+                }
+                /* 职责描述 */
+                var jobdesc='';
+                if( jsonInfo.jobDescList!=null && jsonInfo.jobDescList.length ){
+                    for( var z = 0; z < jsonInfo.jobDescList.length; z++ ){
+                        jobdesc = jsonInfo.jobDescList[z].jobDesc;
+                        $(".viewDetailTbody tr:last td:eq(5)").append( jobdesc + "<br>");
+                    }
+                }
+            }
+            else {
+                $(".viewDetailTbody tr:last td:eq(5)").text(jsonInfo.jobDesc);
+                $(".viewDetailTbody tr:last td:eq(4)").text(jsonInfo.jsonChildWeight );
+            }
 
             $(".viewDetailTbody tr:last td:eq(4)").css("line-height","28px");
             $(".viewDetailTbody tr:last td:eq(5)").css("line-height","28px");

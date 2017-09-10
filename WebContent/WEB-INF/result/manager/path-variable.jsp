@@ -88,6 +88,8 @@
 
     var itemStatusUrl=itemManageUrl+"/status-update";
 
+    var applyAgainUrl=itemManageUrl+"/apply-again";
+
     var itemInfoUrl=contextPath+"/item/info";
 
     var teacherAnalyzeUrl=itemInfoUrl+"/teacher-analyze";

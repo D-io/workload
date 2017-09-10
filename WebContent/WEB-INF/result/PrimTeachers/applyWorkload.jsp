@@ -251,8 +251,8 @@
                                                 <tr style="font-size: 13px;">
 
                                                     <th style="width: 115px">成员姓名</th>
-                                                    <th style="width: 120px">成员职责描述</th>
-                                                    <th style="width: 140px">成员所占权重<span style="float: right;"><button type="button" class="btn btn-primary" id="calculator" title="计算工作当量"><i class="fa fa-calculator"></i></button><button type="button" class="btn btn-success" id="addGroupMessage" title="添加成员"><i class="fa fa-plus"></i></button></span></th>
+                                                    <th style="width: 120px">职责描述</th>
+                                                    <th style="width: 140px">所占权重<span style="float: right;"><button type="button" class="btn btn-primary" id="calculator" title="计算工作当量"><i class="fa fa-calculator"></i></button><button type="button" class="btn btn-success" id="addGroupMessage" title="添加成员"><i class="fa fa-plus"></i></button></span></th>
                                                 </tr>
 
                                                 </thead>
@@ -282,7 +282,7 @@
                                             <tr style="font-size: 13px;">
 
                                                 <th style="text-align: center">成员姓名</th>
-                                                <th style="text-align: center">成员工作当量</th>
+                                                <th style="text-align: center">工作当量</th>
                                                 <%--  <th>成员所占权重</th>--%>
                                             </tr>
 
@@ -433,8 +433,8 @@
                                                 <tr style="font-size: 13px;">
 
                                                     <th style="width: 115px">成员姓名</th>
-                                                    <th style="width: 120px">成员职责描述</th>
-                                                    <th style="width: 140px">成员所占权重 <span style="float: right;"><button type="button" class="btn btn-primary" id="showcalculator" title="计算工作当量"><i class="fa fa-calculator"></i></button><button type="button" class="btn btn-success" id="showaddGroupMessage" title="添加成员"><i class="fa fa-plus"></i></button></span>
+                                                    <th style="width: 120px">职责描述</th>
+                                                    <th style="width: 140px">所占权重 <span style="float: right;"><button type="button" class="btn btn-primary" id="showcalculator" title="计算工作当量"><i class="fa fa-calculator"></i></button><button type="button" class="btn btn-success" id="showaddGroupMessage" title="添加成员"><i class="fa fa-plus"></i></button></span>
                                                     </th>
                                                 </tr>
 
@@ -465,7 +465,7 @@
                                             <tr style="font-size: 13px;">
 
                                                 <th style="text-align: center">成员姓名</th>
-                                                <th style="text-align: center">成员工作当量</th>
+                                                <th style="text-align: center">工作当量</th>
                                               <%--  <th>成员所占权重</th>--%>
                                             </tr>
 
@@ -493,6 +493,170 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
+        <div class="modal fade" id="refuse_To_Apply" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="position: relative">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" >
+                            申报信息
+                            <span class="cateName" style="font-size: 14px;"></span>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
 
+                        <form class="form-horizontal form-label-left">
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目名称<span class="needed">*</span></label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" class="form-control" id="applyAgainName" name="apply_name" onblur="reminder(this)">
+                                </div>
+                            </div>
+                            <span class="experient" id="experient_apply_name" >项目名称不可为空！</span>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目描述<span class="needed">*</span></label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <textarea class="form-control" id="applyAgainDesc" name="apply_desc" onblur="reminder(this)"></textarea>
+                                </div>
+                            </div>
+                            <span class="experient" id="experient_apply_desc" >项目简介不可为空！</span>
+
+                            <div class="radio">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                </label>
+                                <label>
+                                    <input type="radio"  value="0"  name="applyRadios" class="applyRadios" id="is_single"> 个人申报
+                                </label>
+                                <label>
+                                    <input type="radio"  value="1"  name="applyRadios" class="applyRadios" id="is_group"> 小组申报
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">主要参数<span class="needed">*</span></label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+
+
+                                    <div class="well">
+                                        <table class="table" id="parameterApplyTable">
+                                            <thead class="applyparameterTh" style="font-size: 13px">
+
+
+                                            </thead>
+                                            <tbody class="AddPramter">
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <span class="experient" id="experient_applyAgainpara" >主要参数不可为空！</span>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">附加属性<span class="needed">*</span></label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+
+                                    <div class="well">
+                                        <table class="table" id="otherApplyparameterTable">
+                                            <thead class="applyotherParaTh" style="font-size: 13px;">
+
+                                            </thead>
+                                            <tbody id="addApplyOtherPramter">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <span class="experient" id="experient_otherApplypara" >附加属性不可为空！</span>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">附件信息</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+
+                                    <span class='filestyle'><input type="file" name='applyfile' id='applyfile' style="float: left; outline: none;"><span class="showhiddenapply"></span></span>
+
+                                </div>
+                            </div>
+                            <div class="form-group item_apply_manager" style="display: none;">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目组长</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <select class="form-control teacherName" id="applyitemmanager">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group item_apply_group" style="display: none;">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">项目成员<span class="needed">*</span></label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+
+                                    <%--  <a class="btn btn-primary" role="button" data-toggle="collapse" href="#groupMessage" aria-expanded="false" aria-controls="collapseExample">
+                                          <i class="fa fa-plus"></i>
+                                      </a>--%>
+
+                                    <div class="well">
+                                        <table class="table" id="groupApplyMessageTable">
+                                            <thead>
+                                            <tr style="font-size: 13px;">
+
+                                                <th style="width: 115px">成员姓名</th>
+                                                <th style="width: 120px">职责描述</th>
+                                                <th style="width: 140px">所占权重<span style="float: right;"><button type="button" class="btn btn-primary" id="applyCalculator" title="计算工作当量" style="display: none;"><i class="fa fa-calculator"></i></button><button type="button" class="btn btn-success" id="applyAddGroupMessage" title="添加成员"><i class="fa fa-plus"></i></button></span></th>
+                                            </tr>
+
+                                            </thead>
+                                            <tbody id="AddgroupApplyPramter">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <span class="experient" id="experient_applygroup" >项目成员信息不可为空！</span>
+                            <span class="experient" id="experient_applyweight" >项目成员权重请填写小数且相加应为1！</span>
+                            <div class="form-group applygroupDiv" style="display: none;">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">成员工作当量</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12 team-member">
+
+                                    <div class="well">
+                                        <table class="table" id="applyWorkloadTable">
+                                            <thead>
+                                            <tr style="font-size: 13px;">
+
+                                                <th style="text-align: center">成员姓名</th>
+                                                <th style="text-align: center">工作当量</th>
+                                                <%--  <th>成员所占权重</th>--%>
+                                            </tr>
+
+                                            </thead>
+                                            <tbody id="apply_Workload">
+
+                                            </tbody>
+                                        </table>
+                                        <%--   <span style="float: right;"><button class="btn btn-success" id="showaddGroupMessage" title="添加成员"><i class="fa fa-plus"></i></button></span>
+                                   --%>    </div>
+
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary applydismiss" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary applySave">保存</button>
+                        <%--   <button type="button" class="btn btn-primary saveAgain" style="display: none">保存</button>--%>
+                        <button type="button" class="btn btn-primary applyeditor">编辑</button>
+                        <%--<button type="button" class="btn btn-primary applysubmit">提交</button>--%>
+                        <%--<input type="submit" value="提交">--%>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
     </div>
 </div>
