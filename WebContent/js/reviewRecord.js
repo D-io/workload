@@ -688,6 +688,9 @@ function applyworkload() {
 
                 },
                 success: function (data) {
+
+                    var msg = data.data.item;
+                    window.Temp.splice(window.contentCount - 1, 1, msg);
                     if($("#revfile").val()){
                         var formdata = new FormData;
                         formdata.append("file", $("#revfile")[0].files[0]);
@@ -723,9 +726,7 @@ function applyworkload() {
                     }
                     $(".editApply").show();
                     $(".editSubmit").show();
-                    var msg = data.data.item;
 
-                    window.Temp.splice(window.contentCount - 1, 1, msg);
                     $("#workload_" + msg.itemId).text(msg.workload);
                     $("#itemname_" + msg.itemId).text(msg.itemName);
                     $(".form-control").attr("disabled", "disabled");
@@ -764,6 +765,8 @@ function applyworkload() {
 
                 }
                 , success: function (data) {
+                    var msg = data.data.item;
+                    window.Temp.splice(window.contentCount-1, 1, msg);
                     if($("#revfile").val()){
                         var formdata = new FormData;
                         formdata.append("file", $("#revfile")[0].files[0]);
@@ -797,8 +800,7 @@ function applyworkload() {
                     else{
                         alert("修改成功!");
                     }
-                    var msg = data.data.item;
-                    window.Temp.splice(window.contentCount-1, 1, msg);
+
                     $("#workload_" + msg.itemId).text(msg.workload);
                     $("#itemname_" + msg.itemId).text(msg.itemName);
                     $(".form-control").attr("disabled", "disabled");
@@ -974,6 +976,11 @@ function applyworkload() {
 
                     },
                     success: function (data) {
+
+                        var Info = data.data.item;
+                        var newCount=$(".neweditor").attr("id");
+                        newCount=newCount.match(/\d+/g);
+                        window.Temp.splice(newCount-1,1,Info);
                         if($("#testfile").val()){
                             var formdata = new FormData;
                             formdata.append("file", $("#testfile")[0].files[0]);
@@ -1004,12 +1011,9 @@ function applyworkload() {
                             });
                         }
                         else{
-                           alert("修改成功！");
+                            alert("修改成功！");
                         }
-                        var Info = data.data.item;
-                        var newCount=$(".neweditor").attr("id");
-                        newCount=newCount.match(/\d+/g);
-                        window.Temp.splice(newCount-1,1,Info);
+
 
                         $(".neweditor").show();
                       //  $(".neweditor").attr("id","neweditor_"+Info.itemId);
@@ -1057,6 +1061,11 @@ function applyworkload() {
 
                     }
                     , success: function (data) {
+
+                        var Info = data.data.item;
+                        var newCount=$(".neweditor").attr("id");
+                        newCount=newCount.match(/\d+/g);
+                        window.Temp.splice(newCount-1,1,Info);
                         if($("#testfile").val()){
                             var formdata = new FormData;
                             formdata.append("file", $("#testfile")[0].files[0]);
@@ -1089,10 +1098,7 @@ function applyworkload() {
                         else {
                             alert("修改成功！");
                         }
-                        var Info = data.data.item;
-                        var newCount=$(".neweditor").attr("id");
-                        newCount=newCount.match(/\d+/g);
-                        window.Temp.splice(newCount-1,1,Info);
+
                         $(".neweditor").show();
                         //  $(".neweditor").attr("id","neweditor_"+Info.itemId);
                         $(".newsubmit").show();
@@ -1140,6 +1146,11 @@ function applyworkload() {
 
                     },
                     success: function (data) {
+
+                        var rowInfo = "<tr></tr>";
+                        var cellInfo = "<td></td>";
+                        var Info = data.data.item;
+                        window.Temp.push(Info);
                         if($("#testfile").val()){
                             var formdata = new FormData;
                             formdata.append("file", $("#testfile")[0].files[0]);
@@ -1172,10 +1183,7 @@ function applyworkload() {
                         else{
                             alert("添加成功！");
                         }
-                        var rowInfo = "<tr></tr>";
-                        var cellInfo = "<td></td>";
-                        var Info = data.data.item;
-                        window.Temp.push(Info);
+
                         var newcount=$(".showContent").length;
                         newcount++;
 
@@ -1277,6 +1285,9 @@ function applyworkload() {
 
                     }
                     , success: function (data) {
+
+                        var Info = data.data.item;
+                        window.Temp.push(Info);
                         if($("#testfile").val()){
                             var formdata = new FormData;
                             formdata.append("file", $("#testfile")[0].files[0]);
@@ -1308,12 +1319,11 @@ function applyworkload() {
                         else{
                             alert("添加成功！");
                         }
-                        var Info = data.data.item;
                         var rowInfo = "<tr></tr>";
                         var cellInfo = "<td></td>";
                         var newcount=$(".showContent").length;
                         newcount++;
-                        window.Temp.push(Info);
+
                         $(".neweditor").show();
                         $(".neweditor").attr("id","neweditor_"+newcount);
                         $(".newsubmit").show();
