@@ -518,8 +518,14 @@ function showapplydata(item) {
         $(".showDesc tr:last").css("text-align","center");
         $(".showDesc tr:last td:eq(0)").text(id + 1);
         $(".showDesc tr:last td:eq(1)").text(Info.teacherName);
-        $(".showDesc tr:last td:eq(2)").text(Info.itemName);
+        if(Info.proof!=null){
+            $(".showDesc tr:last td:eq(2)").append("<span>"+Info.itemName+"</span>"+"<a href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right;cursor: pointer' title='下载附件'><i class='fa fa-download'></i></a>");
 
+        }
+       else{
+            $(".showDesc tr:last td:eq(2)").append("<span>"+Info.itemName+"</span>"+"<a style='float: right;cursor: pointer' title='下载附件'><i class='fa fa-download'></i></a>");
+
+        }
         var applyType='';
         switch (Info.isGroup){
             case 1:applyType="小组形式";

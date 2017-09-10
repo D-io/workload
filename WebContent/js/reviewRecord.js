@@ -1747,11 +1747,6 @@ function applyRec() {
 
     });
 
-    var teacherName=new Array();
-    $.get(TeacherInfoUrl, {test: 12}, function (data) {
-        window.teacherName=data.data.teacherList;
-    });
-
     /* 查看回复修复 */
     $(".reviewerApply").on("click",function () {
         $(this).popover("toggle");
@@ -1834,35 +1829,15 @@ function applyRec() {
             $('.checkedView tr').find('td:eq(5)').show();
             $(".groupDesc").show();
             $(".groupWeight").show();
-            var countArray=new Array();
-            if(jsonInfo.childWeightList!=null){
-                for(var p=0;p<jsonInfo.childWeightList.length;p++){
-                    for(var q=0;q<window.teacherName.length;q++){
-                        if(jsonInfo.childWeightList[p].userId==window.teacherName[q].teacherId){
-                            countArray.push(window.teacherName[q].name);
-                        }
-
-                    }
-
-                }
-            }
 
             /* 成员权重 */
-            var childWeight='';
-            if( jsonInfo.childWeightList!=null && jsonInfo.childWeightList.length ){
-                for( var t = 0; t < jsonInfo.childWeightList.length; t++ ){
-                    childWeight = countArray[t] + "：" + jsonInfo.childWeightList[t].weight;
-                    $(".viewDetailTbody tr:last td:eq(4)").append( childWeight + "<br>");
-                }
-            }
+
+             $(".viewDetailTbody tr:last td:eq(5)").text(jsonInfo.jobDesc);
+
             /* 职责描述 */
-            var jobdesc='';
-            if( jsonInfo.jobDescList!=null && jsonInfo.jobDescList.length ){
-                for( var z = 0; z < jsonInfo.jobDescList.length; z++ ){
-                    jobdesc = jsonInfo.jobDescList[z].jobDesc;
-                    $(".viewDetailTbody tr:last td:eq(5)").append( jobdesc + "<br>");
-                }
-            }
+
+           $(".viewDetailTbody tr:last td:eq(4)").text(jsonInfo.jsonChildWeight );
+
             $(".viewDetailTbody tr:last td:eq(4)").css("line-height","28px");
             $(".viewDetailTbody tr:last td:eq(5)").css("line-height","28px");
         }
