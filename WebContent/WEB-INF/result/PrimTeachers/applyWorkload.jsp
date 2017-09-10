@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="modal-body">
-                                <table  class="table table-striped table-bordered dataTable no-footer">
+                                <table  class="table table-striped table-bordered dataTable no-footer checkedView">
                                     <thead>
                                     <tr role="row">
                                         <th class="sorting">申报描述</th>

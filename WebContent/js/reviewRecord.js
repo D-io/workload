@@ -259,7 +259,7 @@ function  reviewerRec() {
         $("#viewdetail_review .message").append(
             "工作当量：" + jsonInfo.workload +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
-            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核状态：" + auditStatus +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复核状态：" + auditStatus +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复核截止时间：" + deadline );
 
         $(".viewDetailTbody").append(rowInfo);

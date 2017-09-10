@@ -141,7 +141,7 @@
                                        </div>
                                    </div>
                                 <div class="modal-body">
-                                    <table  class="table table-striped table-bordered dataTable no-footer resetDetail">
+                                    <table  class="table table-striped table-bordered dataTable no-footer resetDetail checkedView">
                                         <thead>
                                         <tr role="row">
 
