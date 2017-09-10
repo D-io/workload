@@ -11,6 +11,8 @@ package cn.edu.uestc.ostec.workload.event;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.edu.uestc.ostec.workload.dto.ItemDto;
+
 /**
  * Version:v1.0 (description:  )
  */
@@ -23,5 +25,8 @@ public interface GroupItemEvent extends IEvent {
 
 	@Transactional
 	boolean updateGroupItemsCommonInfo(Integer parentId,String version,String itemName,String otherParams);
+
+	@Transactional
+	boolean submitGroupItems(ItemDto groupManagerItem);
 
 }

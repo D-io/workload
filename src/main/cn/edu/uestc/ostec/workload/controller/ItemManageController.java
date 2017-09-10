@@ -51,10 +51,8 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
-import static org.springframework.core.GenericCollectionTypeResolver.getCollectionType;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -90,7 +88,7 @@ public class ItemManageController extends ApplicationController {
 	@Autowired
 	private GroupItemEvent itemEvent;
 
-	@RequestMapping(value = "calculate",method = GET)
+	@RequestMapping(value = "calculate", method = GET)
 	public RestResponse calculate(
 			@RequestParam("categoryId")
 					Integer categoryId,
@@ -108,8 +106,8 @@ public class ItemManageController extends ApplicationController {
 		childWeightList = FormulaCalculate
 				.calculateChildWorkloaad(formula, parameterValues, childWeightList);
 
-		Map<String,Object> data = getData();
-		data.put("childWeightList",childWeightList);
+		Map<String, Object> data = getData();
+		data.put("childWeightList", childWeightList);
 		return successResponse(data);
 	}
 
@@ -297,36 +295,47 @@ public class ItemManageController extends ApplicationController {
 			return parameterNotSupportResponse("无法重新申请");
 		}
 
-		//原条目删除
-		item.setStatus(DELETED);
+		if(GROUP.equals(item.getIsGroup()) && !itemDto.getGroupManagerId().equals(teacherId)) {
+			return invalidOperationResponse("不是小组组长。无法重新申请");
+		}
 
 		//重新申请时新产生的对象
 		itemDto.setItemId(null);
 		itemDto.setStatus(NON_CHECKED);
 
-		Item newItem = itemConverter.dtoToPo(itemDto);
-
-		boolean saveSuccess = itemService.saveItem(newItem);
-		if (!saveSuccess) {
-			return systemErrResponse();
-		}
-
-		ItemDto newItemDto = itemConverter.poToDto(newItem);
 
 		Map<String, Object> data = getData();
-		data.put("newItemDto", newItemDto);
+		if (GROUP.equals(item.getIsGroup()) && item.getOwnerId().equals(item.getGroupManagerId())) {
+			boolean updateSuccess = itemEvent.updateGroupItemsStatus(item.getItemId(),getCurrentSemester(),DELETED);
+			if(updateSuccess) {
+				itemEvent.submitGroupItems(itemDto);
+ 			} else {
+				return systemErrResponse();
+			}
+		} else {
+			itemService.removeItem(itemId,getCurrentSemester());
+			Item newItem = itemConverter.dtoToPo(itemDto);
+			item.setStatus(DELETED);
+			itemService.saveItem(item);
+			//重新申请时新产生的对象
+			itemDto.setItemId(null);
+			itemDto.setStatus(NON_CHECKED);
+
+			boolean saveSuccess = itemService.saveItem(newItem);
+			if (!saveSuccess) {
+				return systemErrResponse();
+			}
+
+			ItemDto newItemDto = itemConverter.poToDto(newItem);
+			data.put("newItemDto", newItemDto);
+		}
+
+
+
+
+
 
 		return successResponse(data);
-		//		item.setStatus(NON_CHECKED);
-		//		boolean saveSuccess = itemService.saveItem(item);
-		//		if (!saveSuccess) {
-		//			return systemErrResponse("重新申请失败");
-		//		}
-		//
-		//		Map<String, Object> data = getData();
-		//		data.put("item", itemConverter.poToDto(item));
-		//
-		//		return successResponse(data);
 	}
 
 	/**
