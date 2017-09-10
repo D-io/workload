@@ -1414,6 +1414,9 @@ function reminder(obj) {
      if(!objValue){
         $("#experient_"+obj.name).show();
        $(obj).parent().parent(".form-group").addClass("has-error");
+         if(obj.name=="weight"||obj.name=="showweight"||obj.name=="applyweight"){
+             $("#experient_"+obj.name).hide();
+         }
 
     }
     else{
@@ -1425,6 +1428,7 @@ function reminder(obj) {
             $(obj).parent().parent(".form-group").removeClass("has-error");
         }
 
+
     }
 }
 function removeApplyAttr(){
@@ -1433,9 +1437,23 @@ function removeApplyAttr(){
     $('#applyDesc').parent().parent(".form-group").removeClass("has-error");
     $('.parameterName').parent().parent(".form-group").removeClass("has-error");
     $('.otherparameterName').parent().parent(".form-group").removeClass("has-error");
+    $('#itemMember').parent().parent(".form-group").removeClass("has-error");
     $('.groupMemberSymbol').parent().parent(".form-group").removeClass("has-error");
     $(".experient").hide();
    /* console.log($(".experient").css("display"));*/
+    if($(".experient").css("display")!="none"){
+        $(".experient").css("display","none");
+    }
+}
+function removeApplyAgain(){
+
+    $('#applyAgainName').parent().parent(".form-group").removeClass("has-error");
+    $('#applyAgainDesc').parent().parent(".form-group").removeClass("has-error");
+    $('.applyparameterName').parent().parent(".form-group").removeClass("has-error");
+    $('.applyotherparameterName').parent().parent(".form-group").removeClass("has-error");
+    $('.showapplyMemberSymbol').parent().parent(".form-group").removeClass("has-error");
+    $(".experient").hide();
+    /* console.log($(".experient").css("display"));*/
     if($(".experient").css("display")!="none"){
         $(".experient").css("display","none");
     }

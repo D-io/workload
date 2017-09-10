@@ -242,20 +242,19 @@
                     <form class="form-horizontal form-label-left">
 
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目名称</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目名称<span class="needed">*</span></label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type="text" class="form-control" id="itemName">
+                                <input type="text" class="form-control" id="itemName" name="name" onblur="reminder(this)">
                             </div>
                         </div>
-
+                        <span class="experient" id="experient_name" >项目名称不可为空！</span>
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目描述
-                            </label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目描述<span class="needed">*</span></label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <textarea class="form-control" id="applyDesc"></textarea>
+                                <textarea class="form-control" id="applyDesc" name="desc" onblur="reminder(this)"></textarea>
                             </div>
                         </div>
-
+                        <span class="experient" id="experient_desc" >项目简介不可为空！</span>
                         <div class="radio" style="display: none;">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             </label>
@@ -267,15 +266,16 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目成员</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目成员<span class="needed">*</span></label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <select class="form-control teacherName" id="itemMember">
+                                <select class="form-control teacherName" id="itemMember" name="userId" onchange="reminder(this)">
                                     <option value=""></option>
                                 </select>
                             </div>
                         </div>
+                        <span class="experient" id="experient_userId" >项目成员不可为空！</span>
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">主要参数</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">主要参数<span class="needed">*</span></label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
 
                                     <div class="well">
@@ -291,8 +291,9 @@
                              <%--   </div>--%>
                             </div>
                         </div>
+                        <span class="experient" id="experient_para" >主要参数不可为空！</span>
                         <div class="form-group hiddenRequired">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">附加属性</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">附加属性<span class="needed">*</span></label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                                     <div class="well">
                                         <table class="table" id="addotherparameterTable">
@@ -308,7 +309,8 @@
                               <%--  </div>--%>
                             </div>
                         </div>
-                        <div class="form-group required" style="display: none">
+                        <span class="experient" id="experient_otherpara" >附加属性不可为空！</span>
+                      <%--  <div class="form-group required" style="display: none">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">职责描述</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                                 <input type="text" class="form-control" id="jobDesc">
@@ -328,14 +330,14 @@
                                     <option value=""></option>
                                 </select>
                             </div>
-                        </div>
+                        </div>--%>
 
                     </form>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary dismiss" data-dismiss="modal" style="display:none">取消</button>
-                    <button type="button" class="btn btn-success savemyEdit" style="display:none">保存</button>
+                    <button type="button" class="btn btn-primary savemyEdit" style="display:none">保存</button>
                     <button class="btn btn-primary editor">编辑</button>
                     <button class="btn btn-primary submitTo">提交</button>
                     <%--<input type="submit" value="提交">--%>

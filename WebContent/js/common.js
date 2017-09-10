@@ -151,14 +151,14 @@ $(document).ready(function () {
                 symbolPara=symbolPara.substr(1);
             }
 
-            $('.parameterThead').append("<tr><th class='pramterDesc' id='"+symbolPara+"' style='font-size: 13px;'>"+$paraDesc.eq(t).text()+"</th><td><input type='text' class='importpara form-control importpara_"+t+"'></td></tr>");
+            $('.parameterThead').append("<tr><th class='pramterDesc' id='"+symbolPara+"' style='font-size: 13px;'>"+$paraDesc.eq(t).text()+"</th><td><input type='text' class='importpara form-control importpara_"+t+"' name='para' onblur='reminder(this)'></td></tr>");
 
         }
         var $otherDesc=$(".otherparaDesc_"+flag);
         if($(".otherparaDesc_"+flag).length&&$(".otherparaDesc_"+flag).length>0){
 
             for(var s=0;s<$otherDesc.length;s++){
-                $('.otherParaThead').append("<tr><th class='otherPramterkey' style='font-size: 13px'>"+$otherDesc.eq(s).text()+"</th><td><input type='text' class='otherimportpara form-control otherimportpara_"+s+"'></td></tr>");
+                $('.otherParaThead').append("<tr><th class='otherPramterkey' style='font-size: 13px'>"+$otherDesc.eq(s).text()+"</th><td><input type='text' class='otherimportpara form-control otherimportpara_"+s+"' name='otherpara' onblur='reminder(this)'></td></tr>");
             }
 
         }
@@ -190,6 +190,7 @@ $(document).ready(function () {
     $(document).on("click",".showImportAll",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
        window.countToCount=thisId;
+
         $(".editor").show();
         $(".submitTo").show();
         $(".dismiss").hide();
@@ -222,6 +223,7 @@ $(document).ready(function () {
       //  $("#groupMember").val(allItem[thisId].ownerId);
       //  $("#groupMember").attr("disabled","disabled");
         $("#itemMember").select2().val(allItem[thisId].groupManagerId).trigger("change").css("width","100%");
+        removeApplyAttr();
         $(".select2-container").css("width","100%");
         $("#itemMember").attr("disabled","disabled");
        $(".otherimportpara").attr("disabled","disabled");
@@ -263,15 +265,36 @@ $(document).ready(function () {
 
     });
     $(document).on("click",".savemyEdit",function () {
+            if(!$('#itemName').val()){
+                $('#itemName').parent().parent(".form-group").addClass("has-error");
+                $("#experient_name").show();
+                return false;
+            }
+            if(!$('#applyDesc').val()){
+                $('#applyDesc').parent().parent(".form-group").addClass("has-error");
+                $("#experient_desc").show();
+                return false;
+            }
+            if($('.parameterName').length>0){
+                if(!$('.parameterName').val()){
+                    $('.parameterName').parent().parent(".form-group").addClass("has-error");
+                    $("#experient_para").show();
+                    return false;
+                }
+            }
+            if($('.otherparameterName').length>0){
+                if(!$('.otherparameterName').val()){
+                    $('.otherparameterName').parent().parent(".form-group").addClass("has-error");
+                    $("#experient_otherpara").show();
+                    return false;
+                }
+            }
+        if(!$('#itemMember').val()){
+            $('#itemMember').parent().parent(".form-group").addClass("has-error");
+            $("#experient_userId").show();
+            return false;
+        }
 
-            $(".form-control").attr("disabled","disabled");
-            $("#year").removeAttr("disabled");
-            $("#term").removeAttr("disabled");
-            $("#file").removeAttr("disabled");
-            $(".dismiss").hide();
-            $(".savemyEdit").hide();
-            $(".editor").show();
-            $(".submitTo").show();
             var radioGroup=$("input:radio[name='optionsRadios']:checked").val();
             var $parametername = $(".pramterDesc");
             var newArray = new Array();
@@ -293,8 +316,6 @@ $(document).ready(function () {
                     }
                     otherArray = JSON.stringify(otherArray);
                 }
-
-
             var grouparray = new Array();
             var sumArray=new Array();
             //  var groupmessageArray = $('.showgroupMemberName');
@@ -307,12 +328,10 @@ $(document).ready(function () {
           //  console.log($("#childWeight").val());
             if($("#childWeight").is(":empty")){
                 childWeight=1;
-
             }
             else{
                 childWeight=parseFloat($("#childWeight").val())
             }
-
             sumArray=[{
                 userId: parseInt($("#itemMember option:selected").val()),
                 weight: childWeight
@@ -379,11 +398,14 @@ $(document).ready(function () {
                         $("#year").removeAttr("disabled");
                         $("#term").removeAttr("disabled");
                         $("#file").removeAttr("disabled");
+                        $(".dismiss").hide();
+                        $(".savemyEdit").hide();
+                        $(".editor").show();
+                        $(".submitTo").show();
                         allItem.splice(window.countToCount,1,data.data.item);
                         $("#itemName_"+window.countToCount).text(data.data.item.itemName);
                         $("#workload_"+window.countToCount).text(data.data.item.workload);
                         $("#teacherName_"+window.countToCount).text(data.data.item.teacherName);
-
                     }
 
                 )
@@ -448,9 +470,14 @@ $(document).ready(function () {
                         itemCount++;
                         $(".submitTo").attr("id","submitTo_"+data.data.item.itemId);
                         $(".savemyEdit").attr("id","savemyEdit_"+data.data.item.itemId);
-                       /* $(".form-control").attr("disabled","disabled");
+                        $(".form-control").attr("disabled","disabled");
                         $("#year").removeAttr("disabled");
-                        $("#term").removeAttr("disabled");*/
+                        $("#term").removeAttr("disabled");
+                        $(".dismiss").hide();
+                        $("#file").removeAttr("disabled");
+                        $(".savemyEdit").hide();
+                        $(".editor").show();
+                        $(".submitTo").show();
                     }
 
                 )
@@ -556,6 +583,7 @@ $(document).ready(function () {
         $("#isGroup").removeAttr("disabled");
         $("#isSingle").removeAttr("disabled");
         $("#itemMember").select2().val(null).trigger("change").css("width","100%");
+        removeApplyAttr();
         $(".select2-container").css("width","100%");
         $("#groupMember").val(null);
         $(".importpara").val(null);
@@ -699,11 +727,11 @@ $(document).ready(function () {
                         case 3:
                             statusName = '尚存疑';
                             $(".tbody tr:last td:eq(3)");
-                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-three");
                             break;
                         case 4:
                             statusName = '已解惑';
                             $(".tbody tr:last td:eq(3)");
+                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-three");
                             break;
                         case 5:
                             statusName = '已拒绝';
@@ -838,9 +866,22 @@ $(document).ready(function () {
 
         }
     });
+    $(document).on("click",".applyRadios",function () {
+        var selectedvValue=$("input[name='applyRadios']:checked").val();
+        if(selectedvValue=="1"){
+            $(".item_apply_manager").show();
+            $(".item_apply_group").show();
+
+        }
+        else {
+            $(".item_apply_manager").hide();
+            $(".item_apply_group").hide();
+
+        }
+    })
     $(document).off("click","#addGroupMessage");
     $(document).on("click","#addGroupMessage",function () {
-        var addMessage="<tr><td style='width: 120px;'><select class='groupMemberName teacherName' ><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol' name='group' onblur='reminder(this)' style='width:120px; height: 38px; padding-left: 8px;'></td><td style='position: relative;'><input type='text' class='groupMemberWeight' name='weight' onblur='reminder(this)'  style='width:120px; height: 38px; padding-left: 8px;'><button type='button' class='btn btn-danger removeOtherRow removeRow' style='position: absolute; top: 12px; right: -22px;'><i class='fa fa-trash'></i></button></td></tr>";
+        var addMessage="<tr><td style='width: 120px;'><select class='groupMemberName teacherName' ><option value=''></option> </select></td><td><input type='text' class='groupMemberSymbol' name='group' onblur='reminder(this)' style='width:120px; height: 38px; padding-left: 8px;'></td><td style='position: absolute;'><input type='text' class='groupMemberWeight' name='weight' onblur='reminder(this)'  style='width:120px; height: 38px; padding-left: 8px;'><button type='button' class='btn btn-danger removeOtherRow removeRow' style='position: absolute; top: 12px; right: -22px;'><i class='fa fa-trash'></i></button></td></tr>";
         $('#AddgroupPramter').append(addMessage);
         $.get(TeacherInfoUrl, {test: 12}, function (data) {
             for (var i = 0; i < data.data.teacherList.length; i++) {
@@ -860,7 +901,7 @@ $(document).ready(function () {
     });
     $(document).off("click","#showaddGroupMessage");
     $(document).on("click","#showaddGroupMessage",function () {
-        var addMessage="<tr><td><select class='showgroupMemberName teacherName'><option value=''></option> </select></td><td><input type='text' class='showgroupMemberSymbol' style='width: 100px;'></td><td><input type='text' class='showgroupMemberWeight' style='width: 100px'></td></tr>";
+        var addMessage="<tr><td><select class='showgroupMemberName teacherName'><option value=''></option> </select></td><td><input type='text' class='showgroupMemberSymbol' name='showpara' onblur='reminder(this)'></td><td style='position: absolute;'><input type='text' class='showgroupMemberWeight' name='showotherpara' onblur='reminder(this)'><button type='button' class='btn btn-danger removeOtherRow removeRow' style='position: absolute; top: 12px; right: -22px;'><i class='fa fa-trash'></i></button></td></tr>";
         $('#showAddgroupPramter').append(addMessage);
         $.get(TeacherInfoUrl, {test: 12}, function (data) {
             for (var i = 0; i < data.data.teacherList.length; i++) {
@@ -871,11 +912,28 @@ $(document).ready(function () {
         $(".showgroupMemberName").select2({
             placeholder:"",
             allowClear: true,
+            width: "100%"
+
+        });
+    });
+    $(document).off("click","#applyAddGroupMessage");
+    $(document).on("click","#applyAddGroupMessage",function () {
+
+        var addStr = "<tr><td><select class='showapplyMemberName teacherName'><option value=''></option> </select></td><td><input type='text' class='showapplyMemberSymbol' name='applygroup' onblur='reminder(this)' style='width: 120px;min-height:38px;padding-left: 8px' ></td><td style='position: absolute'><input type='text' class='showgapplyMemberWeight' name='applyweight' onblur='reminder(this)' style='width: 120px;min-height: 38px;padding-left: 8px'><button type='button' class='btn btn-danger removeOtherRow removeRow' style='position: absolute; top: 12px; right: -22px;'><i class='fa fa-trash'></i></button></td></tr>";
+        $('#AddgroupApplyPramter').append(addStr);
+        $.get(TeacherInfoUrl, {test: 12}, function (data) {
+            for (var i = 0; i < data.data.teacherList.length; i++) {
+                $('.showapplyMemberName:last').append('<option value=\"' + data.data.teacherList[i].teacherId + '\">' + data.data.teacherList[i].name + '</option>');
+            }
+
+        });
+        $(".showapplyMemberName").select2({
+            placeholder:"",
+            allowClear: true,
             width: "100%",
 
         });
     });
-
     $(document).on("click",".groupMemberName",function () {
         $.get(TeacherInfoUrl,function (data) {
             for (var i = 0; i < data.data.teacherList.length; i++) {
@@ -883,7 +941,6 @@ $(document).ready(function () {
             }
         })
     });
-
     $(document).on("click",".showgroupMemberName",function () {
         $.get(TeacherInfoUrl,function (data) {
             for (var i = 0; i < data.data.teacherList.length; i++) {
@@ -891,7 +948,6 @@ $(document).ready(function () {
             }
         })
     });
-
     $(document).on("click",".editApply",function () {
         var editId=parseInt(this.id.match(/\d+/g));
         $(".editApply").hide();
@@ -953,7 +1009,355 @@ $(document).ready(function () {
         };
 
     });
+    /*apply again*/
+    $(document).on("click",".applyrefuseApply",function () {
+      //  $(".applydismiss").hide();
+        $(".applySave").hide();
+        $(".applyeditor").show();
+        $(".applydismiss").show();
+        $(".form-control").attr("disabled","disabled");
+        $("#term").removeAttr("disabled");
+        $("#year").removeAttr("disabled");
+        removeApplyAgain();
+        var Info = $(this).parent().next().text();
+        var jsonInfo = JSON.parse(Info);
+        if(userId!=jsonInfo.groupManagerId){
+            $("#refuse_To_Apply").modal("hide");
+            alert("请由小组组长重新申请！");
+        }
+        $(".applySave").attr("id","applySave_"+jsonInfo.itemId);
+        $(".applydismiss").attr("id","applydismiss_"+jsonInfo.categoryId);
 
+        /*name desc and fileName*/
+        $(".cateName").text(jsonInfo.categoryName);
+        $("#applyAgainName").val(jsonInfo.itemName);
+        $("#applyAgainDesc").val(jsonInfo.applyDesc);
+        $(".showhiddenapply").text(jsonInfo.fileName);
+        $("#applyfile").attr("disabled","disabled");
+        $("input[name='applyfile']").css({"color":"transparent","width":"80px"});
+        $('.applyparameterTh').empty();
+        $('.applyotherParaTh').empty();
+        $("#AddgroupApplyPramter").empty();
+        /*para and otherPara*/
+        for (var t = 0; t < jsonInfo.paramDesc.length; t++) {
+            var symbolname = jsonInfo.paramDesc[t].symbol;
+
+            $('.applyparameterTh').append("<tr><th class='applypramterDesc' id='" + symbolname + "' style='font-size: 13px;'>" + jsonInfo.paramDesc[t].desc + "</th><td><input type='text' class='applyparameterName form-control' name='applyAgainpara' onblur='reminder(this)'></td></tr>");
+          $(".applyparameterName").eq(t).val(jsonInfo.parameterValues[t].value);
+            //  $("#showparameterTable").append("<tr><th class='showpramterDesc' id='" + symbolname + "' style='font-size: 13px;'>" + item[comp].formulaParameterList[t].desc + "</th><td><input type='text' class='showparameterName form-control' name='showpara' onblur='reminder(this)'></td></tr>")
+        }
+        for (var s = 0; s < jsonInfo.otherJsonParameters.length; s++) {
+
+            $('.applyotherParaTh').append("<tr><th class='applyotherPramterkey' style='font-size: 13px'>" + jsonInfo.otherJsonParameters[s].key + "</th><td><input type='text' class='applyotherparameterName form-control' name='otherApplypara' onblur='reminder(this)'></td></tr>");
+            $(".applyotherparameterName").eq(s).val(jsonInfo.otherJsonParameters[s].value);
+          //  $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>" + item[comp].otherJsonParameters[s].key + "</th><td><input type='text' class='showotherparameterName form-control' name='showotherpara' onblur='reminder(this)'></td></tr>");
+        }
+        $(".applyparameterName").attr("disabled","true");
+        $(".applyotherparameterName").attr("disabled","true");
+        /*isGroup*/
+        if (jsonInfo.isGroup == 0) {
+            $("#is_single").attr("checked", 'checked');
+            $("#is_group").attr("disabled", "true");
+            $(".item_apply_manager").hide();
+            $(".item_apply_group").hide();
+            $(".applygroupDiv").hide();
+
+        }
+        else {
+            $("#is_group").attr("checked", 'checked');
+            $("#is_single").attr("disabled", "true");
+            $("#applyAddGroupMessage").attr("disabled","true");
+            $("#applyCalculator").attr("disabled","true");
+            $(".item_apply_manager").show();
+            $(".item_apply_group").show();
+          //  $(".showgroupDiv").show();
+            $("#apply_Workload").empty();
+
+            $("#applyitemmanager").select2().val(jsonInfo.groupManagerId).trigger("change");
+            $(".select2-container").css("width","100%");
+            $("#applyitemmanager").attr("disabled", "true");
+            $("#applyCalculator").attr("disabled", "true");
+/*
+            var matchArry=new Array();
+            for(var p=0;p<jsonInfo.childWeightList.length;p++){
+                for(var q=0;q<window.teacherList.length;q++){
+                    if(window.Temp[newReg-1].childWeightList[p].userId==window.teacherList[q].teacherId){
+                        matchArry.push(window.teacherList[q].name);
+                    }
+
+                }
+
+            }*/
+            var addStr = '';
+            var teacherInfo=new Array();
+            $.get(TeacherInfoUrl, {test: 12}, function (data) {
+                teacherInfo=data.data.teacherList;
+            });
+            for (var pramterCount = 0; pramterCount < jsonInfo.jobDescList.length; pramterCount++) {
+
+                var addStr = "<tr><td><select class='showapplyMemberName teacherName'></select></td><td><input type='text' class='showapplyMemberSymbol' name='applygroup' onblur='reminder(this)' style='width: 120px;min-height:38px;padding-left: 8px'></td><td style='position: absolute'><input type='text' class='showgapplyMemberWeight' name='applyweight' onblur='reminder(this)' style='width: 120px;min-height:38px;padding-left: 8px'><button type='button' class='btn btn-danger removeOtherRow removeRow' style='position: absolute; top: 12px; right: -22px;'><i class='fa fa-trash'></i></button></td></tr>";
+                $('#AddgroupApplyPramter').append(addStr);
+
+                for (var i = 0; i < teacherInfo.length; i++) {
+                    $('.showapplyMemberName:last').append('<option value=\"' + teacherInfo[i].teacherId + '\">' +teacherInfo[i].name + '</option>');
+                }
+
+                //  $(".showgroupMemberName").eq(pramterCount).append("<option value='"+window.Temp[newReg-1].jobDescList[pramterCount].userId+"' selected='selected'></option>");
+                $(".showapplyMemberName").eq(pramterCount).select2().val(jsonInfo.jobDescList[pramterCount].userId).trigger("change");
+                $(".showapplyMemberSymbol").eq(pramterCount).val(jsonInfo.jobDescList[pramterCount].jobDesc);
+                $(".showgapplyMemberWeight").eq(pramterCount).val(jsonInfo.childWeightList[pramterCount].weight);
+              //  $("#showgroupWorkload").append("<tr><td style='width: 190px;text-align: center'>"+matchArry[pramterCount]+"</td><td style='width: 190px;text-align: center'>"+window.Temp[newReg-1].childWeightList[pramterCount].workload+"</td></tr>");
+
+            }
+            $(".teacherName").select2({
+                placeholder:"",
+                allowClear: true,
+                width: "100%"
+            });
+            $(".removeRow").attr("disabled","disabled");
+            $(".select2-container").css("width","100%");
+            $(".showapplyMemberName").attr("disabled", "true");
+            $(".showapplyMemberSymbol").attr("disabled", "true");
+            $(".showgapplyMemberWeight").attr("disabled", "true");
+
+        }
+    });
+    /*apply to edit*/
+    $(document).on("click",".applyeditor",function () {
+        $(".form-control").removeAttr("disabled");
+        $(".applyparameterName").removeAttr("disabled");
+        $(".applyotherparameterName").removeAttr("disabled");
+        $("#is_group").removeAttr("disabled");
+        $("#is_single").removeAttr("disabled");
+        $(".removeRow").removeAttr("disabled");
+        $("#applyAddGroupMessage").removeAttr("disabled");
+        $("#applyCalculator").removeAttr("disabled");
+        $(".showapplyMemberName").removeAttr("disabled", "true");
+        $(".showapplyMemberSymbol").removeAttr("disabled", "true");
+        $(".showgapplyMemberWeight").removeAttr("disabled", "true");
+        $(".applySave").show();
+        $(".applyeditor").hide();
+        $(".applydismiss").show();
+    })
+    /*apply to save*/
+    $(document).on("click",".applySave",function () {
+        var thisId=parseInt(this.id.match(/\d+/g));
+        var cateId= parseInt($(".applydismiss").attr("id").match(/\d+/g));
+        /*verify the form*/
+
+        if(!$('#applyAgainName').val()){
+            $('#applyAgainName').parent().parent(".form-group").addClass("has-error");
+            $("#experient_apply_name").show();
+            return false;
+        }
+        if(!$('#applyAgainDesc').val()){
+            $('#applyAgainDesc').parent().parent(".form-group").addClass("has-error");
+            $("#experient_apply_desc").show();
+            return false;
+        }
+        if($('.applyparameterName ').length>0){
+            if(!$('.applyparameterName ').val()){
+                $('.applyparameterName ').parent().parent(".form-group").addClass("has-error");
+                $("#experient_applyAgainpara").show();
+                return false;
+            }
+        }
+        if($('.applyotherparameterName ').length>0){
+            if(!$('.applyotherparameterName ').val()){
+                $('.applyotherparameterName ').parent().parent(".form-group").addClass("has-error");
+                $("#experient_otherApplypara").show();
+                return false;
+            }
+        }
+        if($(".showapplyMemberSymbol").length>1){
+            if(!$('.showapplyMemberSymbol').val()){
+                $('.showapplyMemberSymbol').parent().parent(".form-group").addClass("has-error");
+                $("#experient_applygroup").show();
+                $("#experient_applyweight").hide();
+                return false;
+            }
+            if(!$('.showgapplyMemberWeight').val()){
+                $('.showgapplyMemberWeight').parent().parent(".form-group").addClass("has-error");
+                $("#experient_applygroup").show();
+                $("#experient_applyweight").hide();
+                return false;
+            }
+            else{
+                var sumCount=0;
+                for(var t=0;t<$('.showgapplyMemberWeight').length;t++){
+                 //   console.log($('.groupMemberWeight').eq(t).val());
+                    sumCount+=parseFloat($('.showgapplyMemberWeight').eq(t).val());
+                }
+                if(sumCount!=1){
+                    $('.showgapplyMemberWeight').parent().parent(".form-group").addClass("has-error");
+                    $("#experient_applygroup").hide();
+                    $("#experient_applyweight").show();
+                    return false;
+                }
+            }
+        }
+        else {
+            alert("小组人数应不少于2！");
+            return false;
+        }
+        /*collect the message*/
+        var $parametername = $(".applypramterDesc");
+        var newArray = new Array();
+        for (var i = 0; i < $(".applypramterDesc").length; i++) {
+            var dom = $parametername.eq(i).attr("id");
+            newArray.push({symbol: dom, value: parseInt($(".applyparameterName").eq(i).val())});
+
+        }
+        newArray = JSON.stringify(newArray);
+        var otherArray = new Array();
+        var otherPramterkey = $(".applyotherPramterkey");
+        for (var j = 0; j < otherPramterkey.length; j++) {
+            var otherKey = otherPramterkey.eq(j);
+            otherArray.push({key: otherKey.text(), value: $(".applyotherparameterName").eq(j).val()});
+
+        }
+        otherArray = JSON.stringify(otherArray);
+        if ($("#AddgroupApplyPramter").find("td").length > 0) {
+            var grouparray = new Array();
+            //   var sumArray=new Array();
+            var groupmessageArray = $('.showapplyMemberName');
+            for (var c = 0; c < groupmessageArray.length; c++) {
+                grouparray.push({
+                    userId: parseInt($(".showapplyMemberName option:selected").eq(c).val()),
+                    jobDesc: $(".showapplyMemberSymbol").eq(c).val()
+                });
+
+            }
+            grouparray = JSON.stringify(grouparray);
+
+            var childWeight = new Array();
+            for (m = 0; m < groupmessageArray.length; m++) {
+                childWeight.push({
+                    userId: parseInt($(".showapplyMemberName option:selected").eq(m).val()),
+                    weight: parseFloat($(".showgapplyMemberWeight").eq(m).val())
+                });
+            }
+            childWeight = JSON.stringify(childWeight);
+        }
+        else {
+            var childWeight = new Array();
+            childWeight = [{userId: parseInt(userId), weight: 1}];
+            childWeight = JSON.stringify(childWeight);
+        }
+        var radio = $("input:radio[name='applyRadios']:checked");
+        // var applicant = $('#applicant option:selected');
+        var itemmanager = $('#applyitemmanager option:selected');
+
+        if (radio.val() == 1) {
+            $.ajax({
+                type: "POST",
+                url: applyAgainUrl,
+                data: {
+                    categoryId: cateId,
+                    itemId: thisId,
+                    itemName: $("#applyAgainName").val(),
+                    applyDesc: $('#applyAgainDesc').val(),
+                    groupManagerId: itemmanager.val(),
+                    isGroup: 1,
+                    jsonParameter: newArray,
+                    otherJson: otherArray,
+                    jobDesc: grouparray,
+                    jsonChildWeight: childWeight
+                },
+                success: function (data) {
+
+                    var msg = data.data.newItemDto;
+                    if($("#applyfile").val()){
+                        var formdata = new FormData;
+                        formdata.append("file", $("#applyfile")[0].files[0]);
+                        $.ajax({
+                            url: importProofUrl + "?itemId=" + msg.itemId,
+                            type: "POST",
+                            dataType: "JSON",
+                            data: formdata,
+                            contentType: false,
+                            processData: false,
+                            success: function (data) {
+                                if(data.status==200){
+                                    alert("提交申请成功!");
+                                    $("#refuse_To_Apply").modal("hide");
+                                    var file = $("#applyfile")
+                                    file.after(file.clone().val(""));
+                                    file.remove();
+                                    applyRec();
+                                  //  $("#revfile").attr("disabled","disabled");
+                                  //  $("input[name='revfile']").css({"color":"transparent","width":"80px"});
+                                  //  $(".showagain").text(data.data.itemDto.fileName);
+                                  //  window.Temp.splice(window.contentCount - 1,1,data.data.itemDto);
+                                }
+
+                                else{
+                                    alert("文件已存在！请修改文件名或文件内容后重新上传！");
+                                    return false;
+                                }
+                            }
+
+                        });
+                    }
+                    else{
+                        alert("提交申请成功!");
+                        $("#refuse_To_Apply").modal("hide");
+                        applyRec();
+                    }
+
+                }
+            })
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: applyAgainUrl,
+                data: {
+                    categoryId: cateId,
+                    itemId: thisId,
+                    itemName:$("#applyAgainName").val(),
+                    applyDesc: $('#applyAgainDesc').val(),
+                    isGroup: 0,
+                    jsonParameter: newArray,
+                    otherJson: otherArray,
+                    jsonChildWeight: childWeight
+                }
+                , success: function (data) {
+                    var msg = data.data.newItemDto;
+                    if($("#applyfile").val()){
+                        var formdata = new FormData;
+                        formdata.append("file", $("#applyfile")[0].files[0]);
+                        $.ajax({
+                            url: importProofUrl + "?itemId=" + msg.itemId,
+                            type: "POST",
+                            dataType: "JSON",
+                            data: formdata,
+                            contentType: false,
+                            processData: false,
+                            success: function (data) {
+                                if(data.status==200){
+                                    alert("提交规则成功!");
+                                    var file = $("#applyfile")
+                                    file.after(file.clone().val(""));
+                                    file.remove();
+                                   applyRec();
+                                    }
+
+                                else{
+                                    alert("文件已存在！请修改文件名或文件内容后重新上传！");
+                                    return false;
+                                }
+                            }
+                        });
+                    }
+                    else{
+                        alert("提交申请成功!");
+                        applyRec();
+                    }
+                }
+            });
+        }
+    })
 });
 function getSideBar(role,roleList) {
     $.ajaxSetup({
