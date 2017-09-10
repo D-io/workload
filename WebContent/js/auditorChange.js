@@ -288,6 +288,7 @@ function showimportRec() {
         /* 查看回复修复 */
        // $(".reviewerApply").off("click");
         $(".reviewerApply").on("click",function () {
+            $(this).popover("toggle");
             var element = this.id;
             var thisId=element.match(/\d+/g);
             $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
@@ -305,54 +306,20 @@ function showimportRec() {
             });
 
         });
-        /*$(document).on("click","#btn-viewdetail",function (){
-            var rowInfo="<tr></tr>";
-            var cellInfo="<td></td>";
-            $("#viewdetail_import .project").empty();
-            $("#viewdetail_import .message").empty();
-            $("#viewdetail_import tbody").empty();
-            var Info = $(this).parent().next().text();
-            var jsonInfo = JSON.parse(Info);
-            var deadline = $(this).parent().prev().prev().text();
-            var auditStatus = $(this).parent().prev().text();
-            var form = $(this).parent().prev().prev().prev().text();
+        $(document).on("click","body",function (event) {
+            var target = $(event.target); // One jQuery object instead of 3
 
-            $("#viewdetail_import .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>" );
-            $("#viewdetail_import .message").append(
-                "工作当量：" + jsonInfo.workload +
-                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
-                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核状态：" + auditStatus +
-                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复核截止时间：" + deadline );
-
-            $(".viewDetailbody").append(rowInfo);
-            for( var i=0; i<3; i++){
-                $(".viewDetailbody tr:last").append(cellInfo);
-            }
-            $(".viewDetailbody tr:last").css("text-align","center");
-
-            /!* 计算公式 *!/
-            $(".viewDetailbody tr:last td:eq(0)").text(jsonInfo.formula);
-
-            /!* 计算参数 *!/
-            var praValues='';
-            for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
-                praValues = jsonInfo.paramDesc[m].desc + "：" + jsonInfo.parameterValues[m].value;
-                $(".viewDetailbody tr:last td:eq(1)").append( praValues + "<br>");
+            // Compare length with an integer rather than with
+            if (!target.hasClass('popover')
+                && !target.hasClass('reviewerApply')
+                && !target.hasClass('popover-content')
+                && !target.hasClass('popover-title')
+                && !target.hasClass('arrow')) {
+                /* $('#folder').popover('hide');*/
+                $(".reviewerApply").popover('hide');
             }
 
-            /!* 项目属性 *!/
-            var projectProperties='';
-            if( jsonInfo.otherJsonParameters && jsonInfo.otherJsonParameters.length ){
-                for( var n = 0; n < jsonInfo.otherJsonParameters.length; n++ ){
-                    projectProperties = jsonInfo.otherJsonParameters[n].key + "：" + jsonInfo.otherJsonParameters[n].value;
-                    $(".viewDetailbody tr:last td:eq(2)").append( projectProperties + "<br>");
-                }
-            }
-
-            $(".viewDetailbody tr:last td:eq(1)").css("line-height","28px");
-            $(".viewDetailbody tr:last td:eq(2)").css("line-height","28px");
-
-        });*/
+        });
     });
     $.get(auditorManageItemUrl+"?"+"importRequired=1&&option=uncommitted",function (data) {
         uncommited=data.data.unCommittedItem;

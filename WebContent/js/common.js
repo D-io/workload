@@ -699,6 +699,7 @@ $(document).ready(function () {
                         case 3:
                             statusName = '尚存疑';
                             $(".tbody tr:last td:eq(3)");
+                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-three");
                             break;
                         case 4:
                             statusName = '已解惑';

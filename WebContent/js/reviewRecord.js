@@ -193,25 +193,26 @@ function  reviewerRec() {
 
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_review' id='btn-viewdetail'>查看详情</a><a class='btn btn-primary reviewerApply' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
                 $(".reviewerRecTbody tr:last td:eq(6)").append(act).attr("class","operation-btn-two");
-                $("[data-toggle='popover']").popover();
-                $(".reviewerApply").popover({
-                    placement: "top",
-                    trigger: "click",
-                    html: true,
-                    title: "回复信息",
-                    content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
-
-                });
 
                 $(".reviewerRecTbody tr:last td:eq(7)").text(JSON.stringify(Info));
                 $(".reviewerRecTbody tr:last td:eq(7)").css("display","none");
 
             }
+            $("[data-toggle='popover']").popover();
+            $(".reviewerApply").popover({
+                placement: "top",
+                trigger: "click",
+                html: true,
+                title: "回复信息",
+                content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
+
+            });
         }
     });
     /* 查看回复修复 */
-    $(".reviewerApply").off("click");
+    //$(".reviewerApply").off("click");
     $(".reviewerApply").on("click",function () {
+            $(this).popover("toggle");
         var element = this.id;
         var thisId=element.match(/\d+/g);
         $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
@@ -227,10 +228,21 @@ function  reviewerRec() {
                 $(".sendTime").text("暂无");
             }
         });
+    });
+    $(document).on("click","body",function (event) {
+        var target = $(event.target); // One jQuery object instead of 3
+
+        // Compare length with an integer rather than with
+        if (!target.hasClass('popover')
+            && !target.hasClass('reviewerApply')
+            && !target.hasClass('popover-content')
+            && !target.hasClass('popover-title')
+            && !target.hasClass('arrow')) {
+            /* $('#folder').popover('hide');*/
+            $(".reviewerApply").popover('hide');
+        }
 
     });
-
-
     $(document).on("click","#btn-viewdetail",function (){
         var rowInfo="<tr></tr>";
         var cellInfo="<td></td>";
@@ -477,7 +489,6 @@ function applyworkload() {
                 $("#showgroupWorkload").empty();
 
                 $("#showitemmanager").select2().val(window.Temp[newReg - 1].groupManagerId).trigger("change");
-                $(".select2-container").css("width","100%");
                 $("#showitemmanager").attr("disabled", "true");
                 $("#showcalculator").attr("disabled", "true");
                 $('#showAddgroupPramter').empty();
@@ -509,6 +520,7 @@ function applyworkload() {
 
                 }
                 $(".removeRow").attr("disabled","disabled");
+                $(".select2-container").css("width","100%");
                 $(".showgroupMemberName").attr("disabled", "true");
                 $(".showgroupMemberSymbol").attr("disabled", "true");
                 $(".showgroupMemberWeight").attr("disabled", "true");
@@ -1582,13 +1594,6 @@ function applyRec() {
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId);
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("待审核")
-                /*  var statusName='';
-                 switch (Info.status){
-                 case 1:statusName="已提交";
-                 break;
-                 case 0:statusName="未提交";
-                 }*/
-
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_apply' id='btn-viewdetail'>查看详情</a> ";
                 $(".reviewerRecTbody tr:last td:eq(6)").append(act).attr("class","operation-btn-three");
 
@@ -1690,37 +1695,31 @@ function applyRec() {
                 $(".reviewerRecTbody tr:last td:eq(4)").attr("class","revieDead_"+Info.categoryId);
                 $(".revieDead_"+Info.categoryId).text($(".revieDeadline_"+Info.categoryId).text());
                 $(".reviewerRecTbody tr:last td:eq(5)").text("已拒绝");
-                /*  var statusName='';
-                 switch (Info.status){
-                 case 1:statusName="已提交";
-                 break;
-                 case 0:statusName="未提交";
-                 }*/
 
                 var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_apply' id='btn-viewdetail'>查看详情</a><button class='btn btn-primary reviewerApply source' id='reviewerRec_"+Info.itemId+"'>查看回复</button><a class='btn btn-info apply' data-toggle='modal' data-target='#applyModal' id='applyAgain_"+Info.categoryId+"'><i class='fa fa-pencil'></i>重新申请</a> ";
                 $(".reviewerRecTbody tr:last td:eq(6)").append(act).attr("class","operation-btn-three");
-
-                    $("[data-toggle='popover']").popover();
-
-                        $(".reviewerApply").popover({
-                            placement: "top",
-                            trigger: "click",
-                            html: true,
-                            title: "回复信息",
-                            content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
-
-                        });
-
                 $(".reviewerRecTbody tr:last td:eq(7)").text(JSON.stringify(Info));
                 $(".reviewerRecTbody tr:last td:eq(7)").css("display","none");
             }
+
+            $("[data-toggle='popover']").popover();
+
+            $(".reviewerApply").popover({
+                placement: "top",
+                trigger: "click",
+                html: true,
+                title: "回复信息",
+                content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
+
+            });
+
         }
 
     });
 
     /* 查看回复修复 */
-    $(".reviewerApply").off("click");
     $(".reviewerApply").on("click",function () {
+        $(this).popover("toggle");
         var element = this.id;
         var thisId=element.match(/\d+/g);
         $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
@@ -1738,7 +1737,20 @@ function applyRec() {
         });
 
     });
+    $(document).on("click","body",function (event) {
+        var target = $(event.target); // One jQuery object instead of 3
 
+        // Compare length with an integer rather than with
+        if (!target.hasClass('popover')
+            && !target.hasClass('reviewerApply')
+            && !target.hasClass('popover-content')
+            && !target.hasClass('popover-title')
+            && !target.hasClass('arrow')) {
+            /* $('#folder').popover('hide');*/
+            $(".reviewerApply").popover('hide');
+        }
+
+    });
     $(document).on("click","#btn-viewdetail",function (){
         var rowInfo="<tr></tr>";
         var cellInfo="<td></td>";
