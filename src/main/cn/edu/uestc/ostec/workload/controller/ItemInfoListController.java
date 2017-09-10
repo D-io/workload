@@ -464,6 +464,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		int teacherId = user.getUserId();
 		List<ItemDto> itemList = findItemsByStatus(importedRequired, status, teacherId,
 				getCurrentSemester());
+
 		if (isEmptyList(itemList)) {
 			return successResponse();
 		}
@@ -617,10 +618,21 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		for (ItemDto itemDto : itemDtoList) {
 			if (null != importRequired && importRequired.equals(itemDto.getImportRequired())
 					&& version.equals(itemDto.getVersion())) {
+
+				if (GROUP.equals(itemDto.getIsGroup()) && itemDto.getOwnerId()
+						.equals(itemDto.getGroupManagerId())) {
+					Item item = itemConverter
+							.generateGroupItem(itemDto.getItemId(), getCurrentSemester());
+					itemDto = itemConverter.poToDto(item);
+				}
+
 				itemDtoGroup.add(itemDto);
-			} else if (null == importRequired && version.equals(itemDto.getVersion())) {
+			} else if (null == importRequired && version.equals(itemDto.getVersion()))
+
+			{
 				itemDtoGroup.add(itemDto);
 			}
+
 		}
 		return itemDtoGroup;
 	}
