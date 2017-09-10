@@ -161,7 +161,7 @@ function reset() {
 
 
                 }
-                str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+                str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="10" tabindex="0">下一页</a></li>'
                 $(".pagination").empty();
                 $(".pagination").append(str);
             }
@@ -245,7 +245,7 @@ function reset() {
 
 
                 }
-                str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+                str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="10" tabindex="0">下一页</a></li>'
                 $(".pagination").empty();
                 $(".pagination").append(str);
             }
@@ -305,7 +305,7 @@ function reset() {
 
 
                     }
-                    str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+                    str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="10" tabindex="0">下一页</a></li>'
                 }
             });
 
@@ -443,7 +443,7 @@ function reset() {
 
 
                 }
-                str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
+                str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="10" tabindex="0">下一页</a></li>'
                 $(".pagination").empty();
                 $(".pagination").append(str);
             }
@@ -502,8 +502,9 @@ function reset() {
         }
     });
     $(document).on("click","#next",function(){
-        var pageNum=parseInt($(this).attr("data-dt-idx"))+1;
+        var pageNum=parseInt($(this).attr("data-dt-idx"));
         pageNum++;
+        $(this).attr("data-dt-idx",pageNum);
         var option0=$("#ispassed option:selected").val();
         var option1=$("#itemRequired option:selected").val();
         var option2=$("#teacherName option:selected").val();
@@ -524,22 +525,23 @@ function reset() {
             status:option0,
             ownerId:option2
         }, function (data) {
+            $(".ResetItem").empty();
             if(data.data==null){
                 $(".totalItem").text("0");
             }
             else {
+                reviewerResetItem(data);
                 $(".totalItem").text(data.data.totalLines);
             }
-            $(".ResetItem").empty();
-            reviewerResetItem(data);
-            var str='';
+
+           /* var str='';
             var totalPage=data.data.totalLines;
             var $pageSize=$(".input-sm option:selected").val();
             var pageCountNum=Math.ceil(totalPage/$pageSize);
             if(pageCountNum<10){
-                for(var pageNum=0;pageNum<pageCountNum;pageNum++){
-                    var pagestore=pageNum+1;
-                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
+                for(var anopageNum=0;anopageNum<pageCountNum;anopageNum++){
+                    var pagestore=anopageNum+1;
+                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+anopageNum+'" tabindex="0">'+pagestore+'</a> </li>';
                 }
                 $(".pagination").empty();
                 $(".pagination").append(str);
@@ -556,9 +558,9 @@ function reset() {
                 str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
                 $(".pagination").empty();
                 $(".pagination").append(str);
-            }
+            }*/
         });
-        this.attr("data-dt-idx",pageNum);
+
 
     })
     $("#teacherName").select2({
