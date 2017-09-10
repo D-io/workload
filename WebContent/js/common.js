@@ -1029,7 +1029,7 @@ $(document).ready(function () {
         $(".applydismiss").attr("id","applydismiss_"+jsonInfo.categoryId);
 
         /*name desc and fileName*/
-        $(".cateName").text(jsonInfo.categoryName);
+      //  $(".cateName").text(jsonInfo.categoryName);
         $("#applyAgainName").val(jsonInfo.itemName);
         $("#applyAgainDesc").val(jsonInfo.applyDesc);
         $(".showhiddenapply").text(jsonInfo.fileName);
