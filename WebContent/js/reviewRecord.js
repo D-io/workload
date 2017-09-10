@@ -1150,6 +1150,8 @@ function applyworkload() {
                         var rowInfo = "<tr></tr>";
                         var cellInfo = "<td></td>";
                         var Info = data.data.item;
+                        var newcount=$(".showContent").length;
+                        newcount++;
                         window.Temp.push(Info);
                         if($("#testfile").val()){
                             var formdata = new FormData;
@@ -1184,8 +1186,7 @@ function applyworkload() {
                             alert("添加成功！");
                         }
 
-                        var newcount=$(".showContent").length;
-                        newcount++;
+
 
                         $(".neweditor").show();
                         $(".neweditor").attr("id","neweditor_"+newcount);
@@ -1288,6 +1289,9 @@ function applyworkload() {
 
                         var Info = data.data.item;
                         window.Temp.push(Info);
+                        var newcount=$(".showContent").length;
+                        newcount++;
+
                         if($("#testfile").val()){
                             var formdata = new FormData;
                             formdata.append("file", $("#testfile")[0].files[0]);
@@ -1321,8 +1325,6 @@ function applyworkload() {
                         }
                         var rowInfo = "<tr></tr>";
                         var cellInfo = "<td></td>";
-                        var newcount=$(".showContent").length;
-                        newcount++;
 
                         $(".neweditor").show();
                         $(".neweditor").attr("id","neweditor_"+newcount);
