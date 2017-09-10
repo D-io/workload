@@ -185,6 +185,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 			Double weight = Double.valueOf(item1.getJsonChildWeight());
 			JobDesc jobDesc = new JobDesc(userId, jobDescription);
 			ChildWeight childWeight = new ChildWeight(userId, weight);
+			childWeight.setWorkload(item.getWorkload());
 			jobDescList.add(jobDesc);
 			childWeightList.add(childWeight);
 		}

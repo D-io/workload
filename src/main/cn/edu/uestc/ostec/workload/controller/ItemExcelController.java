@@ -177,6 +177,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 	 * @return RestResponse
 	 */
 	@RequestMapping(value = "import", method = POST)
+	@SuppressWarnings("deprecation")
 	public RestResponse importByTemplate(
 			@RequestParam("categoryId")
 					int categoryId,
