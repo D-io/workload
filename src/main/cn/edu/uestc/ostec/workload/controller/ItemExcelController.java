@@ -248,6 +248,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 					Cell jobDesc = row.getCell(T_JOB_DESC_INDEX);
 					item.setJobDesc(jobDesc.getStringCellValue());
+					item.setApplyDesc(jobDesc.getStringCellValue());
 
 					List<ParameterValue> parameterValues = new ArrayList<>();
 					int index = T_JOB_DESC_INDEX + 1;
@@ -264,7 +265,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					}
 
 					List<OtherJsonParameter> otherJsonParameterList = new ArrayList<>();
-					if (isEmptyList(categoryDto.getOtherJsonParameters())) {
+					if (!isEmptyList(categoryDto.getOtherJsonParameters())) {
 						for (OtherJsonParameter otherJsonParameter : categoryDto
 								.getOtherJsonParameters()) {
 							Cell cell = row.getCell(index);
