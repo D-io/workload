@@ -281,6 +281,16 @@ $(document).ready(function () {
                     $("#experient_para").show();
                     return false;
                 }
+                else{
+                    var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+                    for(var z=0;z<$('.parameterName').val().length;z++){
+                        var nubmer = $('.parameterName').eq(z).val();
+                        if (!re.test(nubmer)) {
+                            return false;
+                        }
+                    }
+
+                }
             }
             if($('.otherparameterName').length>0){
                 if(!$('.otherparameterName').val()){
@@ -317,14 +327,14 @@ $(document).ready(function () {
                     otherArray = JSON.stringify(otherArray);
                 }
             var grouparray = new Array();
-            var sumArray=new Array();
+           // var sumArray=new Array();
             //  var groupmessageArray = $('.showgroupMemberName');
 
-            grouparray=[{
+          /*  grouparray=[{
                 userId: parseInt($("#itemMember option:selected").val()),
                 jobDesc: $("#jobDesc").val()
-            }];
-            var childWeight=1;
+            }];*/
+          //  var childWeight=1;
           //  console.log($("#childWeight").val());
             i/*f($("#childWeight").is(":empty")){
                 childWeight=1;
@@ -332,12 +342,12 @@ $(document).ready(function () {
             else{*/
                 /*childWeight=parseFloat($("#childWeight").val());*/
            /* }*/
-            sumArray=[{
-                userId: parseInt($("#itemMember option:selected").val()),
-                weight: parseInt(childWeight)
-            }];
+           /* sumArray=[{
+         userId: parseInt($("#itemMember option:selected").val()),
+         weight: parseInt(childWeight)
+         }];*/
             grouparray = JSON.stringify(grouparray);
-            sumArray=JSON.stringify(sumArray);
+           // sumArray=JSON.stringify(sumArray);
 
         if($(".savemyEdit").attr("id")){
             var thisId=parseInt(this.id.match(/\d+/g));
@@ -453,13 +463,13 @@ $(document).ready(function () {
                         itemName: $('#itemName').val(),
                         applyDesc: $('#applyDesc').val(),
                         //   workload: $('#workload').val(),
-                        //   ownerId: applicant.val(),
+                        ownerId: parseInt($("#itemMember option:selected").val()),
                         //   ownerId: $("#itemmanager").val(),
                         isGroup: 0,
                         jsonParameter: newArray,
                         otherJson: otherArray,
                         //   jobDesc: grouparray,
-                        jsonChildWeight: sumArray
+                      //  jsonChildWeight: sumArray
                         //   option:"modify"
 
                     }, function (data) {
@@ -1161,6 +1171,16 @@ $(document).ready(function () {
                 $("#experient_applyAgainpara").show();
                 return false;
             }
+            else{
+                var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+                for(var z=0;z<$('.applyparameterName').val().length;z++){
+                    var nubmer = $('.applyparameterName').eq(z).val();
+                    if (!re.test(nubmer)) {
+                        return false;
+                    }
+                }
+
+            }
         }
         if($('.applyotherparameterName ').length>0){
             if(!$('.applyotherparameterName ').val()){
@@ -1169,7 +1189,8 @@ $(document).ready(function () {
                 return false;
             }
         }
-        if($(".showapplyMemberSymbol").length>1){
+        var radio = $("input:radio[name='applyRadios']:checked");
+        if(radio==1&&$(".showapplyMemberSymbol").length>1){
             if(!$('.showapplyMemberSymbol').val()){
                 $('.showapplyMemberSymbol').parent().parent(".form-group").addClass("has-error");
                 $("#experient_applygroup").show();
@@ -1244,7 +1265,7 @@ $(document).ready(function () {
             childWeight = [{userId: parseInt(userId), weight: 1}];
             childWeight = JSON.stringify(childWeight);
         }
-        var radio = $("input:radio[name='applyRadios']:checked");
+
         // var applicant = $('#applicant option:selected');
         var itemmanager = $('#applyitemmanager option:selected');
 

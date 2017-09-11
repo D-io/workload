@@ -582,6 +582,16 @@ function applyworkload() {
                 $("#experient_showpara").show();
                 return false;
             }
+            else{
+                var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+                for(var z=0;z<$('.showparameterName').val().length;z++){
+                    var nubmer = $('.showparameterName').eq(z).val();
+                    if (!re.test(nubmer)) {
+                        return false;
+                    }
+                }
+
+            }
         }
         if($('.showotherparameterName').length>0){
             if(!$('.showotherparameterName').val()){
@@ -590,7 +600,8 @@ function applyworkload() {
                 return false;
             }
         }
-        if($(".showgroupMemberSymbol").length>1){
+        var radio = $("input:radio[name='showoptionsRadios']:checked");
+        if(radio==1&&$(".showgroupMemberSymbol").length>1){
             if(!$('.showgroupMemberSymbol').val()){
                 $('.showgroupMemberSymbol').parent().parent(".form-group").addClass("has-error");
                 $("#experient_showgroup").show();
@@ -668,7 +679,6 @@ function applyworkload() {
             childWeight = JSON.stringify(childWeight);
         }
 
-        var radio = $("input:radio[name='showoptionsRadios']:checked");
         // var applicant = $('#applicant option:selected');
         var itemmanager = $('#showitemmanager option:selected');
 
@@ -765,7 +775,7 @@ function applyworkload() {
                     isGroup: 0,
                     jsonParameter: newArray,
                     otherJson: otherArray,
-                    jsonChildWeight: childWeight,
+                  //  jsonChildWeight: childWeight,
                     option: "modify"
 
                 }
@@ -876,6 +886,16 @@ function applyworkload() {
                 $("#experient_para").show();
                 return false;
             }
+            else{
+                var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+                for(var z=0;z<$('.parameterName').val().length;z++){
+                    var nubmer = $('.parameterName').eq(z).val();
+                    if (!re.test(nubmer)) {
+                        return false;
+                    }
+                }
+
+            }
         }
         if($('.otherparameterName').length>0){
             if(!$('.otherparameterName').val()){
@@ -884,7 +904,8 @@ function applyworkload() {
                 return false;
             }
         }
-        if($(".groupMemberSymbol").length>1){
+        var radio = $("input:radio[name='optionsRadios']:checked");
+        if(radio==1&&$(".groupMemberSymbol").length>1){
             if(!$('.groupMemberSymbol').val()){
                 $('.groupMemberSymbol').parent().parent(".form-group").addClass("has-error");
                 $("#experient_group").show();
@@ -900,7 +921,6 @@ function applyworkload() {
             else{
                 var sumCount=0;
                 for(var t=0;t<$('.groupMemberWeight').length;t++){
-                    console.log($('.groupMemberWeight').eq(t).val());
                     sumCount+=parseFloat($('.groupMemberWeight').eq(t).val());
                 }
                 if(sumCount!=1){
@@ -959,7 +979,6 @@ function applyworkload() {
             childWeight = JSON.stringify(childWeight);
         }
 
-        var radio = $("input:radio[name='optionsRadios']:checked");
         //  var applicant = $('#applicant option:selected');
         var itemmanager = $('#itemmanager option:selected');
 
@@ -1064,7 +1083,7 @@ function applyworkload() {
                         isGroup: 0,
                         jsonParameter: newArray,
                         otherJson: otherArray,
-                        jsonChildWeight:childWeight,
+                     //   jsonChildWeight:childWeight,
                         option:"modify"
                         // jobDesc: grouparray,
                         //  jsonChildWeight: childWeight,
@@ -1292,8 +1311,8 @@ function applyworkload() {
                         applyDesc: $('#applyDesc').val(),
                         isGroup: 0,
                         jsonParameter: newArray,
-                        otherJson: otherArray,
-                        jsonChildWeight:childWeight
+                        otherJson: otherArray
+                      //  jsonChildWeight:childWeight
 
                     }
                     , success: function (data) {
