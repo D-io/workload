@@ -331,7 +331,7 @@ function applyworkload() {
                 }
                 else if (menu_list[menu].importRequired == 0) {
                     $("<li class='item_" + menu_list[menu].categoryId + "'></li>").append( "<p class='itemMessage'><span class='itemName'>" + menu_list[menu].name + "</span>&nbsp;-&nbsp;<span class='itemDesc'>" + menu_list[menu].desc + "</span></p>" +
-                        "<p class='deadline'> 申报截止时间：<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> <span style='display: none;' class='revieDeadline_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; <button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply' data-toggle='modal' data-target='#applyModal' style='float: right; margin-top: -2px;'>点击申报</button> </p> <div style='clear: both;'></div>").appendTo(parent);
+                        "<p class='deadline'> 申报截止时间：<span class='time_" + menu_list[menu].categoryId + "'>" + menu_list[menu].applyDeadline + "</span> <span style='display: none;' class='revieDeadline_" + menu_list[menu].categoryId + "'>" + menu_list[menu].reviewDeadline + "</span> &nbsp;&nbsp;&nbsp;&nbsp; <button  id='apply_" + menu_list[menu].categoryId + "' class='btn btn-primary apply "+ menu_list[menu].isSingle+"' data-toggle='modal' data-target='#applyModal' style='float: right; margin-top: -2px;'>点击申报</button> </p> <div style='clear: both;'></div>").appendTo(parent);
                 }
 
             }
@@ -343,6 +343,16 @@ function applyworkload() {
 
         $(document).on("click", ".apply", function () {
             //$(".panel-default").toggle("show");
+            var thisclass=parseInt($(this).attr("class").match(/\d+/g));
+            $("#mygroup").prop("checkded","false");
+            $("#mysingle").prop("checkded","checked");
+            if(thisclass==1){
+                $(".applyradio").hide();
+
+            }
+            else{
+                $(".applyradio").show();
+            }
             $('.applymodalbody').empty();
             var myseleFlag = this.id;
             var reg = parseInt(myseleFlag.match(/\d+/g));
@@ -757,8 +767,8 @@ function applyworkload() {
                     $(".showgroupMemberName ").attr("disabled","disabled");
                     $(".showgroupMemberSymbol").attr("disabled","disabled");
                     $(".showgroupMemberWeight").attr("disabled","disabled");
-                    $("#year").removeAttr("disabled", "disabled");
-                    $("#term").removeAttr("disabled", "disabled");
+                    $("#year").removeAttr("disabled");
+                    $("#term").removeAttr("disabled");
                     $("#revfile").attr("disabled","disabled");
                     $(".dismissagain").hide();
                     $(".savemyApplyAgain").hide();
@@ -835,7 +845,7 @@ function applyworkload() {
                     $(".showgroupMemberWeight").attr("disabled","disabled");
                     $("#revfile").attr("disabled","disabled");
                     $("#year").removeAttr("disabled");
-                    $("term").removeAttr("disabled");
+                    $("#term").removeAttr("disabled");
                     $(".dismissagain").hide();
                     $(".savemyApplyAgain").hide();
                     $(".editApply").show();
@@ -1204,7 +1214,7 @@ function applyworkload() {
                         var Info = data.data.item;
                         var newcount=$(".showContent").length;
                         newcount++;
-                        window.Temp.push(Info);
+                        window.Temp[window.Temp.length]=Info;
                         if($("#testfile").val()){
                             var formdata = new FormData;
                             formdata.append("file", $("#testfile")[0].files[0]);
@@ -1240,9 +1250,6 @@ function applyworkload() {
                         else{
                             alert("添加成功！");
                         }
-
-
-
                         $(".neweditor").show();
                         $(".neweditor").attr("id","neweditor_"+newcount);
                         $(".newsubmit").show();
@@ -1339,7 +1346,7 @@ function applyworkload() {
                     , success: function (data) {
 
                         var Info = data.data.item;
-                        window.Temp.push(Info);
+                        window.Temp[window.Temp.length]=Info;
                         var newcount=$(".showContent").length;
                         newcount++;
 

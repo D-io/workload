@@ -1020,6 +1020,7 @@ $(document).ready(function () {
     /*apply again*/
     $(document).on("click",".applyrefuseApply",function () {
       //  $(".applydismiss").hide();
+
         $(".applySave").hide();
         $(".applyeditor").show();
         $(".applydismiss").show();
@@ -1029,6 +1030,7 @@ $(document).ready(function () {
         removeApplyAgain();
         var Info = $(this).parent().next().text();
         var jsonInfo = JSON.parse(Info);
+
         if(userId!=jsonInfo.groupManagerId){
             $("#refuse_To_Apply").modal("hide");
             alert("请由小组组长重新申请！");
@@ -1069,9 +1071,11 @@ $(document).ready(function () {
             $(".item_apply_manager").hide();
             $(".item_apply_group").hide();
             $(".applygroupDiv").hide();
+            $(".radio").hide();
 
         }
         else {
+            $(".radio").show();
             $("#is_group").attr("checked", 'checked');
             $("#is_single").attr("disabled", "true");
             $("#applyAddGroupMessage").attr("disabled","true");

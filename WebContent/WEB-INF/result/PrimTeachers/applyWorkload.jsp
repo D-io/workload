@@ -22,7 +22,6 @@
     </div>
     <div class="x_content">
 
-
         <div class="" role="tabpanel" data-example-id="togglable-tabs">
             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">工作当量申报</a>
@@ -119,12 +118,7 @@
                     </div>
                     <div class="modal-body">
                         <button class="add btn btn-primary" data-toggle="modal" data-target="#addContent">添加申报</button>
-                        <div class="applymodalbody" style="height: 60%;"><%--
-                            <table class="table table-bordered table-striped dataTable no-footer" style="font-size:14px;">
-                                <thead class="showThead" style="display: none;"><th>序号</th><th>条目名称</th><th>工作量</th><th>提交状态</th><th>操作</th></thead>
-                                <tbody class="showDesc"></tbody>
-                            </table>--%>
-
+                        <div class="applymodalbody" style="height: 60%;">
 
                         </div>
                     </div>
@@ -164,14 +158,14 @@
                             </div>
                             <span class="experient" id="experient_desc" >项目简介不可为空！</span>
 
-                            <div class="radio">
+                            <div class="applyradio">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                 </label>
                                 <label>
-                                    <input type="radio"  value="0"  name="optionsRadios" class="radioChange"> 个人申报
+                                    <input type="radio"  value="0"  name="optionsRadios" class="radioChange" id="mysingle"> 个人申报
                                 </label>
                                 <label>
-                                    <input type="radio"  value="1"  name="optionsRadios" class="radioChange"> 小组申报
+                                    <input type="radio"  value="1"  name="optionsRadios" class="radioChange" id="mygroup"> 小组申报
                                 </label>
                             </div>
                             <div class="form-group">

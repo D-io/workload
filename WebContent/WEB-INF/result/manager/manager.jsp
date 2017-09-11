@@ -133,32 +133,12 @@
                                 <span class="userName"></span><span class=" fa fa-angle-down" style="margin-right: 10px"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href="">个人信息</a></li>
+                                <li><a href="${userProfile}">个人信息</a></li>
                                 <li><a href="">查看帮助</a></li>
                                 <li><a href="${contextPath}/auth/logout">退出系统</a></li>
                             </ul>
                         </li>
-                       <%-- <div style="float: right;padding-top: 15px;padding-left: 10px;">
-                            <span>欢迎,</span>
 
-                        </div>--%>
-<%--<li class="">
-                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
-                    <span class=" fa fa-angle-down"></span>
-                  </a>
-                  <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> Profile</a></li>
-                    <li>
-                      <a href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                      </a>
-                    </li>
-                    <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-                  </ul>
-                </li>--%>
                         <div style="float: right;padding-top: 10px;">
                             <a href="javascript:;" class="badge bg-green" id="itemChange">
                                 <%--<i class="fa fa-envelope-o"></i>--%>
