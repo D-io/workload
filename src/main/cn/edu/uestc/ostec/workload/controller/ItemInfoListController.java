@@ -51,6 +51,7 @@ import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.I
 import static cn.edu.uestc.ostec.workload.service.ItemService.EMPTY_WORKLOAD;
 import static cn.edu.uestc.ostec.workload.type.UserType.ADMINISTRATOR;
 import static cn.edu.uestc.ostec.workload.type.UserType.LEADER;
+import static cn.edu.uestc.ostec.workload.type.UserType.REVIEWER;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -321,6 +322,36 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return parameterNotSupportResponse();
 		}
 
+	}
+
+	/**
+	 * 审核人获取导入类对应条目信息
+	 * @param categoryId 类目编号
+	 * @return
+	 */
+	@RequestMapping(value = "item-group/import",method = GET)
+	public RestResponse getImportItemsByCategory(
+			@RequestParam("categoryId")
+					Integer categoryId) {
+
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		Category category = categoryService.getCategory(categoryId,getCurrentSemester());
+		if(!user.getUserId().equals(category.getReviewerId())) {
+			return invalidOperationResponse("非法请求");
+		}
+
+		List<Item> itemList = itemService
+				.findItemByCategory(getCurrentSemester(), categoryId, ZERO_INT);
+
+		Map<String, Object> data = getData();
+		data.put("itemList", itemConverter.poListToDtoList(itemList));
+		data.put("recordNumbers", itemList.size());
+
+		return successResponse(data);
 	}
 
 	/**
@@ -627,9 +658,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				}
 
 				itemDtoGroup.add(itemDto);
-			} else if (null == importRequired && version.equals(itemDto.getVersion()))
-
-			{
+			} else if (null == importRequired && version.equals(itemDto.getVersion())) {
 				itemDtoGroup.add(itemDto);
 			}
 
