@@ -200,4 +200,17 @@
         SELECT * FROM item WHERE parent_id = #{parentId} AND version = #{version}
     </select>
 
+    <select id="selectValidItemsNumbersOfCategory" resultType="Integer">
+        SELECT COUNT(*) FROM item
+        <where>
+            category_id = #{categoryId} AND version = version AND parent_id = #{parentId}
+            <if test="null != status">
+                AND status = #{status}
+            </if>
+            <if test="null == status">
+                AND (status = 1 OR status = 2 OR status = 5)
+            </if>
+        </where>
+    </select>
+
 </mapper>

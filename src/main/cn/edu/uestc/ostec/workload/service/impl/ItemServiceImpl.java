@@ -77,6 +77,12 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 	}
 
 	@Override
+	public Integer getValidItemNumberOfCategory(Integer categoryId, String version,
+			Integer parentId, Integer status) {
+		return itemDao.selectValidItemsNumbersOfCategory(categoryId, version, parentId, status);
+	}
+
+	@Override
 	public List<Item> findChildItemList(Integer parentId, String version) {
 		return itemDao.selectChild(parentId, version);
 	}
@@ -123,9 +129,9 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 						importedRequired);
 		List<Item> itemList = new ArrayList<>();
 		for (Item item : items) {
-			if (GROUP.equals(item.getIsGroup())
-					&& item.getOwnerId().equals(item.getGroupManagerId())) {
-				item = itemConverter.generateGroupItem(item.getItemId(),version);
+			if (GROUP.equals(item.getIsGroup()) && item.getOwnerId()
+					.equals(item.getGroupManagerId())) {
+				item = itemConverter.generateGroupItem(item.getItemId(), version);
 			}
 			itemList.add(item);
 		}

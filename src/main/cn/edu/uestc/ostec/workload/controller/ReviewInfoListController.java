@@ -53,7 +53,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  */
 @RestController
 @RequestMapping(REVIEWER_PATH + INFO_PATH)
-public class ReviewInfoListController extends ApplicationController implements OperatingStatusType{
+public class ReviewInfoListController extends ApplicationController implements OperatingStatusType {
 
 	@Autowired
 	private CategoryService categoryService;
@@ -206,9 +206,10 @@ public class ReviewInfoListController extends ApplicationController implements O
 
 		List<Category> categories = new ArrayList<>();
 		for (Category category : categoryList) {
-			List<Item> itemList = itemService
-					.findItemByCategory(getCurrentSemester(), category.getCategoryId(), ZERO_INT);
-			if (!isEmptyList(itemList)) {
+			Integer count = itemService
+					.getValidItemNumberOfCategory(category.getCategoryId(), getCurrentSemester(),
+							ZERO_INT, null);
+			if (!count.equals(ZERO_INT)) {
 				categories.add(category);
 			}
 		}

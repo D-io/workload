@@ -170,4 +170,14 @@ public interface ItemDao extends BaseDao<Item> {
 			@Param("version")
 					String version);
 
+	Integer selectValidItemsNumbersOfCategory(
+			@Param("categoryId")
+					Integer categoryId,
+			@Param("version")
+					String version,
+			@Param("parentId")
+					Integer parentId,
+			@Param("status")
+					Integer status);
+
 }
