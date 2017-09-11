@@ -10,6 +10,7 @@ import cn.edu.uestc.ostec.workload.WebParametersConstants;
 import cn.edu.uestc.ostec.workload.WorkloadObjects;
 
 import static cn.edu.uestc.ostec.workload.ServletContextConstants.APPLICATION_CAS_SERVER_LOGOUT_PATH;
+import static cn.edu.uestc.ostec.workload.ServletContextConstants.APPLICATION_CAS_USER_PROFILE_PATH;
 import static cn.edu.uestc.ostec.workload.ServletContextConstants.APPLICATION_FILE_UPLOAD_PATH;
 import static cn.edu.uestc.ostec.workload.ServletContextConstants.APPLICATION_ONLINE_USER_COUNT;
 
@@ -46,11 +47,11 @@ public class WorkloadServletContextListener implements ServletContextListener, W
 	private void doWebXmlInitParametersAction(ServletContext servletContext) {
 
 		//1.从web.xml中提取初始化参数 begin
-		String fileUploadPath = servletContext.getInitParameter(
-				WebParametersConstants.FILE_UPLOAD_PATH);
+		String fileUploadPath = servletContext
+				.getInitParameter(WebParametersConstants.FILE_UPLOAD_PATH);
 		String fileContextPath = servletContext.getRealPath("/");
-		String casContextPath = servletContext.getInitParameter(
-				WebParametersConstants.CAS_SERVER_CONTEXT_PATH_NAME);
+		String casContextPath = servletContext
+				.getInitParameter(WebParametersConstants.CAS_SERVER_CONTEXT_PATH_NAME);
 		//1.从web.xml中提取初始化参数 end
 
 		//2.设置参数至application域 begin
@@ -59,6 +60,9 @@ public class WorkloadServletContextListener implements ServletContextListener, W
 		//设置cas登出地址
 		servletContext.setAttribute(APPLICATION_CAS_SERVER_LOGOUT_PATH,
 				casContextPath + WebParametersConstants.CAS_SERVER_LOGOUT_PREFIX);
+		//设置查看教师个人信息地址
+		servletContext.setAttribute(APPLICATION_CAS_USER_PROFILE_PATH,
+				casContextPath + WebParametersConstants.CAS_USER_PROFILE_PATH_SUFFIX);
 		//2.设置参数至application域 end
 	}
 }

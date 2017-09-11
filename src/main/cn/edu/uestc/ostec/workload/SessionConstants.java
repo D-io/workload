@@ -46,4 +46,6 @@ public interface SessionConstants {
 
 	String SESSION_CURRENT_SCHOOL_YEARS = "years";
 
+	String SESSION_CAS_USER_PROFILE_URL = "userProfile";
+
 }

@@ -57,6 +57,7 @@ public class SignInAndOutController extends ApplicationController {
 		session.setAttribute(SESSION_USER_IDENTIFIER, user.getUserId());
 		session.setAttribute(SESSION_USER_INFO_ENTITY, user);
 		session.setAttribute(SESSION_USER_NAME, user.getName());
+		session.setAttribute(SESSION_CAS_USER_PROFILE_URL, getCasUserProfilePath());
 
 		// 重定向到首页
 		return getRedirectUrlPath(DEFAULT_PAGE);

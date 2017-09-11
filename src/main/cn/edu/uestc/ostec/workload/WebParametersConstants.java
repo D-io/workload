@@ -23,6 +23,11 @@ public interface WebParametersConstants {
 	String CAS_SERVER_LOGOUT_PREFIX = "/logout?service=";
 
 	/**
+	 * CAS个人信息地址
+	 */
+	String CAS_USER_PROFILE_PATH_SUFFIX = "/user/profile";
+
+	/**
 	 * 文件上传路径
 	 */
 	String FILE_UPLOAD_PATH = "fileUploadPath";

@@ -11,6 +11,7 @@ package cn.edu.uestc.ostec.workload.context;
 import cn.edu.uestc.ostec.workload.adaptor.ServletContextAdapter;
 
 import static cn.edu.uestc.ostec.workload.ServletContextConstants.APPLICATION_CAS_SERVER_LOGOUT_PATH;
+import static cn.edu.uestc.ostec.workload.ServletContextConstants.APPLICATION_CAS_USER_PROFILE_PATH;
 import static cn.edu.uestc.ostec.workload.ServletContextConstants.APPLICATION_FILE_UPLOAD_PATH;
 import static cn.edu.uestc.ostec.workload.ServletContextConstants.APPLICATION_ONLINE_USER_COUNT;
 
@@ -18,6 +19,15 @@ import static cn.edu.uestc.ostec.workload.ServletContextConstants.APPLICATION_ON
  * Description:
  */
 public interface StandardApplicationAttributeContext extends ServletContextAdapter {
+
+	/**
+	 * 获取CAS个人信息地址
+	 * @return String
+	 */
+	default String getCasUserProfilePath() {
+
+		return (String) getApplicationAttribute(APPLICATION_CAS_USER_PROFILE_PATH);
+	}
 
 	/**
 	 * 获取系统文件上传路径

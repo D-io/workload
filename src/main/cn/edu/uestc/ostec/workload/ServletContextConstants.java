@@ -27,4 +27,9 @@ public interface ServletContextConstants extends WebParametersConstants {
 	 */
 	String APPLICATION_FILE_UPLOAD_PATH = "FILE_UPLOAD_PATH";
 
+	/**
+	 * CAS个人信息地址
+	 */
+	String APPLICATION_CAS_USER_PROFILE_PATH = "CAS_USER_PROFILE_PATH";
+
 }
