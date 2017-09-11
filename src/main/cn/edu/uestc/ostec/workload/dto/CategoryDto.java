@@ -103,6 +103,26 @@ public class CategoryDto extends AbstractMultiLevelObjectDto<CategoryDto> {
 
 	private String categoryCode = null;
 
+	private Integer isSingle = ZERO_INT;
+
+	private Double limitWorkload = 200.0;
+
+	public Integer getIsSingle() {
+		return isSingle;
+	}
+
+	public void setIsSingle(Integer isSingle) {
+		this.isSingle = isSingle;
+	}
+
+	public Double getLimitWorkload() {
+		return limitWorkload;
+	}
+
+	public void setLimitWorkload(Double limitWorkload) {
+		this.limitWorkload = limitWorkload;
+	}
+
 	public String getCategoryCode() {
 		return categoryCode;
 	}

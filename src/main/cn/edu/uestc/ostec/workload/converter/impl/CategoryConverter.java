@@ -51,6 +51,8 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 		categoryDto.setStatus(po.getStatus());
 		categoryDto.setVersion(po.getVersion());
 		categoryDto.setParentId(po.getParentId());
+		categoryDto.setIsSingle(po.getIsSingle());
+		categoryDto.setLimitWorkload(po.getLimitWorkload());
 		categoryDto.setApplyDeadline(isNull(po.getApplyDeadline()) ?
 				null :
 				DateHelper.getDefaultDateTime(po.getApplyDeadline()));
@@ -91,6 +93,8 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
 		category.setImportRequired(dto.getImportRequired());
 		category.setParentId(dto.getParentId());
 		category.setIsLeaf(dto.getIsLeaf());
+		category.setIsSingle(dto.getIsSingle());
+		category.setLimitWorkload(dto.getLimitWorkload());
 
 		category.setApplyDeadline(isNull(dto.getApplyDeadline()) ?
 				null :

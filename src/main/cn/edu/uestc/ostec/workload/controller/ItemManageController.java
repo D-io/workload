@@ -363,6 +363,13 @@ public class ItemManageController extends ApplicationController {
 		Category category = categoryService
 				.getCategory(itemDto.getCategoryId(), getCurrentSemester());
 
+		/**
+		 * 添加个人申报的限制
+		 */
+		if(!category.getIsSingle().equals(ZERO_INT) && GROUP.equals(itemDto.getIsGroup())) {
+			return invalidOperationResponse("该类规则无法进行小组申报/导入，只能个人申报/导入");
+		}
+
 		// 获取对应的申报方式  申报类：可选上传相关附件，导入类：无需上传相关附件
 		int importRequired = category.getImportRequired();
 
@@ -395,6 +402,13 @@ public class ItemManageController extends ApplicationController {
 		// 根据转换获得的参数列表和权重列表计算出总的工作量
 		double workload = FormulaCalculate
 				.calculate(category.getFormula(), newItemDto.getParameterValues());
+
+		/**
+		 * 工作量大小限制
+		 */
+		if(workload > category.getLimitWorkload()) {
+			workload = category.getLimitWorkload();
+		}
 
 		boolean flag = true;
 
@@ -529,6 +543,9 @@ public class ItemManageController extends ApplicationController {
 					Integer baseItemId = ZERO_INT;
 					double workload = FormulaCalculate
 							.calculate(category.getFormula(), itemDto.getParameterValues());
+					if(workload > category.getLimitWorkload()) {
+						workload = category.getLimitWorkload();
+					}
 
 					// 成员职责列表
 					List<JobDesc> jobDescList = itemDto.getJobDescList();

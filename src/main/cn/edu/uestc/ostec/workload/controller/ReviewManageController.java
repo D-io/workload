@@ -66,6 +66,7 @@ public class ReviewManageController extends ApplicationController {
 
 	@Autowired
 	private GroupItemEvent groupItemEvent;
+
 	/**
 	 * 审核人审核Item信息
 	 *
@@ -117,11 +118,10 @@ public class ReviewManageController extends ApplicationController {
 		item.setStatus(status);
 		boolean saveSuccess = false;
 
-
 		Map<String, Object> data = getData();
 
-		if(GROUP.equals(item.getIsGroup()) && item.getOwnerId().equals(item.getGroupManagerId())) {
-			groupItemEvent.updateGroupItemsStatus(item.getItemId(),getCurrentSemester(),status);
+		if (GROUP.equals(item.getIsGroup()) && item.getOwnerId().equals(item.getGroupManagerId())) {
+			groupItemEvent.updateGroupItemsStatus(item.getItemId(), getCurrentSemester(), status);
 		}
 
 		if (null != message && DENIED.equals(status)) {
@@ -247,6 +247,7 @@ public class ReviewManageController extends ApplicationController {
 		}
 
 		Item item = itemService.findItem(itemId, getCurrentSemester());
+		Category category = categoryService.getCategory(item.getCategoryId(), getCurrentSemester());
 
 		if (null == item || !DOUBTED.equals(item.getStatus())) {
 			return invalidOperationResponse("非法操作");
@@ -263,6 +264,7 @@ public class ReviewManageController extends ApplicationController {
 		ItemDto itemDto = itemConverter.poToDto(item);
 		List<ParameterValue> parameters = itemDto.getParameterValues();
 		double workload = FormulaCalculate.calculate(itemDto.getFormula(), parameters);
+		workload = (workload > category.getLimitWorkload() ? category.getLimitWorkload() : workload);
 		item.setWorkload(workload * Double.valueOf(item.getJsonChildWeight()));
 
 		boolean saveSuccess = subjectEvent.sendMessageAboutItem(item, message, user.getUserId());

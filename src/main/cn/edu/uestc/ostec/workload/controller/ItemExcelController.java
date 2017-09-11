@@ -44,6 +44,7 @@ import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.JobDesc;
 import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
+import cn.edu.uestc.ostec.workload.dto.Workload;
 import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.Item;
@@ -309,6 +310,9 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					//计算workload(先获取公式对应的参数)
 					double totalWorkload = FormulaCalculate
 							.calculate(category.getFormula(), parameterValues);
+					totalWorkload = totalWorkload > category.getLimitWorkload() ?
+							category.getLimitWorkload() :
+							totalWorkload;
 					double personalWeight = Double.valueOf(item.getJsonChildWeight());
 					double workload = totalWorkload * personalWeight;
 

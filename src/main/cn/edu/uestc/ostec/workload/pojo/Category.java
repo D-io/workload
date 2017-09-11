@@ -84,7 +84,36 @@ public class Category {
 	 */
 	private String otherJson = null;
 
+	/**
+	 * 规则编码
+	 */
 	private String categoryCode = null;
+
+	/**
+	 * 是否只能个人申请
+	 */
+	private Integer isSingle = ZERO_INT;
+
+	/**
+	 * 最大申请工作量限制
+	 */
+	private Double limitWorkload = 200.0;
+
+	public Integer getIsSingle() {
+		return isSingle;
+	}
+
+	public void setIsSingle(Integer isSingle) {
+		this.isSingle = isSingle;
+	}
+
+	public Double getLimitWorkload() {
+		return limitWorkload;
+	}
+
+	public void setLimitWorkload(Double limitWorkload) {
+		this.limitWorkload = limitWorkload;
+	}
 
 	public String getCategoryCode() {
 		return categoryCode;
