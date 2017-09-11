@@ -73,6 +73,8 @@ function ztree() {
                                 'applyDeadline': appDeadline,
                                 'formula': item.formula,
                                 'reviewerId':item.reviewerId,
+                                'isSingle':item.isSingle,
+                                'limitWorkload':item.limitWorkload,
                                 'formulaParameterList':item.formulaParameterList,
                                 'otherJsonParameters':item.otherJsonParameters,
                                 'isLeaf':item.isLeaf,
@@ -85,11 +87,8 @@ function ztree() {
                         }
                         else if(item.importRequired==0){
                             var nodes = {
-                              /*  'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+item.name,
-                           */
                                 'name':item.name,
-                                /*<span style="background-color:#6fcd54;color:#fff">'+item.name+ '</span><span style="margin-right: 5px;>【申报截止：'+appDeadline+'</span><span style="margin-right: 5px;>审核截止：'+rewDeadline+'】</span>',
-                            */    'realName':item.name,
+                                  'realName':item.name,
                                   'font':{'background-color':'#6fcd54','color':'#fff'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
@@ -100,6 +99,8 @@ function ztree() {
                                 'applyDeadline': appDeadline,
                                 'formula': item.formula,
                                 'reviewerId':item.reviewerId,
+                                'isSingle':item.isSingle,
+                                'limitWorkload':item.limitWorkload,
                                 'formulaParameterList':item.formulaParameterList,
                                 'otherJsonParameters':item.otherJsonParameters,
                                 'isLeaf':item.isLeaf,
@@ -132,15 +133,11 @@ function ztree() {
                                 'open':true
                             };
                         }
-
                     }
                     else {
                         if(item.importRequired==1){
                             var nodes = {
-                               /* 'name': '<span style="margin-right: 5px;">复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'</span>'+item.name,
-                              */
-                                'name':item.name,/*'<span style="background-color:#ffe746;color:#2A3F54">'+item.name+ '</span><span style="margin-right: 5px;">【复核截止：'+appDeadline+'</span><span style="margin-right: 5px;">导入截止：'+rewDeadline+'】</span>',
-*/
+                                'name':item.name,
                                 'realName':item.name,
                               'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                 'id': item.categoryId,
@@ -151,6 +148,8 @@ function ztree() {
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
                                 'formula': item.formula,
+                                'isSingle':item.isSingle,
+                                'limitWorkload':item.limitWorkload,
                                 'reviewerId':item.reviewerId,
                                 'formulaParameterList':item.formulaParameterList,
                                 'otherJsonParameters':item.otherJsonParameters,
@@ -163,16 +162,15 @@ function ztree() {
                         }
                         else if(item.importRequired==0){
                             var nodes = {
-                               /* 'name': '<span style="margin-right: 5px;">申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'</span>'+item.name,
-                            */  'name':item.name,/*'<span style="background-color:#ffe746;color:#2A3F54">'+item.name+ '</span><span style="margin-right: 5px;">【申报截止：'+appDeadline+'</span><span style="margin-right: 5px;">审核截止：'+rewDeadline+'】</span>',
-*/
+                               'name':item.name,
                                 'realName':item.name,
                                'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
                                 'title':'【规则描述】'+item.desc+ '&#10【申报截止】'+appDeadline+'&#10【审核截止】'+rewDeadline,
-
+                                'isSingle':item.isSingle,
+                                'limitWorkload':item.limitWorkload,
                                 'status':item.status,
                                 'reviewDeadline': rewDeadline,
                                 'applyDeadline': appDeadline,
@@ -193,7 +191,6 @@ function ztree() {
                                 'realName':item.name,
                                 'title':'【规则描述】'+item.desc,
                                 'font':{'background-color':'#ffe746','color':'#2A3F54'},
-                           //     'font':{'background-color':'#ffe746','color':'#2A3F54'},
                                 'id': item.categoryId,
                                 'parentId': item.parentId,
                                 'desc': item.desc,
@@ -210,11 +207,8 @@ function ztree() {
                                 'open':true
                             };
                         }
-
                     }
-
                 var zTree=$.fn.zTree.getZTreeObj("treeDemo");
-
                zNodes.push(nodes);
                 $.fn.zTree.init($("#treeDemo"), setting, zNodes);
 
@@ -224,9 +218,7 @@ function ztree() {
                     }
                 }
             }
-        }
-
-    );
+        });
     var log, className = "dark";
 //禁止节点的单机事件
     function zTreeBeforeClick(treeId, treeNode, clickFlag) {
@@ -234,12 +226,10 @@ function ztree() {
     };
 //捕获节点编辑按钮回调函数
     function beforeEditName(treeId, treeNode) {
-
         className = (className === "dark" ? "" : "dark");
        /* showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.desc);*/
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         zTree.selectNode(treeNode);
-
         setTimeout(function () {
             var editCount=0;
             var zTree = $.fn.zTree.getZTreeObj("treeDemo");
@@ -273,12 +263,6 @@ function ztree() {
                            var parentNode=zNodes[z];
                        }
                    }
-
-
-                   /* if (parentNode == null) {
-                           parNodeId = 0;
-                        parNodeName = '';
-                    }*/
                     if(parentNode!=null){
                         parNodeId = parentNode.id;
                         parNodeName = parentNode.realName;
@@ -287,14 +271,16 @@ function ztree() {
                 }
             }
 
-
             $("#importRequired option").each(function () {
                 if ($(this).val() == treeNode.importRequired) {
                     $(this).attr("selected", true);
-
                     if ($(this).val() == 1) {
                         $(".requiredtime").show();
                         $(".select2").show();
+                        $(".apply_style").hide();
+                        $(".maxWork").show();
+                        $("#maxWorkload").val(treeNode.limitWorkload);
+                        $("#maxWorkload").attr("disabled","disabled");
                         $(".applyDeadLabel").text("复核截止时间");
                         $(".revDeadLabel").text("导入截止时间");
                         $("#importManager").text("负责人");
@@ -302,12 +288,20 @@ function ztree() {
                     else if ($(this).val() == 0) {
                         $(".fomulaPara").show();
                         $(".requiredtime").show();
+                        $(".apply_style").show();
+                        $("#applyStyle").attr("disabled","disabled");
+                        $("#applyStyle").val(treeNode.isSingle);
+                        $(".maxWork").show();
+                        $("#maxWorkload").attr("disabled","disabled");
+                        $("#maxWorkload").val(treeNode.limitWorkload);
                         $(".select2").show();
                         $(".applyDeadLabel").text("申报截止时间");
                         $(".revDeadLabel").text("审核截止时间");
                         $("#importManager").text("审核人");
                     }
                     else {
+                        $(".apply_style").hide();
+                        $(".maxWork").hide();
                         $(".requiredtime").hide();
                         $(".select2").hide();
                     }
@@ -341,9 +335,6 @@ function ztree() {
             if (treeNode.otherJsonParameters != null) {
                 otherjsonstrArray = treeNode.otherJsonParameters;
             }
-            /*else {
-             jsonstrArray='';
-             }*/
             var addOtherStr = '';
 
             for (var pramterCount = 0; pramterCount < otherjsonstrArray.length; pramterCount++) {
@@ -358,9 +349,7 @@ function ztree() {
             if (treeNode.formulaParameterList != null) {
                 jsonstrArray = treeNode.formulaParameterList;
             }
-            /*else {
-             jsonstrArray='';
-             }*/
+
             var addStr = '';
             for (var pramterCount = 0; pramterCount < jsonstrArray.length; pramterCount++) {
                 editCount++;
@@ -411,13 +400,14 @@ function ztree() {
                                 $("#parentId").attr("disabled","disabled");
                                 $(".parameterName").removeAttr("disabled");
                                 $(".parameterSymbol").removeAttr("disabled");
+                                $("#applyStyle").removeAttr("disabled");
+                                $("#maxWorkload").removeAttr("disabled");
                                 $(".otherParameterName").removeAttr("disabled");
                                 $("#addParameter").show();
                                 $("#addOtherParameter").show();
                                 $(".editOtherRow").show();
                                 $(".editParaRow").show();
-                                // $('#' + treeNode.tId + '_a').css({'background-color': '#ffe746', "color": "#2A3F54"});
-                                //   return confirm("解锁节点成功！");
+
                                 ztree();
                             }
 
@@ -441,15 +431,59 @@ function ztree() {
                             $("#addOtherParameter").show();
                             $(".editOtherRow").show();
                             $(".editParaRow").show();
-                            // $('#' + treeNode.tId + '_a').css({'background-color': '#ffe746', "color": "#2A3F54"});
-                            //   return confirm("解锁节点成功！");
-                          //   ztree();
+                            $("#applyStyle").removeAttr("disabled");
+                            $("#maxWorkload").removeAttr("disabled");
 
                 }
             });
             $(document).off("click",'#save');
             $(document).on("click",'#save', function () {
+                if(!$("#itemName").val()){
+                    $("#myname").addClass("has-error");
+                    $("#experient_name").show();
+                    return false;
+                }
+                if(!$("#desc").val()){
+                    $("#mydesc").addClass("has-error");
+                    $("#experient_desc").show();
+                    return false;
+                }
+                if(radio!=2) {
+                    if (!($("#formula").val())) {
+                        $("#myformula").addClass("has-error");
+                        $("#experient_formula").show();
+                        return false;
+                    }
+                    if (!$("#teacherName").val()) {
+                        $("#mymanager").addClass("has-error");
+                        $("#experient_manager").show();
+                        return false;
+                    }
+                    if (!$("#applyDeadline").val()) {
+                        $("#myapply").addClass("has-error");
+                        $("#experient_apply").show();
+                        return false;
+                    }
+                    if (!$("#reviewDeadline").val()) {
+                        $("#myrevie").addClass("has-error");
+                        $("#experient_revie").show();
+                        return false;
+                    }
+                    if (!$(".parameterName").val()) {
+                        $("#mypara").addClass("has-error");
+                        $("#experient_para").show();
+                        return false;
+                    }
+                    if (!$("#maxWorkload").val()) {
+                        var re = /^[0-9]+.?[0-9]*$/;
+                        var nubmer = $("#maxWorkload").val();
+                        if (!re.test(nubmer)) {
+                            alert("最大工作当量应填写数字！");
+                            return false;
+                        }
 
+                    }
+                }
                 var parametername = $('.parameterName');
                 var newArray=new Array();
                 for(var i=0;i<parametername.length;i++){
@@ -467,137 +501,25 @@ function ztree() {
                 var reviewTimetodate = $('#reviewDeadline').val();
                 var applyTimetodate = $('#applyDeadline').val();
 
-                var radio=$("#importRequired option:selected");
+                var radio=$("#importRequired option:selected").val();
+
                 var ischild=$("input:radio[name='hasChildNode']:checked").val();
                 var reviewerid=$('#teacherName option:selected');
+                var newType=0;
+                if(radio==1){
+                    newType=1;
+                }
+                else if(radio==0){
+                    newType=$("#applyStyle option:selected").val();
+                }
+                else{
+                    newType=0;
+                }
                 var itemcount=0;
                 $.get(affectUrl+"?categoryId="+treeNode.id,function (data) {
                     itemcount=data.data.itemCount;
                 });
                 if(itemcount==0){
-                    $.post(categoryEditUrl,
-                        {
-                            name: $('#itemName').val(),
-                            desc: $('#desc').val(),
-                            parentId: parNodeId,
-                            isLeaf: ischild,
-                            reviewDeadline: reviewTimetodate,
-                            applyDeadline: applyTimetodate,
-                            reviewerId: reviewerid.val(),
-                            formula: $('#formula').val(),
-                            importRequired: radio.val(),
-                            version: $('#version').val(),
-                            categoryId: treeNode.id,
-                            jsonParameters: newArray,
-                            otherJson:otherArray
-                        },
-                        function (data) {
-
-                            /*    var a=x.match(/\d+/g);
-                             var b=y.match(/\d+/g);
-                             var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
-                             var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];*/
-                            if(data.status==200){
-                                alert("规则已保存！");
-                                ztree();
-
-                                $.get(categoryAllUrl,function (data) {
-                                        for (var m = 0; m < data.data.categoryTree.length; m++) {
-
-                                            createTree(data.data.categoryTree[m]);
-                                        }
-                                        function createTree(item) {
-                                            var appDeadline=item.applyDeadline;
-                                            var rewDeadline=item.reviewDeadline;
-                                            if(item.categoryId==treeNode.id){
-                                                if(item.importRequired==1){
-                                                    var newnode={
-                                                        'name':item.name,
-                                                        'realName':item.name,
-                                                        'font':{'background-color':'#6fcd54','color':'#fff'},
-                                                        'id': item.categoryId,
-                                                        'parentId': item.parentId,
-                                                        'desc': item.desc,
-                                                        'title':'【规则描述】'+item.desc+ '&#10【导入截止】'+rewDeadline+'&#10【复核截止】'+appDeadline,
-                                                        'reviewDeadline': item.reviewDeadline,
-                                                        'applyDeadline': item.applyDeadline,
-                                                        'formula': item.formula,
-                                                        'reviewerId':item.reviewerId,
-                                                        'formulaParameterList':item.formulaParameterList,
-                                                        'otherJsonParameters':item.otherJsonParameters,
-                                                        'isLeaf':item.isLeaf,
-                                                        'importRequired':item.importRequired,
-                                                        'iconSkin':"icon06",
-                                                        'status':item.status,
-                                                        //  'status':item.status,
-                                                        'open':true}
-                                                }
-                                                else if(item.importRequired==0){
-                                                    var newnode={
-                                                        'name':item.name,
-                                                        'realName':item.name,
-                                                        'font':{'background-color':'#6fcd54','color':'#fff'},
-                                                        'id': item.categoryId,
-                                                        'parentId': item.parentId,
-                                                        'desc': item.desc,
-                                                        'title':'【规则描述】'+item.desc+ '&#10【申报截止】'+rewDeadline+'&#10【审核截止】'+appDeadline,
-                                                        'reviewDeadline': item.reviewDeadline,
-                                                        'applyDeadline': item.applyDeadline,
-                                                        'formula': item.formula,
-                                                        'reviewerId':item.reviewerId,
-                                                        'formulaParameterList':item.formulaParameterList,
-                                                        'otherJsonParameters':item.otherJsonParameters,
-                                                        'isLeaf':item.isLeaf,
-                                                        'importRequired':item.importRequired,
-                                                        'iconSkin':"icon06",
-                                                        'status':item.status,
-                                                        //  'status':item.status,
-                                                        'open':true}
-                                                }
-                                                else{
-                                                    var newnode={
-                                                        'name':item.name,
-                                                        'realName':item.name,
-                                                        'font':{'background-color':'#6fcd54','color':'#fff'},
-                                                        'id': item.categoryId,
-                                                        'parentId': item.parentId,
-                                                        'desc': item.desc,
-                                                        'title':'【规则描述】'+item.desc,
-                                                        'reviewDeadline': item.reviewDeadline,
-                                                        'applyDeadline': item.applyDeadline,
-                                                        'formula': item.formula,
-                                                        'reviewerId':item.reviewerId,
-                                                        'formulaParameterList':item.formulaParameterList,
-                                                        'otherJsonParameters':item.otherJsonParameters,
-                                                        'isLeaf':item.isLeaf,
-                                                        'importRequired':item.importRequired,
-                                                        //  'iconSkin':"icon06",
-                                                        'status':item.status,
-                                                        'iconSkin':"icon04",
-                                                        //  'status':item.status,
-                                                        'open':true}
-                                                }
-
-                                                treeNode=newnode;
-                                            }
-                                            else if (item.children) {
-                                                for(var i=0;i<item.children.length;i++) {
-                                                    createTree(item.children[i]);
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                );
-                                beforeEditName("treeDemo",treeNode);
-
-                            }
-
-                        }
-                    );
-                }
-                else {
-                    if(confirm("修改此规则将会影响"+itemcount+"条项目"))   {
                         $.post(categoryEditUrl,
                             {
                                 name: $('#itemName').val(),
@@ -608,7 +530,9 @@ function ztree() {
                                 applyDeadline: applyTimetodate,
                                 reviewerId: reviewerid.val(),
                                 formula: $('#formula').val(),
-                                importRequired: radio.val(),
+                                isSingle:newType,
+                                limitWorkload:$("#maxWorkload").val(),
+                                importRequired:radio,
                                 version: $('#version').val(),
                                 categoryId: treeNode.id,
                                 jsonParameters: newArray,
@@ -616,10 +540,6 @@ function ztree() {
                             },
                             function (data) {
 
-                                /*    var a=x.match(/\d+/g);
-                                 var b=y.match(/\d+/g);
-                                 var appDeadline=b[1]+'/'+b[2]+'/'+b[0];
-                                 var rewDeadline=a[1]+'/'+a[2]+'/'+a[0];*/
                                 if(data.status==200){
                                     alert("规则已保存！");
                                     ztree();
@@ -645,6 +565,8 @@ function ztree() {
                                                             'reviewDeadline': item.reviewDeadline,
                                                             'applyDeadline': item.applyDeadline,
                                                             'formula': item.formula,
+                                                            'isSingle':item.isSingle,
+                                                            'limitWorkload':item.limitWorkload,
                                                             'reviewerId':item.reviewerId,
                                                             'formulaParameterList':item.formulaParameterList,
                                                             'otherJsonParameters':item.otherJsonParameters,
@@ -668,6 +590,8 @@ function ztree() {
                                                             'applyDeadline': item.applyDeadline,
                                                             'formula': item.formula,
                                                             'reviewerId':item.reviewerId,
+                                                            'isSingle':item.isSingle,
+                                                            'limitWorkload':item.limitWorkload,
                                                             'formulaParameterList':item.formulaParameterList,
                                                             'otherJsonParameters':item.otherJsonParameters,
                                                             'isLeaf':item.isLeaf,
@@ -689,6 +613,130 @@ function ztree() {
                                                             'reviewDeadline': item.reviewDeadline,
                                                             'applyDeadline': item.applyDeadline,
                                                             'formula': item.formula,
+                                                            'reviewerId':item.reviewerId,
+                                                            'isSingle':item.isSingle,
+                                                            'limitWorkload':item.limitWorkload,
+                                                            'formulaParameterList':item.formulaParameterList,
+                                                            'otherJsonParameters':item.otherJsonParameters,
+                                                            'isLeaf':item.isLeaf,
+                                                            'importRequired':item.importRequired,
+                                                            //  'iconSkin':"icon06",
+                                                            'status':item.status,
+                                                            'iconSkin':"icon04",
+                                                            //  'status':item.status,
+                                                            'open':true}
+                                                    }
+
+                                                    treeNode=newnode;
+                                                }
+                                                else if (item.children) {
+                                                    for(var i=0;i<item.children.length;i++) {
+                                                        createTree(item.children[i]);
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    beforeEditName("treeDemo",treeNode);
+                                }
+                            });
+                }
+                else {
+                    if(confirm("修改此规则将会影响"+itemcount+"条项目"))   {
+                        $.post(categoryEditUrl,
+                            {
+                                name: $('#itemName').val(),
+                                desc: $('#desc').val(),
+                                parentId: parNodeId,
+                                isLeaf: ischild,
+                                reviewDeadline: reviewTimetodate,
+                                applyDeadline: applyTimetodate,
+                                reviewerId: reviewerid.val(),
+                                formula: $('#formula').val(),
+                                importRequired: radio,
+                                version: $('#version').val(),
+                                isSingle:newType,
+                                limitWorkload:$("#maxWorkload").val(),
+                                categoryId: treeNode.id,
+                                jsonParameters: newArray,
+                                otherJson:otherArray
+                            },
+                            function (data) {
+
+                                if(data.status==200){
+                                    alert("规则已保存！");
+                                    ztree();
+
+                                    $.get(categoryAllUrl,function (data) {
+                                            for (var m = 0; m < data.data.categoryTree.length; m++) {
+
+                                                createTree(data.data.categoryTree[m]);
+                                            }
+                                            function createTree(item) {
+                                                var appDeadline=item.applyDeadline;
+                                                var rewDeadline=item.reviewDeadline;
+                                                if(item.categoryId==treeNode.id){
+                                                    if(item.importRequired==1){
+                                                        var newnode={
+                                                            'name':item.name,
+                                                            'realName':item.name,
+                                                            'font':{'background-color':'#6fcd54','color':'#fff'},
+                                                            'id': item.categoryId,
+                                                            'parentId': item.parentId,
+                                                            'desc': item.desc,
+                                                            'title':'【规则描述】'+item.desc+ '&#10【导入截止】'+rewDeadline+'&#10【复核截止】'+appDeadline,
+                                                            'reviewDeadline': item.reviewDeadline,
+                                                            'applyDeadline': item.applyDeadline,
+                                                            'formula': item.formula,
+                                                            'isSingle':item.isSingle,
+                                                            'limitWorkload':item.limitWorkload,
+                                                            'reviewerId':item.reviewerId,
+                                                            'formulaParameterList':item.formulaParameterList,
+                                                            'otherJsonParameters':item.otherJsonParameters,
+                                                            'isLeaf':item.isLeaf,
+                                                            'importRequired':item.importRequired,
+                                                            'iconSkin':"icon06",
+                                                            'status':item.status,
+                                                            //  'status':item.status,
+                                                            'open':true}
+                                                    }
+                                                    else if(item.importRequired==0){
+                                                        var newnode={
+                                                            'name':item.name,
+                                                            'realName':item.name,
+                                                            'font':{'background-color':'#6fcd54','color':'#fff'},
+                                                            'id': item.categoryId,
+                                                            'parentId': item.parentId,
+                                                            'desc': item.desc,
+                                                            'title':'【规则描述】'+item.desc+ '&#10【申报截止】'+rewDeadline+'&#10【审核截止】'+appDeadline,
+                                                            'reviewDeadline': item.reviewDeadline,
+                                                            'applyDeadline': item.applyDeadline,
+                                                            'formula': item.formula,
+                                                            'isSingle':item.isSingle,
+                                                            'limitWorkload':item.limitWorkload,
+                                                            'reviewerId':item.reviewerId,
+                                                            'formulaParameterList':item.formulaParameterList,
+                                                            'otherJsonParameters':item.otherJsonParameters,
+                                                            'isLeaf':item.isLeaf,
+                                                            'importRequired':item.importRequired,
+                                                            'iconSkin':"icon06",
+                                                            'status':item.status,
+                                                            //  'status':item.status,
+                                                            'open':true}
+                                                    }
+                                                    else{
+                                                        var newnode={
+                                                            'name':item.name,
+                                                            'realName':item.name,
+                                                            'font':{'background-color':'#6fcd54','color':'#fff'},
+                                                            'id': item.categoryId,
+                                                            'parentId': item.parentId,
+                                                            'desc': item.desc,
+                                                            'title':'【规则描述】'+item.desc,
+                                                            'reviewDeadline': item.reviewDeadline,
+                                                            'applyDeadline': item.applyDeadline,
+                                                            'formula': item.formula,
+                                                            'isSingle':item.isSingle,
+                                                            'limitWorkload':item.limitWorkload,
                                                             'reviewerId':item.reviewerId,
                                                             'formulaParameterList':item.formulaParameterList,
                                                             'otherJsonParameters':item.otherJsonParameters,
@@ -790,27 +838,7 @@ function ztree() {
     function showRenameBtn(treeId, treeNode) {
         return treeNode;
     }
-//选中时
-    /*function onClick(event, treeId, treeNode){
-        beforeEditName(treeId, treeNode) ;
-        $(".manageEdit").hide();
-        $(".submitEdit").hide();
-    }*/
-    /*function showLog(str) {
-        if (!log) log = $("#log");
-        log.append("<li class='"+className+"'>"+str+"</li>");
-        if(log.children("li").length > 8) {
-            log.get(0).removeChild(log.children("li")[0]);
-        }
-    }*/
-    /*function getTime() {
-        var now= new Date(),
-            h=now.getHours(),
-            m=now.getMinutes(),
-            s=now.getSeconds(),
-            ms=now.getMilliseconds();
-        return (h+":"+m+":"+s+ " " +ms);
-    }*/
+
     function addHoverDom(treeId, treeNode){
         var sObj = $("#" + treeNode.tId + "_span");
         if(treeNode.importRequired==2 ) {
@@ -828,7 +856,7 @@ function ztree() {
                     initModal();
                     $(document).off('click', '#save');
                     $(document).on('click', '#save', function () {
-                        var radio=$("#importRequired option:selected");
+                        var radio=$("#importRequired option:selected").val();
                         if(!$("#itemName").val()){
                             $("#myname").addClass("has-error");
                             $("#experient_name").show();
@@ -841,7 +869,14 @@ function ztree() {
                         }
                         var reviewTimetodate = $('#reviewDeadline').val();
                         var applyTimetodate = $('#applyDeadline').val();
-                        if(radio.val()!=2) {
+                        var newtype=0;
+                        if(radio==1){
+                            newtype=1;
+                        }
+                        else if(radio==0){
+                            newtype=$("#applyStyle option:selected").val();
+                        }
+                        if(radio!=2) {
                             if(!($("#formula").val())){
                                 $("#myformula").addClass("has-error");
                                 $("#experient_formula").show();
@@ -866,6 +901,15 @@ function ztree() {
                                 $("#mypara").addClass("has-error");
                                 $("#experient_para").show();
                                 return false;
+                            }
+                            if(!$("#maxWorkload").val()){
+                                var re = /^[0-9]+.?[0-9]*$/;
+                                var nubmer = $("#maxWorkload").val();
+                                if (!re.test(nubmer)) {
+                                    alert("最大工作当量应填写数字！");
+                                    return false;
+                                }
+
                             }
 
                             var parametername = $('.parameterName');
@@ -901,7 +945,9 @@ function ztree() {
                                     applyDeadline: applyTimetodate,
                                     reviewerId: reviewerid.val(),
                                     formula: $('#formula').val(),
-                                    importRequired: radio.val(),
+                                    importRequired: radio,
+                                    isSingle:newtype,
+                                    limitWorkload:$("#maxWorkload").val(),
                                     jsonParameters: newArray,
                                     otherJson: otherArray
 
@@ -920,6 +966,8 @@ function ztree() {
                                                 'parentId': data.data.category.parentId,
                                                 'status': data.data.category.status,
                                                 'desc': data.data.category.desc,
+                                                'isSingle':data.data.category.isSingle,
+                                                'limitWorkload':data.data.category.limitWorkload,
                                                 'title': '【规则描述】' + data.data.category.desc + '&#10【导入截止】' + appDeadline + '&#10【复核截止】' + rewDeadline,
                                                 'reviewDeadline': rewDeadline,
                                                 'applyDeadline': appDeadline,
@@ -940,6 +988,8 @@ function ztree() {
                                                 'id': data.data.category.categoryId,
                                                 'parentId': data.data.category.parentId,
                                                 'desc': data.data.category.desc,
+                                                'isSingle':data.data.category.isSingle,
+                                                'limitWorkload':data.data.category.limitWorkload,
                                                 'title': '【规则描述】' + data.data.category.desc + '&#10【申报截止】' + appDeadline + '&#10【审核截止】' + rewDeadline,
                                                 'status': data.data.category.status,
                                                 'reviewDeadline': rewDeadline,
@@ -1023,10 +1073,6 @@ function ztree() {
         zTree.setting.edit.editNameSelectAll =  $("#selectAll").attr("checked");
     }
     $(document).ready(function(){
-        /*$(document).on("click",".node_name",function () {
-            $(".node_name").off("click");
-        })*/
-
         $(document).off("click","#addToTable");
         $(document).on('click','#addToTable',function() {
             initRemoveAttr();
@@ -1034,7 +1080,8 @@ function ztree() {
            initModal();
             $(document).off('click','#save');
             $(document).on('click','#save',function () {
-                var radio=$("#importRequired option:selected");
+                var radio=$("#importRequired option:selected").val();
+
                 if(!$("#itemName").val()){
                     $("#myname").addClass("has-error");
                     $("#experient_name").show();
@@ -1047,8 +1094,14 @@ function ztree() {
                 }
                 var reviewTimetodate = $('#reviewDeadline').val();
                 var applyTimetodate = $('#applyDeadline').val();
-
-                 if(radio.val()!=2){
+                var newtype=0;
+                if(radio==1){
+                    newtype=1;
+                }
+                else if(radio==0){
+                    newtype=$("#applyStyle option:selected").val();
+                }
+                 if(radio!=2){
                      if(!($("#formula").val())){
                          $("#myformula").addClass("has-error");
                          $("#experient_formula").show();
@@ -1073,6 +1126,15 @@ function ztree() {
                          $("#mypara").addClass("has-error");
                          $("#experient_para").show();
                          return false;
+                     }
+                     if(!$("#maxWorkload").val()){
+                         var re = /^[0-9]+.?[0-9]*$/;
+                             var nubmer = $("#maxWorkload").val();
+                             if (!re.test(nubmer)) {
+                                 alert("最大工作当量应填写数字！");
+                                 return false;
+                             }
+
                      }
                      var parametername =$(".parameterName") ;
                      var newArray=new Array();
@@ -1107,8 +1169,10 @@ function ztree() {
                              applyDeadline: applyTimetodate,
                              reviewerId:reviewerid.val() ,
                              formula: $('#formula').val(),
-                             importRequired: radio.val(),
+                             importRequired: radio,
                              jsonParameters: newArray,
+                             isSingle:newtype,
+                             limitWorkload:$("#maxWorkload").val(),
                              otherJson:otherArray
                          }, function (data) {
                              if(data.status==200&&data.data.category){
@@ -1117,8 +1181,7 @@ function ztree() {
 
                                  var x=data.data.category.reviewDeadline;
                                  var y=data.data.category.applyDeadline;
-                                 /* var a=x.match(/\d+/g);
-                                  var b=y.match(/\d+/g);*/
+
                                  var zTree = $.fn.zTree.getZTreeObj("treeDemo");
                                  if(data.data.category.importRequired==1){
                                      var newNode= {
@@ -1132,6 +1195,8 @@ function ztree() {
                                          'applyDeadline':y,
                                          'formula':data.data.category.formula,
                                          'status':data.data.category.status,
+                                         'isSingle':data.data.category.isSingle,
+                                         'limitWorkload':data.data.category.limitWorkload,
                                          'reviewerId':data.data.category.reviewerId,
                                          'formulaParameterList':data.data.category.formulaParameterList,
                                          'otherJsonParameters':data.data.category.otherJsonParameters,
@@ -1150,6 +1215,8 @@ function ztree() {
                                          'parentId': data.data.category.parentId,
                                          'status':data.data.category.status,
                                          'desc':data.data.category.desc,
+                                         'isSingle':data.data.category.isSingle,
+                                         'limitWorkload':data.data.category.limitWorkload,
                                          'reviewDeadline':x,
                                          'applyDeadline':y,
                                          'formula':data.data.category.formula,
@@ -1242,6 +1309,9 @@ function ztree() {
                 $("#importManager").text("负责人");
                 $(".requiredtime").show();
                 $(".select2").show();
+                $(".apply_style").hide();
+                $(".maxWork").show();
+                $("#maxWorkload").val(null);
             }
             else if(options.val()==0){
                 $(".applyDeadLabel").text("申报截止时间");
@@ -1249,10 +1319,15 @@ function ztree() {
                 $("#importManager").text("审核人");
                 $(".requiredtime").show();
                 $(".select2").show();
+                $(".apply_style").show();
+                $(".maxWork").show();
+                $("#maxWorkload").val(null);
             }
             else {
                 $(".requiredtime").hide();
                 $(".select2").hide();
+                $(".apply_style").hide();
+                $(".maxWork").hide();
             }
 
         });
@@ -1279,7 +1354,7 @@ function ztree() {
 
         });
         $.fn.modal.Constructor.prototype.enforceFocus = function () {};
-
+//todo to match maxWorkload
     });
    /* function add0(m){return m<10?'0'+m:m }*/
     function zTreeOnClick(event, treeId, treeNode) {
@@ -1290,7 +1365,6 @@ function ztree() {
 
             if(i==nodes.length-1){
                 str+="categoryId="+nodes[i].id;
-
             }
             else
                 str+="categoryId="+nodes[i].id+"&";
@@ -1304,13 +1378,8 @@ function ztree() {
              if(confirm("确认提交？")){
                  $.post(categorySubmitUrl+"?"+str,{test:12},function (data){
                      if(data.status==200){
-                         // window.location.reload();
                          ztree();
                          alert("提交规则成功！");
-
-                         /*for(var m=0;m<nodes.length;nodes++){
-                          $('#'+nodes[m].tId+'_span').attr("color","rgba(29,125,228,0.74)");
-                          }*/
 
                      }
                      else
@@ -1318,14 +1387,11 @@ function ztree() {
                      $("#addModal").hide();
                  } )
              };
-
-
         });
 
     }
     $.fn.zTree.init($("#treeDemo"), setting, zNodes);
 
-    // $("#selectAll").bind("click", selectAll);
 }
 function initRemoveAttr() {
     $("#myname").removeClass("has-error");
@@ -1344,17 +1410,11 @@ function initRemoveAttr() {
 function format() {
     var time = new Date();
     var y = time.getFullYear();
-    /* var m = time.getMonth()+1;
-     var d = time.getDate();*/
-
     return y+'-12-31 00:00:00';
 }
 function importFormat() {
     var time = new Date();
     var y = time.getFullYear();
-    /* var m = time.getMonth()+1;
-     var d = time.getDate();*/
-
     return y+'-12-28 00:00:00';
 }
 
@@ -1369,6 +1429,8 @@ function initModal() {
     $(".select2-container").css("width","405px");
     $("#parentId").attr("disabled", "disabled");
     $(".requiredtime").hide();
+    $(".maxWork").hide();
+    $(".apply_style").hide();
     $("#importRequired option").each(function () {
         console.log($(this).val());
         if ($(this).val() == 2) {

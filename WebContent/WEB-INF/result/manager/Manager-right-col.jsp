@@ -501,6 +501,16 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group apply_style">
+                        <label class="col-sm-3 control-label">申报形式<span class="needed">*</span></label>
+                        <div class="col-sm-9">
+                            <select class="form-control " id="applyStyle">
+                                <option value="1">个人申报</option>
+                                <option value="0">小组/个人申报</option>
+
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group requiredtime" id="mymanager">
                         <label class="col-sm-3 control-label" ><span id="importManager">审核人员</span><span class="needed">*</span></label>
                         <div class="col-sm-9">
@@ -522,13 +532,7 @@
                             <input type="text" class="form-control" id="parentId" name="parentId">
                         </div>
                     </div>
-                    <%--<div class="form-group">
-                        <label class="col-sm-3 control-label">是否为叶子节点</label>
-                        <div class="col-sm-9">
-                            <input type="radio" class="isLeaf" name="hasChildNode" value="Y">是
-                            <input type="radio" class="isLeaf" name="hasChildNode"  value="N">否
-                        </div>
-                    </div>--%>
+
                     <div class="form-group requiredtime" id="myapply">
                         <label class="col-sm-3 control-label">复核截止时间<span class="needed">*</span></label>
                         <div class="col-sm-9">
@@ -627,7 +631,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group maxWork">
+                        <label class="col-sm-3 control-label">最大工作当量</label>
+                        <div class="col-sm-9">
 
+                            <input type="text" class="form-control"  id="maxWorkload">
+
+
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
