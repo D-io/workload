@@ -83,7 +83,7 @@
                 </tbody>
             </table>
 
-            <div class="modal fade bs-example-modal-lg" id="applyModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal fade bs-example-modal-lg" id="applyModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="display: none;">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content" style="height: 780px;">
 
@@ -156,7 +156,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade bs-example-modal-lg" id="showPieModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal fade bs-example-modal-lg" id="showPieModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="display: none;">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content" style="height: 500px;">
 
@@ -175,7 +175,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
+            <div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog" role="document" style="min-width: 700px">
                     <%--<div class="modal-content">
                         <div class="modal-header">

@@ -82,7 +82,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="viewdetail_review" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal fade" id="viewdetail_review" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false"  style="display: none;">
             <div class="modal-dialog" role="document" style="min-width: 700px">
                 <div class="modal-content">
                     <div class="modal-header" style="position: relative">
@@ -112,7 +112,7 @@
             </div>
         </div>
 
-        <div class="modal fade bs-example-modal-lg" id="importModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal fade bs-example-modal-lg" id="importModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="display: none;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
 
@@ -157,7 +157,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="viewdetail_reviewer" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal fade" id="viewdetail_reviewer" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false"  style="display: none;">
             <div class="modal-dialog" role="document" style="min-width: 700px">
                 <div class="modal-content">
                     <div class="modal-header" style="position: relative">
@@ -187,7 +187,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="refuModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="refuModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="position: relative">

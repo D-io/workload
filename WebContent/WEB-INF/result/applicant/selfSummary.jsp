@@ -183,7 +183,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil">
+<div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="width:96%;float: left;">

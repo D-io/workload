@@ -54,7 +54,7 @@
                     </table>
                 </div>
 
-                <div class="modal fade" id="viewdetail_apply" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                <div class="modal fade" id="viewdetail_apply" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="display: none;">
                     <div class="modal-dialog" role="document" style="min-width: 700px">
                         <div class="modal-content">
                             <div class="modal-header" style="position: relative">
@@ -109,7 +109,7 @@
             </div>
         </div>
 
-        <div class="modal fade bs-example-modal-lg" id="applyModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal fade bs-example-modal-lg" id="applyModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="display: none;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header" style="position: relative">
@@ -133,7 +133,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="addContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal fade" id="addContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="position: relative">
@@ -310,7 +310,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-        <div class="modal fade" id="showContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="showContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="position: relative">
@@ -493,7 +493,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-        <div class="modal fade" id="refuse_To_Apply" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal fade" id="refuse_To_Apply" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="position: relative">
