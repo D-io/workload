@@ -376,6 +376,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		List<Item> itemList = itemService
 				.findItemByCategory(getCurrentSemester(), categoryId, ZERO_INT);
+		if(isEmptyList(itemList)) {
+			return successResponse();
+		}
 
 		List<Item> teacherItems = new ArrayList<>();
 		for (Item item : itemList) {
@@ -423,6 +426,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		//获取当前教师对应的导入类的条目
 		List<ItemDto> itemDtoList = findItems(IMPORT_EXCEL, getImportStatus(), teacherId,
 				getCurrentSemester());
+		if(isEmptyList(itemDtoList)) {
+			return successResponse();
+		}
 
 		//获取当前教师对应的导入类的条目对应的规则列表
 		List<Category> categoryList = new ArrayList<>();
@@ -564,6 +570,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		List<ItemDto> itemList = findItems(null, statusList, teacherId, getCurrentSemester());
+		if(isEmptyList(itemList)) {
+			return successResponse();
+		}
 		List<ItemDto> applyItemList = new ArrayList<>();
 		List<ItemDto> importItemList = new ArrayList<>();
 
@@ -631,6 +640,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(
 				itemService.findItemsByStatus(status, teacherId, getCurrentSemester()));
+		if(isEmptyList(itemDtoList)) {
+			return null;
+		}
 		List<ItemDto> itemDtoGroup = new ArrayList<>();
 
 		for (ItemDto itemDto : itemDtoList) {
@@ -664,6 +676,10 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	private List<ItemDto> findItems(Integer importRequired, List<Integer> statusList,
 			Integer teacherId, String version) {
 
+		if(isEmptyList(statusList)) {
+			return null;
+		}
+
 		List<ItemDto> itemDtoList = new ArrayList<>();
 		for (Integer status : statusList) {
 			itemDtoList.addAll(findItemsByStatus(importRequired, status, teacherId, version));
@@ -685,6 +701,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		List<CategoryDto> parentList = categoryConverter.poListToDtoList(
 				categoryService.getCategoryChildren(SUBMITTED, ZERO_INT, getCurrentSemester()));
+		if(isEmptyList(parentList)) {
+			return null;
+		}
 		List<CategoryDto> tree = new ArrayList<>();
 		for (CategoryDto categoryDto : parentList) {
 			tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
@@ -696,6 +715,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		ItemDto itemDto = itemConverter.poToDto(item);
 		Double workload = itemDto.getWorkload();
 		List<ChildWeight> childWeightList = itemDto.getChildWeightList();
+		if(isEmptyList(childWeightList)) {
+			return null;
+		}
 		List<ChildWeight> newChildWeightList = new ArrayList<>();
 		for(ChildWeight childWeight : childWeightList) {
 			childWeight.setWorkload(workload * childWeight.getWeight());

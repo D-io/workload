@@ -295,7 +295,7 @@ public class ItemManageController extends ApplicationController {
 			return parameterNotSupportResponse("无法重新申请");
 		}
 
-		if(GROUP.equals(item.getIsGroup()) && !itemDto.getGroupManagerId().equals(teacherId)) {
+		if (GROUP.equals(item.getIsGroup()) && !itemDto.getGroupManagerId().equals(teacherId)) {
 			return invalidOperationResponse("不是小组组长。无法重新申请");
 		}
 
@@ -303,17 +303,17 @@ public class ItemManageController extends ApplicationController {
 		itemDto.setItemId(null);
 		itemDto.setStatus(NON_CHECKED);
 
-
 		Map<String, Object> data = getData();
 		if (GROUP.equals(item.getIsGroup()) && item.getOwnerId().equals(item.getGroupManagerId())) {
-			boolean updateSuccess = itemEvent.updateGroupItemsStatus(item.getItemId(),getCurrentSemester(),DELETED);
-			if(updateSuccess) {
+			boolean updateSuccess = itemEvent
+					.updateGroupItemsStatus(item.getItemId(), getCurrentSemester(), DELETED);
+			if (updateSuccess) {
 				itemEvent.submitGroupItems(itemDto);
- 			} else {
+			} else {
 				return systemErrResponse();
 			}
 		} else {
-			itemService.removeItem(itemId,getCurrentSemester());
+			itemService.removeItem(itemId, getCurrentSemester());
 			Item newItem = itemConverter.dtoToPo(itemDto);
 			item.setStatus(DELETED);
 			itemService.saveItem(item);
@@ -366,7 +366,7 @@ public class ItemManageController extends ApplicationController {
 		/**
 		 * 添加个人申报的限制
 		 */
-		if(!category.getIsSingle().equals(ZERO_INT) && GROUP.equals(itemDto.getIsGroup())) {
+		if (!category.getIsSingle().equals(ZERO_INT) && GROUP.equals(itemDto.getIsGroup())) {
 			return invalidOperationResponse("该类规则无法进行小组申报/导入，只能个人申报/导入");
 		}
 
@@ -406,7 +406,7 @@ public class ItemManageController extends ApplicationController {
 		/**
 		 * 工作量大小限制
 		 */
-		if(workload > category.getLimitWorkload()) {
+		if (workload > category.getLimitWorkload()) {
 			workload = category.getLimitWorkload();
 		}
 
@@ -543,7 +543,7 @@ public class ItemManageController extends ApplicationController {
 					Integer baseItemId = ZERO_INT;
 					double workload = FormulaCalculate
 							.calculate(category.getFormula(), itemDto.getParameterValues());
-					if(workload > category.getLimitWorkload()) {
+					if (workload > category.getLimitWorkload()) {
 						workload = category.getLimitWorkload();
 					}
 
@@ -581,32 +581,37 @@ public class ItemManageController extends ApplicationController {
 					itemService.removeItem(itemId, getCurrentSemester());
 
 					List<Item> memberItems = new ArrayList<>();
-					for (Item item1 : groupItemList) {
-						if (item1.getOwnerId().equals(item1.getGroupManagerId())) {
-							boolean saveSuccess = itemService.saveItem(item1);
-							if (!saveSuccess) {
-								return systemErrResponse("保存失败");
+
+					if (!isEmptyList(groupItemList)) {
+						for (Item item1 : groupItemList) {
+							if (item1.getOwnerId().equals(item1.getGroupManagerId())) {
+								boolean saveSuccess = itemService.saveItem(item1);
+								if (!saveSuccess) {
+									return systemErrResponse("保存失败");
+								}
+								baseItemId = item1.getItemId();
+								itemList.add(item1);
+							} else {
+								memberItems.add(item1);
 							}
-							baseItemId = item1.getItemId();
-							itemList.add(item1);
-						} else {
-							memberItems.add(item1);
 						}
 					}
 
-					for (Item item2 : memberItems) {
-						item2.setParentId(baseItemId);
-						boolean saveSuccess = itemService.saveItem(item2);
-						if (!saveSuccess) {
-							List<Item> itemList1 = itemService
-									.findItemByCategory(getCurrentSemester(), item.getCategoryId(),
-											baseItemId);
-							for (Item item1 : itemList1) {
-								itemService.removeItem(item1.getItemId(), getCurrentSemester());
+					if (!isEmptyList(memberItems)) {
+						for (Item item2 : memberItems) {
+							item2.setParentId(baseItemId);
+							boolean saveSuccess = itemService.saveItem(item2);
+							if (!saveSuccess) {
+								List<Item> itemList1 = itemService
+										.findItemByCategory(getCurrentSemester(),
+												item.getCategoryId(), baseItemId);
+								for (Item item1 : itemList1) {
+									itemService.removeItem(item1.getItemId(), getCurrentSemester());
+								}
+								break;
 							}
-							break;
+							itemList.add(item2);
 						}
-						itemList.add(item2);
 					}
 
 				} else {

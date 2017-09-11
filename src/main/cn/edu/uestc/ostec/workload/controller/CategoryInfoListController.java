@@ -138,9 +138,11 @@ public class CategoryInfoListController extends ApplicationController
 			//获取状态为Disable的工作量类目信息
 			List<CategoryDto> categoryDtos = categoryConverter.poListToDtoList(
 					categoryService.getCategoriesByStatus(DELETED, getCurrentSemester()));
-			for (CategoryDto categoryDto : categoryDtos) {
-				categoryDto.setOtherJson(null);
-				categoryDto.setJsonParameters(null);
+			if (!isEmptyList(categoryDtos)) {
+				for (CategoryDto categoryDto : categoryDtos) {
+					categoryDto.setOtherJson(null);
+					categoryDto.setJsonParameters(null);
+				}
 			}
 			data.put("categoryList", categoryDtos);
 		}
@@ -158,7 +160,7 @@ public class CategoryInfoListController extends ApplicationController
 
 		List<Category> categoryList = categoryService.getAllValidCategory(getCurrentSemester());
 
-		if (null == categoryList) {
+		if (isEmptyList(categoryList)) {
 			return successResponse("无配置好的父类");
 		}
 
@@ -190,7 +192,7 @@ public class CategoryInfoListController extends ApplicationController
 			categoryDtoList = categoryService.getDtoObjects(status, parentId, getCurrentSemester());
 		}
 
-		if (categoryDtoList.size() < 0) {
+		if (categoryDtoList.size() <= 0) {
 			return null;
 		}
 

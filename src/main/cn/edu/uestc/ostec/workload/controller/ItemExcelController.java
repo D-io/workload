@@ -335,21 +335,22 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 				}
 
-				for (Item itemTemp : itemGroupList) {
-					if (GROUP.equals(itemTemp.getIsGroup())) {
-						if (itemTemp.getOwnerId().equals(itemTemp.getGroupManagerId())) {
-							itemService.saveItem(itemTemp);
-							parentId = itemTemp.getItemId();
+				if (!isEmptyList(itemGroupList)) {
+					for (Item itemTemp : itemGroupList) {
+						if (GROUP.equals(itemTemp.getIsGroup())) {
+							if (itemTemp.getOwnerId().equals(itemTemp.getGroupManagerId())) {
+								itemService.saveItem(itemTemp);
+								parentId = itemTemp.getItemId();
+							} else {
+								itemMemberList.add(itemTemp);
+							}
+							continue;
 						} else {
-							itemMemberList.add(itemTemp);
+							itemService.saveItem(itemTemp);
+							itemList.add(itemTemp);
 						}
-						continue;
-					} else {
-						itemService.saveItem(itemTemp);
-						itemList.add(itemTemp);
 					}
 				}
-
 				if (!isEmptyList(itemMemberList)) {
 					for (Item itemTemp : itemMemberList) {
 						itemTemp.setParentId(parentId);

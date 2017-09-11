@@ -169,9 +169,11 @@ public class HistoryInfoController extends ApplicationController {
 						null);
 
 		List<ItemDto> commonItemDto = new ArrayList<>();
-		for (ItemDto itemDto : itemDtoList) {
-			if (itemDto.getOwnerId().equals(itemDto.getReviewerId())) {
-				commonItemDto.add(itemDto);
+		if (!isEmptyList(itemDtoList)) {
+			for (ItemDto itemDto : itemDtoList) {
+				if (itemDto.getOwnerId().equals(itemDto.getReviewerId())) {
+					commonItemDto.add(itemDto);
+				}
 			}
 		}
 
@@ -225,9 +227,12 @@ public class HistoryInfoController extends ApplicationController {
 		if (ROLE_REVIEWER.equals(role)) {
 			List<Category> categoryList = categoryService
 					.getCategoriesByReviewer(user.getUserId(), getCurrentSemester(), null);
-			for (Category category : categoryList) {
-				itemList.addAll(itemConverter.poListToDtoList(itemService
-						.findItemByCategory(getCurrentSemester(), category.getCategoryId(),ZERO_INT)));
+			if (!isEmptyList(categoryList)) {
+				for (Category category : categoryList) {
+					itemList.addAll(itemConverter.poListToDtoList(itemService
+							.findItemByCategory(getCurrentSemester(), category.getCategoryId(),
+									ZERO_INT)));
+				}
 			}
 		} else {
 			itemList = itemService
@@ -236,9 +241,11 @@ public class HistoryInfoController extends ApplicationController {
 		}
 
 		for (History history : historyList) {
-			for (ItemDto itemDto : itemList) {
-				if (history.getItemId().equals(buildHistoryItemId(itemDto.getItemId()))) {
-					histories.add(history);
+			if(!isEmptyList(itemList)) {
+				for (ItemDto itemDto : itemList) {
+					if (history.getItemId().equals(buildHistoryItemId(itemDto.getItemId()))) {
+						histories.add(history);
+					}
 				}
 			}
 		}
@@ -270,10 +277,12 @@ public class HistoryInfoController extends ApplicationController {
 		}
 
 		//根据对应的条目查找相应的历史记录
-		for (ItemDto item : itemDtoList) {
-			List<History> historyList = historyService
-					.getHistoriesByItem(buildHistoryItemId(item.getItemId()), getCurrentSemester());
-			histories.addAll(historyList);
+		if(!isEmptyList(itemDtoList)) {
+			for (ItemDto item : itemDtoList) {
+				List<History> historyList = historyService
+						.getHistoriesByItem(buildHistoryItemId(item.getItemId()), getCurrentSemester());
+				histories.addAll(historyList);
+			}
 		}
 
 		return sortHistories(histories);

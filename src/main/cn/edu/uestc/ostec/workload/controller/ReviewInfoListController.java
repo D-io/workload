@@ -37,14 +37,7 @@ import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.REVIEWER_PATH;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECKED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.SUBMITTED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
+
 import static cn.edu.uestc.ostec.workload.type.UserType.REVIEWER;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -144,8 +137,8 @@ public class ReviewInfoListController extends ApplicationController implements O
 
 		List<Category> categoryList = categoryService
 				.getCategoriesByReviewer(user.getUserId(), getCurrentSemester(), null);
-		if (categoryList.isEmpty()) {
-			return invalidOperationResponse();
+		if (isEmptyList(categoryList)) {
+			return successResponse();
 		}
 
 		List<Category> importCategories = new ArrayList<>();
@@ -157,11 +150,13 @@ public class ReviewInfoListController extends ApplicationController implements O
 			Integer todoCount = ZERO_INT;
 			List<Item> itemList = itemService
 					.findItemByCategory(getCurrentSemester(), category.getCategoryId(), ZERO_INT);
-			for (Item item : itemList) {
-				if (NON_CHECKED.equals(item.getStatus())) {
-					todoCount++;
-				} else {
-					continue;
+			if (!isEmptyList(itemList)) {
+				for (Item item : itemList) {
+					if (NON_CHECKED.equals(item.getStatus())) {
+						todoCount++;
+					} else {
+						continue;
+					}
 				}
 			}
 			categoryBriefs.add(new CategoryBrief(category.getCategoryId(), category.getName(),
@@ -200,8 +195,8 @@ public class ReviewInfoListController extends ApplicationController implements O
 
 		List<Category> categoryList = categoryService
 				.getCategoriesByReviewer(user.getUserId(), getCurrentSemester(), APPLY_SELF);
-		if (categoryList.isEmpty()) {
-			return invalidOperationResponse();
+		if (isEmptyList(categoryList)) {
+			return successResponse();
 		}
 
 		List<Category> categories = new ArrayList<>();
@@ -253,6 +248,9 @@ public class ReviewInfoListController extends ApplicationController implements O
 		List<ItemDto> itemDtoList = itemService
 				.findAll(null, categoryId, null, ownerId, isGroup, getCurrentSemester(), null,
 						null);
+		if(isEmptyList(itemDtoList)) {
+			return successResponse();
+		}
 
 		List<ItemDto> removeItemDtoList = new ArrayList<>();
 
@@ -268,10 +266,12 @@ public class ReviewInfoListController extends ApplicationController implements O
 		}
 
 		double workload = ZERO_DOUBLE;
-		for (ItemDto itemDto : itemDtoList) {
-			Integer status = itemDto.getStatus();
-			if (CHECKED.equals(status)) {
-				workload += itemDto.getWorkload();
+		if(!isEmptyList(itemDtoList)) {
+			for (ItemDto itemDto : itemDtoList) {
+				Integer status = itemDto.getStatus();
+				if (CHECKED.equals(status)) {
+					workload += itemDto.getWorkload();
+				}
 			}
 		}
 
@@ -302,7 +302,7 @@ public class ReviewInfoListController extends ApplicationController implements O
 		//获取审核人负责的Category类目信息
 		List<Category> categoryList = categoryService
 				.getCategoriesByReviewer(reviewerId, getCurrentSemester(), importRequired);
-		if (categoryList.isEmpty()) {
+		if (isEmptyList(categoryList)) {
 			return null;
 		}
 
@@ -314,14 +314,15 @@ public class ReviewInfoListController extends ApplicationController implements O
 			items = itemService
 					.findItemsByCategory(category.getCategoryId(), status, getCurrentSemester(),
 							ZERO_INT);
-			for (Item item : items) {
-				if (GROUP.equals(item.getIsGroup()) && item.getOwnerId()
-						.equals(item.getGroupManagerId())) {
-					item = itemConverter.generateGroupItem(item.getItemId(), getCurrentSemester());
+			if(!isEmptyList(items)) {
+				for (Item item : items) {
+					if (GROUP.equals(item.getIsGroup()) && item.getOwnerId().equals(item.getGroupManagerId())) {
+						item = itemConverter.generateGroupItem(item.getItemId(), getCurrentSemester());
+						itemList.add(item);
+						continue;
+					}
 					itemList.add(item);
-					continue;
 				}
-				itemList.add(item);
 			}
 		}
 
@@ -381,8 +382,10 @@ public class ReviewInfoListController extends ApplicationController implements O
 		List<CategoryDto> parentList = categoryConverter.poListToDtoList(
 				categoryService.getCategoryChildren(SUBMITTED, ZERO_INT, getCurrentSemester()));
 		List<CategoryDto> tree = new ArrayList<>();
-		for (CategoryDto categoryDto : parentList) {
-			tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
+		if(!isEmptyList(parentList)) {
+			for (CategoryDto categoryDto : parentList) {
+				tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
+			}
 		}
 		return tree;
 	}
