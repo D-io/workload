@@ -264,20 +264,22 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					}
 
 					List<OtherJsonParameter> otherJsonParameterList = new ArrayList<>();
-					for (OtherJsonParameter otherJsonParameter : categoryDto
-							.getOtherJsonParameters()) {
-						Cell cell = row.getCell(index);
+					if (isEmptyList(categoryDto.getOtherJsonParameters())) {
+						for (OtherJsonParameter otherJsonParameter : categoryDto
+								.getOtherJsonParameters()) {
+							Cell cell = row.getCell(index);
 
-						String value = null;
-						if (CELL_TYPE_NUMERIC == cell.getCellType()) {
-							value = Double.valueOf(cell.getNumericCellValue()).toString();
-						} else {
-							value = cell.getStringCellValue();
+							String value = null;
+							if (CELL_TYPE_NUMERIC == cell.getCellType()) {
+								value = Double.valueOf(cell.getNumericCellValue()).toString();
+							} else {
+								value = cell.getStringCellValue();
+							}
+							OtherJsonParameter otherJson = new OtherJsonParameter(
+									otherJsonParameter.getKey(), value);
+							otherJsonParameterList.add(otherJson);
+							index++;
 						}
-						OtherJsonParameter otherJson = new OtherJsonParameter(
-								otherJsonParameter.getKey(), value);
-						otherJsonParameterList.add(otherJson);
-						index++;
 					}
 
 					Cell groupManagerId = row.getCell(index);

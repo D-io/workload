@@ -107,7 +107,9 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 				readValueFromJson(category.getJsonParameters(), FormulaParameter.class));
 
 		List<DescAndValue> descAndValues = new ArrayList<>();
-		List<ParameterValue> parameterValueList = itemDto.getParameterValues();
+		List<ParameterValue> parameterValueList = (null == itemDto.getParameterValues() ?
+				new ArrayList<>() :
+				itemDto.getParameterValues());
 		List<FormulaParameter> formulaParameterList = itemDto.getParamDesc();
 		for (int i = 0; i < parameterValueList.size(); i++) {
 			if (parameterValueList.get(i).getSymbol()
