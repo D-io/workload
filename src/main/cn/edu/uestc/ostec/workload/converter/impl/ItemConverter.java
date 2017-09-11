@@ -25,8 +25,10 @@ import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FileHelper;
+import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 import cn.edu.uestc.ostec.workload.support.utils.ObjectHelper;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 
 /**
@@ -175,6 +177,9 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 
 	public Item generateGroupItem(Integer parentId, String version) {
 		Item item = itemDao.select(parentId, version);
+		ItemDto itemDto = poToDto(item);
+		Double workload = FormulaCalculate
+				.calculate(itemDto.getFormula(), itemDto.getParameterValues());
 		List<Item> children = itemDao.selectChild(parentId, version);
 		children.add(item);
 		List<JobDesc> jobDescList = new ArrayList<>();
@@ -185,7 +190,9 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 			Double weight = Double.valueOf(item1.getJsonChildWeight());
 			JobDesc jobDesc = new JobDesc(userId, jobDescription);
 			ChildWeight childWeight = new ChildWeight(userId, weight);
-			childWeight.setWorkload(item.getWorkload());
+			childWeight.setWorkload(item1.getWorkload().equals(ZERO_DOUBLE) ?
+					workload * weight :
+					item1.getWorkload());
 			jobDescList.add(jobDesc);
 			childWeightList.add(childWeight);
 		}

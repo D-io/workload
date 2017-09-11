@@ -7,6 +7,8 @@
  */
 package cn.edu.uestc.ostec.workload.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +24,7 @@ import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
+import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.SubjectDto;
 import cn.edu.uestc.ostec.workload.dto.TeacherWorkloadAnalyze;
@@ -385,7 +388,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				if (GROUP.equals(item.getIsGroup()) && item.getOwnerId()
 						.equals(item.getGroupManagerId())) {
 					if (UNCOMMITTED.equals(item.getStatus())) {
-						teacherItems.add(item);
+						teacherItems.add(calculateChildrenWorkloadOfUncommittedItem(item));
 					} else {
 						Integer parentId = item.getItemId();
 						teacherItems.add(itemConverter
@@ -572,22 +575,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			}
 		}
 
-		//		TotalWorkloadAndCount checkedWorkload = itemService
-		//				.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester());
-		//		TotalWorkloadAndCount nonCheckedWorkload = itemService
-		//				.selectTotalWorkload(teacherId, null, getCurrentSemester());
-		//
-		//		checkedWorkload = (null == checkedWorkload ? EMPTY_WORKLOAD : checkedWorkload);
-		//		nonCheckedWorkload = (null == nonCheckedWorkload ? EMPTY_WORKLOAD : nonCheckedWorkload);
-		//		TeacherWorkload teacherWorkload = new TeacherWorkload();
-		//		teacherWorkload.setCheckedWorkload(checkedWorkload.getWorkload());
-		//		teacherWorkload.setCheckedItems(checkedWorkload.getCount());
-		//
-		//		teacherWorkload.setUncheckedItems(nonCheckedWorkload.getCount());
-		//		teacherWorkload.setUncheckedWorkload(nonCheckedWorkload.getWorkload());
-		//		teacherWorkload.setTotalWorkload(
-		//				teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
-
 		TeacherWorkload teacherWorkload = teacherWorkloadService
 				.getTeacherWorkload(teacherId, getCurrentSemester());
 
@@ -703,6 +690,25 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
 		}
 		return tree;
+	}
+
+	private Item calculateChildrenWorkloadOfUncommittedItem(Item item) {
+		ItemDto itemDto = itemConverter.poToDto(item);
+		Double workload = itemDto.getWorkload();
+		List<ChildWeight> childWeightList = itemDto.getChildWeightList();
+		List<ChildWeight> newChildWeightList = new ArrayList<>();
+		for(ChildWeight childWeight : childWeightList) {
+			childWeight.setWorkload(workload * childWeight.getWeight());
+			newChildWeightList.add(childWeight);
+		}
+
+		itemDto.setChildWeightList(newChildWeightList);
+		try {
+			itemDto.setJsonChildWeight(OBJECT_MAPPER.writeValueAsString(newChildWeightList));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return itemConverter.dtoToPo(itemDto);
 	}
 
 }

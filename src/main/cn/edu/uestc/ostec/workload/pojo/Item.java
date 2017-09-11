@@ -2,6 +2,7 @@ package cn.edu.uestc.ostec.workload.pojo;
 
 import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 
 public class Item implements Cloneable {
@@ -39,7 +40,7 @@ public class Item implements Cloneable {
 	/**
 	 * 根据参数计算出的当前总的工作量
 	 */
-	private Double workload;
+	private Double workload = ZERO_DOUBLE;
 
 	/**
 	 * 组长编号，默认当前申请人为组长。当前登录人编号与此字段一致时，方可进行工作量的修改操作
