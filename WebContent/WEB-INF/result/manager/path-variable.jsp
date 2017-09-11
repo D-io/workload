@@ -102,6 +102,8 @@
 
     var itemGroupUrl=itemInfoUrl+"/item-group";
 
+    var itemGroupImportUrl=itemGroupUrl+"/import";
+
     var itemCollection=itemInfoUrl+"/collection";
 
     var commonYearsUrl=contextPath+"/common/years";

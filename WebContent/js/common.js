@@ -162,7 +162,7 @@ $(document).ready(function () {
             }
 
         }
-        $.get(itemGroupUrl + "?" + 'categoryId=' + flag, function (msg) {
+        $.get(itemGroupImportUrl + "?" + 'categoryId=' + flag, function (msg) {
             $(".importItemTbody").empty();
             if(msg.data.itemList.length>0){
             //    $(".parameterTh").append("")
