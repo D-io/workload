@@ -192,7 +192,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 		Item item = null;
 		List<Item> itemList = new ArrayList<>();
-//		List<ItemBrief> itemBriefList = new ArrayList<>();
+		//		List<ItemBrief> itemBriefList = new ArrayList<>();
 		List<Item> itemGroupList = new ArrayList<>();
 		Integer parentId = ZERO_INT;
 		List<Item> itemMemberList = new ArrayList<>();
@@ -269,7 +269,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 						Cell cell = row.getCell(index);
 
 						String value = null;
-						if(CELL_TYPE_NUMERIC == cell.getCellType()) {
+						if (CELL_TYPE_NUMERIC == cell.getCellType()) {
 							value = Double.valueOf(cell.getNumericCellValue()).toString();
 						} else {
 							value = cell.getStringCellValue();
@@ -328,8 +328,8 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 				}
 
-				for(Item itemTemp : itemGroupList) {
-					if(GROUP.equals(itemTemp.getIsGroup())) {
+				for (Item itemTemp : itemGroupList) {
+					if (GROUP.equals(itemTemp.getIsGroup())) {
 						if (itemTemp.getOwnerId().equals(itemTemp.getGroupManagerId())) {
 							itemService.saveItem(itemTemp);
 							parentId = itemTemp.getItemId();
@@ -343,7 +343,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					}
 				}
 
-				if(!isEmptyList(itemMemberList)) {
+				if (!isEmptyList(itemMemberList)) {
 					for (Item itemTemp : itemMemberList) {
 						itemTemp.setParentId(parentId);
 						boolean saveSuccess = itemService.saveItem(itemTemp);
@@ -352,6 +352,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 							continue;
 						}
 					}
+					itemList.add(itemConverter.generateGroupItem(parentId, getCurrentSemester()));
 				}
 			}
 
@@ -361,258 +362,257 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 			e.printStackTrace();
 		}
 
-		itemList.add(itemConverter.generateGroupItem(parentId,getCurrentSemester()));
 		data.put("itemList", itemConverter.poListToDtoList(itemList));
 		data.put("errorData", errorData);
 
 		return successResponse(data);
 	}
 
-//	/**
-//	 * 将Item信息做转换
-//	 */
-//	public ItemBrief itemToBrief(Item item) {
-//
-//		ItemBrief itemBrief = new ItemBrief();
-//		itemBrief.setCategoryId(item.getCategoryId());
-//		itemBrief.setGroupManagerId(item.getGroupManagerId());
-//		itemBrief.setGroupManagerName(
-//				teacherService.findTeacherNameById(itemBrief.getGroupManagerId()));
-//		itemBrief.setIsGroup(item.getIsGroup());
-//		itemBrief.setOwnerId(item.getOwnerId());
-//		itemBrief.setOwnerName(teacherService.findTeacherNameById(itemBrief.getOwnerId()));
-//		itemBrief.setItemId(item.getItemId());
-//
-//		itemBrief.setItemName(item.getItemName());
-//		itemBrief.setStatus(item.getStatus());
-//		itemBrief.setProof(item.getProof());
-//
-//		itemBrief.setJobDesc(item.getJobDesc());
-//		itemBrief.setWeight(item.getJsonChildWeight());
-//
-//		itemBrief.setJsonParameter(item.getJsonParameter());
-//		itemBrief.setWorkload(item.getWorkload());
-//
-//		itemBrief.setCategoryName(
-//				categoryService.getCategory(itemBrief.getCategoryId(), getCurrentSemester())
-//						.getName());
-//		itemBrief.setOtherJson(item.getOtherJson());
-//
-//		return itemBrief;
-//
-//	}
-//
-//	public Item briefToItem() {
-//		Item item = new Item();
-//		return item;
-//	}
-//
-//	class ItemBrief {
-//
-//		/**
-//		 * 工作量编号
-//		 */
-//		private Integer itemId;
-//
-//		/**
-//		 * 工作量对应的项目名称
-//		 */
-//		private String itemName;
-//
-//		/**
-//		 * 工作量类目编号，确定工作量所属类目
-//		 */
-//		private Integer categoryId;
-//
-//		/**
-//		 * 工作量类目名称
-//		 */
-//		private String categoryName;
-//
-//		/**
-//		 * 所属人编号，与教师表中工号一致
-//		 */
-//		private Integer ownerId;
-//
-//		/**
-//		 * 工作量条目所属人姓名
-//		 */
-//		private String ownerName;
-//
-//		/**
-//		 * 参数以json格式存储，与类目表公式中参数一致，如{A：40}
-//		 */
-//		private String jsonParameter;
-//
-//		/**
-//		 * 根据参数计算出的当前总的工作量
-//		 */
-//		private Double workload;
-//
-//		/**
-//		 * 组长编号，默认当前申请人为组长。当前登录人编号与此字段一致时，方可进行工作量的修改操作
-//		 */
-//		private Integer groupManagerId;
-//
-//		/**
-//		 * 组长姓名
-//		 */
-//		private String groupManagerName;
-//
-//		/**
-//		 * 工作描述
-//		 */
-//		private String jobDesc = null;
-//
-//		/**
-//		 * 状态
-//		 */
-//		private Integer status;
-//
-//		/**
-//		 * Json格式存储组员权重，用于计算个人工作量，存储如：{组员1编号：0.4}
-//		 */
-//		private String weight;
-//
-//		/**
-//		 * 证明
-//		 */
-//		private Integer proof = null;
-//
-//		/**
-//		 * 是否为小组
-//		 */
-//		private Integer isGroup = ZERO_INT;
-//
-//		private String otherJson = null;
-//
-//		public String getOtherJson() {
-//			return otherJson;
-//		}
-//
-//		public void setOtherJson(String otherJson) {
-//			this.otherJson = otherJson;
-//		}
-//
-//		public Integer getItemId() {
-//			return itemId;
-//		}
-//
-//		public void setItemId(Integer itemId) {
-//			this.itemId = itemId;
-//		}
-//
-//		public String getItemName() {
-//			return itemName;
-//		}
-//
-//		public void setItemName(String itemName) {
-//			this.itemName = itemName;
-//		}
-//
-//		public Integer getCategoryId() {
-//			return categoryId;
-//		}
-//
-//		public void setCategoryId(Integer categoryId) {
-//			this.categoryId = categoryId;
-//		}
-//
-//		public Integer getOwnerId() {
-//			return ownerId;
-//		}
-//
-//		public void setOwnerId(Integer ownerId) {
-//			this.ownerId = ownerId;
-//		}
-//
-//		public String getOwnerName() {
-//			return ownerName;
-//		}
-//
-//		public void setOwnerName(String ownerName) {
-//			this.ownerName = ownerName;
-//		}
-//
-//		public String getJsonParameter() {
-//			return jsonParameter;
-//		}
-//
-//		public void setJsonParameter(String jsonParameter) {
-//			this.jsonParameter = jsonParameter;
-//		}
-//
-//		public Double getWorkload() {
-//			return workload;
-//		}
-//
-//		public void setWorkload(Double workload) {
-//			this.workload = workload;
-//		}
-//
-//		public Integer getGroupManagerId() {
-//			return groupManagerId;
-//		}
-//
-//		public void setGroupManagerId(Integer groupManagerId) {
-//			this.groupManagerId = groupManagerId;
-//		}
-//
-//		public String getGroupManagerName() {
-//			return groupManagerName;
-//		}
-//
-//		public void setGroupManagerName(String groupManagerName) {
-//			this.groupManagerName = groupManagerName;
-//		}
-//
-//		public String getJobDesc() {
-//			return jobDesc;
-//		}
-//
-//		public void setJobDesc(String jobDesc) {
-//			this.jobDesc = jobDesc;
-//		}
-//
-//		public Integer getStatus() {
-//			return status;
-//		}
-//
-//		public void setStatus(Integer status) {
-//			this.status = status;
-//		}
-//
-//		public String getWeight() {
-//			return weight;
-//		}
-//
-//		public void setWeight(String weight) {
-//			this.weight = weight;
-//		}
-//
-//		public Integer getProof() {
-//			return proof;
-//		}
-//
-//		public void setProof(Integer proof) {
-//			this.proof = proof;
-//		}
-//
-//		public Integer getIsGroup() {
-//			return isGroup;
-//		}
-//
-//		public void setIsGroup(Integer isGroup) {
-//			this.isGroup = isGroup;
-//		}
-//
-//		public String getCategoryName() {
-//			return categoryName;
-//		}
-//
-//		public void setCategoryName(String categoryName) {
-//			this.categoryName = categoryName;
-//		}
-//	}
+	//	/**
+	//	 * 将Item信息做转换
+	//	 */
+	//	public ItemBrief itemToBrief(Item item) {
+	//
+	//		ItemBrief itemBrief = new ItemBrief();
+	//		itemBrief.setCategoryId(item.getCategoryId());
+	//		itemBrief.setGroupManagerId(item.getGroupManagerId());
+	//		itemBrief.setGroupManagerName(
+	//				teacherService.findTeacherNameById(itemBrief.getGroupManagerId()));
+	//		itemBrief.setIsGroup(item.getIsGroup());
+	//		itemBrief.setOwnerId(item.getOwnerId());
+	//		itemBrief.setOwnerName(teacherService.findTeacherNameById(itemBrief.getOwnerId()));
+	//		itemBrief.setItemId(item.getItemId());
+	//
+	//		itemBrief.setItemName(item.getItemName());
+	//		itemBrief.setStatus(item.getStatus());
+	//		itemBrief.setProof(item.getProof());
+	//
+	//		itemBrief.setJobDesc(item.getJobDesc());
+	//		itemBrief.setWeight(item.getJsonChildWeight());
+	//
+	//		itemBrief.setJsonParameter(item.getJsonParameter());
+	//		itemBrief.setWorkload(item.getWorkload());
+	//
+	//		itemBrief.setCategoryName(
+	//				categoryService.getCategory(itemBrief.getCategoryId(), getCurrentSemester())
+	//						.getName());
+	//		itemBrief.setOtherJson(item.getOtherJson());
+	//
+	//		return itemBrief;
+	//
+	//	}
+	//
+	//	public Item briefToItem() {
+	//		Item item = new Item();
+	//		return item;
+	//	}
+	//
+	//	class ItemBrief {
+	//
+	//		/**
+	//		 * 工作量编号
+	//		 */
+	//		private Integer itemId;
+	//
+	//		/**
+	//		 * 工作量对应的项目名称
+	//		 */
+	//		private String itemName;
+	//
+	//		/**
+	//		 * 工作量类目编号，确定工作量所属类目
+	//		 */
+	//		private Integer categoryId;
+	//
+	//		/**
+	//		 * 工作量类目名称
+	//		 */
+	//		private String categoryName;
+	//
+	//		/**
+	//		 * 所属人编号，与教师表中工号一致
+	//		 */
+	//		private Integer ownerId;
+	//
+	//		/**
+	//		 * 工作量条目所属人姓名
+	//		 */
+	//		private String ownerName;
+	//
+	//		/**
+	//		 * 参数以json格式存储，与类目表公式中参数一致，如{A：40}
+	//		 */
+	//		private String jsonParameter;
+	//
+	//		/**
+	//		 * 根据参数计算出的当前总的工作量
+	//		 */
+	//		private Double workload;
+	//
+	//		/**
+	//		 * 组长编号，默认当前申请人为组长。当前登录人编号与此字段一致时，方可进行工作量的修改操作
+	//		 */
+	//		private Integer groupManagerId;
+	//
+	//		/**
+	//		 * 组长姓名
+	//		 */
+	//		private String groupManagerName;
+	//
+	//		/**
+	//		 * 工作描述
+	//		 */
+	//		private String jobDesc = null;
+	//
+	//		/**
+	//		 * 状态
+	//		 */
+	//		private Integer status;
+	//
+	//		/**
+	//		 * Json格式存储组员权重，用于计算个人工作量，存储如：{组员1编号：0.4}
+	//		 */
+	//		private String weight;
+	//
+	//		/**
+	//		 * 证明
+	//		 */
+	//		private Integer proof = null;
+	//
+	//		/**
+	//		 * 是否为小组
+	//		 */
+	//		private Integer isGroup = ZERO_INT;
+	//
+	//		private String otherJson = null;
+	//
+	//		public String getOtherJson() {
+	//			return otherJson;
+	//		}
+	//
+	//		public void setOtherJson(String otherJson) {
+	//			this.otherJson = otherJson;
+	//		}
+	//
+	//		public Integer getItemId() {
+	//			return itemId;
+	//		}
+	//
+	//		public void setItemId(Integer itemId) {
+	//			this.itemId = itemId;
+	//		}
+	//
+	//		public String getItemName() {
+	//			return itemName;
+	//		}
+	//
+	//		public void setItemName(String itemName) {
+	//			this.itemName = itemName;
+	//		}
+	//
+	//		public Integer getCategoryId() {
+	//			return categoryId;
+	//		}
+	//
+	//		public void setCategoryId(Integer categoryId) {
+	//			this.categoryId = categoryId;
+	//		}
+	//
+	//		public Integer getOwnerId() {
+	//			return ownerId;
+	//		}
+	//
+	//		public void setOwnerId(Integer ownerId) {
+	//			this.ownerId = ownerId;
+	//		}
+	//
+	//		public String getOwnerName() {
+	//			return ownerName;
+	//		}
+	//
+	//		public void setOwnerName(String ownerName) {
+	//			this.ownerName = ownerName;
+	//		}
+	//
+	//		public String getJsonParameter() {
+	//			return jsonParameter;
+	//		}
+	//
+	//		public void setJsonParameter(String jsonParameter) {
+	//			this.jsonParameter = jsonParameter;
+	//		}
+	//
+	//		public Double getWorkload() {
+	//			return workload;
+	//		}
+	//
+	//		public void setWorkload(Double workload) {
+	//			this.workload = workload;
+	//		}
+	//
+	//		public Integer getGroupManagerId() {
+	//			return groupManagerId;
+	//		}
+	//
+	//		public void setGroupManagerId(Integer groupManagerId) {
+	//			this.groupManagerId = groupManagerId;
+	//		}
+	//
+	//		public String getGroupManagerName() {
+	//			return groupManagerName;
+	//		}
+	//
+	//		public void setGroupManagerName(String groupManagerName) {
+	//			this.groupManagerName = groupManagerName;
+	//		}
+	//
+	//		public String getJobDesc() {
+	//			return jobDesc;
+	//		}
+	//
+	//		public void setJobDesc(String jobDesc) {
+	//			this.jobDesc = jobDesc;
+	//		}
+	//
+	//		public Integer getStatus() {
+	//			return status;
+	//		}
+	//
+	//		public void setStatus(Integer status) {
+	//			this.status = status;
+	//		}
+	//
+	//		public String getWeight() {
+	//			return weight;
+	//		}
+	//
+	//		public void setWeight(String weight) {
+	//			this.weight = weight;
+	//		}
+	//
+	//		public Integer getProof() {
+	//			return proof;
+	//		}
+	//
+	//		public void setProof(Integer proof) {
+	//			this.proof = proof;
+	//		}
+	//
+	//		public Integer getIsGroup() {
+	//			return isGroup;
+	//		}
+	//
+	//		public void setIsGroup(Integer isGroup) {
+	//			this.isGroup = isGroup;
+	//		}
+	//
+	//		public String getCategoryName() {
+	//			return categoryName;
+	//		}
+	//
+	//		public void setCategoryName(String categoryName) {
+	//			this.categoryName = categoryName;
+	//		}
+	//	}
 
 }
