@@ -309,7 +309,7 @@ $(document).ready(function () {
                     otherArray=null;
                 }
                 else {
-                    var otherPramterkey = $(".otherParaThead");
+                    var otherPramterkey = $(".otherimportpara");
                     for (var j = 0; j < otherPramterkey.length; j++) {
                         var otherKey=$(".otherPramterkey").eq(j);
                         otherArray.push({key: otherKey.text(), value: $(".otherimportpara").eq(j).val()});
@@ -324,17 +324,17 @@ $(document).ready(function () {
                 userId: parseInt($("#itemMember option:selected").val()),
                 jobDesc: $("#jobDesc").val()
             }];
-            var childWeight=0;
+            var childWeight=1;
           //  console.log($("#childWeight").val());
-            if($("#childWeight").is(":empty")){
+            i/*f($("#childWeight").is(":empty")){
                 childWeight=1;
             }
-            else{
-                childWeight=parseFloat($("#childWeight").val())
-            }
+            else{*/
+                /*childWeight=parseFloat($("#childWeight").val());*/
+           /* }*/
             sumArray=[{
                 userId: parseInt($("#itemMember option:selected").val()),
-                weight: childWeight
+                weight: parseInt(childWeight)
             }];
             grouparray = JSON.stringify(grouparray);
             sumArray=JSON.stringify(sumArray);
@@ -1589,7 +1589,7 @@ function showImportPreview(data,itemCount) {
             $(".importItemTbody tr:last").append(cellInfo);
             $(".importItemTbody tr:last").attr("class","trDele_"+data.itemId);
         }
-
+        $(".importItemTbody tr:last").css("text-align","center");
         /* var checkboxStr='<div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" class="flat" name="table_records" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>'
          */   var checkboxStr='<input type="checkbox" name="checkbox1" value="checkbox" class="submitmyself" id="'+data.itemId+'">' ;
         var anotherboxStr='<input type="checkbox" name="checkbox1" value="checkbox" class="anothersubmit" id="'+data.itemId+'">' ;

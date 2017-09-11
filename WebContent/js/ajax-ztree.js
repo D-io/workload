@@ -227,7 +227,6 @@ function ztree() {
         }
 
     );
-
     var log, className = "dark";
 //禁止节点的单机事件
     function zTreeBeforeClick(treeId, treeNode, clickFlag) {
