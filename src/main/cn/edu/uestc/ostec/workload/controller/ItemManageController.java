@@ -330,11 +330,6 @@ public class ItemManageController extends ApplicationController {
 			data.put("newItemDto", newItemDto);
 		}
 
-
-
-
-
-
 		return successResponse(data);
 	}
 
@@ -363,20 +358,15 @@ public class ItemManageController extends ApplicationController {
 			if (NON_CHECKED.equals(itemDto.getStatus())) {
 				return invalidOperationResponse("已提交的工作量，无法修改");
 			}
-		} else {
-
-			//若为 添加，则设置当前相应的条目 拥有者 为登录的用户编号
-			itemDto.setOwnerId(userId);
 		}
 
 		Category category = categoryService
 				.getCategory(itemDto.getCategoryId(), getCurrentSemester());
 
 		// 获取对应的申报方式  申报类：可选上传相关附件，导入类：无需上传相关附件
-		int importRequired = itemDto.getImportRequired();
+		int importRequired = category.getImportRequired();
 
 		Map<String, Object> data = getData();
-		Map<String, Object> errorData = getData();
 
 		// 申报类：上传相关的文件附件（文件不为空的前提下） 导入类：设置proof属性为null
 		if (APPLY_SELF.equals(importRequired)) {
@@ -394,6 +384,7 @@ public class ItemManageController extends ApplicationController {
 
 		} else if (IMPORT_EXCEL.equals(importRequired)) {
 			itemDto.setProof(null);
+			itemDto.setIsGroup(SINGLE);
 		}
 
 		// 添加时，将对应的json串全部转换为相应的list，便于生成成员各自的工作量条目
@@ -412,10 +403,6 @@ public class ItemManageController extends ApplicationController {
 			newItemDto.setJsonChildWeight(String.valueOf(DEFAULT_CHILD_WEIGHT));
 			newItemDto.setGroupManagerId(newItemDto.getOwnerId());
 
-			if (!(userId.equals(newItemDto.getGroupManagerId()) || userId
-					.equals(itemDto.getReviewerId()))) {
-				flag = false;
-			}
 		} else if (GROUP.equals(newItemDto.getIsGroup()) && IMPORT_EXCEL
 				.equals(newItemDto.getImportRequired())) {
 			Double jsonChildWeight = Double.valueOf(newItemDto.getJsonChildWeight());
@@ -437,7 +424,6 @@ public class ItemManageController extends ApplicationController {
 		newItemDto.setStatus(UNCOMMITTED);
 		newItemDto.setVersion(getCurrentSemester());
 
-		// 设置小组负责人为他自己
 		Item item = itemConverter.dtoToPo(newItemDto);
 
 		boolean saveSuccess = itemService.saveItem(item);
