@@ -1190,37 +1190,40 @@ $(document).ready(function () {
             }
         }
         var radio = $("input:radio[name='applyRadios']:checked");
-        if(radio==1&&$(".showapplyMemberSymbol").length>1){
-            if(!$('.showapplyMemberSymbol').val()){
-                $('.showapplyMemberSymbol').parent().parent(".form-group").addClass("has-error");
-                $("#experient_applygroup").show();
-                $("#experient_applyweight").hide();
-                return false;
-            }
-            if(!$('.showgapplyMemberWeight').val()){
-                $('.showgapplyMemberWeight').parent().parent(".form-group").addClass("has-error");
-                $("#experient_applygroup").show();
-                $("#experient_applyweight").hide();
-                return false;
-            }
-            else{
-                var sumCount=0;
-                for(var t=0;t<$('.showgapplyMemberWeight').length;t++){
-                 //   console.log($('.groupMemberWeight').eq(t).val());
-                    sumCount+=parseFloat($('.showgapplyMemberWeight').eq(t).val());
-                }
-                if(sumCount!=1){
-                    $('.showgapplyMemberWeight').parent().parent(".form-group").addClass("has-error");
-                    $("#experient_applygroup").hide();
-                    $("#experient_applyweight").show();
+        if(radio==1){
+            if($(".showapplyMemberSymbol").length>1){
+                if(!$('.showapplyMemberSymbol').val()){
+                    $('.showapplyMemberSymbol').parent().parent(".form-group").addClass("has-error");
+                    $("#experient_applygroup").show();
+                    $("#experient_applyweight").hide();
                     return false;
                 }
+                if(!$('.showgapplyMemberWeight').val()){
+                    $('.showgapplyMemberWeight').parent().parent(".form-group").addClass("has-error");
+                    $("#experient_applygroup").show();
+                    $("#experient_applyweight").hide();
+                    return false;
+                }
+                else{
+                    var sumCount=0;
+                    for(var t=0;t<$('.showgapplyMemberWeight').length;t++){
+                        //   console.log($('.groupMemberWeight').eq(t).val());
+                        sumCount+=parseFloat($('.showgapplyMemberWeight').eq(t).val());
+                    }
+                    if(sumCount!=1){
+                        $('.showgapplyMemberWeight').parent().parent(".form-group").addClass("has-error");
+                        $("#experient_applygroup").hide();
+                        $("#experient_applyweight").show();
+                        return false;
+                    }
+                }
+            }
+            else {
+                alert("小组人数应不少于2！");
+                return false;
             }
         }
-        else {
-            alert("小组人数应不少于2！");
-            return false;
-        }
+
         /*collect the message*/
         var $parametername = $(".applypramterDesc");
         var newArray = new Array();
