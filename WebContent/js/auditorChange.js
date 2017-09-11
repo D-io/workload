@@ -418,6 +418,7 @@ function showimportRec() {
         $(".viewDetailbody tr:last td:eq(2)").css("line-height","28px");
 
     });
+    $(document).off("click",".editInfo");
     $(document).on("click",".editInfo",function () {
         $(".parameterTh").empty();
         $(".editorPram").empty();
@@ -429,29 +430,36 @@ function showimportRec() {
         var Realreg=parseInt(realId.match(/\d+/g));
        var flag=this.id;
         var reg=parseInt(flag.match(/\d+/g));*/
-        for(var count=0;count<jsonInfo.descAndValues.length;count++){
+       if(jsonInfo.descAndValues!=null){
+           for(var count=0;count<jsonInfo.descAndValues.length;count++){
 
-            $(".parameterTh").append("<tr><th class='pramterDesc' id='"+jsonInfo.parameterValues[count].symbol+"'>"+jsonInfo.descAndValues[count].desc+"</th><td><input type='text' class='parameterName form-control'></td></tr>")
-          // $(".editorPram").append("<td><input type='text' class='parameterName form-control'></td>");
+               $(".parameterTh").append("<tr><th class='pramterDesc' id='"+jsonInfo.parameterValues[count].symbol+"'>"+jsonInfo.descAndValues[count].desc+"</th><td><input type='text' class='parameterName form-control'></td></tr>")
+               // $(".editorPram").append("<td><input type='text' class='parameterName form-control'></td>");
 
-            $(".parameterName").eq(count).val(jsonInfo.descAndValues[count].value);
-        }
-        for(var othercount=0;othercount<jsonInfo.otherJsonParameters.length;othercount++){
-            $(".otherParaTh").append("<tr><th class='otherPramterkey'>"+jsonInfo.otherJsonParameters[othercount].key+"</th><td><input type='text' class='otherparameterName form-control'></td></tr>")
-        //    $(".editorotherPara").append("<td><input type='text' class='otherparameterName form-control'></td>");
-            $(".otherparameterName").eq(othercount).val(jsonInfo.otherJsonParameters[othercount].value);
+               $(".parameterName").eq(count).val(jsonInfo.descAndValues[count].value);
+           }
+           $(".parameterName").attr("disabled","true");
+       }
+       if(jsonInfo.otherJsonParameters!=null){
+           for(var othercount=0;othercount<jsonInfo.otherJsonParameters.length;othercount++){
+               $(".otherParaTh").append("<tr><th class='otherPramterkey'>"+jsonInfo.otherJsonParameters[othercount].key+"</th><td><input type='text' class='otherparameterName form-control'></td></tr>")
+               //    $(".editorotherPara").append("<td><input type='text' class='otherparameterName form-control'></td>");
+               $(".otherparameterName").eq(othercount).val(jsonInfo.otherJsonParameters[othercount].value);
 
-        }
-        $(".parameterName").attr("disabled","true");
-        $(".otherparameterName").attr("disabled","true");
+           }
+           $(".otherparameterName").attr("disabled","true");
+       }
+        $("#showitemName").val(null);
         $("#showitemName").attr("disabled","true");
         $(".editorSubmit").attr("id","editorSubmit_"+jsonInfo.itemId);
     });
+    $(document).off("click",".editApplyInfo");
     $(document).on("click",".editApplyInfo",function () {
         $(".parameterName").removeAttr("disabled");
         $(".otherparameterName").removeAttr("disabled");
         $("#showitemName").removeAttr("disabled");
     });
+    $(document).off("click",".editorSubmit");
     $(document).on("click",".editorSubmit",function () {
         var submitId=parseInt(this.id.match(/\d+/g));
         var newArray = new Array();
