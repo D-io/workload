@@ -117,4 +117,7 @@ public interface ItemService extends BaseService {
 	List<Item> findAnalyzeItems(Integer teacherId, Integer status, String version, String type);
 
 	List<Item> findChildItemList(Integer parentId, String version);
+
+	Integer getValidItemNumberOfCategory(Integer categoryId, String version, Integer parentId,
+			Integer status);
 }
