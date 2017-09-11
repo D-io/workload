@@ -1426,7 +1426,7 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
 
-                            var act = "<a class='btn btn-primary showaddContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount+ "'>查看详情</a><a class='btn btn-primary  delemyself_"+Info.itemId+"' id='delemyself_" + newcount+ "'>删除操作</a>";
+                            var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount+ "'>查看详情</a><a class='btn btn-primary  delemyself_"+Info.itemId+"' id='delemyself_" + newcount+ "'>删除操作</a>";
                             $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-two");
 
                         }
