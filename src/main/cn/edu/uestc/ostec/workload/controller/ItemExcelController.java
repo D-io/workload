@@ -49,6 +49,7 @@ import cn.edu.uestc.ostec.workload.pojo.Category;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
+import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.FileInfoService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
@@ -109,6 +110,11 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					Integer categoryId,
 			@RequestParam("type")
 					String type) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
 
 		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
 		CategoryDto categoryDto = categoryConverter.poToDto(category);
@@ -184,6 +190,11 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					int categoryId,
 			@RequestParam("file")
 					MultipartFile file) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
 
 		if (isNull(file)) {
 			return invalidOperationResponse();

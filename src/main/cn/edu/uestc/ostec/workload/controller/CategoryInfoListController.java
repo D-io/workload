@@ -68,6 +68,12 @@ public class CategoryInfoListController extends ApplicationController
 			@RequestParam("categoryId")
 					Integer categoryId) {
 
+		//验证管理员身份
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
+
 		List<Item> itemList = itemService
 				.findItemByCategory(getCurrentSemester(), categoryId, null);
 		int count = itemList.size();
@@ -84,6 +90,11 @@ public class CategoryInfoListController extends ApplicationController
 	 */
 	@RequestMapping(value = "list", method = GET)
 	public RestResponse getSubmittedCategories() {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
 
 		Map<String, Object> data = getData();
 
@@ -102,6 +113,11 @@ public class CategoryInfoListController extends ApplicationController
 	public RestResponse getCategory(
 			@RequestParam("categoryId")
 					Integer categoryId) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
 
 		CategoryDto categoryDto = categoryConverter
 				.poToDto(categoryService.getCategory(categoryId, getCurrentSemester()));
@@ -157,6 +173,11 @@ public class CategoryInfoListController extends ApplicationController
 	 */
 	@RequestMapping(value = "parent-brief", method = GET)
 	public RestResponse getParentCategories() {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
 
 		List<Category> categoryList = categoryService.getAllValidCategory(getCurrentSemester());
 
