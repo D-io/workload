@@ -115,6 +115,11 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			@RequestParam("teacherId")
 					Integer teacherId, String option, String categoryCode) {
 
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
 		Workload workloadTypeOne = itemService
 				.workloadAnalyze(teacherId, TYPE_ONE_PREFIX, getCurrentSemester());
 		Workload workloadTypeTwo = itemService
@@ -160,6 +165,11 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	public RestResponse refreshTeacherWorkload(
 			@RequestParam("teacherId")
 					Integer... teacherIdList) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
 
 		List<TeacherWorkload> teacherWorkloadList = new ArrayList<>();
 		Map<String, Object> data = getData();
@@ -613,6 +623,11 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	public RestResponse getSubjectList(
 			@RequestParam("itemId")
 					Integer itemId) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
 
 		List<Subject> subjectList = subjectService.getSubjectsByItem(itemId, getCurrentSemester());
 

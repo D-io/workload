@@ -97,6 +97,11 @@ public class ItemManageController extends ApplicationController {
 			@RequestParam("jsonChildWeight")
 					String childWeight) {
 
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
 		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
 		List<ParameterValue> parameterValues = itemConverter
 				.readValueFromJson(json, ParameterValue.class);
@@ -127,6 +132,12 @@ public class ItemManageController extends ApplicationController {
 					String itemName,
 			@RequestParam(required = false)
 					String otherParams) {
+
+		//验证管理员身份
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(ADMINISTRATOR.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
 
 		Item item = itemService.findItem(itemId, getCurrentSemester());
 		if (null == item) {
@@ -238,9 +249,18 @@ public class ItemManageController extends ApplicationController {
 			@RequestParam(value = "itemId")
 					Integer itemId) {
 
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
 		Item item = itemService.findItem(itemId, getCurrentSemester());
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
+		}
+
+		if(!user.getUserId().equals(item.getGroupManagerId())) {
+			return invalidOperationResponse("无权限删除");
 		}
 
 		boolean removeSuccess;
@@ -461,6 +481,13 @@ public class ItemManageController extends ApplicationController {
 	public RestResponse uploadFileAsProof(MultipartFile file,
 			@RequestParam("itemId")
 					Integer... itemIdList) throws IOException {
+
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+
 		Map<String, Object> data = getData();
 
 		FileInfo fileInfo = new FileInfo(ATTACHMENT_FILE_ID, getUserId(), "");
