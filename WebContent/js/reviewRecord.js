@@ -371,8 +371,7 @@ function applyworkload() {
                         $(".tbody tr:last").attr("class","tbodyTr_"+id).css("text-align","center");
                         $(".tbody tr:last td:eq(0)").text(id);
                         $(".tbody tr:last td:eq(0)").attr("class", "itemCount");
-                        $(".tbody tr:last td:eq(1)").text(Info.itemName);
-                        $(".tbody tr:last td:eq(1)").attr("id", "itemname_" + Info.itemId);
+                        $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><span id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></span>");
                         $(".tbody tr:last td:eq(2)").text(Info.workload);
                         $(".tbody tr:last td:eq(2)").attr("id", "workload_" + Info.itemId);
                         var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + id + "'>删除操作</a> ";
@@ -729,12 +728,16 @@ function applyworkload() {
                                     $("input[name='revfile']").css({"color":"transparent","width":"80px"});
                                     $(".showagain").text(data.data.itemDto.fileName);
                                     window.Temp.splice(window.contentCount - 1,1,data.data.itemDto);
+                                    $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
                                 }
 
                                 else{
                                     alert("文件已存在！请修改文件名或文件内容后重新上传！");
                                     return false;
                                 }
+                            },
+                            error:function () {
+                                alert("文件已存在！请修改文件名或文件内容后重新上传！");
                             }
 
                         });
@@ -805,12 +808,17 @@ function applyworkload() {
                                     $("input[name='revfile']").css({"color":"transparent","width":"80px"});
                                     $(".showagain").text(data.data.itemDto.fileName);
                                     window.Temp.splice(window.contentCount - 1,1,data.data.itemDto);
+                                    $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
                                 }
 
                                 else{
                                     alert("文件已存在！请修改文件名或文件内容后重新上传！");
-                                    return false;
+                                   // return false;
                                 }
+
+                            },
+                            error:function () {
+                                alert("文件已存在！请修改文件名或文件内容后重新上传！");
                             }
 
                         });
@@ -1015,7 +1023,7 @@ function applyworkload() {
 
                         var Info = data.data.item;
                         var newCount=$(".neweditor").attr("id");
-                        newCount=newCount.match(/\d+/g);
+                        newCount=parseInt(newCount.match(/\d+/g));
                         window.Temp.splice(newCount-1,1,Info);
                         if($("#testfile").val()){
                             var formdata = new FormData;
@@ -1036,12 +1044,16 @@ function applyworkload() {
                                         $("input[name='testfile']").css({"color":"transparent","width":"80px"})
                                         $(".showhidden").text(data.data.itemDto.fileName);
                                         window.Temp.splice(newcount-1,1,data.data.itemDto);
+                                        $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
                                     }
 
                                     else{
                                         alert("文件已存在！请修改文件名或文件内容后重新上传！");
-                                        return false;
+                                      //  return false;
                                     }
+                                },
+                                error:function () {
+                                    alert("文件已存在！请修改文件名或文件内容后重新上传！");
                                 }
 
                             });
@@ -1100,7 +1112,7 @@ function applyworkload() {
 
                         var Info = data.data.item;
                         var newCount=$(".neweditor").attr("id");
-                        newCount=newCount.match(/\d+/g);
+                        newCount=parseInt(newCount.match(/\d+/g));
                         window.Temp.splice(newCount-1,1,Info);
                         if($("#testfile").val()){
                             var formdata = new FormData;
@@ -1121,12 +1133,16 @@ function applyworkload() {
                                         $("input[name='testfile']").css({"color":"transparent","width":"80px"})
                                         $(".showhidden").text(data.data.itemDto.fileName);
                                         window.Temp.splice(newcount-1,1,data.data.itemDto);
+                                        $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
                                     }
                                     else{
                                         alert("文件已存在！请修改文件名或文件内容后重新上传！");
                                         return false;
                                     }
 
+                                },
+                                error:function () {
+                                    alert("文件已存在！请修改文件名或文件内容后重新上传！");
                                 }
 
                             });
@@ -1214,6 +1230,9 @@ function applyworkload() {
                                         return false;
                                     }
 
+                                },
+                                error:function () {
+                                    alert("文件已存在！请修改文件名或文件内容后重新上传！");
                                 }
 
                             });
@@ -1258,9 +1277,7 @@ function applyworkload() {
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
-                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
-                            $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
-
+                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><span id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></span>");
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
                             $(".tbody tr:last td:eq(3)").text("未提交");
@@ -1290,10 +1307,8 @@ function applyworkload() {
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt("1"));
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
-
-                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
+                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><span id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></span>");
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
-                            $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
 
                             $(".tbody tr:last td:eq(3)").text("未提交");
@@ -1352,6 +1367,9 @@ function applyworkload() {
                                         alert("文件已存在！请修改文件名或文件内容后重新上传！");
                                         return false;
                                     }
+                                },
+                                error:function () {
+                                    alert("文件已存在！请修改文件名或文件内容后重新上传！");
                                 }
 
                             });
@@ -1389,8 +1407,7 @@ function applyworkload() {
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
-                            $(".tbody tr:last td:eq(1)").text(Info.itemName);
-                            $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
+                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><span id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></span>");
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
 

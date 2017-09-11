@@ -130,7 +130,6 @@ $(document).ready(function () {
         var flag = this.id;
         flag = parseInt(flag.match(/\d+/g));
         window.cateId=flag;
-    //    console.log(window.cateId);
         var file = $("#file")
         file.after(file.clone().val(""));
         file.remove();
@@ -169,23 +168,22 @@ $(document).ready(function () {
                 $(".parameterTh").empty();
                 $(".otherParaTh").empty();
                 $(".submitItem").show();
-             //    showPara(msg.data.unCommittedItem[0]);
-
-
                 showImportPreview(msg.data.itemList,itemCount);
                 while(itemCount<msg.data.itemList.length){
                     itemCount++;
-
                 }
-                console.log(itemCount);
-              //  window.itemDouble=msg.data.unCommittedItem;
                 for(var key in msg.data.itemList){
                     allItem.push(msg.data.itemList[key]);
                 }
                 JSON.stringify(allItem);
-                console.log(allItem);
             }
         });
+        if($(".showImportAll").length>0){
+            $(".submitItem").show();
+        }
+        else{
+            $(".submitItem").hide();
+        }
     });
     $(document).on("click",".showImportAll",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
