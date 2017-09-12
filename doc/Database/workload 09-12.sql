@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2017-09-12 15:59:50
+Date: 2017-09-12 16:35:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -953,7 +953,7 @@ INSERT INTO `user_role` VALUES ('3203656', '[{\"role\":\"TE\",\"roleName\":\"复
 INSERT INTO `user_role` VALUES ('3203657', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('3203663', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('3203702', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
-INSERT INTO `user_role` VALUES ('3203753', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
+INSERT INTO `user_role` VALUES ('3203753', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"},{\"role\":\"LEADER\",\"roleName\":\"全院统计与查看\"}]', '1', '1505204762');
 INSERT INTO `user_role` VALUES ('3203872', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('3203887', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('3203896', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
@@ -983,7 +983,7 @@ INSERT INTO `user_role` VALUES ('3210251', '[{\"role\":\"TE\",\"roleName\":\"复
 INSERT INTO `user_role` VALUES ('3210319', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('3210326', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('3210340', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
-INSERT INTO `user_role` VALUES ('3210343', '[{\"role\":\"ADMIN\",\"roleName\":\"工作量计算规则配置管理员\"},{\"role\":\"RE\",\"roleName\":\"工作量审核人\"},{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
+INSERT INTO `user_role` VALUES ('3210343', '[{\"role\":\"ADMIN\",\"roleName\":\"工作量计算规则配置管理员\"},{\"role\":\"RE\",\"roleName\":\"工作量审核人\"},{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"},{\"role\":\"LEADER\",\"roleName\":\"全院统计与查看\"}]', '1', '1505204684');
 INSERT INTO `user_role` VALUES ('3210429', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('3210465', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('3210476', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
@@ -1069,7 +1069,7 @@ INSERT INTO `user_role` VALUES ('6130058', '[{\"role\":\"TE\",\"roleName\":\"复
 INSERT INTO `user_role` VALUES ('6142006', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('6156302', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('6156310', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
-INSERT INTO `user_role` VALUES ('6156311', '[{\"role\":\"ADMIN\",\"roleName\":\"工作量计算规则配置管理员\"}]', '1', '1502380800');
+INSERT INTO `user_role` VALUES ('6156311', '[{\"role\":\"ADMIN\",\"roleName\":\"工作量计算规则配置管理员\"},{\"role\":\"RE\",\"roleName\":\"工作量审核人\"},{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('7140003', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('7140258', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');
 INSERT INTO `user_role` VALUES ('7141201', '[{\"role\":\"TE\",\"roleName\":\"复核人(普通教师)\"}]', '1', '1502380800');

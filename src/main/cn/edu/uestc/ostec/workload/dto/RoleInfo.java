@@ -1,9 +1,11 @@
 package cn.edu.uestc.ostec.workload.dto;
 
+import java.io.Serializable;
+
 /**
  * Description: 角色信息
  */
-public class RoleInfo {
+public class RoleInfo implements Serializable {
 
 	private String role;
 
