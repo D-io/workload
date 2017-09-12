@@ -384,6 +384,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 		int teacherId = user.getUserId();
 
+		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
+
 		List<Item> itemList = itemService
 				.findItemByCategory(getCurrentSemester(), categoryId, ZERO_INT);
 		if (isEmptyList(itemList)) {
@@ -394,7 +396,11 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		for (Item item : itemList) {
 			if (item.getOwnerId().equals(teacherId)) {
 				//遍历该类下所有的条目，若和当前老师相对应，筛选
-				if (SINGLE.equals(item.getIsGroup())) {
+				if (APPLY_SELF.equals(category.getImportRequired()) && SINGLE
+						.equals(item.getIsGroup())) {
+					teacherItems.add(item);
+				} else if (IMPORT_EXCEL.equals(category.getImportRequired()) && !UNCOMMITTED
+						.equals(item.getStatus())) {
 					teacherItems.add(item);
 				}
 
@@ -411,6 +417,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				} else {
 					continue;
 				}
+
 			}
 		}
 

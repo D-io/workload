@@ -208,7 +208,7 @@
                 AND status = #{status}
             </if>
             <if test="null == status">
-                AND (status = 1 OR status = 2 OR status = 5)
+                AND (status != 0 AND status != -1)
             </if>
         </where>
     </select>
