@@ -20,31 +20,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <!-- Web Fonts  -->
-  <%--  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
- --%>   <title>教学工作当量计算系统 | </title>
+   <title>教学工作当量计算系统 | </title>
     <%--title-image--%>
     <link href="${contextPath}/css/images/workloadltitleogo.png" rel="Shortcut Icon" type="text/css">
     <!-- Bootstrap -->
-    <link href="${contextPath}/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="${contextPath}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
     <!-- Font Awesome -->
     <link href="${contextPath}/vendor/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
     <!-- bootstrap-progressbar -->
     <link href="${contextPath}/vendor/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.css" rel="stylesheet" type="text/css">
 
-    <link rel="stylesheet" type="text/css" href="${contextPath}/css/bootstrap-datetimepicker.css" />
+    <link rel="stylesheet" type="text/css" href="${contextPath}/vendor/bootstrap-datepicker/css/bootstrap-datetimepicker.css" />
 
-    <link rel="stylesheet" type="text/css" href="${contextPath}/css/select2.min.css" />
+    <link rel="stylesheet" type="text/css" href="${contextPath}/vendor/js/select2/select2.min.css" />
 
     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/panel-content.css" />
-
-   <%-- <link rel="stylesheet" type="text/css" href="${contextPath}/css/datatables.css" />--%>
-
-   <%-- <link rel="stylesheet" type="text/css" href="${contextPath}/css/normalize.css" />--%>
-
-
-    <!-- Skin CSS (颜色)-->
-   <%-- <link rel="stylesheet" href="${contextPath}/css/default.css" />--%>
 
     <!-- ztree -->
     <link rel="stylesheet" type="text/css" href="${contextPath}/css/zTreeStyle/zTreeStyle.css" type="text/css">
@@ -98,8 +89,6 @@
         }
     </style>
     <jsp:include page="path-variable.jsp"/>
-
-
 
 </head>
 
@@ -226,34 +215,63 @@
 </div>
 
 <!-- jQuery -->
-<%--<script language='javascript' src="${contextPath}/vendor/js/jquery.js"></script>--%>
-<script language='javascript' src="${contextPath}/js/jquery.min.js"></script>
+<script language='javascript' src="${contextPath}/vendor/jquery/js/jquery.min.js"></script>
+
 <!-- Bootstrap -->
-<script language='javascript' src="${contextPath}/js/bootstrap.min.js"></script>
-<%--<script language='javascript' src="${contextPath}/vendor/js/bootstrap.js"></script>--%>
+<script language='javascript' src="${contextPath}/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- bootstrap-progressbar -->
 <script src="${contextPath}/vendor/bootstrap-progressbar/js/bootstrap-progressbar.min.js"></script>
 
-<!-- Custom Theme Scripts -->
-
+<!-- 时间插件 -->
 <script language='javascript' src="${contextPath}/vendor/bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
-<script language='javascript' src="${contextPath}/vendor/js/select2.min.js"></script>
+
+<%--select2插件--%>
+<script language='javascript' src="${contextPath}/vendor/js/select2/select2.min.js"></script>
+
+<%--饼图插件--%>
 <script language='javascript' src="${contextPath}/vendor/js/echart/echarts.min.js"></script>
 
+<%--datatables插件--%>
 <script language='javascript' src="${contextPath}/vendor/js/jquery-datatables/jquery.dataTables.min.js"></script>
-<script language='javascript'src="${contextPath}/js/jquery.ztree.core.js"></script>
-<script language='javascript' src="${contextPath}/js/jquery.ztree.excheck.js"></script>
-<script language='javascript' src="${contextPath}/js/jquery.ztree.exedit.js"></script>
 
-<script src="${contextPath}/js/custom_test.js"></script>
-<script src="${contextPath}/js/reviewRecord.js"></script>
-<script src="${contextPath}/js/reviewerSummary.js"></script>
-<script src="${contextPath}/js/auditorChange.js"></script>
-<script src="${contextPath}/js/common.js"></script>
-<script src="${contextPath}/js/ajax-ztree.js"></script>
-<script src="${contextPath}/js/Bftheme_jquery.js"></script>
+<%--ztree插件--%>
+<script language='javascript'src="${contextPath}/vendor/js/ztree/jquery.ztree.core.js"></script>
+<script language='javascript' src="${contextPath}/vendor/js/ztree/jquery.ztree.excheck.js"></script>
+<script language='javascript' src="${contextPath}/vendor/js/ztree/jquery.ztree.exedit.js"></script>
 
+<%--切换样式等--%>
+<script src="${contextPath}/js/custom/custom_test.js"></script>
+
+<%--申报人申报工作当量--%>
+<script src="${contextPath}/js/reviewer/reviewer_applyWorkload.js"></script>
+
+<%--申报人复核工作当量--%>
+<script src="${contextPath}/js/reviewer/reviewer_workRevie.js"></script>
+
+<%--个人工作当量汇总--%>
+<script src="${contextPath}/js/reviewer/reviewer_selfSummary.js"></script>
+
+<%--审核人导入工作当量--%>
+<script src="${contextPath}/js/auditor/auditor_importWorkload.js"></script>
+
+<%--审核人审核工作当量--%>
+<script src="${contextPath}/js/auditor/auditor_checkWorkload.js"></script>
+
+<%--初始化函数--%>
+<script src="${contextPath}/js/manager/initJs.js"></script>
+
+<%--一些click绑定事件--%>
+<script src="${contextPath}/js/custom/common.js"></script>
+
+<%--管理员管理规则--%>
+<script src="${contextPath}/js/manager/manager_categoryManage.js"></script>
+
+<%--管理员管理教师项目--%>
+<script src="${contextPath}/js/manager/manager_teachersManage.js"></script>
+
+<%--管理员查看教师工作当量汇总--%>
+<script src="${contextPath}/js/manager/manager_workloadSummary.js"></script>
 
 </body>
 </html>
