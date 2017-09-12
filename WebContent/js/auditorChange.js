@@ -8,10 +8,12 @@ function importWorkload(){
         $(".hiddendistrict").empty();
     });
         $.get(itemAuditorUrl,{test : 12},function (data) {
-          var parent = $("<ul></ul>");
-          showimportall(data.data.importCategories,parent);
-          $("#tab_content1").append(parent);
+            if(data.data!=null&&data.data.importCategories){
+                var parent = $("<ul></ul>");
+                showimportall(data.data.importCategories,parent);
+                $("#tab_content1").append(parent);
 
+            }
           function  showimportall(item,parent) {
                 for(var i=0;i<item.length;i++){
 
@@ -100,9 +102,11 @@ function auditworkload() {
       $('.right_hole').append(result);
    });
        $.get(workloadAuditUrl,{test : 12},function (data) {
-           var showimport=  $("<ul></ul>");
-            showall(data.data.applyCategories, showimport);
-            $("#tab_content1").append(showimport);
+           if(data.data!=null&&data.data.applyCategories){
+               var showimport=  $("<ul></ul>");
+               showall(data.data.applyCategories, showimport);
+               $("#tab_content1").append(showimport);
+           }
            $(document).off("click",".pass");
             $(document).on("click",".pass",function () {
                 var flag=this.id;
@@ -135,8 +139,6 @@ function auditworkload() {
 
            });
         });
-
-
 }
 function showimportRec() {
 
@@ -210,7 +212,6 @@ function showimportRec() {
         }
     });*/
     var doubtedItem='';
-
     var uncommited='';
     var Count_double=0;
     $.get(auditorManageItemUrl+"?"+"importRequired=1",function (data) {
@@ -308,8 +309,6 @@ function showimportRec() {
         });
         $(document).on("click","body",function (event) {
             var target = $(event.target); // One jQuery object instead of 3
-
-            // Compare length with an integer rather than with
             if (!target.hasClass('popover')
                 && !target.hasClass('reviewerApply')
                 && !target.hasClass('popover-content')
@@ -426,10 +425,7 @@ function showimportRec() {
         $(".editorotherPara").empty();
         var Info = $(this).parent().next().text();
         var jsonInfo = JSON.parse(Info);
-       /* var realId=$(".editInfo").attr("class");
-        var Realreg=parseInt(realId.match(/\d+/g));
-       var flag=this.id;
-        var reg=parseInt(flag.match(/\d+/g));*/
+
        if(jsonInfo.descAndValues!=null){
            for(var count=0;count<jsonInfo.descAndValues.length;count++){
 
@@ -598,12 +594,12 @@ function showapplydata(item) {
         var applicant = $(this).parent().parent().find("td:eq(1)").text();
         var form = $(this).parent().prev().prev().prev().text();
 
-        $("#viewdetail_audit .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_audit .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>");
         $("#viewdetail_audit .message").append(
             "工作当量：" + jsonInfo.workload +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报人：" + applicant +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
-            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核状态：" + auditStatus);
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核状态：" + auditStatus+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报时间："+jsonInfo.applyTime);
 
         $(".viewDetailTbody").append(rowInfo);
         for( var i=0; i<6; i++){

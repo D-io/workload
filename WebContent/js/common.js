@@ -1,16 +1,11 @@
 $(document).ready(function () {
     $(function () {
         $(".datetimepicker").datetimepicker({
-         /* language: "zh-CN",
-         autoclose: true,//选中之后自动隐藏日期选择框
-         clearBtn: true,//清除按钮
-         todayBtn: true,//今日按钮*/
          autoclose: true,
          todayBtn: true,
          pickerPosition: "bottom-left",
-         format: "yyyy-mm-dd hh:ii:ss",//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
+         format: "yyyy-mm-dd hh:ii:ss",
             weekStart: 1,
-
             pickerPosition: "top-left",
             todayHighlight: 1,
             startView: 2,
@@ -18,10 +13,7 @@ $(document).ready(function () {
             showSecond:1,
             minuteStep:1,
         });
-
-       /* data-plugin-datepicker*/
     });
-
     getSideBar(currentRole,roleList);
     $("#year").val(currentYearUrl);
     $.get(commonYearsUrl,function (data) {
@@ -1407,9 +1399,7 @@ function getSideBar(role,roleList) {
                 var selectdata=new Array();
                 for(var i=0;i<teacherInfo.length;i++){
                     $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
-                    /* $('#firstteacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
-
-                     */       }
+                        }
             });
             $("#teacherName").select2({
                 placeholder:"",
@@ -1426,7 +1416,19 @@ function getSideBar(role,roleList) {
     }
     else if(role=="RE"){
         $("#dropdownMenu1").hide();
-        if(roleList.length==2){
+        if(roleList.length==3){
+            $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher2-left-sidebar",{test:12},function (html) {
+                $(".scroll-view").empty();
+                $(".scroll-view").append(html);
+                $(".userName").text(userNameUrl);
+                $(".userTeacher").text(userNameUrl+"老师！");
+            });
+            $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
+                $(".right_hole").empty();
+                $(".right_hole").append(html);
+            });
+        }
+        else if(roleList.length==2){
             $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher-left-sidebar",{test:12},function (html) {
                 $(".scroll-view").empty();
                 $(".scroll-view").append(html);
@@ -1437,7 +1439,6 @@ function getSideBar(role,roleList) {
                 $(".right_hole").empty();
                 $(".right_hole").append(html);
             });
-          //  applyworkload();
 
         }
         else {
@@ -1451,24 +1452,27 @@ function getSideBar(role,roleList) {
                 $(".right_hole").empty();
                 $(".right_hole").append(html);
             });
-          //  importWorkload();
-
         }
-
     }
     else{
+        if(roleList.length==2){
+            $.get(pageManageUrl+"?"+"regionName=manager/PrimaryTeacher-left-sidebar",{test:12},function (html) {
+                $(".scroll-view").empty();
+                $(".scroll-view").append(html);
+                $(".userName").text(userNameUrl);
+                $(".userTeacher").text(userNameUrl+"老师！");
+            });
+        }
+
+        else{
+            $.get(pageManageUrl+"?"+"regionName=manager/PrimaryTeacher1-left-sidebar",{test:12},function (html) {
+                $(".scroll-view").empty();
+                $(".scroll-view").append(html);
+                $(".userName").text(userNameUrl);
+                $(".userTeacher").text(userNameUrl+"老师！");
+            });
+        }
         $("#dropdownMenu1").hide();
-        $.get(pageManageUrl+"?"+"regionName=manager/PrimaryTeacher-left-sidebar",{test:12},function (html) {
-            $(".scroll-view").empty();
-            $(".scroll-view").append(html);
-            $(".userName").text(userNameUrl);
-            $(".userTeacher").text(userNameUrl+"老师！");
-        });
-        /*$.get(pageManageUrl+"?"+"regionName=manager/Teachers-right-col",{test:12},function (html) {
-            /!*$(".right_hole").empty();
-            $(".right_hole").append(html);*!/
-        });
-        applyworkload();*/
         $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
             $(".right_hole").empty();
             $(".right_hole").append(html);
@@ -1479,23 +1483,58 @@ function changeSideBar(role,roleList) {
     $.ajaxSetup({
         async : false
     });
-        if(roleList.length==3){
-            $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher-left-sidebar",{test:12},function (html) {
-                $(".scroll-view").empty();
-                $(".scroll-view").append(html);
-                $(".userName").text(userNameUrl);
-                $(".userTeacher").text(userNameUrl+"老师！");
-                pageshow();
+        if(roleList.length==4){
+        $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher2-left-sidebar",{test:12},function (html) {
+            $(".scroll-view").empty();
+            $(".scroll-view").append(html);
+            $(".userName").text(userNameUrl);
+            $(".userTeacher").text(userNameUrl+"老师！");
+            pageshow();
 
-            });
+        });
 
-           /* applyworkload();*/
-            $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
-                $(".right_hole").empty();
-                $(".right_hole").append(html);
-            });
+        /* applyworkload();*/
+        $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
+            $(".right_hole").empty();
+            $(".right_hole").append(html);
+        });
+
+    }
+       else if(roleList.length==3){
+            for(var t=0;t<roleList.length;t++){
+                if(roleList[t].role=="RE"){
+                    $.get(pageManageUrl+"?"+"regionName=manager/SpecialTeacher-left-sidebar",{test:12},function (html) {
+                        $(".scroll-view").empty();
+                        $(".scroll-view").append(html);
+                        $(".userName").text(userNameUrl);
+                        $(".userTeacher").text(userNameUrl+"老师！");
+                        pageshow();
+
+                    });
+
+                    /* applyworkload();*/
+                    $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
+                        $(".right_hole").empty();
+                        $(".right_hole").append(html);
+                    });
+
+                }
+                else if(roleList[t].role=="LEADER"){
+                    $.get(pageManageUrl+"?"+"regionName=manager/PrimaryTeacher-left-sidebar",{test:12},function (html) {
+                        $(".scroll-view").empty();
+                        $(".scroll-view").append(html);
+                        $(".userName").text(userNameUrl);
+                        $(".userTeacher").text(userNameUrl+"老师！");
+                    });
+                    $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
+                        $(".right_hole").empty();
+                        $(".right_hole").append(html);
+                    });
+                }
+            }
 
         }
+
         else {
             for(var leng=0;leng<roleList.length;leng++){
                 if(roleList[leng].role=="RE"){
@@ -1512,6 +1551,18 @@ function changeSideBar(role,roleList) {
                     });
                  //   importWorkload();
                     return;
+                }
+                else if(roleList[leng].role=="TE"){
+                    $.get(pageManageUrl+"?"+"regionName=manager/PrimaryTeacher1-left-sidebar",{test:12},function (html) {
+                        $(".scroll-view").empty();
+                        $(".scroll-view").append(html);
+                        $(".userName").text(userNameUrl);
+                        $(".userTeacher").text(userNameUrl+"老师！");
+                    });
+                    $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
+                        $(".right_hole").empty();
+                        $(".right_hole").append(html);
+                    });
                 }
             }
         }
@@ -1699,26 +1750,8 @@ function pageshow() {
         $SIDEBAR_MENU.find('li.active-sm').addClass('active').removeClass('active-sm');
         $(".profile_info").show();
         $(".child_menu").show();
-       /* $("#clickToggle1").on("click",function () {
-            $(".ck1").toggle("slow");
-
-        });*/
-      //  $(".firstToggleLi").unbind("mouseenter").unbind("mouseleave");
-
-        /*	$(".active").attr("onmouseout");
-         $(".active").attr("onmouseover");
-         $(".active").mouseout(function () {
-         var s = event.toElement || event.relatedTarget;
-         if (!$(".child_menu").contains(s)) { $(".child_menu").hide("slow"); }
-         });
-         $(".active").mouseover(function () {
-         var s = event.fromElement || event.relatedTarget;
-         if (!$(".child_menu").contains(s)) { $(".child_menu").show("slow"); }
-         });*/
         $BODY.toggleClass('nav-md nav-sm');
     }
-
-
 }
 function revieMyWorkload() {
     $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {

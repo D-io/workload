@@ -1,15 +1,3 @@
-/*$(document).on("click","#clickToggle1",function () {
-    $(".ck1").toggle("slow");
-
-});*/
-/*$(document).on("click","#clickToggle2",function () {
-    $(".ck2").toggle("slow");
-
-});
-$(document).on("click","#clickToggle3",function () {
-    $(".ck3").toggle("slow");
-
-});*/
 $(document).on("click",".btn-sm",function () {
     $('.hidden-addedText').show();
 
@@ -40,13 +28,7 @@ $(document).on("click",".collapse-link",function () {
         $(".sorting_asc").toggleClass("sorting_desc");
     });
 function jumpToSum() {
-/*
-    var resetStr='regionName=Realmanager/sum';
-    $.get(pageManageUrl+"?"+resetStr,function (data) {
-        $('#tab_content2').empty();
-        $('#tab_content2').append(data);
 
-    });*/
     $.get(categoryInfoListUrl, function (data) {
         $('#tab_content2').empty();
         var showlist = $("<ul></ul>");
@@ -84,14 +66,9 @@ function jumpToSum() {
                         }
 
                     }
-                    /*else{
-                        $("<li class='itemList'></li>").append("["+item[menu].name+"]"+item[menu].desc).appendTo(parent);
-                    }*/
                 }
             }
         }
-
-
     });
 }
 function jumpToAdd() {
@@ -110,9 +87,7 @@ function jumpToAdd() {
         var selectdata=new Array();
         for(var i=0;i<teacherInfo.length;i++){
             $('#teacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
-            /* $('#firstteacherName').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
-
-             */       }
+        }
     });
     $("#teacherName").select2({
         placeholder:"",
@@ -196,12 +171,6 @@ function reset() {
         if(option0==0){
             option0=null;
         }
-      /*  if(option0==6){
-            option0=1
-        }
-        if(option0==7){
-            option0=2;
-        }*/
         if(option1==0){
             option1=null;
         }
@@ -249,8 +218,6 @@ function reset() {
                 $(".pagination").empty();
                 $(".pagination").append(str);
             }
-
-
         });
     });
     $(".input-sm").change(function () {
@@ -315,16 +282,10 @@ function reset() {
         var option0=$("#ispassed option:selected");
         var option1=$("#itemRequired option:selected");
         var option2=$("#teacherName option:selected");
-        // var option3=$("#datatable_length option:selected");
-        /*$.get(itemAllUrl+"?"+"categoryId="+option1.val()+"&status="+option0.val()+"&ownerId="+option2.val()+"&isExport=yes",function (data) {
-
-         });*/
         var form = $("<form>");
         form.attr("style","display:none");
         // form.attr("target","");
         form.attr("method","get");
-        //  var strZipPath='categoryId="'+option1.val()+'"&status="'+option0.val()+'"&ownerId="'+option2.val()+'"&isExport="yes"';
-
         form.attr("action",itemWithPageUrl);
         if(option1.val()!=0){
             var input1 = $("<input>");
@@ -534,31 +495,6 @@ function reset() {
                 $(".totalItem").text(data.data.totalLines);
             }
 
-           /* var str='';
-            var totalPage=data.data.totalLines;
-            var $pageSize=$(".input-sm option:selected").val();
-            var pageCountNum=Math.ceil(totalPage/$pageSize);
-            if(pageCountNum<10){
-                for(var anopageNum=0;anopageNum<pageCountNum;anopageNum++){
-                    var pagestore=anopageNum+1;
-                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+anopageNum+'" tabindex="0">'+pagestore+'</a> </li>';
-                }
-                $(".pagination").empty();
-                $(".pagination").append(str);
-            }
-            else{
-                str="共<span>"+pageCountNum+"页</span>"
-                for(var pageNum=0;pageNum<10;pageNum++){
-                    var pagestore=pageNum+1;
-
-                    str+='<li class="paginate_button"> <a class="activePage" aria-controls="datatable-checkbox" data-dt-idx="'+pageNum+'" tabindex="0">'+pagestore+'</a> </li>';
-
-
-                }
-                str+='<li class="paginate_button next" id="datatable-checkbox_next"><a id="next" aria-controls="datatable-checkbox" data-dt-idx="11" tabindex="0">下一页</a></li>'
-                $(".pagination").empty();
-                $(".pagination").append(str);
-            }*/
         });
 
 
@@ -649,15 +585,10 @@ function itemSummary() {
                         $(".sumItemPreview tr:last td:eq(4)").append("<span class='uncheckedCount_"+id+"'>" + Info.uncheckedWorkload + "</span><span style='cursor:pointer;float: right' class='uncheckedWork' id='uncheckedwork_" + id + "' data-toggle='modal' data-target='#applyModal'>共" + Info.uncheckedItems + "项</span>")
 
                     }
-                    /*   $(".sumItemPreview tr:last td:eq(5)").attr("class","uncheckedWork");
-                     $(".sumItemPreview tr:last td:eq(5)").attr("id","uncheckedwork_"+id);
-                     $(".sumItemPreview tr:last td:eq(5)").attr("data-toggle","modal");
-                     $(".sumItemPreview tr:last td:eq(5)").attr("data-target","#applyModal");*/
+
                     $(".sumItemPreview tr:last td:eq(4)").css("text-align", "center");
                     $(".sumItemPreview tr:last td:eq(5)").append("<span class='totalCount_"+id+"'>" + Info.totalWorkload + "</span>");
                     $(".sumItemPreview tr:last td:eq(5)").css("text-align", "center");
-                    /* var act="<a class=\"btn btn-primary btn-xs previewAll\" id=\"previewAll_"+ id+"\" data-toggle='modal' data-target='#applyModal'>查看详情</a>";
-                     $(".sumItemPreview tr:last td:eq(5)").append(act);*/
                     $(".sumItemPreview tr:last td:eq(6)").append('<span class="refresh" id="refresh_'+id+'" style="cursor: pointer"><i class="fa fa-refresh"></i></span>');
 
                 }
@@ -951,8 +882,7 @@ function itemSummary() {
                     legend: {
                         x: 'left',
                         y: 'top',
-                        /*data: ['本科和研究生(含留学生、非全日制研究生)培养方案规定课程的工作当量', '培养方案规定的实践教学工作当量', '年度人才培养服务工作当量', '教研教改等教学当量', '其他工作当量']
-                         */   data: ['本科和研究生', '培养方案实践教学', '年度人才培养服务', '教研教改', '其他工作当量']
+                        data: ['本科和研究生', '培养方案实践教学', '年度人才培养服务', '教研教改', '其他工作当量']
 
                     },
 
@@ -1066,11 +996,7 @@ function itemSummary() {
 
 
                 });
-                /* echartPie.on('click', function (param) {
-                 // var index = param.dataIndex;
-                 // alert(index);
-                 console.log(param);
-                 });*/
+
                 var placeHolderStyle = {
                     normal: {
                         color: 'rgba(0,0,0,0)',
@@ -1111,36 +1037,6 @@ function appendAllItem(data,mystr,count) {
                 $("."+mystr+" tr:last").append(cellInfo);
             }
             var id=i;
-           /* var paramArray=Info.descAndValues;
-            var str='';
-            for(var paramCount=0;paramCount<paramArray.length;paramCount++){
-                if(paramCount!=paramArray.length-1){
-                    str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p><hr/>';
-
-                }
-                else
-                    str+='<p style="width: max-content;">'+paramArray[paramCount].desc+':'+paramArray[paramCount].value+'</p>';
-            }
-            var otherparamArray = Info.otherJsonParameters;
-            var otherstr = '';
-            if(otherparamArray&&otherparamArray.length>0){
-                for (var otherparamCount = 0; otherparamCount < otherparamArray.length; otherparamCount++) {
-                    if(otherparamCount!=otherparamArray.length-1){
-                        otherstr +='<p style="width: max-content;">'+ otherparamArray[otherparamCount].key + ':'+ otherparamArray[otherparamCount].value+'</p><hr/>';
-
-                    }
-                    else
-                        otherstr +='<p style="width: max-content;">'+ otherparamArray[otherparamCount].key + ':'+ otherparamArray[otherparamCount].value+'</p>';
-
-                }
-            }
-            var paramDesc = Info.paramDesc;
-            var paramDescstr = '';
-            if(paramDesc&&paramDesc.length>0){
-                for (var paramDescCount = 0; paramDescCount < paramDesc.length; paramDescCount++) {
-                    paramDescstr +='<p>'+ paramDesc[paramDescCount].symbol +'<p>'+ ':' +'<p>'+ paramDesc[paramDescCount].desc+'<p><hr/>';
-                }
-            }*/
             var statusName;
             if(Info.importRequired==0) {
                 switch (Info.status) {
@@ -1206,21 +1102,10 @@ function appendAllItem(data,mystr,count) {
                     $("."+mystr+" tr:last td:eq(2)").append("<span title='导入类'><img src='"+imaginUrl+"/css/images/newImport.png'></span>");
                     break;
             }
-         //   $("."+mystr+" tr:last td:eq(2)").text(itemImport);
             $("."+mystr+" tr:last td:eq(3)").text(Info.itemName);
-          //  $("."+mystr+" tr:last td:eq(4)").text(Info.formula);
-
-         //   $("."+mystr+" tr:last td:eq(5)").append(str);
-
-
-            /*  $(".ResetItem tr:last td:eq(5)").text(paramDescstr);*/
-         //   $("."+mystr+" tr:last td:eq(6)").append(otherstr);
-
             $("."+mystr+" tr:last td:eq(4)").text(Info.workload);
-            /*$("."+mystr+" tr:last td:eq(5)").text(Info.teacherName);*/
             $("."+mystr+" tr:last td:eq(5)").text(statusName);
             var checkAct=" <button class='btn btn-primary viewdetail' id='viewdetail_"+count+"' data-toggle='modal' data-target='#showdetail'>查看详情</button> ";
-
             $("."+mystr+" tr:last td:eq(6)").append(checkAct);
             count++;
 
@@ -1281,9 +1166,7 @@ function reviewerResetItem(data) {
 
                 var checkAct="<button type='button' class=\"btn btn-new reset_applicant\" id=\"applyReset_"+ Info.itemId+"\">退回申请</button><button type='button' class=\"btn btn-success reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\" style=''>退回审核</button><button class='btn btn-primary view_detail' id='viewdetail_"+i+"' data-toggle='modal' data-target='#showdetail'>查看详情</button> ";
                 var importAct="<button type='button' class=\"btn btn-danger reset_reviewer\" id=\"reviReset_"+ Info.itemId+"\">退回导入</button><button type='button' class=\"btn btn-warning reset_applicant\" id=\"applyReset_"+ Info.itemId+"\">退回复核</button><button class='btn btn-primary view_detail' id='viewdetail_"+i+"'  data-toggle='modal' data-target='#showdetail'>查看详情</button>";
-               /*background-color:rgb(155, 89, 182);color: #fff*/
-               /*style='background-color:rgba(243,156,18,.88);color: #fff'*/
-               /* style='background-color:rgba(231,76,60,.88);color: #fff'*/
+
                 if(Info.importRequired==0){
                     $(".ResetItem tr:last td:eq(8)").append(checkAct);
                 }
@@ -1345,9 +1228,7 @@ function reviewerResetItem(data) {
                     }
                 }
                 $(".ResetItem tr:last td:eq(7)").text(statusName);
-               /* if(statusName==0){
-                    $("#reviReset_"+Info.itemId).attr("disabled","disabled");
-                }*/
+
                 $(document).off("click",".view_detail");
                 $(document).on("click",".view_detail",function () {
                     var thisId=parseInt(this.id.match(/\d+/g));
@@ -1375,13 +1256,7 @@ function reviewerResetItem(data) {
                             }
                         }
                     }
-                 /*   var paramDesc = analyseList[thisId].paramDesc;
-                    var paramDescstr = '';
-                    if(paramDesc&&paramDesc.length>0){
-                        for (var paramDescCount = 0; paramDescCount < paramDesc.length; paramDescCount++) {
-                            paramDescstr +='<p>'+ paramDesc[paramDescCount].symbol +'<p>'+ ':' +'<p>'+ paramDesc[paramDescCount].desc+'<p><hr/>';
-                        }
-                    }*/
+
                     for(var t=0;t<5;t++)//单元格
                     {
                         $(".revDetail tr:last").append(cellInfo);
@@ -1471,7 +1346,6 @@ function reviewerResetItem(data) {
                 })
             }
         }
-
     }
 function manageHistory() {
     $.get(manageHistoryUrl,function (data) {
@@ -1491,22 +1365,12 @@ $(document).ready(function () {
     var addStr="<tr class='trCount_"+Count+"'><td><input type='text' class='form-control parameterName' name='para'  onblur='reminder(this)'></td><td style='position:relative'><input type='text' class='form-control parameterSymbol' name='para' onblur='reminder(this)'><button type='button' class='btn btn-danger removeParaRow' id='removeParaRow_"+Count+"' style='position: absolute;top:10px;right: -24px;'><i class='fa fa-trash'></i></button></td></tr>";
     $('.AddPramter').append(addStr);
 });
-  /*  $(document).on("click","#firstaddParameter",function () {
-        newCount++;
-        var addStr="<tr class='firsttrCount_"+newCount+"'><td><input type='text' class='form-control firstparameterName' name='firstparameterName'></td><td><input type='text' class='form-control firstparameterSymbol' name='parameterSymbol'><a class='btn btn-danger firstremoveParaRow' id='firstremoveParaRow_"+newCount+"' style='float: right;'><i class='fa fa-trash'></i></a></td></tr>";
-        $('.firstAddPramter').append(addStr);
-    });*/
+
 $(document).on("click","#addOtherParameter",function () {
     Count++;
     var addStr="<tr class='otherCount_"+Count+"'><td style='position:relative'><input type='text' class='form-control otherParameterName' name='parameterName' ><button type='button' class='btn btn-danger removeOtherRow' id='removeOtherRow_"+Count+"' style='position: absolute;top:10px;right: -24px;'><i class='fa fa-trash'></i></button></td></tr>";
     $('.addOtherPramter').append(addStr);
 });
-/*    $(document).on("click","#firstaddOtherParameter",function () {
-        newCount++;
-        var addStr="<tr class='firstotherCount_"+newCount+"'><td><input type='text' class='form-control firstotherParameterName' name='parameterName'><a class='btn btn-danger firstremoveOtherRow' id='firstremoveOtherRow_"+newCount+"' style='float:right;'><i class='fa fa-trash'></i></a></td></tr>";
-        $('.firstaddOtherPramter').append(addStr);
-    });*/
-
 $(document).on("click",".removeParaRow",function () {
     var trId=this.id.match(/\d+/g);
     $(".trCount_"+trId).remove();
@@ -1515,15 +1379,6 @@ $(document).on("click",".removeParaRow",function () {
         var trId=this.id.match(/\d+/g);
         $(".otherCount_"+trId).remove();
     });
-/*    $(document).on("click",".firstremoveParaRow",function () {
-        var trId=this.id.match(/\d+/g);
-        $(".firsttrCount_"+trId).remove();
-    });
-    $(document).on("click",".firstremoveOtherRow",function () {
-        var trId=this.id.match(/\d+/g);
-        $(".firstotherCount_"+trId).remove();
-    });*/
-
     $(document).on("click",".editOtherRow",function () {
         var trId=this.id.match(/\d+/g);
         $(".editOtherCount_"+trId).remove();
@@ -1537,6 +1392,4 @@ $(document).on("click",".removeParaRow",function () {
     },function () {
         $(".calendar-bar").css("display","none");
     })
-
-
 });
