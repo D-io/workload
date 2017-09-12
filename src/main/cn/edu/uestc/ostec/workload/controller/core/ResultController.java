@@ -237,7 +237,7 @@ public abstract class ResultController extends BaseController
 
 		// FireFox用ISO-8859-1
 		String encodedFileName;
-		if (Browser.IE.getName() == getClientBrowser()) {
+		if (Browser.IE.getName().equals(getClientBrowser())) {
 			encodedFileName = URLEncoder.encode(fileName, "UTF-8");
 		} else {
 			encodedFileName = new String(fileName.getBytes(), "ISO-8859-1");
@@ -262,7 +262,7 @@ public abstract class ResultController extends BaseController
 
 		// FireFox用ISO-8859-1
 		String encodedFileName;
-		if (Browser.IE.getName() == getClientBrowser()) {
+		if (Browser.IE.getName().equals(getClientBrowser())) {
 			encodedFileName = URLEncoder.encode(fileName, "UTF-8");
 		} else {
 			encodedFileName = new String(fileName.getBytes(), "ISO-8859-1");
