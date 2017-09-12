@@ -491,6 +491,7 @@ function applyworkload() {
                 $(".showitem_manager").hide();
                 $(".showitem_group").hide();
                 $(".showgroupDiv").hide();
+                $(".applyradio").hide();
                 $("#showAddgroupPramter").empty();
             }
             else {
@@ -499,6 +500,7 @@ function applyworkload() {
                 $(".showitem_manager").show();
                 $(".showitem_group").show();
                 $(".showgroupDiv").show();
+                $(".applyradio").show();
                 $("#showgroupWorkload").empty();
 
                 $("#showitemmanager").select2().val(window.Temp[newReg - 1].groupManagerId).trigger("change");
@@ -1214,7 +1216,7 @@ function applyworkload() {
                         var Info = data.data.item;
                         var newcount=$(".showContent").length;
                         newcount++;
-                        window.Temp[window.Temp.length]=Info;
+                        window.Temp.splice(newcount-1,1,Info);
                         if($("#testfile").val()){
                             var formdata = new FormData;
                             formdata.append("file", $("#testfile")[0].files[0]);
@@ -1344,11 +1346,11 @@ function applyworkload() {
 
                     }
                     , success: function (data) {
-
-                        var Info = data.data.item;
-                        window.Temp[window.Temp.length]=Info;
                         var newcount=$(".showContent").length;
                         newcount++;
+                        var Info = data.data.item;
+                        window.Temp.splice(newcount-1,1,Info);
+
 
                         if($("#testfile").val()){
                             var formdata = new FormData;

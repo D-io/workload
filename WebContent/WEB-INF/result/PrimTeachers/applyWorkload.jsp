@@ -336,7 +336,7 @@
                                 </div>
                             </div>
                             <span class="experient" id="experient_showndesc" >项目简介不可为空！</span>
-                            <div class="radio">
+                            <div class="applyradio">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                 </label>
                                 <label>
