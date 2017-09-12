@@ -87,9 +87,19 @@ public class Item implements Cloneable {
 	 */
 	private String version = DateHelper.getCurrentTerm();
 
+	private String applyTime = DateHelper.getDateTime();
+
 	private String categoryCode = null;
 
 	private Integer parentId = ZERO_INT;
+
+	public String getApplyTime() {
+		return applyTime;
+	}
+
+	public void setApplyTime(String applyTime) {
+		this.applyTime = applyTime;
+	}
 
 	public Integer getParentId() {
 		return parentId;

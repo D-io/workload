@@ -73,6 +73,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		itemDto.setOtherJson(po.getOtherJson());
 		itemDto.setVersion(po.getVersion());
 		itemDto.setParentId(po.getParentId());
+		itemDto.setApplyTime(po.getApplyTime());
 
 		Category category = isNull(itemDto.getCategoryId()) ?
 				null :
@@ -168,6 +169,7 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 		item.setOtherJson(dto.getOtherJson());
 		item.setVersion(dto.getVersion());
 		item.setParentId(dto.getParentId());
+		item.setApplyTime(dto.getApplyTime());
 
 		Category category = categoryDao
 				.select(item.getCategoryId(), null, null, null, null, DateHelper.getCurrentTerm())

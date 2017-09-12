@@ -323,6 +323,7 @@ public class ItemManageController extends ApplicationController {
 		//重新申请时新产生的对象
 		itemDto.setItemId(null);
 		itemDto.setStatus(NON_CHECKED);
+		itemDto.setApplyTime(DateHelper.getDateTime());
 
 		Map<String, Object> data = getData();
 		if (GROUP.equals(item.getIsGroup()) && item.getOwnerId().equals(item.getGroupManagerId())) {
@@ -393,6 +394,7 @@ public class ItemManageController extends ApplicationController {
 
 		// 获取对应的申报方式  申报类：可选上传相关附件，导入类：无需上传相关附件
 		int importRequired = category.getImportRequired();
+		itemDto.setApplyTime(DateHelper.getDateTime());
 
 		Map<String, Object> data = getData();
 
@@ -545,8 +547,9 @@ public class ItemManageController extends ApplicationController {
 
 		for (Integer itemId : itemIdList) {
 			Item item = itemService.findItem(itemId, getCurrentSemester());
+			item.setApplyTime(DateHelper.getDateTime());
 			ItemDto itemDto = itemConverter.poToDto(item);
-
+			itemDto.setApplyTime(DateHelper.getDateTime());
 			if ((item.getOwnerId().equals(teacherId) || itemDto.getReviewerId().equals(teacherId))
 					&& UNCOMMITTED.equals(item.getStatus())) {
 

@@ -20,11 +20,12 @@
         <result column="version" property="version" jdbcType="VARCHAR"/>
         <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
         <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+        <result column="apply_time" property="applyTime" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="Base_Column_List">
     item_id, item_name, category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc,
-    job_desc, status, json_child_weight,proof,is_group,other_json,version,category_code,parent_id
+    job_desc, status, json_child_weight,proof,is_group,other_json,version,category_code,parent_id,apply_time
   </sql>
 
     <select id="select" resultMap="itemResultMap">
@@ -57,7 +58,8 @@
         #{otherJson,jdbcType=VARCHAR},
         #{version},
         #{categoryCode},
-        #{parentId})
+        #{parentId},
+        #{applyTime})
     </insert>
 
     <update id="update">
@@ -76,7 +78,8 @@
       is_group = #{isGroup,jdbcType=INTEGER},
       other_json = #{otherJson,jdbcType=VARCHAR},
       category_code = #{categoryCode},
-      parent_id = #{parentId}
+      parent_id = #{parentId},
+      apply_time = #{applyTime}
     where item_id = #{itemId,jdbcType=INTEGER} and version = #{version}
   </update>
 
@@ -121,7 +124,7 @@
     <select id="selectAll" resultMap="itemResultMap">
         SELECT
         DISTINCT item_id, item_name, item.category_id, owner_id, json_parameter, workload, group_manager_id, apply_desc,
-        job_desc, item.status, json_child_weight,proof,is_group,item.other_json,item.version
+        job_desc, item.status, json_child_weight,proof,is_group,item.other_json,item.version,item.category_code,item.parent_id,apply_time
         FROM item,category
         <where>
             item.status != -1 AND item.status != 0 AND item.version = #{version}

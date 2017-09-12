@@ -156,6 +156,16 @@ public class ItemDto implements CompareObjectDifferences<ItemDto> {
 
 	private String categoryCode = null;
 
+	private String applyTime = DateHelper.getDateTime();
+
+	public String getApplyTime() {
+		return applyTime;
+	}
+
+	public void setApplyTime(String applyTime) {
+		this.applyTime = applyTime;
+	}
+
 	public Integer getParentId() {
 		return parentId;
 	}
