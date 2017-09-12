@@ -49,6 +49,7 @@ import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DELETED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
+import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.NON_CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.UNCOMMITTED;
@@ -259,7 +260,7 @@ public class ItemManageController extends ApplicationController {
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		if(!user.getUserId().equals(item.getGroupManagerId())) {
+		if (!user.getUserId().equals(item.getGroupManagerId())) {
 			return invalidOperationResponse("无权限删除");
 		}
 
@@ -481,7 +482,6 @@ public class ItemManageController extends ApplicationController {
 	public RestResponse uploadFileAsProof(MultipartFile file,
 			@RequestParam("itemId")
 					Integer... itemIdList) throws IOException {
-
 
 		User user = getUser();
 		if (null == user) {
@@ -745,7 +745,7 @@ public class ItemManageController extends ApplicationController {
 			return invalidOperationResponse("复核已经截止");
 		}
 
-		if (!NON_CHECKED.equals(item.getStatus())) {
+		if (!(NON_CHECKED.equals(item.getStatus()) || DOUBTED_CHECKED.equals(item.getStatus()))) {
 			return invalidOperationResponse();
 		}
 

@@ -339,10 +339,10 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 	/**
 	 * 审核人获取导入类对应条目信息
+	 *
 	 * @param categoryId 类目编号
-	 * @return
 	 */
-	@RequestMapping(value = "item-group/import",method = GET)
+	@RequestMapping(value = "item-group/import", method = GET)
 	public RestResponse getImportItemsByCategory(
 			@RequestParam("categoryId")
 					Integer categoryId) {
@@ -352,8 +352,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return invalidOperationResponse("非法请求");
 		}
 
-		Category category = categoryService.getCategory(categoryId,getCurrentSemester());
-		if(!user.getUserId().equals(category.getReviewerId())) {
+		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
+		if (!user.getUserId().equals(category.getReviewerId())) {
 			return invalidOperationResponse("非法请求");
 		}
 
@@ -384,9 +384,11 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 		int teacherId = user.getUserId();
 
+		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
+
 		List<Item> itemList = itemService
 				.findItemByCategory(getCurrentSemester(), categoryId, ZERO_INT);
-		if(isEmptyList(itemList)) {
+		if (isEmptyList(itemList)) {
 			return successResponse();
 		}
 
@@ -394,7 +396,11 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		for (Item item : itemList) {
 			if (item.getOwnerId().equals(teacherId)) {
 				//遍历该类下所有的条目，若和当前老师相对应，筛选
-				if (SINGLE.equals(item.getIsGroup())) {
+				if (APPLY_SELF.equals(category.getImportRequired()) && SINGLE
+						.equals(item.getIsGroup())) {
+					teacherItems.add(item);
+				} else if (IMPORT_EXCEL.equals(category.getImportRequired()) && !UNCOMMITTED
+						.equals(item.getStatus())) {
 					teacherItems.add(item);
 				}
 
@@ -411,6 +417,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				} else {
 					continue;
 				}
+
 			}
 		}
 
@@ -436,7 +443,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		//获取当前教师对应的导入类的条目
 		List<ItemDto> itemDtoList = findItems(IMPORT_EXCEL, getImportStatus(), teacherId,
 				getCurrentSemester());
-		if(isEmptyList(itemDtoList)) {
+		if (isEmptyList(itemDtoList)) {
 			return successResponse();
 		}
 
@@ -580,7 +587,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		List<ItemDto> itemList = findItems(null, statusList, teacherId, getCurrentSemester());
-		if(isEmptyList(itemList)) {
+		if (isEmptyList(itemList)) {
 			return successResponse();
 		}
 		List<ItemDto> applyItemList = new ArrayList<>();
@@ -655,7 +662,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(
 				itemService.findItemsByStatus(status, teacherId, getCurrentSemester()));
-		if(isEmptyList(itemDtoList)) {
+		if (isEmptyList(itemDtoList)) {
 			return null;
 		}
 		List<ItemDto> itemDtoGroup = new ArrayList<>();
@@ -691,13 +698,16 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	private List<ItemDto> findItems(Integer importRequired, List<Integer> statusList,
 			Integer teacherId, String version) {
 
-		if(isEmptyList(statusList)) {
+		if (isEmptyList(statusList)) {
 			return null;
 		}
 
 		List<ItemDto> itemDtoList = new ArrayList<>();
 		for (Integer status : statusList) {
-			itemDtoList.addAll(findItemsByStatus(importRequired, status, teacherId, version));
+			List<ItemDto> itemDtos = findItemsByStatus(importRequired, status, teacherId, version);
+			if (!isEmptyList(itemDtos)) {
+				itemDtoList.addAll(findItemsByStatus(importRequired, status, teacherId, version));
+			}
 		}
 
 		return itemDtoList;
@@ -716,7 +726,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		List<CategoryDto> parentList = categoryConverter.poListToDtoList(
 				categoryService.getCategoryChildren(SUBMITTED, ZERO_INT, getCurrentSemester()));
-		if(isEmptyList(parentList)) {
+		if (isEmptyList(parentList)) {
 			return null;
 		}
 		List<CategoryDto> tree = new ArrayList<>();
@@ -730,11 +740,11 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		ItemDto itemDto = itemConverter.poToDto(item);
 		Double workload = itemDto.getWorkload();
 		List<ChildWeight> childWeightList = itemDto.getChildWeightList();
-		if(isEmptyList(childWeightList)) {
+		if (isEmptyList(childWeightList)) {
 			return null;
 		}
 		List<ChildWeight> newChildWeightList = new ArrayList<>();
-		for(ChildWeight childWeight : childWeightList) {
+		for (ChildWeight childWeight : childWeightList) {
 			childWeight.setWorkload(workload * childWeight.getWeight());
 			newChildWeightList.add(childWeight);
 		}
