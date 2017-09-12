@@ -420,6 +420,9 @@ function applyworkload() {
                 }
                 window.Temp=[];
                 window.Temp = data.data.itemList;
+                if(data.data.itemList==null){
+                    window.Temp=[];
+                }
 
             });
             $("#myModalLabel").empty();
@@ -1125,6 +1128,7 @@ function applyworkload() {
                         var Info = data.data.item;
                         var newCount=$(".neweditor").attr("id");
                         newCount=parseInt(newCount.match(/\d+/g));
+
                         window.Temp.splice(newCount-1,1,Info);
                         if($("#testfile").val()){
                             var formdata = new FormData;
@@ -1347,10 +1351,11 @@ function applyworkload() {
                     }
                     , success: function (data) {
                         var newcount=$(".showContent").length;
+                        console.log(newcount);
+                        console.log( window.Temp);
                         newcount++;
                         var Info = data.data.item;
                         window.Temp.splice(newcount-1,1,Info);
-
 
                         if($("#testfile").val()){
                             var formdata = new FormData;
