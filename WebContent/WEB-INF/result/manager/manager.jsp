@@ -164,7 +164,7 @@
                         </div>
                         <div class="dropdown" id="changerole"  style="float:right;padding-top: 13px;">
                             <button type="button" class="btn dropdown-toggle btn-primary" id="dropdownMenu1"
-                                    data-toggle="dropdown" style="margin: 2px;padding: 1px;">
+                                    data-toggle="dropdown" style="margin-right: 10px;padding: 1px;">
                                 切换角色
                                 <span class="caret"></span>
                             </button>

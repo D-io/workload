@@ -8,10 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="navbar nav_title" style="border: 0;">
-   <%-- <a class="site_title" >--%>
-               <%-- <span>
-                    <img src="<%=request.getContextPath()%>/css/images/logo+xueyuan-workload.png" alt="..." class="left_span" style="width: 210px;margin-top: 12px;">
-                </span>--%>
+
        <div class="profile_pic">
                 <span>
                     <img src="<%=request.getContextPath()%>/css/images/img.png" alt="..." class="img-circle profile_img">
@@ -21,23 +18,8 @@
            <span style="font-size: 14px;">欢迎,</span>
            <span class="userTeacher" style="font-size: 14px;"></span>
        </div>
-    <%--  <span style="font-size: 16px;">信息与软件工程学院
-          <span style="font-size: 5px;">School of Information and Software Engineering</span></span></a>--%>
+
 </div>
-
-       <%-- <div class="clearfix"></div>--%>
-
-        <!-- menu profile quick info -->
-       <%-- <div class="profile">
-            <div class="profile_pic">
-
-            </div>
-            <div class="profile_info">
-                <span>欢迎,</span>
-                <h2 class="userName">学院教师</h2>
-            </div>
-        </div>--%>
-        <!-- /menu profile quick info -->
 
         <br />
 

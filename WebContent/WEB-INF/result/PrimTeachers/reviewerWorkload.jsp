@@ -49,7 +49,7 @@
                             <%--<th class="sorting">主要参数</th>--%>
                             <%--<th class="sorting">参数描述</th>--%>
                             <%--<th class="sorting">其他参数</th>--%>
-                            <%--<th class="sorting">版本</th>--%>
+                            <th class="sorting">复核时间</th>
                             <th class="sorting">复核截止时间 </th>
                             <th class="sorting">复核状态 </th>
                             <th class="sorting">操作</th>
@@ -83,7 +83,7 @@
         </div>
 
         <div class="modal fade" id="viewdetail_review" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false"  style="display: none;">
-            <div class="modal-dialog" role="document" style="min-width: 700px">
+            <div class="modal-dialog" role="document" style="min-width: 800px">
                 <div class="modal-content">
                     <div class="modal-header" style="position: relative">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
