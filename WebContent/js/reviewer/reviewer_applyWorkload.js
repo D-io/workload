@@ -89,11 +89,14 @@ function applyworkload() {
                         $(".tbody tr:last").attr("class","tbodyTr_"+id).css("text-align","center");
                         $(".tbody tr:last td:eq(0)").text(id);
                         $(".tbody tr:last td:eq(0)").attr("class", "itemCount");
-                        $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><span id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></span>");
+                        $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><a id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></a>");
                         $(".tbody tr:last td:eq(2)").text(Info.workload);
                         $(".tbody tr:last td:eq(2)").attr("id", "workload_" + Info.itemId);
                         var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + id + "'>删除操作</a> ";
                         var newAct="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a>";
+                       /* var proofAct="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"'>下载附件</a>";
+                        var proofAct="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"'>下载附件</a>";
+*/
                         var statusName;
                         switch (Info.status) {
                             case 0:
@@ -187,6 +190,8 @@ function applyworkload() {
 
         $(".savemyApplyAgain").hide();
         $(".dismissagain").hide();
+        $("#showitemmanager").select2().val(userId).trigger("change");
+        $("#showitemmanager").attr("disabled","disabled");
         $(".select2-container").css("width","100%");
         $(".editApply").hide();
         $(".editSubmit").hide();
@@ -215,7 +220,7 @@ function applyworkload() {
             $(".applyradio").show();
             $("#showgroupWorkload").empty();
 
-            $("#showitemmanager").select2().val(window.Temp[newReg - 1].groupManagerId).trigger("change");
+         //   $("#showitemmanager").select2().val(window.Temp[newReg - 1].groupManagerId).trigger("change");
             $("#showitemmanager").attr("disabled", "true");
             $("#showcalculator").attr("disabled", "true");
             $('#showAddgroupPramter').empty();
@@ -310,6 +315,7 @@ function applyworkload() {
                 for(var z=0;z<$('.showparameterName').val().length;z++){
                     var nubmer = $('.showparameterName').eq(z).val();
                     if (!re.test(nubmer)) {
+                        alert("计算参数请填写数字！");
                         return false;
                     }
                 }
@@ -583,8 +589,9 @@ function applyworkload() {
         $('#applyDesc').val(null);
         $('#workload').val(null);
         $("#AddgroupPramter").empty();
-        $("#itemmanager").select2().val(null).trigger("change").css("width","100%");
+        $("#itemmanager").select2().val(userId).trigger("change").css("width","100%");
         $(".select2-container").css("width","100%");
+        $("#itemmanager").attr("disabled","disabled");
         $('.parameterName').val(null);
         $('.otherparameterName').val(null);
         $(".radioChange").eq(0).attr("checked","true");
@@ -624,6 +631,7 @@ function applyworkload() {
                 for(var z=0;z<$('.parameterName').val().length;z++){
                     var nubmer = $('.parameterName').eq(z).val();
                     if (!re.test(nubmer)) {
+                        alert("计算参数请填写数字！");
                         return false;
                     }
                 }
@@ -978,7 +986,7 @@ function applyworkload() {
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
-                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><span id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></span>");
+                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><a id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></a>");
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
                             $(".tbody tr:last td:eq(3)").text("未提交");
@@ -1008,7 +1016,7 @@ function applyworkload() {
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt("1"));
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
-                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><span id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></span>");
+                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><a id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></a>");
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
 
@@ -1175,7 +1183,6 @@ function applyworkload() {
             else{
                 var sumCount=0;
                 for(var t=0;t<$('.groupMemberWeight').length;t++){
-                    console.log($('.groupMemberWeight').eq(t).val());
                     sumCount+=parseFloat($('.groupMemberWeight').eq(t).val());
                 }
                 if(sumCount!=1){
@@ -1291,12 +1298,15 @@ function applyworkload() {
     /*编辑时解禁*/
     $(document).on("click",".neweditor",function () {
         $(".form-control").removeAttr("disabled");
+        $("#itemmanager").attr("disabled","true");
         $(".parameterName").removeAttr("disabled");
         $(".otherparameterName").removeAttr("disabled");
         $(".groupMemberName").removeAttr("disabled");
         $(".groupMemberSymbol").removeAttr("disabled");
         $(".groupMemberWeight").removeAttr("disabled");
         $(".removeRow").removeAttr("disabled");
+        $("#calculator").removeAttr("disabled");
+        $("#addGroupMessage").removeAttr("disabled");
         $(".savemyApply").show();
         $(".dismiss").show();
         $(".neweditor").hide();

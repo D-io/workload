@@ -184,9 +184,9 @@
     </div>
 </div>
 <div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" style="min-width: 600px;">
         <div class="modal-content">
-            <div class="modal-header" style="width:96%;float: left;">
+            <div class="modal-header" style="position: relative">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="header" style="width:96%;float: left;">
                     <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class="current-page">工作当量汇总&nbsp;/&nbsp;查看详情</span></p>

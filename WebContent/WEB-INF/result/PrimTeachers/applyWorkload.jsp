@@ -644,7 +644,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary applydismiss" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary applySave">保存</button>
+                        <button type="button" class="btn btn-primary applySave">提交</button>
                         <%--   <button type="button" class="btn btn-primary saveAgain" style="display: none">保存</button>--%>
                         <button type="button" class="btn btn-primary applyeditor">编辑</button>
                         <%--<button type="button" class="btn btn-primary applysubmit">提交</button>--%>

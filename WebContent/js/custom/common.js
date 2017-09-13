@@ -878,7 +878,7 @@ $(document).ready(function () {
         $("#single").removeAttr("disabled");
         $("#group").removeAttr("disabled");
         $(".showotherparameterName").removeAttr("disabled");
-        $("#showitemmanager").removeAttr("disabled");
+      //  $("#showitemmanager").removeAttr("disabled");
         $(".showgroupMemberName").removeAttr("disabled");
         $(".showgroupMemberSymbol").removeAttr("disabled");
         $(".showgroupMemberWeight").removeAttr("disabled");
