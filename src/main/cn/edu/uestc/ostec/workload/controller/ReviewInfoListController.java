@@ -93,6 +93,7 @@ public class ReviewInfoListController extends ApplicationController implements O
 
 		Map<String,Object> data = getData();
 		data.put("itemList",itemConverter.poListToDtoList(items));
+		data.put("recordNumbers",itemList.size());
 
 		return successResponse(data);
 	}
