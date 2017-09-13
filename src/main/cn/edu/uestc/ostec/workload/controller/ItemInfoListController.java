@@ -7,8 +7,6 @@
  */
 package cn.edu.uestc.ostec.workload.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +22,6 @@ import cn.edu.uestc.ostec.workload.converter.impl.CategoryConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.converter.impl.SubjectConverter;
 import cn.edu.uestc.ostec.workload.dto.CategoryDto;
-import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.SubjectDto;
 import cn.edu.uestc.ostec.workload.dto.TeacherWorkloadAnalyze;
@@ -42,11 +39,9 @@ import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.service.SubjectService;
 import cn.edu.uestc.ostec.workload.service.TeacherService;
 import cn.edu.uestc.ostec.workload.service.TeacherWorkloadService;
-import cn.edu.uestc.ostec.workload.support.utils.PageHelper;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.TreeGenerateHelper;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
-import javafx.scene.Parent;
-import jdk.net.SocketFlow;
 
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.INFO_PATH;
 import static cn.edu.uestc.ostec.workload.controller.core.PathMappingConstants.ITEM_PATH;
@@ -57,7 +52,6 @@ import static cn.edu.uestc.ostec.workload.type.UserType.LEADER;
 import static cn.edu.uestc.ostec.workload.type.UserType.REVIEWER;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
  * Version:v1.0 (description: 工作量信息展示控制器 )
@@ -90,25 +84,42 @@ public class ItemInfoListController extends ApplicationController implements Ope
 	@Autowired
 	private TeacherWorkloadService teacherWorkloadService;
 
-	//	@RequestMapping(value = "items/group", method = GET)
-	//	public RestResponse getOwnItemsGroup(
-	//			@RequestParam("categoryId")
-	//					Integer categoryId) {
-	//		User user = getUser();
-	//		if (null == user) {
-	//			return invalidOperationResponse("非法请求");
-	//		}
-	//
-	//		int teacherId = user.getUserId();
-	//
-	//		List<ItemDto> itemDtoList = itemService
-	//				.findAll(null, categoryId, null, null, GROUP, getCurrentSemester(), APPLY_SELF,
-	//						teacherId);
-	//
-	//		Map<String, Object> data = getData();
-	//		data.put("itemDtoList", itemDtoList);
-	//		return successResponse(data);
-	//	}
+	@RequestMapping(value = "teacher-analyze-year", method = GET)
+	public RestResponse analyzeYearWorkload(
+			@RequestParam("teacherId")
+					Integer teacherId, String option, String categoryCode,
+			@RequestParam("year")
+					Integer year) {
+
+		User user = getUser();
+		if (null == user) {
+			return invalidOperationResponse("非法请求");
+		}
+		List<String> terms = DateHelper.getTermsOfTheYear(year);
+		TeacherWorkloadAnalyze firstWorkload = getTeacherWorkloadAnalyze(teacherId,
+				terms.get(ZERO_INT));
+		TeacherWorkloadAnalyze secondWorkload = getTeacherWorkloadAnalyze(teacherId, terms.get(1));
+		Map<String, Object> data = getData();
+		data.put("workload", firstWorkload.add(secondWorkload));
+
+		if ("details".equals(option)) {
+			List<Item> checkedItemList = new ArrayList<>();
+			checkedItemList.addAll(itemService
+					.findAnalyzeItems(teacherId, CHECKED, terms.get(ZERO_INT), categoryCode));
+			checkedItemList.addAll(itemService
+					.findAnalyzeItems(teacherId, CHECKED, terms.get(1), categoryCode));
+			data.put("checkedItemList", itemConverter.poListToDtoList(checkedItemList));
+
+			List<Item> uncheckedItemList = new ArrayList<>();
+			uncheckedItemList.addAll(itemService
+							.findAnalyzeItems(teacherId, null, terms.get(ZERO_INT), categoryCode));
+			uncheckedItemList.addAll(itemService
+							.findAnalyzeItems(teacherId, null, terms.get(1), categoryCode));
+
+			data.put("uncheckedItemList", itemConverter.poListToDtoList(uncheckedItemList));
+		}
+		return successResponse(data);
+	}
 
 	@RequestMapping(value = "teacher-analyze", method = GET)
 	public RestResponse analyzeWorkload(
@@ -120,34 +131,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return invalidOperationResponse("非法请求");
 		}
 
-		Workload workloadTypeOne = itemService
-				.workloadAnalyze(teacherId, TYPE_ONE_PREFIX, getCurrentSemester());
-		Workload workloadTypeTwo = itemService
-				.workloadAnalyze(teacherId, TYPE_TWO_PREFIX, getCurrentSemester());
-		Workload workloadTypeThree = itemService
-				.workloadAnalyze(teacherId, TYPE_THREE_PREFIX, getCurrentSemester());
-		Workload workloadTypeFour = itemService
-				.workloadAnalyze(teacherId, TYPE_FOUR_PREFIX, getCurrentSemester());
-		Workload workloadTypeFive = itemService
-				.workloadAnalyze(teacherId, TYPE_FIVE_PREFIX, getCurrentSemester());
-		Workload workloadTypeSix = itemService
-				.workloadAnalyze(teacherId, TYPE_SIX_PREFIX, getCurrentSemester());
-		Workload workloadTypeSeven = itemService
-				.workloadAnalyze(teacherId, TYPE_SEVEN_PREFIX, getCurrentSemester());
-		TeacherWorkloadAnalyze teacherWorkloadAnalyze = new TeacherWorkloadAnalyze();
-		teacherWorkloadAnalyze.setTeacherId(teacherId);
-		teacherWorkloadAnalyze.setTypeFive(workloadTypeFive);
-		teacherWorkloadAnalyze.setTypeFour(workloadTypeFour);
-		teacherWorkloadAnalyze.setTypeThree(workloadTypeThree);
-		teacherWorkloadAnalyze.setTypeTwo(workloadTypeTwo);
-		teacherWorkloadAnalyze.setTypeOne(workloadTypeOne);
-		teacherWorkloadAnalyze.setTypeSix(workloadTypeSix);
-		teacherWorkloadAnalyze.setTypeSeven(workloadTypeSeven);
-		teacherWorkloadAnalyze.setTeacherName(teacherService.findTeacherNameById(teacherId));
-		teacherWorkloadAnalyze.setTotalWorkload(
-				teacherWorkloadService.getTeacherWorkload(teacherId, getCurrentSemester())
-						.getTotalWorkload());
-
 		Map<String, Object> data = getData();
 		if ("details".equals(option)) {
 			data.put("checkedItemList", itemConverter.poListToDtoList(itemService
@@ -157,7 +140,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return successResponse(data);
 		}
 
-		data.put("workload", teacherWorkloadAnalyze);
+		data.put("workload", getTeacherWorkloadAnalyze(teacherId, getCurrentSemester()));
 		return successResponse(data);
 	}
 
@@ -736,6 +719,23 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
 		}
 		return tree;
+	}
+
+	private TeacherWorkloadAnalyze getTeacherWorkloadAnalyze(Integer teacherId, String version) {
+
+		TeacherWorkloadAnalyze teacherWorkloadAnalyze = new TeacherWorkloadAnalyze();
+		List<Workload> workloadList = new ArrayList<>();
+		List<String> types = getTypePrefix();
+		for(int i = 0; i < 7; i++) {
+			workloadList.add(itemService.workloadAnalyze(teacherId,types.get(i),version));
+		}
+		teacherWorkloadAnalyze.setTypes(workloadList);
+
+		teacherWorkloadAnalyze.setTeacherId(teacherId);
+		teacherWorkloadAnalyze.setTeacherName(teacherService.findTeacherNameById(teacherId));
+		teacherWorkloadAnalyze.setTotalWorkload(
+				teacherWorkloadService.getTeacherWorkload(teacherId, version).getTotalWorkload());
+		return teacherWorkloadAnalyze;
 	}
 
 }

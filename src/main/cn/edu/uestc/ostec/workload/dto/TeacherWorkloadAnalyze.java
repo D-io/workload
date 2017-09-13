@@ -9,6 +9,9 @@
 
 package cn.edu.uestc.ostec.workload.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Version:v1.0 (description:  )
  */
@@ -18,21 +21,17 @@ public class TeacherWorkloadAnalyze {
 
 	private String teacherName;
 
-	private Workload typeOne;
-
-	private Workload typeTwo;
-
-	private Workload typeThree;
-
-	private Workload typeFour;
-
-	private Workload typeFive;
-
-	private Workload typeSix;
-
-	private Workload typeSeven;
+	private List<Workload> types;
 
 	private Double totalWorkload;
+
+	public List<Workload> getTypes() {
+		return types;
+	}
+
+	public void setTypes(List<Workload> types) {
+		this.types = types;
+	}
 
 	public Integer getTeacherId() {
 		return teacherId;
@@ -50,67 +49,22 @@ public class TeacherWorkloadAnalyze {
 		this.teacherName = teacherName;
 	}
 
-	public Workload getTypeOne() {
-		return typeOne;
-	}
-
-	public void setTypeOne(Workload typeOne) {
-		this.typeOne = typeOne;
-	}
-
-	public Workload getTypeTwo() {
-		return typeTwo;
-	}
-
-	public void setTypeTwo(Workload typeTwo) {
-		this.typeTwo = typeTwo;
-	}
-
-	public Workload getTypeThree() {
-		return typeThree;
-	}
-
-	public void setTypeThree(Workload typeThree) {
-		this.typeThree = typeThree;
-	}
-
-	public Workload getTypeFour() {
-		return typeFour;
-	}
-
-	public void setTypeFour(Workload typeFour) {
-		this.typeFour = typeFour;
-	}
-
-	public Workload getTypeFive() {
-		return typeFive;
-	}
-
-	public void setTypeFive(Workload typeFive) {
-		this.typeFive = typeFive;
-	}
-
-	public Workload getTypeSix() {
-		return typeSix;
-	}
-
-	public void setTypeSix(Workload typeSix) {
-		this.typeSix = typeSix;
-	}
-
-	public Workload getTypeSeven() {
-		return typeSeven;
-	}
-
-	public void setTypeSeven(Workload typeSeven) {
-		this.typeSeven = typeSeven;
-	}
-
 	public Double getTotalWorkload() {
 		return totalWorkload;
 	}
 
 	public void setTotalWorkload(Double totalWorkload) {
 		this.totalWorkload = totalWorkload;
+	}
+
+	public TeacherWorkloadAnalyze add(TeacherWorkloadAnalyze workload) {
+		List<Workload> workloadList = workload.getTypes();
+		List<Workload> newWorkload = new ArrayList<>();
+		for (int i = 0; i < 7; i++) {
+			newWorkload.add(this.types.get(i).add(workloadList.get(i)));
+		}
+		workload.setTypes(newWorkload);
+		workload.setTotalWorkload(this.getTotalWorkload() + workload.getTotalWorkload());
+		return workload;
 	}
 }

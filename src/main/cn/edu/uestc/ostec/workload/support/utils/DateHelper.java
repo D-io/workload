@@ -144,11 +144,11 @@ public class DateHelper {
 	}
 
 	public static int getDefaultFormatTimeStamp(String dateTime) {
-		return getTimeStamp(dateTime,DATE_TIME_FORMAT_DEFAULT);
+		return getTimeStamp(dateTime, DATE_TIME_FORMAT_DEFAULT);
 	}
 
 	public static int getDefaultTimeStamp(String time) {
-		return getTimeStamp(time,DATE_TIME_FORMAT_DEFAULT);
+		return getTimeStamp(time, DATE_TIME_FORMAT_DEFAULT);
 	}
 
 	public static int getTimeStamp(String date) {
@@ -198,7 +198,7 @@ public class DateHelper {
 
 	public static int getCurrentScheme() {
 
-		if(getCurrentMonth() >= 8 || getCurrentMonth() <= 2) {
+		if (getCurrentMonth() >= 8 || getCurrentMonth() <= 2) {
 			return 1;
 		} else {
 			return 2;
@@ -230,6 +230,18 @@ public class DateHelper {
 		schemeList.add(nextYear.toString() + "-" + nextTwoYear.toString());
 		Collections.sort(schemeList);
 		return schemeList;
+	}
+
+	public static List<String> getTermsOfTheYear(Integer year) {
+		Integer nextYear = year + 1;
+		Integer lastYear = year + 2;
+
+		String firstTerm = lastYear.toString() + "-" + year.toString() + "-2";
+		String secondTerm = year.toString() + "-" + nextYear.toString() + "-1";
+		List<String> terms = new ArrayList<>();
+		terms.add(firstTerm);
+		terms.add(secondTerm);
+		return terms;
 	}
 
 }

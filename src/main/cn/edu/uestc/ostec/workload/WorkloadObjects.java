@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.lang.model.element.TypeElement;
+
 import cn.edu.uestc.ostec.workload.dto.RoleInfo;
 
 /**
@@ -107,6 +109,18 @@ public interface WorkloadObjects {
 	String TYPE_SIX_PREFIX = "0-3";
 
 	String TYPE_SEVEN_PREFIX = "0-4";
+
+	default List<String> getTypePrefix() {
+		List<String> typePrefixs = new ArrayList<>();
+		typePrefixs.add(TYPE_ONE_PREFIX);
+		typePrefixs.add(TYPE_TWO_PREFIX);
+		typePrefixs.add(TYPE_THREE_PREFIX);
+		typePrefixs.add(TYPE_FOUR_PREFIX);
+		typePrefixs.add(TYPE_FIVE_PREFIX);
+		typePrefixs.add(TYPE_SIX_PREFIX);
+		typePrefixs.add(TYPE_SEVEN_PREFIX);
+		return typePrefixs;
+	}
 
 	/**
 	 * 获取空的Map&lt;K, V&gt;

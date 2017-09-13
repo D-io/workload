@@ -63,4 +63,12 @@ public class Workload {
 	public void setWorkloadCode(String workloadCode) {
 		this.workloadCode = workloadCode;
 	}
+
+	public Workload add(Workload workload) {
+		workload.setTotalWorkload(workload.getTotalWorkload() + this.getTotalWorkload());
+		workload.setUncheckedWorkload(
+				workload.getUncheckedWorkload() + this.getUncheckedWorkload());
+		workload.setCheckedWorkload(workload.getCheckedWorkload() + this.getCheckedWorkload());
+		return workload;
+	}
 }
