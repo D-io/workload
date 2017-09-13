@@ -407,7 +407,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				if (GROUP.equals(item.getIsGroup()) && item.getOwnerId()
 						.equals(item.getGroupManagerId())) {
 					if (UNCOMMITTED.equals(item.getStatus())) {
-						teacherItems.add(calculateChildrenWorkloadOfUncommittedItem(item));
+						teacherItems
+								.add(itemService.calculateChildrenWorkloadOfUncommittedItem(item));
 					} else {
 						Integer parentId = item.getItemId();
 						teacherItems.add(itemConverter
@@ -734,28 +735,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
 		}
 		return tree;
-	}
-
-	private Item calculateChildrenWorkloadOfUncommittedItem(Item item) {
-		ItemDto itemDto = itemConverter.poToDto(item);
-		Double workload = itemDto.getWorkload();
-		List<ChildWeight> childWeightList = itemDto.getChildWeightList();
-		if (isEmptyList(childWeightList)) {
-			return null;
-		}
-		List<ChildWeight> newChildWeightList = new ArrayList<>();
-		for (ChildWeight childWeight : childWeightList) {
-			childWeight.setWorkload(workload * childWeight.getWeight());
-			newChildWeightList.add(childWeight);
-		}
-
-		itemDto.setChildWeightList(newChildWeightList);
-		try {
-			itemDto.setJsonChildWeight(OBJECT_MAPPER.writeValueAsString(newChildWeightList));
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return itemConverter.dtoToPo(itemDto);
 	}
 
 }

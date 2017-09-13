@@ -120,4 +120,6 @@ public interface ItemService extends BaseService {
 
 	Integer getValidItemNumberOfCategory(Integer categoryId, String version, Integer parentId,
 			Integer status);
+
+	Item calculateChildrenWorkloadOfUncommittedItem(Item item);
 }

@@ -474,8 +474,14 @@ public class ItemManageController extends ApplicationController {
 			return systemErrResponse("保存失败");
 		}
 		newItemDto.setItemId(item.getItemId());
-		data.put("item", newItemDto);
 
+		if (GROUP.equals(itemDto.getIsGroup()) && itemDto.getOwnerId()
+				.equals(itemDto.getGroupManagerId())) {
+			data.put("item", itemConverter
+					.poToDto(itemService.calculateChildrenWorkloadOfUncommittedItem(item)));
+		} else {
+			data.put("item", newItemDto);
+		}
 		return successResponse(data);
 	}
 
