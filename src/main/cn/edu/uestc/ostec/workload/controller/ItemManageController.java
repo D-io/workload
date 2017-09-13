@@ -210,9 +210,9 @@ public class ItemManageController extends ApplicationController {
 					.equals(item.getGroupManagerId())) {
 				itemEvent.updateGroupItemsStatus(item.getItemId(), getCurrentSemester(),
 						NON_CHECKED);
-			} else {
-				item.setStatus(NON_CHECKED);
 			}
+			item.setStatus(NON_CHECKED);
+
 		} else {
 			if (GROUP.equals(item.getIsGroup()) && item.getOwnerId()
 					.equals(item.getGroupManagerId())) {

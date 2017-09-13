@@ -145,4 +145,12 @@ public interface OperatingStatusType {
 		return statusList;
 	}
 
+	default List<Integer> getApplyStatus() {
+		List<Integer> statusList = new ArrayList<>();
+		statusList.addAll(getNormalStatusList());
+		statusList.add(DENIED);
+
+		return statusList;
+	}
+
 }
