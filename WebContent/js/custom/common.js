@@ -121,9 +121,8 @@ $(document).ready(function () {
     $(document).off("click",".importList");
     $(document).on("click",".importList",function () {
 
-        $("#myModalLabel").empty();
-        $("#myModalLabel").append("<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class='current-page'>工作当量导入</span></p>" +
-            "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+        $(".appendArial").empty();
+        $(".appendArial").append("<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
             "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
             "<p class='message'>" + $(this).next().next().text() + "</p>");
 
@@ -226,7 +225,7 @@ $(document).ready(function () {
     $(document).on("click",".showImportAll",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
        window.countToCount=thisId;
-
+        $(".changetext").text("查看详情");
         $(".editor").show();
         $(".submitTo").show();
         $(".dismiss").hide();
@@ -334,6 +333,7 @@ $(document).ready(function () {
     $(document).on("click",".addNewItem",function () {
         $(".form-control").removeAttr("disabled");
         $(".dismiss").show();
+        $(".changetext").text("添加项目");
         $(".savemyEdit").show();
         if($(".savemyEdit").attr("id")){
             $(".savemyEdit").removeAttr("id");
@@ -578,7 +578,7 @@ $(document).ready(function () {
         var reg=parseInt(flag.match(/\d+/g));
         $("#myModalLabel").empty();
         $("#myModalLabel").append( "<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量复核</span></p>" +
-            "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+            "<p class='project'><span class='itemName'>【规则名称】 " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
             "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
             "<p class='message'>复核截止时间：" + $(this).prev().text() +"</p>");
 
@@ -667,7 +667,7 @@ $(document).ready(function () {
         var auditStatus = $(this).parent().prev().text();
         // var form = $(this).parent().prev().prev().prev().text();
 
-        $("#viewdetail_reviewer .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_reviewer .project").append( "<span class='itemName'>【项目名称】" + jsonInfo.itemName +"</span>" );
         $("#viewdetail_reviewer .message").append(
             "工作当量：" + jsonInfo.workload +
             // "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
@@ -1018,11 +1018,13 @@ $(document).ready(function () {
     /*重新申请编辑*/
     $(document).on("click",".applyeditor",function () {
         $(".form-control").removeAttr("disabled");
+        $("#applyitemmanager").attr("disabled","disabled");
         $(".applyparameterName").removeAttr("disabled");
         $(".applyotherparameterName").removeAttr("disabled");
         $("#is_group").removeAttr("disabled");
         $("#is_single").removeAttr("disabled");
         $(".removeRow").removeAttr("disabled");
+        $("#revfile").removeAttr("disabled");
         $("#applyAddGroupMessage").removeAttr("disabled");
         $("#applyCalculator").removeAttr("disabled");
         $(".showapplyMemberName").removeAttr("disabled", "true");
@@ -1031,7 +1033,7 @@ $(document).ready(function () {
         $(".applySave").show();
         $(".applyeditor").hide();
         $(".applydismiss").show();
-    })
+    });
     /*保存重新申请*/
     $(document).on("click",".applySave",function () {
         var thisId=parseInt(this.id.match(/\d+/g));

@@ -55,7 +55,7 @@
                         </tbody>
                     </table>
 
-                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static" data-keyboard="false">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -189,16 +189,19 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                     </button>
-                    <h4 class="modal-title" id="myModalLabel"></h4>
+                    <h4 class="modal-title myModalLabel">
+                        <p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class='current-page'>工作当量导入</span></p>
+                        <span class="appendArial"></span>
+                    </h4>
                 </div>
                 <div class="modal-body">
 
                     <span>
-                            <input type="file" class=" col-md-9 col-sm-9 col-xs-12" id="file" style="    padding: 6px 12px;line-height: 1.42857143;color: #555;margin-bottom:10px;background-color: #fff;background-image: none;border: 1px solid #ccc;border-radius: 4px; outline: none;">
-                            <div class="control-label col-md-3 col-sm-3 col-xs-12">
+                            <input type="file" class="col-md-3 col-sm-12 col-xs-12 " id="file" style="padding: 6px 12px;line-height: 1.42857143;color: #555;margin-bottom:10px;background-color: #fff;background-image: none;border: 1px solid #ccc;border-radius: 4px; outline: none;">
+                            <div class="control-label col-md-9 col-sm-9 col-xs-9">
                                 <a class="importNewFile" title="上传文件" style="cursor:pointer;position: relative; top: 7px; font-size: 14px;margin-left: 7px;"><i class="fa fa-upload"></i>上传</a>
-                                <a class=" addNewItem" title="添加项目"  data-toggle="modal" data-target="#addContent" style="cursor:pointer;position: relative; top: 7px; font-size: 14px;margin-left: 7px;"><i class="fa fa-plus"></i>添加</a>
-                                 <a class=" submitItem" title="提交项目" style="cursor:pointer;display: none; position: relative; top: 7px; font-size: 14px;margin-left: 7px;"><i class="fa fa-check-square-o"></i>提交</a>
+                                <a class=" submitItem" title="提交项目" style="float:right;cursor:pointer;display: none; position: relative; top: 7px; font-size: 14px;margin-left: 7px;"><i class="fa fa-check-square-o"></i>提交</a>
+                                <a class=" addNewItem" title="添加项目"  data-toggle="modal" data-target="#addContent" style="float:right;cursor:pointer;position: relative; top: 7px; font-size: 14px;margin-left: 7px;"><i class="fa fa-plus"></i>添加</a>
 
                             </div>
 
@@ -226,16 +229,17 @@
 
         </div>
     </div>
-    <div class="modal fade" id="addContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="addContent" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
-                    <h5 class="modal-title" >
-                        项目信息
-                    </h5>
+                    <h4 class="modal-title myModalLabel">
+                        <p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class='current-page'>工作当量导入/</span><span class="changetext" style="font-size: 13px;font-weight: normal;">添加申报</span></p>
+                        <span class="appendArial"></span>
+                    </h4>
                 </div>
                 <div class="modal-body">
 

@@ -115,7 +115,10 @@
                     <div class="modal-header" style="position: relative">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                         </button>
-                        <div class="modal-title" id="myModalLabel"></div>
+                        <div class="modal-title myModalLabel">
+                            <p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量申报</span></p>
+                            <span class="appendArial"></span>
+                        </div>
                     </div>
                     <div class="modal-body">
                         <button class="add btn btn-primary" data-toggle="modal" data-target="#addContent">添加申报</button>
@@ -128,16 +131,16 @@
             </div>
         </div>
 
-        <div class="modal fade" id="addContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal fade" id="addContent" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="position: relative">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             &times;
                         </button>
-                        <h4 class="modal-title" >
-                            申报信息
-                        </h4>
+                        <div class="modal-title myModalLabel">  <p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量申报/添加申报</span></p>
+                            <span class="appendArial"></span></div>
+
                     </div>
                     <div class="modal-body">
 
@@ -305,16 +308,17 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-        <div class="modal fade" id="showContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal fade" id="showContent" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="position: relative">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             &times;
                         </button>
-                        <h4 class="modal-title" >
-                            申报信息
-                        </h4>
+                        <div class="modal-title myModalLabel">
+                            <p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量申报/查看详情</span></p>
+                            <span class="appendArial"></span>
+                        </div>
                     </div>
                     <div class="modal-body">
 
@@ -488,7 +492,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-        <div class="modal fade" id="refuse_To_Apply" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal fade" id="refuse_To_Apply" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="position: relative">

@@ -136,9 +136,8 @@ function applyworkload() {
                 }
 
             });
-            $("#myModalLabel").empty();
-            $("#myModalLabel").append( "<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量申报</span></p>" +
-                "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+            $(".appendArial").empty();
+            $(".appendArial").append("<p class='project'><span class='itemName'>【规则名称】 " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
                 "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
                 "<p class='message'>申报截止时间：" + $(this).prev().prev().text() + "</p>"
             );
@@ -1558,7 +1557,7 @@ function applyRec() {
         var auditStatus = $(this).parent().prev().text();
         var form = $(this).parent().prev().prev().prev().prev().text();
 
-        $("#viewdetail_apply .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_apply .project").append( "<span class='itemName'>【项目名称】" + jsonInfo.itemName +"</span>" );
         $("#viewdetail_apply .message").append(
             "工作当量：" + jsonInfo.workload +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +

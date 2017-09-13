@@ -212,7 +212,7 @@ function showapplydata(item) {
 
         $(".showDesc tr:last td:eq(4)").text(Info.workload);    //工作当量
 
-        var statusName;
+        var statusName='';
         switch (Info.status) {
             case -1:
                 statusName = '删除状态';
@@ -238,9 +238,17 @@ function showapplydata(item) {
         }
         $(".showDesc tr:last td:eq(5)").text(statusName);
         $(".showDesc tr:last td:eq(5)").attr("id","reviewe_"+Info.itemId);
+        var act='';
+        switch (Info.status){
+            case 1:act = "<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_audit' id='btn-audit-viewdetail'>查看详情</a><button class='btn btn-success pass' id='pass_" + Info.itemId + "'>审核通过</button><button class='btn btn-danger refuse' data-toggle='modal' data-target='#refuseModal' id='refuse_" + Info.itemId + "'>审核拒绝</button> ";
+            break;
+            case 2:act = "<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_audit' id='btn-audit-viewdetail'>查看详情</a>";
+            break;
+            case 5:act = "<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_audit' id='btn-audit-viewdetail'>查看详情</a>";
+            break;
+        }
 
-        var act = "<a class='btn btn-primary' data-toggle='modal' data-target='#viewdetail_audit' id='btn-audit-viewdetail'>查看详情</a><button class='btn btn-success pass' id='pass_" + Info.itemId + "'>审核通过</button><button class='btn btn-danger refuse' data-toggle='modal' data-target='#refuseModal' id='refuse_" + Info.itemId + "'>审核拒绝</button> ";
-        $(".showDesc tr:last td:eq(6)").append(act).attr("class","operation-btn-three");
+           $(".showDesc tr:last td:eq(6)").append(act).attr("class","operation-btn-three");
 
         $(".showDesc tr:last td:eq(7)").text(JSON.stringify(Info));
         $(".showDesc tr:last td:eq(7)").css("display","none");
@@ -265,7 +273,7 @@ function showapplydata(item) {
         var applicant = $(this).parent().parent().find("td:eq(1)").text();
         var form = $(this).parent().prev().prev().prev().text();
 
-        $("#viewdetail_audit .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>");
+        $("#viewdetail_audit .project").append( "<span class='itemName'>【项目名称】" + jsonInfo.itemName +"</span>");
         $("#viewdetail_audit .message").append(
             "工作当量：" + jsonInfo.workload +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报人：" + applicant +

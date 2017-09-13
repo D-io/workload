@@ -287,7 +287,7 @@ function reviewerSumItem() {
             }
         }
 
-        $(".name").text(newArray[thisId].itemName);
+        $(".name").text("【项目名称】"+newArray[thisId].itemName);
         $(".message").empty();
         $(".message").append("工作当量："+newArray[thisId].workload+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;形式："+applyStyle+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+applystatus);
 

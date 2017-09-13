@@ -214,7 +214,7 @@ function showimportRec() {
         var auditStatus = $(this).parent().prev().text();
         var form = $(this).parent().prev().prev().prev().text();
 
-        $("#viewdetail_import .project").append( "<span class='itemName'>" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_import .project").append( "<span class='itemName'>【项目名称】" + jsonInfo.itemName +"</span>" );
         $("#viewdetail_import .message").append(
             "工作当量：" + jsonInfo.workload +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
