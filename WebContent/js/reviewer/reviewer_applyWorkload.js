@@ -89,44 +89,59 @@ function applyworkload() {
                         $(".tbody tr:last").attr("class","tbodyTr_"+id).css("text-align","center");
                         $(".tbody tr:last td:eq(0)").text(id);
                         $(".tbody tr:last td:eq(0)").attr("class", "itemCount");
-                        $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><a id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></a>");
+                        $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><a href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'></a>");
                         $(".tbody tr:last td:eq(2)").text(Info.workload);
                         $(".tbody tr:last td:eq(2)").attr("id", "workload_" + Info.itemId);
-                        var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + id + "'>删除操作</a> ";
-                        var newAct="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a>";
-                       /* var proofAct="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"'>下载附件</a>";
-                        var proofAct="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"'>下载附件</a>";
-*/
-                        var statusName;
+                        var act='';
+                           var statusName='';
+                        if(Info.status==0){
+                            if(Info.proof!=null){
+                                 act="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + id + "'>删除操作</a><a class='btn btn-primary' id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"'>下载附件</a>";
+
+                            }
+                            else{
+                                act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + id + "'>删除操作</a> ";
+
+                            }
+                        }
+                        else{
+                            if(Info.proof!=null){
+                                act="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a><a class='btn btn-primary' id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"'>下载附件</a>";
+
+                            }
+                            else{
+                                 act="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + id + "'>查看详情</a>";
+
+                            }
+                        }
+
                         switch (Info.status) {
                             case 0:
                                 statusName = '未提交';
-                                $(".tbody tr:last td:eq(4)").append(act);
                                 break;
                             case 1:
                                 statusName = '待审核';
-                                $(".tbody tr:last td:eq(4)").append(newAct);
                                 break;
                             case 2:
                                 statusName = '已通过';
-                                $(".tbody tr:last td:eq(4)").append(newAct);
                                 break;
                             case 3:
                                 statusName = '尚存疑';
-                                $(".tbody tr:last td:eq(4)").append(newAct);
+
                                 break;
                             case 4:
                                 statusName = '已解惑';
-                                $(".tbody tr:last td:eq(4)").append(newAct);
+
                                 break;
                             case 5:
                                 statusName = '已拒绝';
-                                $(".tbody tr:last td:eq(4)").append(newAct);
+
                                 break;
                         }
                         $(".tbody tr:last td:eq(3)").text(statusName);
                         $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
-                        $(".tbody tr:last td:eq(4)").attr("class","operation-btn-two");
+                        $(".tbody tr:last td:eq(4)").append(act);
+                        $(".tbody tr:last td:eq(4)").attr("class","operation-btn-three").attr("id","three_"+Info.itemId);
                     }
                 }
                 window.Temp=[];
@@ -207,7 +222,7 @@ function applyworkload() {
             $(".showitem_manager").hide();
             $(".showitem_group").hide();
             $(".showgroupDiv").hide();
-            $(".applyradio").hide();
+           // $(".applyradio").hide();
             $("#showAddgroupPramter").empty();
         }
         else {
@@ -329,7 +344,7 @@ function applyworkload() {
             }
         }
         var radio = $("input:radio[name='showoptionsRadios']:checked");
-        if(radio==1){
+        if(radio.val()==1){
             if($(".showgroupMemberSymbol").length>1){
                 if(!$('.showgroupMemberSymbol').val()){
                     $('.showgroupMemberSymbol').parent().parent(".form-group").addClass("has-error");
@@ -457,7 +472,14 @@ function applyworkload() {
                                     $("input[name='revfile']").css({"color":"transparent","width":"80px"});
                                     $(".showagain").text(data.data.itemDto.fileName);
                                     window.Temp.splice(window.contentCount - 1,1,data.data.itemDto);
-                                    $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
+                                    msg=data.data.itemDto;
+                                    if($("#proof_"+data.data.itemDto.itemId).length>0){
+                                        $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
+                                    }
+                                    else{
+
+                                        $("#three_"+data.data.itemDto.itemId).append("<a class='btn btn-primary' id='proof_"+data.data.itemDto.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+data.data.itemDto.proof+"'>下载附件</a>")
+                                    }
                                 }
 
                                 else{
@@ -537,7 +559,14 @@ function applyworkload() {
                                     $("input[name='revfile']").css({"color":"transparent","width":"80px"});
                                     $(".showagain").text(data.data.itemDto.fileName);
                                     window.Temp.splice(window.contentCount - 1,1,data.data.itemDto);
-                                    $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
+                                    msg=data.data.itemDto;
+                                    if($("#proof_"+data.data.itemDto.itemId).length>0){
+                                        $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
+                                    }
+                                    else{
+
+                                        $("#three_"+data.data.itemDto.itemId).append("<a class='btn btn-primary' id='proof_"+data.data.itemDto.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+data.data.itemDto.proof+"'>下载附件</a>")
+                                    }
                                 }
 
                                 else{
@@ -645,8 +674,8 @@ function applyworkload() {
             }
         }
         var radio = $("input:radio[name='optionsRadios']:checked");
-        if(radio==1){
-            if($(".groupMemberSymbol").length>1){
+        if(radio.val()==1){
+            if($(".groupMemberSymbol")&&$(".groupMemberSymbol").length>1){
                 if(!$('.groupMemberSymbol').val()){
                     $('.groupMemberSymbol').parent().parent(".form-group").addClass("has-error");
                     $("#experient_group").show();
@@ -769,8 +798,16 @@ function applyworkload() {
                                         file.remove();
                                         $("input[name='testfile']").css({"color":"transparent","width":"80px"})
                                         $(".showhidden").text(data.data.itemDto.fileName);
-                                        window.Temp.splice(newcount-1,1,data.data.itemDto);
-                                        $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
+                                        window.Temp.splice(newCount-1,1,data.data.itemDto);
+                                        Info=data.data.itemDto;
+                                        if($("#proof_"+data.data.itemDto.itemId).length>0){
+                                            $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
+                                        }
+                                        else{
+
+                                            $("#three_"+data.data.itemDto.itemId).append("<a class='btn btn-primary' id='proof_"+data.data.itemDto.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+data.data.itemDto.proof+"'>下载附件</a>")
+                                        }
+
                                     }
 
                                     else{
@@ -852,8 +889,15 @@ function applyworkload() {
                                         file.remove();
                                         $("input[name='testfile']").css({"color":"transparent","width":"80px"})
                                         $(".showhidden").text(data.data.itemDto.fileName);
-                                        window.Temp.splice(newcount-1,1,data.data.itemDto);
-                                        $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
+                                        window.Temp.splice(newCount-1,1,data.data.itemDto);
+                                        Info=data.data.itemDto;
+                                        if($("#proof_"+data.data.itemDto.itemId).length>0){
+                                            $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
+                                        }
+                                        else{
+
+                                            $("#three_"+data.data.itemDto.itemId).append("<a class='btn btn-primary' id='proof_"+data.data.itemDto.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+data.data.itemDto.proof+"'>下载附件</a>")
+                                        }
                                     }
                                     else{
                                         alert("文件已存在！请修改文件名或文件内容后重新上传！");
@@ -937,6 +981,7 @@ function applyworkload() {
                                         $("input[type='file']").css({"color":"transparent","width":"80px"})
                                         $(".showhidden").text(data.data.itemDto.fileName);
                                         window.Temp.splice(newcount-1,1,data.data.itemDto);
+                                        Info=data.data.itemDto;
                                     }
                                     else{
                                         alert("文件已存在！请修改文件名或文件内容后重新上传！");
@@ -985,16 +1030,23 @@ function applyworkload() {
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
-                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><a id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></a>");
+                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><a href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'></a>");
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
                             $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
+                            var act='';
+                            if(Info.proof!=null){
+                                act="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + newcount + "'>删除操作</a><a class='btn btn-primary' id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"'>下载附件</a>";
 
-                            var act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
+                            }
+                            else{
+                                 act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
+
+                            }
 
                             $(".tbody tr:last td:eq(4)").append(act).css("width","200px");
-                            $(".tbody tr:last td:eq(4)").attr("class","operation-btn-two");
+                            $(".tbody tr:last td:eq(4)").attr("class","operation-btn-three").attr("id","three_"+Info.itemId);
 
                         }
                         else {
@@ -1015,15 +1067,22 @@ function applyworkload() {
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt("1"));
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
-                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><a id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></a>");
+                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><a href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'></a>");
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
 
                             $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
+                            var act='';
+                            if(Info.proof!=null){
+                                act="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + newcount + "'>删除操作</a><a class='btn btn-primary' id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"'>下载附件</a>";
 
-                            var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_"+Info.itemId+"' id='delemyself_" + newcount+ "'>删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-two");
+                            }
+                            else{
+                                act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
+
+                            }
+                              $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-three").attr("id","three_"+Info.itemId);
                         }
 
                     }
@@ -1071,6 +1130,14 @@ function applyworkload() {
                                         $("input[name='testfile']").css({"color":"transparent","width":"80px"})
                                         $(".showhidden").text(data.data.itemDto.fileName);
                                         window.Temp.splice(newcount-1,1,data.data.itemDto);
+                                        Info=data.data.itemDto;
+                                        if($("#proof_"+data.data.itemDto.itemId).length>0){
+                                            $("#proof_"+data.data.itemDto.itemId).attr("href",fileInfoUrl+"?fileInfoId="+data.data.fileInfo.fileInfoId);
+                                        }
+                                        else{
+
+                                            $("#three_"+data.data.itemDto.itemId).append("<a class='btn btn-primary' id='proof_"+data.data.itemDto.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+data.data.itemDto.proof+"'>下载附件</a>")
+                                        }
                                     }
                                     else{
                                         alert("文件已存在！请修改文件名或文件内容后重新上传！");
@@ -1113,15 +1180,22 @@ function applyworkload() {
                             $(".tbody tr:last").attr("class","tbodyTr_"+newcount).css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt($itemCt.eq($itemCt.length-1).text())+1);
                             $(".tbody tr:last td:eq(0)").attr("class","itemCount");
-                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><span id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'><i class='fa fa-download'></i></span>");
+                            $(".tbody tr:last td:eq(1)").append("<span id='itemname_"+Info.itemId+"'>"+Info.itemName+"</span><span href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"' style='float: right'></span>");
                             $(".tbody tr:last td:eq(2)").text(Info.workload);
                             $(".tbody tr:last td:eq(2)").attr("id","workload_"+Info.itemId);
 
                             $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
+                            var act='';
+                            if(Info.proof!=null){
+                                act="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + newcount + "'>删除操作</a><a class='btn btn-primary' id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"'>下载附件</a>";
 
-                            var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount+ "'>查看详情</a><a class='btn btn-primary delemyself delemyself_"+Info.itemId+"' id='delemyself_" + newcount+ "'>删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-two");
+                            }
+                            else{
+                                act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
+
+                            }
+                             $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-three").attr("id","three_"+Info.itemId);
 
 
                         }
@@ -1141,6 +1215,7 @@ function applyworkload() {
                             }
                             $(".tbody tr:last").css("text-align","center");
                             $(".tbody tr:last td:eq(0)").text(parseInt("1"));
+                            $(".tbody tr:last td:eq(0)").attr("class","itemCount");
                             $(".tbody tr:last td:eq(1)").text(Info.itemName);
                             $(".tbody tr:last td:eq(1)").attr("id","itemname_"+Info.itemId);
 
@@ -1148,9 +1223,16 @@ function applyworkload() {
                             $(".tbody tr:last td:eq(1)").attr("id","workload_"+Info.itemId);
                             $(".tbody tr:last td:eq(3)").text("未提交");
                             $(".tbody tr:last td:eq(3)").attr("id", "statusChange_" + Info.itemId);
+                            var act='';
+                            if(Info.proof!=null){
+                                act="<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount + "'>查看详情</a><a class='btn btn-primary delemyself delemyself_" + Info.itemId + "' id='delemyself_" + newcount + "'>删除操作</a><a class='btn btn-primary' id='proof_"+Info.itemId+"' href='"+fileInfoUrl+"?fileInfoId="+Info.proof+"'>下载附件</a>";
 
-                            var act = "<a class='btn btn-primary showContent' data-toggle='modal' data-target='#showContent' id='show_" + newcount+ "'>查看详情</a><a class='btn btn-primary delemyself delemyself_"+Info.itemId+"' id='delemyself_" + newcount+ "'>删除操作</a>";
-                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-two");
+                            }
+                            else{
+                                act = "<a class=\"btn btn-primary showContent\" data-toggle=\"modal\" data-target=\"#showContent\" id=\"show_" + newcount+ "\">查看详情</a><a class=\"btn btn-primary delemyself delemyself_"+Info.itemId+"\" id=\"delemyself_" + newcount+ "\">删除操作</a>";
+
+                            }
+                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-three").attr("id","three_"+Info.itemId);
 
                         }
                     }
