@@ -52,6 +52,8 @@
 
     var auditorManageUrl=contextPath+"/reviewer/info";
 
+    var auditorCheckedUrl=auditorManageUrl+"/item-group";
+
     var reviewerManagerUrl=contextPath+"/reviewer/manage";
 
     var reviDoubleCheckUrl=reviewerManagerUrl+"/doubted-check";

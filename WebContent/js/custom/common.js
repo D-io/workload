@@ -517,8 +517,20 @@ $(document).ready(function () {
             }
         }
         if(confirm("确认提交？")){
-            $.post(itemManaPublicUrl+"?"+itemStr,function () {
-                for(var i=0;i<chooseitem.length;i++){
+            $.post(itemManaPublicUrl+"?"+itemStr,function (data) {
+                if(data.data.errorData!=null){
+                    alert(data.data.errorData);
+                }
+                var Info=data.data.itemList;
+                for(var i=0;i<Info.length;i++){
+
+                        $(".status_"+Info[i].itemId).text("已提交");
+                        $("#deleteAll_"+Info[i].itemId).remove();
+                        $("#"+Info[i].itemId).removeAttr('checked');
+                        $("#"+Info[i].itemId).attr('disabled',"true");
+
+                }
+                /*for(var i=0;i<chooseitem.length;i++){
                     if(chooseitem.eq(i).is(':checked')){
                         $(".status_"+chooseitem.eq(i).attr("id")).text("已提交");
                         $("#deleteAll_"+chooseitem.eq(i).attr("id")).remove();
@@ -526,7 +538,7 @@ $(document).ready(function () {
                         chooseitem.eq(i).attr('disabled',"true");
                       //  $(".submitItem").removeAttr('checked');
                     }
-                }
+                }*/
             })
         };
     });
@@ -557,16 +569,9 @@ $(document).ready(function () {
             "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
             "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
             "<p class='message'>审核截止时间：" + $(this).prev().text() + "</p>");
-        $.get(auditorManageItemUrl+"?"+'importRequired=0',function (data) {
+        $.get(auditorCheckedUrl+"?"+'categoryId='+reg,function (data) {
             $(".showDesc").empty();
-            var dataArray=new Array();
-            for( var applyItemCount = 0; applyItemCount < data.data.nonCheckedItem.length; applyItemCount++){
-
-                if(data.data.nonCheckedItem[applyItemCount].categoryId==reg){
-                    dataArray.push(data.data.nonCheckedItem[applyItemCount]);
-                }
-            };
-            showapplydata(dataArray);
+            showapplydata(data.data.itemList);
         });
     });
 
