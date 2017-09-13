@@ -87,9 +87,13 @@ public class ReviewInfoListController extends ApplicationController implements O
 		//自我申报-未审核状态
 		if (APPLY_SELF.equals(importRequired)) {
 
-			List<ItemDto> nonCheckedItems = itemService
-					.listResult(getReviewItems(teacherId, importRequired, NON_CHECKED));
-			data.put("nonCheckedItem", nonCheckedItems);
+			List<Integer> statusList = getApplyStatus();
+			List<ItemDto> nonCheckedItems = new ArrayList<>();
+			for (Integer status : statusList) {
+				nonCheckedItems.addAll(itemService
+						.listResult(getReviewItems(teacherId, importRequired, status)));
+			}
+			data.put("nonCheckedItem",nonCheckedItems);
 			return successResponse(data);
 
 		} else if (IMPORT_EXCEL.equals(importRequired)) {
@@ -248,7 +252,7 @@ public class ReviewInfoListController extends ApplicationController implements O
 		List<ItemDto> itemDtoList = itemService
 				.findAll(null, categoryId, null, ownerId, isGroup, getCurrentSemester(), null,
 						null);
-		if(isEmptyList(itemDtoList)) {
+		if (isEmptyList(itemDtoList)) {
 			return successResponse();
 		}
 
@@ -266,7 +270,7 @@ public class ReviewInfoListController extends ApplicationController implements O
 		}
 
 		double workload = ZERO_DOUBLE;
-		if(!isEmptyList(itemDtoList)) {
+		if (!isEmptyList(itemDtoList)) {
 			for (ItemDto itemDto : itemDtoList) {
 				Integer status = itemDto.getStatus();
 				if (CHECKED.equals(status)) {
@@ -314,10 +318,12 @@ public class ReviewInfoListController extends ApplicationController implements O
 			items = itemService
 					.findItemsByCategory(category.getCategoryId(), status, getCurrentSemester(),
 							ZERO_INT);
-			if(!isEmptyList(items)) {
+			if (!isEmptyList(items)) {
 				for (Item item : items) {
-					if (GROUP.equals(item.getIsGroup()) && item.getOwnerId().equals(item.getGroupManagerId())) {
-						item = itemConverter.generateGroupItem(item.getItemId(), getCurrentSemester());
+					if (GROUP.equals(item.getIsGroup()) && item.getOwnerId()
+							.equals(item.getGroupManagerId())) {
+						item = itemConverter
+								.generateGroupItem(item.getItemId(), getCurrentSemester());
 						itemList.add(item);
 						continue;
 					}
@@ -382,7 +388,7 @@ public class ReviewInfoListController extends ApplicationController implements O
 		List<CategoryDto> parentList = categoryConverter.poListToDtoList(
 				categoryService.getCategoryChildren(SUBMITTED, ZERO_INT, getCurrentSemester()));
 		List<CategoryDto> tree = new ArrayList<>();
-		if(!isEmptyList(parentList)) {
+		if (!isEmptyList(parentList)) {
 			for (CategoryDto categoryDto : parentList) {
 				tree.add(treeGenerateHelper.generateTree(categoryDto.getCategoryId()));
 			}
