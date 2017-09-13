@@ -60,6 +60,43 @@ public class ReviewInfoListController extends ApplicationController implements O
 	@Autowired
 	private CategoryConverter categoryConverter;
 
+	@RequestMapping(value = "item-group",method = GET)
+	public RestResponse getItemGroup(
+			@RequestParam("categoryId")
+					Integer categoryId) {
+		// 用户验证
+		User user = getUser();
+		if (null == user || !getUserRoleCodeList().contains(REVIEWER.getCode())) {
+			return invalidOperationResponse("非法请求");
+		}
+		Integer userId = user.getUserId();
+		Category category = categoryService.getCategory(categoryId,getCurrentSemester());
+		if(!userId.equals(category.getReviewerId())) {
+			return invalidOperationResponse("非法请求");
+		}
+		List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(),categoryId,ZERO_INT);
+		if(isEmptyList(itemList)) {
+			return successResponse();
+		}
+
+		List<Item> items = new ArrayList<>();
+		for (Item itemTemp : itemList) {
+			if(UNCOMMITTED.equals(itemTemp.getStatus())) {
+				continue;
+			}
+			if(GROUP.equals(itemTemp.getIsGroup()) && itemTemp.getOwnerId().equals(itemTemp.getGroupManagerId())) {
+				items.add(itemTemp);
+				continue;
+			}
+			items.add(itemTemp);
+		}
+
+		Map<String,Object> data = getData();
+		data.put("itemList",itemConverter.poListToDtoList(items));
+
+		return successResponse(data);
+	}
+
 	/**
 	 * 获取不同导入方式下的对应的需要审核的工作量条目信息
 	 *
@@ -93,7 +130,7 @@ public class ReviewInfoListController extends ApplicationController implements O
 				nonCheckedItems.addAll(itemService
 						.listResult(getReviewItems(teacherId, importRequired, status)));
 			}
-			data.put("nonCheckedItem",nonCheckedItems);
+			data.put("nonCheckedItem", nonCheckedItems);
 			return successResponse(data);
 
 		} else if (IMPORT_EXCEL.equals(importRequired)) {
