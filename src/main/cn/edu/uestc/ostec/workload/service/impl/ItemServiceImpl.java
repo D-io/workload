@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -178,7 +179,9 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 		}
 		List<ChildWeight> newChildWeightList = new ArrayList<>();
 		for (ChildWeight childWeight : childWeightList) {
-			childWeight.setWorkload(workload * childWeight.getWeight());
+			BigDecimal b = new BigDecimal(workload * childWeight.getWeight());
+			double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			childWeight.setWorkload(formatWorkload);
 			newChildWeightList.add(childWeight);
 		}
 

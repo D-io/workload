@@ -190,6 +190,10 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 				for (ItemDto itemDto1 : itemDtoList) {
 					history.setHistoryId(null);
 					history.setItemId(buildHistoryItemId(itemDto1.getItemId()));
+					if (GROUP.equals(itemDto1.getIsGroup())) {
+						history.setOperation(
+								"提交工作量项目：" + item.getItemName() + "。（" + itemDto1.getTeacherName() + "）");
+					}
 					saveSuccess = historyService.saveHistory(history);
 				}
 
