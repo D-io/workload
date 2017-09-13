@@ -21,9 +21,11 @@ import cn.edu.uestc.ostec.workload.event.FileEvent;
 import cn.edu.uestc.ostec.workload.pojo.FileInfo;
 import cn.edu.uestc.ostec.workload.service.FileInfoService;
 import cn.edu.uestc.ostec.workload.service.FileService;
+import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.FileHelper;
 
 import static cn.edu.uestc.ostec.workload.support.utils.DateHelper.getCurrentTimestamp;
+import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.buildFileNameWithTime;
 import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.buildFilePath;
 import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.clearFiles;
 import static cn.edu.uestc.ostec.workload.support.utils.FileHelper.getFileExtension;
@@ -48,7 +50,7 @@ public class FileEventImpl implements FileEvent {
 	@Override
 	public boolean submitFileInfo(int fileInfoId) {
 		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
-		if(null == fileInfo) {
+		if (null == fileInfo) {
 			return false;
 		}
 		fileInfo.setStatus(SUBMITTED);
@@ -62,6 +64,10 @@ public class FileEventImpl implements FileEvent {
 		//生成服务器文件路径（包含名称）
 		String filePath = buildFilePath(getFileUploadPath(), fileName);
 		java.io.File newFile = new java.io.File(filePath);
+		if (newFile.exists()) {
+			filePath = buildFilePath(getFileUploadPath(), buildFileNameWithTime(fileName));
+			newFile = new File(filePath);
+		}
 
 		//将文件存档至目标文件
 		file.transferTo(newFile);
@@ -84,17 +90,18 @@ public class FileEventImpl implements FileEvent {
 
 	/**
 	 * 删除指定文件
+	 *
 	 * @param fileInfoId 文件编号
 	 * @return boolean
 	 */
 	@Override
 	public boolean deleteFile(Integer fileInfoId) {
 
-		if(isNull(fileInfoId)) {
+		if (isNull(fileInfoId)) {
 			return false;
 		}
 		FileInfo fileInfo = fileInfoService.getFileInfo(fileInfoId);
-		if(isNull(fileInfo)) {
+		if (isNull(fileInfo)) {
 			return false;
 		}
 

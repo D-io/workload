@@ -380,6 +380,10 @@ public class ItemManageController extends ApplicationController {
 			if (NON_CHECKED.equals(itemDto.getStatus())) {
 				return invalidOperationResponse("已提交的工作量，无法修改");
 			}
+			Item oldItem = itemService.findItem(itemDto.getItemId(),getCurrentSemester());
+			if(isEmptyNumber(itemDto.getProof())) {
+				itemDto.setProof(oldItem.getProof());
+			}
 		}
 
 		Category category = categoryService
