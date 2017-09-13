@@ -222,7 +222,6 @@ public class ItemManageController extends ApplicationController {
 				newItem.setItemId(null);
 				newItem.setStatus(UNCOMMITTED);
 				newItem.setParentId(ZERO_INT);
-				newItem.setWorkload(ZERO_DOUBLE);
 				itemService.saveItem(newItem);
 			} else {
 				item.setStatus(UNCOMMITTED);

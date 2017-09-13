@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -194,8 +195,10 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 			Double weight = Double.valueOf(item1.getJsonChildWeight());
 			JobDesc jobDesc = new JobDesc(userId, jobDescription);
 			ChildWeight childWeight = new ChildWeight(userId, weight);
+			BigDecimal b = new BigDecimal(workload * weight);
+			double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			childWeight.setWorkload(item1.getWorkload().equals(ZERO_DOUBLE) ?
-					workload * weight :
+					formatWorkload :
 					item1.getWorkload());
 			jobDescList.add(jobDesc);
 			childWeightList.add(childWeight);
