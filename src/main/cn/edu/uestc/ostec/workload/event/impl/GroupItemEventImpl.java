@@ -22,7 +22,9 @@ import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.JobDesc;
 import cn.edu.uestc.ostec.workload.event.GroupItemEvent;
+import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
+import cn.edu.uestc.ostec.workload.service.HistoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 import cn.edu.uestc.ostec.workload.support.utils.FormulaCalculate;
 
@@ -40,6 +42,9 @@ public class GroupItemEventImpl implements GroupItemEvent {
 
 	@Autowired
 	private ItemConverter itemConverter;
+
+	@Autowired
+	private HistoryService historyService;
 
 	@Override
 	public boolean updateGroupItemsStatus(Integer parentId, String version, Integer status) {
@@ -132,6 +137,25 @@ public class GroupItemEventImpl implements GroupItemEvent {
 		for(Item itemTemp : memberItemList) {
 			itemTemp.setParentId(baseItemId);
 			saveSuccess = itemService.saveItem(itemTemp);
+		}
+
+		return saveSuccess;
+	}
+
+	@Override
+	public boolean addGroupItemHistory(Integer parentId, String version, History history) {
+
+		List<Item> children = itemService.findChildItemList(parentId,version);
+
+		boolean saveSuccess = true;
+		if(null != children) {
+			for (Item itemTemp : children) {
+				History childHistory = (History) history.clone();
+				childHistory.setAimUserId(itemTemp.getOwnerId());
+				childHistory.setHistoryId(null);
+				childHistory.setItemId("I" + itemTemp.getItemId().toString());
+				saveSuccess = historyService.saveHistory(history);
+			}
 		}
 
 		return saveSuccess;

@@ -9,6 +9,7 @@
 
 package cn.edu.uestc.ostec.workload.aspect.impl;
 
+import org.apache.ibatis.annotations.Arg;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,6 +24,7 @@ import java.util.List;
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.ParameterValue;
+import cn.edu.uestc.ostec.workload.event.GroupItemEvent;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -68,6 +70,9 @@ public class ReviewerManageAspectImpl implements IAspect {
 	@Autowired
 	private TeacherWorkloadService teacherWorkloadService;
 
+	@Autowired
+	private GroupItemEvent groupItemEvent;
+
 	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ReviewManageController.checkItems(..))")
 	private void reviewPointCut() {
 	}
@@ -106,6 +111,10 @@ public class ReviewerManageAspectImpl implements IAspect {
 		history.setOperation(checkStatus.getDesc() + "工作量项目：" + item.getItemName() + "。");
 		history.setType("apply");
 		history.setAimUserId(item.getOwnerId());
+
+		if(GROUP.equals(item)) {
+			groupItemEvent.addGroupItemHistory(itemId,getCurrentSemester(),history);
+		}
 
 		//修改教师对应的工作量
 		TeacherWorkload teacherWorkload = teacherWorkloadService

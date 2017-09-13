@@ -26,6 +26,7 @@ import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
+import cn.edu.uestc.ostec.workload.event.GroupItemEvent;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.pojo.RestResponse;
@@ -80,6 +81,9 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 	@Autowired
 	private TeacherWorkloadService teacherWorkloadService;
 
+	@Autowired
+	private GroupItemEvent groupItemEvent;
+
 	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ItemManageController.submitItem(..))")
 	private void itemSubmitPointCut() {
 	}
@@ -126,6 +130,10 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 
 		history.setType(APPLY_SELF.equals(oldItem.getImportRequired()) ? "apply" : "import");
 		history.setAimUserId(oldItem.getOwnerId());
+
+		if(GROUP.equals(item.getIsGroup())) {
+			groupItemEvent.addGroupItemHistory(item.getItemId(),getCurrentSemester(),history);
+		}
 
 		boolean saveSuccess = historyService.saveHistory(history);
 		if (!saveSuccess) {
@@ -315,6 +323,10 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 
 		history.setType("apply");
 		history.setAimUserId(itemDto.getReviewerId());
+
+		if(GROUP.equals(item.getIsGroup())) {
+			groupItemEvent.addGroupItemHistory(item.getItemId(),getCurrentSemester(),history);
+		}
 
 		//修改待审核的工作量
 		TeacherWorkload teacherWorkload = teacherWorkloadService
