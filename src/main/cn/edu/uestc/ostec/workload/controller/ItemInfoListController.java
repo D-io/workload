@@ -173,7 +173,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 		List<TeacherWorkload> teacherWorkloadList = new ArrayList<>();
 		Map<String, Object> data = getData();
-		Map<String, Object> errorData = getData();
+		StringBuilder errorData = new StringBuilder();
 		for (Integer teacherId : teacherIdList) {
 
 			TeacherWorkload teacherWorkload = teacherWorkloadService
@@ -196,12 +196,13 @@ public class ItemInfoListController extends ApplicationController implements Ope
 					teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
 			boolean saveSuccess = teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
 			if (!saveSuccess) {
-				errorData.put(teacherWorkload.getTeacherName(), "更新失败");
+				errorData.append(teacherWorkload.getTeacherName() + "更新失败。");
 			} else {
 				teacherWorkloadList.add(teacherWorkload);
 			}
 		}
 		data.put("teacherWorkloadList", teacherWorkloadList);
+		data.put("errorData", errorData);
 		return successResponse(data);
 	}
 

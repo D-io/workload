@@ -89,7 +89,7 @@ public class CategoryManageController extends ApplicationController {
 
 		List<Category> categoryList1 = new ArrayList<>();
 		Map<String, Object> data = getData();
-		Map<String, Object> errorData = getData();
+		StringBuilder errorData = new StringBuilder();
 		for (Category category : categoryList) {
 			category.setVersion(getCurrentSemester());
 			category.setReviewDeadline(
@@ -97,7 +97,7 @@ public class CategoryManageController extends ApplicationController {
 			category.setApplyDeadline(
 					DateHelper.getDefaultTimeStamp(getCurrentYear() + DEFAULT_APPLY_DATE_TIME));
 			if (!categoryService.addCategory(category)) {
-				errorData.put(category.getName(), "导入失败");
+				errorData.append(category.getName() + "导入失败");
 			}
 			categoryList1.add(category);
 		}
@@ -112,6 +112,7 @@ public class CategoryManageController extends ApplicationController {
 
 		data.put("teacherWorkloadList", teacherWorkloadList);
 		data.put("categoryList", categoryList);
+		data.put("errorData",errorData);
 		return successResponse(data);
 
 	}

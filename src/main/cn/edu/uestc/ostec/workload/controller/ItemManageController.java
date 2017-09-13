@@ -555,7 +555,7 @@ public class ItemManageController extends ApplicationController {
 
 		List<Item> itemList = new ArrayList<>();
 		Map<String, Object> data = getData();
-		Map<String, Object> errorData = getData();
+		StringBuilder errorData = new StringBuilder();
 
 		for (Integer itemId : itemIdList) {
 			Item item = itemService.findItem(itemId, getCurrentSemester());
@@ -569,7 +569,7 @@ public class ItemManageController extends ApplicationController {
 				Category category = categoryService
 						.getCategory(item.getCategoryId(), getCurrentSemester());
 				if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
-					errorData.put(item.getItemName(), "申请已经截止");
+					errorData.append(item.getItemName() + "对应的规则申请已经截止。");
 					continue;
 				}
 
@@ -667,14 +667,14 @@ public class ItemManageController extends ApplicationController {
 							true :
 							fileEvent.submitFileInfo(item.getProof()));
 					if (!saveSuccess || !fileSubmitSuccess) {
-						errorData.put(item.getItemName(), "提交失败");
+						errorData.append(item.getItemName() + "提交失败。");
 					} else {
 						item = itemService.findItem(itemId, getCurrentSemester());
 						itemList.add(item);
 					}
 				}
 			} else {
-				errorData.put(item.getItemName(), "无法提交");
+				errorData.append(item.getItemName() + "无法提交。");
 			}
 		}
 
@@ -705,7 +705,7 @@ public class ItemManageController extends ApplicationController {
 			return invalidOperationResponse("无可提交的项目");
 		}
 
-		Map<String, Object> errorData = getData();
+		StringBuilder errorData = new StringBuilder();
 		//修改Item状态为未审核态（提交态）
 		for (Item item : itemList) {
 
@@ -713,7 +713,7 @@ public class ItemManageController extends ApplicationController {
 			Category category = categoryService
 					.getCategory(item.getCategoryId(), getCurrentSemester());
 			if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
-				errorData.put(item.getItemName(), "申请已经截止");
+				errorData.append(item.getItemName() + "申请已经截止。");
 				continue;
 			}
 
@@ -721,7 +721,7 @@ public class ItemManageController extends ApplicationController {
 			boolean saveSuccess = itemService.saveItem(item);
 			boolean submitSuccess = fileEvent.submitFileInfo(item.getProof());
 			if (!saveSuccess || !submitSuccess) {
-				errorData.put(item.getItemName(), "提交失败");
+				errorData.append(item.getItemName() + "提交失败。");
 			}
 		}
 
