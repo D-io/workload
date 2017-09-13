@@ -254,13 +254,15 @@ public class ItemManageController extends ApplicationController {
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
 		}
+		Integer userId = user.getUserId();
 
 		Item item = itemService.findItem(itemId, getCurrentSemester());
+		ItemDto itemDto = itemConverter.poToDto(item);
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		if (!user.getUserId().equals(item.getGroupManagerId())) {
+		if (!(userId.equals(item.getGroupManagerId()) || userId.equals(itemDto.getReviewerId()))) {
 			return invalidOperationResponse("无权限删除");
 		}
 
@@ -380,8 +382,8 @@ public class ItemManageController extends ApplicationController {
 			if (NON_CHECKED.equals(itemDto.getStatus())) {
 				return invalidOperationResponse("已提交的工作量，无法修改");
 			}
-			Item oldItem = itemService.findItem(itemDto.getItemId(),getCurrentSemester());
-			if(isEmptyNumber(itemDto.getProof())) {
+			Item oldItem = itemService.findItem(itemDto.getItemId(), getCurrentSemester());
+			if (isEmptyNumber(itemDto.getProof())) {
 				itemDto.setProof(oldItem.getProof());
 			}
 		}
