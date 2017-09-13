@@ -1,5 +1,6 @@
 package cn.edu.uestc.ostec.workload.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dao.CategoryDao;
 import cn.edu.uestc.ostec.workload.dao.ItemDao;
+import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
 import cn.edu.uestc.ostec.workload.dto.Workload;
@@ -21,6 +23,7 @@ import cn.edu.uestc.ostec.workload.pojo.Item;
 import cn.edu.uestc.ostec.workload.service.ItemService;
 
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.GROUP;
+import static cn.edu.uestc.ostec.workload.WorkloadObjects.OBJECT_MAPPER;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
@@ -163,5 +166,28 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 			Integer parentId) {
 
 		return itemDao.selectItemsByCategory(categoryId, status, version, parentId);
+	}
+
+	@Override
+	public Item calculateChildrenWorkloadOfUncommittedItem(Item item) {
+		ItemDto itemDto = itemConverter.poToDto(item);
+		Double workload = itemDto.getWorkload();
+		List<ChildWeight> childWeightList = itemDto.getChildWeightList();
+		if (null == childWeightList) {
+			return null;
+		}
+		List<ChildWeight> newChildWeightList = new ArrayList<>();
+		for (ChildWeight childWeight : childWeightList) {
+			childWeight.setWorkload(workload * childWeight.getWeight());
+			newChildWeightList.add(childWeight);
+		}
+
+		itemDto.setChildWeightList(newChildWeightList);
+		try {
+			itemDto.setJsonChildWeight(OBJECT_MAPPER.writeValueAsString(newChildWeightList));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return itemConverter.dtoToPo(itemDto);
 	}
 }

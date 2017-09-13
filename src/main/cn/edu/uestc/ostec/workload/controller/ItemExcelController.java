@@ -219,7 +219,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 
 		CategoryDto categoryDto = categoryConverter.poToDto(category);
 
-		Map<String, Object> errorData = getData();
+		StringBuilder errorData = new StringBuilder();
 
 		try {
 
@@ -367,7 +367,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 						itemTemp.setParentId(parentId);
 						boolean saveSuccess = itemService.saveItem(itemTemp);
 						if (!saveSuccess) {
-							errorData.put(itemTemp.getItemName(), "导入失败");
+							errorData.append(itemTemp.getItemName() + "导入失败。");
 							continue;
 						}
 					}

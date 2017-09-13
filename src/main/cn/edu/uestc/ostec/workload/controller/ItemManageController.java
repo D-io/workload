@@ -254,13 +254,15 @@ public class ItemManageController extends ApplicationController {
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
 		}
+		Integer userId = user.getUserId();
 
 		Item item = itemService.findItem(itemId, getCurrentSemester());
+		ItemDto itemDto = itemConverter.poToDto(item);
 		if (null == item) {
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		if (!user.getUserId().equals(item.getGroupManagerId())) {
+		if (!(userId.equals(item.getGroupManagerId()) || userId.equals(itemDto.getReviewerId()))) {
 			return invalidOperationResponse("无权限删除");
 		}
 
@@ -380,6 +382,10 @@ public class ItemManageController extends ApplicationController {
 			if (NON_CHECKED.equals(itemDto.getStatus())) {
 				return invalidOperationResponse("已提交的工作量，无法修改");
 			}
+			Item oldItem = itemService.findItem(itemDto.getItemId(), getCurrentSemester());
+			if (isEmptyNumber(itemDto.getProof())) {
+				itemDto.setProof(oldItem.getProof());
+			}
 		}
 
 		Category category = categoryService
@@ -468,8 +474,14 @@ public class ItemManageController extends ApplicationController {
 			return systemErrResponse("保存失败");
 		}
 		newItemDto.setItemId(item.getItemId());
-		data.put("item", newItemDto);
 
+		if (GROUP.equals(itemDto.getIsGroup()) && itemDto.getOwnerId()
+				.equals(itemDto.getGroupManagerId())) {
+			data.put("item", itemConverter
+					.poToDto(itemService.calculateChildrenWorkloadOfUncommittedItem(item)));
+		} else {
+			data.put("item", newItemDto);
+		}
 		return successResponse(data);
 	}
 
@@ -543,7 +555,7 @@ public class ItemManageController extends ApplicationController {
 
 		List<Item> itemList = new ArrayList<>();
 		Map<String, Object> data = getData();
-		Map<String, Object> errorData = getData();
+		StringBuilder errorData = new StringBuilder();
 
 		for (Integer itemId : itemIdList) {
 			Item item = itemService.findItem(itemId, getCurrentSemester());
@@ -557,7 +569,7 @@ public class ItemManageController extends ApplicationController {
 				Category category = categoryService
 						.getCategory(item.getCategoryId(), getCurrentSemester());
 				if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
-					errorData.put(item.getItemName(), "申请已经截止");
+					errorData.append(item.getItemName() + "对应的规则申请已经截止。");
 					continue;
 				}
 
@@ -655,14 +667,14 @@ public class ItemManageController extends ApplicationController {
 							true :
 							fileEvent.submitFileInfo(item.getProof()));
 					if (!saveSuccess || !fileSubmitSuccess) {
-						errorData.put(item.getItemName(), "提交失败");
+						errorData.append(item.getItemName() + "提交失败。");
 					} else {
 						item = itemService.findItem(itemId, getCurrentSemester());
 						itemList.add(item);
 					}
 				}
 			} else {
-				errorData.put(item.getItemName(), "无法提交");
+				errorData.append(item.getItemName() + "无法提交。");
 			}
 		}
 
@@ -693,7 +705,7 @@ public class ItemManageController extends ApplicationController {
 			return invalidOperationResponse("无可提交的项目");
 		}
 
-		Map<String, Object> errorData = getData();
+		StringBuilder errorData = new StringBuilder();
 		//修改Item状态为未审核态（提交态）
 		for (Item item : itemList) {
 
@@ -701,7 +713,7 @@ public class ItemManageController extends ApplicationController {
 			Category category = categoryService
 					.getCategory(item.getCategoryId(), getCurrentSemester());
 			if (DateHelper.getCurrentTimestamp() > category.getApplyDeadline()) {
-				errorData.put(item.getItemName(), "申请已经截止");
+				errorData.append(item.getItemName() + "申请已经截止。");
 				continue;
 			}
 
@@ -709,7 +721,7 @@ public class ItemManageController extends ApplicationController {
 			boolean saveSuccess = itemService.saveItem(item);
 			boolean submitSuccess = fileEvent.submitFileInfo(item.getProof());
 			if (!saveSuccess || !submitSuccess) {
-				errorData.put(item.getItemName(), "提交失败");
+				errorData.append(item.getItemName() + "提交失败。");
 			}
 		}
 

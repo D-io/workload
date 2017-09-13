@@ -98,6 +98,17 @@ public class FileHelper {
 				fileName.lastIndexOf(DEFAULT_FILE_EXTENSION_SEPARATOR) + FILE_SPOT_EXTENSION_STEP);
 	}
 
+	public static String buildFileNameWithTime(
+			@NotNull
+					String fileName) {
+		if (isNull(fileName)) {
+			return DEFAULT_RESULT_STRING;
+		}
+
+		return getFileSimpleName(fileName) + "-" + DateHelper.getCurrentTimestamp()
+				+ DEFAULT_FILE_EXTENSION_SEPARATOR + getFileExtension(fileName);
+	}
+
 	/**
 	 * 获取文件名（不带扩展名）
 	 *
@@ -110,8 +121,7 @@ public class FileHelper {
 		}
 		return fileName
 				.substring(fileName.lastIndexOf(getFileSeparator()) + FILE_SPOT_EXTENSION_STEP,
-						fileName.lastIndexOf(DEFAULT_FILE_EXTENSION_SEPARATOR)
-								- FILE_SPOT_EXTENSION_STEP);
+						fileName.lastIndexOf(DEFAULT_FILE_EXTENSION_SEPARATOR));
 	}
 
 	/**
