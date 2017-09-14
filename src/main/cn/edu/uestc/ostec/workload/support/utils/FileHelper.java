@@ -9,6 +9,8 @@
 
 package cn.edu.uestc.ostec.workload.support.utils;
 
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -191,4 +193,5 @@ public class FileHelper {
 		}
 		file.delete();
 	}
+
 }
