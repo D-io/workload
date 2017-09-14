@@ -24,7 +24,7 @@ function reviewerSumItem() {
                 $(".checkedWorkload").text("0");
                 $(".uncheckedWorkload").text("0");
             }
-            if(data.data.applyCount){
+            if(data.data!=null){
                 $("#check_passed").text(data.data.applyCount);
                 $("#rev_passed").text(data.data.importCount);
             }
@@ -62,7 +62,7 @@ function reviewerSumItem() {
                 $(".checkedWorkload").text("0");
                 $(".uncheckedWorkload").text("0");
             }
-            if(data.data.applyCount){
+            if(data.data!=null){
                 $("#check_no_passed").text(data.data.applyCount);
                 $("#rev_no_passed").text(data.data.importCount);
             }
@@ -86,6 +86,7 @@ function reviewerSumItem() {
             }
 
         });
+     /* 学期所以工作当量展示*/
         $.get(itemCollection+"?teacherId="+userId,function (data) {
             if(data.data!=null&&data.data.itemDtoList!=null){
                 appendReviewerItem(data.data.itemDtoList,"sumall",sumtocount);
@@ -95,7 +96,8 @@ function reviewerSumItem() {
                 }
             }
         });
-           $.get(itemCollection+"?teacherId="+userId+"&year="+yearstr,function (data) {
+     /*学年室友工作当量展示*/
+        $.get(itemCollection+"?teacherId="+userId+"&year="+yearstr,function (data) {
          if(data.data!=null&&data.data.itemDtoList!=null){
              $(".year_totalWorkload ").text(data.data.teacherWorkload.totalWorkload );
              $(".year_checkedWorkload ").text(data.data.teacherWorkload.checkedWorkload);
