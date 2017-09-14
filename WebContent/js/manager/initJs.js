@@ -799,3 +799,14 @@ function checkedRevie() {
         $(".right_hole").append(html);
     });
 }
+/*验证导入时上传文件是否为excell格式*/
+function getFileType(obj) {
+    var photoExt=obj.value.substr(obj.value.lastIndexOf(".")).toLowerCase();//获得文件后缀名
+    if(photoExt!='.xls'||photoExt!='.xlsx'){
+        alert("请上传正确格式的Excell表格！");
+        return false;
+    }
+    else {
+        return 0;
+    }
+}

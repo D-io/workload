@@ -181,7 +181,7 @@
             </div>
         </div>
     </div>
-
+    <%--展示所有导入的项目modal--%>
     <div class="modal fade bs-example-modal-lg" id="importNewModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false"  style="display: none;">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -197,7 +197,7 @@
                 <div class="modal-body">
 
                     <span>
-                            <input type="file" class="col-md-3 col-sm-12 col-xs-12 " id="file" style="padding: 6px 12px;line-height: 1.42857143;color: #555;margin-bottom:10px;background-color: #fff;background-image: none;border: 1px solid #ccc;border-radius: 4px; outline: none;">
+                            <input type="file" class="col-md-3 col-sm-12 col-xs-12 " id="file" onchange="getFileType(this)" style="padding: 6px 12px;line-height: 1.42857143;color: #555;margin-bottom:10px;background-color: #fff;background-image: none;border: 1px solid #ccc;border-radius: 4px; outline: none;">
                             <div class="control-label col-md-9 col-sm-9 col-xs-9">
                                 <a class="importNewFile" title="上传文件" style="cursor:pointer;position: relative; top: 7px; font-size: 14px;margin-left: 7px;"><i class="fa fa-upload"></i>上传</a>
                                 <a class=" submitItem" title="提交项目" style="float:right;cursor:pointer;display: none; position: relative; top: 7px; font-size: 14px;margin-left: 7px;"><i class="fa fa-check-square-o"></i>提交</a>
@@ -208,7 +208,7 @@
                     </span>
 
                     <div>
-        <table class="table table-striped table-bordered dataTable no-footer importItemShow" style="display: none;">
+                        <table class="table table-striped table-bordered dataTable no-footer importItemShow" style="display: none;">
                             <thead>
                             <tr role="row">
                                  <th class="sorting"><input type="checkbox" name="checkbox1" value="checkbox" class="submitall" ></th>
@@ -229,6 +229,7 @@
 
         </div>
     </div>
+    <%--查看详情/添加申报modal--%>
     <div class="modal fade" id="addContent" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -237,7 +238,7 @@
                         &times;
                     </button>
                     <h4 class="modal-title myModalLabel">
-                        <p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class='current-page'>工作当量导入/</span><span class="changetext" style="font-size: 13px;font-weight: normal;">添加申报</span></p>
+                        <p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class='current-page'>工作当量导入&nbsp;/&nbsp;</span><span class="changetext" style="font-size: 13px;font-weight: normal;">添加申报</span></p>
                         <span class="appendArial"></span>
                     </h4>
                 </div>

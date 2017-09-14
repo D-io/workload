@@ -190,31 +190,36 @@ $(document).ready(function () {
         var data=new FormData;
         data.append("file",$("#file")[0].files[0]);
         if($('#file').val()){
-            $.ajax({
-                url:importFileUrl+"?categoryId="+thisId,
-                type:"POST",
-                dataType:"JSON",
-                data:data,
-                contentType: false,
-                processData: false,
-                success:function (msg) {
-                    alert("上传成功！");
-                    $(".submitItem").show();
-                    $(".importItemShow").show();
-                    showImportPreview(msg.data.itemList,itemCount);
-                    $(".submitItem").show();
-                    while(itemCount<msg.data.itemList.length){
-                        itemCount++;
+            if($('#file').val().split('.')=='xls'||$('#file').val().split('.')=='xlsx'){
+                $.ajax({
+                    url:importFileUrl+"?categoryId="+thisId,
+                    type:"POST",
+                    dataType:"JSON",
+                    data:data,
+                    contentType: false,
+                    processData: false,
+                    success:function (msg) {
+                        alert("上传成功！");
+                        $(".submitItem").show();
+                        $(".importItemShow").show();
+                        showImportPreview(msg.data.itemList,itemCount);
+                        $(".submitItem").show();
+                        while(itemCount<msg.data.itemList.length){
+                            itemCount++;
+                        }
+                        for(var key in msg.data.itemList){
+                            allItem.push(msg.data.itemList[key]);
+                        }
+                        JSON.stringify(allItem);
+                    },
+                    error:function () {
+                        alert("上传失败！");
                     }
-                    for(var key in msg.data.itemList){
-                        allItem.push(msg.data.itemList[key]);
-                    }
-                    JSON.stringify(allItem);
-                },
-                error:function () {
-                    alert("上传失败！");
-                }
-            });
+                });
+            }
+            else{
+                alert("请上传正确格式的Excell表格！")
+            }
         }
         else{
             alert("请先选择文件!");
@@ -518,7 +523,7 @@ $(document).ready(function () {
         }
         if(confirm("确认提交？")){
             $.post(itemManaPublicUrl+"?"+itemStr,function (data) {
-                if(data.data.errorData!=null){
+                if(data.data.errorData!=""&&data.data.errorData!=null){
                     alert(data.data.errorData);
                 }
                 var Info=data.data.itemList;
@@ -526,9 +531,10 @@ $(document).ready(function () {
 
                         $(".status_"+Info[i].itemId).text("已提交");
                         $("#deleteAll_"+Info[i].itemId).remove();
+                        $(".submitall").removeAttr('checked');
                         $("#"+Info[i].itemId).removeAttr('checked');
                         $("#"+Info[i].itemId).attr('disabled',"true");
-
+                        $("#"+Info[i].itemId).attr('class',"anothersubmit");
                 }
                 /*for(var i=0;i<chooseitem.length;i++){
                     if(chooseitem.eq(i).is(':checked')){
@@ -851,20 +857,7 @@ $(document).ready(function () {
 
         });
     });
-    /*$(document).on("click",".groupMemberName",function () {
-        $.get(TeacherInfoUrl,function (data) {
-            for (var i = 0; i < data.data.teacherList.length; i++) {
-                $('.groupMemberName').append('<option value=\"' + data.data.teacherList[i].teacherId + '\">' + data.data.teacherList[i].name + '</option>');
-            }
-        })
-    });
-    $(document).on("click",".showgroupMemberName",function () {
-        $.get(TeacherInfoUrl,function (data) {
-            for (var i = 0; i < data.data.teacherList.length; i++) {
-                $('.showgroupMemberName').append('<option value=\"' + data.data.teacherList[i].teacherId + '\">' + data.data.teacherList[i].name + '</option>');
-            }
-        })
-    });*/
+
     /*编辑申报信息*/
     $(document).on("click",".editApply",function () {
         var editId=parseInt(this.id.match(/\d+/g));
