@@ -112,9 +112,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 
 			List<Item> uncheckedItemList = new ArrayList<>();
 			uncheckedItemList.addAll(itemService
-							.findAnalyzeItems(teacherId, null, terms.get(ZERO_INT), categoryCode));
+					.findAnalyzeItems(teacherId, null, terms.get(ZERO_INT), categoryCode));
 			uncheckedItemList.addAll(itemService
-							.findAnalyzeItems(teacherId, null, terms.get(1), categoryCode));
+					.findAnalyzeItems(teacherId, null, terms.get(1), categoryCode));
 
 			data.put("uncheckedItemList", itemConverter.poListToDtoList(uncheckedItemList));
 		}
@@ -542,7 +542,9 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			@RequestParam(required = false)
 					String option,
 			@RequestParam(required = false)
-					String ifExport) {
+					String ifExport,
+			@RequestParam(required = false)
+					Integer year) {
 
 		User user = getUser();
 		Map<String, Object> data = getData();
@@ -571,7 +573,40 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		List<ItemDto> itemList = findItems(null, statusList, teacherId, getCurrentSemester());
+		TeacherWorkload teacherWorkload = new TeacherWorkload();
+		List<ItemDto> itemList = new ArrayList<>();
+		if (isEmptyNumber(year)) {
+			itemList = findItems(null, statusList, teacherId, getCurrentSemester());
+			teacherWorkload = teacherWorkloadService
+					.getTeacherWorkload(teacherId, getCurrentSemester());
+		} else {
+			List<String> terms = DateHelper.getTermsOfTheYear(year);
+			itemList = findItems(null, statusList, teacherId, terms.get(ZERO_INT));
+			List<ItemDto> secondTerm = findItems(null, statusList, teacherId, terms.get(1));
+			if (null != itemList && null != secondTerm) {
+				itemList.addAll(secondTerm);
+			}
+			teacherWorkload = teacherWorkloadService
+					.getTeacherWorkload(teacherId, terms.get(ZERO_INT));
+			TeacherWorkload secondTeacherWorkload = teacherWorkloadService
+					.getTeacherWorkload(teacherId, terms.get(1));
+			if (null != teacherWorkload.getTeacherId()) {
+				if (null == secondTeacherWorkload.getTeacherId()) {
+					secondTeacherWorkload.setDefaultParams();
+				}
+				teacherWorkload.add(secondTeacherWorkload);
+				teacherWorkload.setVersion(year.toString());
+			} else {
+				if (null != secondTeacherWorkload.getTeacherId()) {
+					teacherWorkload = (TeacherWorkload) secondTeacherWorkload.clone();
+				} else {
+					teacherWorkload.setDefaultParams();
+					teacherWorkload.setVersion(year.toString());
+					teacherWorkload.setTeacherId(teacherId);
+					teacherWorkload.setTeacherName(teacherService.findTeacherNameById(teacherId));
+				}
+			}
+		}
 		if (isEmptyList(itemList)) {
 			return successResponse();
 		}
@@ -584,13 +619,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			} else {
 				importItemList.add(itemDto);
 			}
-		}
-
-		TeacherWorkload teacherWorkload = teacherWorkloadService
-				.getTeacherWorkload(teacherId, getCurrentSemester());
-
-		if (isEmptyList(itemList)) {
-			return successResponse();
 		}
 
 		data.put("importItemList", importItemList);
@@ -726,8 +754,8 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		TeacherWorkloadAnalyze teacherWorkloadAnalyze = new TeacherWorkloadAnalyze();
 		List<Workload> workloadList = new ArrayList<>();
 		List<String> types = getTypePrefix();
-		for(int i = 0; i < 7; i++) {
-			workloadList.add(itemService.workloadAnalyze(teacherId,types.get(i),version));
+		for (int i = 0; i < 7; i++) {
+			workloadList.add(itemService.workloadAnalyze(teacherId, types.get(i), version));
 		}
 		teacherWorkloadAnalyze.setTypes(workloadList);
 

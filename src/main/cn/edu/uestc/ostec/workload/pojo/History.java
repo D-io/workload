@@ -14,7 +14,7 @@ import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 /**
  * Description: 历史记录
  */
-public class History {
+public class History implements Cloneable {
 
 	/**
 	 * 历史记录所在关联的表名

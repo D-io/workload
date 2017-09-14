@@ -234,7 +234,7 @@ public class DateHelper {
 
 	public static List<String> getTermsOfTheYear(Integer year) {
 		Integer nextYear = year + 1;
-		Integer lastYear = year + 2;
+		Integer lastYear = year - 1;
 
 		String firstTerm = lastYear.toString() + "-" + year.toString() + "-2";
 		String secondTerm = year.toString() + "-" + nextYear.toString() + "-1";
