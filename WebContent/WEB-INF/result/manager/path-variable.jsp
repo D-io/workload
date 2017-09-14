@@ -96,6 +96,8 @@
 
     var teacherAnalyzeUrl=itemInfoUrl+"/teacher-analyze";
 
+    var teacherAnalyzeYearUrl=itemInfoUrl+"/teacher-analyze-year";
+
     var refreshInfoUrl=itemInfoUrl+"/refresh";
 
     var itemInfoSubUrl=itemInfoUrl+"/subjectList";

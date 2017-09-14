@@ -353,8 +353,8 @@ function itemSummary() {
                 unarry=msg.data.workload;
             });
             $(".totlaAll").text(unarry.totalWorkload);
-            $(".passAll").text(unarry.typeOne.checkedWorkload+unarry.typeTwo.checkedWorkload+unarry.typeThree.checkedWorkload+unarry.typeFour.checkedWorkload+unarry.typeFive.checkedWorkload+unarry.typeSix.checkedWorkload+unarry.typeSeven.checkedWorkload);
-            $(".unpassAll").text(unarry.typeOne.uncheckedWorkload+unarry.typeTwo.uncheckedWorkload+unarry.typeThree.uncheckedWorkload+unarry.typeFour.uncheckedWorkload+unarry.typeFive.uncheckedWorkload+unarry.typeSix.uncheckedWorkload+unarry.typeSeven.uncheckedWorkload);
+            $(".passAll").text(unarry.types[0].checkedWorkload+unarry.types[1].checkedWorkload+unarry.types[2].checkedWorkload+unarry.types[3].checkedWorkload+unarry.types[4].checkedWorkload+unarry.types[5].checkedWorkload+unarry.types[6].checkedWorkload);
+            $(".unpassAll").text(unarry.types[0].uncheckedWorkload+unarry.types[1].uncheckedWorkload+unarry.types[2].uncheckedWorkload+unarry.types[3].uncheckedWorkload+unarry.types[4].uncheckedWorkload+unarry.types[5].uncheckedWorkload+unarry.types[6].uncheckedWorkload);
 
             if ($('#echart_unchecked_pie').length ){
                 var echartPie = echarts.init(document.getElementById('echart_unchecked_pie'));
@@ -404,45 +404,45 @@ function itemSummary() {
                         radius: [55, 70],
                         center:["45%","50%"],
                         data: [{
-                            value: unarry.typeOne.checkedWorkload,
-                            name: '本科和研究生(含留学生、非全日制研究生)-培养方案规定课程的工作当量-（预计总量： '+unarry.typeOne.totalWorkload+' 已通过： '+unarry.typeOne.checkedWorkload+' 仍待核： '+unarry.typeOne.uncheckedWorkload+'）',
+                            value: unarry.types[0].checkedWorkload,
+                            name: '本科和研究生(含留学生、非全日制研究生)-培养方案规定课程的工作当量-（预计总量： '+unarry.types[0].totalWorkload+' 已通过： '+unarry.types[0].checkedWorkload+' 仍待核： '+unarry.types[0].uncheckedWorkload+'）',
                             itemStyle:{
                                 normal:{color:'#b6a2de'}
                             }
                         }, {
-                            value: unarry.typeTwo.checkedWorkload,
-                            name: '培养方案规定课程的实践教学工作当量-（预计总量： '+unarry.typeTwo.totalWorkload+' 已通过： '+unarry.typeTwo.checkedWorkload+' 仍待核： '+unarry.typeTwo.uncheckedWorkload+'）',
+                            value: unarry.types[1].checkedWorkload,
+                            name: '培养方案规定课程的实践教学工作当量-（预计总量： '+unarry.types[1].totalWorkload+' 已通过： '+unarry.types[1].checkedWorkload+' 仍待核： '+unarry.types[1].uncheckedWorkload+'）',
                             itemStyle:{
                                 normal:{color:'#5ab1ef'},
                             }
                         }, {
-                            value: unarry.typeSeven.checkedWorkload,
-                            name: '其他-（预计总量： '+unarry.typeSeven.totalWorkload+' 已通过： '+unarry.typeSeven.checkedWorkload+' 仍待核： '+unarry.typeSeven.uncheckedWorkload+'）',
+                            value: unarry.types[6].checkedWorkload,
+                            name: '其他-（预计总量： '+unarry.types[6].totalWorkload+' 已通过： '+unarry.types[6].checkedWorkload+' 仍待核： '+unarry.types[6].uncheckedWorkload+'）',
                             itemStyle:{
                                 normal:{color:'#CCFF99'}
                             }
                         },
                             {
-                                value: unarry.typeFour.checkedWorkload,
-                                name: '其他教学工作当量-（预计总量：'+unarry.typeFour.totalWorkload+'已通过：'+unarry.typeFour.checkedWorkload+'仍待核：'+unarry.typeFour.uncheckedWorkload+'）',
+                                value: unarry.types[3].checkedWorkload,
+                                name: '其他教学工作当量-（预计总量：'+unarry.types[3].totalWorkload+'已通过：'+unarry.types[3].checkedWorkload+'仍待核：'+unarry.types[3].uncheckedWorkload+'）',
                                 itemStyle:{
                                     normal:{color:'#d87a80'}
                                 }
                             },{
-                                value: unarry.typeSix.checkedWorkload,
-                                name: '年度人才培养服务工作当量-（预计总量： '+unarry.typeSix.totalWorkload+' 已通过： '+unarry.typeSix.checkedWorkload+' 仍待核： '+unarry.typeSix.uncheckedWorkload+'）',
+                                value: unarry.types[5].checkedWorkload,
+                                name: '年度人才培养服务工作当量-（预计总量： '+unarry.types[5].totalWorkload+' 已通过： '+unarry.types[5].checkedWorkload+' 仍待核： '+unarry.types[5].uncheckedWorkload+'）',
                                 itemStyle:{
                                     normal:{color:'#2ec7c9'}
                                 }
                             }, {
-                                value: unarry.typeFive.checkedWorkload,
-                                name: '教研教改等教学当量-（预计总量： '+unarry.typeFive.totalWorkload+' 已通过： '+unarry.typeFive.checkedWorkload+' 仍待核： '+unarry.typeFive.uncheckedWorkload+'）',
+                                value: unarry.types[4].checkedWorkload,
+                                name: '教研教改等教学当量-（预计总量： '+unarry.types[4].totalWorkload+' 已通过： '+unarry.types[4].checkedWorkload+' 仍待核： '+unarry.types[4].uncheckedWorkload+'）',
                                 itemStyle:{
                                     normal:{color:'#ffb980'}
                                 }
                             },{
-                                value: unarry.typeThree.checkedWorkload,
-                                name: '学生工程科研能力培养辅助教学工作当量-（预计总量： '+unarry.typeThree.totalWorkload +' 已通过：'+unarry.typeThree.checkedWorkload +' 仍待核：'+unarry.typeThree.uncheckedWorkload+'）',
+                                value: unarry.types[2].checkedWorkload,
+                                name: '学生工程科研能力培养辅助教学工作当量-（预计总量： '+unarry.types[2].totalWorkload +' 已通过：'+unarry.types[2].checkedWorkload +' 仍待核：'+unarry.types[2].uncheckedWorkload+'）',
                                 itemStyle:{
                                     normal:{color:'#ffab00'}
                                 }
