@@ -33,36 +33,40 @@
 
                 </ul>
                 <div id="mysumContent" class="tab-content">
+                    <%--学期tab--%>
                     <div role="tabpanel" class="tab-pane fade active in" id="sumTerm" aria-labelledby="home-tab">
 
-                            <div class="show-all-count"  style="background-color: #5ab1ef;margin-left: 184px">预期总工作当量：<span  class="totalWorkload "></span></div>
+                            <div class="show-all-count"  style="background-color: #5ab1ef;margin-left: 190px">预期总工作当量：<span  class="totalWorkload "></span></div>
                             <div class="show-all-count"  style="background-color: #2ec7c9;">已通过工作当量：<span  class="checkedWorkload "></span></div>
                             <div class="show-all-count"  style="background-color: #ffb980;">待核定工作当量：<span  class="uncheckedWorkload "></span></div>
 
-                        <div style="float: right">
-                            <div class="dropdown" id="changerole" style="float:right;padding-top: 13px;">
-                                <button type="button" class="btn dropdown-toggle btn-primary" id="dropdownMenu1" data-toggle="dropdown" style="margin: 2px;padding: 1px;" aria-expanded="false">
-                                    切换方式
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                    <li role="presentation">
-                                        <a id="all" tabindex="-1" class="swift-role">展示全部</a>
-                                    </li>
-                                    <li role="presentation">
-                                        <a id="sort" tabindex="-1" class="swift-role">分类展示</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                         <div class="clearfix"></div>
                         <%--style="float: left; margin-right: 20px;"--%>
                         <%-- <div class="switch switch-success">
                              <div class="ios-switch on"><div class="on-background background-fill"></div><div class="state-background background-fill"></div><div class="handle"></div></div><input type="checkbox" name="switch" data-plugin-ios-switch="" checked="checked" style="display: none;">
                          </div>--%>
-                        <div id="echart_pie" style="height:350px;"></div>
-                        <%-- <div class="clearfix"></div>--%>
-                        <div class="sort" role="tabpanel" data-example-id="togglable-tabs">
+                        <%--学期饼图--%>
+                        <div id="echart_pie" style="height:300px;border-bottom: 1px solid"></div>
+
+                        <span><p style="text-align: center;padding-top:15px;font-weight: 700;font-size:18px">本学期教学工作当量一览表</p> <span style="float: right">
+                        <span class="dropdown" id="changerole" style="float:right;padding-top: 13px;">
+                            <button type="button" class="btn dropdown-toggle btn-primary" id="dropdownMenu1" data-toggle="dropdown" style="margin: 2px;padding: 1px;" aria-expanded="false">
+                                切换方式
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                <li role="presentation">
+                                    <a id="all" tabindex="-1" class="swift-role">展示全部</a>
+                                </li>
+                                <li role="presentation">
+                                    <a id="sort" tabindex="-1" class="swift-role">分类展示</a>
+                                </li>
+                            </ul>
+                        </span>
+                    </span>
+                        </span>
+
+                        <div class="sort" role="tabpanel" data-example-id="togglable-tabs" style="padding-top: 20px;">
                             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">审核通过(<span id="check_passed"></span>)</a>
                                 </li>
@@ -170,41 +174,24 @@
                             </tbody>
                         </table>
                     </div>
+                    <%--学年tab--%>
                     <div role="tabpanel" class="tab-pane fade" id="sumYear" aria-labelledby="profile-tab">
 
-                            <div class="show-all-count" style="background-color: #5ab1ef;margin-left: 184px">预期总工作当量：<span  class="year_totalWorkload "></span></div>
+                            <div class="show-all-count" style="background-color: #5ab1ef;margin-left: 190px">预期总工作当量：<span  class="year_totalWorkload "></span></div>
                             <div class="show-all-count" style="background-color: #2ec7c9;">已通过工作当量：<span  class="year_checkedWorkload "></span></div>
                             <div class="show-all-count" style="background-color: #ffb980;">待核定工作当量：<span  class="year_uncheckedWorkload "></span></div>
-
+                            <div style="float: right"><select class="btn btn-primary" id="allyear_To_change"><option>学年选择</option></select></div>
                         <div class="clearfix"></div>
-
-                        <div id="year_echart_pie" style="height:350px;"></div>
-
-                        <table  class="table table-striped table-bordered dataTable no-footer yearall" style="display: none">
-                            <thead>
-                            <tr role="row">
-                                <th  class="sorting" >序号</th>
-                                <th class="sorting" >规则名称</th>
-                                <th class="sorting" >规则类别</th>
-                                <th class="sorting" >项目名称</th>
-                                <th class="sorting">工作当量</th>
-                                <th class="sorting" >项目状态</th>
-                                <th class="sorting">操作</th>
-
-                            </tr>
-                            </thead>
-                            <tbody class="year_view">
-                            </tbody>
-                        </table>
+                        <%--学年饼图--%>
+                        <div id="year_echart_pie" style="height:300px;margin-top: 20px"></div>
 
                     </div>
-
                 </div>
             </div>
-
         </div>
     </div>
 </div>
+<%--查看详情--%>
 <div class="modal fade" id="showdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabeil" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document" style="min-width: 600px;">
         <div class="modal-content">
