@@ -17,7 +17,7 @@ import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 /**
  * Version:v1.0 (description:  )
  */
-public class TeacherWorkload {
+public class TeacherWorkload implements Cloneable {
 
 	private String teacherName;
 
@@ -127,4 +127,31 @@ public class TeacherWorkload {
 		this.setCheckedWorkload(ZERO_DOUBLE);
 		this.setTotalWorkload(ZERO_DOUBLE);
 	}
+
+	public TeacherWorkload add(TeacherWorkload teacherWorkload) {
+		teacherWorkload
+				.setTotalWorkload(teacherWorkload.getTotalWorkload() + this.getTotalWorkload());
+		teacherWorkload.setCheckedWorkload(
+				teacherWorkload.getCheckedWorkload() + this.getCheckedWorkload());
+		teacherWorkload
+				.setUncheckedItems(teacherWorkload.getUncheckedItems() + this.getUncheckedItems());
+		teacherWorkload.setUncheckedWorkload(
+				teacherWorkload.getUncheckedWorkload() + this.getUncheckedWorkload());
+		teacherWorkload.setCheckedItems(teacherWorkload.getCheckedItems() + this.getCheckedItems());
+		return teacherWorkload;
+	}
+
+	@Override
+	public Object clone() {
+
+		TeacherWorkload teacherWorkload = null;
+		try {
+			teacherWorkload = (TeacherWorkload) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+
+		return teacherWorkload;
+	}
 }
+
