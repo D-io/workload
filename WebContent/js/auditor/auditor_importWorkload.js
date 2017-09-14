@@ -214,7 +214,7 @@ function showimportRec() {
         var auditStatus = $(this).parent().prev().text();
         var form = $(this).parent().prev().prev().prev().text();
 
-        $("#viewdetail_import .project").append( "<span class='itemName'>【项目名称】" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_import .project").append( "<p class='itemName'>【项目名称】" + jsonInfo.itemName +"</p>" );
         $("#viewdetail_import .message").append(
             "工作当量：" + jsonInfo.workload +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
@@ -263,21 +263,21 @@ function showimportRec() {
         if(jsonInfo.descAndValues!=null){
             for(var count=0;count<jsonInfo.descAndValues.length;count++){
 
-                $(".parameterTh").append("<tr><th class='pramterDesc' id='"+jsonInfo.parameterValues[count].symbol+"'>"+jsonInfo.descAndValues[count].desc+"</th><td><input type='text' class='parameterName form-control'></td></tr>")
+                $(".parameterTh").append("<tr><th class='addpramterDesc' id='"+jsonInfo.parameterValues[count].symbol+"'>"+jsonInfo.descAndValues[count].desc+"</th><td><input type='text' class='addparameterName form-control'></td></tr>")
                 // $(".editorPram").append("<td><input type='text' class='parameterName form-control'></td>");
 
-                $(".parameterName").eq(count).val(jsonInfo.descAndValues[count].value);
+                $(".addparameterName").eq(count).val(jsonInfo.descAndValues[count].value);
             }
-            $(".parameterName").attr("disabled","true");
+            $(".addparameterName").attr("disabled","true");
         }
         if(jsonInfo.otherJsonParameters!=null){
             for(var othercount=0;othercount<jsonInfo.otherJsonParameters.length;othercount++){
-                $(".otherParaTh").append("<tr><th class='otherPramterkey'>"+jsonInfo.otherJsonParameters[othercount].key+"</th><td><input type='text' class='otherparameterName form-control'></td></tr>")
+                $(".otherParaTh").append("<tr><th class='addotherPramterkey'>"+jsonInfo.otherJsonParameters[othercount].key+"</th><td><input type='text' class='addotherparameterName form-control'></td></tr>")
                 //    $(".editorotherPara").append("<td><input type='text' class='otherparameterName form-control'></td>");
-                $(".otherparameterName").eq(othercount).val(jsonInfo.otherJsonParameters[othercount].value);
+                $(".addotherparameterName").eq(othercount).val(jsonInfo.otherJsonParameters[othercount].value);
 
             }
-            $(".otherparameterName").attr("disabled","true");
+            $(".addotherparameterName").attr("disabled","true");
         }
         $("#showitemName").val(null);
         $("#showitemName").attr("disabled","true");
@@ -286,8 +286,8 @@ function showimportRec() {
     $(document).off("click",".editApplyInfo");
     /*编辑项目信息*/
     $(document).on("click",".editApplyInfo",function () {
-        $(".parameterName").removeAttr("disabled");
-        $(".otherparameterName").removeAttr("disabled");
+        $(".addparameterName").removeAttr("disabled");
+        $(".addotherparameterName").removeAttr("disabled");
         $("#showitemName").removeAttr("disabled");
     });
     $(document).off("click",".editorSubmit");
@@ -295,10 +295,10 @@ function showimportRec() {
     $(document).on("click",".editorSubmit",function () {
         var submitId=parseInt(this.id.match(/\d+/g));
         var newArray = new Array();
-        if( $(".pramterDesc").length>0){
-            for (var i = 0; i < $(".pramterDesc").length; i++) {
-                var dom = $(".pramterDesc").eq(i).attr("id");
-                newArray.push({symbol: dom, value:parseInt($(".parameterName").eq(i).val())});
+        if( $(".addpramterDesc").length>0){
+            for (var i = 0; i < $(".addparameterName").length; i++) {
+                var dom = $(".addpramterDesc").eq(i).attr("id");
+                newArray.push({symbol: dom, value:parseInt($(".addparameterName").eq(i).val())});
 
             }
             newArray = JSON.stringify(newArray);
@@ -307,11 +307,11 @@ function showimportRec() {
             newArray=null;
         }
         var otherArray = new Array();
-        var otherPramterkey = $(".otherPramterkey");
+        var otherPramterkey = $(".addotherPramterkey");
         if(otherPramterkey.length>0){
             for (var j = 0; j < otherPramterkey.length; j++) {
-                var otherKey=$(".otherPramterkey").eq(j);
-                otherArray.push({key: otherKey.text(), value: $(".otherparameterName").eq(j).val()});
+                var otherKey=$(".addotherPramterkey").eq(j);
+                otherArray.push({key: otherKey.text(), value: $(".addotherparameterName").eq(j).val()});
 
             }
             otherArray = JSON.stringify(otherArray);

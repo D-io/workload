@@ -258,7 +258,7 @@ function  reviewerRec() {
         var auditStatus = $(this).parent().prev().text();
         var form = $(this).parent().prev().prev().prev().prev().text();
 
-        $("#viewdetail_review .project").append( "<span class='itemName'>【规则名称】" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_review .project").append( "<p class='itemName'>【规则名称】" + jsonInfo.itemName +"</p>" );
         $("#viewdetail_review .message").append(
             "工作当量：" + jsonInfo.workload +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +

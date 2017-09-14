@@ -273,7 +273,7 @@ function showapplydata(item) {
         var applicant = $(this).parent().parent().find("td:eq(1)").text();
         var form = $(this).parent().prev().prev().prev().text();
 
-        $("#viewdetail_audit .project").append( "<span class='itemName'>【项目名称】" + jsonInfo.itemName +"</span>");
+        $("#viewdetail_audit .project").append( "<p class='itemName'>【项目名称】" + jsonInfo.itemName +"</p>");
         $("#viewdetail_audit .message").append(
             "工作当量：" + jsonInfo.workload +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报人：" + applicant +

@@ -122,7 +122,7 @@ $(document).ready(function () {
     $(document).on("click",".importList",function () {
 
         $(".appendArial").empty();
-        $(".appendArial").append("<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+        $(".appendArial").append("<p class='project'><p class='itemName'> 【规则名称】" + $(this).parent().prev().find(".itemName").text() + "</p></p>" +
             "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
             "<p class='message'>" + $(this).next().next().text() + "</p>");
 
@@ -566,7 +566,7 @@ $(document).ready(function () {
         var reg=parseInt(flag.match(/\d+/g));
         $("#myModalLabel").empty();
         $("#myModalLabel").append("<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class='current-page'>工作当量审核</span></p>" +
-            "<p class='project'><span class='itemName'> " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+            "<p class='project'><p class='itemName'>【规则名称】 " + $(this).parent().prev().find(".itemName").text() + "</p></p>" +
             "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
             "<p class='message'>审核截止时间：" + $(this).prev().text() + "</p>");
         $.get(auditorCheckedUrl+"?"+'categoryId='+reg,function (data) {
@@ -583,7 +583,7 @@ $(document).ready(function () {
         var reg=parseInt(flag.match(/\d+/g));
         $("#myModalLabel").empty();
         $("#myModalLabel").append( "<p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量复核</span></p>" +
-            "<p class='project'><span class='itemName'>【规则名称】 " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+            "<p class='project'><p class='itemName'>【规则名称】 " + $(this).parent().prev().find(".itemName").text() + "</p></p>" +
             "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
             "<p class='message'>复核截止时间：" + $(this).prev().text() +"</p>");
 
@@ -672,7 +672,7 @@ $(document).ready(function () {
         var auditStatus = $(this).parent().prev().text();
         // var form = $(this).parent().prev().prev().prev().text();
 
-        $("#viewdetail_reviewer .project").append( "<span class='itemName'>【项目名称】" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_reviewer .project").append( "<p class='itemName'>【项目名称】" + jsonInfo.itemName +"</p>" );
         $("#viewdetail_reviewer .message").append(
             "工作当量：" + jsonInfo.workload +
             // "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +

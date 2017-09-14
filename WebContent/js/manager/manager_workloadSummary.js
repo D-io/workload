@@ -355,152 +355,150 @@ function itemSummary() {
             $(".totlaAll").text(unarry.totalWorkload);
             $(".passAll").text(unarry.types[0].checkedWorkload+unarry.types[1].checkedWorkload+unarry.types[2].checkedWorkload+unarry.types[3].checkedWorkload+unarry.types[4].checkedWorkload+unarry.types[5].checkedWorkload+unarry.types[6].checkedWorkload);
             $(".unpassAll").text(unarry.types[0].uncheckedWorkload+unarry.types[1].uncheckedWorkload+unarry.types[2].uncheckedWorkload+unarry.types[3].uncheckedWorkload+unarry.types[4].uncheckedWorkload+unarry.types[5].uncheckedWorkload+unarry.types[6].uncheckedWorkload);
-
-            if ($('#echart_unchecked_pie').length ){
-                var echartPie = echarts.init(document.getElementById('echart_unchecked_pie'));
-                echartPie.setOption({
-                    tooltip: {
-                        trigger: 'item',
-                        position:['26%','80%'],
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
-                    },
-                    legend: {
-                        x: 'left',
-                        y: 'top',
-                        data: ['本科和研究生', '培养方案实践教学', '年度人才培养服务', '教研教改', '其他工作当量']
-
-                    },
-
-                    toolbox: {
-                        show: true,
-                        feature: {
-                            magicType: {
-                                show: true,
-                                type: ['pie', 'funnel'],
-                                option: {
-                                    funnel: {
-                                        x: '25%',
-                                        width: '50%',
-                                        funnelAlign: 'left',
-                                        max: 1548
-                                    }
-                                }
-                            },
-                            restore: {
-                                show: true,
-                                title: "刷新"
-                            },
-                            saveAsImage: {
-                                show: true,
-                                title: "下载"
-                            }
-                        }
-                    },
-                    calculable: true,
-                    series: [{
-                        name: '访问来源',
-                        type: 'pie',
-                        /*radius: '60%',*/
-                        radius: [55, 70],
-                        center:["45%","50%"],
-                        data: [{
-                            value: unarry.types[0].checkedWorkload,
-                            name: '本科和研究生(含留学生、非全日制研究生)-培养方案规定课程的工作当量-（预计总量： '+unarry.types[0].totalWorkload+' 已通过： '+unarry.types[0].checkedWorkload+' 仍待核： '+unarry.types[0].uncheckedWorkload+'）',
-                            itemStyle:{
-                                normal:{color:'#b6a2de'}
-                            }
-                        }, {
-                            value: unarry.types[1].checkedWorkload,
-                            name: '培养方案规定课程的实践教学工作当量-（预计总量： '+unarry.types[1].totalWorkload+' 已通过： '+unarry.types[1].checkedWorkload+' 仍待核： '+unarry.types[1].uncheckedWorkload+'）',
-                            itemStyle:{
-                                normal:{color:'#5ab1ef'},
-                            }
-                        }, {
-                            value: unarry.types[6].checkedWorkload,
-                            name: '其他-（预计总量： '+unarry.types[6].totalWorkload+' 已通过： '+unarry.types[6].checkedWorkload+' 仍待核： '+unarry.types[6].uncheckedWorkload+'）',
-                            itemStyle:{
-                                normal:{color:'#CCFF99'}
-                            }
+            $('#showPieModal').on('shown.bs.modal',function(){
+               // echartPie.resize()
+                if ($('#echart_unchecked_pie').length ){
+                    var echartPie = echarts.init(document.getElementById('echart_unchecked_pie'));
+                    echartPie.setOption({
+                        tooltip: {
+                            trigger: 'item',
+                            position:['26%','80%'],
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
                         },
-                            {
-                                value: unarry.types[3].checkedWorkload,
-                                name: '其他教学工作当量-（预计总量：'+unarry.types[3].totalWorkload+'已通过：'+unarry.types[3].checkedWorkload+'仍待核：'+unarry.types[3].uncheckedWorkload+'）',
-                                itemStyle:{
-                                    normal:{color:'#d87a80'}
-                                }
-                            },{
-                                value: unarry.types[5].checkedWorkload,
-                                name: '年度人才培养服务工作当量-（预计总量： '+unarry.types[5].totalWorkload+' 已通过： '+unarry.types[5].checkedWorkload+' 仍待核： '+unarry.types[5].uncheckedWorkload+'）',
-                                itemStyle:{
-                                    normal:{color:'#2ec7c9'}
-                                }
-                            }, {
-                                value: unarry.types[4].checkedWorkload,
-                                name: '教研教改等教学当量-（预计总量： '+unarry.types[4].totalWorkload+' 已通过： '+unarry.types[4].checkedWorkload+' 仍待核： '+unarry.types[4].uncheckedWorkload+'）',
-                                itemStyle:{
-                                    normal:{color:'#ffb980'}
-                                }
-                            },{
-                                value: unarry.types[2].checkedWorkload,
-                                name: '学生工程科研能力培养辅助教学工作当量-（预计总量： '+unarry.types[2].totalWorkload +' 已通过：'+unarry.types[2].checkedWorkload +' 仍待核：'+unarry.types[2].uncheckedWorkload+'）',
-                                itemStyle:{
-                                    normal:{color:'#ffab00'}
-                                }
-                            }],
-                        itemStyle: {
-                            normal: {
-                                label: {
+                        legend: {
+                            x: 'left',
+                            y: 'top',
+                            data: ['本科和研究生', '培养方案实践教学', '年度人才培养服务', '教研教改', '其他工作当量']
+
+                        },
+
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                magicType: {
                                     show: true,
-                                    formatter: function (val) {   //让series 中的文字进行换行
-                                        return val.name.split("-").join("\n");
-                                    },
-                                    textStyle: {
-                                        fontWeight: 'normal',
-                                        fontSize: '14',
-                                        color:"rgb(115, 135, 156)"
-                                        /* color:'rgb(0, 0, 0)',
-                                         letterspacing:'2px'*/
-                                    }
-                                },
-                                labelLine: {
-                                    show: true
-                                },
-                                emphasis: {
-                                    label: {
-                                        show: true,
-                                        position: 'center',
-                                        textStyle: {
-                                            fontSize: '14',
-                                            fontWeight: 'normal'
+                                    type: ['pie', 'funnel'],
+                                    option: {
+                                        funnel: {
+                                            x: '25%',
+                                            width: '50%',
+                                            funnelAlign: 'left',
+                                            max: 1548
                                         }
                                     }
+                                },
+                                restore: {
+                                    show: true,
+                                    title: "刷新"
+                                },
+                                saveAsImage: {
+                                    show: true,
+                                    title: "下载"
                                 }
-
                             }
-                        }}]
-
-
-                });
-
-                var placeHolderStyle = {
-                    normal: {
-                        color: 'rgba(0,0,0,0)',
-                        label: {
-                            show: true
                         },
-                        labelLine: {
-                            show: true
-                        }
-                    },
-                    emphasis: {
-                        color: 'rgba(0,0,0,0)'
-                    }
-                };
-            }
+                        calculable: true,
+                        series: [{
+                            name: '访问来源',
+                            type: 'pie',
+                            /*radius: '60%',*/
+                            radius: [55, 70],
+                            center:["45%","50%"],
+                            data: [{
+                                value: unarry.types[0].checkedWorkload,
+                                name: '本科和研究生(含留学生、非全日制研究生)-培养方案规定课程的工作当量-（预计总量： '+unarry.types[0].totalWorkload+' 已通过： '+unarry.types[0].checkedWorkload+' 仍待核： '+unarry.types[0].uncheckedWorkload+'）',
+                                itemStyle:{
+                                    normal:{color:'#b6a2de'}
+                                }
+                            }, {
+                                value: unarry.types[1].checkedWorkload,
+                                name: '培养方案规定课程的实践教学工作当量-（预计总量： '+unarry.types[1].totalWorkload+' 已通过： '+unarry.types[1].checkedWorkload+' 仍待核： '+unarry.types[1].uncheckedWorkload+'）',
+                                itemStyle:{
+                                    normal:{color:'#5ab1ef'},
+                                }
+                            }, {
+                                value: unarry.types[6].checkedWorkload,
+                                name: '其他-（预计总量： '+unarry.types[6].totalWorkload+' 已通过： '+unarry.types[6].checkedWorkload+' 仍待核： '+unarry.types[6].uncheckedWorkload+'）',
+                                itemStyle:{
+                                    normal:{color:'#CCFF99'}
+                                }
+                            },
+                                {
+                                    value: unarry.types[3].checkedWorkload,
+                                    name: '其他教学工作当量-（预计总量：'+unarry.types[3].totalWorkload+'已通过：'+unarry.types[3].checkedWorkload+'仍待核：'+unarry.types[3].uncheckedWorkload+'）',
+                                    itemStyle:{
+                                        normal:{color:'#d87a80'}
+                                    }
+                                },{
+                                    value: unarry.types[5].checkedWorkload,
+                                    name: '年度人才培养服务工作当量-（预计总量： '+unarry.types[5].totalWorkload+' 已通过： '+unarry.types[5].checkedWorkload+' 仍待核： '+unarry.types[5].uncheckedWorkload+'）',
+                                    itemStyle:{
+                                        normal:{color:'#2ec7c9'}
+                                    }
+                                }, {
+                                    value: unarry.types[4].checkedWorkload,
+                                    name: '教研教改等教学当量-（预计总量： '+unarry.types[4].totalWorkload+' 已通过： '+unarry.types[4].checkedWorkload+' 仍待核： '+unarry.types[4].uncheckedWorkload+'）',
+                                    itemStyle:{
+                                        normal:{color:'#ffb980'}
+                                    }
+                                },{
+                                    value: unarry.types[2].checkedWorkload,
+                                    name: '学生工程科研能力培养辅助教学工作当量-（预计总量： '+unarry.types[2].totalWorkload +' 已通过：'+unarry.types[2].checkedWorkload +' 仍待核：'+unarry.types[2].uncheckedWorkload+'）',
+                                    itemStyle:{
+                                        normal:{color:'#ffab00'}
+                                    }
+                                }],
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        show: true,
+                                        formatter: function (val) {   //让series 中的文字进行换行
+                                            return val.name.split("-").join("\n");
+                                        },
+                                        textStyle: {
+                                            fontWeight: 'normal',
+                                            fontSize: '14',
+                                            color:"rgb(115, 135, 156)"
+                                            /* color:'rgb(0, 0, 0)',
+                                             letterspacing:'2px'*/
+                                        }
+                                    },
+                                    labelLine: {
+                                        show: true
+                                    },
+                                    emphasis: {
+                                        label: {
+                                            show: true,
+                                            position: 'center',
+                                            textStyle: {
+                                                fontSize: '14',
+                                                fontWeight: 'normal'
+                                            }
+                                        }
+                                    }
 
-            $('#showPieModal').on('shown.bs.modal',function(){
-                echartPie.resize()
-            })
+                                }
+                            }}]
+
+
+                    });
+
+                    var placeHolderStyle = {
+                        normal: {
+                            color: 'rgba(0,0,0,0)',
+                            label: {
+                                show: true
+                            },
+                            labelLine: {
+                                show: true
+                            }
+                        },
+                        emphasis: {
+                            color: 'rgba(0,0,0,0)'
+                        }
+                    };
+                }
+            });
 
         });
 

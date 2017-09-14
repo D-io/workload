@@ -152,7 +152,7 @@ function applyworkload() {
 
             });
             $(".appendArial").empty();
-            $(".appendArial").append("<p class='project'><span class='itemName'>【规则名称】 " + $(this).parent().prev().find(".itemName").text() + "</span></p>" +
+            $(".appendArial").append("<p class='project'><p class='itemName'>【规则名称】 " + $(this).parent().prev().find(".itemName").text() + "</p></p>" +
                 "<p class='message'>规则详情描述：" + $(this).parent().prev().find(".itemDesc").text() + "</p> " +
                 "<p class='message'>申报截止时间：" + $(this).prev().prev().text() + "</p>"
             );
@@ -1639,7 +1639,7 @@ function applyRec() {
         var auditStatus = $(this).parent().prev().text();
         var form = $(this).parent().prev().prev().prev().prev().text();
 
-        $("#viewdetail_apply .project").append( "<span class='itemName'>【项目名称】" + jsonInfo.itemName +"</span>" );
+        $("#viewdetail_apply .project").append( "<p class='itemName'>【项目名称】" + jsonInfo.itemName +"</p>" );
         $("#viewdetail_apply .message").append(
             "工作当量：" + jsonInfo.workload +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申报形式：" + form +
