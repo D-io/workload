@@ -108,7 +108,7 @@
 
             </div>
         </div>
-
+        <%--展示申报项modal--%>
         <div class="modal fade bs-example-modal-lg" id="applyModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="display: none;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -130,7 +130,7 @@
                 </div>
             </div>
         </div>
-
+        <%--添加申报项目的表单modal--%>
         <div class="modal fade" id="addContent" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -138,7 +138,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             &times;
                         </button>
-                        <div class="modal-title myModalLabel">  <p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量申报/添加申报</span></p>
+                        <div class="modal-title myModalLabel">  <p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量申报&nbsp;/&nbsp;添加申报</span></p>
                             <span class="appendArial"></span></div>
 
                     </div>
@@ -308,6 +308,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
+        <%--查看详情表单modal--%>
         <div class="modal fade" id="showContent" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -316,7 +317,7 @@
                             &times;
                         </button>
                         <div class="modal-title myModalLabel">
-                            <p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量申报/查看详情</span></p>
+                            <p class='page-nav'><i class='fa fa-bar-chart' style='z-index: 100'></i>&nbsp;我的工作当量&nbsp;/&nbsp;<span class='current-page'>工作当量申报&nbsp;/&nbsp;查看详情</span></p>
                             <span class="appendArial"></span>
                         </div>
                     </div>
@@ -492,6 +493,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
+        <%--申报审核情况页面的重新申请表单--%>
         <div class="modal fade" id="refuse_To_Apply" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">

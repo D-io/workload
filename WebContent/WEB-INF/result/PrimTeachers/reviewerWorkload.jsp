@@ -81,7 +81,7 @@
 
             </div>
         </div>
-
+        <%--导入复核情况的查看详情modal--%>
         <div class="modal fade" id="viewdetail_review" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false"  style="display: none;">
             <div class="modal-dialog" role="document" style="min-width: 800px">
                 <div class="modal-content">
@@ -111,7 +111,7 @@
 
             </div>
         </div>
-
+        <%--需要复核的项目展示modal--%>
         <div class="modal fade bs-example-modal-lg" id="importModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="display: none;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -122,16 +122,7 @@
                         <div class="modal-title" id="myModalLabel"></div>
                     </div>
                     <div class="modal-body">
-                        <%--<button class="add btn btn-primary" data-toggle="modal" data-target="#myModal">上传文件</button>
-                        <div class="applymodalbody" style="height: 60%;">
-                           &lt;%&ndash; <table class="showImportThead table dataTable no-footer table-bordered" style="display: none;">
-                                <thead style="font-size: 14px;">
-                                <tr role="row">
-                                    <th>序号</th><th>文件名称</th><th>上传时间</th><th>提交状态</th><th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody class="showImportDesc"></tbody>
-                            </table>&ndash;%&gt;--%>
+
                         <div class="applymodalbody">
                             <table  class="table table-striped table-bordered dataTable no-footer">
                                 <thead>
@@ -156,7 +147,7 @@
 
             </div>
         </div>
-
+        <%--查看详情的modal--%>
         <div class="modal fade" id="viewdetail_reviewer" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false"  style="display: none;">
             <div class="modal-dialog" role="document" style="min-width: 700px">
                 <div class="modal-content">
@@ -186,7 +177,7 @@
 
             </div>
         </div>
-
+        <%--填写存疑的modal--%>
         <div class="modal fade" id="refuModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">

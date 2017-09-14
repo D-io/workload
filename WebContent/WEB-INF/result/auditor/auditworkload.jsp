@@ -54,6 +54,7 @@
 
             </div>
         </div>
+        <%--展示所有待审核项目的modal--%>
         <div class="modal fade bs-example-modal-lg" id="auditormodal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="display: none;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -91,7 +92,7 @@
                 </div>
             </div>
         </div>
-
+        <%--查看详情modal--%>
         <div class="modal fade" id="viewdetail_audit" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="display: none;">
             <div class="modal-dialog" role="document" style="min-width: 800px">
                 <div class="modal-content">
@@ -99,7 +100,7 @@
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                         </button>
                         <div class="header">
-                            <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class="current-page">工作当量审核/查看详情</span></p>
+                            <p class='page-nav'><i class='fa fa-bar-chart'></i>&nbsp;工作当量管理&nbsp;/&nbsp;<span class="current-page">工作当量审核&nbsp;/&nbsp;查看详情</span></p>
                             <p class="project"></p>
                             <p class="message"></p>
                         </div>
@@ -125,9 +126,8 @@
             </div>
         </div>
 
-
-
     </div>
+    <%--审核拒绝modal--%>
     <div class="modal fade" id="refuseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
