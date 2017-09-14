@@ -19,11 +19,11 @@ function importWorkload(){
         }
     });
     $.get(TeacherInfoUrl,{test : 12},function (data) {
-        teacherInfo=data.data.teacherList;
+        var teacherInfo=data.data.teacherList;
         var selectdata=new Array();
         for(var i=0;i<teacherInfo.length;i++){
             $('#itemMember').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
-            $('#itemmanager').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
+           // $('#itemmanager').append('<option value=\"'+teacherInfo[i].teacherId+'\">'+teacherInfo[i].name+'</option>');
 
         }
     });
@@ -32,11 +32,11 @@ function importWorkload(){
         allowClear: true,
         width:"100%",
     });
-    $("#itemmanager").select2({
+   /* $("#itemmanager").select2({
         placeholder:"",
         allowClear: true,
         width:"100%",
-    });
+    });*/
 }
 /*查看导入复核情况*/
 function showimportRec() {
