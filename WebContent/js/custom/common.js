@@ -72,7 +72,7 @@ $(document).ready(function () {
     });
     /*切换学年时对应的刷新页面*/
     $(document).on("click","#itemChange",function () {
-        $.post(thisTermUrl+"?year="+$("#year").text()+"&scheme="+parseInt($("#term").val()),function (data) {
+        $.post(thisTermUrl+"?year="+$("#year").val()+"&scheme="+parseInt($("#term").val()),function (data) {
 
             var $currentContent=$(".curentPage").attr("id");
             switch ($currentContent){
