@@ -719,7 +719,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		for (Integer status : statusList) {
 			List<ItemDto> itemDtos = findItemsByStatus(importRequired, status, teacherId, version);
 			if (!isEmptyList(itemDtos)) {
-				itemDtoList.addAll(findItemsByStatus(importRequired, status, teacherId, version));
+				itemDtoList.addAll(itemDtos);
 			}
 		}
 
