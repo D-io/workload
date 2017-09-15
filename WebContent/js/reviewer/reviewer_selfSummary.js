@@ -99,6 +99,10 @@ function reviewerSumItem() {
                 }
             }
         });
+      /*刷新学年数据*/
+    /*$.post(refreshInfoUrl+"?teacherId="+userId,function (msg) {
+
+    });*/
      /*学年工作当量展示*/
         $.get(itemCollection+"?year="+yearstr,function (data) {
          if(data.data!=null&&data.data.itemDtoList!=null){

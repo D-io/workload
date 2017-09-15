@@ -28,7 +28,7 @@
                 <ul id="sumTab" class="nav nav-tabs bar_tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#sumTerm" id="term-tab" role="tab" data-toggle="tab" aria-expanded="true">学期工作当量</a>
                     </li>
-                    <li role="presentation"  onclick="applyRec()"><a href="#sumYear" role="tab" id="year-tab" data-toggle="tab" aria-expanded="false">学年工作当量</a>
+                    <li role="presentation"><a href="#sumYear" role="tab" id="year-tab" data-toggle="tab" aria-expanded="false">学年工作当量</a>
                     </li>
 
                 </ul>

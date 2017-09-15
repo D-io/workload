@@ -18,6 +18,7 @@ $(document).ready(function () {
     /*获取侧边栏*/
     getSideBar(currentRole,roleList);
     /*过去当前学年*/
+    console.log(currentYearUrl);
     $("#year").val(currentYearUrl);
     $.get(commonYearsUrl,function (data) {
         var arry=new Array;

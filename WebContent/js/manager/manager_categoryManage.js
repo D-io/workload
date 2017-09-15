@@ -77,10 +77,13 @@ function ztree() {
 //动态添加节点信息
     var zNodes = new Array();
     $.get(categoryAllUrl,function (data) {
-        for (var m = 0; m < data.data.categoryTree.length; m++) {
+        if( data.data.categoryTree!=null){
+            for (var m = 0; m < data.data.categoryTree.length; m++) {
 
-            createTree(data.data.categoryTree[m]);
+                createTree(data.data.categoryTree[m]);
+            }
         }
+
         function createTree(item) {
 
             var x=item.reviewDeadline;
