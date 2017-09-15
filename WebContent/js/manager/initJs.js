@@ -806,7 +806,4 @@ function getFileType(obj) {
         alert("请上传正确格式的Excell表格！");
         return false;
     }
-    else {
-        return 0;
-    }
 }
