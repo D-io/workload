@@ -12,20 +12,23 @@ package cn.edu.uestc.ostec.workload.aspect.impl;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.criteria.Join;
 
 import cn.edu.uestc.ostec.workload.aspect.IAspect;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
 import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
+import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
 import cn.edu.uestc.ostec.workload.event.GroupItemEvent;
 import cn.edu.uestc.ostec.workload.pojo.History;
 import cn.edu.uestc.ostec.workload.pojo.Item;
@@ -45,6 +48,7 @@ import static cn.edu.uestc.ostec.workload.WorkloadObjects.ROLE_REVIEWER;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.SINGLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
+import static cn.edu.uestc.ostec.workload.service.ItemService.EMPTY_WORKLOAD;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
 import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
@@ -102,6 +106,10 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 
 	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ItemManageController.correctItemInfo(..))")
 	private void itemCorrectByAdminPointCut() {
+	}
+
+	@Pointcut("execution(* cn.edu.uestc.ostec.workload.controller.ItemInfoListController.getAllItemDtoList(..))")
+	private void workloadAnalyze() {
 	}
 
 	@AfterReturning(returning = "rvt", pointcut = "itemCorrectByAdminPointCut()")
@@ -450,5 +458,32 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 			LOGGER.info(ITEM_MANAGE_INFO_LOG_PATTERN, history.getOperation(), "成功");
 		}
 	}
+
+	@Before("workloadAnalyze()")
+	public void refreshWorkload(JoinPoint joinPoint) {
+		Object[] params = getParameters(joinPoint);
+		Integer teacherId = (Integer) params[0];
+
+		TeacherWorkload teacherWorkload = teacherWorkloadService
+				.getTeacherWorkload(teacherId, getCurrentSemester());
+
+		TotalWorkloadAndCount checkedWorkload = itemService
+				.selectTotalWorkload(teacherId, CHECKED, getCurrentSemester());
+		TotalWorkloadAndCount nonCheckedWorkload = itemService
+				.selectTotalWorkload(teacherId, null, getCurrentSemester());
+
+		checkedWorkload = (null == checkedWorkload ? EMPTY_WORKLOAD : checkedWorkload);
+		nonCheckedWorkload = (null == nonCheckedWorkload ? EMPTY_WORKLOAD : nonCheckedWorkload);
+
+		teacherWorkload.setCheckedWorkload(checkedWorkload.getWorkload());
+		teacherWorkload.setCheckedItems(checkedWorkload.getCount());
+
+		teacherWorkload.setUncheckedItems(nonCheckedWorkload.getCount());
+		teacherWorkload.setUncheckedWorkload(nonCheckedWorkload.getWorkload());
+		teacherWorkload.setTotalWorkload(
+				teacherWorkload.getCheckedWorkload() + teacherWorkload.getUncheckedWorkload());
+		teacherWorkloadService.saveTeacherWorkload(teacherWorkload);
+	}
+
 }
 
