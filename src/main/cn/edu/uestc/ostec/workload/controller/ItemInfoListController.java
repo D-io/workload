@@ -574,7 +574,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			return parameterNotSupportResponse("参数有误");
 		}
 
-		TeacherWorkload teacherWorkload = new TeacherWorkload();
+		TeacherWorkload teacherWorkload;
 		List<ItemDto> itemList = new ArrayList<>();
 		if (isEmptyNumber(year)) {
 			itemList = findItems(null, statusList, teacherId, getCurrentSemester());
@@ -591,14 +591,14 @@ public class ItemInfoListController extends ApplicationController implements Ope
 					.getTeacherWorkload(teacherId, terms.get(ZERO_INT));
 			TeacherWorkload secondTeacherWorkload = teacherWorkloadService
 					.getTeacherWorkload(teacherId, terms.get(1));
-			if (null != teacherWorkload.getVersion()) {
+			if (null != teacherWorkload.getTeacherId()) {
 				if (null == secondTeacherWorkload.getTeacherId()) {
 					secondTeacherWorkload.setDefaultParams();
 				}
 				teacherWorkload = teacherWorkload.add(secondTeacherWorkload);
 				teacherWorkload.setVersion(year.toString());
 			} else {
-				if (null != secondTeacherWorkload.getVersion()) {
+				if (null != secondTeacherWorkload.getTeacherId()) {
 					teacherWorkload = (TeacherWorkload) secondTeacherWorkload.clone();
 				} else {
 					teacherWorkload.setDefaultParams();
@@ -608,28 +608,27 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				}
 			}
 		}
-		if (isEmptyList(itemList)) {
-			return successResponse();
-		}
+
 		List<ItemDto> applyItemList = new ArrayList<>();
 		List<ItemDto> importItemList = new ArrayList<>();
 
-		for (ItemDto itemDto : itemList) {
-			if (APPLY_SELF.equals(itemDto.getImportRequired())) {
-				applyItemList.add(itemDto);
-			} else {
-				importItemList.add(itemDto);
+		if (!isEmptyList(itemList)) {
+			for (ItemDto itemDto : itemList) {
+				if (APPLY_SELF.equals(itemDto.getImportRequired())) {
+					applyItemList.add(itemDto);
+				} else {
+					importItemList.add(itemDto);
+				}
 			}
+			data.put("importItemList", importItemList);
+			data.put("applyItemList", applyItemList);
+			data.put("importCount", importItemList.size());
+			data.put("applyCount", applyItemList.size());
+			data.put("recordCount", itemList.size());
+			data.put("itemDtoList", itemList);
 		}
 
-		data.put("importItemList", importItemList);
-		data.put("applyItemList", applyItemList);
-		data.put("importCount", importItemList.size());
-		data.put("applyCount", applyItemList.size());
-		data.put("recordCount", itemList.size());
 		data.put("teacherWorkload", teacherWorkload);
-
-		data.put("itemDtoList", itemList);
 
 		return successResponse(data);
 	}
