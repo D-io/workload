@@ -90,7 +90,7 @@ function reviewerSumItem() {
 
         });
      /* 学期所以工作当量展示*/
-        $.get(itemCollection+"?teacherId="+userId,function (data) {
+        $.get(itemCollection,function (data) {
             if(data.data!=null&&data.data.itemDtoList!=null){
                 appendReviewerItem(data.data.itemDtoList,"sumall",sumtocount);
                 for(var k=0;k<data.data.itemDtoList.length;k++){
