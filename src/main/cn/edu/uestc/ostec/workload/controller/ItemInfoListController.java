@@ -575,7 +575,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		}
 
 		TeacherWorkload teacherWorkload;
-		List<ItemDto> itemList = new ArrayList<>();
+		List<ItemDto> itemList;
 		if (isEmptyNumber(year)) {
 			itemList = findItems(null, statusList, teacherId, getCurrentSemester());
 			teacherWorkload = teacherWorkloadService
@@ -674,7 +674,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			Integer teacherId, String version) {
 
 		List<ItemDto> itemDtoList = itemConverter.poListToDtoList(
-				itemService.findItemsByStatus(status, teacherId, getCurrentSemester()));
+				itemService.findItemsByStatus(status, teacherId, version));
 		if (isEmptyList(itemDtoList)) {
 			return null;
 		}
@@ -687,7 +687,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				if (GROUP.equals(itemDto.getIsGroup()) && itemDto.getOwnerId()
 						.equals(itemDto.getGroupManagerId())) {
 					Item item = itemConverter
-							.generateGroupItem(itemDto.getItemId(), getCurrentSemester());
+							.generateGroupItem(itemDto.getItemId(), version);
 					itemDto = itemConverter.poToDto(item);
 				}
 
