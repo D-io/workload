@@ -17,7 +17,7 @@ function reviewerSumItem() {
         $('.right_hole').append(result);
      /*已通过的条目信息*/
         $.get(itemCollection,{"option":"checked"},function (data) {
-            if(data.data.teacherWorkload){
+            if(data.data.teacherWorkload!=null){
                 $(".totalWorkload").text(data.data.teacherWorkload.totalWorkload);
                 $(".checkedWorkload").text(data.data.teacherWorkload.checkedWorkload);
                 $(".uncheckedWorkload").text(data.data.teacherWorkload.uncheckedWorkload);
@@ -54,7 +54,7 @@ function reviewerSumItem() {
     });
     /*未通过的条目信息*/
         $.get(itemCollection,{"option":"unchecked"},function (data) {
-            if(data.data.teacherWorkload){
+            if(data.data.teacherWorkload!=null){
                 $(".totalWorkload").text(data.data.teacherWorkload.totalWorkload);
                 $(".checkedWorkload").text(data.data.teacherWorkload.checkedWorkload);
                 $(".uncheckedWorkload").text(data.data.teacherWorkload.uncheckedWorkload);
