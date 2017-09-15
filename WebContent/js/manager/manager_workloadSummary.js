@@ -352,9 +352,9 @@ function itemSummary() {
             $.get(teacherAnalyzeUrl+"?teacherId="+$("#teacherId_"+thisId).text(),function (msg) {
                 unarry=msg.data.workload;
             });
-            $(".totlaAll").text(unarry.totalWorkload);
-            $(".passAll").text(unarry.types[0].checkedWorkload+unarry.types[1].checkedWorkload+unarry.types[2].checkedWorkload+unarry.types[3].checkedWorkload+unarry.types[4].checkedWorkload+unarry.types[5].checkedWorkload+unarry.types[6].checkedWorkload);
-            $(".unpassAll").text(unarry.types[0].uncheckedWorkload+unarry.types[1].uncheckedWorkload+unarry.types[2].uncheckedWorkload+unarry.types[3].uncheckedWorkload+unarry.types[4].uncheckedWorkload+unarry.types[5].uncheckedWorkload+unarry.types[6].uncheckedWorkload);
+            $(".totlaAll").text($(".totalCount_"+thisId).text());
+            $(".passAll").text($(".checkedCount_"+thisId).text());
+            $(".unpassAll").text($(".uncheckedCount_"+thisId).text());
             $('#showPieModal').on('shown.bs.modal',function(){
                // echartPie.resize()
                 if ($('#echart_unchecked_pie').length ){
