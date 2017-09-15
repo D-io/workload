@@ -3,6 +3,9 @@
  */
     /*个人工作当量汇总*/
 function reviewerSumItem() {
+    $.ajaxSetup({
+        async: false
+    });
     $('.right_hole').empty();
 
     /*声明一个数组newArray存放所有的条目*/
@@ -10,7 +13,7 @@ function reviewerSumItem() {
     /*声明一个变量索引数组元素*/
     var sumtocount=0;
     var yearstr=$("#year").val().substring(0,4);
-    $.get(pageManageUrl+"?"+'regionName=applicant/selfSummary',function (result) {
+    $.get(pageManageUrl+"?"+'regionName=applicant/selfSummary',{test:12},function (result) {
         $('.right_hole').append(result);
      /*已通过的条目信息*/
         $.get(itemCollection,{"option":"checked"},function (data) {
@@ -97,7 +100,7 @@ function reviewerSumItem() {
             }
         });
      /*学年工作当量展示*/
-        $.get(itemCollection+"?teacherId="+userId+"&year="+yearstr,function (data) {
+        $.get(itemCollection+"?year="+yearstr,function (data) {
          if(data.data!=null&&data.data.itemDtoList!=null){
              $(".year_totalWorkload ").text(data.data.teacherWorkload.totalWorkload );
              $(".year_checkedWorkload ").text(data.data.teacherWorkload.checkedWorkload);
@@ -380,7 +383,7 @@ function reviewerSumItem() {
             changeArray=msg.data.workload
             showyearPie(changeArray);
         });
-        $.get(itemCollection+"?teacherId="+userId+"&year="+$("#allyear_To_change").val(),function (data) {
+        $.get(itemCollection+"?year="+$("#allyear_To_change").val(),function (data) {
             if(data.data!=null&&data.data.itemDtoList!=null){
                 $(".year_totalWorkload ").text(data.data.teacherWorkload.totalWorkload );
                 $(".year_checkedWorkload ").text(data.data.teacherWorkload.checkedWorkload);
