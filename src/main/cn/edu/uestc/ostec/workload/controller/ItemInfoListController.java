@@ -91,6 +91,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 			@RequestParam("year")
 					Integer year) {
 
+		//TODO 查询前先刷新
 		User user = getUser();
 		if (null == user) {
 			return invalidOperationResponse("非法请求");
@@ -159,6 +160,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		StringBuilder errorData = new StringBuilder();
 		for (Integer teacherId : teacherIdList) {
 
+			//TODO 抽象出refresh方法
 			TeacherWorkload teacherWorkload = teacherWorkloadService
 					.getTeacherWorkload(teacherId, getCurrentSemester());
 
@@ -594,7 +596,7 @@ public class ItemInfoListController extends ApplicationController implements Ope
 				if (null == secondTeacherWorkload.getTeacherId()) {
 					secondTeacherWorkload.setDefaultParams();
 				}
-				teacherWorkload.add(secondTeacherWorkload);
+				teacherWorkload = teacherWorkload.add(secondTeacherWorkload);
 				teacherWorkload.setVersion(year.toString());
 			} else {
 				if (null != secondTeacherWorkload.getTeacherId()) {
