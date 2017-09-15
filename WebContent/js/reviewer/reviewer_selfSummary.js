@@ -105,7 +105,7 @@ function reviewerSumItem() {
     });*/
      /*学年工作当量展示*/
         $.get(itemCollection+"?year="+yearstr,function (data) {
-         if(data.data!=null&&data.data.itemDtoList!=null){
+         if(data.data!=null&&data.data.teacherWorkload!=null){
              $(".year_totalWorkload ").text(data.data.teacherWorkload.totalWorkload );
              $(".year_checkedWorkload ").text(data.data.teacherWorkload.checkedWorkload);
              $(".year_uncheckedWorkload  ").text(data.data.teacherWorkload.uncheckedWorkload);
@@ -388,7 +388,7 @@ function reviewerSumItem() {
             showyearPie(changeArray);
         });
         $.get(itemCollection+"?year="+$("#allyear_To_change").val(),function (data) {
-            if(data.data!=null&&data.data.itemDtoList!=null){
+            if(data.data!=null&&data.data.teacherWorkload!=null){
                 $(".year_totalWorkload ").text(data.data.teacherWorkload.totalWorkload );
                 $(".year_checkedWorkload ").text(data.data.teacherWorkload.checkedWorkload);
                 $(".year_uncheckedWorkload  ").text(data.data.teacherWorkload.uncheckedWorkload);
