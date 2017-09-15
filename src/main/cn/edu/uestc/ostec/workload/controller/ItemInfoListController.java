@@ -160,7 +160,6 @@ public class ItemInfoListController extends ApplicationController implements Ope
 		StringBuilder errorData = new StringBuilder();
 		for (Integer teacherId : teacherIdList) {
 
-			//TODO 抽象出refresh方法
 			TeacherWorkload teacherWorkload = teacherWorkloadService
 					.getTeacherWorkload(teacherId, getCurrentSemester());
 
@@ -592,14 +591,14 @@ public class ItemInfoListController extends ApplicationController implements Ope
 					.getTeacherWorkload(teacherId, terms.get(ZERO_INT));
 			TeacherWorkload secondTeacherWorkload = teacherWorkloadService
 					.getTeacherWorkload(teacherId, terms.get(1));
-			if (null != teacherWorkload.getTeacherId()) {
+			if (null != teacherWorkload.getVersion()) {
 				if (null == secondTeacherWorkload.getTeacherId()) {
 					secondTeacherWorkload.setDefaultParams();
 				}
 				teacherWorkload = teacherWorkload.add(secondTeacherWorkload);
 				teacherWorkload.setVersion(year.toString());
 			} else {
-				if (null != secondTeacherWorkload.getTeacherId()) {
+				if (null != secondTeacherWorkload.getVersion()) {
 					teacherWorkload = (TeacherWorkload) secondTeacherWorkload.clone();
 				} else {
 					teacherWorkload.setDefaultParams();
