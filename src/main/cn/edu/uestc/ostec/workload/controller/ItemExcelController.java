@@ -320,6 +320,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 					//文件信息编号对应为该条目的proof
 					item.setProof(null);
 					item.setCategoryId(categoryId);
+					item.setCategoryCode(category.getCategoryCode());
 					item.setStatus(UNCOMMITTED);
 
 					//计算workload(先获取公式对应的参数)
