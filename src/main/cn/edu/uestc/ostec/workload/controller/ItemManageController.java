@@ -337,13 +337,14 @@ public class ItemManageController extends ApplicationController {
 			}
 		} else {
 			itemService.removeItem(itemId, getCurrentSemester());
-			Item newItem = itemConverter.dtoToPo(itemDto);
+
 			item.setStatus(DELETED);
 			itemService.saveItem(item);
 			//重新申请时新产生的对象
 			itemDto.setItemId(null);
 			itemDto.setStatus(NON_CHECKED);
-
+			itemDto.setJsonChildWeight(item.getJsonChildWeight());
+			Item newItem = itemConverter.dtoToPo(itemDto);
 			boolean saveSuccess = itemService.saveItem(newItem);
 			if (!saveSuccess) {
 				return systemErrResponse();

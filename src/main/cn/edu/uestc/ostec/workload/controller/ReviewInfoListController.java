@@ -7,16 +7,12 @@
  */
 package cn.edu.uestc.ostec.workload.controller;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +27,6 @@ import cn.edu.uestc.ostec.workload.pojo.RestResponse;
 import cn.edu.uestc.ostec.workload.pojo.User;
 import cn.edu.uestc.ostec.workload.service.CategoryService;
 import cn.edu.uestc.ostec.workload.service.ItemService;
-import cn.edu.uestc.ostec.workload.support.utils.DateHelper;
 import cn.edu.uestc.ostec.workload.support.utils.TreeGenerateHelper;
 import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
 
@@ -60,7 +55,7 @@ public class ReviewInfoListController extends ApplicationController implements O
 	@Autowired
 	private CategoryConverter categoryConverter;
 
-	@RequestMapping(value = "item-group",method = GET)
+	@RequestMapping(value = "item-group", method = GET)
 	public RestResponse getItemGroup(
 			@RequestParam("categoryId")
 					Integer categoryId) {
@@ -70,30 +65,34 @@ public class ReviewInfoListController extends ApplicationController implements O
 			return invalidOperationResponse("非法请求");
 		}
 		Integer userId = user.getUserId();
-		Category category = categoryService.getCategory(categoryId,getCurrentSemester());
-		if(!userId.equals(category.getReviewerId())) {
+		Category category = categoryService.getCategory(categoryId, getCurrentSemester());
+		if (!userId.equals(category.getReviewerId())) {
 			return invalidOperationResponse("非法请求");
 		}
-		List<Item> itemList = itemService.findItemByCategory(getCurrentSemester(),categoryId,ZERO_INT);
-		if(isEmptyList(itemList)) {
+		List<Item> itemList = itemService
+				.findItemByCategory(getCurrentSemester(), categoryId, ZERO_INT);
+		if (isEmptyList(itemList)) {
 			return successResponse();
 		}
 
 		List<Item> items = new ArrayList<>();
 		for (Item itemTemp : itemList) {
-			if(UNCOMMITTED.equals(itemTemp.getStatus())) {
+			if (UNCOMMITTED.equals(itemTemp.getStatus())) {
 				continue;
 			}
-			if(GROUP.equals(itemTemp.getIsGroup()) && itemTemp.getOwnerId().equals(itemTemp.getGroupManagerId())) {
+			if (GROUP.equals(itemTemp.getIsGroup()) && itemTemp.getOwnerId()
+					.equals(itemTemp.getGroupManagerId())) {
+				itemTemp = itemConverter
+						.generateGroupItem(itemTemp.getItemId(), getCurrentSemester());
 				items.add(itemTemp);
 				continue;
 			}
 			items.add(itemTemp);
 		}
 
-		Map<String,Object> data = getData();
-		data.put("itemList",itemConverter.poListToDtoList(items));
-		data.put("recordNumbers",itemList.size());
+		Map<String, Object> data = getData();
+		data.put("itemList", itemConverter.poListToDtoList(items));
+		data.put("recordNumbers", itemList.size());
 
 		return successResponse(data);
 	}
