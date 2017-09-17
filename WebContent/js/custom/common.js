@@ -117,7 +117,7 @@ $(document).ready(function () {
     /*定义一个变量存放当前规则id*/
     var cateId=0;
     /*定义一个变量记录数组元素index*/
-    var countToCount=0;
+   // var countToCount=0;
     /*点击导入按钮--改变表单主要参数和附加属性*/
     $(document).off("click",".importList");
     $(document).on("click",".importList",function () {
@@ -134,7 +134,7 @@ $(document).ready(function () {
         file.after(file.clone().val(""));
         file.remove();
         allItem=[];
-        itemCount=0;
+        window.itemCount=0;
         $(".importNewFile").attr("id","importNewFile_"+flag);
         $(".importItemShow").show();
         var $paraDesc=$(".paraDesc_"+flag);
@@ -167,9 +167,9 @@ $(document).ready(function () {
                 $(".parameterTh").empty();
                 $(".otherParaTh").empty();
                 $(".submitItem").show();
-                showImportPreview(msg.data.itemList,itemCount);
-                while(itemCount<msg.data.itemList.length){
-                    itemCount++;
+                showImportPreview(msg.data.itemList,window.itemCount);
+                while(window.itemCount<msg.data.itemList.length){
+                    window.itemCount++;
                 }
                 for(var key in msg.data.itemList){
                     allItem.push(msg.data.itemList[key]);
@@ -191,7 +191,8 @@ $(document).ready(function () {
         var data=new FormData;
         data.append("file",$("#file")[0].files[0]);
         if($('#file').val()){
-            if($('#file').val().split('.')=='xls'||$('#file').val().split('.')=='xlsx'){
+            var filestr=($('#file').val().split('.'));
+            if(filestr[filestr.length-1]=='xls'||filestr[filestr.length-1]=='xlsx'){
                 $.ajax({
                     url:importFileUrl+"?categoryId="+thisId,
                     type:"POST",
@@ -200,18 +201,29 @@ $(document).ready(function () {
                     contentType: false,
                     processData: false,
                     success:function (msg) {
-                        alert("上传成功！");
-                        $(".submitItem").show();
-                        $(".importItemShow").show();
-                        showImportPreview(msg.data.itemList,itemCount);
-                        $(".submitItem").show();
-                        while(itemCount<msg.data.itemList.length){
-                            itemCount++;
+                        if(msg.status=="200"){
+                            if(msg.data.errorData!=""&&msg.data.errorData!=null){
+                                alert("上传成功！");
+                                $(".submitItem").show();
+                                $(".importItemShow").show();
+                                showImportPreview(msg.data.itemList,window.itemCount);
+                                $(".submitItem").show();
+                                while(window.itemCount<msg.data.itemList.length){
+                                    window.itemCount++;
+                                }
+                                for(var key in msg.data.itemList){
+                                    allItem.push(msg.data.itemList[key]);
+                                }
+                                JSON.stringify(allItem);
+                            }
+                            else{
+                                alert(msg.data.errorData);
+                            }
                         }
-                        for(var key in msg.data.itemList){
-                            allItem.push(msg.data.itemList[key]);
+                        else{
+                            alert("上传失败！请检查文件内容及格式是否正确！");
                         }
-                        JSON.stringify(allItem);
+
                     },
                     error:function () {
                         alert("上传失败！");
@@ -230,9 +242,10 @@ $(document).ready(function () {
     /*查看条目详情*/
     $(document).on("click",".showImportAll",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
-       window.countToCount=thisId;
+    //   window.countToCount=thisId;
         $(".changetext").text("查看详情");
         $(".editor").show();
+        $(".editor").attr("id","toeditor_"+thisId);
         $(".submitTo").show();
         $(".dismiss").hide();
         $(".savemyEdit").hide();
@@ -302,19 +315,22 @@ $(document).ready(function () {
     $(document).on("click",".submitTo",function () {
        var thisId=parseInt(this.id.match(/\d+/g));
         if(confirm("确认提交？")){
-            $.post(itemManaPublicUrl+"?itemId="+thisId,function () {
-
+            $.post(itemManaPublicUrl+"?itemId="+thisId,function (data) {
+                if(data.data.errorData!=""&&data.data.errorData!=null){
+                    alert(data.data.errorData);
+                }
                 //  $("#statusChange_"+submitId).text("已提交");
-                $(".status_"+thisId).text("已提交");
-                $("#deleteAll_"+thisId).remove();
+                $(".status_"+data.data.itemList[0].itemId).text("已提交");
+                $("#deleteAll_"+data.data.itemList[0].itemId).remove();
                 $("#addContent").modal("hide");
-                $("#"+thisId).prop("disabled","true");
+                $("#"+data.data.itemList[0].itemId).prop("disabled","true");
+                $("#"+data.data.itemList[0].itemId).attr('class',"anothersubmit");
 
             })
         };
 
     });
-    $(document).off("click",".deleteAll");
+
     /*删除条目操作*/
     $(document).off("click",".deleteAll");
     $(document).on("click",".deleteAll",function () {
@@ -470,10 +486,11 @@ $(document).ready(function () {
                 $(".savemyEdit").hide();
                 $(".editor").show();
                 $(".submitTo").show();
-                allItem.splice(window.countToCount,1,data.data.item);
-                $("#itemName_"+window.countToCount).text(data.data.item.itemName);
-                $("#workload_"+window.countToCount).text(data.data.item.workload);
-                $("#teacherName_"+window.countToCount).text(data.data.item.teacherName);
+                var strId=parseInt($(".editor").attr("id").match(/\d+/g));
+                allItem.splice(strId,1,data.data.item);
+                $("#itemName_"+strId).text(data.data.item.itemName);
+                $("#workload_"+strId).text(data.data.item.workload);
+                $("#teacherName_"+strId).text(data.data.item.teacherName);
             })
         }
         else{
@@ -490,8 +507,9 @@ $(document).ready(function () {
                 alert("添加成功!");
 
                 allItem.push(data.data.item);
-                showImportPreview(data.data.item,itemCount);
-                itemCount++;
+                showImportPreview(data.data.item,window.itemCount);
+                $(".editor").attr("id","toeditor_"+window.itemCount);
+                window.itemCount++;
                 $(".submitTo").attr("id","submitTo_"+data.data.item.itemId);
                 $(".savemyEdit").attr("id","savemyEdit_"+data.data.item.itemId);
                 $(".form-control").attr("disabled","disabled");
@@ -725,8 +743,10 @@ $(document).ready(function () {
             url:itemStatusUrl+"?"+itemstr,
             success:function () {
                 alert("操作成功！");
-                $("#pass_"+passItemId).attr("disabled","disabled");
-                $("#refuse_"+passItemId).attr("disabled","disabled");
+               /* $("#pass_"+passItemId).attr("disabled","disabled");
+                $("#refuse_"+passItemId).attr("disabled","disabled");*/
+                $("#pass_"+passItemId).remove();
+                $("#refuse_"+passItemId).remove();
 
             }
 
@@ -748,8 +768,10 @@ $(document).ready(function () {
                     alert("操作成功！");
                     $("#refuModal").modal("hide");
                     $('#reviewe_'+refuItemId).text('尚存疑');
-                    $("#pass_"+refuItemId).attr("disabled","disabled");
-                    $("#refuse_"+refuItemId).attr("disabled","disabled");
+                   /* $("#pass_"+refuItemId).attr("disabled","disabled");
+                    $("#refuse_"+refuItemId).attr("disabled","disabled");*/
+                    $("#pass_"+refuItemId).remove();
+                    $("#refuse_"+refuItemId).remove();
                 }
             });
         });
@@ -961,7 +983,9 @@ $(document).ready(function () {
         $(".applyotherparameterName").attr("disabled","true");
         /*isGroup*/
         if (jsonInfo.isGroup == 0) {
-            $("#is_single").attr("checked", 'checked');
+            $("#is_single").attr("checked", "checked");
+           /* $("#is_group").prop("checked", "false");
+            $("#is_group").removeAttr("checked");*/
             $("#is_group").attr("disabled", "true");
             $(".item_apply_manager").hide();
             $(".item_apply_group").hide();
@@ -971,7 +995,9 @@ $(document).ready(function () {
         }
         else {
             $(".radio").show();
-            $("#is_group").attr("checked", 'checked');
+            $("#is_group").attr("checked", "checked");
+            /*$("#is_single").prop("checked", "false");
+            $("#is_single").removeAttr("checked");*/
             $("#is_single").attr("disabled", "true");
             $("#applyAddGroupMessage").attr("disabled","true");
             $("#applyCalculator").attr("disabled","true");
@@ -1073,7 +1099,14 @@ $(document).ready(function () {
                 return false;
             }
         }
-        var radio = $("input:radio[name='applyRadios']:checked");
+      //  var radio = $("input:radio[name='applyRadios']:checked");
+        var radio=0;
+        $("input:radio[name='applyRadios']:checked").each(function () {
+            if($(this).is(':checked')){
+                radio=$(this).val();
+            }
+        });
+
         if(radio==1){
             if($(".showapplyMemberSymbol").length>1){
                 if(!$('.showapplyMemberSymbol').val()){
@@ -1156,7 +1189,7 @@ $(document).ready(function () {
         // var applicant = $('#applicant option:selected');
         var itemmanager = $('#applyitemmanager option:selected');
 
-        if (radio.val() == 1) {
+        if (radio == 1) {
             $.ajax({
                 type: "POST",
                 url: applyAgainUrl,
@@ -1224,7 +1257,8 @@ $(document).ready(function () {
                     isGroup: 0,
                     jsonParameter: newArray,
                     otherJson: otherArray,
-                    jsonChildWeight: childWeight
+                    ownerId:userId
+                   // jsonChildWeight: childWeight
                 }
                 , success: function (data) {
                     var msg = data.data.newItemDto;

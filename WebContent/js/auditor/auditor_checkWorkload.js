@@ -26,8 +26,10 @@ function auditworkload() {
                 $.post(reviewerCheckUrl + "?" + "itemId=" + passItemId + "&status=2", function () {
                     alert('操作成功！');
                     $("#reviewe_" + passItemId).text("已通过");
-                    $("#pass_" + passItemId).attr("disabled", "disabled");
-                    $("#refuse_" + passItemId).attr("disabled", "disabled");
+                   /* $("#pass_" + passItemId).attr("disabled", "disabled");
+                    $("#refuse_" + passItemId).attr("disabled", "disabled");*/
+                    $("#pass_" + passItemId).remove();
+                    $("#refuse_" + passItemId).remove();
                 })
             }
         });
@@ -44,8 +46,10 @@ function auditworkload() {
                 $.post(reviewerCheckUrl+"?"+"itemId="+refuItemId+"&status=5"+"&message="+refudesc,function () {
                     alert('操作成功！');
                     $("#reviewe_"+refuItemId).text("已拒绝");
-                    $("#pass_"+refuItemId).attr("disabled","disabled");
-                    $("#refuse_"+refuItemId).attr("disabled","disabled");
+                   /* $("#pass_"+refuItemId).attr("disabled","disabled");
+                    $("#refuse_"+refuItemId).attr("disabled","disabled");*/
+                    $("#pass_"+refuItemId).remove();
+                    $("#refuse_"+refuItemId).remove();
                     $("#refuseModal").modal("hide");
                 })
             });

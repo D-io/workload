@@ -709,7 +709,7 @@ function showImportPreview(data,itemCount) {
 
         }
     }
-    else{
+    else if(typeof(data)!="undefined"){
         $(".importItemTbody").append(rowInfo);
         $(".importItemTbody tr:last").attr("class","resetNum");
         for(var j=0;j<6;j++)//单元格
@@ -802,7 +802,11 @@ function checkedRevie() {
 /*验证导入时上传文件是否为excell格式*/
 function getFileType(obj) {
     var photoExt=obj.value.substr(obj.value.lastIndexOf(".")).toLowerCase();//获得文件后缀名
-    if(photoExt!='.xls'||photoExt!='.xlsx'){
+    console.log(photoExt);
+    if(photoExt==".xls"||photoExt==".xlsx"){
+
+    }
+    else{
         alert("请上传正确格式的Excell表格！");
         return false;
     }
