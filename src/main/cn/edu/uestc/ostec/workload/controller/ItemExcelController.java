@@ -201,7 +201,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		}
 
 		String fileNameExtension = FileHelper.getFileExtension(file.getOriginalFilename());
-		if("xls".equals(fileNameExtension) || "xlsx".equals(fileNameExtension)) {
+		if(!("xls".equals(fileNameExtension) || "xlsx".equals(fileNameExtension))) {
 			return invalidOperationResponse("无法上传，请检查文件格式！");
 		}
 		Map<String, Object> data = getData();
