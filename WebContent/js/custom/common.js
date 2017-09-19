@@ -168,9 +168,9 @@ $(document).ready(function () {
                 $(".otherParaTh").empty();
                 $(".submitItem").show();
                 showImportPreview(msg.data.itemList,window.itemCount);
-                while(window.itemCount<msg.data.itemList.length){
-                    window.itemCount++;
-                }
+             
+                    window.itemCount+=msg.data.itemList.length;
+                
                 for(var key in msg.data.itemList){
                     allItem.push(msg.data.itemList[key]);
                 }
@@ -208,9 +208,9 @@ $(document).ready(function () {
                                 $(".importItemShow").show();
                                 showImportPreview(msg.data.itemList,window.itemCount);
                                 $(".submitItem").show();
-                                while(window.itemCount<msg.data.itemList.length){
-                                    window.itemCount++;
-                                }
+                             
+                             	window.itemCount+=msg.data.itemList.length;
+                               
                                 for(var key in msg.data.itemList){
                                     allItem.push(msg.data.itemList[key]);
                                 }
