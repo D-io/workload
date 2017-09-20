@@ -188,6 +188,8 @@ $(document).ready(function () {
     $(document).off("click",".importNewFile");
     $(document).on("click",".importNewFile",function () {
         var thisId=this.id.match(/\d+/g);
+        $(this).hide();
+        $(".showHiddenImport").show();
         var data=new FormData;
         data.append("file",$("#file")[0].files[0]);
         if($('#file').val()){
@@ -237,6 +239,8 @@ $(document).ready(function () {
         else{
             alert("请先选择文件!");
         }
+        $(this).show();
+        $(".showHiddenImport").hide();
 
     });
     /*查看条目详情*/
@@ -1049,7 +1053,8 @@ $(document).ready(function () {
         $("#is_group").removeAttr("disabled");
         $("#is_single").removeAttr("disabled");
         $(".removeRow").removeAttr("disabled");
-        $("#revfile").removeAttr("disabled");
+       // $("#revfile").removeAttr("disabled");
+        $("#applyfile").removeAttr("disabled");
         $("#applyAddGroupMessage").removeAttr("disabled");
         $("#applyCalculator").removeAttr("disabled");
         $(".showapplyMemberName").removeAttr("disabled", "true");

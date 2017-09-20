@@ -200,6 +200,7 @@
                             <input type="file" class="col-md-3 col-sm-12 col-xs-12 " id="file" onchange="getFileType(this)" style="padding: 6px 12px;line-height: 1.42857143;color: #555;margin-bottom:10px;background-color: #fff;background-image: none;border: 1px solid #ccc;border-radius: 4px; outline: none;">
                             <div class="control-label col-md-9 col-sm-9 col-xs-9">
                                 <a class="importNewFile" title="上传文件" style="cursor:pointer;position: relative; top: 7px; font-size: 14px;margin-left: 7px;"><i class="fa fa-upload"></i>上传</a>
+                                <span class="showHiddenImport" title="上传文件" style="cursor:pointer;position: relative; top: 7px; font-size: 14px;margin-left: 7px;display:none;"><i class="fa fa-upload"></i>上传</span>
                                 <a class=" submitItem" title="提交项目" style="float:right;cursor:pointer;display: none; position: relative; top: 7px; font-size: 14px;margin-left: 7px;"><i class="fa fa-check-square-o"></i>提交</a>
                                 <a class=" addNewItem" title="添加项目"  data-toggle="modal" data-target="#addContent" style="float:right;cursor:pointer;position: relative; top: 7px; font-size: 14px;margin-left: 7px;"><i class="fa fa-plus"></i>添加</a>
 

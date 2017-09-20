@@ -27,13 +27,17 @@ function reviewerSumItem() {
                 $(".checkedWorkload").text("0");
                 $(".uncheckedWorkload").text("0");
             }
-            if(data.data!=null){
-                $("#check_passed").text(data.data.applyCount);
+            if(data.data.importCount){
                 $("#rev_passed").text(data.data.importCount);
             }
             else{
-                $("#check_passed").text("0");
                 $("#rev_passed").text("0");
+            }
+            if(data.data.applyCount){
+                $("#check_passed").text(data.data.applyCount);
+            }
+            else{
+                $("#check_passed").text("0");
             }
             if(data.data.importItemList!=null){
                 appendReviewerItem(data.data.importItemList,"sumrevieItem",sumtocount);
@@ -65,12 +69,16 @@ function reviewerSumItem() {
                 $(".checkedWorkload").text("0");
                 $(".uncheckedWorkload").text("0");
             }
-            if(data.data!=null){
+            if(data.data.applyCount){
                 $("#check_no_passed").text(data.data.applyCount);
-                $("#rev_no_passed").text(data.data.importCount);
             }
             else{
                 $("#check_no_passed").text("0");
+            }
+            if(data.data.importCount){
+                $("#rev_no_passed").text(data.data.importCount);
+            }
+            else{
                 $("#rev_no_passed").text("0");
             }
             if(data.data.importItemList!=null){
