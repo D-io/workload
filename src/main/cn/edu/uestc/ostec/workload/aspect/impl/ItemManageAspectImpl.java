@@ -27,7 +27,6 @@ import cn.edu.uestc.ostec.workload.aspect.IAspect;
 import cn.edu.uestc.ostec.workload.converter.impl.ItemConverter;
 import cn.edu.uestc.ostec.workload.dto.ChildWeight;
 import cn.edu.uestc.ostec.workload.dto.ItemDto;
-import cn.edu.uestc.ostec.workload.dto.OtherJsonParameter;
 import cn.edu.uestc.ostec.workload.dto.TotalWorkloadAndCount;
 import cn.edu.uestc.ostec.workload.event.GroupItemEvent;
 import cn.edu.uestc.ostec.workload.pojo.History;
@@ -43,17 +42,10 @@ import cn.edu.uestc.ostec.workload.type.OperatingStatusType;
 
 import static cn.edu.uestc.ostec.workload.SessionConstants.SESSION_USER_INFO_ENTITY;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.GROUP;
-import static cn.edu.uestc.ostec.workload.WorkloadObjects.ROLE_PROPOSER;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ROLE_REVIEWER;
-import static cn.edu.uestc.ostec.workload.WorkloadObjects.SINGLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_DOUBLE;
 import static cn.edu.uestc.ostec.workload.WorkloadObjects.ZERO_INT;
 import static cn.edu.uestc.ostec.workload.service.ItemService.EMPTY_WORKLOAD;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.APPLY_SELF;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.CHECKED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DENIED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.DOUBTED;
-import static cn.edu.uestc.ostec.workload.type.OperatingStatusType.IMPORT_EXCEL;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
@@ -139,8 +131,8 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 		history.setType(APPLY_SELF.equals(oldItem.getImportRequired()) ? "apply" : "import");
 		history.setAimUserId(oldItem.getOwnerId());
 
-		if(GROUP.equals(item.getIsGroup())) {
-			groupItemEvent.addGroupItemHistory(item.getItemId(),getCurrentSemester(),history);
+		if (GROUP.equals(item.getIsGroup())) {
+			groupItemEvent.addGroupItemHistory(item.getItemId(), getCurrentSemester(), history);
 		}
 
 		boolean saveSuccess = historyService.saveHistory(history);
@@ -178,7 +170,8 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 			history.setVersion(getCurrentSemester());
 			history.setUserId(userId);
 			history.setCreateTime(DateHelper.getDateTime());
-			history.setOperation("提交工作量项目：" + item.getItemName() + "。");
+			history.setOperation(
+					"提交工作量项目：" + item.getItemName() + "。 （" + itemDto.getTeacherName() + "）");
 
 			history.setType(APPLY_SELF.equals(importedRequired) ? "apply" : "import");
 			history.setAimUserId(itemDto.getReviewerId());
@@ -208,7 +201,8 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 					history.setItemId(buildHistoryItemId(itemDto1.getItemId()));
 					if (GROUP.equals(itemDto1.getIsGroup())) {
 						history.setOperation(
-								"提交工作量项目：" + item.getItemName() + "。（" + itemDto1.getTeacherName() + "）");
+								"提交工作量项目：" + item.getItemName() + "。（" + itemDto1.getTeacherName()
+										+ "）");
 					}
 					saveSuccess = historyService.saveHistory(history);
 				}
@@ -332,8 +326,8 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 		history.setType("apply");
 		history.setAimUserId(itemDto.getReviewerId());
 
-		if(GROUP.equals(item.getIsGroup())) {
-			groupItemEvent.addGroupItemHistory(item.getItemId(),getCurrentSemester(),history);
+		if (GROUP.equals(item.getIsGroup())) {
+			groupItemEvent.addGroupItemHistory(item.getItemId(), getCurrentSemester(), history);
 		}
 
 		//修改待审核的工作量
@@ -463,6 +457,11 @@ public class ItemManageAspectImpl implements IAspect, OperatingStatusType {
 	public void refreshWorkload(JoinPoint joinPoint) {
 		Object[] params = getParameters(joinPoint);
 		Integer teacherId = (Integer) params[0];
+
+
+		User user = (User) getSessionContext().getAttribute(SESSION_USER_INFO_ENTITY);
+		Integer userId = user.getUserId();
+		teacherId = (null == teacherId || teacherId.equals(ZERO_INT) ? userId : teacherId);
 
 		TeacherWorkload teacherWorkload = teacherWorkloadService
 				.getTeacherWorkload(teacherId, getCurrentSemester());
