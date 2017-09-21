@@ -108,6 +108,9 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 				null :
 				readValueFromJson(category.getJsonParameters(), FormulaParameter.class));
 
+		itemDto.setTotalWorkload(
+				FormulaCalculate.calculate(itemDto.getFormula(), itemDto.getParameterValues()));
+
 		List<DescAndValue> descAndValues = new ArrayList<>();
 		List<ParameterValue> parameterValueList = (null == itemDto.getParameterValues() ?
 				new ArrayList<>() :
@@ -197,9 +200,8 @@ public class ItemConverter implements Converter<Item, ItemDto> {
 			ChildWeight childWeight = new ChildWeight(userId, weight);
 			BigDecimal b = new BigDecimal(workload * weight);
 			double formatWorkload = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			childWeight.setWorkload(item1.getWorkload().equals(ZERO_DOUBLE) ?
-					formatWorkload :
-					item1.getWorkload());
+			childWeight.setWorkload(
+					item1.getWorkload().equals(ZERO_DOUBLE) ? formatWorkload : item1.getWorkload());
 			jobDescList.add(jobDesc);
 			childWeightList.add(childWeight);
 		}
