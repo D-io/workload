@@ -533,17 +533,26 @@ $(document).ready(function () {
     /*单条提交项目*/
     $(document).on("click",".submitItem",function () {
         var chooseitem=$(".submitmyself");
+        var isCheckedItem = new Array();
         var itemStr='';
         for(var i=0;i<chooseitem.length;i++){
-            if(i!=chooseitem.length-1){
+
                 if(chooseitem.eq(i).is(':checked')){
-                    itemStr+="itemId="+chooseitem.eq(i).attr("id")+"&";
+                    isCheckedItem.push(chooseitem.eq(i).attr("id"));
+                  //  itemStr+="itemId="+chooseitem.eq(i).attr("id")+"&";
                 }
+        }
+
+        for(var n=0;n<isCheckedItem.length;n++){
+            if(n!=isCheckedItem.length-1){
+                itemStr+="itemId="+isCheckedItem[n]+"&";
             }
+
             else {
-                itemStr+="itemId="+chooseitem.eq(i).attr("id");
+                itemStr+="itemId="+isCheckedItem[n];
             }
         }
+
         if(confirm("确认提交？")){
             $.post(itemManaPublicUrl+"?"+itemStr,function (data) {
                 if(data.data.errorData!=""&&data.data.errorData!=null){
@@ -642,8 +651,9 @@ $(document).ready(function () {
                     var statusName='';
 
                     var act = " <button class='btn btn-success sure' id='pass_" + Info.itemId + "'>确认通过</button><button class='btn btn-danger LeaveQues' data-toggle='modal' data-target='#refuModal' id='refuse_" + Info.itemId + "'>存疑提交</button> ";
+                    var addedact = "<a class='btn btn-warning revi_Apply' id='reviewerRec_"+Info.itemId+"'>存疑回复</a><button class='btn btn-success sure' id='pass_" + Info.itemId + "'>确认通过</button><button class='btn btn-danger LeaveQues' data-toggle='modal' data-target='#refuModal' id='refuse_" + Info.itemId + "'>存疑提交</button> ";
                     var newAct = "<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_reviewer' id='btn-viewdetail-reviewer'>查看详情</a>" ;
-                    $(".tbody tr:last td:eq(4)").append(newAct).attr("class","operation-btn-three");
+                    $(".tbody tr:last td:eq(4)").append(newAct).attr("class","operation-btn-four");
 
                     switch (Info.status) {
                         case -1:
@@ -655,7 +665,7 @@ $(document).ready(function () {
                             break;
                         case 1:
                             statusName = '待复核';
-                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-three");
+                            $(".tbody tr:last td:eq(4)").append(act);
                             $(".tbody tr:last td:eq(3)");
                             break;
                         case 2:
@@ -669,7 +679,7 @@ $(document).ready(function () {
                         case 4:
                             statusName = '已解惑';
                             $(".tbody tr:last td:eq(3)");
-                            $(".tbody tr:last td:eq(4)").append(act).attr("class","operation-btn-three");
+                            $(".tbody tr:last td:eq(4)").append(addedact);
                             break;
                         case 5:
                             statusName = '已拒绝';
@@ -683,11 +693,52 @@ $(document).ready(function () {
                     $(".tbody tr:last td:eq(5)").text(JSON.stringify(Info));
                     $(".tbody tr:last td:eq(5)").css("display","none");
                 }
+                $("[data-toggle='popover']").popover();
+                $(".revi_Apply").popover({
+                    placement: "bottom",
+                    trigger: "click",
+                    html: true,
+                    title: "回复信息",
+                    content: '<div>回复人：<span class="sendFromName"></span></div><div>回复内容:<span class="msgContent"></span></div><hr/><div>回复时间：<span class="sendTime"></span></div>'
+
+                });
             }
 
         });
+        /*查看存疑回复*/
+        $(".revi_Apply").on("click",function () {
+         $(this).popover("toggle");
+         var element = this.id;
+         var thisId=element.match(/\d+/g);
+         $.get(itemInfoSubUrl+"?"+"itemId="+thisId,function (data) {
+         if(data.data!=null&&data.data.subjectList!=null&&data.data.subjectList.length){
+         $(".sendFromName").text(data.data.subjectList[0].sendFromName);
+         $(".msgContent").text(data.data.subjectList[0].msgContent);
+         $(".sendTime").text(data.data.subjectList[0].sendTime);
 
+         }
+         else {
+         $(".sendFromName").text("暂无");
+         $(".msgContent").text("暂无");
+         $(".sendTime").text("暂无");
+         }
+         });
+         });
+        $(document).on("click","body",function (event) {
+            var target = $(event.target); // One jQuery object instead of 3
+
+            if (!target.hasClass('popover')
+                && !target.hasClass('revi_Apply')
+                && !target.hasClass('popover-content')
+                && !target.hasClass('popover-title')
+                && !target.hasClass('arrow')) {
+                /* $('#folder').popover('hide');*/
+                $(".revi_Apply").popover('hide');
+            }
+
+        });
     });
+
     /*查看某一条目信息详情*/
     $(document).on("click","#btn-viewdetail-reviewer",function (){
         var rowInfo="<tr></tr>";
@@ -719,7 +770,7 @@ $(document).ready(function () {
         /* 计算参数 */
         var praValues='';
         for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
-            praValues = jsonInfo.paramDesc[m].desc + "：" + jsonInfo.parameterValues[m].value;
+            praValues = jsonInfo.paramDesc[m].desc + "（"+jsonInfo.parameterValues[m].symbol +"）：" + jsonInfo.parameterValues[m].value;
             $(".viewDetailbody tr:last td:eq(1)").append( praValues + "<br>");
         }
 
