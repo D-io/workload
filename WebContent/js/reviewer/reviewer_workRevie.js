@@ -65,9 +65,6 @@ function  reviewerRec() {
                 $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
                 $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
 
-                /* 计算公式 */
-                // $(".reviewerRecTbody tr:last td:eq(3)").text(Info.formula);
-
                 var showtype='';
                 switch (Info.isGroup){
 
@@ -89,9 +86,6 @@ function  reviewerRec() {
 
                 $(".reviewerRecTbody tr:last td:eq(8)").text(JSON.stringify(Info));
                 $(".reviewerRecTbody tr:last td:eq(8)").css("display","none");
-                //   console.log($(".reviewerRecTbody tr:last td:eq(7)").text());
-
-
             }
         }
 
@@ -107,7 +101,6 @@ function  reviewerRec() {
                 RevNum++;
                 var Info=analyseList[i];
                 $(".reviewerRecTbody").append(rowInfo);
-                //  $(".showImportbodyList tr:last").attr("id",Info.itemId);
                 for(var j=0;j<9;j++)//单元格
                 {
                     $(".reviewerRecTbody tr:last").append(cellInfo);
@@ -118,9 +111,6 @@ function  reviewerRec() {
                 $(".reviewerRecTbody tr:last td:eq(0)").text(RevNum);
                 $(".reviewerRecTbody tr:last td:eq(1)").text(Info.itemName);
                 $(".reviewerRecTbody tr:last td:eq(2)").text(Info.workload);
-
-                /* 计算公式 */
-                // $(".reviewerRecTbody tr:last td:eq(3)").text(Info.formula);
                 var showtype='';
                 switch (Info.isGroup){
 
@@ -132,16 +122,6 @@ function  reviewerRec() {
                 }
                 $(".reviewerRecTbody tr:last td:eq(3)").text(showtype);
                 $(".reviewerRecTbody tr:last td:eq(4)").text(Info.applyTime);
-
-                /* 参数描述 */
-                // var itemDesc='';
-                // for(var item=0;item<Info.paramDesc.length;item++){
-                //     itemDesc+=Info.paramDesc[item].symbol+":"+Info.paramDesc[item].desc;
-                // }
-                // $(".reviewerRecTbody tr:last td:eq(6)").text(itemDesc);
-
-                /* 版本 */
-                //  $(".reviewerRecTbody tr:last td:eq(8)").text(Info.version);
 
                 $(".reviewerRecTbody tr:last td:eq(5)").attr("class","revieRec_"+Info.categoryId);
                 $(".revieRec_"+Info.categoryId).text($(".time_"+Info.categoryId).text());
@@ -195,7 +175,7 @@ function  reviewerRec() {
                 $(".reviewerRecTbody tr:last td:eq(6)").text("已解惑");
 
 
-                var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_review' id='btn-viewdetail'>查看详情</a><a class='btn btn-primary reviewerApply' id='reviewerRec_"+Info.itemId+"'>查看回复</a> ";
+                var act="<a class='btn btn-primary viewDetail' data-toggle='modal' data-target='#viewdetail_review' id='btn-viewdetail'>查看详情</a><a class='btn btn-primary reviewerApply' id='reviewerRec_"+Info.itemId+"'>存疑回复</a> ";
                 $(".reviewerRecTbody tr:last td:eq(7)").append(act).attr("class","operation-btn-two");
 
                 $(".reviewerRecTbody tr:last td:eq(8)").text(JSON.stringify(Info));
@@ -276,7 +256,7 @@ function  reviewerRec() {
         /* 计算参数 */
         var praValues='';
         for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
-            praValues = jsonInfo.paramDesc[m].desc + "：" + jsonInfo.parameterValues[m].value;
+            praValues = jsonInfo.paramDesc[m].desc + "（"+jsonInfo.parameterValues[m].symbol +"）：" + jsonInfo.parameterValues[m].value;
             $(".viewDetailTbody tr:last td:eq(1)").append( praValues + "<br>");
         }
 
