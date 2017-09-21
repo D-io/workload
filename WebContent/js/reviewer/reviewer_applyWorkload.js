@@ -1658,7 +1658,7 @@ function applyRec() {
         /* 计算参数 */
         var praValues='';
         for( var m = 0; m < jsonInfo.parameterValues.length; m++ ){
-            praValues = jsonInfo.paramDesc[m].desc + "：" + jsonInfo.parameterValues[m].value;
+            praValues = jsonInfo.paramDesc[m].desc + "（"+jsonInfo.parameterValues[m].symbol +"）："+ jsonInfo.parameterValues[m].value;
             $(".viewDetailTbody tr:last td:eq(2)").append( praValues + "<br>");
         }
 

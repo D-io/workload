@@ -347,7 +347,7 @@ function reviewerSumItem() {
         var str='';
         for(var paramCount=0;paramCount<paramArray.length;paramCount++){
 
-            str+='<p><span>'+paramArray[paramCount].desc+'</span>：<span>'+paramArray[paramCount].value+'</span></p>';
+            str+='<p><span>'+paramArray[paramCount].desc+'</span>（'+newArray[thisId].parameterValues[paramCount].symbol+'）：<span>'+paramArray[paramCount].value+'</span></p>';
 
 
         }

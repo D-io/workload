@@ -547,7 +547,7 @@ function reviewerResetItem(data) {
                 if(analyseList[thisId].descAndValues!=null){
                     var paramArray=analyseList[thisId].descAndValues;
                     for(var paramCount=0;paramCount<paramArray.length;paramCount++){
-                        str+='<p style="width: max-content;margin-left: 30px;"><span>'+paramArray[paramCount].desc+'</span>：<span>'+paramArray[paramCount].value+'</span></p>';
+                        str+='<p style="width: max-content;margin-left: 30px;"><span>'+paramArray[paramCount].desc+'</span>（'+analyseList[thisId].parameterValues[paramCount].symbol+'）：<span>'+paramArray[paramCount].value+'</span></p>';
 
                     }
                 }

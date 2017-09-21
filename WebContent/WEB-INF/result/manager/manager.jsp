@@ -75,7 +75,7 @@
 
        .bs-example-modal-lg .modal-body {
             overflow-y: auto;
-            max-height: 430px;
+            min-height: 450px;
             width: 100%;
         }
        .bs-example-modal-lg .modal-header{
