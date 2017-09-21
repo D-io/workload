@@ -158,6 +158,16 @@ public class ItemDto implements CompareObjectDifferences<ItemDto> {
 
 	private String applyTime = DateHelper.getDateTime();
 
+	private Double totalWorkload = ZERO_DOUBLE;
+
+	public Double getTotalWorkload() {
+		return totalWorkload;
+	}
+
+	public void setTotalWorkload(Double totalWorkload) {
+		this.totalWorkload = totalWorkload;
+	}
+
 	public String getApplyTime() {
 		return applyTime;
 	}
