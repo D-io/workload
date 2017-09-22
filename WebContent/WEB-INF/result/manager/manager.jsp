@@ -193,8 +193,8 @@
 
         <!-- footer content -->
         <footer>
-           <div style="text-align: center">电子科技大学信息与软件工程学院卓越工程师实验教育中心（OSTEC@ISE）</div>
-            <div style="text-align: center">Copyright © 2014-2017 SynX Studio, All Rights Reserved</div>
+           <div style="text-align: center">电子科技大学信息与软件工程学院（ISE@UESTC）</div>
+            <div style="text-align: center">Copyright  2014-2017 SynX, All Rights Reserved</div>
             <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
@@ -236,7 +236,7 @@
 <script language='javascript' src="${contextPath}/vendor/js/jquery-datatables/jquery.dataTables.min.js"></script>
 
 <%--ztree插件--%>
-<script language='javascript'src="${contextPath}/vendor/js/ztree/jquery.ztree.core.js"></script>
+<script language='javascript' src="${contextPath}/vendor/js/ztree/jquery.ztree.core.js"></script>
 <script language='javascript' src="${contextPath}/vendor/js/ztree/jquery.ztree.excheck.js"></script>
 <script language='javascript' src="${contextPath}/vendor/js/ztree/jquery.ztree.exedit.js"></script>
 
