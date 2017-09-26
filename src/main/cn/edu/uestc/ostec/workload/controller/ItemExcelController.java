@@ -170,7 +170,8 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		byte[] fileContent = os.toByteArray();
 		try {
 			return streamResponse(fileContent,
-					getCurrentSemester() + category.getName() + "工作量导入模板" + excelTypeName + ".xls");
+					"【" + getCurrentSemester() + "】" + category.getName() + "工作量导入模板"
+							+ excelTypeName + ".xls");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return systemErrResponse();
@@ -201,7 +202,7 @@ public class ItemExcelController extends ApplicationController implements ExcelT
 		}
 
 		String fileNameExtension = FileHelper.getFileExtension(file.getOriginalFilename());
-		if(!("xls".equals(fileNameExtension) || "xlsx".equals(fileNameExtension))) {
+		if (!("xls".equals(fileNameExtension) || "xlsx".equals(fileNameExtension))) {
 			return invalidOperationResponse("无法上传，请检查文件格式！");
 		}
 		Map<String, Object> data = getData();

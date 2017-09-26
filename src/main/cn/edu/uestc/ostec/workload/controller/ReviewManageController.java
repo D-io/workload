@@ -253,6 +253,10 @@ public class ReviewManageController extends ApplicationController {
 			return invalidOperationResponse("非法操作");
 		}
 
+		if(DateHelper.getCurrentTimestamp() > category.getReviewDeadline()) {
+			return invalidOperationResponse("审核已经截止");
+		}
+
 		//修改item的状态为CHECKED 存疑解决
 		item.setStatus(DOUBTED_CHECKED);
 
