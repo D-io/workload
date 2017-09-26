@@ -204,7 +204,7 @@ $(document).ready(function () {
                     processData: false,
                     success:function (msg) {
                         if(msg.status=="200"){
-                            if(msg.data.errorData!=""&&msg.data.errorData!=null){
+                            if(msg.data.errorData==""||msg.data.errorData==null){
                                 alert("上传成功！");
                                 $(".submitItem").show();
                                 $(".importItemShow").show();
