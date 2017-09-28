@@ -1004,10 +1004,6 @@ $(document).ready(function () {
         var Info = $(this).parent().next().text();
         var jsonInfo = JSON.parse(Info);
 
-        if(userId!=jsonInfo.groupManagerId){
-            $("#refuse_To_Apply").modal("hide");
-            alert("请由小组组长重新申请！");
-        }
         $(".applySave").attr("id","applySave_"+jsonInfo.itemId);
         $(".applydismiss").attr("id","applydismiss_"+jsonInfo.categoryId);
 
@@ -1049,6 +1045,10 @@ $(document).ready(function () {
 
         }
         else {
+            if(userId!=jsonInfo.groupManagerId){
+            $("#refuse_To_Apply").modal("hide");
+            alert("请由小组组长重新申请！");
+        }
             $(".radio").show();
             $("#is_group").attr("checked", "checked");
             /*$("#is_single").prop("checked", "false");
@@ -1330,7 +1330,8 @@ $(document).ready(function () {
                             processData: false,
                             success: function (data) {
                                 if(data.status==200){
-                                    alert("提交规则成功!");
+                                    alert("提交申请成功!");
+                                     $("#refuse_To_Apply").modal("hide");
                                     var file = $("#applyfile")
                                     file.after(file.clone().val(""));
                                     file.remove();
@@ -1346,6 +1347,7 @@ $(document).ready(function () {
                     }
                     else{
                         alert("提交申请成功!");
+                         $("#refuse_To_Apply").modal("hide");
                         applyRec();
                     }
                 }

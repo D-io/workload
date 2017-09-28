@@ -1416,7 +1416,9 @@ function applyworkload() {
                     itemId:itemid
                 },
                 success:function () {
-                    $(".tbodyTr_"+thisId).remove();
+
+                    $(this).parent().parent('tr').remove();
+                   // $(".tbodyTr_"+thisId).remove();
                     for(;thisId<=$(".itemCount").length;thisId++){
                         $(".itemCount").eq(thisId-1).text(thisId);
                     }
