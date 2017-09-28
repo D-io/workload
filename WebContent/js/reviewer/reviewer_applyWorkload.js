@@ -394,12 +394,17 @@ function applyworkload() {
         newArray = JSON.stringify(newArray);
         var otherArray = new Array();
         var otherPramterkey = $(".showotherPramterkey");
-        for (var j = 0; j < otherPramterkey.length; j++) {
-            var otherKey = $(".showotherPramterkey").eq(j);
-            otherArray.push({key: otherKey.text(), value: $(".showotherparameterName").eq(j).val()});
+        if(otherPramterkey.length>0){
+            for (var j = 0; j < otherPramterkey.length; j++) {
+                var otherKey = $(".showotherPramterkey").eq(j);
+                otherArray.push({key: otherKey.text(), value: $(".showotherparameterName").eq(j).val()});
 
+            }
+            otherArray = JSON.stringify(otherArray);
         }
-        otherArray = JSON.stringify(otherArray);
+       else{
+            otherArray =null;
+        }
         if ($("#showAddgroupPramter").find("td").length > 0) {
             var grouparray = new Array();
             //   var sumArray=new Array();
@@ -720,12 +725,17 @@ function applyworkload() {
         newArray = JSON.stringify(newArray);
         var otherArray = new Array();
         var otherPramterkey = $(".otherPramterkey");
-        for (var j = 0; j < otherPramterkey.length; j++) {
-            var otherKey = $(".otherPramterkey").eq(j);
-            otherArray.push({key: otherKey.text(), value: $(".otherparameterName").eq(j).val()});
+        if(otherPramterkey.length>0){
+            for (var j = 0; j < otherPramterkey.length; j++) {
+                var otherKey = $(".otherPramterkey").eq(j);
+                otherArray.push({key: otherKey.text(), value: $(".otherparameterName").eq(j).val()});
 
+            }
+            otherArray = JSON.stringify(otherArray);
         }
-        otherArray = JSON.stringify(otherArray);
+        else{
+            otherArray =null;
+        }
 
         if($("#groupMessageTable").find("td").length>0){
             var grouparray = new Array();

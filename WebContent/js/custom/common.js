@@ -1024,12 +1024,15 @@ $(document).ready(function () {
             $('.applyparameterTh').append("<tr><th class='applypramterDesc' id='" + symbolname + "' style='font-size: 13px;'>" + jsonInfo.paramDesc[t].desc + "</th><td><input type='text' class='applyparameterName form-control' name='applyAgainpara' onblur='reminder(this)'></td></tr>");
           $(".applyparameterName").eq(t).val(jsonInfo.parameterValues[t].value);
              }
-        for (var s = 0; s < jsonInfo.otherJsonParameters.length; s++) {
+             if(jsonInfo.otherJsonParameters!=null&&jsonInfo.otherJsonParameters!=''){
+                 for (var s = 0; s < jsonInfo.otherJsonParameters.length; s++) {
 
-            $('.applyotherParaTh').append("<tr><th class='applyotherPramterkey' style='font-size: 13px'>" + jsonInfo.otherJsonParameters[s].key + "</th><td><input type='text' class='applyotherparameterName form-control' name='otherApplypara' onblur='reminder(this)'></td></tr>");
-            $(".applyotherparameterName").eq(s).val(jsonInfo.otherJsonParameters[s].value);
-          //  $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>" + item[comp].otherJsonParameters[s].key + "</th><td><input type='text' class='showotherparameterName form-control' name='showotherpara' onblur='reminder(this)'></td></tr>");
-        }
+                     $('.applyotherParaTh').append("<tr><th class='applyotherPramterkey' style='font-size: 13px'>" + jsonInfo.otherJsonParameters[s].key + "</th><td><input type='text' class='applyotherparameterName form-control' name='otherApplypara' onblur='reminder(this)'></td></tr>");
+                     $(".applyotherparameterName").eq(s).val(jsonInfo.otherJsonParameters[s].value);
+                     //  $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>" + item[comp].otherJsonParameters[s].key + "</th><td><input type='text' class='showotherparameterName form-control' name='showotherpara' onblur='reminder(this)'></td></tr>");
+                 }
+             }
+
         $(".applyparameterName").attr("disabled","true");
         $(".applyotherparameterName").attr("disabled","true");
         /*isGroup*/
@@ -1212,12 +1215,18 @@ $(document).ready(function () {
         newArray = JSON.stringify(newArray);
         var otherArray = new Array();
         var otherPramterkey = $(".applyotherPramterkey");
-        for (var j = 0; j < otherPramterkey.length; j++) {
-            var otherKey = otherPramterkey.eq(j);
-            otherArray.push({key: otherKey.text(), value: $(".applyotherparameterName").eq(j).val()});
+       if(otherPramterkey.length>0){
+           for (var j = 0; j < otherPramterkey.length; j++) {
+               var otherKey = otherPramterkey.eq(j);
+               otherArray.push({key: otherKey.text(), value: $(".applyotherparameterName").eq(j).val()});
+               otherArray = JSON.stringify(otherArray);
+           }
 
-        }
-        otherArray = JSON.stringify(otherArray);
+       }
+        else{
+           otherArray=null;
+       }
+
         if ($("#AddgroupApplyPramter").find("td").length > 0) {
             var grouparray = new Array();
             //   var sumArray=new Array();
