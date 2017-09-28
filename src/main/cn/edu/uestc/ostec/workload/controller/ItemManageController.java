@@ -7,6 +7,7 @@
  */
 package cn.edu.uestc.ostec.workload.controller;
 
+import org.apache.poi.ss.formula.Formula;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -340,18 +341,23 @@ public class ItemManageController extends ApplicationController {
 
 			item.setStatus(DELETED);
 			itemService.saveItem(item);
+
 			//重新申请时新产生的对象
 			itemDto.setItemId(null);
 			itemDto.setStatus(NON_CHECKED);
 			itemDto.setJsonChildWeight(item.getJsonChildWeight());
-			Item newItem = itemConverter.dtoToPo(itemDto);
+			Item oldItem = itemConverter.dtoToPo(itemDto);
+			ItemDto newItemDto = itemConverter.poToDto(oldItem);
+			double workload = FormulaCalculate.calculate(newItemDto.getFormula(),newItemDto.getParameterValues());
+			newItemDto.setWorkload(workload);
+			Item newItem = itemConverter.dtoToPo(newItemDto);
 			boolean saveSuccess = itemService.saveItem(newItem);
 			if (!saveSuccess) {
 				return systemErrResponse();
 			}
 
-			ItemDto newItemDto = itemConverter.poToDto(newItem);
-			data.put("newItemDto", newItemDto);
+			ItemDto itemDto1 = itemConverter.poToDto(newItem);
+			data.put("newItemDto", itemDto1);
 		}
 
 		return successResponse(data);
@@ -516,10 +522,6 @@ public class ItemManageController extends ApplicationController {
 			Item item = itemService.findItem(itemId, getCurrentSemester());
 			if (null == item) {
 				return parameterNotSupportResponse("参数有误");
-			}
-
-			if (!UNCOMMITTED.equals(item.getStatus())) {
-				return invalidOperationResponse("无法上传附件");
 			}
 
 			//考虑设置为文件信息编号，展示时不做文件信息展示，仅仅展示 查看附件
