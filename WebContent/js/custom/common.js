@@ -1115,6 +1115,10 @@ $(document).ready(function () {
         $(".applyeditor").hide();
         $(".applydismiss").show();
     });
+    $(document).on("click","#applyfile",function () {
+        $(".showhidden").text("");
+        $("input[name='applyfile']").css({"color":"","width":""});
+    });
     /*保存重新申请*/
     $(document).on("click",".applySave",function () {
         var thisId=parseInt(this.id.match(/\d+/g));

@@ -1408,6 +1408,7 @@ function applyworkload() {
     $(document).on("click",".delemyself",function () {
         var thisId=parseInt(this.id.match(/\d+/g));
         var itemid=window.Temp[thisId-1].itemId;
+        var $removeTr=$(this).parent().parent('tr');
         if(confirm("确认删除该条目吗？")){
             $.ajax({
                 url:itemManageUrl+"?itemId="+itemid,
@@ -1417,7 +1418,7 @@ function applyworkload() {
                 },
                 success:function () {
 
-                    $(this).parent().parent('tr').remove();
+                    $removeTr.remove();
                    // $(".tbodyTr_"+thisId).remove();
                     for(;thisId<=$(".itemCount").length;thisId++){
                         $(".itemCount").eq(thisId-1).text(thisId);
