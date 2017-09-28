@@ -169,19 +169,22 @@ function applyworkload() {
 
     function comparePara(item, para) {
         for (var comp = 0; comp < item.length; comp++) {
-            if (item[comp].categoryId == para && item[comp].formulaParameterList && item[comp].otherJsonParameters) {
+            if (item[comp].categoryId == para) {
+                if(item[comp].formulaParameterList!=null&&item[comp].formulaParameterList!=''){
+                    for (var t = 0; t < item[comp].formulaParameterList.length; t++) {
+                        var symbolname = item[comp].formulaParameterList[t].symbol;
 
-                for (var t = 0; t < item[comp].formulaParameterList.length; t++) {
-                    var symbolname = item[comp].formulaParameterList[t].symbol;
-
-                    $('#parameterTable').append("<tr><th class='pramterDesc' id='" + symbolname + "' style='font-size: 13px;'>" + item[comp].formulaParameterList[t].desc + "</th><td><input type='text' class='parameterName form-control' name='para' onblur='reminder(this)'></td></tr>");
-                    $("#showparameterTable").append("<tr><th class='showpramterDesc' id='" + symbolname + "' style='font-size: 13px;'>" + item[comp].formulaParameterList[t].desc + "</th><td><input type='text' class='showparameterName form-control' name='showpara' onblur='reminder(this)'></td></tr>")
+                        $('#parameterTable').append("<tr><th class='pramterDesc' id='" + symbolname + "' style='font-size: 13px;'>" + item[comp].formulaParameterList[t].desc + "</th><td><input type='text' class='parameterName form-control' name='para' onblur='reminder(this)'></td></tr>");
+                        $("#showparameterTable").append("<tr><th class='showpramterDesc' id='" + symbolname + "' style='font-size: 13px;'>" + item[comp].formulaParameterList[t].desc + "</th><td><input type='text' class='showparameterName form-control' name='showpara' onblur='reminder(this)'></td></tr>")
+                    }
                 }
-                for (var s = 0; s < item[comp].otherJsonParameters.length; s++) {
+               if(item[comp].otherJsonParameters!=null&&item[comp].otherJsonParameters!=''){
+                   for (var s = 0; s < item[comp].otherJsonParameters.length; s++) {
 
-                    $('#otherparameterTable').append("<tr><th class='otherPramterkey' style='font-size: 13px'>" + item[comp].otherJsonParameters[s].key + "</th><td><input type='text' class='otherparameterName form-control' name='otherpara' onblur='reminder(this)'></td></tr>");
-                    $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>" + item[comp].otherJsonParameters[s].key + "</th><td><input type='text' class='showotherparameterName form-control' name='showotherpara' onblur='reminder(this)'></td></tr>");
-                }
+                       $('#otherparameterTable').append("<tr><th class='otherPramterkey' style='font-size: 13px'>" + item[comp].otherJsonParameters[s].key + "</th><td><input type='text' class='otherparameterName form-control' name='otherpara' onblur='reminder(this)'></td></tr>");
+                       $('#showotherparameterTable').append("<tr><th class='showotherPramterkey' style='font-size: 13px;'>" + item[comp].otherJsonParameters[s].key + "</th><td><input type='text' class='showotherparameterName form-control' name='showotherpara' onblur='reminder(this)'></td></tr>");
+                   }
+               }
 
             }
             else if (item[comp].children) {

@@ -1116,7 +1116,7 @@ $(document).ready(function () {
         $(".applydismiss").show();
     });
     $(document).on("click","#applyfile",function () {
-        $(".showhidden").text("");
+        $(".showhiddenapply").text("");
         $("input[name='applyfile']").css({"color":"","width":""});
     });
     /*保存重新申请*/
