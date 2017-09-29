@@ -193,8 +193,10 @@
 
         <!-- footer content -->
         <footer>
-           <div style="text-align: center">电子科技大学信息与软件工程学院（ISE@UESTC）</div>
-            <div style="text-align: center">Copyright  2014-2017 SynX, All Rights Reserved</div>
+           <div style="text-align: center">Content Copyright  电子科技大学信息与软件工程学院（ISE@UESTC）
+</div>
+            <div style="text-align: center"> 2014-2017 SynX Studio, All Rights Reserved
+</div>
             <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
