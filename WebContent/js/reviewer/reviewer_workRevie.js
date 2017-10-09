@@ -9,6 +9,7 @@ function workRevie(){
         $('.right_hole').append(result);
 
     });
+    $(".x_panel").css('min-height',$('.right_col').height());
     $.get(itemImportUrl, function (data) {
         if(data.data!=null&&data.data.categoryTree){
             var showlist=$("<ul></ul>");

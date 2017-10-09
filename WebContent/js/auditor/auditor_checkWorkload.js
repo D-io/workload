@@ -11,6 +11,7 @@ function auditworkload() {
     $.get(pageManageUrl+"?"+'regionName=auditor/auditworkload',{test : 12},function (result) {
         $('.right_hole').append(result);
     });
+    $(".x_panel").css('min-height',$('.right_col').height());
     $.get(workloadAuditUrl,{test : 12},function (data) {
         if(data.data!=null&&data.data.applyCategories){
             var showimport=  $("<ul></ul>");

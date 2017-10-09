@@ -11,6 +11,7 @@ function importWorkload(){
         $('.right_hole').append(result);
         $(".hiddendistrict").empty();
     });
+    $(".x_panel").css('min-height',$('.right_col').height());
     $.get(itemAuditorUrl,{test : 12},function (data) {
         if(data.data!=null&&data.data.importCategories){
             var parent = $("<ul></ul>");

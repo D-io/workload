@@ -791,13 +791,17 @@ function revieMyWorkload() {
     $.get(pageManageUrl+"?"+"regionName=PrimTeachers/revieMyWorkload",function (html) {
         $(".right_hole").empty();
         $(".right_hole").append(html);
+        $(".x_panel").css('min-height',$('.right_col').height());
     });
+
 }
 function checkedRevie() {
     $.get(pageManageUrl+"?"+"regionName=PrimTeachers/checkedRevie",function (html) {
         $(".right_hole").empty();
         $(".right_hole").append(html);
+        $(".x_panel").css('min-height',$('.right_col').height());
     });
+
 }
 /*验证导入时上传文件是否为excell格式*/
 function getFileType(obj) {

@@ -17,6 +17,7 @@ $(document).ready(function () {
     });
     /*获取侧边栏*/
     getSideBar(currentRole,roleList);
+    $(".x_panel").css('min-height',$('.right_col').height());
     /*获取当前学年*/
 
     $("#year").val(currentYearUrl);
@@ -70,6 +71,7 @@ $(document).ready(function () {
                 break;
 
         }
+        $(".x_panel").css('min-height',$('.right_col').height());
     });
     /*切换学年时对应的刷新页面*/
     $(document).on("click","#itemChange",function () {
@@ -106,6 +108,7 @@ $(document).ready(function () {
                     break;
 
             }
+            $(".x_panel").css('min-height',$('.right_col').height());
         });
     });
 

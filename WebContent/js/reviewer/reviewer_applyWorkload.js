@@ -21,6 +21,7 @@ function applyworkload() {
         });
 
     });
+    $(".x_panel").css('min-height',$('.right_col').height());
     /*声明一个数组Temp保存某一规则下的所有条目*/
     var Temp = new Array();
     /*声明变量Categry来记录数组下标*/

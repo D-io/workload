@@ -23,7 +23,7 @@ $(document).ready(function () {
 
         $RIGHT_COL.css('min-height', contentHeight);
     };
-
+       // $(".x_panel").css('min-height',$('.right_col').height());
     $MENU_TOGGLE.on('click', function() {
 
         if ($BODY.hasClass('nav-md')) {
@@ -48,7 +48,7 @@ $(document).ready(function () {
 
         $BODY.toggleClass('nav-md nav-sm');
 
-        setContentHeight();
+      //  setContentHeight();
     });
     $(document).on("click",".collapse-link",function () {
         $(".x_content").toggle("slow");

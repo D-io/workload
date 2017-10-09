@@ -167,6 +167,7 @@ html , body{
     visibility: hidden
 }
 .nav-sm .container.body .right_col {
+    height: 100%;
     padding: 10px 20px;
     margin-left: 70px;
     z-index: 2;
@@ -384,7 +385,9 @@ body .container.body .right_col {
 }
 .nav-md .container.body .right_col {
     padding: 10px 20px 0;
-    margin-left: 230px
+    margin-left: 230px;
+    height: auto;
+    min-height: 100%;
 }
 .nav_title {
     width: 230px;
@@ -505,7 +508,11 @@ body .container.body .right_col {
 }*/
 .container {
     width: 100%;
+    height: 100%;
     padding: 0
+}
+.main_container{
+    height: 100%;
 }
 .navbar-nav>li>a,
 .navbar-brand,
@@ -944,12 +951,16 @@ a:focus {
 }
 .bs-docs-sidebar .nav>li>a {
     display: block;
-    padding: 4px 6px
+    padding: 4px 6px;
+
 }
 footer {
     background: #fff;
     padding: 15px 20px;
-    display: block
+    display: block;
+    position: relative;
+    height: 80px;
+
 }
 .nav-sm footer {
     margin-left: 70px
@@ -1084,7 +1095,7 @@ h2 {
     column-break-inside: avoid;
     opacity: 1;
     transition: all .2s ease;
-    min-height: 90%;
+  /*  min-height: 90%;*/
 }
 .x_title {
     border-bottom: 2px solid #E6E9ED;
@@ -1497,7 +1508,7 @@ td.details {
 }
 .revContent{
     width:238px;
-    height: 50%;
+    height: 300px;
     box-shadow: 0 0 13px #eee;
     margin-left: 5%;
     margin-right: 20px;

@@ -56,6 +56,7 @@ function reviewerSumItem() {
 
         });
     });
+    $(".x_panel").css('min-height',$('.right_col').height());
     /*未通过的条目信息*/
         $.get(itemCollection,{"option":"unchecked"},function (data) {
             if(data.data.teacherWorkload!=null){

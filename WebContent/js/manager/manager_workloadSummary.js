@@ -106,7 +106,7 @@ function itemSummary() {
             };
         });
     })
-
+    $(".x_panel").css('min-height',$('.right_col').height());
     // 使用
     $(document).on("click",".Toexcellall",function () {
         var form = $("<form>");

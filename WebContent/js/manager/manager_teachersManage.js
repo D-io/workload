@@ -49,6 +49,7 @@ function reset() {
         });
 
     });
+    $(".x_panel").css('min-height',$('.right_col').height());
     var teachersInfo='';
     $.get(TeacherInfoUrl, {test : 12},function (data) {
         window.teachersInfo=data.data.teacherList;
