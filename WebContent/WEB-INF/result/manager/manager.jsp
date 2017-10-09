@@ -124,7 +124,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
                                 <li><a href="${userProfile}">个人信息</a></li>
-                                <li><a href="">查看帮助</a></li>
+                                <li><a href="${contextPath}/file?fileInfoId=1">查看帮助</a></li>
                                 <li><a href="${contextPath}/auth/logout">退出系统</a></li>
                             </ul>
                         </li>
